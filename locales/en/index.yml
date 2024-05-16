@@ -1,0 +1,90 @@
+---
+accessibility:
+  doubleTapToActivateHint: "Double tap to activate"
+  buttons:
+    torch:
+      turnOn: "Accendi la torcia"
+      turnOff: "Spegni la torcia"
+date:
+  formats:
+    default: "%d/%m/%Y"
+    short: "%d %B"
+    long: "%d %B %Y"
+  day_names:
+    - "Sunday"
+    - "Monday"
+    - "Tuesday"
+    - "Wednesday"
+    - "Thursday"
+    - "Friday"
+    - "Saturday"
+  abbr_day_names:
+    - "Sun"
+    - "Mon"
+    - "Tue"
+    - "Wed"
+    - "Thu"
+    - "Fri"
+    - "Sat"
+  month_names:
+    - " "
+    - "January"
+    - "February"
+    - "March"
+    - "April"
+    - "May"
+    - "June"
+    - "July"
+    - "August"
+    - "September"
+    - "October"
+    - "November"
+    - "December"
+  abbr_month_names:
+    - " "
+    - "Jan"
+    - "Feb"
+    - "Mar"
+    - "Apr"
+    - "May"
+    - "Jun"
+    - "Jul"
+    - "Aug"
+    - "Sept"
+    - "Oct"
+    - "Nov"
+    - "Dec"
+  meridian:
+    - "am"
+    - "pm"
+global:
+  date:
+    invalid: "invalid date"
+    today: "today"
+    tomorrow: "tomorrow"
+  locales:
+    it: Italian
+    en: English
+    de: German
+  dateFormats:
+    shortFormat: "%d/%m/%Y"
+    shortFormatWithTime: "%d/%m/%Y, %H:%M"
+    fullFormatShortMonthLiteral: "%d %b %Y"
+    fullFormatShortMonthLiteralWithTime: "%d %b %Y, %H:%M"
+    fullFormatShortMonthLiteralWithoutTime: "%d %b %Y"
+    fullFormatFullMonthLiteral: "%d %B %Y"
+    fullMonthLiteral: "%B"
+    fullMonthLiteralWithYear: "%B %Y"
+    numericMonthYear: "%m/%Y"
+    shortNumericMonthYear: "%m/%-y"
+    timeFormat: "%H:%M"
+    timeFormatWithTimezone: "%H:%M:%S (%z)"
+    dayMonthWithTime: "%d %b, %H:%M"
+    dayMonthWithoutTime: "%d %b"
+    dayFullMonth: "%d %B"
+    monthYear: "MMMM YYYY"
+    dayAndMonth: "dddd D MMMM"
+    dayMonth: "MM/DD"
+    dayMonthYear: "D MMMM YYYY"
+    weekdayDayMonthYear: "dddd D MMMM YYYY"
+    dateTimePicker: "gg/mm/yyyy"
