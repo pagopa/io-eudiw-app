@@ -14,6 +14,7 @@ module.exports = {
     "import/order": "error",
     "import/no-named-as-default": "off",
     "import/no-named-as-default-member": "off",
+    "import/namespace": "off",
     "react-native/no-inline-styles": "off",
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/ban-ts-comment": "error",
