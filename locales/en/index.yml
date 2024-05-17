@@ -88,3 +88,38 @@ global:
     dayMonthYear: "D MMMM YYYY"
     weekdayDayMonthYear: "dddd D MMMM YYYY"
     dateTimePicker: "gg/mm/yyyy"
+  buttons:
+    deny: "Deny"
+    share: Share
+    delete: Delete
+    cancel: Cancel
+    settings: Settings
+    ok: OK
+    ok2: Ok
+    continue: Continue
+    notNow: Maybe later
+    retry: Retry
+    back: Back
+    confirm: Confirm
+    close: Close
+    exit: Exit
+    saveSelection: Save the selection
+    search: Search
+    skip: "Skip"
+    add: Add
+    edit: "Edit"
+    info: "Info"
+    activate: "Enable"
+    activate2: Enable
+    deactivate: "Disable"
+    show: "Show"
+    update: "Update"
+    updateIO: "Update IO"
+    findOutMore: "Find out more"
+    details: "Details"
+    choose: "Scegli"
+    copy: Copy
+  remoteStates:
+    loading: Loading...
+    wait: Wait a few seconds..
+    notAvailable: Not available

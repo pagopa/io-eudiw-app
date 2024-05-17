@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "react-native";
+import { H1, Body } from "@pagopa/io-app-design-system";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppParamsList } from "./params/AppParamsList";
@@ -13,7 +13,8 @@ const hideHeaderOptions = {
 
 const InitialScreen = () => (
   <SafeAreaView>
-    <Text>Initial screen</Text>
+    <H1>Initial screen</H1>
+    <Body>React Native Application for EUDIW PoC</Body>
   </SafeAreaView>
 );
 

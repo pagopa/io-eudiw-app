@@ -20,7 +20,7 @@ import {
   IONavigationDarkTheme,
   IONavigationLightTheme
 } from "../theme/navigations";
-//import LoadingSpinnerOverlay from "../components/LoadingSpinnerOverlay";
+import LoadingSpinnerOverlay from "../components/LoadingSpinnerOverlay";
 import AuthenticatedStackNavigator from "./AuthenticatedStackNavigator";
 import { AppParamsList } from "./params/AppParamsList";
 import NavigationService, {
@@ -70,7 +70,7 @@ const InnerNavigationContainer = (props: { children: React.ReactElement }) => {
       }
       ref={navigationRef}
       linking={linking}
-      //fallback={<LoadingSpinnerOverlay isLoading={true} />}
+      fallback={<LoadingSpinnerOverlay isLoading={true} />}
       onReady={() => {
         NavigationService.setNavigationReady();
         routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
