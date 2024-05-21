@@ -21,7 +21,8 @@ module.exports = {
     "no-console": "error",
     "functional/no-let": "error",
     "functional/immutable-data": "error",
-    "eslint-comments/no-unlimited-disable": "off"
+    "eslint-comments/no-unlimited-disable": "off",
+    "react-native-a11y/has-accessibility-hint": "off"
   },
   ignorePatterns: [
     "*rc.js",

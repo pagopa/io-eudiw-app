@@ -8,6 +8,8 @@ import appStateReducer from "./appState";
 import { navigationReducer } from "./navigation";
 import { GlobalState } from "./types";
 import { debugReducer } from "./debug";
+import startupReducer from "./startup";
+import persistedPreferencesReducer from "./persistedPreferences";
 
 /**
  * Here we combine all the reducers.
@@ -28,9 +30,11 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
   //
   appState: appStateReducer,
   navigation: navigationReducer,
+  startup: startupReducer,
 
   // standard persistor, see configureStoreAndPersistor.ts
-  debug: debugReducer
+  debug: debugReducer,
+  persistedPreferences: persistedPreferencesReducer
 });
 
 export function createRootReducer(
