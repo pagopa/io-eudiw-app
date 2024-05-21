@@ -10,8 +10,16 @@ import {
 import { GlobalState } from "../reducers/types";
 import { ApplicationActions } from "./application";
 import { DebugActions } from "./debug";
+import { StartupActions } from "./startup";
+import { PersistedPreferencesActions } from "./persistedPreferences";
+import { AuthenticationActions } from "./authentication";
 
-export type Action = ApplicationActions | DebugActions;
+export type Action =
+  | ApplicationActions
+  | DebugActions
+  | StartupActions
+  | PersistedPreferencesActions
+  | AuthenticationActions;
 
 export type Dispatch = DispatchAPI<Action>;
 
