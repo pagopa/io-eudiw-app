@@ -12,12 +12,14 @@ import { ApplicationActions } from "./application";
 import { DebugActions } from "./debug";
 import { StartupActions } from "./startup";
 import { PersistedPreferencesActions } from "./persistedPreferences";
+import { AuthenticationActions } from "./authentication";
 
 export type Action =
   | ApplicationActions
   | DebugActions
   | StartupActions
-  | PersistedPreferencesActions;
+  | PersistedPreferencesActions
+  | AuthenticationActions;
 
 export type Dispatch = DispatchAPI<Action>;
 

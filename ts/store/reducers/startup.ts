@@ -2,6 +2,7 @@
  * A reducer for not persisted preferences.
  */
 import { isActionOf } from "typesafe-actions";
+import { sessionExpired, sessionInvalid } from "../actions/authentication";
 
 import { startupLoadSuccess } from "../actions/startup";
 import { Action } from "../actions/types";
@@ -32,7 +33,7 @@ export default function startupReducer(
       status: action.payload
     };
   }
-  /* if (
+  if (
     isActionOf(sessionInvalid, action) ||
     isActionOf(sessionExpired, action)
   ) {
@@ -40,7 +41,7 @@ export default function startupReducer(
       ...state,
       status: StartupStatusEnum.NOT_AUTHENTICATED
     };
-  } */
+  }
   return state;
 }
 
