@@ -67,3 +67,5 @@ definitions
 
 # Auto generated locales
 locales/locales.ts
+
+coverage
