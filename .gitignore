@@ -91,7 +91,7 @@ __pycache__
 definitions
 
 # Auto generated locales
-locales.ts
+locales/locales.ts
 
 # Certificates
 **/*.p12
