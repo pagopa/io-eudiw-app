@@ -3,6 +3,7 @@
  */
 import { combineReducers, Reducer } from "redux";
 import { PersistConfig } from "redux-persist";
+import { featuresPersistor } from "../../features/common/store/reducers";
 import { Action } from "../actions/types";
 import appStateReducer from "./appState";
 import { navigationReducer } from "./navigation";
@@ -33,6 +34,7 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
   startup: startupReducer,
 
   // standard persistor, see configureStoreAndPersistor.ts
+  features: featuresPersistor,
   debug: debugReducer,
   persistedPreferences: persistedPreferencesReducer
 });
