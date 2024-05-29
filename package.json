@@ -8,6 +8,7 @@
     "lint": "eslint . -c .eslintrc.js --ext .ts,.tsx",
     "lint-autofix": "eslint . -c .eslintrc.js --ext .ts,.tsx --fix",
     "prettify": "prettier --write \"ts/**/*.(ts|tsx)\"",
+    "prettier:check": "prettier --check \"ts/**/*.(ts|tsx)\"",
     "start": "react-native start",
     "tsc:noemit": "tsc --noemit",
     "test": "jest",
@@ -16,7 +17,8 @@
     "generate:content-definitions": "rimraf definitions/content && mkdir -p definitions/content && gen-api-models --api-spec $npm_package_io_content_specs --out-dir ./definitions/content",
     "generate:locales": "ts-node --skip-project -O '{\"lib\":[\"es2015\"]}' scripts/make-locales.ts",
     "generate": "npm-run-all generate:*",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "test:ci": "jest --ci --maxWorkers=2 --silent"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.1.5",
