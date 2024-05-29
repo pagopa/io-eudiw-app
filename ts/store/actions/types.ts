@@ -8,6 +8,7 @@ import {
   StoreEnhancer as ReduxStoreEnhancer
 } from "redux";
 import { GlobalState } from "../reducers/types";
+import { ItWalletActions } from "../../features/itwallet/store/actions";
 import { ApplicationActions } from "./application";
 import { DebugActions } from "./debug";
 import { StartupActions } from "./startup";
@@ -19,7 +20,8 @@ export type Action =
   | DebugActions
   | StartupActions
   | PersistedPreferencesActions
-  | AuthenticationActions;
+  | AuthenticationActions
+  | ItWalletActions;
 
 export type Dispatch = DispatchAPI<Action>;
 

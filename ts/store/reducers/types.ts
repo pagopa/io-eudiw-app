@@ -1,4 +1,5 @@
 import { PersistPartial } from "redux-persist";
+import { PersistedFeaturesState } from "../../features/common/store/reducers";
 import { AppState } from "./appState";
 import { NavigationState } from "./navigation";
 import { DebugState } from "./debug";
@@ -11,6 +12,7 @@ export type GlobalState = Readonly<{
   debug: DebugState;
   persistedPreferences: PersistedPreferencesState;
   startup: StartupState;
+  features: PersistedFeaturesState;
 }>;
 
 export type PersistedGlobalState = GlobalState & PersistPartial;
