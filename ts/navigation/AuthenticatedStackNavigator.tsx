@@ -2,6 +2,7 @@ import React from "react";
 import { H1, Body } from "@pagopa/io-app-design-system";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { PID } from "@pagopa/io-react-native-wallet";
 import { AppParamsList } from "./params/AppParamsList";
 import ROUTES from "./routes";
 
@@ -11,12 +12,15 @@ const hideHeaderOptions = {
   headerShown: false
 };
 
-const InitialScreen = () => (
-  <SafeAreaView>
-    <H1>Initial screen</H1>
-    <Body>React Native Application for EUDIW PoC</Body>
-  </SafeAreaView>
-);
+const InitialScreen = () => {
+  return (
+    <SafeAreaView>
+      <H1>Initial screen</H1>
+      <Body>React Native Application for EUDIW PoC</Body>
+      <Body>IO React Native Wallet: {PID.SdJwt ? "✅" : "❗️"}</Body>
+    </SafeAreaView>
+  );
+};
 
 const AuthenticatedStackNavigator = () => {
   return (

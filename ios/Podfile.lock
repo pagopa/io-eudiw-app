@@ -78,9 +78,14 @@ PODS:
   - hermes-engine (0.71.18):
     - hermes-engine/Pre-built (= 0.71.18)
   - hermes-engine/Pre-built (0.71.18)
+  - JOSESwift (2.4.0)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.1100)
   - pagopa-io-react-native-crypto (0.3.0):
+    - React-Core
+  - pagopa-io-react-native-jwt (1.2.0):
+    - JOSESwift (~> 2.3)
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -504,6 +509,7 @@ DEPENDENCIES:
   - libevent (~> 2.1.12)
   - OpenSSL-Universal (= 1.1.1100)
   - "pagopa-io-react-native-crypto (from `../node_modules/@pagopa/io-react-native-crypto`)"
+  - "pagopa-io-react-native-jwt (from `../node_modules/@pagopa/io-react-native-jwt`)"
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -559,6 +565,7 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - fmt
+    - JOSESwift
     - libevent
     - OpenSSL-Universal
     - SocketRocket
@@ -581,6 +588,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
   pagopa-io-react-native-crypto:
     :path: "../node_modules/@pagopa/io-react-native-crypto"
+  pagopa-io-react-native-jwt:
+    :path: "../node_modules/@pagopa/io-react-native-jwt"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -679,9 +688,11 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 251dcc3511fc68678e2ee96dd7d175d9489b781e
+  JOSESwift: 7ff178bb9173ff42c6e990929a9f2fa702a34f69
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   pagopa-io-react-native-crypto: 6aa9f33e4bf64ef420ad97c720c1ad0f876cd470
+  pagopa-io-react-native-jwt: be05e46a4067feafb395a6857bc608a843a590b5
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: 467cd79889cbcfd008d0ff7c697f73765d4578c3
   RCTTypeSafety: 71c8b219dc633684896452fee38a1e442d167dd6
