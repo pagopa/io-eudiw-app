@@ -123,4 +123,312 @@ global:
     loading: In caricamento...
     wait: Attendi qualche secondo...
     notAvailable: Non disponibile
-  
+  accessibility:
+    minusSymbol: meno
+    reload: "Ricarica"
+    search: "Cerca"
+    switchLabel: "Seleziona per attivare"
+    inputLabel: "{{header}}, Intestazione"
+    textField: "{{inputLabel}}, campo di testo"
+    description: Descrizione
+    dateField: Due cifre per il mese, due per l'anno
+    threeDigits: 3 cifre
+    fourDigits: 4 cifre
+    dateFormat: DD MMMM YYYY
+    expanded: Paragrafo espanso
+    collapsed: Paragrafo chiuso
+    active: Stato attivo
+    inactive: Stato non attivo
+    linkHint: Attivando questo elemento verrai reindirizzato sul browser del dispositivo
+    alert: Avviso
+    activityIndicator:
+      label: Caricamento in corso
+      hint: Attendi il caricamento del contenuto
+    header:
+      label: Header dell'applicazione
+    contextualHelp:
+      close: Chiudi l'help contestuale
+      open:
+        label: Aiuto contestuale
+        hint: Accedi alle informazioni sul contenuto della schermata corrente
+features:
+  itWallet:
+    title: "IT Wallet"
+    tos: "Proseguendo accetti i [Termini e condizioni d’uso](https://io.italia.it/privacy-policy/) del servizio e confermi di avere letto l’[Informativa Privacy](https://io.italia.it/privacy-policy/)."
+    actionBanner:
+      title: "Novità IT Wallet"
+      description: "Da oggi puoi collezionare le tue credenziali digitali (come Licenza di Guida, Tessera Sanitaria, etc.) e accedere ai servizi online con IT Wallet."
+      action: "Attiva IT Wallet"
+      hideLabel: "Nascondi questo banner"
+    innerActionBanner: 
+      title: "Novità credenziali digitali"
+      description: "Attiva IT Wallet e aggiungi le tue credenziali digitali (come Licenza di Guida, Tessera Sanitaria, etc.)"
+      action: "Attiva IT Wallet"
+      hideLabel: "Nascondi questo banner"
+    activationScreen:
+      intro: "## IT Wallet: cos'è e come funziona\n\nIT Wallet è una funzionalità che ti permette di aggiungere nel Portafoglio di IO la tua identità digitale, ovvero l'**insieme dei dati personali che ti permette di autenticarti online**, e i tuoi documenti personali, come la patente di guida, la tessera sanitaria e la Carta Europea della disabilità."
+      subContentOne: "###### Online e dal vivo\n\nUsa l'identità digitale per **accedere ai servizi online, sia pubblici che privati**. Usa i documenti per **condividere con altri i dati che contengono**, online e dal vivo, ogni volta che ne hai bisogno."
+      subContentTwo: "###### Facile da attivare\n\nAvrai bisogno della **Carta d'Identità Elettronica (CIE) e del suo PIN**. I dati della tua CIE faranno parte della tua identità digitale, il primo documento del tuo IT Wallet."
+      cancel: "Non ora"
+      confirm: "Attiva IT Wallet"
+    homeScreen:
+      categories: 
+        any: "Tutto"
+        itWallet: "IT Wallet"
+        health: "Sanità"
+        payments: "Metodi di pagamento"
+        bonus: "Bonus e sconti"
+      reset: 
+        label: "Resetta"
+        bottomSheet: 
+          title: "Vuoi resettare IT Wallet?"
+          body: "Perderai l’Identità Digitale e tornerai allo stato iniziale disattivando IT Wallet. Potrai riattivarlo in un secondo momento."
+          confirm: "Conferma reset"
+          cancel: "Annulla"
+      buttons:
+        addCredential: "Aggiungi documento"
+    infoAuthScreen:
+      title: "Iniziamo!"
+      subTitle: "Prendi la tua CIE e il suo PIN."
+      readMoreUrl: "https://www.cartaidentita.interno.gov.it/"
+      noCieInfo: "Non hai la CIE?"
+      errors:
+        nfc:
+          title: "Il tuo dispositivo non supporta la funzione NFC necessaria per attivare IT Wallet"
+          body: "Per proseguire è necessaria la funzione NFC del dispositivo."
+    featuresInfoScreen:
+      title: "Come vuoi attivare l'IT Wallet?"
+      showDiff:
+        title: "La differenza tra i metodi di attivazione"
+        content: "Se attivi IT Wallet con “Entra con CIE”, potrai utilizzare tutte le sue funzionalità. Se lo attivi con SPID o CieID, potrai utilizzarne solo alcune.\n\nQuesto perché la CIE (Carta d'Identità Elettronica) ha un livello di sicurezza più alto di SPID e CieID. Se ce l'hai, ti consigliamo quindi di usare la CIE."
+      list:
+        allFeaturesSection: "Metodo consigliato"
+        mainFeaturesSection: "Altri metodi"
+        incomingFeature: "In arrivo"
+        cie: "Entra con CIE"
+        cieSubTitle: "Usa Carta d’Identità Elettronica e PIN"
+        spid: "SPID"
+        spidSubTitle: "Usa credenziali e app (o SMS)"
+        cieId: "CieID"
+        cieIdSubTitle: "Usa app o credenziali CieID"
+      compareFeatures: "Qual è la differenza?"
+    cie:
+      pinScreen:
+        title: "Inserisci il PIN della CIE"
+        description: "È un codice di 8 cifre. Ti è stato comunicato in due momenti:\n- le prime 4 cifre le hai ricevute all’anagrafe;\n- le ultime 4 cifre le hai ricevute a casa con la CIE.\nMettile insieme e inseriscile in quest’ordine.\n\n[Hai dimenticato il PIN?](https://www.cartaidentita.interno.gov.it/info-utili/codici-di-sicurezza-pin-e-puk/)"
+    issuing:
+      title: "Attivazione IT Wallet"
+      cie:
+        waiting: 
+          title: "Appoggia la CIE sul retro del dispositivo"
+          content: "Se la lettura non parte, sposta la carta in punti diversi e attendi qualche secondo finché non senti una vibrazione."
+        reading:
+          title: "Tienila ferma per qualche secondo"
+        success:
+          title: "Lettura completata!"
+          content: "Continua per aggiungere la tua identità digitale e completare l’attivazione di IT Wallet."
+        error:
+          title: "Hai rimosso la CIE troppo presto"
+          retry: "Riprova"
+        help: "Guarda come fare"
+      infoConsent:
+        footer:
+          cancel: "Annulla"
+          confirm: "Continua"
+      loading:
+        title: "Sto caricando i dati dal Ministero dell’Interno"
+        subtitle: "Attendi qualche secondo"
+      pidPreviewScreen: 
+        title: "Ecco un’anteprima della tua Identità Digitale"
+        checkNotice: "Verifica che le informazioni siano corrette e aggiungila per completare l’attivazione di IT Wallet."
+        buttons:
+          add: "Aggiungi"
+          cancel: "Annulla"
+        banner:
+          title: "Qualcosa non torna?"
+          content: "Se vuoi approfondire alcuni dati o segnalare errori, contatta l’assistenza."
+          actionTitle: "Contatta l'assistenza"
+          closeTitle: "Chiudi"
+        bottomSheet: 
+          title: "Annulla attivazione dell’IT Wallet"
+          body: "Vuoi annullare l’ottenimento dell’identità digitale e quindi l’attivazione dell’IT Wallet?"
+          buttons: 
+            back: "Torna indietro"
+            cancel: "Annulla attivazione"
+        loading:
+          title: "Sto caricando i dati dal Ministero dell’Interno"
+          subtitle: "Attendi qualche secondo"
+      pidActivationScreen: 
+        loading: 
+          title: "Sto attivando il tuo IT Wallet"
+          subtitle: "Attendi qualche secondo"
+        typ:
+          title: "IT Wallet è attivo!"
+          content: "Vai al Portafoglio: puoi già aggiungere altre tessere e usare la tua identità digitale per accedere ai servizi online."
+          button: "Vai al Portafoglio"
+      credentialsCatalogScreen:
+        title: "Aggiungi altri documenti"
+        incomingFeature: "In arrivo"
+      credentialsChecksScreen:
+        loading:
+          title: "Stiamo facendo alcune verifiche di sicurezza"
+        success:
+          title: Stai aggiungendo {{credentialName}} al Portafoglio
+        toast: 
+          cancel: "Tessera non aggiunta al Portafoglio."
+        failure: 
+          alreadyExisting: 
+            title: "Hai già questa tessera"
+            subtitle: "La tessera si trova già nel tuo Portafoglio. Se non la vedi, scrivici."
+            actionLabel: "Vai al Portafoglio"
+      credentialAddScreen:
+        loading:
+          title: "Stiamo aggiungendo la tua credenziale al portafoglio"
+        toast: 
+          success: "Tessera aggiunta!"
+      credentialsIssuingInfoScreen:
+        title: "Dati necessari per aggiungere la tessera"
+        subtitle: "{{authsource}} li invierà a {{organization}}."
+        readMore: "Scopri di più"
+        infoBottomSheet:
+          title: "Trattamento dei dati"
+          body:
+            firstHeaderTitle: "Perché è necessario?"
+            firstBodyContent: "Per ottenere il rilascio della tessera L’ente autorizzato ad emettere questa tessera ha bisogno di leggere i tuoi dati per verificarne l’identità."
+            secondHeaderTitle: "Sicurezza del trattamento"
+            secondBodyContent: "App IO consente la condivisione dei tuoi dati solo con enti verificati e iscritti alle liste che ne garantiscono l’affidabilità."
+        tos: "Per maggiori informazioni leggi l’[Informativa Privacy](https://io.italia.it/privacy-policy/) e i [Termini e condizioni d’uso](https://io.italia.it/privacy-policy/)"
+      credentialPreviewScreen:
+        title: "Ecco un’anteprima della tua tessera"
+        subtitle: "Prima di aggiungerla, verifica che tutte le informazioni siano
+            corrette."
+        banner:
+          title: "Qualcosa non torna?"
+          content: "Se ci sono errori nei dati o vuoi capire meglio cosa significano, contatta l’assistenza."
+          actionTitle: "Contatta l'assistenza"
+        bottomSheet: 
+          about: 
+            title: "Chi è?"
+            subtitle: "È la fonte che gestisce e protegge i tuoi dati. App IO ti consente di visualizzarli perché è in grado di verificare e proteggere la tua identità grazie a importanti procedure di sicurezza."
+          data:
+            title: "Protezione dei dati"
+            subtitle: "I tuoi dati non vengono salvati su questo dispositivo, ma conservati nella Wallet Instance e potrai decidere di revocarli in qualsiasi momento."
+        toast:
+          success: "Tessera aggiunta!"
+          failure: "Non siamo riusciti ad aggiungere questa tessera, riprova più tardi."
+    presentation: 
+      credentialDetails: 
+        buttons: 
+          qrCode: "Mostra QR code"
+      pidAttributesScreen: 
+        headerTitle: "Presentazione dati"
+        title: "Confermi questi dati?"
+        subTitle: "Qui trovi i dati relativi alla tua Identità Digitale e l’Ente a cui li stai presentando"
+        requiredData: 
+          title: "Dati obbligatori"
+          subTitle: "Necessari per accedere ai servizi che richiedi"
+        wrongClaims: 
+          title: "Qualcosa non torna? "
+          reportLink: "Segnala un errore"
+        privacy: 
+          thirdParty: "I dati non sono condivisi con terze parti"
+          preservation: "I dati saranno conservati per {{numberOfMonths}} mesi"
+          deletion: "Potrai cancellare i dati in qualsiasi momento"
+          conditionsLink: "Tutte le condizioni"
+        buttons: 
+          confirmData: "Conferma dati"
+          deny: "Nega"
+        tos: "Proseguendo accetti i [Termini e condizioni d’uso]() del servizio e confermi di avere letto l’[Informativa Privacy]() di {{relayingParty}}."
+      checksScreen: 
+        loading: "Stiamo controllando che questo ente sia verificato"
+        success: "{{organizationName}} è un ente verificato"
+        errors: 
+          walletNotValid: 
+            title: IT Wallet non è attivo
+            subtitle: Per presentare una credenziale, devi prima attivarlo.
+            actionLabel: Attiva IT Wallet
+      dataScreen: 
+        title: "Consenti la lettura dei tuoi dati"
+        subtitle: "Autorizza {{organizationName}} al trattamento dei tuoi dati per fornirti i servizi che richiedi."
+        why: "Come mai?"
+        requiredClaims: "Dati obbligatori"
+        optionalClaims: "Dati facoltativi"
+        privacy: 
+          usage: "I dati vengono utilizzati solo per le finalità mostrate"
+          deletion: "Potrai richiederne la rimozione in qualsiasi momento"
+        infoBottomSheet:
+          body:
+            firstHeader: "Chi è?"
+            firstBody: "È l’ente che vuole accedere ad alcune informazioni per fornirti i servizi che richiedi. IO ti consente di autorizzare il trattamento dei tuoi dati solo con enti verificati e correttamente iscritti alle liste che ne garantiscono l’affidabilità."
+            secondHeader: "I miei dati sono al sicuro?"
+            secondBody: "I tuoi dati non sono condivisi con altri soggetti e non vengono utilizzati per finalità diverse da quelle indicati. Potrai richiederne la rimozione in qualsiasi momento."
+        tos: "Per maggiori informazioni leggi l’[Informativa Privacy](https://io.italia.it/privacy-policy/) e i [Termini e condizioni d’uso](https://io.italia.it/privacy-policy/)"
+      resultScreen: 
+        loading: 
+          title: "Stiamo condividendo i tuoi dati con {{organizationName}}"
+        success: 
+          title: "Fatto!"
+          subtitle: "Torna sul sito di {{organizationName}} per continuare."
+      qrCodeScreen:
+        title: "Codice QR personale"
+        proximity:
+          start: "Verifica in prossimità avviata"
+          stop: "Verifica in prossimità terminata"
+          peripheralConnected: "Dispositivo di verifica connesso"
+          sessionEstablished: "E' stata stabilita una sessione con il dispositivo di verifica"
+          documentRequestReceived: "Controllo della credenziale in corso"
+          documentPresentationCompleted: "Controllo della credenziale completato"
+    missingFeatureScreen: 
+      headerTitle: "Schermata non disponibile"
+      title: "Questa schermata sarà presto disponibile"
+      subtitle: "In questo momento non esiste ancora, ma stiamo lavorando alla sua implementazione."
+      button: 
+        label: "Ho capito"
+    verifiableCredentials:
+      type:
+        digitalCredential: "Identità digitale"
+        disabilityCard: "Tessera Europa della disabilità"
+        healthCard: "Tessera Sanitaria"
+        drivingLicense: "Licenza di guida"
+      claims:
+        uniqueId: "ID univoco"
+        givenName: "Nome"
+        familyName: "Cognome"
+        taxIdCode: "Codice Fiscale"
+        birthdate: "Data di nascita"
+        placeOfBirth: "Luogo di nascita"
+        expirationDate: "Scadenza"
+        securityLevel: "Livello di sicurezza"
+        issuedBy: "Credenziale emessa da"
+        info: "Ulteriori info su questi dati"
+        issuedByNew: "Emessa da"
+        releasedBy: "Rilasciata da"
+        mdl: 
+          category: "Licenza {{category}}"
+          issuedDate: "Valida dal"
+          expirationDate: "Valida fino"
+      unrecognizedData: 
+        title: "Non riconosci alcuni dati?"
+        body: "Se ci sono errori nei dati o vuoi capire meglio cosa significano, puoi contattare il Ministero dell’Interno."
+        cta: "Chiedi informazioni o segnala errori"
+    generic:
+      error:
+        title: "C'è un problema sui nostri sistemi"
+        body: "Riprova tra qualche minuto. Se si ripete, contatta l'assistenza."
+      close: "Chiudi"
+      rp: "Relying Party"
+      trusted: "Trusted"
+      search: "Cerca"
+      alert:
+        title: "Vuoi interrompere l’operazione?"
+        confirm: "Sì, interrompi"
+        cancel: "No, vai indietro"
+      dataSource:
+        multi: "Forniti da {{credentialSource}}"
+        single: "Fornito da {{credentialSource}}"
+      credential: "Credenziale"
+      attribute: "Attributo"
+      placeholders: 
+        claimNotAvailable: "Attributo non riconosciuto"
+        claimLabelNotAvailable: "Etichetta attributo non presente"
+        organizationName: "Nome ente non disponibile"

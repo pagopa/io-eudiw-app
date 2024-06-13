@@ -123,3 +123,311 @@ global:
     loading: Loading...
     wait: Wait a few seconds..
     notAvailable: Not available
+  accessibility:
+    minusSymbol: minus
+    switchLabel: "Select to activate"
+    reload: "Reload"
+    search: "Search"
+    inputLabel: "{{header}}, Header"
+    textField: "{{inputLabel}}, text field"
+    description: Description
+    dateField: 2 digits for the month, 2 for the year
+    threeDigits: 3 digits
+    fourDigits: 4 digits
+    dateFormat: MMMM Do YYYY
+    expanded: Expanded paragraph
+    collapsed: Collapsed paragraph
+    active: State active
+    inactive: State inactive
+    linkHint: Activating this item you will be redirected to the web browser of your device
+    alert: Alert
+    activityIndicator:
+      label: Loading
+      hint: Wait for the content load
+    header:
+      label: Application header
+    contextualHelp:
+      close: Close the contextual help
+      open:
+        label: Contextual Help
+        hint: Access information about the contents of the current screen
+features:
+  itWallet:
+    title: "IT Wallet"
+    tos: "By continuing, you accept the [Terms and conditions of use]() of the service and confirm that you have read the [Privacy Policy]() of {{relayingParty}}."
+    actionBanner:
+      title: "Novità IT Wallet"
+      description: "Starting today, you can collect your digital credentials (such as Driver's License, Health Card, etc.) and access online services with IT Wallet."
+      action: "Enable IT Wallet"
+      hideLabel: "Hide this banner"
+    innerActionBanner: 
+      title: "Digital credential news"
+      description: "Enable IT Wallet and add your digital credentials (e.g. driving license, health insurance card, etc.)"
+      action: "Enable IT Wallet"
+      hideLabel: "Hide this banner"
+    activationScreen:
+      intro: "## IT Wallet: what it is and how it works\n\nIT Wallet is a feature that allows you to add your digital identity to the IO Wallet, i.e. the **set of personal data that allows you to authenticate yourself online**, and the your personal documents, such as your driving license, health card and European Disability Card."
+      subContentOne: "###### Online and live\n\nUse your digital identity to **access online services, both public and private**. Use documents to **share the data they contain with others**, online and live, whenever you need it."
+      subContentTwo: "###### Easy to activate\n\nYou will need the **Electronic Identity Card (CIE) and its PIN**. Your CIE data will be part of your digital identity, the first document in your IT Wallet."
+      cancel: "Not now"
+      confirm: "Activate IT Wallet"
+    homeScreen:
+      categories: 
+        any: "Any"
+        itWallet: "IT Wallet"
+        health: "Health"
+        payments: "Payments methods"
+        bonus: "Bonuses and discounts"
+      reset: 
+        label: "Reset"
+        bottomSheet: 
+          title: "Do you want to reset IT Wallet?"
+          body: "By deactivating IT Wallet, you will lose your Digital Identity and return to the initial state. You can reactivate it later."
+          confirm: "Confirm reset"
+          cancel: "Cancel"
+      buttons:
+        addCredential: "Add credential"
+    infoAuthScreen:
+      title: "Let's begin!"
+      subTitle: "Get your CIE and its PIN."
+      readMoreUrl: "https://www.cartaidentita.interno.gov.it/"
+      noCieInfo: "Don't you have the CIE?"
+      errors:
+        nfc:
+          title: "Your device does not support NFC which is required to enable IT Wallet"
+          body: "To proceed, the NFC function of the device is required."
+    featuresInfoScreen:
+      title: "How do you want to activate the IT Wallet?"
+      showDiff:
+        title: "The difference between activation methods"
+        content: "If you activate IT Wallet with 'Log in with CIE', you will be able to use all its features. If you activate it with SPID or CieID, you will only be able to use some of them.\n\nThis is because the CIE (Electronic Identity Card) has a higher level of security than SPID and CieID. If you have it, we therefore recommend using the CIE."
+      list:
+        allFeaturesSection: "Recommended method"
+        mainFeaturesSection: "Other methods"
+        incomingFeature: "Coming soon"
+        cie: "Enter with CIE"
+        cieSubTitle: "Use Electronic Identity Card and PIN"
+        spid: "SPID"
+        spidSubTitle: "Use credentials and app (or SMS)"
+        cieId: "CieID"
+        cieIdSubTitle: "Use CieID app or credentials"
+      compareFeatures: "What is the difference?"
+    cie:
+      pinScreen:
+        title: "Enter your CIE PIN"
+        description: "It is an 8 digit code. It was communicated to you in two moments:\n- you received the first 4 digits at the registry office;\n- you received the last 4 digits at home with the CIE.\nPut them together and enter them in this order.\n\n[Have you forgotten your PIN?](https://www.cartaidentita.interno.gov.it/info-utili/codici-di-sicurezza-pin-e-puk/)"
+    issuing:
+      title: "IT Wallet activation"
+      cie:
+        waiting: 
+          title: "Place the CIE on the back of the device"
+          content: "If the reading doesn't start, move the card to different places and wait a few seconds until you feel a vibration."
+        reading:
+          title: "Hold it still for a few seconds"
+        success:
+          title: "Reading completed!"
+          content: "Continue to add your digital identity and complete IT Wallet activation."
+        error:
+          title: "You removed the CIE too early"
+          retry: "Retry"
+        help: "See how to do it"
+      infoConsent:
+        footer:
+          cancel: "Cancel"
+          confirm: "Continue"
+      loading:
+        title: "I am loading the data from the Ministry of the Interior"
+        subtitle: "Wait a few seconds"
+      pidPreviewScreen: 
+        title: "Do you want to add this data to the IT Wallet?"
+        checkNotice: "Verify that the following data is correct."
+        buttons:
+          add: "Add"
+          cancel: "Cancel"
+        banner:
+          title: "Something doesn't add up?"
+          content: "If you want to delve deeper into some data or report errors, contact support."
+          actionTitle: "Contact support"
+          closeTitle: "Close"
+        bottomSheet: 
+          title: "Cancel the IT Wallet activation"
+          body: "Do you want to cancel the obtaining of the digital identity and therefore the activation of the IT Wallet?"
+          buttons: 
+            back: "Go back"
+            cancel: "Cancel activation"
+        loading:
+          title: "I am loading the data from the Ministry of the Interior"
+          subtitle: "Wait a few seconds"
+      pidActivationScreen: 
+        loading: 
+          title: "I'm activating your IT Wallet"
+          subtitle: "Wait a few seconds"
+        typ:
+          title: "IT Wallet is active!"
+          content: "Go to Wallet: you can already add other cards and use your digital identity to access online services."
+          button: "Go to Wallet"
+      credentialsCatalogScreen:
+        title: "Add more credentials"
+        incomingFeature: "Coming soon"
+      credentialsChecksScreen:
+        loading:
+          title: "We are performing some security checks"
+        success:
+          title: You are adding {{credentialName}} to your Wallet
+        toast: 
+          cancel: "The credential was not added to the wallet."
+        failure: 
+          alreadyExisting: 
+            title: "You already have this credential."
+            subtitle: "This credential is already in your wallet. If you don't see it, contact us."
+            actionLabel: "Go to the Wallet"
+      credentialAddScreen:
+        loading:
+          title: "We're adding your credential to your walleto"
+        toast: 
+          success: "Card added!"
+      credentialsIssuingInfoScreen:
+        title: "Data needed to add the card"
+        subtitle: "{{authsource}} will send them to {{organization}}."
+        readMore: "Find out more"
+        infoBottomSheet:
+          title: "Data processing"
+          body:
+            firstHeaderTitle: "Why is it necessary?"
+            firstBodyContent: "To obtain the issuance of the card The body authorized to issue this card needs to read your data to verify your identity."
+            secondHeaderTitle: "Safety of treatment"
+            secondBodyContent: "App IO allows the sharing of your data only with verified bodies registered on the lists that guarantee its reliability."
+        tos: "For more information, read the [Privacy Policy](https://io.italia.it/privacy-policy/) and the [Terms and Conditions](https://io.italia.it/privacy-policy/)"
+      credentialPreviewScreen:
+        title: "Here's a preview of your credential"
+        subtitle: "Before adding it, check if the data is correct."
+        banner:
+          title: "Something doesn't add up?"
+          content: "If you want to delve deeper into some data or report errors, contact support."
+          actionTitle: "Contact support"
+        bottomSheet: 
+          about: 
+            title: "Who is it?"
+            subtitle: "it is the source that manages and protects your data. The IO app allows you to view them because it can verify and protect your identity through important security procedures."
+          data:
+            title: "Data protection"
+            subtitle: "our data is not saved on this device but stored in the Wallet Instance, and you can choose to revoke them at any time."
+        toast:
+          success: "Credential added!"
+          failure: "We were not able to add this card, try again later."
+    presentation: 
+      credentialDetails: 
+        buttons: 
+          qrCode: "Show QR code"
+      pidAttributesScreen: 
+        headerTitle: "Data presentation"
+        title: "Do you confirm this data?"
+        subTitle: "Here you can find the data regarding your Digital Identity and the Authority to which you are presenting them."
+        requiredData: 
+          title: "Required data"
+          subTitle: "Required to access the services you are requesting."
+        wrongClaims: 
+          title: "Something wrong? "
+          reportLink: "Report an error"
+        privacy: 
+          thirdParty: "Data is not shared with third parties"
+          preservation: "Data will be retained for {{numberOfMonths}} months"
+          deletion: "You can delete your data at any time"
+          conditionsLink: "Terms of Service"
+        buttons: 
+          confirmData: "Confirm data"
+          deny: "Deny"
+        tos: "By continuing, you accept the [Terms and conditions of use]() of the service and confirm that you have read the [Privacy Policy]() of {{relayingParty}}."
+      checksScreen: 
+        loading: "We are checking that this organization is verified"
+        success: "{{organizationName}} is a verified organization"
+        errors:
+          walletNotValid: 
+            title: IT Wallet is not active
+            subtitle: To present a credential, you need to activate it first.
+            actionLabel: Activate IT Wallet
+      dataScreen: 
+        title: "Allow the reading of your data"
+        subtitle: "Authorizes {{organizationName}} to process your data to provide you with the services you request."
+        why: "Why?"
+        requiredClaims: "Required data"
+        optionalClaims: "Optional data"
+        privacy: 
+          usage: "The data is only used for the purposes shown"
+          deletion: "You can request its removal at any time"
+        infoBottomSheet:
+          body:
+            firstHeader: "Why is it necessary?"
+            firstBody: "To obtain the issuance of the card The body authorized to issue this card needs to read your data to verify your identity."
+            secondHeader: "Safety of treatment"
+            secondBody: "App IO allows the sharing of your data only with verified bodies registered on the lists that guarantee its reliability."
+        tos: "For more information, read the [Privacy Policy](https://io.italia.it/privacy-policy/) and the [Terms and Conditions](https://io.italia.it/privacy-policy/)"
+      resultScreen:
+        loading: 
+          title: "We are sharing your data with {{organizationName}}" 
+        success: 
+          title: "Done!"
+          subtitle: "Go back to the {{organizationName}} website to continue."
+      qrCodeScreen:
+        title: "Personal QR code"
+        proximity:
+          start: "Proximity check started"
+          stop: "Proximity check completed"
+          peripheralConnected: "Verification device connected"
+          sessionEstablished: "A session has been established with the verification device"
+          documentRequestReceived: "Credential checking in progress"
+          documentPresentationCompleted: "Credential check completed"
+    missingFeatureScreen: 
+      headerTitle: "Screen not available"
+      title: "This screen will be available soon."
+      subtitle: "At this moment, it doesn't exist yet, but we are working on its implementation."
+      button: 
+        label: "I understand"
+    verifiableCredentials:
+      type:
+        digitalCredential: "Identità Digitale"
+        disabilityCard: "European Disability Card"
+        healthCard: "Health Insurance Card"
+        drivingLicense: "Driving License"
+      claims:
+        uniqueId: "Unique ID"
+        givenName: "Name"
+        familyName: "Surname"
+        taxIdCode: "Fiscal Code"
+        birthdate: "Birth date"
+        placeOfBirth: "Place of birth"
+        expirationDate: "Expiration date"
+        securityLevel: "Security level"
+        issuedBy: "Credential issued by"
+        issuedByNew: "Issued by"
+        releasedBy: "Released by"
+        info: "Further information about this data"
+        mdl: 
+          category: "License {{category}}"
+          issuedDate: "Valid from"
+          expirationDate: "Valid until"
+      unrecognizedData: 
+        title: "Not recognizing some data?"
+        body: "If there are errors in the data or if you want to better understand their meaning, you can contact the {{issuer}}."
+        cta: "Ask for information or report errors"
+    generic:
+      error:
+        title: "There's a problem on our systems"
+        body: "Try again in a few minutes. If it happens again, contact support."
+      close: "Close"
+      rp: "Relying Party"
+      trusted: "Trusted"
+      search: "Cerca"
+      alert:
+          title: "Do you want to interrupt the operation?"
+          confirm: "Yes, interrupt it."
+          cancel: "No, go back"
+      dataSource: 
+        multi: "Provided by {{credentialSource}}"
+        single: "Provided by {{credentialSource}}"
+      credential: "Credential"
+      attribute: "Attribute"
+      placeholders:
+        claimNotAvailable: "Claim not available"
+        claimLabelNotAvailable: "Claim label not available"
+        organizationName: "Issuer name not available"

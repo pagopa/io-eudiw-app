@@ -24,7 +24,7 @@
     "test:ci": "jest --ci --maxWorkers=2 --silent"
   },
   "dependencies": {
-    "@gorhom/bottom-sheet": "^4.1.5",
+    "@gorhom/bottom-sheet": "4.1.5",
     "@pagopa/io-app-design-system": "1.36.11",
     "@pagopa/io-pagopa-commons": "^3.1.0",
     "@pagopa/io-react-native-cie-pid": "^0.1.3",
