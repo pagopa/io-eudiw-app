@@ -88,6 +88,16 @@ global:
     dayMonthYear: "D MMMM YYYY"
     weekdayDayMonthYear: "dddd D MMMM YYYY"
     dateTimePicker: "gg/mm/yyyy"
+  genericError: C'è un problema temporaneo, riprova.
+  genericAlert: Attenzione!
+  genericWaiting: Attendi qualche secondo...
+  genericThanks: Grazie
+  genericShare: Condividi
+  genericSave: Salva
+  genericRetry: Riprova
+  jserror:
+    title: Si è verificato un errore imprevisto
+    message: Abbiamo segnalato questo al nostro team! Si prega di chiudere l'app e ricominciare!
   buttons:
     deny: "Nega"
     share: Condividi
@@ -151,6 +161,10 @@ global:
       open:
         label: Aiuto contestuale
         hint: Accedi alle informazioni sul contenuto della schermata corrente
+  media:
+    email: "Email"
+    pec: "PEC"
+    phone: "Telefono"
 features:
   itWallet:
     title: "IT Wallet"

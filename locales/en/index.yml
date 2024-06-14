@@ -88,6 +88,16 @@ global:
     dayMonthYear: "D MMMM YYYY"
     weekdayDayMonthYear: "dddd D MMMM YYYY"
     dateTimePicker: "gg/mm/yyyy"
+  genericError: There is a temporary problem, please try again.
+  genericAlert: Warning!
+  genericWaiting: Wait a few seconds..
+  genericThanks: Thank you
+  genericShare: Share
+  genericSave: Save
+  genericRetry: Try again
+  jserror:
+    title: Unexpected error occurred
+    message: We have reported this to our team! Please close the app and start again!
   buttons:
     deny: "Deny"
     share: Share
@@ -151,6 +161,10 @@ global:
       open:
         label: Contextual Help
         hint: Access information about the contents of the current screen
+  media:
+    email: "Email"
+    pec: "Certified email"
+    phone: "Phone"
 features:
   itWallet:
     title: "IT Wallet"
