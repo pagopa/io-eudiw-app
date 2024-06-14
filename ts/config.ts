@@ -9,6 +9,14 @@ export const environment: string = Config.ENVIRONMENT;
 // Default pin for dev mode
 export const defaultPin = "162534";
 
+export const apiUrlPrefix: string = Config.API_URL_PREFIX;
+
+// SPID Relay State
+export const spidRelayState = Config.SPID_RELAY_STATE;
+
+export const isDebugBiometricIdentificationEnabled =
+  Config.DEBUG_BIOMETRIC_IDENTIFICATION === "YES";
+
 /**
  * IT Wallet
  */
