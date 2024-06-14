@@ -58,6 +58,9 @@ date:
     - "am"
     - "pm"
 global:
+  symbols:
+    question: "?"
+    asterisk: "*"
   date:
     invalid: "invalid date"
     today: "today"
@@ -445,3 +448,223 @@ features:
         claimNotAvailable: "Claim not available"
         claimLabelNotAvailable: "Claim label not available"
         organizationName: "Issuer name not available"
+authentication:
+  cie:
+    genericTitle: Login with CIE
+    cie: CIE
+    noDataTitle: To use IO you must authorize the sending of data
+    authToSendData: !include cie/auth_to_send_data.md
+    nfc:
+      apduNotSupported: "The operating system doesn't support the reading of your CIE. For further details, please contact your device manufacturer."
+      retry: Retry
+      noNfcConnectionTitle: Are you sure you put the card down?
+      noNfcConnectionContent: !include cie/noNfcConnection.md
+      enableNfcTitle: Enable NFC
+      enableNfcHeader: Check NFC
+      enableNfcContent: For allowing the app to verify your Electronic Identity Card, you must first activate the NFC function of your device. Come back here when you're done!
+    pin:
+      accessibility:
+        placeholderLabel: PIN of Electronic Identity Card
+        label: Insertion field for Electronic Identity Card pins
+        hint: Enter the 8 digits pin of your Electronic Identity Card in this field.
+      pinCardTitle: Enter the PIN of your ID Card
+      pinCardHeader: Login with CIE
+      pinCardContent: The PIN code consists of 8 digits. Four digits have been delivered to you at the registry office and another four digits have been sent to your home along with the card. Put them together, in that order, and enter them here please.
+      incorrectCiePinTitle: Incorrect PIN, you still have {{remainingCount}} attempts
+      incorrectCiePinHeaderTitle: Wrong PIN
+      incorrectCiePinContent1: For your security, you can try entering the card PIN no more than three times. Then you will have to unlock the card by entering the PUK.
+      incorrectCiePinContent2: Keep in mind that the PIN code of your Electronic Identity Card (CIE) is composed of 8 digits. Four digits that were given to you at the registry office and another four digits that were sent to you at home, along with the card.
+      alert: Are you sure you want to go back?
+      subtitleHelp: The PIN code consists of 8 digits.
+      subtitleCTA: Where can I find it?
+      bottomSheetCTA: Did you forget your PIN?
+      contextualHelpTitle: Where can I find my PIN and PUK?
+      contextualHelpBody: !include help/ciePinHelpBody.md
+      contextualHelpCTA: Did you forget your PIN/PUK?
+    pinTempLocked:
+      header: Login with CIE
+      title: Card temporarily locked
+      content: !include cie/temporary_blocked_cie.md
+      button: "Load/open CieID"
+    card:
+      headerTitle: Login with CIE
+      titleiOS: Hold the card still
+      title: Hold the card again
+      layCardMessageHeader: Hold your Electronic ID Card on the back of your phone for a few seconds.
+      layCardMessageHeaderiOS: The sensor is located on top of the device.
+      layCardMessageFooter: If you don't know exactly where the NFC sensor is, move the card to different points and wait a few seconds until you feel a vibration.
+      cieCardValid: Ok, your card is valid! You can remove it.
+      readerCardTitle: Hold the card for a few seconds
+      readerCardHeader: We are reading the data of your CIE and verifying its validity.
+      readerCardFooter: Hold the card in this position for a few more seconds
+      iosAlert:
+        readingInstructions: Keep your electronic ID card on the top of the iPhone.
+        moreTags: More cards have been identified. Please bring one card at a time.
+        readingInProgress: "READING IN PROGRESS\nHold the card still for a few seconds..."
+        readingSuccess: "Successful reading.\nYou can remove the card while we complete the data verification."
+        invalidCard: It seems that this card is not an Electronic Identity Card (CIE).
+        tagLost: You removed the card too soon.
+        cardLocked: CIE card locked
+        wrongPin1AttemptLeft: Wrong PIN, you still have 1 attempt
+        wrongPin2AttemptLeft: Wrong PIN, you still have 2 attempts
+      error:
+        readerCardLostTitle: Hold the card again for a few seconds
+        readerCardLostTitleiOS: You removed the card too soon.
+        readerCardLostHeader: We have not yet finished reading the card data.
+        readerCardLostHeaderiOS: We have not yet finished reading the card data. Please try again.
+        onTagLost: You removed the card too soon. Hold the card as close as possible to the back of the device until a confirmation appears on the screen. It will take a few seconds.
+        tryAgain: Something did not work as expected while we read your CIE. It's probably a temporary issue, please try again!
+        generic: Something did not work as expected while we read your CIE.
+        unknownCardTitle: Unknown card
+        unknownCardContent: The card used does not seem to be an Electronic Identity Card (CIE).
+        unknownCardHelpLink: What is the Electronic Identity Card?
+    dataUsageConsent:
+      retryCTA: Entra
+  errors:
+    notoken: The session is not ready or is invalid
+    logout: Error on logout
+    network:
+      title: Access problem
+      body: The selected identity provider is not available at this time, you can try again later. If you have another SPID, choose an alternative provider. You can report the problem with the '?' icon at the top right of the screen.
+    login:
+      title: Login error
+      body: There was an error with the login, please retry!
+    spid:
+      unknown: Unknown error
+      error_19: "You have entered an incorrect username or password too many times: try again in a few minutes or contact your SPID identity provider to change your credentials."
+      error_20: "For security reasons IO requires a login with a second authentication factor: contact your SPID identity provider to understand how to use it."
+      error_21: "It's been too long since you started accessing: please start over again."
+      error_22: "To use IO, you have to consent access to some data. Enter again and consent."
+      error_23: "Your SPID identity is suspended or revoked. To reactivate your account, contact your SPID identity provider."
+      error_25: "You have canceled the login operation: you can try again whenever you want."
+      error_1001: "Access Denied: You are not of the minimum age required to use IO"
+identification:
+  title: Hi!
+  titleProfileName: Hi {{profileName}}!
+  titleValidation: Confirm the procedure
+  logout: Logout
+  logoutProfileName: Not {{profileName}}?
+  logoutDescription: You can login with your SPID or CIE credentials. This session will be disconnected.
+  logoutDescriptionProfileName: You can login with your SPID or CIE credentials. {{profileName}}'s session will be disconnected.
+  subtitleCode: Enter the unlock code
+  subtitleCodeFingerprint: use the fingerprint or the unlock code
+  subtitleCodeFaceId: use the Face ID or enter the unlock code
+  biometric:
+    fingerprintType: Fingerprint
+    title: Biometric identification
+    popup:
+      reason: Identification by touch ID failed
+      title: Identification required
+      sensorDescription: Login quickly
+  fail:
+    remainingAttempts: You have {{attempts}} attempts left.
+    remainingAttemptSingle: You have {{attempts}} attempt left.
+    tooManyAttempts: Too many attempts.
+    waitMessage: "Try again in:"
+  unlockCode:
+    accessibility:
+      unlockHint: You entered {{number}} digits of {{length}}
+      fingerprint: Login with your fingerprint
+      faceId: Login with the Face ID
+      delete: Remove last inserted digit
+    reset:
+      button: Did you forget the
+      code: unlock code
+      button_short: Change the unlock code
+      subtitle: Set a new 6-digit code
+    confirmValid: Correct unlock code
+  forgetCode:
+    confirmTitle: Did you forget the unlock code?
+    confirmMsg: To be able to choose a new unlock code you will need to log in again.
+    confirmMsgWithTask: To be able to choose a new unlock code you will need to cancel the current procedure and log in again.
+onboarding:
+  contextualHelpTitle: How does the biometric recognition work
+  contextualHelpContent: !include onboarding/onboarding_fingerprint.md
+  tos:
+    headerTitle: Configure IO
+    accept: Accept and continue
+    error: Loading error
+    alert:
+      title: Attention
+      message: Please, read the full content of the Terms of Service and Privacy Policy to continue
+  unlockCode:
+    reset: Change the code
+    contextualHelpTitle: What your unlock code is
+    contextualHelpContent: !include onboarding/onboarding_pin.md
+  pin:
+    headerTitle: IO Settings
+    title: Unlock code
+    subTitle: It's a six-digit code you'll use to login and authorize some in-app operations. If supported by your device, you can replace it with biometric authentication.
+    pinLabel: Create unlock code
+    pinConfirmationLabel: Repeat unlock code
+    tutorial: You can change the code at any time under Profile > Security
+    errors:
+      invalid: The code is not valid
+      match: The code doesn’t match
+    policy:
+      headerTitle: "Choose a code that's hard to guess and doesn't contain:"
+      first: repeated numbers (e.g. 000000)
+      second: a number sequence (e.g. 123456 or 654321)
+  alert:
+    title: Do you really want to log out?
+    description: You will have to log in again to use the app
+  biometric:
+    headerTitle: Configure IO
+    available:
+      title: Enable biometric recognition
+      settings: You can always change your choice in Profile > Security
+      body:
+        infoStart: You can use biometric recognition in place of the unlock code. This will let you access the app and authorizeoperations and payments with your
+        biometricType: face or fingerprint
+        infoEnd: more quickly and securely.
+        enrolledText: The biometric information is stored in your phone's memory. it will not be disclosed in any way to IO systems or stored anywhere else.
+        notEnrolled:
+          text: To use it, go to your device settings and configure it. Then activate it on IO under Profile > Security.
+    unavailable:
+      title: Protect your device
+      body:
+        firstInfoStart: IO sends you communications that concern you
+        firstInfoEnd: personally.
+        secondInfoStart: Protect your device from unwanted access and make sure that only you can access the app. To do this, go to your device settings, set an
+        secondInfoEnd: unlock code or configure biometric recognition.
+  shareData:
+    title: "Configure IO"
+  thankYouPage:
+    title: Setup completed!
+  notifications:
+    badge: New
+    headerTitle: IO Settings
+    continue: Continue
+    preview:
+      accessibilityLabelPrefix: "Here's an example:"
+      reminderOnPreviewOnTitle: You have a notice due soon
+      reminderOnPreviewOnMessage: Log in to pay the notice issued by ACI
+      reminderOffPreviewOnTitle: Comune di Ipazia
+      reminderOffPreviewOnMessage: Summer camp registration is now open
+      reminderOnPreviewOffTitle: You have a notice due tomorrow
+      reminderOnPreviewOffMessage: Log in to pay for it
+      reminderOffPreviewOffTitle: You have a new message
+      reminderOffPreviewOffMessage: Open the app to read the content
+    contextualHelpTitle: Push notifications
+    contextualHelpContent: !include onboarding/onboarding_notifications.md
+  infoConsent:
+    headerTitle: IO Settings
+    title: Enable push notifications not to miss important messages!
+    subTitle: To do so, you'll have to edit the preferences in your device settings.
+    openSettings: Go to Settings
+    continue: Not now
+    contextualHelpTitle: Push notifications
+    contextualHelpContent: !include onboarding/onboarding_notifications_info_consent.md
+    instructions:
+      title: "Here's how:"
+      label: Step
+      ios:
+        step1: Go to "Settings"
+        step2: Select "Notifications"
+        step3: Enable "Allow Notifications"
+      android:
+        step1: Go to "Settings"
+        step2: Select "Applications"
+        step3: Select "IO"
+        step4: Select "Notifications"
+        step5: Enable notifications

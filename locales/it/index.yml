@@ -58,6 +58,9 @@ date:
     - "am"
     - "pm"
 global:
+  symbols:
+    question: "?"
+    asterisk: "*"
   date:
     invalid: "data non valida"
     today: "oggi"
@@ -446,3 +449,223 @@ features:
         claimNotAvailable: "Attributo non riconosciuto"
         claimLabelNotAvailable: "Etichetta attributo non presente"
         organizationName: "Nome ente non disponibile"
+authentication:
+  cie:
+    genericTitle: Entra con CIE
+    cie: CIE
+    noDataTitle: Per usare IO è necessario autorizzare l'invio dei dati
+    authToSendData: !include cie/auth_to_send_data.md
+    nfc:
+      apduNotSupported: "Il sistema operativo non supporta la lettura della tua carta di identità elettronica. Per maggiori informazioni, contatta il produttore del tuo dispositivo."
+      retry: Riprova
+      noNfcConnectionTitle: Hai appoggiato la carta?
+      noNfcConnectionContent: !include cie/noNfcConnection.md
+      enableNfcTitle: Attiva NFC
+      enableNfcHeader: Verifica NFC
+      enableNfcContent: Per permettere all'app di verificare la tua Carta di Identità Elettronica devi prima attivare la funzione NFC del tuo dispositivo. Torna qui quando avrai finito!
+    pin:
+      accessibility:
+        placeholderLabel: PIN della Carta di identità elettronica
+        label: Campo di inserimento per pin della Carta di Identità elettronica
+        hint: Inserire in questo campo il pin a 8 cifre della propria Carta di Identità Elettronica
+      pinCardTitle: Inserisci il PIN della tua carta di identità
+      pinCardHeader: Entra con CIE
+      pinCardContent: Il codice PIN è composto da 8 cifre. Quattro cifre che ti sono state consegnate all'anagrafe e altre 4 cifre ti sono state spedite a casa, insieme alla carta. Mettile insieme, in quest'ordine, e inseriscile qui per favore.
+      incorrectCiePinTitle: PIN errato, hai ancora {{remainingCount}} tentativi
+      incorrectCiePinHeaderTitle: PIN errato
+      incorrectCiePinContent1: Per la tua sicurezza puoi provare ad inserire il PIN della carta non più di tre volte. Poi dovrai sbloccare la carta inserendo il PUK.
+      incorrectCiePinContent2: Ricorda che il codice PIN della tua Carta d'Identità Elettronica (CIE) è composto da 8 cifre. Quattro cifre che ti sono state consegnate all'anagrafe e altre quattro cifre che ti sono state spedite a casa, insieme alla carta.
+      alert: Vuoi davvero tornare indietro?
+      subtitleHelp: Il PIN è un codice di 8 cifre.
+      subtitleCTA: Dove lo trovo?
+      bottomSheetCTA: Hai dimenticato il PIN?
+      contextualHelpTitle: Dove trovo i codici PIN e PUK?
+      contextualHelpBody: !include help/ciePinHelpBody.md
+      contextualHelpCTA: Hai dimenticato il PIN/PUK?
+    pinTempLocked:
+      header: Entra con CIE
+      title: Carta temporaneamente bloccata
+      content: !include cie/temporary_blocked_cie.md
+      button: "Scarica / Apri CieID"
+    card:
+      title: Appoggia la carta
+      titleiOS: Tieni ferma la carta
+      headerTitle: Entra con CIE
+      layCardMessageHeader: Appoggia per qualche secondo la tua carta di identità elettronica al retro del tuo telefono.
+      layCardMessageHeaderiOS: Il sensore è posizionato nella parte alta del dispositivo.
+      layCardMessageFooter: Se non sai con precisione dove sia l'antenna NFC sposta la carta in punti diversi e attendi qualche secondo finché non senti una vibrazione.
+      cieCardValid: Ok, la tua carta CIE è valida! Puoi rimuoverla.
+      readerCardTitle: Tieni ferma la carta per qualche secondo
+      readerCardHeader: Stiamo leggendo i dati della tua carta d'identità e verificandone la sua validità.
+      readerCardFooter: Tieni ferma la carta in questa posizione ancora per qualche secondo
+      iosAlert:
+        readingInstructions: Appoggia la tua carta d’identità elettronica nella parte alta del telefono.
+        moreTags: Sono state individuate più carte. Per favore avvicina una carta alla volta.
+        readingInProgress: "LETTURA IN CORSO\nTieni ferma la carta per qualche secondo..."
+        readingSuccess: "Lettura avvenuta con successo.\nPuoi rimuovere la carta mentre completiamo la verifica dei dati."
+        invalidCard: La carta utilizzata non sembra essere una Carta di Identità Elettronica (CIE).
+        tagLost: Hai rimosso la carta troppo presto.
+        cardLocked: Carta CIE bloccata
+        wrongPin1AttemptLeft: PIN errato, hai ancora 1 tentativo
+        wrongPin2AttemptLeft: PIN errato, hai ancora 2 tentativi
+      error:
+        readerCardLostTitle: Avvicina nuovamente la carta
+        readerCardLostTitleiOS: Hai rimosso la carta troppo presto
+        readerCardLostHeader: Non abbiamo ancora terminato le operazioni di lettura dei dati della carta.
+        readerCardLostHeaderiOS: Non abbiamo ancora terminato le operazioni di lettura dei dati della carta. Riprova di nuovo.
+        onTagLost: Hai rimosso la carta troppo presto. Tieni la carta appoggiata sul retro dello smartphone finché nello schermo non comparirà una conferma. Basterà qualche secondo.
+        tryAgain: Si è verificato un errore durante la verifica della tua carta. Probabilmente è un errore momentaneo, riprova per piacere!
+        generic: Si è verificato un errore durante la verifica della tua carta. Se non riesci a risolvere il problema, segnalacelo con l’icona '?' in alto a destra. Grazie!
+        unknownCardTitle: Carta sconosciuta
+        unknownCardContent: La carta utilizzata non sembra essere una Carta di Identità Elettronica (CIE).
+        unknownCardHelpLink: Che cos'è la Carta di Identità Elettronica?
+    dataUsageConsent:
+      retryCTA: Entra
+  errors:
+    notoken: La sessione non è pronta o non è valida
+    logout: Errore nel logout
+    network:
+      title: Problema di accesso
+      body: L'identity provider che hai scelto non è disponibile in questo momento, puoi riprovare più tardi. Se disponi di un altra identità SPID scegli un provider alternativo. Puoi segnalarci il problema con l’icona '?' in alto a destra.
+    login:
+      title: Errore nel login
+      body: Si è verificato un errore durante il login, si prega di riprovare!
+    spid:
+      unknown: Errore sconosciuto
+      error_19: "Hai inserito troppe volte un nome utente o una password non corretti: riprova fra qualche minuto o contatta il tuo fornitore di identità SPID per cambiare le tue credenziali."
+      error_20: "Per motivi di sicurezza IO richiede un login con un secondo fattore di autenticazione: contatta il tuo fornitore di identità SPID per capire come si usa."
+      error_21: "È passato troppo tempo da quando hai iniziato l'accesso: per piacere riparti dall'inizio."
+      error_22: "Per usare IO, devi acconsentire all’invio di alcuni dati. Entra di nuovo e dai il tuo consenso."
+      error_23: "La tua identità SPID risulta sospesa o revocata. Per riattivare il tuo account, contatta il tuo fornitore di identità SPID."
+      error_25: "Hai annullato l'operazione di login: puoi riprovare quando vuoi."
+      error_1001: "Accesso negato: non hai l'età minima richiesta per usare IO"
+identification:
+  title: Ciao!
+  titleProfileName: Ciao {{profileName}}!
+  titleValidation: Conferma l'operazione
+  logout: Esci
+  logoutProfileName: Non sei {{profileName}}?
+  logoutDescription: Puoi accedere con le tue credenziali SPID o CIE. Questa sessione verrà disconnessa.
+  logoutDescriptionProfileName: Puoi accedere con le tue credenziali SPID o CIE. La sessione di {{profileName}} verrà disconnessa.
+  subtitleCode: Inserisci il codice di sblocco
+  subtitleCodeFingerprint: "usa l'impronta o il codice di sblocco"
+  subtitleCodeFaceId: "usa Face ID o il codice di sblocco"
+  biometric:
+    fingerprintType: Impronta digitale
+    title: Identificazione Biometrica
+    popup:
+      reason: Identificazione tramite touch ID non riuscita
+      title: Identificazione richiesta
+      sensorDescription: Accedi velocemente
+  fail:
+    remainingAttempts: Ti rimangono {{attempts}} tentativi.
+    remainingAttemptSingle: Ti rimane {{attempts}} tentativo.
+    tooManyAttempts: Troppi tentativi di inserimento errati.
+    waitMessage: "Riprova tra:"
+  unlockCode:
+    accessibility:
+      unlockHint: Hai inserito {{number}} cifre di {{length}}
+      fingerprint: Autenticati con l'impronta digitale
+      faceId: Autenticati con il riconoscimento facciale
+      delete: Cancella l'ultima cifra inserita
+    reset:
+      button: Hai dimenticato il
+      code: codice di sblocco
+      button_short: Modifica il codice di sblocco
+      subtitle: Imposta un nuovo codice di 6 cifre
+    confirmValid: Codice di sblocco corretto
+  forgetCode:
+    confirmTitle: Hai dimenticato il codice di sblocco?
+    confirmMsg: Per poter scegliere un nuovo codice di sblocco dovrai accedere nuovamente.
+    confirmMsgWithTask: Per poter scegliere un nuovo codice di sblocco dovrai annullare l'operazione corrente e accedere nuovamente.
+onboarding:
+  contextualHelpTitle: Come funziona il riconoscimento biometrico
+  contextualHelpContent: !include onboarding/onboarding_fingerprint.md
+  tos:
+    headerTitle: Configura IO
+    accept: Accetta e continua
+    error: Errore nel caricamento
+    alert:
+      title: Attenzione
+      message: Devi leggere tutto il contenuto dei Termini di servizio e Privacy policy per continuare.
+  unlockCode:
+    reset: Modifica il codice
+    contextualHelpTitle: Qual è il tuo codice di sblocco
+    contextualHelpContent: !include onboarding/onboarding_pin.md
+  pin:
+    headerTitle: Configura IO
+    title: Codice di sblocco
+    subTitle: È un codice a 6 cifre che ti serve per accedere a IO e autorizzare alcune operazioni in app. Se supportato, puoi in seguito sostituirlo con l'uso del biometrico.
+    pinLabel: Crea codice di sblocco
+    pinConfirmationLabel: Ripeti codice di sblocco
+    tutorial: Potrai modificare il codice in ogni momento in Profilo > Sicurezza
+    errors:
+      invalid: Il codice non è valido
+      match: Il codice non coincide
+    policy:
+      headerTitle: "Scegli un codice difficile da individuare e che non contenga:"
+      first: ripetizioni di numeri (es. 000000)
+      second: numeri in sequenza (es. 123456 o 654321)
+  alert:
+    title: Vuoi davvero uscire da IO?
+    description: Dovrai fare nuovamente il login per continuare ad usare l'app
+  biometric:
+    headerTitle: Configura IO
+    available:
+      title: Attiva il riconoscimento biometrico
+      settings: Puoi sempre modificare la tua scelta in Profilo > Sicurezza
+      body:
+        infoStart: Potrai usare il riconoscimento biometrico al posto del codice di sblocco. Ti permetterà di accedere all’app e autorizzare operazioni e pagamenti, con il tuo
+        biometricType: volto o impronta digitale,
+        infoEnd: in modo più rapido e sicuro.
+        enrolledText: Le informazioni biometriche vengono salvate nella memoria del tuo telefono, non verranno in nessun modo comunicate ai sistemi di IO o salvate da altre parti.
+        notEnrolled:
+          text: Per usarlo, vai alle impostazioni del tuo dispositivo e configuralo. Poi attivalo su IO in Profilo > Sicurezza.
+    unavailable:
+      title: Proteggi il tuo dispositivo
+      body:
+        firstInfoStart: Io ti invia le comunicazioni che ti riguardano
+        firstInfoEnd: personalmente.
+        secondInfoStart: Proteggi il tuo dispositivo da accessi indesiderati e assicurati che solo tu possa accedere all'app. Per farlo, vai alle impostazioni del tuo dispositivo, imposta un
+        secondInfoEnd: codice di sblocco o configura il riconoscimento biometrico.
+  shareData:
+    title: Configura IO
+  thankYouPage:
+    title: Il tuo profilo su IO è attivo!
+  notifications:
+    badge: Novità
+    headerTitle: Configura IO
+    continue: Continua
+    preview:
+      accessibilityLabelPrefix: "Ecco un esempio:"
+      reminderOnPreviewOnTitle: Hai un avviso in scadenza
+      reminderOnPreviewOnMessage: Entra nell’app e paga l’avviso emesso da ACI
+      reminderOffPreviewOnTitle: Comune di Ipazia
+      reminderOffPreviewOnMessage: Sono aperte le iscrizioni per il centro estivo
+      reminderOnPreviewOffTitle: Hai un avviso che scade domani
+      reminderOnPreviewOffMessage: Entra nell'app per pagarlo
+      reminderOffPreviewOffTitle: Hai un nuovo messaggio
+      reminderOffPreviewOffMessage: Apri l'app per leggere il contenuto
+    contextualHelpTitle: Notifiche push
+    contextualHelpContent: !include onboarding/onboarding_notifications.md
+  infoConsent:
+    headerTitle: Configura IO
+    title: Attiva le notifiche push per non perdere messaggi importanti!
+    subTitle: Per farlo, devi modificare le preferenze nelle impostazioni di sistema del tuo dispositivo.
+    openSettings: Apri Impostazioni
+    continue: Non ora
+    contextualHelpTitle: Notifiche push
+    contextualHelpContent: !include onboarding/onboarding_notifications_info_consent.md
+    instructions:
+      title: "Ecco come:"
+      label: Step
+      ios:
+        step1: Vai su "Impostazioni"
+        step2: Seleziona "Notifiche"
+        step3: Attiva "Consenti notifiche"
+      android:
+        step1: Vai su "Impostazioni"
+        step2: Seleziona "Applicazioni"
+        step3: Seleziona "IO"
+        step4: Seleziona "Notifiche"
+        step5: Attiva le notifiche
