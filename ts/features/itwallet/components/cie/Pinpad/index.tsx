@@ -65,8 +65,8 @@ const INPUT_MARGIN = 36;
  * A customized CodeInput component.
  */
 class Pinpad extends React.PureComponent<Props, State> {
-  private onFulfillTimeoutId?: number;
-  private onDelayOnFailureTimeoutId?: number;
+  private onFulfillTimeoutId?: ReturnType<typeof setTimeout>;
+  private onDelayOnFailureTimeoutId?: ReturnType<typeof setTimeout>;
   private shakeAnimationRef = React.createRef<ShakeAnimation>();
 
   /**
