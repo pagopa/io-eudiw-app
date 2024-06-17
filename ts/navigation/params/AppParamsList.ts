@@ -1,16 +1,20 @@
 import {
   useNavigation,
   ParamListBase,
-  RouteProp
+  RouteProp,
+  NavigatorScreenParams
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import ROUTES from "../routes";
+import { ITW_ROUTES } from "../../features/itwallet/navigation/ItwRoutes";
+import { ItwParamsList } from "../../features/itwallet/navigation/ItwParamsList";
 
 export type AppParamsList = {
   [ROUTES.INGRESS]: undefined;
   [ROUTES.UNSUPPORTED_DEVICE]: undefined;
   [ROUTES.BACKGROUND]: undefined;
   [ROUTES.MAIN]: undefined;
+  [ITW_ROUTES.MAIN]: NavigatorScreenParams<ItwParamsList>;
 };
 
 /**
