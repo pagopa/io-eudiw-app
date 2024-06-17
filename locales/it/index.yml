@@ -132,6 +132,10 @@ global:
     details: "Dettagli"
     choose: "Scegli"
     copy: Copia
+  navigator:
+    itwallet: Portafoglio
+    scan: Inquadra
+    profile: Profilo
   remoteStates:
     loading: In caricamento...
     wait: Attendi qualche secondo...
