@@ -1,4 +1,5 @@
 import { ItwPrCredentialDetailsScreenNavigationParams } from "../screens/presentation/ItwPrCredentialDetails";
+import { ItwPrRemotePidChecksScreenNavigationParams } from "../screens/presentation/remote/pid/ItwPrRemotePidChecksScreen";
 import { ITW_ROUTES } from "./ItwRoutes";
 
 export type ItwParamsList = {
@@ -26,7 +27,8 @@ export type ItwParamsList = {
 
   // PRESENTATION REMOTE PID
   [ITW_ROUTES.PRESENTATION.PID.DETAILS]: undefined;
-  [ITW_ROUTES.PRESENTATION.PID.REMOTE.INIT]: undefined;
+  [ITW_ROUTES.PRESENTATION.PID.REMOTE
+    .INIT]: ItwPrRemotePidChecksScreenNavigationParams;
   [ITW_ROUTES.PRESENTATION.PID.REMOTE.DATA]: undefined;
   [ITW_ROUTES.PRESENTATION.PID.REMOTE.RESULT]: undefined;
 
