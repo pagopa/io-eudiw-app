@@ -22,7 +22,11 @@ const AuthenticatedStackNavigator = () => {
         options={{ headerShown: false }}
         component={MainTabNavigator}
       />
-      <Stack.Screen name={ITW_ROUTES.MAIN} component={ItwStackNavigator} />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name={ITW_ROUTES.MAIN}
+        component={ItwStackNavigator}
+      />
     </Stack.Navigator>
   );
 };

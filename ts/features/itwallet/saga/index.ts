@@ -1,9 +1,12 @@
+import { fork } from "typed-redux-saga/macro";
 import { SagaIterator } from "redux-saga";
+
+import { watchItwActivationSaga } from "./itwActivationSaga";
 
 /**
  * Watcher for any IT wallet related sagas.
  */
 export function* watchItwSaga(): SagaIterator {
-  // eslint-disable-next-line no-console
-  console.log("IT Wallet");
+  /* GENERIC */
+  yield* fork(watchItwActivationSaga);
 }

@@ -2,6 +2,10 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { isGestureEnabled } from "../../../utils/navigation";
 import ItwPrCredentialDetailsScreen from "../screens/presentation/ItwPrCredentialDetails";
+import ItwPrRemoteCredentialInitScreen from "../screens/presentation/remote/credential/ItwPrRemoteCredentialChecksScreen";
+import ItwIssuanceCredentialCatalogScreen from "../screens/issuance/credential/ItwIssuanceCredentialCatalogScreen";
+import ItwIssuancePidInfoScreen from "../screens/issuance/pid/ItwIssuancePidInfoScreen";
+import ItwIssuancePidAuthScreen from "../screens/issuance/pid/ItwIssuancePidAuthScreen";
 import { ItwParamsList } from "./ItwParamsList";
 import { ITW_ROUTES } from "./ItwRoutes";
 
@@ -14,10 +18,28 @@ export const ItwStackNavigator = () => (
       headerShown: false
     }}
   >
+    {/* ISSUANCE PID */}
+    <Stack.Screen
+      name={ITW_ROUTES.ISSUANCE.PID.INFO}
+      component={ItwIssuancePidInfoScreen}
+    />
+    <Stack.Screen
+      name={ITW_ROUTES.ISSUANCE.PID.AUTH}
+      component={ItwIssuancePidAuthScreen}
+    />
+    {/* ISSUANCE CREDENTIAL */}
+    <Stack.Screen
+      name={ITW_ROUTES.ISSUANCE.CREDENTIAL.CATALOG}
+      component={ItwIssuanceCredentialCatalogScreen}
+    />
     {/* CREDENTIAL PRESENTATION */}
     <Stack.Screen
       name={ITW_ROUTES.PRESENTATION.CREDENTIAL.DETAILS}
       component={ItwPrCredentialDetailsScreen}
+    />
+    <Stack.Screen
+      name={ITW_ROUTES.PRESENTATION.CREDENTIAL.REMOTE.INIT}
+      component={ItwPrRemoteCredentialInitScreen}
     />
   </Stack.Navigator>
 );
