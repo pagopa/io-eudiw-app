@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createRef, useEffect, useReducer } from "react";
-import { Platform, View } from "react-native";
-import { IOStyles } from "@pagopa/io-app-design-system";
+import { Platform, StyleSheet, View } from "react-native";
+import { IOColors, IOStyles } from "@pagopa/io-app-design-system";
 import WebView from "react-native-webview";
 import {
   WebViewErrorEvent,
@@ -12,8 +12,14 @@ import I18n from "../../../../i18n";
 import { closeInjectedScript } from "../../../../utils/webview";
 import { withLoadingSpinner } from "../../../../components/helpers/withLoadingSpinner";
 import { getIdpLoginUri } from "../../../../utils/login";
-import GenericErrorComponent from "../../../../components/screens/GenericErrorComponent";
 import { useHardwareBackButton } from "../../../../hooks/useHardwareBackButton";
+import { OperationResultScreenContent } from "../../../../components/screens/OperationResultScreenContent";
+
+const styles = StyleSheet.create({
+  errorContainer: {
+    backgroundColor: IOColors.white
+  }
+});
 
 // to make sure the server recognizes the client as valid iPhone device (iOS only) we use a custom header
 // on Android it is not required
@@ -170,13 +176,22 @@ const CieWebView = (props: Props) => {
 const ErrorComponent = (
   props: { onRetry: () => void } & Pick<Props, "onClose">
 ) => (
-  <GenericErrorComponent
-    avoidNavigationEvents={true}
-    onRetry={props.onRetry}
-    onCancel={props.onClose}
-    image={require("../../../../../img/broken-link.png")} // TODO: use custom or generic image?
-    text={I18n.t("authentication.errors.network.title")} // TODO: use custom or generic text?
-  />
+  <View style={[IOStyles.flex, styles.errorContainer]}>
+    <OperationResultScreenContent
+      pictogram="umbrellaNew"
+      title={I18n.t("authentication.errors.network.title")}
+      action={{
+        label: I18n.t("global.buttons.retry"),
+        accessibilityLabel: I18n.t("global.buttons.retry"),
+        onPress: props.onRetry
+      }}
+      secondaryAction={{
+        label: I18n.t("global.buttons.cancel"),
+        accessibilityLabel: I18n.t("global.buttons.cancel"),
+        onPress: props.onClose
+      }}
+    />
+  </View>
 );
 
 /**
