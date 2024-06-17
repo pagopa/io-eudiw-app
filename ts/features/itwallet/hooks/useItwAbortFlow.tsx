@@ -43,7 +43,7 @@ export const useItwAbortFlow = () => {
           onPress: () => {
             dismiss();
             dispatch(itwActivationStop());
-            navigation.navigate(ROUTES.MAIN);
+            navigation.navigate(ROUTES.MAIN, { screen: ROUTES.ITWALLET_HOME });
           }
         }
       }}
