@@ -1,8 +1,7 @@
+import { ItwPrCredentialDetailsScreenNavigationParams } from "../screens/presentation/ItwPrCredentialDetails";
 import { ITW_ROUTES } from "./ItwRoutes";
 
 export type ItwParamsList = {
-  [ITW_ROUTES.MAIN]: undefined;
-
   // ISSUANCE PID
   [ITW_ROUTES.ISSUANCE.PID.INFO]: undefined;
   [ITW_ROUTES.ISSUANCE.PID.AUTH]: undefined;
@@ -32,7 +31,8 @@ export type ItwParamsList = {
   [ITW_ROUTES.PRESENTATION.PID.REMOTE.RESULT]: undefined;
 
   // PRESENTATION REMOTE CREDENTIAL
-  [ITW_ROUTES.PRESENTATION.CREDENTIAL.DETAILS]: undefined;
+  [ITW_ROUTES.PRESENTATION.CREDENTIAL
+    .DETAILS]: ItwPrCredentialDetailsScreenNavigationParams;
   [ITW_ROUTES.PRESENTATION.CREDENTIAL.REMOTE.INIT]: undefined;
   [ITW_ROUTES.PRESENTATION.CREDENTIAL.REMOTE.DATA]: undefined;
   [ITW_ROUTES.PRESENTATION.CREDENTIAL.REMOTE.RESULT]: undefined;

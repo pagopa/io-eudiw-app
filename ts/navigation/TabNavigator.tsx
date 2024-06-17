@@ -2,14 +2,19 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import { StyleSheet, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { IOColors, makeFontStyleObject } from "@pagopa/io-app-design-system";
+import {
+  ContentWrapper,
+  HeaderFirstLevel,
+  IOColors,
+  makeFontStyleObject
+} from "@pagopa/io-app-design-system";
 import LoadingSpinnerOverlay from "../components/LoadingSpinnerOverlay";
 import { TabIconComponent } from "../components/ui/TabIconComponent";
 import I18n from "../i18n";
 import { useIOSelector } from "../store/hooks";
 import { StartupStatusEnum, isStartupLoaded } from "../store/reducers/startup";
 import variables from "../theme/variables";
-import { ItwStackNavigator } from "../features/itwallet/navigation/ItwStackNavigator";
+import ItwHomeScreen from "../features/itwallet/screens/ItwHomeScreen";
 import { MainTabParamsList } from "./params/MainTabParamsList";
 import ROUTES from "./routes";
 
@@ -51,6 +56,7 @@ export const MainTabNavigator = () => {
     >
       <Tab.Navigator
         screenOptions={{
+          headerShown: false,
           tabBarLabelStyle: {
             fontSize: 10,
             ...makeFontStyleObject("Regular", false, "ReadexPro")
@@ -68,7 +74,7 @@ export const MainTabNavigator = () => {
       >
         <Tab.Screen
           name={ROUTES.ITWALLET_HOME}
-          component={ItwStackNavigator}
+          component={ItwHomeScreen}
           options={{
             title: I18n.t("global.navigator.itwallet"),
             tabBarIcon: ({ color, focused }) => (
@@ -83,7 +89,7 @@ export const MainTabNavigator = () => {
         />
         <Tab.Screen
           name={ROUTES.QR_CODE_SCAN}
-          component={() => <Text>Barcode</Text>}
+          component={MockQrScan}
           options={{
             title: I18n.t("global.navigator.scan"),
             tabBarIcon: ({ color, focused }) => (
@@ -98,7 +104,7 @@ export const MainTabNavigator = () => {
         />
         <Tab.Screen
           name={ROUTES.PROFILE_MAIN}
-          component={() => <Text>Profile</Text>}
+          component={MockProfile}
           options={{
             title: I18n.t("global.navigator.profile"),
             tabBarIcon: ({ color, focused }) => (
@@ -115,3 +121,21 @@ export const MainTabNavigator = () => {
     </LoadingSpinnerOverlay>
   );
 };
+
+const MockProfile = () => (
+  <>
+    <HeaderFirstLevel title="Mock Profile" type="base" />
+    <ContentWrapper>
+      <Text>Profile</Text>
+    </ContentWrapper>
+  </>
+);
+
+const MockQrScan = () => (
+  <>
+    <HeaderFirstLevel title="Mock Scan" type="base" />
+    <ContentWrapper>
+      <Text>Scan</Text>
+    </ContentWrapper>
+  </>
+);
