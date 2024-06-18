@@ -6,6 +6,7 @@ import ItwPrRemoteCredentialInitScreen from "../screens/presentation/remote/cred
 import ItwIssuanceCredentialCatalogScreen from "../screens/issuance/credential/ItwIssuanceCredentialCatalogScreen";
 import ItwIssuancePidInfoScreen from "../screens/issuance/pid/ItwIssuancePidInfoScreen";
 import ItwIssuancePidAuthScreen from "../screens/issuance/pid/ItwIssuancePidAuthScreen";
+import ItwIssuingPidAuthInfoScreen from "../screens/issuance/pid/ItwIssuancePidAuthInfoScreen";
 import { ItwParamsList } from "./ItwParamsList";
 import { ITW_ROUTES } from "./ItwRoutes";
 
@@ -26,6 +27,10 @@ export const ItwStackNavigator = () => (
     <Stack.Screen
       name={ITW_ROUTES.ISSUANCE.PID.AUTH}
       component={ItwIssuancePidAuthScreen}
+    />
+    <Stack.Screen
+      name={ITW_ROUTES.ISSUANCE.PID.AUTH_INFO}
+      component={ItwIssuingPidAuthInfoScreen}
     />
     {/* ISSUANCE CREDENTIAL */}
     <Stack.Screen

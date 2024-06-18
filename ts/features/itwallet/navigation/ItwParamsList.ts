@@ -1,3 +1,4 @@
+import { ItwIssuancePidRequestScreenNavigationParams } from "../screens/issuance/pid/ItwIssuancePidRequestScreen";
 import { ItwPrCredentialDetailsScreenNavigationParams } from "../screens/presentation/ItwPrCredentialDetails";
 import { ItwPrRemotePidChecksScreenNavigationParams } from "../screens/presentation/remote/pid/ItwPrRemotePidChecksScreen";
 import { ITW_ROUTES } from "./ItwRoutes";
@@ -7,7 +8,8 @@ export type ItwParamsList = {
   [ITW_ROUTES.ISSUANCE.PID.INFO]: undefined;
   [ITW_ROUTES.ISSUANCE.PID.AUTH]: undefined;
   [ITW_ROUTES.ISSUANCE.PID.AUTH_INFO]: undefined;
-  [ITW_ROUTES.ISSUANCE.PID.REQUEST]: undefined;
+  [ITW_ROUTES.ISSUANCE.PID
+    .REQUEST]: ItwIssuancePidRequestScreenNavigationParams;
   [ITW_ROUTES.ISSUANCE.PID.PREVIEW]: undefined;
   [ITW_ROUTES.ISSUANCE.PID.STORE]: undefined;
 

@@ -2,8 +2,9 @@
  * Aggregates all defined reducers
  */
 import { combineReducers, Reducer } from "redux";
-import { PersistConfig } from "redux-persist";
+import { PersistConfig, persistReducer } from "redux-persist";
 import { featuresPersistor } from "../../features/common/store/reducers";
+import createSecureStorage from "../storages/keychain";
 import { Action } from "../actions/types";
 import appStateReducer from "./appState";
 import { navigationReducer } from "./navigation";
@@ -11,6 +12,15 @@ import { GlobalState } from "./types";
 import { debugReducer } from "./debug";
 import startupReducer from "./startup";
 import persistedPreferencesReducer from "./persistedPreferences";
+import profileReducer from "./profile";
+import authenticationReducer, { AuthenticationState } from "./authentication";
+
+// A custom configuration to store the authentication into the Keychain
+export const authenticationPersistConfig: PersistConfig = {
+  key: "authentication",
+  storage: createSecureStorage(),
+  blacklist: ["deepLink"]
+};
 
 /**
  * Here we combine all the reducers.
@@ -33,8 +43,15 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
   navigation: navigationReducer,
   startup: startupReducer,
 
+  // custom persistor (uses secure storage)
+  authentication: persistReducer<AuthenticationState, Action>(
+    authenticationPersistConfig,
+    authenticationReducer
+  ),
+
   // standard persistor, see configureStoreAndPersistor.ts
   features: featuresPersistor,
+  profile: profileReducer,
   debug: debugReducer,
   persistedPreferences: persistedPreferencesReducer
 });
