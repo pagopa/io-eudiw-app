@@ -11,11 +11,12 @@ import {
   VSpacer,
   useIOToast
 } from "@pagopa/io-app-design-system";
+import { useDispatch } from "react-redux";
 import * as O from "fp-ts/lib/Option";
 import I18n from "../../../../../i18n";
 import { ITW_ROUTES } from "../../../navigation/ItwRoutes";
 import { IOStackNavigationProp } from "../../../../../navigation/params/AppParamsList";
-import { useIODispatch, useIOSelector } from "../../../../../store/hooks";
+import { useIOSelector } from "../../../../../store/hooks";
 import ItwCredentialCard from "../../../components/ItwCredentialCard";
 import { ForceScrollDownView } from "../../../../../components/ForceScrollDownView";
 import ItwFooterVerticalButtons from "../../../components/ItwFooterVerticalButtons";
@@ -39,7 +40,7 @@ import { useHeaderSecondLevel } from "../../../../../hooks/useHeaderSecondLevel"
 const ItwIssuancePidPreviewScreen = () => {
   const navigation = useNavigation<IOStackNavigationProp<ItwParamsList>>();
   const pid = useIOSelector(itwIssuancePidValueSelector);
-  const dispatch = useIODispatch();
+  const dispatch = useDispatch();
 
   /**
    * Renders the content of the screen if the PID is decoded.
