@@ -1,8 +1,7 @@
 import {
   IOColors,
   Icon,
-  makeFontFamilyName,
-  useIOExperimentalDesign
+  makeFontFamilyName
 } from "@pagopa/io-app-design-system";
 import React, { useState } from "react";
 import { StyleSheet, View, TextInput } from "react-native";
@@ -14,7 +13,6 @@ const PADDING = 10;
  * Dummy search bar component. It currently doesn't have any function beside displaying a search icon and a text input.
  */
 const ItwSearchBar = () => {
-  const { isExperimental } = useIOExperimentalDesign();
   const [value, setValue] = useState("");
   return (
     <View style={styles.container}>
@@ -28,9 +26,7 @@ const ItwSearchBar = () => {
         keyboardType="default"
         style={{
           padding: PADDING,
-          fontFamily: isExperimental
-            ? makeFontFamilyName("ReadexPro")
-            : makeFontFamilyName("TitilliumWeb"),
+          fontFamily: makeFontFamilyName("ReadexPro"),
           width: "100%"
         }}
       />
