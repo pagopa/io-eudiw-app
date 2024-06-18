@@ -15,6 +15,7 @@ import { StartupActions } from "./startup";
 import { PersistedPreferencesActions } from "./persistedPreferences";
 import { AuthenticationActions } from "./authentication";
 import { ProfileActions } from "./profile";
+import { IdentificationActions } from "./identification";
 
 export type Action =
   | ApplicationActions
@@ -23,6 +24,7 @@ export type Action =
   | StartupActions
   | PersistedPreferencesActions
   | AuthenticationActions
+  | IdentificationActions
   | ItWalletActions;
 
 export type Dispatch = DispatchAPI<Action>;

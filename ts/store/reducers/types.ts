@@ -7,12 +7,14 @@ import { StartupState } from "./startup";
 import { PersistedPreferencesState } from "./persistedPreferences";
 import { ProfileState } from "./profile";
 import { PersistedAuthenticationState } from "./authentication";
+import { PersistedIdentificationState } from "./identification";
 
 export type GlobalState = Readonly<{
   appState: AppState;
   authentication: PersistedAuthenticationState;
   profile: ProfileState;
   navigation: NavigationState;
+  identification: PersistedIdentificationState;
   debug: DebugState;
   persistedPreferences: PersistedPreferencesState;
   startup: StartupState;

@@ -1,11 +1,13 @@
 /**
  * Aggregates all defined reducers
  */
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { combineReducers, Reducer } from "redux";
 import { PersistConfig, persistReducer } from "redux-persist";
 import { featuresPersistor } from "../../features/common/store/reducers";
 import createSecureStorage from "../storages/keychain";
 import { Action } from "../actions/types";
+import { DateISO8601Transform } from "../transforms/dateISO8601Tranform";
 import appStateReducer from "./appState";
 import { navigationReducer } from "./navigation";
 import { GlobalState } from "./types";
@@ -14,12 +16,21 @@ import startupReducer from "./startup";
 import persistedPreferencesReducer from "./persistedPreferences";
 import profileReducer from "./profile";
 import authenticationReducer, { AuthenticationState } from "./authentication";
+import identificationReducer, { IdentificationState } from "./identification";
 
 // A custom configuration to store the authentication into the Keychain
 export const authenticationPersistConfig: PersistConfig = {
   key: "authentication",
   storage: createSecureStorage(),
   blacklist: ["deepLink"]
+};
+
+// A custom configuration to store the fail information of the identification section
+export const identificationPersistConfig: PersistConfig = {
+  key: "identification",
+  storage: AsyncStorage,
+  blacklist: ["progress"],
+  transforms: [DateISO8601Transform]
 };
 
 /**
@@ -50,6 +61,11 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
   ),
 
   // standard persistor, see configureStoreAndPersistor.ts
+  // standard persistor, see configureStoreAndPersistor.ts
+  identification: persistReducer<IdentificationState, Action>(
+    identificationPersistConfig,
+    identificationReducer
+  ),
   features: featuresPersistor,
   profile: profileReducer,
   debug: debugReducer,
