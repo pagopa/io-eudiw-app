@@ -543,45 +543,6 @@ authentication:
       error_23: "La tua identità SPID risulta sospesa o revocata. Per riattivare il tuo account, contatta il tuo fornitore di identità SPID."
       error_25: "Hai annullato l'operazione di login: puoi riprovare quando vuoi."
       error_1001: "Accesso negato: non hai l'età minima richiesta per usare IO"
-identification:
-  title: Ciao!
-  titleProfileName: Ciao {{profileName}}!
-  titleValidation: Conferma l'operazione
-  logout: Esci
-  logoutProfileName: Non sei {{profileName}}?
-  logoutDescription: Puoi accedere con le tue credenziali SPID o CIE. Questa sessione verrà disconnessa.
-  logoutDescriptionProfileName: Puoi accedere con le tue credenziali SPID o CIE. La sessione di {{profileName}} verrà disconnessa.
-  subtitleCode: Inserisci il codice di sblocco
-  subtitleCodeFingerprint: "usa l'impronta o il codice di sblocco"
-  subtitleCodeFaceId: "usa Face ID o il codice di sblocco"
-  biometric:
-    fingerprintType: Impronta digitale
-    title: Identificazione Biometrica
-    popup:
-      reason: Identificazione tramite touch ID non riuscita
-      title: Identificazione richiesta
-      sensorDescription: Accedi velocemente
-  fail:
-    remainingAttempts: Ti rimangono {{attempts}} tentativi.
-    remainingAttemptSingle: Ti rimane {{attempts}} tentativo.
-    tooManyAttempts: Troppi tentativi di inserimento errati.
-    waitMessage: "Riprova tra:"
-  unlockCode:
-    accessibility:
-      unlockHint: Hai inserito {{number}} cifre di {{length}}
-      fingerprint: Autenticati con l'impronta digitale
-      faceId: Autenticati con il riconoscimento facciale
-      delete: Cancella l'ultima cifra inserita
-    reset:
-      button: Hai dimenticato il
-      code: codice di sblocco
-      button_short: Modifica il codice di sblocco
-      subtitle: Imposta un nuovo codice di 6 cifre
-    confirmValid: Codice di sblocco corretto
-  forgetCode:
-    confirmTitle: Hai dimenticato il codice di sblocco?
-    confirmMsg: Per poter scegliere un nuovo codice di sblocco dovrai accedere nuovamente.
-    confirmMsgWithTask: Per poter scegliere un nuovo codice di sblocco dovrai annullare l'operazione corrente e accedere nuovamente.
 onboarding:
   contextualHelpTitle: Come funziona il riconoscimento biometrico
   contextualHelpContent: !include onboarding/onboarding_fingerprint.md
@@ -673,3 +634,47 @@ onboarding:
         step3: Seleziona "IO"
         step4: Seleziona "Notifiche"
         step5: Attiva le notifiche
+identification:
+  instructions:
+    unlockCode: codice di sblocco
+    unlockCodepPrefix: inserisci il
+    fingerprint: impronta
+    fingerprintPrefix: usa l'
+    faceId: volto
+    faceIdPrefix: usa il
+    congiunction: o
+  title: Ciao {{name}}!
+  titleProfileName: Ciao {{profileName}}!
+  titleValidation: Conferma l'operazione
+  logout: Esci
+  logoutProfileName: Non sei {{profileName}}?
+  logoutDescription: Puoi accedere con le tue credenziali SPID o CIE. Questa sessione verrà disconnessa.
+  logoutDescriptionProfileName: Puoi accedere con le tue credenziali SPID o CIE. La sessione di {{profileName}} verrà disconnessa.
+  biometric:
+    fingerprintType: Impronta digitale
+    title: Identificazione Biometrica
+    popup:
+      reason: Identificazione tramite touch ID non riuscita
+      title: Identificazione richiesta
+      sensorDescription: Accedi velocemente
+  fail:
+    remainingAttempts: Hai a disposizione ancora {{attempts}} tentativi
+    remainingAttemptSingle: Hai a disposizone ancora {{attempts}} tentativo
+    tooManyAttempts: Hai inserito troppe volte il codice sbagliato!
+    waitMessage: "Riprova tra:"
+  unlockCode:
+    accessibility:
+      unlockHint: Hai inserito {{number}} cifre di {{length}}
+      fingerprint: Autenticati con l'impronta digitale
+      faceId: Autenticati con il riconoscimento facciale
+      delete: Cancella l'ultima cifra inserita
+    reset:
+      button: Hai dimenticato il
+      code: codice di sblocco
+      button_short: Modifica il codice di sblocco
+      subtitle: Imposta un nuovo codice di 6 cifre.
+    confirmValid: Codice di sblocco corretto
+  forgetCode:
+    confirmTitle: Hai dimenticato il codice di sblocco?
+    confirmMsg: Per poter scegliere un nuovo codice di sblocco dovrai accedere nuovamente.
+    confirmMsgWithTask: Per poter scegliere un nuovo codice di sblocco dovrai annullare l'operazione corrente e accedere nuovamente.

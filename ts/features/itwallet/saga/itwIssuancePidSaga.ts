@@ -183,6 +183,7 @@ export function* handleItwIssuancePidSaga({
 export function* handleItwIssuancePidStoreSaga(
   action: ActionType<typeof itwIssuancePidStore>
 ): SagaIterator {
+  // TODO: add a step where you create a pin or comment the next line
   yield* call(verifyPin);
   yield* put(itwPersistedCredentialsStore(action.payload));
   yield* put(itwLifecycleValid());

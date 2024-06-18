@@ -542,45 +542,6 @@ authentication:
       error_23: "Your SPID identity is suspended or revoked. To reactivate your account, contact your SPID identity provider."
       error_25: "You have canceled the login operation: you can try again whenever you want."
       error_1001: "Access Denied: You are not of the minimum age required to use IO"
-identification:
-  title: Hi!
-  titleProfileName: Hi {{profileName}}!
-  titleValidation: Confirm the procedure
-  logout: Logout
-  logoutProfileName: Not {{profileName}}?
-  logoutDescription: You can login with your SPID or CIE credentials. This session will be disconnected.
-  logoutDescriptionProfileName: You can login with your SPID or CIE credentials. {{profileName}}'s session will be disconnected.
-  subtitleCode: Enter the unlock code
-  subtitleCodeFingerprint: use the fingerprint or the unlock code
-  subtitleCodeFaceId: use the Face ID or enter the unlock code
-  biometric:
-    fingerprintType: Fingerprint
-    title: Biometric identification
-    popup:
-      reason: Identification by touch ID failed
-      title: Identification required
-      sensorDescription: Login quickly
-  fail:
-    remainingAttempts: You have {{attempts}} attempts left.
-    remainingAttemptSingle: You have {{attempts}} attempt left.
-    tooManyAttempts: Too many attempts.
-    waitMessage: "Try again in:"
-  unlockCode:
-    accessibility:
-      unlockHint: You entered {{number}} digits of {{length}}
-      fingerprint: Login with your fingerprint
-      faceId: Login with the Face ID
-      delete: Remove last inserted digit
-    reset:
-      button: Did you forget the
-      code: unlock code
-      button_short: Change the unlock code
-      subtitle: Set a new 6-digit code
-    confirmValid: Correct unlock code
-  forgetCode:
-    confirmTitle: Did you forget the unlock code?
-    confirmMsg: To be able to choose a new unlock code you will need to log in again.
-    confirmMsgWithTask: To be able to choose a new unlock code you will need to cancel the current procedure and log in again.
 onboarding:
   contextualHelpTitle: How does the biometric recognition work
   contextualHelpContent: !include onboarding/onboarding_fingerprint.md
@@ -672,3 +633,47 @@ onboarding:
         step3: Select "IO"
         step4: Select "Notifications"
         step5: Enable notifications
+identification:
+  instructions:
+    unlockCode: unlock code
+    unlockCodepPrefix: use your
+    fingerprint: fingerprint
+    fingerprintPrefix: use your
+    faceId: face
+    faceIdPrefix: use your
+    congiunction: or
+  title: Hi {{name}}!
+  titleProfileName: Hi {{profileName}}!
+  titleValidation: Confirm the procedure
+  logout: Logout
+  logoutProfileName: Not {{profileName}}?
+  logoutDescription: You can login with your SPID or CIE credentials. This session will be disconnected.
+  logoutDescriptionProfileName: You can login with your SPID or CIE credentials. {{profileName}}'s session will be disconnected.
+  biometric:
+    fingerprintType: Fingerprint
+    title: Biometric identification
+    popup:
+      reason: Identification by touch ID failed
+      title: Identification required
+      sensorDescription: Login quickly
+  fail:
+    remainingAttempts: You have {{attempts}} attempts left
+    remainingAttemptSingle: You have {{attempts}} attempt left
+    tooManyAttempts: Too many attempts.
+    waitMessage: "Try again in:"
+  unlockCode:
+    accessibility:
+      unlockHint: You entered {{number}} digits of {{length}}
+      fingerprint: Login with your fingerprint
+      faceId: Login with the Face ID
+      delete: Remove last inserted digit
+    reset:
+      button: Did you forget the
+      code: unlock code
+      button_short: Change the unlock code
+      subtitle: Set a new 6-digit code.
+    confirmValid: Correct unlock code
+  forgetCode:
+    confirmTitle: Did you forget the unlock code?
+    confirmMsg: To be able to choose a new unlock code you will need to log in again.
+    confirmMsgWithTask: To be able to choose a new unlock code you will need to cancel the current procedure and log in again.
