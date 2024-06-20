@@ -16,6 +16,8 @@ import { PersistedPreferencesActions } from "./persistedPreferences";
 import { AuthenticationActions } from "./authentication";
 import { ProfileActions } from "./profile";
 import { IdentificationActions } from "./identification";
+import { PinSetActions } from "./pinset";
+import { OnboardingActions } from "./onboarding";
 
 export type Action =
   | ApplicationActions
@@ -25,7 +27,9 @@ export type Action =
   | PersistedPreferencesActions
   | AuthenticationActions
   | IdentificationActions
-  | ItWalletActions;
+  | ItWalletActions
+  | PinSetActions
+  | OnboardingActions;
 
 export type Dispatch = DispatchAPI<Action>;
 

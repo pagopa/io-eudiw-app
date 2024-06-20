@@ -5,8 +5,13 @@ import { ITW_ROUTES } from "../features/itwallet/navigation/ItwRoutes";
 import { AppParamsList } from "./params/AppParamsList";
 import ROUTES from "./routes";
 import { MainTabNavigator } from "./TabNavigator";
+import OnboardingNavigator from "./OnboardingNavigator";
 
 const Stack = createStackNavigator<AppParamsList>();
+
+const hideHeaderOptions = {
+  headerShown: false
+};
 
 const AuthenticatedStackNavigator = () => {
   return (
@@ -19,8 +24,13 @@ const AuthenticatedStackNavigator = () => {
     >
       <Stack.Screen
         name={ROUTES.MAIN}
-        options={{ headerShown: false }}
+        options={hideHeaderOptions}
         component={MainTabNavigator}
+      />
+      <Stack.Screen
+        name={ROUTES.ONBOARDING}
+        options={hideHeaderOptions}
+        component={OnboardingNavigator}
       />
       <Stack.Screen
         options={{ headerShown: false }}

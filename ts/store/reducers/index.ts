@@ -17,6 +17,7 @@ import persistedPreferencesReducer from "./persistedPreferences";
 import profileReducer from "./profile";
 import authenticationReducer, { AuthenticationState } from "./authentication";
 import identificationReducer, { IdentificationState } from "./identification";
+import onboardingReducer from "./onboarding";
 
 // A custom configuration to store the authentication into the Keychain
 export const authenticationPersistConfig: PersistConfig = {
@@ -67,6 +68,7 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
     identificationReducer
   ),
   features: featuresPersistor,
+  onboarding: onboardingReducer,
   profile: profileReducer,
   debug: debugReducer,
   persistedPreferences: persistedPreferencesReducer

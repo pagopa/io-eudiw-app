@@ -9,9 +9,11 @@ import ROUTES from "../routes";
 import { ITW_ROUTES } from "../../features/itwallet/navigation/ItwRoutes";
 import { ItwParamsList } from "../../features/itwallet/navigation/ItwParamsList";
 import { MainTabParamsList } from "./MainTabParamsList";
+import { OnboardingParamsList } from "./OnboardingParamsList";
 
 export type AppParamsList = {
   [ROUTES.INGRESS]: undefined;
+  [ROUTES.ONBOARDING]: NavigatorScreenParams<OnboardingParamsList>;
   [ROUTES.UNSUPPORTED_DEVICE]: undefined;
   [ROUTES.BACKGROUND]: undefined;
   [ROUTES.MAIN]: NavigatorScreenParams<MainTabParamsList>;
