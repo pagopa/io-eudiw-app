@@ -23,16 +23,14 @@ export type ItwCieWrongPinScreenNavigationParams = {
   remainingCount: number;
 };
 
-type ItwCredentialDetailscreenRouteProps = Route<
+type ItwCieWrongPinScreenRouteProps = Route<
   "ITW_ISSUANCE_PID_CIE_WRONG_PIN_SCREEN",
   ItwCieWrongPinScreenNavigationParams
 >;
 
-type Props = ItwCieWrongPinScreenNavigationParams;
-
-const ItwCieWrongPinScreen = (_: Props) => {
+const ItwCieWrongPinScreen = () => {
   const navigation = useNavigation<IOStackNavigationProp<ItwParamsList>>();
-  const route = useRoute<ItwCredentialDetailscreenRouteProps>();
+  const route = useRoute<ItwCieWrongPinScreenRouteProps>();
 
   useHeaderSecondLevel({
     title: I18n.t("authentication.cie.pin.incorrectCiePinHeaderTitle"),
@@ -51,8 +49,6 @@ const ItwCieWrongPinScreen = (_: Props) => {
       screen: ITW_ROUTES.ISSUANCE.PID.AUTH_INFO
     });
   };
-
-  const ciePinRemainingCount = route.params.remainingCount;
 
   const renderFooterButtons = () => (
     <FooterWithButtons
@@ -78,12 +74,11 @@ const ItwCieWrongPinScreen = (_: Props) => {
     />
   );
 
-  const remainingCount = ciePinRemainingCount;
   return (
     <>
       <ScreenContentHeader
         title={I18n.t("authentication.cie.pin.incorrectCiePinTitle", {
-          remainingCount
+          remainingCount: route.params.remainingCount
         })}
       />
 

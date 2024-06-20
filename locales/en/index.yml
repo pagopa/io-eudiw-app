@@ -453,6 +453,11 @@ features:
         claimLabelNotAvailable: "Claim label not available"
         organizationName: "Issuer name not available"
 authentication:
+  landing:
+    expiredCardTitle: The CIE verification failed
+    expiredCardHeaderTitle: Login with CIE
+    expiredCardContent: The card used is no longer valid or has expired. Use SPID to enter the app.
+    expiredCardHelp: How to renew your Electronic Identity Card?
   cie:
     genericTitle: Login with CIE
     cie: CIE
@@ -689,3 +694,8 @@ identification:
     confirmTitle: Did you forget the unlock code?
     confirmMsg: To be able to choose a new unlock code you will need to log in again.
     confirmMsgWithTask: To be able to choose a new unlock code you will need to cancel the current procedure and log in again.
+cie:
+  title: Touch the card
+  layCardMessageHeader: Touch your Electronic ID Card on the back of your phone for a few seconds.
+  layCardMessageFooter: If you don't know exactly where is the NFC sensor, move the card to different points and wait a few seconds until you hear a sound.
+  booking_url: https://www.cartaidentita.interno.gov.it/cittadini/sistema-di-prenotazione-della-cie/

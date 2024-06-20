@@ -3,11 +3,12 @@
  * If not, alert/guide the user to activate it from device settings
  */
 import * as React from "react";
-import { Alert } from "react-native";
+import { Alert, View } from "react-native";
 import {
   Body,
   FooterWithButtons,
-  ContentWrapper
+  ContentWrapper,
+  IOStyles
 } from "@pagopa/io-app-design-system";
 import I18n from "../../../../i18n";
 import { ReduxProps } from "../../../../store/actions/types";
@@ -67,9 +68,11 @@ export default function CieNfcOverlay(_: Props) {
         title={I18n.t("authentication.cie.nfc.enableNfcTitle")}
         rasterIcon={require("../../../../../img/icons/nfc-icon.png")}
       />
-      <ContentWrapper>
-        <Body>{I18n.t("authentication.cie.nfc.enableNfcContent")}</Body>
-      </ContentWrapper>
+      <View style={IOStyles.flex}>
+        <ContentWrapper>
+          <Body>{I18n.t("authentication.cie.nfc.enableNfcContent")}</Body>
+        </ContentWrapper>
+      </View>
       <FooterWithButtons
         primary={{
           type: "Outline",

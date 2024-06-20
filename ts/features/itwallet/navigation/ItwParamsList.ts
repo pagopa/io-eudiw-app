@@ -1,6 +1,8 @@
-import { ItwIssuancePidRequestScreenNavigationParams } from "../screens/issuance/pid/ItwIssuancePidRequestScreen";
-import { ItwCieWrongPinScreenNavigationParams } from "../screens/issuance/pid/cie/ItwCieWrongPinScreen";
 import { ItwPrCredentialDetailsScreenNavigationParams } from "../screens/presentation/ItwPrCredentialDetails";
+import { ItwIssuancePidRequestScreenNavigationParams } from "../screens/issuance/pid/ItwIssuancePidRequestScreen";
+import { ItwCieCardReaderScreenNavigationParams } from "../screens/issuance/pid/cie/ItwCieCardReaderScreen";
+import { ItwCieConsentDataUsageScreenNavigationParams } from "../screens/issuance/pid/cie/ItwCieConsentDataUsageScreen";
+import { ItwCieWrongPinScreenNavigationParams } from "../screens/issuance/pid/cie/ItwCieWrongPinScreen";
 import { ItwPrRemotePidChecksScreenNavigationParams } from "../screens/presentation/remote/pid/ItwPrRemotePidChecksScreen";
 import { ITW_ROUTES } from "./ItwRoutes";
 
@@ -17,8 +19,10 @@ export type ItwParamsList = {
   // ISSUANCE PID CIE
   [ITW_ROUTES.ISSUANCE.PID.CIE.EXPIRED_SCREEN]: undefined;
   [ITW_ROUTES.ISSUANCE.PID.CIE.PIN_SCREEN]: undefined;
-  [ITW_ROUTES.ISSUANCE.PID.CIE.CARD_READER_SCREEN]: undefined;
-  [ITW_ROUTES.ISSUANCE.PID.CIE.CONSENT_DATA_USAGE]: undefined;
+  [ITW_ROUTES.ISSUANCE.PID.CIE
+    .CARD_READER_SCREEN]: ItwCieCardReaderScreenNavigationParams;
+  [ITW_ROUTES.ISSUANCE.PID.CIE
+    .CONSENT_DATA_USAGE]: ItwCieConsentDataUsageScreenNavigationParams;
   [ITW_ROUTES.ISSUANCE.PID.CIE
     .WRONG_PIN_SCREEN]: ItwCieWrongPinScreenNavigationParams;
   [ITW_ROUTES.ISSUANCE.PID.CIE.PIN_TEMP_LOCKED_SCREEN]: undefined;
