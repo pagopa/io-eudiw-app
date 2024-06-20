@@ -19,6 +19,7 @@ import {
 import { ItwParamsList } from "../../navigation/ItwParamsList";
 import { itwOpenNFCSettings } from "../../utils/itwCieUtils";
 import { useHeaderSecondLevel } from "../../../../hooks/useHeaderSecondLevel";
+import { ScreenContentHeader } from "../../../../components/screens/ScreenContentHeader";
 
 type NavigationProps = IOStackNavigationRouteProps<
   ItwParamsList,
@@ -62,10 +63,10 @@ export default function CieNfcOverlay(_: Props) {
 
   return (
     <>
-      {/* <ScreenContentHeader
+      <ScreenContentHeader
         title={I18n.t("authentication.cie.nfc.enableNfcTitle")}
         rasterIcon={require("../../../../../img/icons/nfc-icon.png")}
-      /> */}
+      />
       <ContentWrapper>
         <Body>{I18n.t("authentication.cie.nfc.enableNfcContent")}</Body>
       </ContentWrapper>

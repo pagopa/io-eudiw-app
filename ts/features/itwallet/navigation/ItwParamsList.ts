@@ -1,4 +1,5 @@
 import { ItwIssuancePidRequestScreenNavigationParams } from "../screens/issuance/pid/ItwIssuancePidRequestScreen";
+import { ItwCieWrongPinScreenNavigationParams } from "../screens/issuance/pid/cie/ItwCieWrongPinScreen";
 import { ItwPrCredentialDetailsScreenNavigationParams } from "../screens/presentation/ItwPrCredentialDetails";
 import { ItwPrRemotePidChecksScreenNavigationParams } from "../screens/presentation/remote/pid/ItwPrRemotePidChecksScreen";
 import { ITW_ROUTES } from "./ItwRoutes";
@@ -18,7 +19,8 @@ export type ItwParamsList = {
   [ITW_ROUTES.ISSUANCE.PID.CIE.PIN_SCREEN]: undefined;
   [ITW_ROUTES.ISSUANCE.PID.CIE.CARD_READER_SCREEN]: undefined;
   [ITW_ROUTES.ISSUANCE.PID.CIE.CONSENT_DATA_USAGE]: undefined;
-  [ITW_ROUTES.ISSUANCE.PID.CIE.WRONG_PIN_SCREEN]: undefined;
+  [ITW_ROUTES.ISSUANCE.PID.CIE
+    .WRONG_PIN_SCREEN]: ItwCieWrongPinScreenNavigationParams;
   [ITW_ROUTES.ISSUANCE.PID.CIE.PIN_TEMP_LOCKED_SCREEN]: undefined;
 
   // ISSUANCE CREDENTIALS
