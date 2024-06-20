@@ -9,6 +9,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { LightModalProvider } from "./components/ui/LightModal";
 import RootContainer from "./RootContainer";
 import { persistor, store } from "./boot/configureStoreAndPersistor";
 
@@ -25,7 +26,9 @@ export const App = () => (
             <Provider store={store}>
               <PersistGate loading={undefined} persistor={persistor}>
                 <BottomSheetModalProvider>
-                  <RootContainer />
+                  <LightModalProvider>
+                    <RootContainer />
+                  </LightModalProvider>
                 </BottomSheetModalProvider>
               </PersistGate>
             </Provider>
