@@ -31,6 +31,7 @@ import { mockedmDLResponse } from "../../utils/itwMocksUtils";
 import ItwContinueView from "../../components/ItwContinueView";
 import ROUTES from "../../../../navigation/routes";
 import { useIODispatch, useIOSelector } from "../../../../store/hooks";
+import { useHeaderSecondLevel } from "../../../../hooks/useHeaderSecondLevel";
 import {
   ProximityManagerStatusEnum,
   startProximityManager,
@@ -55,6 +56,11 @@ const ItwPrProximityQrCodeScreen = () => {
   const dispatch = useIODispatch();
   const proximityStatus = useIOSelector(itwPrProximitySelector);
   const qrCode = useIOSelector(itwPrProximityQrCodeSelector);
+
+  useHeaderSecondLevel({
+    title: "",
+    supportRequest: true
+  });
 
   useOnFirstRender(() => {
     handleAndroidPermissions().catch(_ => setIsError(true));

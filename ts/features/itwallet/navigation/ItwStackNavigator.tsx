@@ -14,6 +14,12 @@ import ItwPrPidDetails from "../screens/presentation/ItwPrPidDetails";
 import ItwIssuanceCredentialChecksScreen from "../screens/issuance/credential/ItwIssuanceCredentialChecksScreen";
 import ItwIssuanceCredentialAuthScreen from "../screens/issuance/credential/ItwIssuanceCredentialAuthScreen";
 import ItwIssuanceCredentialPreviewScreen from "../screens/issuance/credential/ItwIssuanceCredentialPreviewScreen";
+import ItwPrRemotePidChecksScreen from "../screens/presentation/remote/pid/ItwPrRemotePidChecksScreen";
+import ItwPrRemotePidDataScreen from "../screens/presentation/remote/pid/ItwPrRemotePidDataScreen";
+import ItwPrRemotePidResultScreen from "../screens/presentation/remote/pid/ItwPrRemotePidResultScreen";
+import ItwPrRemoteCredentialDataScreen from "../screens/presentation/remote/credential/ItwPrRemoteCredentialDataScreen";
+import ItwPrRemoteCredentialResultScreen from "../screens/presentation/remote/credential/ItwPrRemoteCredentialResultScreen";
+import ItwPrProximityQrCodeScreen from "../screens/presentation/ItwPrProximityQrCodeScreen";
 import { ItwParamsList } from "./ItwParamsList";
 import { ITW_ROUTES } from "./ItwRoutes";
 
@@ -57,6 +63,36 @@ export const ItwStackNavigator = () => (
       name={ITW_ROUTES.PRESENTATION.PID.DETAILS}
       component={ItwPrPidDetails}
     />
+    <Stack.Screen
+      name={ITW_ROUTES.PRESENTATION.PID.REMOTE.INIT}
+      component={ItwPrRemotePidChecksScreen}
+    />
+    <Stack.Screen
+      name={ITW_ROUTES.PRESENTATION.PID.REMOTE.DATA}
+      component={ItwPrRemotePidDataScreen}
+    />
+    <Stack.Screen
+      name={ITW_ROUTES.PRESENTATION.PID.REMOTE.RESULT}
+      component={ItwPrRemotePidResultScreen}
+    />
+
+    {/* CREDENTIAL PRESENTATION */}
+    <Stack.Screen
+      name={ITW_ROUTES.PRESENTATION.CREDENTIAL.DETAILS}
+      component={ItwPrCredentialDetailsScreen}
+    />
+    <Stack.Screen
+      name={ITW_ROUTES.PRESENTATION.CREDENTIAL.REMOTE.INIT}
+      component={ItwPrRemoteCredentialInitScreen}
+    />
+    <Stack.Screen
+      name={ITW_ROUTES.PRESENTATION.CREDENTIAL.REMOTE.DATA}
+      component={ItwPrRemoteCredentialDataScreen}
+    />
+    <Stack.Screen
+      name={ITW_ROUTES.PRESENTATION.CREDENTIAL.REMOTE.RESULT}
+      component={ItwPrRemoteCredentialResultScreen}
+    />
 
     {/* ISSUANCE CREDENTIAL */}
     <Stack.Screen
@@ -76,14 +112,10 @@ export const ItwStackNavigator = () => (
       component={ItwIssuanceCredentialPreviewScreen}
     />
 
-    {/* CREDENTIAL PRESENTATION */}
+    {/* PRESENTATION PROXIMITY */}
     <Stack.Screen
-      name={ITW_ROUTES.PRESENTATION.CREDENTIAL.DETAILS}
-      component={ItwPrCredentialDetailsScreen}
-    />
-    <Stack.Screen
-      name={ITW_ROUTES.PRESENTATION.CREDENTIAL.REMOTE.INIT}
-      component={ItwPrRemoteCredentialInitScreen}
+      name={ITW_ROUTES.PRESENTATION.PROXIMITY.QRCODE}
+      component={ItwPrProximityQrCodeScreen}
     />
   </Stack.Navigator>
 );
