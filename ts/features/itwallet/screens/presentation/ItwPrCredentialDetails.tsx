@@ -16,6 +16,7 @@ import ItwCredentialClaimsList from "../../components/ItwCredentialClaimsList";
 import ItwClaimsWrapper from "../../components/ItwClaimsWrapper";
 import { ITW_ROUTES } from "../../navigation/ItwRoutes";
 import { StoredCredential } from "../../utils/itwTypesUtils";
+import { useHeaderSecondLevel } from "../../../../hooks/useHeaderSecondLevel";
 
 export type ItwPrCredentialDetailsScreenNavigationParams = {
   credential: StoredCredential;
@@ -35,6 +36,11 @@ const ItwPrCredentialDetailsScreen = () => {
   const { credential } = route.params;
   const bannerViewRef = React.createRef<View>();
   const spacerSize = 32;
+
+  useHeaderSecondLevel({
+    title: "",
+    supportRequest: true
+  });
 
   /**
    * Content view which asks the user to confirm the issuance of the credential.

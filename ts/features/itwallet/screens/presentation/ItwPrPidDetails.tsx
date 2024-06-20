@@ -22,6 +22,7 @@ import { getItwGenericMappedError } from "../../utils/itwErrorsUtils";
 import { itwPersistedCredentialsValuePidSelector } from "../../store/reducers/itwPersistedCredentialsReducer";
 import { StoredCredential } from "../../utils/itwTypesUtils";
 import ItwCredentialClaimsList from "../../components/ItwCredentialClaimsList";
+import { useHeaderSecondLevel } from "../../../../hooks/useHeaderSecondLevel";
 
 /**
  * Renders a preview screen which displays a visual representation and the claims contained in the PID.
@@ -32,6 +33,11 @@ const ItwPrPidDetails = () => {
   const pid = useIOSelector(itwPersistedCredentialsValuePidSelector);
   const bannerViewRef = React.createRef<View>();
   const spacerSize = 32;
+
+  useHeaderSecondLevel({
+    title: "",
+    supportRequest: true
+  });
 
   const presentationButton: BlockButtonProps = {
     type: "Solid",

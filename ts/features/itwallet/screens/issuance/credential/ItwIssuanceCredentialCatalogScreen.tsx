@@ -23,6 +23,7 @@ import { ITW_ROUTES } from "../../../navigation/ItwRoutes";
 import { useIODispatch, useIOSelector } from "../../../../../store/hooks";
 import { itwIssuanceCredentialChecksSelector } from "../../../store/reducers/itwIssuanceCredentialReducer";
 import { itwIssuanceCredentialChecks } from "../../../store/actions/itwIssuanceCredentialActions";
+import { useHeaderSecondLevel } from "../../../../../hooks/useHeaderSecondLevel";
 
 const NONE_LOADING = -1;
 
@@ -35,6 +36,11 @@ const ItwIssuanceCredentialCatalogScreen = () => {
   const preliminaryChecks = useIOSelector(itwIssuanceCredentialChecksSelector);
   const [loadingIndex, setLoadingIndex] = React.useState<number>(NONE_LOADING);
   const catalog = getCredentialsCatalog();
+
+  useHeaderSecondLevel({
+    title: "",
+    supportRequest: true
+  });
 
   /**
    * Side effect to navigate to the credential checks screen when the preliminaryChecks pot
