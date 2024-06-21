@@ -9,7 +9,8 @@ import {
   H2,
   IOStyles,
   VSpacer,
-  useIOToast
+  useIOToast,
+  ForceScrollDownView
 } from "@pagopa/io-app-design-system";
 import { useDispatch } from "react-redux";
 import * as O from "fp-ts/lib/Option";
@@ -18,7 +19,6 @@ import { ITW_ROUTES } from "../../../navigation/ItwRoutes";
 import { IOStackNavigationProp } from "../../../../../navigation/params/AppParamsList";
 import { useIOSelector } from "../../../../../store/hooks";
 import ItwCredentialCard from "../../../components/ItwCredentialCard";
-import { ForceScrollDownView } from "../../../../../components/ForceScrollDownView";
 import ItwFooterVerticalButtons from "../../../components/ItwFooterVerticalButtons";
 import { itwShowCancelAlert } from "../../../utils/itwAlertsUtils";
 import ROUTES from "../../../../../navigation/routes";

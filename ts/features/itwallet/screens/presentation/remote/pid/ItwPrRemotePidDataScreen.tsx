@@ -12,7 +12,8 @@ import {
   Icon,
   IconContained,
   LabelLink,
-  VSpacer
+  VSpacer,
+  ForceScrollDownView
 } from "@pagopa/io-app-design-system";
 import { Image, StyleSheet, View } from "react-native";
 import { pipe } from "fp-ts/lib/function";
@@ -31,7 +32,6 @@ import { useItwInfoBottomSheet } from "../../../../hooks/useItwInfoBottomSheet";
 import ItwKoView from "../../../../components/ItwKoView";
 import { getItwGenericMappedError } from "../../../../utils/itwErrorsUtils";
 import ROUTES from "../../../../../../navigation/routes";
-import { ForceScrollDownView } from "../../../../../../components/ForceScrollDownView";
 import { itwPersistedCredentialsValuePidSelector } from "../../../../store/reducers/itwPersistedCredentialsReducer";
 import { StoredCredential } from "../../../../utils/itwTypesUtils";
 import { useHeaderSecondLevel } from "../../../../../../hooks/useHeaderSecondLevel";

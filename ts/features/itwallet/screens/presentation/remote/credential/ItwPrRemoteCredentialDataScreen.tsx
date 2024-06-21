@@ -11,7 +11,8 @@ import {
   Icon,
   IconContained,
   LabelLink,
-  VSpacer
+  VSpacer,
+  ForceScrollDownView
 } from "@pagopa/io-app-design-system";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
@@ -30,7 +31,6 @@ import { getRpMock } from "../../../../utils/itwMocksUtils";
 import { itwShowCancelAlert } from "../../../../utils/itwAlertsUtils";
 import ItwKoView from "../../../../components/ItwKoView";
 import { getItwGenericMappedError } from "../../../../utils/itwErrorsUtils";
-import { ForceScrollDownView } from "../../../../../../components/ForceScrollDownView";
 import ItwTextInfo from "../../../../components/ItwTextInfo";
 import { itwPersistedCredentialsValuePidSelector } from "../../../../store/reducers/itwPersistedCredentialsReducer";
 import { StoredCredential } from "../../../../utils/itwTypesUtils";
