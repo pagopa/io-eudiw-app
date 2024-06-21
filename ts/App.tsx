@@ -20,7 +20,7 @@ export type AppDispatch = typeof store.dispatch;
 export const App = () => (
   <GestureHandlerRootView style={{ flex: 1 }}>
     <SafeAreaProvider>
-      <IODSExperimentalContextProvider>
+      <IODSExperimentalContextProvider isExperimentaEnabled>
         <IOThemeContextProvider theme={"light"}>
           <ToastProvider>
             <Provider store={store}>
