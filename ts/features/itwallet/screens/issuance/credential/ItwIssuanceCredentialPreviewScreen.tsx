@@ -8,7 +8,8 @@ import {
   H2,
   VSpacer,
   useIOToast,
-  IOStyles
+  IOStyles,
+  ForceScrollDownView
 } from "@pagopa/io-app-design-system";
 import { SafeAreaView, View } from "react-native";
 import * as O from "fp-ts/lib/Option";
@@ -33,7 +34,6 @@ import {
 } from "../../../store/actions/itwIssuanceCredentialActions";
 import { itwIssuanceCredentialResultSelector } from "../../../store/reducers/itwIssuanceCredentialReducer";
 import ItwLoadingSpinnerOverlay from "../../../components/ItwLoadingSpinnerOverlay";
-import { ForceScrollDownView } from "../../../../../components/ForceScrollDownView";
 import ItwFooterVerticalButtons from "../../../components/ItwFooterVerticalButtons";
 import { ITW_ROUTES } from "../../../navigation/ItwRoutes";
 import { StoredCredential } from "../../../utils/itwTypesUtils";
