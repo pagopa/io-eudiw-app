@@ -1,14 +1,18 @@
-import { put, takeLatest, fork } from "typed-redux-saga/macro";
+import { put, takeLatest, fork, call } from "typed-redux-saga/macro";
 import { getType } from "typesafe-actions";
 import { ReduxSagaEffect } from "../types/utils";
 import { startApplicationInitialization } from "../store/actions/application";
 import { startupLoadSuccess } from "../store/actions/startup";
 import { StartupStatusEnum } from "../store/reducers/startup";
 import { watchItwSaga } from "../features/itwallet/saga";
+import { checkConfiguredPinSaga } from "./startup/checkConfiguredPinSaga";
 
 export function* initializeApplicationSaga() {
-  yield* fork(watchItwSaga);
+  yield* put(startupLoadSuccess(StartupStatusEnum.ONBOARDING));
+  yield* call(checkConfiguredPinSaga);
   yield* put(startupLoadSuccess(StartupStatusEnum.AUTHENTICATED));
+
+  yield* fork(watchItwSaga);
 }
 
 export function* startupSaga(): IterableIterator<ReduxSagaEffect> {
