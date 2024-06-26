@@ -22,7 +22,8 @@ module.exports = {
     "functional/no-let": "error",
     "functional/immutable-data": "error",
     "eslint-comments/no-unlimited-disable": "off",
-    "react-native-a11y/has-accessibility-hint": "off"
+    "react-native-a11y/has-accessibility-hint": "off",
+    "react/no-unstable-nested-components": "off"
   },
   ignorePatterns: [
     "*rc.js",
