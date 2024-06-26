@@ -10,12 +10,16 @@ import { Action } from "../actions/types";
 import { GlobalState } from "./types";
 
 export type PersistedPreferencesState = Readonly<{
+  isFingerprintEnabled?: boolean;
   preferredLanguage?: Locales;
 }>;
 
 export const initialPreferencesState: PersistedPreferencesState = {
   preferredLanguage: "it" // Start with it for now
 };
+
+export const isFingerprintEnabledSelector = (state: GlobalState) =>
+  state.persistedPreferences.isFingerprintEnabled;
 
 export default function preferencesReducer(
   state: PersistedPreferencesState = initialPreferencesState,

@@ -17,6 +17,8 @@ import { setDebugCurrentRouteName } from "./store/actions/debug";
 import { isDebugModeEnabledSelector } from "./store/reducers/debug";
 import { GlobalState } from "./store/reducers/types";
 import { preferredLanguageSelector } from "./store/reducers/persistedPreferences";
+import RootModal from "./screens/modal/RootModal";
+import { LightModalRoot } from "./components/ui/LightModal";
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
@@ -82,6 +84,8 @@ class RootContainer extends React.PureComponent<Props> {
         />
 
         <IONavigationContainer />
+        <RootModal />
+        <LightModalRoot />
       </>
     );
   }
