@@ -159,7 +159,7 @@ const ItwHomeScreen = () => {
         secondAction={{
           icon: "coggle",
           onPress: () => {
-            Alert.alert("Contextual Help");
+            Alert.alert("Contextual coggle");
           },
           accessibilityLabel: ""
         }}
