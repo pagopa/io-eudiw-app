@@ -19,6 +19,7 @@ import { GlobalState } from "./store/reducers/types";
 import { preferredLanguageSelector } from "./store/reducers/persistedPreferences";
 import RootModal from "./screens/modal/RootModal";
 import { LightModalRoot } from "./components/ui/LightModal";
+import DebugInfoOverlay from "./components/DebugInfoOverlay";
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
@@ -84,6 +85,7 @@ class RootContainer extends React.PureComponent<Props> {
         />
 
         <IONavigationContainer />
+        {this.props.isDebugModeEnabled && <DebugInfoOverlay />}
         <RootModal />
         <LightModalRoot />
       </>
