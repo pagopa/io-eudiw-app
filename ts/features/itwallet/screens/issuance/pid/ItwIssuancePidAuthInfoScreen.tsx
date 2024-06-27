@@ -91,9 +91,7 @@ const ItwIssuancePidAuthInfoScreen = () => {
             label: I18n.t("global.buttons.confirm"),
             accessibilityLabel: I18n.t("global.buttons.confirm"),
             onPress: () =>
-              isIos
-                ? bypassCieLogin()
-                : navigation.navigate(ITW_ROUTES.ISSUANCE.PID.CIE.PIN_SCREEN)
+              navigation.navigate(ITW_ROUTES.ISSUANCE.PID.CIE.PIN_SCREEN)
           }}
           onPictogramPress={() => bypassCieLogin()}
           secondaryAction={{

@@ -749,7 +749,7 @@ SPEC CHECKSUMS:
   JOSESwift: 7ff178bb9173ff42c6e990929a9f2fa702a34f69
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  pagopa-io-react-native-cie-pid: 0a9d73923891b682c25abea2ff747ddee387517c
+  pagopa-io-react-native-cie-pid: 60e0a7ff97f50ac7b83dca5bea67846d9b9c7e13
   pagopa-io-react-native-crypto: 6aa9f33e4bf64ef420ad97c720c1ad0f876cd470
   pagopa-io-react-native-jwt: be05e46a4067feafb395a6857bc608a843a590b5
   pagopa-io-react-native-proximity: 8e713ae25371a3d334f6d7028fc5cbd564be66ed
