@@ -3,7 +3,12 @@
  */
 
 import * as React from "react";
-import { View, ScrollView, useWindowDimensions } from "react-native";
+import {
+  View,
+  ScrollView,
+  useWindowDimensions,
+  StyleSheet
+} from "react-native";
 import {
   Body,
   H3,
@@ -31,6 +36,9 @@ export const LandingCardComponent = React.forwardRef<View, Props>(
   (props, ref) => {
     const screenDimension = useWindowDimensions();
     const screenWidth = screenDimension.width;
+    const wrapperStyle = {
+      width: screenWidth
+    };
     const {
       accessibilityLabel,
       accessibilityHint,
@@ -42,16 +50,11 @@ export const LandingCardComponent = React.forwardRef<View, Props>(
     } = props;
 
     return (
-      <ScrollView
-        accessible={false}
-        contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
-      >
+      <ScrollView accessible={false} contentContainerStyle={styles.container}>
         <View
           ref={ref}
           style={[
-            {
-              width: screenWidth
-            },
+            wrapperStyle,
             IOStyles.horizontalContentPadding,
             IOStyles.alignCenter
           ]}
@@ -63,7 +66,7 @@ export const LandingCardComponent = React.forwardRef<View, Props>(
           <VSpacer size={VERTICAL_SPACING} />
           <H3
             importantForAccessibility="no"
-            style={{ textAlign: "center" }}
+            style={styles.centeredText}
             color={titleColor}
           >
             {title}
@@ -71,7 +74,7 @@ export const LandingCardComponent = React.forwardRef<View, Props>(
           <VSpacer size={VERTICAL_SPACING} />
           <Body
             importantForAccessibility="no"
-            style={{ textAlign: "center" }}
+            style={styles.centeredText}
             color={contentColor}
           >
             {content}
@@ -82,3 +85,8 @@ export const LandingCardComponent = React.forwardRef<View, Props>(
     );
   }
 );
+
+const styles = StyleSheet.create({
+  centeredText: { textAlign: "center" },
+  container: { flexGrow: 1, justifyContent: "center" }
+});
