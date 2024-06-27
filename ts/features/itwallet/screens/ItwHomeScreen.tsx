@@ -144,6 +144,27 @@ const ItwHomeScreen = () => {
     </View>
   );
 
+  const RenderMask = () =>
+    pipe(
+      decodedPid,
+      O.fold(
+        () => (
+          <ItwKoView
+            title={I18n.t("global.jserror.title")}
+            pictogram="fatalError"
+            action={{
+              accessibilityLabel: I18n.t(
+                "features.itWallet.homeScreen.reset.label"
+              ),
+              label: I18n.t("features.itWallet.homeScreen.reset.label"),
+              onPress: () => present()
+            }}
+          />
+        ),
+        some => <ContentView pid={some} />
+      )
+    );
+
   return (
     <>
       <HeaderFirstLevel
@@ -174,7 +195,7 @@ const ItwHomeScreen = () => {
             />
           </View>
         ) : (
-          <></>
+          <RenderMask />
         )}
         {bottomSheet}
       </View>
