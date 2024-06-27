@@ -17,7 +17,7 @@ import persistedPreferencesReducer from "./persistedPreferences";
 import profileReducer from "./profile";
 import authenticationReducer, { AuthenticationState } from "./authentication";
 import identificationReducer, { IdentificationState } from "./identification";
-import onboardingReducer from "./onboarding";
+import onboardingReducer, { OnboardingState } from "./onboarding";
 
 // A custom configuration to store the authentication into the Keychain
 export const authenticationPersistConfig: PersistConfig = {
@@ -31,6 +31,13 @@ export const identificationPersistConfig: PersistConfig = {
   key: "identification",
   storage: AsyncStorage,
   blacklist: ["progress"],
+  transforms: [DateISO8601Transform]
+};
+
+export const onboardingPersistConfig: PersistConfig = {
+  key: "onboarding",
+  storage: AsyncStorage,
+  blacklist: [],
   transforms: [DateISO8601Transform]
 };
 
@@ -68,7 +75,10 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
     identificationReducer
   ),
   features: featuresPersistor,
-  onboarding: onboardingReducer,
+  onboarding: persistReducer<OnboardingState, Action>(
+    onboardingPersistConfig,
+    onboardingReducer
+  ),
   profile: profileReducer,
   debug: debugReducer,
   persistedPreferences: persistedPreferencesReducer
