@@ -21,6 +21,14 @@ export function* checkConfiguredPinSaga(): Generator<
 
   if (O.isSome(pinCode)) {
     if (isValidPinNumber(pinCode.value)) {
+      yield* call(
+        NavigationService.dispatchNavigationAction,
+        // We use navigate to go back to the main tab
+        // https://reactnavigation.org/docs/nesting-navigators/#navigation-actions-are-handled-by-current-navigator-and-bubble-up-if-couldnt-be-handled
+        CommonActions.navigate({
+          name: ROUTES.MAIN
+        })
+      );
       return pinCode.value;
     }
   }
