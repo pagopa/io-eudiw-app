@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import { Pressable, ScrollView, View } from "react-native";
+import React from "react";
+import { Alert, Pressable, ScrollView, View } from "react-native";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
 import {
   ButtonLink,
   ButtonSolid,
-  TabNavigation,
   VSpacer,
-  TabItem,
   IOStyles,
   HeaderFirstLevel
 } from "@pagopa/io-app-design-system";
@@ -39,14 +37,6 @@ const ItwHomeScreen = () => {
   );
   const decodedPid = useIOSelector(itwPersistedCredentialsValuePidSelector);
   const credentials = useIOSelector(itwPersistedCredentialsValueSelector);
-  const [selectedBadgeIdx, setSelectedBadgeIdx] = useState(0);
-  const badgesLabels = [
-    I18n.t("features.itWallet.homeScreen.categories.any"),
-    I18n.t("features.itWallet.homeScreen.categories.itWallet"),
-    I18n.t("features.itWallet.homeScreen.categories.health"),
-    I18n.t("features.itWallet.homeScreen.categories.payments"),
-    I18n.t("features.itWallet.homeScreen.categories.bonus")
-  ];
   const pidType = CredentialType.PID;
 
   /**
@@ -179,21 +169,22 @@ const ItwHomeScreen = () => {
     <>
       <HeaderFirstLevel
         title={I18n.t("global.navigator.itwallet")}
-        type="base"
+        type="twoActions"
+        firstAction={{
+          icon: "help",
+          onPress: () => {
+            Alert.alert("Contextual Help");
+          },
+          accessibilityLabel: ""
+        }}
+        secondAction={{
+          icon: "coggle",
+          onPress: () => {
+            Alert.alert("Contextual coggle");
+          },
+          accessibilityLabel: ""
+        }}
       />
-      <View>
-        <TabNavigation>
-          {badgesLabels.map((label, idx) => (
-            <TabItem
-              key={`badge-${idx}`}
-              label={label}
-              accessibilityLabel={label}
-              onPress={() => setSelectedBadgeIdx(idx)}
-            />
-          ))}
-        </TabNavigation>
-      </View>
-
       <View style={{ ...IOStyles.flex, ...IOStyles.horizontalContentPadding }}>
         {isItWalletOperational ? (
           <View style={{ ...IOStyles.flex, justifyContent: "flex-start" }}>
@@ -203,10 +194,8 @@ const ItwHomeScreen = () => {
               action={I18n.t("features.itWallet.actionBanner.action")}
             />
           </View>
-        ) : selectedBadgeIdx === 0 || selectedBadgeIdx === 1 ? (
-          <RenderMask />
         ) : (
-          <></>
+          <RenderMask />
         )}
         {bottomSheet}
       </View>
