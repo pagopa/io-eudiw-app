@@ -715,3 +715,14 @@ cie:
   layCardMessageHeader: Appoggia per qualche secondo la tua carta di identità elettronica al retro del tuo telefono.
   layCardMessageFooter: Se non sai con precisione dove sia l'antenna NFC sposta la carta in punti diversi e attendi qualche secondo finché non senti un suono.
   booking_url: https://www.cartaidentita.interno.gov.it/cittadini/sistema-di-prenotazione-della-cie/
+clipboard:
+  copyIntoClipboard: copia negli appunti
+  copyFeedback: Copiato negli appunti
+  copyText: copia
+  copyFeedbackButton: copiato
+profile:
+  main:
+    title: Profilo
+    developerModeOn: Modalità sviluppatore attivata
+    debugMode: Modalità debug
+    appVersion: Versione
