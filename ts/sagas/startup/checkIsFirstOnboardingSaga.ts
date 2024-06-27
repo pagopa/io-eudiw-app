@@ -26,6 +26,5 @@ export function* checkIsFirstOnboardingSaga(): Generator<ReduxSagaEffect> {
     yield* put(firstOnboardingCompleted());
     return resultAction.payload;
   }
-
   return;
 }

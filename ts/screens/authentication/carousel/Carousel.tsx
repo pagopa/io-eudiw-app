@@ -8,7 +8,6 @@ import {
   GestureResponderEvent,
   useWindowDimensions
 } from "react-native";
-// import { trackCarousel } from "../analytics/carouselAnalytics";
 import { useInteractiveElementDefaultColorName } from "../../../utils/hooks/theme";
 import { LandingCardComponent } from "../../../components/LandingCardComponent";
 
@@ -98,8 +97,6 @@ const CarouselDots = (props: CarouselDotsProps) => {
 
 export const Carousel = React.forwardRef<View, CarouselProps>((props, ref) => {
   const { carouselCards, dotEasterEggCallback, dotColor } = props;
-  const screenDimension = useWindowDimensions();
-  const windowWidth = screenDimension.width;
   const scrollX = React.useRef(new Animated.Value(0)).current;
 
   const renderCardComponents = React.useCallback(
@@ -122,16 +119,6 @@ export const Carousel = React.forwardRef<View, CarouselProps>((props, ref) => {
         horizontal={true}
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        onScrollEndDrag={event => {
-          const contentOffsetX = event.nativeEvent.contentOffset.x;
-          const currentPageIndex = Math.round(contentOffsetX / windowWidth);
-          if (
-            currentPageIndex >= 0 &&
-            cardComponents.length > currentPageIndex
-          ) {
-            // trackCarousel(currentPageIndex, cardComponents);
-          }
-        }}
         onScroll={Animated.event(
           [
             {
