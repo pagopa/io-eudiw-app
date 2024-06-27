@@ -17,7 +17,7 @@ export const OnboardingWallet = () => {
   const navigation = useIONavigation();
 
   const skipCarousel = useCallback(() => {
-    navigation.replace(ROUTES.ONBOARDING_WALLET_COMPLETE);
+    navigation.navigate(ROUTES.ONBOARDING_WALLET_COMPLETE);
   }, [navigation]);
 
   const carouselCards: ReadonlyArray<

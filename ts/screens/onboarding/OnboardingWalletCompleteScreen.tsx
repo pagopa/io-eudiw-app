@@ -3,12 +3,15 @@ import { useDispatch } from "react-redux";
 import {
   ButtonSolid,
   ButtonText,
-  IOStyles
+  H3,
+  IOStyles,
+  Pictogram,
+  VSpacer
 } from "@pagopa/io-app-design-system";
 import { SafeAreaView, StyleSheet, View } from "react-native";
-import { OperationResultScreenContent } from "../../components/screens/OperationResultScreenContent";
 import { onBoardingCarouselCompleted } from "../../store/actions/onboarding";
 import I18n from "../../i18n";
+import ItwTextInfo from "../../features/itwallet/components/ItwTextInfo";
 /**
  * A screen where the user can start using Wallet
  */
@@ -24,12 +27,21 @@ const OnboardingWalletCompleteScreen = () => {
 
   return (
     <SafeAreaView style={IOStyles.flex}>
-      <OperationResultScreenContent
-        pictogram="cie"
-        isHeaderVisible={false}
-        title={I18n.t("features.itWallet.onboarding.completeTitle")}
-        subtitle={I18n.t("features.itWallet.onboarding.completeDescription")}
-      />
+      <View
+        style={[IOStyles.alignCenter, IOStyles.flex, IOStyles.centerJustified]}
+      >
+        <View style={[IOStyles.alignCenter]}>
+          <Pictogram name="cie" size={120} />
+          <VSpacer size={24} />
+          <H3 style={styles.text}>
+            {I18n.t("features.itWallet.onboarding.completeTitle")}
+          </H3>
+          <VSpacer size={8} />
+          <ItwTextInfo
+            content={I18n.t("features.itWallet.onboarding.completeDescription")}
+          />
+        </View>
+      </View>
 
       <View style={styles.footer}>
         <ButtonSolid
@@ -50,5 +62,6 @@ const OnboardingWalletCompleteScreen = () => {
 export default OnboardingWalletCompleteScreen;
 
 const styles = StyleSheet.create({
-  footer: { ...IOStyles.horizontalContentPadding, rowGap: 16 }
+  footer: { ...IOStyles.horizontalContentPadding, rowGap: 16 },
+  text: { textAlign: "center" }
 });
