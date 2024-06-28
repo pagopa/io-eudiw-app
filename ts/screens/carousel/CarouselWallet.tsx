@@ -6,7 +6,7 @@ import { OnboardingWallet } from "../../components/screens/OnboardingWallet/Onbo
 /**
  * A screen that displays info about the wallet app
  */
-const OnboardingWalletScreen = () => {
+const CarouselWalletScreen = () => {
   return (
     <SafeAreaView
       style={[IOStyles.flex, { backgroundColor: IOColors["blueIO-600"] }]}
@@ -16,4 +16,4 @@ const OnboardingWalletScreen = () => {
   );
 };
 
-export default OnboardingWalletScreen;
+export default CarouselWalletScreen;

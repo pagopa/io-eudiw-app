@@ -11,7 +11,8 @@ import {
 import { Action } from "../actions/types";
 import {
   firstOnboardingCompleted,
-  sessionExpired
+  sessionExpired,
+  resetFirstOnboarding
 } from "../actions/authentication";
 import { GlobalState } from "./types";
 
@@ -42,6 +43,8 @@ const reducer = (
       return INITIAL_STATE;
     case getType(firstOnboardingCompleted):
       return { ...state, firstOnboardingCompleted: true };
+    case getType(resetFirstOnboarding):
+      return { ...state, firstOnboardingCompleted: false };
     default:
       return state;
   }

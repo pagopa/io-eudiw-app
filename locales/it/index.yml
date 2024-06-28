@@ -724,5 +724,7 @@ profile:
   main:
     title: Profilo
     developerModeOn: Modalità sviluppatore attivata
+    closeAppWarning: Chiudi l'app per riniziare
     debugMode: Modalità debug
+    reset: Resetta al primo avvio
     appVersion: Versione

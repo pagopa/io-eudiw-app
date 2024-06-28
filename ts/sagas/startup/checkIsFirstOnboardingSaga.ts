@@ -1,4 +1,4 @@
-import { CommonActions } from "@react-navigation/native";
+import { StackActions } from "@react-navigation/native";
 import { call, put, select, take } from "typed-redux-saga/macro";
 import { ReduxSagaEffect } from "../../types/utils";
 import NavigationService from "../../navigation/NavigationService";
@@ -17,9 +17,7 @@ export function* checkIsFirstOnboardingSaga(): Generator<ReduxSagaEffect> {
     yield* call(
       NavigationService.dispatchNavigationAction,
       // We use navigate to go to the Onboarding Screen
-      CommonActions.navigate({
-        name: ROUTES.ONBOARDING
-      })
+      StackActions.replace(ROUTES.ONBOARDING)
     );
 
     const resultAction = yield* take(onBoardingCarouselCompleted);

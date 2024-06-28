@@ -15,7 +15,7 @@ import ItwTextInfo from "../../features/itwallet/components/ItwTextInfo";
 /**
  * A screen where the user can start using Wallet
  */
-const OnboardingWalletCompleteScreen = () => {
+const CarouselWalletCompleteScreen = () => {
   const dispatch = useDispatch();
 
   const onContinue = React.useCallback(
@@ -59,7 +59,7 @@ const OnboardingWalletCompleteScreen = () => {
   );
 };
 
-export default OnboardingWalletCompleteScreen;
+export default CarouselWalletCompleteScreen;
 
 const styles = StyleSheet.create({
   footer: { ...IOStyles.horizontalContentPadding, rowGap: 16 },
