@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   versionText: {
     fontSize: 12,
     color: IOColors["grey-850"],
-    ...makeFontStyleObject("SemiBold")
+    ...makeFontStyleObject("Semibold")
   },
   screenDebugText: {
     fontSize: 12,
