@@ -124,18 +124,14 @@ const FingerprintScreen = () => {
         }
       }
     }),
-    [dispatch /* isFirstOnBoarding*/]
+    [dispatch]
   );
 
   return (
     <IOScrollView actions={actions}>
       <H2>{I18n.t("onboarding.biometric.available.title")}</H2>
       <VSpacer size={16} />
-      <Body>
-        {
-          "You can use your face or fingerprint to enter instead of the unlock code. This will let you access the app and authorise operation and payments more easily and safely." /* I18n.t("onboarding.biometric.available.body.text") */
-        }
-      </Body>
+      <Body>{I18n.t("onboarding.biometric.available.body.text")}</Body>
       <VSpacer size={24} />
       <Banner
         content={I18n.t("onboarding.biometric.available.settings")}
