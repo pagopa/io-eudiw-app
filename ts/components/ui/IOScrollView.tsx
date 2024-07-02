@@ -40,7 +40,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { WithTestID } from "../types/WithTestID";
+import { WithTestID } from "../../types/WithTestID";
 
 export type IOScrollViewActions =
   | {

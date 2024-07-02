@@ -4,27 +4,15 @@ import React, { ComponentProps, useMemo } from "react";
 import { ContextualHelpPropsMarkdown } from "../../../components/screens/BaseScreenComponent";
 import I18n from "../../../i18n";
 import { preferenceFingerprintIsEnabledSaveSuccess } from "../../../store/actions/persistedPreferences";
-import { useIODispatch /*, useIOSelector */ } from "../../../store/hooks";
-// import { isProfileFirstOnBoardingSelector } from "../../../store/reducers/profile";
+import { useIODispatch } from "../../../store/hooks";
 import {
   BiometriActivationUserType,
   mayUserActivateBiometric
 } from "../../../utils/biometrics";
-import { useOnFirstRender } from "../../../utils/hooks/useOnFirstRender";
 import { useHeaderSecondLevel } from "../../../hooks/useHeaderSecondLevel";
 import { FAQsCategoriesType } from "../../../utils/faq";
-import { IOScrollView } from "../../../ui/IOScrollView";
+import { IOScrollView } from "../../../components/ui/IOScrollView";
 import { useOnboardingAbortAlert } from "../../../utils/hooks/useOnboardingAbortAlert";
-/*
- * Analytics not required at this point
- * import { getFlowType } from "../../../utils/analytics";
-
- * import {
- *   trackBiometricActivationAccepted,
- *   trackBiometricActivationDeclined,
- *   trackBiometricActivationEducationalScreen
- * } from "./analytics";
-*/
 
 type IOScrollViewActions = ComponentProps<typeof IOScrollView>["actions"];
 
@@ -43,19 +31,7 @@ const contextualHelpMarkdown: ContextualHelpPropsMarkdown = {
  */
 const FingerprintScreen = () => {
   const dispatch = useIODispatch();
-  // Seems to be used only for trigger analytics in mixpanel
-  // const isFirstOnBoarding = useIOSelector(isProfileFirstOnBoardingSelector);
   const { showAlert } = useOnboardingAbortAlert();
-
-  useOnFirstRender(() => {
-    /**
-     * Analytics not required at this point
-     *
-     * trackBiometricActivationEducationalScreen(
-     *    getFlowType(true, isFirstOnBoarding)
-     *  );
-     */
-  });
 
   useHeaderSecondLevel({
     goBack: showAlert,
@@ -74,13 +50,6 @@ const FingerprintScreen = () => {
         onPress: () => {
           mayUserActivateBiometric()
             .then(_ => {
-              /**
-               * Analytics not required at this point
-               *
-               * trackBiometricActivationAccepted(
-               *    getFlowType(true, isFirstOnBoarding)
-               *  );
-               */
               dispatch(
                 preferenceFingerprintIsEnabledSaveSuccess({
                   isFingerprintEnabled: true
@@ -89,13 +58,6 @@ const FingerprintScreen = () => {
             })
             .catch((err: BiometriActivationUserType) => {
               if (err === "PERMISSION_DENIED") {
-                /**
-                 * Analytics not required at this point
-                 *
-                 * trackBiometricActivationDeclined(
-                 *    getFlowType(true, isFirstOnBoarding)
-                 *  );
-                 */
                 dispatch(
                   preferenceFingerprintIsEnabledSaveSuccess({
                     isFingerprintEnabled: false
@@ -109,13 +71,6 @@ const FingerprintScreen = () => {
         label: I18n.t("global.buttons.notNow"),
         accessibilityLabel: I18n.t("global.buttons.notNow"),
         onPress: () => {
-          /**
-           * Analytics not required at this point
-           *
-           * trackBiometricActivationDeclined(
-           *    getFlowType(true, isFirstOnBoarding)
-           *  );
-           */
           dispatch(
             preferenceFingerprintIsEnabledSaveSuccess({
               isFingerprintEnabled: false

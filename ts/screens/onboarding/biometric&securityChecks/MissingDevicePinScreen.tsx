@@ -4,18 +4,11 @@ import { Platform } from "react-native";
 import { ContextualHelpPropsMarkdown } from "../../../components/screens/BaseScreenComponent";
 import I18n from "../../../i18n";
 import { preferenceFingerprintIsEnabledSaveSuccess } from "../../../store/actions/persistedPreferences";
-import { useIODispatch /*, useIOSelector */ } from "../../../store/hooks";
-// import { isProfileFirstOnBoardingSelector } from "../../../store/reducers/profile";
-import { useOnFirstRender } from "../../../utils/hooks/useOnFirstRender";
+import { useIODispatch } from "../../../store/hooks";
 import { useOnboardingAbortAlert } from "../../../utils/hooks/useOnboardingAbortAlert";
 import { useHeaderSecondLevel } from "../../../hooks/useHeaderSecondLevel";
 import { FAQsCategoriesType } from "../../../utils/faq";
 import ScreenWithListItems from "../../../components/screens/ScreenWithListItems";
-/**
- * Analytics not required at this point
- * import { getFlowType } from "../../../utils/analytics";
- * import { trackPinEducationalScreen } from "./analytics";
- */
 
 const FAQ_CATEGORIES: ReadonlyArray<FAQsCategoriesType> = [
   "onboarding_fingerprint"
@@ -32,16 +25,7 @@ const contextualHelpMarkdown: ContextualHelpPropsMarkdown = {
  */
 const MissingDevicePinScreen = () => {
   const dispatch = useIODispatch();
-  // Seems to be used only for trigger analytics in mixpanel
-  // const isFirstOnBoarding = useIOSelector(isProfileFirstOnBoardingSelector);
   const { showAlert } = useOnboardingAbortAlert();
-
-  useOnFirstRender(() => {
-    /**
-     * Analytics not required at this point
-     * trackPinEducationalScreen(getFlowType(true, isFirstOnBoarding));
-     */
-  });
 
   useHeaderSecondLevel({
     title: "",

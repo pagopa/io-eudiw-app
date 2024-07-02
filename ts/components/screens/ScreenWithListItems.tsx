@@ -14,7 +14,7 @@ import {
   BodyProps,
   ComposedBodyFromArray
 } from "../core/typography/ComposedBodyFromArray";
-import { IOScrollView } from "../../ui/IOScrollView";
+import { IOScrollView } from "../ui/IOScrollView";
 
 type IOScrollViewActions = ComponentProps<typeof IOScrollView>["actions"];
 
