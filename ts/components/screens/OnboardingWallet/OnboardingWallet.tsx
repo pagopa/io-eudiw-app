@@ -7,10 +7,10 @@ import {
   IOColors
 } from "@pagopa/io-app-design-system";
 import I18n from "../../../i18n";
-import { Carousel } from "../../../screens/authentication/carousel/Carousel";
 import { useIONavigation } from "../../../navigation/params/AppParamsList";
 import ROUTES from "../../../navigation/routes";
 import { LandingCardComponent } from "../../LandingCardComponent";
+import { Carousel } from "../../../screens/carousel/Carousel";
 
 const MAIN_COLOR = "white";
 export const OnboardingWallet = () => {

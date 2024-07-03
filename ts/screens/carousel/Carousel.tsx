@@ -8,8 +8,8 @@ import {
   GestureResponderEvent,
   useWindowDimensions
 } from "react-native";
-import { useInteractiveElementDefaultColorName } from "../../../utils/hooks/theme";
-import { LandingCardComponent } from "../../../components/LandingCardComponent";
+import { LandingCardComponent } from "../../components/LandingCardComponent";
+import { useInteractiveElementDefaultColorName } from "../../utils/hooks/theme";
 
 const styles = StyleSheet.create({
   normalDot: {
