@@ -1,17 +1,13 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  ContentWrapper,
-  HeaderFirstLevel,
-  IOColors,
-  makeFontStyleObject
-} from "@pagopa/io-app-design-system";
+import { IOColors, makeFontStyleObject } from "@pagopa/io-app-design-system";
 import LoadingSpinnerOverlay from "../components/LoadingSpinnerOverlay";
 import { TabIconComponent } from "../components/ui/TabIconComponent";
 import I18n from "../i18n";
 import { useIOSelector } from "../store/hooks";
+import ProfileMainScreen from "../screens/profile/ProfileMainScreen";
 import { StartupStatusEnum, isStartupLoaded } from "../store/reducers/startup";
 import variables from "../theme/variables";
 import ItwHomeScreen from "../features/itwallet/screens/ItwHomeScreen";
@@ -105,7 +101,7 @@ export const MainTabNavigator = () => {
         />
         <Tab.Screen
           name={ROUTES.PROFILE_MAIN}
-          component={MockProfile}
+          component={ProfileMainScreen}
           options={{
             title: I18n.t("global.navigator.profile"),
             tabBarIcon: ({ color, focused }) => (
@@ -122,12 +118,3 @@ export const MainTabNavigator = () => {
     </LoadingSpinnerOverlay>
   );
 };
-
-const MockProfile = () => (
-  <>
-    <HeaderFirstLevel title="Mock Profile" type="base" />
-    <ContentWrapper>
-      <Text>Profile</Text>
-    </ContentWrapper>
-  </>
-);

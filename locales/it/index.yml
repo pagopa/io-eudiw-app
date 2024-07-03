@@ -729,3 +729,14 @@ barcodeScan:
     title: Hai inquadrato più codici
     body: Inquadra un solo codice alla volta
     action: Riprova
+clipboard:
+  copyIntoClipboard: copia negli appunti
+  copyFeedback: Copiato negli appunti
+  copyText: copia
+  copyFeedbackButton: copiato
+profile:
+  main:
+    title: Profilo
+    developerModeOn: Modalità sviluppatore attivata
+    debugMode: Modalità debug
+    appVersion: Versione
