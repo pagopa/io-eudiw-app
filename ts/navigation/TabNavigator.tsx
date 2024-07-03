@@ -15,6 +15,7 @@ import { useIOSelector } from "../store/hooks";
 import { StartupStatusEnum, isStartupLoaded } from "../store/reducers/startup";
 import variables from "../theme/variables";
 import ItwHomeScreen from "../features/itwallet/screens/ItwHomeScreen";
+import { BarcodeScanScreen } from "../features/bardcode/screens/BarcodeScanScreen";
 import { MainTabParamsList } from "./params/MainTabParamsList";
 import ROUTES from "./routes";
 
@@ -89,7 +90,7 @@ export const MainTabNavigator = () => {
         />
         <Tab.Screen
           name={ROUTES.QR_CODE_SCAN}
-          component={MockQrScan}
+          component={BarcodeScanScreen}
           options={{
             title: I18n.t("global.navigator.scan"),
             tabBarIcon: ({ color, focused }) => (
@@ -127,15 +128,6 @@ const MockProfile = () => (
     <HeaderFirstLevel title="Mock Profile" type="base" />
     <ContentWrapper>
       <Text>Profile</Text>
-    </ContentWrapper>
-  </>
-);
-
-const MockQrScan = () => (
-  <>
-    <HeaderFirstLevel title="Mock Scan" type="base" />
-    <ContentWrapper>
-      <Text>Scan</Text>
     </ContentWrapper>
   </>
 );
