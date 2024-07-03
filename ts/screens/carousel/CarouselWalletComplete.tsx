@@ -12,18 +12,23 @@ import { SafeAreaView, StyleSheet, View } from "react-native";
 import { onBoardingCarouselCompleted } from "../../store/actions/onboarding";
 import I18n from "../../i18n";
 import ItwTextInfo from "../../features/itwallet/components/ItwTextInfo";
+import { useIONavigation } from "../../navigation/params/AppParamsList";
+import ROUTES from "../../navigation/routes";
 /**
  * A screen where the user can start using Wallet
  */
 const CarouselWalletCompleteScreen = () => {
   const dispatch = useDispatch();
+  const navigation = useIONavigation();
 
   const onContinue = React.useCallback(
     () => dispatch(onBoardingCarouselCompleted()),
     [dispatch]
   );
 
-  const onCloseApp = React.useCallback(() => {}, []);
+  const onCloseApp = React.useCallback(() => {
+    navigation.navigate(ROUTES.ONBOARDING_WALLET);
+  }, [navigation]);
 
   return (
     <SafeAreaView style={IOStyles.flex}>
@@ -50,7 +55,7 @@ const CarouselWalletCompleteScreen = () => {
           onPress={onContinue}
         />
         <View style={{ alignItems: "center" }}>
-          <ButtonText color="blueIO-600">
+          <ButtonText color="blueIO-600" onPress={onCloseApp}>
             {I18n.t("features.itWallet.onboarding.closeApp")}
           </ButtonText>
         </View>
