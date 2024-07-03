@@ -1,8 +1,9 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { default as Animated, FadeIn } from "react-native-reanimated";
-import { Path, Svg } from "react-native-svg";
 import { useSineWaveAnimation } from "../../../components/ui/utils/hooks/useSineWaveAnimation";
+import CameraMarkerCorner from "../../../../img/camera-marker-corner.svg";
+import CameraMarkerLine from "../../../../img/camera-marker-line.svg";
 
 const ANIMATION_DURATION = 1500;
 
@@ -29,42 +30,15 @@ const AnimatedCameraMarker = ({
     axis: "y"
   });
 
-  const drawMarkerCorner = (rotation: number, currentSize: number) => {
-    return (
-      <Svg
-        width={currentSize}
-        height={currentSize}
-        viewBox="0 0 44 44"
-        fill="none"
-        transform={[{ rotate: `${rotation}deg` }]}
-      >
-        <Path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M28 4C14.745 4 4 14.745 4 28v14a2 2 0 11-4 0V28C0 12.536 12.536 0 28 0h14a2 2 0 110 4H28z"
-          fill="#fff"
-        />
-      </Svg>
-    );
-  };
-
-  const drawCameraCorner = (currentSize: number) => {
-    return (
-      <Svg
-        width={currentSize - 10}
-        height={currentSize}
-        viewBox="0 0 44 44"
-        fill="none"
-      >
-        <Path
-          stroke="#fff"
-          strokeWidth={4}
-          strokeLinecap="round"
-          d="M2 2L221 2.00002"
-        />
-      </Svg>
-    );
-  };
+  const drawMarkerCorner = (rotation: number, size: number) => (
+    <CameraMarkerCorner
+      width={size}
+      height={size}
+      style={{
+        transform: [{ rotate: `${rotation}deg` }]
+      }}
+    />
+  );
 
   return (
     <Animated.View style={styles.container} entering={FadeIn}>
@@ -80,7 +54,7 @@ const AnimatedCameraMarker = ({
           </View>
         </View>
         <Animated.View style={animatedLineStyle}>
-          {drawCameraCorner(size)}
+          <CameraMarkerLine width={size - 10} height={size} />
         </Animated.View>
       </View>
     </Animated.View>

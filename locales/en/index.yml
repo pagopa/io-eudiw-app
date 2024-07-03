@@ -699,3 +699,13 @@ cie:
   layCardMessageHeader: Touch your Electronic ID Card on the back of your phone for a few seconds.
   layCardMessageFooter: If you don't know exactly where is the NFC sensor, move the card to different points and wait a few seconds until you hear a sound.
   booking_url: https://www.cartaidentita.interno.gov.it/cittadini/sistema-di-prenotazione-della-cie/
+barcodeScan:
+  error: IO non riconosce questo codice
+  tabs:
+    scan: Inquadra
+    upload: Carica
+    input: Digita
+    a11y:
+      scan: Inquadra, 1 di 3
+      upload: Carica, 2 di 3
+      input: Digita, 3 di 3
