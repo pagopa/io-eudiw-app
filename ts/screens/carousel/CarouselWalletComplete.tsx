@@ -42,9 +42,14 @@ const CarouselWalletCompleteScreen = () => {
             {I18n.t("features.itWallet.onboarding.completeTitle")}
           </H3>
           <VSpacer size={8} />
-          <ItwTextInfo
-            content={I18n.t("features.itWallet.onboarding.completeDescription")}
-          />
+          <View style={[IOStyles.horizontalContentPadding]}>
+            <ItwTextInfo
+              textStyle={styles.text}
+              content={I18n.t(
+                "features.itWallet.onboarding.completeDescription"
+              )}
+            />
+          </View>
         </View>
       </View>
 
