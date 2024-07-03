@@ -102,5 +102,7 @@
 		<string>RobotoMono-RegularItalic.ttf</string>
 		<string>DMMono-Medium.ttf</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+    <string>You’ll be able to read QR codes and pay pagoPA notices.</string>
 </dict>
 </plist>
