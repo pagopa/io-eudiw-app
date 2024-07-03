@@ -11,7 +11,8 @@ import ProfileMainScreen from "../screens/profile/ProfileMainScreen";
 import { StartupStatusEnum, isStartupLoaded } from "../store/reducers/startup";
 import variables from "../theme/variables";
 import ItwHomeScreen from "../features/itwallet/screens/ItwHomeScreen";
-import { BarcodeScanScreen } from "../features/bardcode/screens/BarcodeScanScreen";
+
+import { BarcodeScanScreen } from "../features/barcode/screens/BarcodeScanScreen";
 import { MainTabParamsList } from "./params/MainTabParamsList";
 import ROUTES from "./routes";
 

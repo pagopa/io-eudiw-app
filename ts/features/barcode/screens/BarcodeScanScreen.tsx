@@ -12,7 +12,6 @@ import {
   IO_BARCODE_ALL_TYPES
 } from "../types/IOBarcode";
 import { emptyContextualHelp } from "../../../utils/emptyContextualHelp";
-import { itWalletEnabled } from "../../../config";
 import NavigationService from "../../../navigation/NavigationService";
 import { ITW_ROUTES } from "../../itwallet/navigation/ItwRoutes";
 import I18n from "../../../i18n";
@@ -23,8 +22,8 @@ const BarcodeScanScreen = () => {
     format => format
   );
 
-  const barcodeTypes: Array<IOBarcodeType> = IO_BARCODE_ALL_TYPES.filter(type =>
-    type === "ITWALLET" ? itWalletEnabled : true
+  const barcodeTypes: Array<IOBarcodeType> = IO_BARCODE_ALL_TYPES.filter(
+    type => type === "ITWALLET"
   );
 
   /**

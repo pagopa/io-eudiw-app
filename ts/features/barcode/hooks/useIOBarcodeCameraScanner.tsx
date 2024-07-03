@@ -27,7 +27,7 @@ import {
 } from "../types/IOBarcode";
 import { decodeIOBarcode } from "../types/decoders";
 import { BarcodeFailure } from "../types/failure";
-import { useWideAngleCameraDevice } from "./useWindeAngleCameraDevice";
+import { useWideAngleCameraDevice } from "./useWideAngleCameraDevice";
 
 type IOBarcodeFormatsType = {
   [K in IOBarcodeFormat]: BarcodeFormat;
