@@ -453,6 +453,21 @@ features:
         claimNotAvailable: "Attributo non riconosciuto"
         claimLabelNotAvailable: "Etichetta attributo non presente"
         organizationName: "Nome ente non disponibile"
+    onboarding:
+      skip: Salta
+      complete: Continua
+      closeApp: Chiudi l'app
+      completeTitle: Inizia a usare il Wallet
+      completeDescription: Per proseguire, leggi l’[informativa Privacy](https://io.italia.it/privacy-policy/) e i [Termini e Condizioni d’uso](https://io.italia.it/privacy-policy/)
+      card1:
+        title: Questa è l’app del wallet!
+        content: Vediamo insieme cosa puoi fare
+      card2:
+        title: Aggiungi i tuoi documenti
+        content: Puoi salvare e conservare la versione digitale dei tuoi documenti nel wallet
+      card3:
+        title: Autenticati con il Wallet 
+        content:  Puoi verificare le tue attestazioni e usufruire di servizi, anche online, con la scansione del QR code
 authentication:
   landing:
     expiredCardTitle: La verifica della CIE non è andata a buon fine
@@ -729,5 +744,7 @@ profile:
   main:
     title: Profilo
     developerModeOn: Modalità sviluppatore attivata
+    closeAppWarning: Chiudi l'app per riniziare
     debugMode: Modalità debug
+    reset: Resetta al primo avvio
     appVersion: Versione

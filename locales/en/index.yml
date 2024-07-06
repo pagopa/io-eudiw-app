@@ -452,6 +452,21 @@ features:
         claimNotAvailable: "Claim not available"
         claimLabelNotAvailable: "Claim label not available"
         organizationName: "Issuer name not available"
+    onboarding:
+      skip: Skip
+      complete: Continue
+      closeApp: Close the app
+      completeTitle: Start using the Wallet
+      completeDescription:  To proceed, read the [Privacy Policy](https://io.italia.it/privacy-policy/) and the[Terms and Conditions of use](https://io.italia.it/privacy-policy/)
+      card1:
+        title: This is the wallet app!
+        content: Let's see together what you can do
+      card2:
+        title: Add your documents
+        content: You can save and store digital versions of your documents in the wallet
+      card3:
+        title: Authenticate with the Wallet
+        content: You can verify your credentials and access services, including online, by scanning the QR code
 authentication:
   landing:
     expiredCardTitle: The CIE verification failed
@@ -727,5 +742,7 @@ profile:
   main:
     title: Profile
     developerModeOn: Developer mode enabled
+    closeAppWarning: Close the app to restart
     debugMode: Debug mode
+    reset: Reset to the first start
     appVersion: Version
