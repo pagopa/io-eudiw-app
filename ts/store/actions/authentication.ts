@@ -10,6 +10,14 @@ export type CheckSessionResult = {
 
 export const sessionExpired = createStandardAction("SESSION_EXPIRED")();
 
+export const firstOnboardingCompleted = createStandardAction(
+  "FIRST_ONBOARDING_COMPLETED"
+)();
+
+export const resetFirstOnboarding = createStandardAction(
+  "RESET_FIRST_ONBOARDING"
+)();
+
 export const sessionInvalid = createStandardAction("SESSION_INVALID")();
 
 export const checkCurrentSession = createAsyncAction(
