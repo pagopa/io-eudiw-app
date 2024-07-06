@@ -363,7 +363,7 @@ class Pinpad extends React.PureComponent<Props, State> {
             <VSpacer size={16} />
             <LabelLink
               onPress={() => this.enterDefaultPin()}
-              weight="SemiBold"
+              weight="Semibold"
               color="white"
             >
               {"Enter default pin (DevEnv Only)"}

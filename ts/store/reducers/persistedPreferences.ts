@@ -5,7 +5,10 @@ import * as O from "fp-ts/lib/Option";
 import { createSelector } from "reselect";
 import { isActionOf } from "typesafe-actions";
 import { Locales } from "../../../locales/locales";
-import { preferredLanguageSaveSuccess } from "../actions/persistedPreferences";
+import {
+  preferenceFingerprintIsEnabledSaveSuccess,
+  preferredLanguageSaveSuccess
+} from "../actions/persistedPreferences";
 import { Action } from "../actions/types";
 import { GlobalState } from "./types";
 
@@ -18,13 +21,16 @@ export const initialPreferencesState: PersistedPreferencesState = {
   preferredLanguage: "it" // Start with it for now
 };
 
-export const isFingerprintEnabledSelector = (state: GlobalState) =>
-  state.persistedPreferences.isFingerprintEnabled;
-
 export default function preferencesReducer(
   state: PersistedPreferencesState = initialPreferencesState,
   action: Action
 ): PersistedPreferencesState {
+  if (isActionOf(preferenceFingerprintIsEnabledSaveSuccess, action)) {
+    return {
+      ...state,
+      isFingerprintEnabled: action.payload.isFingerprintEnabled
+    };
+  }
   if (isActionOf(preferredLanguageSaveSuccess, action)) {
     return {
       ...state,
@@ -38,6 +44,9 @@ export default function preferencesReducer(
 // Selectors
 export const persistedPreferencesSelector = (state: GlobalState) =>
   state.persistedPreferences;
+
+export const isFingerprintEnabledSelector = (state: GlobalState) =>
+  state.persistedPreferences.isFingerprintEnabled;
 
 // returns the preferred language as an Option from the persisted store
 export const preferredLanguageSelector = createSelector<
