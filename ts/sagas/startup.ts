@@ -7,11 +7,13 @@ import { StartupStatusEnum } from "../store/reducers/startup";
 import { watchItwSaga } from "../features/itwallet/saga";
 import { checkIsFirstOnboardingSaga } from "./startup/checkIsFirstOnboardingSaga";
 import { checkConfiguredPinSaga } from "./startup/checkConfiguredPinSaga";
+import { checkAcknowledgedFingerprintSaga } from "./onboarding/biometric/checkAcknowledgedFingerprintSaga";
 
 export function* initializeApplicationSaga() {
   yield* put(startupLoadSuccess(StartupStatusEnum.ONBOARDING));
   yield* call(checkIsFirstOnboardingSaga);
   yield* call(checkConfiguredPinSaga);
+  yield* call(checkAcknowledgedFingerprintSaga);
   yield* put(startupLoadSuccess(StartupStatusEnum.AUTHENTICATED));
 
   yield* fork(watchItwSaga);
