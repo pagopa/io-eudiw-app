@@ -453,6 +453,21 @@ features:
         claimNotAvailable: "Attributo non riconosciuto"
         claimLabelNotAvailable: "Etichetta attributo non presente"
         organizationName: "Nome ente non disponibile"
+    onboarding:
+      skip: Salta
+      complete: Continua
+      closeApp: Chiudi l'app
+      completeTitle: Inizia a usare il Wallet
+      completeDescription: Per proseguire, leggi l’[informativa Privacy](https://io.italia.it/privacy-policy/) e i [Termini e Condizioni d’uso](https://io.italia.it/privacy-policy/)
+      card1:
+        title: Questa è l’app del wallet!
+        content: Vediamo insieme cosa puoi fare
+      card2:
+        title: Aggiungi i tuoi documenti
+        content: Puoi salvare e conservare la versione digitale dei tuoi documenti nel wallet
+      card3:
+        title: Autenticati con il Wallet 
+        content:  Puoi verificare le tue attestazioni e usufruire di servizi, anche online, con la scansione del QR code
 authentication:
   landing:
     expiredCardTitle: La verifica della CIE non è andata a buon fine
@@ -597,19 +612,39 @@ onboarding:
       title: Attiva il riconoscimento biometrico
       settings: Puoi sempre modificare la tua scelta in Profilo > Sicurezza
       body:
+        text: Potrai usare il tuo volto o impronta digitale al posto del codice di sblocco. Ti permetterà di accedere all’app e autorizzare operazioni e pagamenti in modo più rapido e sicuro.
         infoStart: Potrai usare il riconoscimento biometrico al posto del codice di sblocco. Ti permetterà di accedere all’app e autorizzare operazioni e pagamenti, con il tuo
         biometricType: volto o impronta digitale,
         infoEnd: in modo più rapido e sicuro.
         enrolledText: Le informazioni biometriche vengono salvate nella memoria del tuo telefono, non verranno in nessun modo comunicate ai sistemi di IO o salvate da altre parti.
         notEnrolled:
           text: Per usarlo, vai alle impostazioni del tuo dispositivo e configuralo. Poi attivalo su IO in Profilo > Sicurezza.
+          label: Come fare
+          step1: 
+            label: Step 1
+            value: Vai alle impostazioni del tuo dispositivo
+          step2: 
+            label: Step 2
+            value: Configura il volto o l’impronta
+          step3: 
+            label: Step 3
+            value: Attivalo su IO in Profilo > Sicurezza
     unavailable:
       title: Proteggi il tuo dispositivo
+      subtitle: IO ti invia comunicazioni che ti riguardano personalmente. Assicurati che solo tu possa accedere all’app impostando un codice o un segno per sbloccare il dispositivo.
+      firstInfoStart: Io ti invia le comunicazioni che ti riguardano
+      firstInfoEnd: personalmente.
+      secondInfoStart: Proteggi il tuo dispositivo da accessi indesiderati e assicurati che solo tu possa accedere all'app. Per farlo, vai alle impostazioni del tuo dispositivo, imposta un
+      secondInfoEnd: codice di sblocco o configura il riconoscimento biometrico.
       body:
-        firstInfoStart: Io ti invia le comunicazioni che ti riguardano
-        firstInfoEnd: personalmente.
-        secondInfoStart: Proteggi il tuo dispositivo da accessi indesiderati e assicurati che solo tu possa accedere all'app. Per farlo, vai alle impostazioni del tuo dispositivo, imposta un
-        secondInfoEnd: codice di sblocco o configura il riconoscimento biometrico.
+        label: Come fare
+        step1: 
+          label: Step 1
+          value: Vai alle impostazioni del tuo dispositivo
+        step2: 
+          label: Step 2
+          value: Imposta un codice o un segno per sbloccare il dispositivo
+
   shareData:
     title: Configura IO
   thankYouPage:
@@ -738,5 +773,7 @@ profile:
   main:
     title: Profilo
     developerModeOn: Modalità sviluppatore attivata
+    closeAppWarning: Chiudi l'app per riniziare
     debugMode: Modalità debug
+    reset: Resetta al primo avvio
     appVersion: Versione

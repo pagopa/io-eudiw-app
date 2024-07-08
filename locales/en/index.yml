@@ -452,6 +452,21 @@ features:
         claimNotAvailable: "Claim not available"
         claimLabelNotAvailable: "Claim label not available"
         organizationName: "Issuer name not available"
+    onboarding:
+      skip: Skip
+      complete: Continue
+      closeApp: Close the app
+      completeTitle: Start using the Wallet
+      completeDescription:  To proceed, read the [Privacy Policy](https://io.italia.it/privacy-policy/) and the[Terms and Conditions of use](https://io.italia.it/privacy-policy/)
+      card1:
+        title: This is the wallet app!
+        content: Let's see together what you can do
+      card2:
+        title: Add your documents
+        content: You can save and store digital versions of your documents in the wallet
+      card3:
+        title: Authenticate with the Wallet
+        content: You can verify your credentials and access services, including online, by scanning the QR code
 authentication:
   landing:
     expiredCardTitle: The CIE verification failed
@@ -596,19 +611,38 @@ onboarding:
       title: Enable biometric recognition
       settings: You can always change your choice in Profile > Security
       body:
-        infoStart: You can use biometric recognition in place of the unlock code. This will let you access the app and authorizeoperations and payments with your
+        text: You can use your face or fingerprint to enter instead of the unlock code. This will let you access the app and authorise operation and payments more easily and safely.
+        infoStart: You can use biometric recognition in place of the unlock code. This will let you access the app and authorize operations and payments with your
         biometricType: face or fingerprint
         infoEnd: more quickly and securely.
         enrolledText: The biometric information is stored in your phone's memory. it will not be disclosed in any way to IO systems or stored anywhere else.
         notEnrolled:
-          text: To use it, go to your device settings and configure it. Then activate it on IO under Profile > Security.
+          text: You need to configure this in your device settings.
+          label: How to
+          step1: 
+            label: Step 1
+            value: Go to your device settings
+          step2: 
+            label: Step 2
+            value: Set up face or fingerprint
+          step3: 
+            label: Step 3
+            value: Enable it in IO under Profile > Security
     unavailable:
       title: Protect your device
+      firstInfoStart: Io ti invia le comunicazioni che ti riguardano
+      firstInfoEnd: personalmente.
+      secondInfoStart: Proteggi il tuo dispositivo da accessi indesiderati e assicurati che solo tu possa accedere all'app. Per farlo, vai alle impostazioni del tuo dispositivo, imposta un
+      secondInfoEnd: codice di sblocco o configura il riconoscimento biometrico.
+      subtitle: IO sends you messages that are relevant to you. Make sure that only you can access the app by setting a code or sign to unlock the device.
       body:
-        firstInfoStart: IO sends you communications that concern you
-        firstInfoEnd: personally.
-        secondInfoStart: Protect your device from unwanted access and make sure that only you can access the app. To do this, go to your device settings, set an
-        secondInfoEnd: unlock code or configure biometric recognition.
+        label: How to
+        step1: 
+          label: Step 1
+          value: Go to your device settings
+        step2: 
+          label: Step 2
+          value: Set a code or sign to unlock the device
   shareData:
     title: "Configure IO"
   thankYouPage:
@@ -737,6 +771,7 @@ profile:
   main:
     title: Profile
     developerModeOn: Developer mode enabled
+    closeAppWarning: Close the app to restart
     debugMode: Debug mode
-    appVersion: Version
+    reset: Reset to the first start
     appVersion: Version
