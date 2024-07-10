@@ -37,3 +37,6 @@ export const walletCredentialProviderUrl: string = pipe(
   NonEmptyString.decode,
   E.getOrElse(() => "https://api.eudi-wallet-it-issuer.it/rp")
 );
+
+// IT Wallet Feature Flag
+export const itWalletEnabled = Config.IT_WALLET_ENABLED === "YES";
