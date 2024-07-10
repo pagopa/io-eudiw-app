@@ -38,7 +38,7 @@ const rootPersistConfig: PersistConfig = {
   version: CURRENT_REDUX_STORE_VERSION,
   blacklist: ["features"],
   // Sections of the store that must be persisted and rehydrated with this storage.
-  whitelist: ["debug"],
+  whitelist: ["debug", "onboarding"],
   // Transform functions used to manipulate state on store/rehydrate
   // TODO: add optionTransform https://www.pivotaltracker.com/story/show/170998374
   transforms: [DateISO8601Transform, PotTransform]

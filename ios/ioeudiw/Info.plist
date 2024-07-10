@@ -35,6 +35,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+  <key>NSFaceIDUsageDescription</key>
+  <string>Potrai accedere più facilmente in app senza digitare il codice di sblocco.</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>ioeudiw</string>
@@ -102,5 +104,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+  <string>You’ll be able to read QR codes and pay pagoPA notices.</string>
 </dict>
 </plist>

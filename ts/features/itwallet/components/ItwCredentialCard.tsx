@@ -90,7 +90,7 @@ const OverlayLines = ({
         </Label>
 
         <Body
-          weight="SemiBold"
+          weight="Semibold"
           color={textColor}
           style={[styles.text, styles.fiscalCodeText]}
           accessibilityLabel={secondLine}
