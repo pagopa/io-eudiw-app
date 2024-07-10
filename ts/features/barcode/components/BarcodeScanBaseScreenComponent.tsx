@@ -169,7 +169,7 @@ const BarcodeScanBaseScreenComponent = ({
       : undefined
   });
   return (
-    <View style={[styles.screen, { paddingBottom: insets.bottom }]}>
+    <View style={[styles.screen]}>
       <View style={styles.cameraContainer}>{cameraView}</View>
       <View style={styles.navigationContainer}>
         <TabNavigation tabAlignment="center" selectedIndex={0} color="dark">
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     overflow: "hidden"
   },
   navigationContainer: {
-    paddingVertical: 16
+    paddingVertical: 32
   }
 });
 
