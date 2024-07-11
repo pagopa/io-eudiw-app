@@ -1,4 +1,4 @@
-git_url("git@github.com:pagopa/IT-Wallet-certs.git")
+git_url("git@github.com:pagopa/io-eudiw-app-certs.git")
 
 storage_mode("git")
 
