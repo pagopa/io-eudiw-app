@@ -58,6 +58,10 @@
 	<string>Enable Face ID for a faster identification.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+  <string>Our app uses bluetooth to find, connect and transfer data between different devices</string>
+  <key>NSBluetoothPeripheralUsageDescription</key>
+  <string>IO need access to Bluetooth to allow you to search and exchange data with the verification app</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>TitilliumSansPro-Black.otf</string>
