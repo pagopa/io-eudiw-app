@@ -8,6 +8,7 @@
     "cie-ios:dev": "mv node_modules/@pagopa/react-native-cie/ios node_modules/@pagopa/react-native-cie/.ios && mv node_modules/@pagopa/react-native-cie/react-native-cie.podspec node_modules/@pagopa/react-native-cie/.react-native-cie.podspec && cd ios && rm -rf Pods && pod install",
     "cie-ios:ci": "mv node_modules/@pagopa/react-native-cie/.ios node_modules/@pagopa/react-native-cie/ios && mv node_modules/@pagopa/react-native-cie/.react-native-cie.podspec node_modules/@pagopa/react-native-cie/react-native-cie.podspec",
     "ios": "react-native run-ios",
+    "push-hint": "echo \"To publish changes without checks run:\ngit push --no-verify --follow-tags origin $(git rev-parse --abbrev-ref HEAD)\"",
     "pre-cycle": "scripts/changelog/check_git_status.sh && node scripts/changelog/prepare_to_new_cycle.js",
     "release-rc": "scripts/changelog/check_git_status.sh && standard-version --message \"release(IT Wallet): {{currentTag}}\" -t \"\" --prerelease rc --no-verify && yarn push-hint",
     "start-fix-cycle": "yarn pre-cycle && standard-version --message \"release(IT Wallet): {{currentTag}}\" -t \"\" --prerelease rc --release-as patch --no-verify && yarn push-hint",
