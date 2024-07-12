@@ -24,6 +24,7 @@
     "prepare": "husky",
     "generate:api-definitions": "rimraf definitions/backend && mkdir -p definitions/backend && gen-api-models --api-spec $npm_package_io_public_api --out-dir ./definitions/backend && gen-api-models --api-spec $npm_package_io_backend_api --out-dir ./definitions/backend --no-strict --request-types --response-decoders --client",
     "generate:content-definitions": "rimraf definitions/content && mkdir -p definitions/content && gen-api-models --api-spec $npm_package_io_content_specs --out-dir ./definitions/content",
+    "generate:mock-google-services-json": "cp mock-google-services.json ./android/app/google-services.json",
     "generate:locales": "ts-node --skip-project -O '{\"lib\":[\"es2015\"]}' scripts/make-locales.ts",
     "generate": "npm-run-all generate:*",
     "postinstall": "patch-package",
