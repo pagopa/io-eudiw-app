@@ -100,7 +100,7 @@ export const biometricAuthenticationRequest = (
 
 type biometricState = "Available" | "NotEnrolled" | "NotSupported";
 
-export const getBometricState = (): Promise<biometricState> =>
+export const getBiometricState = (): Promise<biometricState> =>
   new Promise(resolve => {
     FingerprintScanner.isSensorAvailable()
       .then(_ => resolve("Available"))

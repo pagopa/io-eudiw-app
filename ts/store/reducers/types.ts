@@ -8,12 +8,12 @@ import { PersistedPreferencesState } from "./persistedPreferences";
 import { ProfileState } from "./profile";
 import { PersistedAuthenticationState } from "./authentication";
 import { PersistedIdentificationState } from "./identification";
-import { OnboardingState } from "./onboarding";
+import { PersistedOnboardingState } from "./onboarding";
 
 export type GlobalState = Readonly<{
   appState: AppState;
   authentication: PersistedAuthenticationState;
-  onboarding: OnboardingState;
+  onboarding: PersistedOnboardingState;
   profile: ProfileState;
   navigation: NavigationState;
   identification: PersistedIdentificationState;
