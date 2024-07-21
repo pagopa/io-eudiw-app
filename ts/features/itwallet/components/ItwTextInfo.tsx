@@ -9,11 +9,13 @@ import {
 import { pipe } from "fp-ts/lib/function";
 import * as R from "fp-ts/lib/ReadonlyArray";
 import * as B from "fp-ts/lib/boolean";
+import { TextStyle } from "react-native";
 import { openWebUrl } from "../../../utils/url";
 import I18n from "../../../i18n";
 
 interface MarkdownParserProps {
   content: string;
+  textStyle?: TextStyle;
 }
 
 const RenderRegularText = (text: string, index: number) => (
@@ -56,7 +58,7 @@ const RenderLink = (text: string, url: string, index: number) => {
  * headers create a new rgex group (eg. |^##\s(.+)).
  * @param markdownText - contains the text to be parsed.
  */
-const ItwTextInfo: React.FC<MarkdownParserProps> = ({ content }) => {
+const ItwTextInfo: React.FC<MarkdownParserProps> = ({ content, textStyle }) => {
   const renderElements = () => {
     // eslint-disable-next-line functional/no-let
     let elements: ReadonlyArray<React.ReactElement> = [];
@@ -164,7 +166,7 @@ const ItwTextInfo: React.FC<MarkdownParserProps> = ({ content }) => {
     return elements;
   };
 
-  return <Body>{renderElements()}</Body>;
+  return <Body style={textStyle}>{renderElements()}</Body>;
 };
 
 export default ItwTextInfo;

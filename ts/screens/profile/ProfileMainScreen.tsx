@@ -1,17 +1,21 @@
 import React, { useCallback, useRef, useState } from "react";
 import {
   Body,
+  ButtonText,
   ContentWrapper,
   HeaderFirstLevel,
   ListItemSwitch,
   useIOToast
 } from "@pagopa/io-app-design-system";
 import type { Millisecond } from "@pagopa/ts-commons/lib/units";
+import { useDispatch } from "react-redux";
 import AppVersion from "../../components/AppVersion";
 import { useIODispatch, useIOSelector } from "../../store/hooks";
 import { isDebugModeEnabledSelector } from "../../store/reducers/debug";
 import { setDebugModeEnabled } from "../../store/actions/debug";
 import I18n from "../../i18n";
+import { resetFirstOnboarding } from "../../store/actions/onboarding";
+import { deletePin } from "../../utils/keychain";
 
 const consecutiveTapRequired = 4;
 const RESET_COUNTER_TIMEOUT = 2000 as Millisecond;
@@ -21,6 +25,7 @@ const ProfileMainScreen = () => {
   const idResetTap = useRef<ReturnType<typeof setInterval>>();
 
   const dispatch = useIODispatch();
+  const reduxDispatch = useDispatch();
   const { show } = useIOToast();
   const isDebugModeEnabled = useIOSelector(isDebugModeEnabledSelector);
 
@@ -59,19 +64,29 @@ const ProfileMainScreen = () => {
     tapsOnAppVersion
   ]);
 
+  const resetAppStart = useCallback(() => {
+    reduxDispatch(resetFirstOnboarding());
+    deletePin();
+    show(I18n.t("profile.main.closeAppWarning"));
+  }, [reduxDispatch, show]);
   return (
     <>
       <HeaderFirstLevel title={I18n.t("profile.main.title")} type="base" />
       <ContentWrapper>
         <Body>Profile screen - TODO</Body>
         {isDebugModeEnabled ? (
-          <ListItemSwitch
-            label={I18n.t("profile.main.debugMode")}
-            value={isDebugModeEnabled}
-            onSwitchValueChange={enabled =>
-              dispatch(setDebugModeEnabled(enabled))
-            }
-          />
+          <>
+            <ListItemSwitch
+              label={I18n.t("profile.main.debugMode")}
+              value={isDebugModeEnabled}
+              onSwitchValueChange={enabled =>
+                dispatch(setDebugModeEnabled(enabled))
+              }
+            />
+            <ButtonText color="error-400" onPress={resetAppStart}>
+              {I18n.t("profile.main.reset")}
+            </ButtonText>
+          </>
         ) : null}
         <AppVersion onPress={onTapAppVersion} />
       </ContentWrapper>
