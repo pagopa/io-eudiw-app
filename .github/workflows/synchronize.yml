@@ -1,0 +1,30 @@
+name: Synchronize PR
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  rewrite-author:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+
+    - name: Set up Git
+      run: |
+        git config --global user.name "Sviluppo EUDIW"
+        git config --global user.email "mario.perrotta@pagopa.it"
+
+    - name: Rewrite commit history
+      run: |
+        git fetch origin ${{ github.event.pull_request.head.ref }}:refs/remotes/origin/${{ github.event.pull_request.head.ref }}
+        git checkout ${{ github.event.pull_request.head.ref }}
+        git filter-branch --env-filter '
+        export GIT_AUTHOR_NAME="Sviluppo EUDIW"
+        export GIT_AUTHOR_EMAIL="mario.perrotta@pagopa.it"
+        export GIT_COMMITTER_NAME="Sviluppo EUDIW"
+        export GIT_COMMITTER_EMAIL="mario.perrotta@pagopa.it"
+        ' -- --all
+        git push --force origin ${{ github.event.pull_request.head.ref }}
