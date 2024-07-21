@@ -130,7 +130,7 @@ PODS:
   - nanopb/decode (2.30910.0)
   - nanopb/encode (2.30910.0)
   - OpenSSL-Universal (1.1.1100)
-  - pagopa-io-react-native-cie-pid (0.1.3):
+  - pagopa-io-react-native-cie-pid (0.1.4):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - pagopa-io-react-native-crypto (0.3.0):
@@ -840,7 +840,7 @@ SPEC CHECKSUMS:
   MLKitVision: e858c5f125ecc288e4a31127928301eaba9ae0c1
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  pagopa-io-react-native-cie-pid: 60e0a7ff97f50ac7b83dca5bea67846d9b9c7e13
+  pagopa-io-react-native-cie-pid: 7759644529109f91418e3eeaf06820b2108e7336
   pagopa-io-react-native-crypto: 6aa9f33e4bf64ef420ad97c720c1ad0f876cd470
   pagopa-io-react-native-jwt: be05e46a4067feafb395a6857bc608a843a590b5
   pagopa-io-react-native-proximity: 8e713ae25371a3d334f6d7028fc5cbd564be66ed
