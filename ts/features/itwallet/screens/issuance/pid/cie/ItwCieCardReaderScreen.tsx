@@ -360,7 +360,6 @@ class ItwCieCardReaderScreen extends React.PureComponent<Props, State> {
 
   // TODO: It should reset authentication process
   private handleCieError = (error: Error) => {
-    console.log(error);
     this.setError({ eventReason: "GENERIC", errorDescription: error.message });
   };
 
