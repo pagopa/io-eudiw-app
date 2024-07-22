@@ -104,6 +104,7 @@
 		DBFB965D007A4AD6B33B16B4 /* TitilliumWeb-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumWeb-Regular.ttf"; path = "../assets/fonts/TitilliumWeb/TitilliumWeb-Regular.ttf"; sourceTree = "<group>"; };
 		DED140F5B96F28B52D7DFA8B /* Pods-ioeudiw.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ioeudiw.release.xcconfig"; path = "Target Support Files/Pods-ioeudiw/Pods-ioeudiw.release.xcconfig"; sourceTree = "<group>"; };
 		E2F72D5E886A4D0BB7CECEF5 /* TitilliumSansPro-SemiboldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-SemiboldItalic.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-SemiboldItalic.otf"; sourceTree = "<group>"; };
+		E4D8F7352C2D53F7008DB632 /* ioeudiw.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ioeudiw.entitlements; path = ioeudiw/ioeudiw.entitlements; sourceTree = "<group>"; };
 		E7E472FB042D4808A23A5737 /* TitilliumSansPro-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Semibold.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-Semibold.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EF1DF675134947879E0085FE /* TitilliumSansPro-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Thin.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-Thin.otf"; sourceTree = "<group>"; };
@@ -150,6 +151,7 @@
 		13B07FAE1A68108700A75B9A /* ioeudiw */ = {
 			isa = PBXGroup;
 			children = (
+				E4D8F7352C2D53F7008DB632 /* ioeudiw.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -627,6 +629,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = M2X5YQ4BJ7;
+				CODE_SIGN_ENTITLEMENTS = ioeudiw/ioeudiw.entitlements;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ioeudiw/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -660,6 +663,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = M2X5YQ4BJ7;
+				CODE_SIGN_ENTITLEMENTS = ioeudiw/ioeudiw.entitlements;
 				INFOPLIST_FILE = ioeudiw/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
