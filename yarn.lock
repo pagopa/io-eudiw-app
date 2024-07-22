@@ -1833,10 +1833,10 @@
     fp-ts "^2.12.1"
     io-ts "^2.2.16"
 
-"@pagopa/io-react-native-cie-pid@^0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@pagopa/io-react-native-cie-pid/-/io-react-native-cie-pid-0.1.3.tgz#a6f69ac2114ebd6095c5160a983708519f85c66e"
-  integrity sha512-Q0EJX9tg83HtVsB17c52/QKbqW8T/GPSU9aap6MpTLZ637GqEC6zEAax6V5VrQcDINsoazb7ElD509ojsT1knw==
+"@pagopa/io-react-native-cie-pid@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@pagopa/io-react-native-cie-pid/-/io-react-native-cie-pid-0.1.4.tgz#51bb9a17409b5f4f2d6c8b157c766b787f565b49"
+  integrity sha512-pCBo98ry1su3elkqsoJ/dU63JXMIUXnjfLLgYv2n3gXkBkcbBqRHPvW6DmNW9662TpFCS2Xd7UKlO4tExomwkA==
 
 "@pagopa/io-react-native-crypto@^0.3.0":
   version "0.3.0"
