@@ -10,7 +10,6 @@ import {
   StartupStatusEnum,
   isStartupLoaded
 } from "../../store/reducers/startup";
-// import { handlePendingMessageStateIfAllowedSaga } from "../../features/pushNotifications/sagas/notifications";
 
 /**
  * Listen to APP_STATE_CHANGE_ACTION and:
@@ -56,8 +55,6 @@ export function* watchApplicationActivitySaga(): IterableIterator<ReduxSagaEffec
       }
 
       if (lastState.appState !== "active" && newApplicationState === "active") {
-        // yield* fork(handlePendingMessageStateIfAllowedSaga);
-
         // Screens requiring identification when the app pass from background/inactive to active state
         const whiteList: ReadonlyArray<string> = [];
 
