@@ -409,12 +409,14 @@ class ItwCieCardReaderScreen extends React.PureComponent<Props, State> {
   }
 
   public async startCieiOS() {
-    cieManager.removeAllListeners();
     cieManager.onEvent(this.handleCieEvent);
     cieManager.onError(this.handleCieError);
     cieManager.onSuccess(this.handleCieSuccess);
     await cieManager.setPin(this.ciePin);
     cieManager.setAuthenticationUrl(this.cieAuthorizationUri);
+    await cieManager.startListeningNFC();
+    this.setState({ readingState: ReadingState.waiting_card });
+
     cieManager
       .start({
         readingInstructions: I18n.t(
@@ -436,10 +438,6 @@ class ItwCieCardReaderScreen extends React.PureComponent<Props, State> {
         wrongPin2AttemptLeft: I18n.t(
           "authentication.cie.card.iosAlert.wrongPin2AttemptLeft"
         )
-      })
-      .then(async () => {
-        await cieManager.startListeningNFC();
-        this.setState({ readingState: ReadingState.waiting_card });
       })
       .catch(() => {
         this.setState({ readingState: ReadingState.error });
@@ -475,9 +473,7 @@ class ItwCieCardReaderScreen extends React.PureComponent<Props, State> {
     return (
       <>
         <SafeAreaView style={IOStyles.flex}>
-          {!isIos && (
-            <CieReadingCardAnimation readingState={this.state.readingState} />
-          )}
+          <CieReadingCardAnimation readingState={this.state.readingState} />
           {isIos && <VSpacer size={16} />}
           <View style={IOStyles.horizontalContentPadding}>
             <H2 style={styles.textCenter}>{this.state.title}</H2>
