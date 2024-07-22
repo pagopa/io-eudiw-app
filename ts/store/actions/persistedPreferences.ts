@@ -9,6 +9,8 @@ export const preferredLanguageSaveSuccess = createStandardAction(
   "PREFERENCES_LANGUAGE_SAVE_SUCCESS"
 )<{ preferredLanguage: Locales }>();
 
+export const resetPreferences = createStandardAction("RESET_PREFERENCES")();
+
 export type PersistedPreferencesActions = ActionType<
   | typeof preferredLanguageSaveSuccess
   | typeof preferenceFingerprintIsEnabledSaveSuccess
