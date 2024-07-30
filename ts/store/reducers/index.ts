@@ -12,8 +12,10 @@ import appStateReducer from "./appState";
 import { navigationReducer } from "./navigation";
 import { GlobalState } from "./types";
 import { debugReducer } from "./debug";
-import startupReducer from "./startup";
-import persistedPreferencesReducer from "./persistedPreferences";
+import startupReducer, { StartupState } from "./startup";
+import persistedPreferencesReducer, {
+  PreferencesState
+} from "./persistedPreferences";
 import profileReducer from "./profile";
 import authenticationReducer, { AuthenticationState } from "./authentication";
 import identificationReducer, { IdentificationState } from "./identification";
@@ -41,6 +43,20 @@ export const onboardingPersistConfig: PersistConfig = {
   transforms: [DateISO8601Transform]
 };
 
+export const persistedPreferencesConfig: PersistConfig = {
+  key: "persistedPreferences",
+  storage: AsyncStorage,
+  blacklist: [],
+  transforms: [DateISO8601Transform]
+};
+
+export const startupConfig: PersistConfig = {
+  key: "startup",
+  storage: AsyncStorage,
+  blacklist: [],
+  transforms: [DateISO8601Transform]
+};
+
 /**
  * Here we combine all the reducers.
  * We use the best practice of separating UI state from the DATA state.
@@ -60,8 +76,7 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
   //
   appState: appStateReducer,
   navigation: navigationReducer,
-  startup: startupReducer,
-
+  startup: persistReducer<StartupState, Action>(startupConfig, startupReducer),
   // custom persistor (uses secure storage)
   authentication: persistReducer<AuthenticationState, Action>(
     authenticationPersistConfig,
@@ -81,7 +96,10 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
   ),
   profile: profileReducer,
   debug: debugReducer,
-  persistedPreferences: persistedPreferencesReducer
+  persistedPreferences: persistReducer<PreferencesState, Action>(
+    persistedPreferencesConfig,
+    persistedPreferencesReducer
+  )
 });
 
 export function createRootReducer(

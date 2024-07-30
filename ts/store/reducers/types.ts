@@ -3,7 +3,7 @@ import { PersistedFeaturesState } from "../../features/common/store/reducers";
 import { AppState } from "./appState";
 import { NavigationState } from "./navigation";
 import { DebugState } from "./debug";
-import { StartupState } from "./startup";
+import { PersistedStartupState } from "./startup";
 import { PersistedPreferencesState } from "./persistedPreferences";
 import { ProfileState } from "./profile";
 import { PersistedAuthenticationState } from "./authentication";
@@ -19,7 +19,7 @@ export type GlobalState = Readonly<{
   identification: PersistedIdentificationState;
   debug: DebugState;
   persistedPreferences: PersistedPreferencesState;
-  startup: StartupState;
+  startup: PersistedStartupState;
   features: PersistedFeaturesState;
 }>;
 

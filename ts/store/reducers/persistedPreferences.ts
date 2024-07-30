@@ -4,27 +4,31 @@
 import * as O from "fp-ts/lib/Option";
 import { createSelector } from "reselect";
 import { isActionOf } from "typesafe-actions";
+import { PersistPartial } from "redux-persist";
 import { Locales } from "../../../locales/locales";
 import {
   preferenceFingerprintIsEnabledSaveSuccess,
-  preferredLanguageSaveSuccess
+  preferredLanguageSaveSuccess,
+  resetPreferences
 } from "../actions/persistedPreferences";
 import { Action } from "../actions/types";
 import { GlobalState } from "./types";
 
-export type PersistedPreferencesState = Readonly<{
+export type PreferencesState = Readonly<{
   isFingerprintEnabled?: boolean;
   preferredLanguage?: Locales;
 }>;
 
-export const initialPreferencesState: PersistedPreferencesState = {
+export type PersistedPreferencesState = PreferencesState & PersistPartial;
+
+export const initialPreferencesState: PreferencesState = {
   preferredLanguage: "it" // Start with it for now
 };
 
 export default function preferencesReducer(
-  state: PersistedPreferencesState = initialPreferencesState,
+  state: PreferencesState = initialPreferencesState,
   action: Action
-): PersistedPreferencesState {
+): PreferencesState {
   if (isActionOf(preferenceFingerprintIsEnabledSaveSuccess, action)) {
     return {
       ...state,
@@ -35,6 +39,12 @@ export default function preferencesReducer(
     return {
       ...state,
       preferredLanguage: action.payload.preferredLanguage
+    };
+  }
+  if (isActionOf(resetPreferences, action)) {
+    return {
+      ...initialPreferencesState,
+      isFingerprintEnabled: undefined
     };
   }
 

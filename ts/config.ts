@@ -1,8 +1,10 @@
 // Main config file. Mostly read the configuration from .env files
 import { NonEmptyString } from "@pagopa/ts-commons/lib/strings";
 import * as E from "fp-ts/lib/Either";
+import * as t from "io-ts";
 import { pipe } from "fp-ts/lib/function";
 import Config from "react-native-config";
+import { Second } from "@pagopa/ts-commons/lib/units";
 
 export const environment: string = Config.ENVIRONMENT;
 
@@ -40,3 +42,11 @@ export const walletCredentialProviderUrl: string = pipe(
 
 // IT Wallet Feature Flag
 export const itWalletEnabled = Config.IT_WALLET_ENABLED === "YES";
+
+const DEFAULT_BACKGROUND_ACTIVITY_TIMEOUT_S = 30;
+
+export const backgroundActivityTimeout = pipe(
+  parseInt(Config.BACKGROUND_ACTIVITY_TIMEOUT_S, 10),
+  t.Integer.decode,
+  E.getOrElse(() => DEFAULT_BACKGROUND_ACTIVITY_TIMEOUT_S)
+) as Second;
