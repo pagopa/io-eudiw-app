@@ -1,6 +1,6 @@
 import * as O from "fp-ts/lib/Option";
 import { call, take } from "typed-redux-saga/macro";
-import { CommonActions, StackActions } from "@react-navigation/native";
+import { StackActions } from "@react-navigation/native";
 import { navigateToOnboardingPinScreenAction } from "../../store/actions/navigation";
 import { createPinSuccess } from "../../store/actions/pinset";
 import { PinString } from "../../types/PinString";
@@ -9,6 +9,7 @@ import { getPin } from "../../utils/keychain";
 import NavigationService from "../../navigation/NavigationService";
 import { isValidPinNumber } from "../../utils/pin";
 import ROUTES from "../../navigation/routes";
+import { isDevEnv } from "../../utils/environment";
 
 export function* checkConfiguredPinSaga(): Generator<
   ReduxSagaEffect,
@@ -21,6 +22,12 @@ export function* checkConfiguredPinSaga(): Generator<
 
   if (O.isSome(pinCode)) {
     if (isValidPinNumber(pinCode.value)) {
+      if (isDevEnv) {
+        yield* call(
+          NavigationService.dispatchNavigationAction,
+          StackActions.replace(ROUTES.MAIN)
+        );
+      }
       return pinCode.value;
     }
   }
