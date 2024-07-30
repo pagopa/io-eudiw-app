@@ -16,6 +16,7 @@ import { setDebugModeEnabled } from "../../store/actions/debug";
 import I18n from "../../i18n";
 import { resetFirstOnboarding } from "../../store/actions/onboarding";
 import { deletePin } from "../../utils/keychain";
+import { resetPreferences } from "../../store/actions/persistedPreferences";
 
 const consecutiveTapRequired = 4;
 const RESET_COUNTER_TIMEOUT = 2000 as Millisecond;
@@ -66,6 +67,7 @@ const ProfileMainScreen = () => {
 
   const resetAppStart = useCallback(() => {
     reduxDispatch(resetFirstOnboarding());
+    reduxDispatch(resetPreferences());
     deletePin();
     show(I18n.t("profile.main.closeAppWarning"));
   }, [reduxDispatch, show]);

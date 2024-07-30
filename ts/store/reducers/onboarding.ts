@@ -44,7 +44,10 @@ const reducer = (
     case getType(firstOnboardingCompleted):
       return { ...state, firstOnboardingCompleted: true };
     case getType(resetFirstOnboarding):
-      return { ...state, firstOnboardingCompleted: false };
+      return {
+        ...state,
+        ...INITIAL_STATE
+      };
     default:
       return state;
   }

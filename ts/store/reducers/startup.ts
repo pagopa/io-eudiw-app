@@ -2,6 +2,7 @@
  * A reducer for not persisted preferences.
  */
 import { isActionOf } from "typesafe-actions";
+import { PersistPartial } from "redux-persist";
 import { sessionExpired, sessionInvalid } from "../actions/authentication";
 
 import { startupLoadSuccess } from "../actions/startup";
@@ -22,6 +23,8 @@ export type StartupState = {
 const initialStartupState: StartupState = {
   status: StartupStatusEnum.INITIAL
 };
+
+export type PersistedStartupState = StartupState & PersistPartial;
 
 export default function startupReducer(
   state: StartupState = initialStartupState,
