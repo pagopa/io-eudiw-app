@@ -1,4 +1,4 @@
-package it.pagopa.io.app.eudiw;
+package it.pagopa.io.app.poc.eudiw;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

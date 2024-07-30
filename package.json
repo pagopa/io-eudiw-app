@@ -1,6 +1,6 @@
 {
   "name": "io-eudiw-app",
-  "version": "0.0.1",
+  "version": "0.0.2-rc.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -8,6 +8,12 @@
     "cie-ios:dev": "mv node_modules/@pagopa/react-native-cie/ios node_modules/@pagopa/react-native-cie/.ios && mv node_modules/@pagopa/react-native-cie/react-native-cie.podspec node_modules/@pagopa/react-native-cie/.react-native-cie.podspec && cd ios && rm -rf Pods && pod install",
     "cie-ios:ci": "mv node_modules/@pagopa/react-native-cie/.ios node_modules/@pagopa/react-native-cie/ios && mv node_modules/@pagopa/react-native-cie/.react-native-cie.podspec node_modules/@pagopa/react-native-cie/react-native-cie.podspec",
     "ios": "react-native run-ios",
+    "push-hint": "echo \"To publish changes without checks run:\ngit push --no-verify --follow-tags origin $(git rev-parse --abbrev-ref HEAD)\"",
+    "pre-cycle": "scripts/changelog/check_git_status.sh && node scripts/changelog/prepare_to_new_cycle.js",
+    "release-rc": "scripts/changelog/check_git_status.sh && standard-version --message \"release(IT Wallet): {{currentTag}}\" -t \"\" --prerelease rc --no-verify && yarn push-hint",
+    "start-fix-cycle": "yarn pre-cycle && standard-version --message \"release(IT Wallet): {{currentTag}}\" -t \"\" --prerelease rc --release-as patch --no-verify && yarn push-hint",
+    "start-release-cycle": "yarn pre-cycle && standard-version --message \"release(IT Wallet): {{currentTag}}\" -t \"\" --prerelease rc --release-as minor --no-verify && yarn push-hint",
+    "start-breaking-cycle": "yarn pre-cycle && standard-version --message \"release(IT Wallet): {{currentTag}}\" -t \"\" --prerelease rc --release-as major --no-verify && yarn push-hint",
     "lint": "eslint . -c .eslintrc.js --ext .ts,.tsx",
     "lint-autofix": "eslint . -c .eslintrc.js --ext .ts,.tsx --fix",
     "prettify": "prettier --write \"ts/**/*.(ts|tsx)\"",
@@ -18,6 +24,7 @@
     "prepare": "husky",
     "generate:api-definitions": "rimraf definitions/backend && mkdir -p definitions/backend && gen-api-models --api-spec $npm_package_io_public_api --out-dir ./definitions/backend && gen-api-models --api-spec $npm_package_io_backend_api --out-dir ./definitions/backend --no-strict --request-types --response-decoders --client",
     "generate:content-definitions": "rimraf definitions/content && mkdir -p definitions/content && gen-api-models --api-spec $npm_package_io_content_specs --out-dir ./definitions/content",
+    "generate:mock-google-services-json": "cp mock-google-services.json ./android/app/google-services.json",
     "generate:locales": "ts-node --skip-project -O '{\"lib\":[\"es2015\"]}' scripts/make-locales.ts",
     "generate": "npm-run-all generate:*",
     "postinstall": "patch-package",
@@ -126,6 +133,7 @@
     "redux-flipper": "^2.0.0",
     "redux-logger": "3.0.6",
     "redux-mock-store": "^1.5.4",
+    "standard-version": "^9.5.0",
     "ts-node": "^7.0.1",
     "typescript": "^4.9.5"
   },

@@ -35,8 +35,6 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-  <key>NSFaceIDUsageDescription</key>
-  <string>Potrai accedere più facilmente in app senza digitare il codice di sblocco.</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>ioeudiw</string>
@@ -56,10 +54,16 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>You’ll be able to read QR codes and pay pagoPA notices.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Enable Face ID for a faster identification.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+  <string>Our app uses bluetooth to find, connect and transfer data between different devices</string>
+  <key>NSBluetoothPeripheralUsageDescription</key>
+  <string>IO need access to Bluetooth to allow you to search and exchange data with the verification app</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>TitilliumSansPro-Black.otf</string>
