@@ -1,15 +1,7 @@
-import { Millisecond } from "@pagopa/ts-commons/lib/units";
 import { useNavigation } from "@react-navigation/native";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState
-} from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   View,
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -23,17 +15,11 @@ import {
   IOStyles,
   VSpacer
 } from "@pagopa/io-app-design-system";
-import {
-  BottomTopAnimation,
-  LightModalContext
-} from "../../../../../../components/ui/LightModal";
 import I18n from "../../../../../../i18n";
 import { IOStackNavigationProp } from "../../../../../../navigation/params/AppParamsList";
 import variables from "../../../../../../theme/variables";
-import { setAccessibilityFocus } from "../../../../../../utils/accessibility";
 import { ItwParamsList } from "../../../../navigation/ItwParamsList";
 import { ITW_ROUTES } from "../../../../navigation/ItwRoutes";
-import { CieRequestAuthenticationOverlay } from "../../../../components/cie/CieRequestAuthenticationOverlay";
 import { itwNfcIsEnabled } from "../../../../store/actions/itwIssuancePidCieActions";
 import ItwTextInfo from "../../../../components/ItwTextInfo";
 import CiePinpad from "../../../../components/cie/CiePinpad";
@@ -65,51 +51,16 @@ const ItwCiePinScreen = () => {
     supportRequest: true
   });
 
-  const { showAnimatedModal, hideModal } = useContext(LightModalContext);
   const navigation = useNavigation<IOStackNavigationProp<ItwParamsList>>();
   const [pin, setPin] = useState("");
   const pinPadViewRef = useRef<View>(null);
-  const [authUrlGenerated, setAuthUrlGenerated] = useState<string | undefined>(
-    undefined
-  );
 
-  const handleAuthenticationOverlayOnClose = useCallback(() => {
-    setPin("");
-    setAuthUrlGenerated(undefined);
-    hideModal();
-  }, [setPin, setAuthUrlGenerated, hideModal]);
-
-  useEffect(() => {
-    if (authUrlGenerated !== undefined) {
-      navigation.navigate(ITW_ROUTES.ISSUANCE.PID.CIE.CARD_READER_SCREEN, {
-        ciePin: pin,
-        authorizationUri: authUrlGenerated
-      });
-      handleAuthenticationOverlayOnClose();
-    }
-  }, [
-    handleAuthenticationOverlayOnClose,
-    authUrlGenerated,
-    hideModal,
-    navigation,
-    pin
-  ]);
-
-  const showModal = () => {
+  const navigateToCardReaderScreen = useCallback(() => {
     dispatch(itwNfcIsEnabled.request());
-    Keyboard.dismiss();
-    showAnimatedModal(
-      <CieRequestAuthenticationOverlay
-        onClose={handleAuthenticationOverlayOnClose}
-        onSuccess={setAuthUrlGenerated}
-      />,
-      BottomTopAnimation
-    );
-  };
-
-  const doSetAccessibilityFocus = useCallback(() => {
-    setAccessibilityFocus(pinPadViewRef, 100 as Millisecond);
-  }, [pinPadViewRef]);
+    navigation.navigate(ITW_ROUTES.ISSUANCE.PID.CIE.CARD_READER_SCREEN, {
+      ciePin: pin
+    });
+  }, [navigation, pin, dispatch]);
 
   return (
     <SafeAreaView style={IOStyles.flex}>
@@ -121,7 +72,7 @@ const ItwCiePinScreen = () => {
             pin={pin}
             pinLength={CIE_PIN_LENGTH}
             onPinChanged={setPin}
-            onSubmit={showModal}
+            onSubmit={navigateToCardReaderScreen}
           />
         </View>
         <VSpacer size={32} />
@@ -131,7 +82,7 @@ const ItwCiePinScreen = () => {
       </ScrollView>
       <View style={IOStyles.horizontalContentPadding}>
         <ButtonSolid
-          onPress={showModal}
+          onPress={navigateToCardReaderScreen}
           label={I18n.t("global.buttons.continue")}
           accessibilityLabel={I18n.t("global.buttons.continue")}
           fullWidth={true}

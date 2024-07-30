@@ -16,7 +16,6 @@ import { IOStackNavigationProp } from "../../../../../../navigation/params/AppPa
 import { originSchemasWhiteList } from "../../../../../../utils/authentication";
 import { ITW_ROUTES } from "../../../../navigation/ItwRoutes";
 import { itwLoginFailure } from "../../../../store/actions/itwIssuancePidCieActions";
-import { OperationResultScreenContent } from "../../../../../../components/screens/OperationResultScreenContent";
 import { useIODispatch } from "../../../../../../store/hooks";
 import { useHeaderSecondLevel } from "../../../../../../hooks/useHeaderSecondLevel";
 import { ItwParamsList } from "../../../../navigation/ItwParamsList";
@@ -60,8 +59,6 @@ const ItwCieConsentDataUsageScreen = () => {
   const dispatch = useIODispatch();
 
   const [hasError, setHasError] = useState(false);
-  const [isLoginSuccess, setIsLoginSuccess] = useState<boolean>();
-  const [errorCode, setErrorCode] = useState<string>();
 
   const resetNavigation = useCallback(() => {
     navigation.navigate(ITW_ROUTES.MAIN, {
@@ -127,47 +124,21 @@ const ItwCieConsentDataUsageScreen = () => {
     dispatch(itwLoginFailure({ error, idp: "cie" }));
   };
 
-  const getContent = () => {
-    if (isLoginSuccess) {
-      return loaderComponent;
-    }
-    if (hasError) {
-      const errorTranslationKey = errorCode
-        ? `authentication.errors.spid.error_${errorCode}`
-        : "authentication.errors.network.title";
-      return (
-        <OperationResultScreenContent
-          title={I18n.t(errorTranslationKey, {
-            defaultValue: I18n.t("authentication.errors.spid.unknown")
-          })}
-          pictogram="umbrellaNew"
-          action={{
-            label: I18n.t("authentication.cie.dataUsageConsent.retryCTA"),
-            accessibilityLabel: I18n.t(
-              "authentication.cie.dataUsageConsent.retryCTA"
-            ),
-            onPress: resetNavigation
-          }}
-        />
-      );
-    } else {
-      return (
-        <WebView
-          androidCameraAccessDisabled={true}
-          androidMicrophoneAccessDisabled={true}
-          textZoom={100}
-          originWhitelist={originSchemasWhiteList}
-          source={{ uri: decodeURIComponent(cieAuthorizationUri) }}
-          javaScriptEnabled={true}
-          renderLoading={() => loaderComponent}
-          injectedJavaScript={jsCode}
-          onMessage={_ => {}}
-          onError={handleWebViewError}
-          onHttpError={handleHttpError}
-        />
-      );
-    }
-  };
+  const getContent = () => (
+    <WebView
+      androidCameraAccessDisabled={true}
+      androidMicrophoneAccessDisabled={true}
+      textZoom={100}
+      originWhitelist={originSchemasWhiteList}
+      source={{ uri: decodeURIComponent(cieAuthorizationUri) }}
+      javaScriptEnabled={true}
+      renderLoading={() => loaderComponent}
+      injectedJavaScript={jsCode}
+      onMessage={_ => {}}
+      onError={handleWebViewError}
+      onHttpError={handleHttpError}
+    />
+  );
 
   return (
     <>
