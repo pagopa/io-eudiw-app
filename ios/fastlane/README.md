@@ -79,14 +79,6 @@ Submit a new Beta Build to TestFlight
 
 Submit a new Beta Build to TestFlight, using CircleCI
 
-### ios beta
-
-```sh
-[bundle exec] fastlane ios beta
-```
-
-Push a new beta build to TestFlight
-
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
