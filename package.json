@@ -22,6 +22,7 @@
     "tsc:noemit": "tsc --noemit",
     "test": "jest",
     "prepare": "husky",
+    "bundle:android-release": "node node_modules/react-native/local-cli/cli.js bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
     "generate:api-definitions": "rimraf definitions/backend && mkdir -p definitions/backend && gen-api-models --api-spec $npm_package_io_public_api --out-dir ./definitions/backend && gen-api-models --api-spec $npm_package_io_backend_api --out-dir ./definitions/backend --no-strict --request-types --response-decoders --client",
     "generate:content-definitions": "rimraf definitions/content && mkdir -p definitions/content && gen-api-models --api-spec $npm_package_io_content_specs --out-dir ./definitions/content",
     "generate:mock-google-services-json": "cp mock-google-services.json ./android/app/google-services.json",
