@@ -185,7 +185,7 @@ platform :ios do
       changelog: changelog,
       distribute_external: true,
       notify_external_testers: true,
-      groups: ["Internal", "PagoPa"],
+      groups: ["Internal"],
       # max wait for App Store Connect processing (30 min)
       wait_processing_timeout_duration: 1800
     )
