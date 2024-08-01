@@ -630,6 +630,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = M2X5YQ4BJ7;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ioeudiw/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -663,6 +664,7 @@
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = M2X5YQ4BJ7;
 				INFOPLIST_FILE = ioeudiw/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
