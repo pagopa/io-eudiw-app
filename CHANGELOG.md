@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.2-rc.12](https://github.com/pagopa/io-eudiw-app/compare/0.0.2-rc.2...0.0.2-rc.12) (2024-08-01)
+
+
+### Bug Fixes
+
+* add rostruct ([c623c00](https://github.com/pagopa/io-eudiw-app/commit/c623c00ccf73c8ce405c4120b08a91244d03dfa7))
+* package version ([9b2852a](https://github.com/pagopa/io-eudiw-app/commit/9b2852a848f7f4c1bf536e7b8656cfdb8c9e6999))
+* removed unused group ([767cc35](https://github.com/pagopa/io-eudiw-app/commit/767cc35175d7224c8a4d387d938eafefb12d765c))
+* setup-ruby ([c41f8d9](https://github.com/pagopa/io-eudiw-app/commit/c41f8d98dd783a775b747a3310c9669656bf2147))
+
+
+### Chores
+
+* add bundle fastlane ([04c04b1](https://github.com/pagopa/io-eudiw-app/commit/04c04b1d4da0259728608e45a33f30f48dfa4313))
+* add bundle script ([3dbab77](https://github.com/pagopa/io-eudiw-app/commit/3dbab7716d31f726b5b2b7150bc79b8b7a732846))
+* add lock ffi ([45511e3](https://github.com/pagopa/io-eudiw-app/commit/45511e3563021b424be7294fc21a7813fb36e697))
+* add production env ([2b97dae](https://github.com/pagopa/io-eudiw-app/commit/2b97dae0809f3e02f32ce4124a668e428c9f5362))
+* add release pipeline ([6ff9ab0](https://github.com/pagopa/io-eudiw-app/commit/6ff9ab0e785d0b6da82f8e8d258e847dd2063ed0))
+* downgrade setup-ruby for android ([71f6663](https://github.com/pagopa/io-eudiw-app/commit/71f66639a09d427ac4e41e58ea510c4afc0bd994))
+* minor changes ([8ecbe91](https://github.com/pagopa/io-eudiw-app/commit/8ecbe91b35ec3ec2338e340002965e5d5d23351f))
+* refresh entitlments file ([ded10d8](https://github.com/pagopa/io-eudiw-app/commit/ded10d875b72774be44a4d24e02661b17c1c369c))
+* update ([c26adb9](https://github.com/pagopa/io-eudiw-app/commit/c26adb9e735fddea2615b2546b8ffee351076c78))
+* update ([9e6e10e](https://github.com/pagopa/io-eudiw-app/commit/9e6e10ebd76780ee2ab6230dc230ed6b920ee53c))
+* update fastlane ([3729219](https://github.com/pagopa/io-eudiw-app/commit/372921970191f8fefa270faad5ed03b5636fa33f))
+* update macos machine ([9ec1da4](https://github.com/pagopa/io-eudiw-app/commit/9ec1da4065c16d06982d97121b73518cc69885ec))
+* update min iphone deployment ([b8aacf2](https://github.com/pagopa/io-eudiw-app/commit/b8aacf246442ee62cf7d7f48ece01a7c242def37))
+* update pilot configuration ([a911517](https://github.com/pagopa/io-eudiw-app/commit/a911517a18101645a4a98161e68b77a7ec3e8bd5))
+* update project ([100b57c](https://github.com/pagopa/io-eudiw-app/commit/100b57c066fda51876355866f3db5a40e15da947))
+* update release ios pipeline ([226d1b2](https://github.com/pagopa/io-eudiw-app/commit/226d1b24fdbf8b41575534ebfeb24ef6d28a99b2))
+
 ### 0.0.2-rc.2 (2024-07-30)
 
 
