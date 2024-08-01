@@ -58,7 +58,7 @@ jobs:
       - id: setup
         uses: ./.github/actions/setup-composite
       - id: setup-ruby
-        uses: ruby/setup-ruby@d2b39ad0b52eca07d23f3aa14fdf2a3fcc1f411c #v1.149.0
+        uses: ruby/setup-ruby@22fdc77bf4148f810455b226c90fb81b5cbc00a7 #v1.171.0
         with:
           bundler-cache: true
       - id: prepare-ios-build
