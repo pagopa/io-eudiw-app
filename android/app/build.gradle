@@ -1,3 +1,8 @@
+project.ext.envConfigFiles = [
+  debug: ".env",
+  release: ".env.production"
+]
+
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 
@@ -8,6 +13,13 @@ apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.grad
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
  */
+ // usage: ./gradlew assembleDebug -PbundleInDebug=true
+def bundleInDebugPropertyName = "bundleInDebug"
+def bundleDebug = false
+if (project.hasProperty(bundleInDebugPropertyName)) {
+    println bundleInDebugPropertyName + ': ' + bundleInDebug
+    bundleDebug = project.getProperty(bundleInDebugPropertyName)
+}
 react {
     /* Folders */
     //   The root of your project, i.e. where "package.json" lives. Default is '..'
@@ -113,11 +125,13 @@ android {
         }
     }
     signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+        release {
+            if (System.getenv('IO_APP_RELEASE_STORE_FILE')) {
+                storeFile file(System.getenv('IO_APP_RELEASE_STORE_FILE'))
+                storePassword System.getenv('IO_APP_RELEASE_STORE_PASSWORD')
+                keyAlias System.getenv('IO_APP_RELEASE_KEY_ALIAS')
+                keyPassword System.getenv('IO_APP_RELEASE_KEY_PASSWORD')
+            }
         }
     }
     buildTypes {
@@ -127,7 +141,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
