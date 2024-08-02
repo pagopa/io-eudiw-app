@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.2-rc.13](https://github.com/pagopa/io-eudiw-app/compare/0.0.2-rc.12...0.0.2-rc.13) (2024-08-02)
+
+
+### Chores
+
+* update gradle config ([9357617](https://github.com/pagopa/io-eudiw-app/commit/935761754ebaeac725a79f09e0adaae266761019))
+
 ### [0.0.2-rc.12](https://github.com/pagopa/io-eudiw-app/compare/0.0.2-rc.2...0.0.2-rc.12) (2024-08-01)
 
 
