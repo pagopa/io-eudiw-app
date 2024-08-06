@@ -284,8 +284,8 @@ features:
           title: "I'm activating your IT Wallet"
           subtitle: "Wait a few seconds"
         typ:
-          title: "IT Wallet is active!"
-          content: "Go to Wallet: you can already add other cards and use your digital identity to access online services."
+          title: "Wallet is active!"
+          content: "Now you can add other cards and use your digital identity to access online services."
           button: "Go to Wallet"
       credentialsCatalogScreen:
         title: "Add more credentials"

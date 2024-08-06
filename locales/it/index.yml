@@ -284,9 +284,9 @@ features:
           title: "Sto attivando il tuo IT Wallet"
           subtitle: "Attendi qualche secondo"
         typ:
-          title: "IT Wallet è attivo!"
-          content: "Vai al Portafoglio: puoi già aggiungere altre tessere e usare la tua identità digitale per accedere ai servizi online."
-          button: "Vai al Portafoglio"
+          title: "Il Wallet è attivo!"
+          content: "Ora puoi aggiungere i tuoi documenti e accedere ai servizi online."
+          button: "Vai al Wallet"
       credentialsCatalogScreen:
         title: "Aggiungi altri documenti"
         incomingFeature: "In arrivo"

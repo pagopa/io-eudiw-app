@@ -1,9 +1,16 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { IOStyles } from "@pagopa/io-app-design-system";
+import {
+  ButtonSolid,
+  H3,
+  IOStyles,
+  LabelSmall,
+  Pictogram,
+  VSpacer
+} from "@pagopa/io-app-design-system";
+import { View } from "react-native";
 import I18n from "../../../../../i18n";
-import ItwContinueView from "../../../components/ItwContinueView";
 import {
   AppParamsList,
   IOStackNavigationProp
@@ -18,27 +25,35 @@ const ItwIssuancePidStoreScreen = () => {
 
   return (
     <SafeAreaView style={IOStyles.flex}>
-      <ItwContinueView
-        title={I18n.t(
-          "features.itWallet.issuing.pidActivationScreen.typ.title"
-        )}
-        subtitle={I18n.t(
-          "features.itWallet.issuing.pidActivationScreen.typ.content"
-        )}
-        pictogram="success"
-        action={{
-          label: I18n.t(
-            "features.itWallet.issuing.pidActivationScreen.typ.button"
-          ),
-          accessibilityLabel: I18n.t(
-            "features.itWallet.issuing.pidActivationScreen.typ.button"
-          ),
-          onPress: () =>
-            navigation.navigate(ROUTES.MAIN, {
-              screen: ROUTES.ITWALLET_HOME
-            })
-        }}
-      />
+      <View
+        style={[IOStyles.flex, IOStyles.alignCenter, IOStyles.centerJustified]}
+      >
+        <Pictogram name="success" size={180} />
+        <VSpacer size={24} />
+        <H3>
+          {I18n.t("features.itWallet.issuing.pidActivationScreen.typ.title")}
+        </H3>
+        <VSpacer size={8} />
+        <LabelSmall color="grey-650" weight="Regular">
+          {I18n.t("features.itWallet.issuing.pidActivationScreen.typ.content")}
+        </LabelSmall>
+        <VSpacer size={32} />
+        <View style={[IOStyles.alignCenter, IOStyles.centerJustified]}>
+          <ButtonSolid
+            label={I18n.t(
+              "features.itWallet.issuing.pidActivationScreen.typ.button"
+            )}
+            accessibilityLabel={I18n.t(
+              "features.itWallet.issuing.pidActivationScreen.typ.button"
+            )}
+            onPress={() =>
+              navigation.navigate(ROUTES.MAIN, {
+                screen: ROUTES.ITWALLET_HOME
+              })
+            }
+          />
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
