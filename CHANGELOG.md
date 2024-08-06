@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.2-rc.14](https://github.com/pagopa/io-eudiw-app/compare/0.0.2-rc.13...0.0.2-rc.14) (2024-08-06)
+
+
+### Chores
+
+* update maven repository ([df437b4](https://github.com/pagopa/io-eudiw-app/commit/df437b4825e1675a294bed0bbf1dff202e34145e))
+
 ### [0.0.2-rc.13](https://github.com/pagopa/io-eudiw-app/compare/0.0.2-rc.12...0.0.2-rc.13) (2024-08-02)
 
 
