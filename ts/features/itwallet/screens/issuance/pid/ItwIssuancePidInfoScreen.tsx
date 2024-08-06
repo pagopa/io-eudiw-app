@@ -27,7 +27,7 @@ const ItwIssuancePidInfoScreen = () => {
     color: "primary",
     fullWidth: true,
     accessibilityLabel: I18n.t("features.itWallet.activationScreen.confirm"),
-    onPress: () => navigation.navigate(ITW_ROUTES.ISSUANCE.PID.AUTH),
+    onPress: () => navigation.navigate(ITW_ROUTES.ISSUANCE.PID.AUTH_INFO),
     label: I18n.t("features.itWallet.activationScreen.confirm")
   };
 

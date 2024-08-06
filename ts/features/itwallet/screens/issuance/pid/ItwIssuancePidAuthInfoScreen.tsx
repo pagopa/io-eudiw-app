@@ -1,25 +1,21 @@
 import * as React from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { IOStyles } from "@pagopa/io-app-design-system";
+import {
+  Body,
+  ButtonSolid,
+  H2,
+  IOStyles,
+  Pictogram,
+  VSpacer
+} from "@pagopa/io-app-design-system";
 import * as pot from "@pagopa/ts-commons/lib/pot";
 import I18n from "../../../../../i18n";
-import { openWebUrl } from "../../../../../utils/url";
 import { useOnFirstRender } from "../../../../../utils/hooks/useOnFirstRender";
 import { useIODispatch, useIOSelector } from "../../../../../store/hooks";
 import { ITW_ROUTES } from "../../../navigation/ItwRoutes";
-import {
-  profileBirthDateSelector,
-  profileFiscalCodeSelector,
-  profileNameSelector,
-  profileSurnameSelector
-} from "../../../../../store/reducers/profile";
-import { pidDataMock } from "../../../utils/itwMocksUtils";
-import { formatDateToYYYYMMDD } from "../../../../../utils/dates";
-import { isIos } from "../../../../../utils/platform";
 import { itwWiaStateSelector } from "../../../store/reducers/itwWiaReducer";
 import { itwWiaRequest } from "../../../store/actions/itwWiaActions";
-import ItwContinueView from "../../../components/ItwContinueView";
 import ItwLoadingSpinnerOverlay from "../../../components/ItwLoadingSpinnerOverlay";
 import ItwKoView from "../../../components/ItwKoView";
 import {
@@ -37,31 +33,10 @@ const ItwIssuancePidAuthInfoScreen = () => {
   const navigation = useNavigation<IOStackNavigationProp<ItwParamsList>>();
   const dispatch = useIODispatch();
   const wia = useIOSelector(itwWiaStateSelector);
-  const name = useIOSelector(profileNameSelector);
-  const surname = useIOSelector(profileSurnameSelector);
-  const fiscalCode = useIOSelector(profileFiscalCodeSelector);
-  const birthDate = useIOSelector(profileBirthDateSelector);
 
   useOnFirstRender(() => {
     dispatch(itwWiaRequest.request());
   });
-
-  /**
-   * Bypass the CIE authentication process and navigate to the PID preview screen by sending
-   * PID data from the profile store or a mock if the data is not available.
-   */
-  const bypassCieLogin = () => {
-    navigation.navigate(ITW_ROUTES.ISSUANCE.PID.REQUEST, {
-      pidData: {
-        name: name ?? pidDataMock.name,
-        surname: surname ?? pidDataMock.surname,
-        birthDate: birthDate
-          ? formatDateToYYYYMMDD(birthDate)
-          : pidDataMock.birthDate,
-        fiscalCode: fiscalCode ?? pidDataMock.fiscalCode
-      }
-    });
-  };
 
   /**
    * Loading view component.
@@ -82,27 +57,31 @@ const ItwIssuancePidAuthInfoScreen = () => {
     });
 
     return (
-      <SafeAreaView style={IOStyles.flex}>
-        <ItwContinueView
-          title={I18n.t("features.itWallet.infoAuthScreen.title")}
-          subtitle={I18n.t("features.itWallet.infoAuthScreen.subTitle")}
-          pictogram="identityAdd"
-          action={{
-            label: I18n.t("global.buttons.confirm"),
-            accessibilityLabel: I18n.t("global.buttons.confirm"),
-            onPress: () =>
-              navigation.navigate(ITW_ROUTES.ISSUANCE.PID.CIE.PIN_SCREEN)
-          }}
-          onPictogramPress={() => bypassCieLogin()}
-          secondaryAction={{
-            label: I18n.t("features.itWallet.infoAuthScreen.noCieInfo"),
-            accessibilityLabel: I18n.t(
-              "features.itWallet.infoAuthScreen.noCieInfo"
-            ),
-            onPress: () =>
-              openWebUrl(I18n.t("features.itWallet.infoAuthScreen.readMoreUrl"))
-          }}
-        />
+      <SafeAreaView style={[IOStyles.flex]}>
+        <View style={[IOStyles.flex, IOStyles.horizontalContentPadding]}>
+          <H2>{I18n.t("features.itWallet.infoAuthScreen.title")}</H2>
+          <VSpacer size={24} />
+          <Body>{I18n.t("features.itWallet.infoAuthScreen.subTitle")}</Body>
+          <View
+            style={[
+              IOStyles.alignCenter,
+              IOStyles.flex,
+              IOStyles.centerJustified
+            ]}
+          >
+            <Pictogram name="identityCheck" size={180} />
+          </View>
+          <View>
+            <ButtonSolid
+              testID="WalletActivationStart"
+              fullWidth
+              onPress={() =>
+                navigation.navigate(ITW_ROUTES.ISSUANCE.PID.CIE.PIN_SCREEN)
+              }
+              label={I18n.t("features.itWallet.infoAuthScreen.start")}
+            />
+          </View>
+        </View>
       </SafeAreaView>
     );
   };

@@ -208,8 +208,9 @@ features:
       buttons:
         addCredential: "Aggiungi documento"
     infoAuthScreen:
-      title: "Iniziamo!"
-      subTitle: "Prendi la tua CIE e il suo PIN."
+      title: "Attiva il Wallet con CIE + PIN"
+      subTitle: "Assicurati di avere la tua Carta di identità eletrtonica (CE) e il suo codice di 8 cifre."
+      start: "Inizia"
       readMoreUrl: "https://www.cartaidentita.interno.gov.it/"
       noCieInfo: "Non hai la CIE?"
       errors:
