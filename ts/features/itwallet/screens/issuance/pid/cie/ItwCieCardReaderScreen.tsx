@@ -29,7 +29,8 @@ import {
   ButtonSolid,
   Body,
   IOStyles,
-  HeaderSecondLevel
+  HeaderSecondLevel,
+  Stepper
 } from "@pagopa/io-app-design-system";
 import I18n from "../../../../../../i18n";
 import { IOStackNavigationRouteProps } from "../../../../../../navigation/params/AppParamsList";
@@ -49,6 +50,7 @@ import {
 } from "../../../../store/actions/itwIssuancePidCieActions";
 import { itwIsNfcEnabledSelector } from "../../../../store/reducers/itwIssuancePidCieAuthReducer";
 import CieNfcOverlay from "../../../../components/cie/CieNfcOverlay";
+import { useHeaderSecondLevel } from "../../../../../../hooks/useHeaderSecondLevel";
 
 export type ItwCieCardReaderScreenNavigationParams = {
   ciePin: string;
@@ -457,6 +459,8 @@ class ItwCieCardReaderScreen extends React.PureComponent<Props, State> {
     return (
       <>
         <SafeAreaView style={IOStyles.flex}>
+          <Stepper steps={3} currentStep={2} />
+          <VSpacer size={16} />
           <CieReadingCardAnimation readingState={this.state.readingState} />
           {isIos && <VSpacer size={16} />}
           <View style={IOStyles.horizontalContentPadding}>
@@ -495,14 +499,22 @@ const mapStateToProps = (state: GlobalState) => {
   };
 };
 
-const ReaderScreen = (props: Props) => (
-  <View style={styles.container}>
-    {props.isNfcEnabled ? (
-      <ItwCieCardReaderScreen {...props} />
-    ) : (
-      <CieNfcOverlay {...props} />
-    )}
-  </View>
-);
+const ReaderScreen = (props: Props) => {
+  useHeaderSecondLevel({
+    title: "",
+    goBack: () => {},
+    supportRequest: true
+  });
+
+  return (
+    <View style={styles.container}>
+      {props.isNfcEnabled ? (
+        <ItwCieCardReaderScreen {...props} />
+      ) : (
+        <CieNfcOverlay {...props} />
+      )}
+    </View>
+  );
+};
 
 export default connect(mapStateToProps)(ReaderScreen);

@@ -13,6 +13,7 @@ import {
   ButtonSolid,
   H2,
   IOStyles,
+  Stepper,
   VSpacer
 } from "@pagopa/io-app-design-system";
 import I18n from "../../../../../../i18n";
@@ -64,6 +65,8 @@ const ItwCiePinScreen = () => {
 
   return (
     <SafeAreaView style={IOStyles.flex}>
+      <Stepper currentStep={1} steps={3} />
+      <VSpacer size={16} />
       <ScrollView style={IOStyles.horizontalContentPadding}>
         <H2>{I18n.t("features.itWallet.cie.pinScreen.title")}</H2>
         <VSpacer size={16} />
@@ -79,8 +82,7 @@ const ItwCiePinScreen = () => {
         <ItwTextInfo
           content={I18n.t("features.itWallet.cie.pinScreen.description")}
         />
-      </ScrollView>
-      <View style={IOStyles.horizontalContentPadding}>
+        <VSpacer size={32} />
         <ButtonSolid
           onPress={navigateToCardReaderScreen}
           label={I18n.t("global.buttons.continue")}
@@ -88,8 +90,7 @@ const ItwCiePinScreen = () => {
           fullWidth={true}
           disabled={pin.length !== CIE_PIN_LENGTH}
         />
-        <VSpacer size={16} />
-      </View>
+      </ScrollView>
       <KeyboardAvoidingView
         behavior={Platform.OS === "android" ? "height" : "padding"}
         keyboardVerticalOffset={Platform.select({
