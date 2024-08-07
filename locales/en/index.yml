@@ -323,7 +323,7 @@ features:
             secondBodyContent: "App IO allows the sharing of your data only with verified bodies registered on the lists that guarantee its reliability."
         tos: "For more information, read the [Privacy Policy](https://io.italia.it/privacy-policy/) and the [Terms and Conditions](https://io.italia.it/privacy-policy/)"
       credentialPreviewScreen:
-        title: "Here's a preview of your credential"
+        title: "We are adding the following data to the Wallet:"
         subtitle: "Before adding it, check if the data is correct."
         banner:
           title: "Something doesn't add up?"

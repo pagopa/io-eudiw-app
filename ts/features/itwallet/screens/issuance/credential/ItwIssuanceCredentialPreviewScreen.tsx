@@ -91,8 +91,8 @@ const ItwIssuanceCredentialPreviewScreen = () => {
     const topButtonProps: ButtonSolidProps = {
       fullWidth: true,
       color: "primary",
-      label: I18n.t("global.buttons.add"),
-      accessibilityLabel: I18n.t("global.buttons.add"),
+      label: I18n.t("global.buttons.continue"),
+      accessibilityLabel: I18n.t("global.buttons.continue"),
       onPress: () => addOnPress()
     };
 
@@ -106,17 +106,6 @@ const ItwIssuanceCredentialPreviewScreen = () => {
               )}
             </H2>
             <VSpacer />
-            <Body>
-              {I18n.t(
-                "features.itWallet.issuing.credentialPreviewScreen.subtitle"
-              )}
-            </Body>
-            <VSpacer />
-            <ItwCredentialCard
-              parsedCredential={data.parsedCredential}
-              display={data.displayData}
-              type={data.credentialType}
-            />
             <VSpacer />
             <ItwCredentialClaimsList data={data} />
             <VSpacer size={32} />
