@@ -260,10 +260,10 @@ features:
         title: "Sto caricando i dati dal Ministero dell’Interno"
         subtitle: "Attendi qualche secondo"
       pidPreviewScreen: 
-        title: "Ecco un’anteprima della tua Identità Digitale"
+        title: "{{credentialName}}: ecco l'anteprima"
         checkNotice: "Verifica che le informazioni siano corrette e aggiungila per completare l’attivazione di IT Wallet."
         buttons:
-          add: "Aggiungi"
+          add: "Aggiungi al Wallet"
           cancel: "Annulla"
         banner:
           title: "Qualcosa non torna?"

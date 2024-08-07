@@ -1,16 +1,14 @@
 import React from "react";
-import { SafeAreaView, View } from "react-native";
+import { SafeAreaView, ScrollView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { pipe } from "fp-ts/lib/function";
 import {
   Banner,
-  Body,
   ButtonSolidProps,
   H2,
   IOStyles,
   VSpacer,
-  useIOToast,
-  ForceScrollDownView
+  useIOToast
 } from "@pagopa/io-app-design-system";
 import { useDispatch } from "react-redux";
 import * as O from "fp-ts/lib/Option";
@@ -18,7 +16,6 @@ import I18n from "../../../../../i18n";
 import { ITW_ROUTES } from "../../../navigation/ItwRoutes";
 import { IOStackNavigationProp } from "../../../../../navigation/params/AppParamsList";
 import { useIOSelector } from "../../../../../store/hooks";
-import ItwCredentialCard from "../../../components/ItwCredentialCard";
 import ItwFooterVerticalButtons from "../../../components/ItwFooterVerticalButtons";
 import { itwShowCancelAlert } from "../../../utils/itwAlertsUtils";
 import ROUTES from "../../../../../navigation/routes";
@@ -33,6 +30,8 @@ import { StoredCredential } from "../../../utils/itwTypesUtils";
 import { itwIssuancePidValueSelector } from "../../../store/reducers/itwIssuancePidReducer";
 import { itwIssuancePidStore } from "../../../store/actions/itwIssuancePidActions";
 import { useHeaderSecondLevel } from "../../../../../hooks/useHeaderSecondLevel";
+import ItwClaimsWrapper from "../../../components/ItwClaimsWrapper";
+import { CredentialType } from "../../../utils/itwMocksUtils";
 
 /**
  * Renders a preview screen which displays a visual representation and the claims contained in the PID.
@@ -80,27 +79,26 @@ const ItwIssuancePidPreviewScreen = () => {
       accessibilityLabel: I18n.t(
         "features.itWallet.issuing.pidPreviewScreen.buttons.add"
       ),
+      icon: "add",
+      iconPosition: "end",
       onPress: () => dispatch(itwIssuancePidStore(pid)),
       label: I18n.t("features.itWallet.issuing.pidPreviewScreen.buttons.add")
     });
 
     return (
       <SafeAreaView style={IOStyles.flex}>
-        <ForceScrollDownView>
+        <ScrollView>
           <VSpacer />
           <View style={IOStyles.horizontalContentPadding}>
             <H2>
-              {I18n.t("features.itWallet.issuing.pidPreviewScreen.title")}
+              {I18n.t("features.itWallet.issuing.pidPreviewScreen.title", {
+                credentialName: pid.displayData.title
+              })}
             </H2>
-            <VSpacer size={16} />
-            <Body>
-              {I18n.t("features.itWallet.issuing.pidPreviewScreen.checkNotice")}
-            </Body>
             <VSpacer size={24} />
-            <ItwCredentialCard
-              parsedCredential={pid.parsedCredential}
-              display={pid.displayData}
-              type={pid.credentialType}
+            <ItwClaimsWrapper
+              displayData={pid.displayData}
+              type={CredentialType.PID}
             />
             <VSpacer />
             <ItwCredentialClaimsList data={pid} />
@@ -125,11 +123,11 @@ const ItwIssuancePidPreviewScreen = () => {
             />
             <VSpacer />
           </View>
-          <ItwFooterVerticalButtons
-            bottomButtonProps={bottomButtonProps}
-            topButtonProps={topButtonProps(pid)}
-          />
-        </ForceScrollDownView>
+        </ScrollView>
+        <ItwFooterVerticalButtons
+          bottomButtonProps={bottomButtonProps}
+          topButtonProps={topButtonProps(pid)}
+        />
       </SafeAreaView>
     );
   };

@@ -260,10 +260,10 @@ features:
         title: "I am loading the data from the Ministry of the Interior"
         subtitle: "Wait a few seconds"
       pidPreviewScreen: 
-        title: "Do you want to add this data to the IT Wallet?"
+        title: "{{credentialName}}: here the preview"
         checkNotice: "Verify that the following data is correct."
         buttons:
-          add: "Add"
+          add: "Add to Wallet"
           cancel: "Cancel"
         banner:
           title: "Something doesn't add up?"

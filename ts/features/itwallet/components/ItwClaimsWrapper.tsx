@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import { H6, IOColors } from "@pagopa/io-app-design-system";
 import {
@@ -12,11 +12,10 @@ import {
  * @param children - the children of the component.
  * @param type - the credential type.
  */
-type Props = {
+type Props = PropsWithChildren<{
   displayData: CredentialCatalogDisplay;
-  children: React.ReactNode;
   type: string;
-};
+}>;
 
 /**
  * Const used to set the border radius of the body and the ImageBackground component.
@@ -37,7 +36,7 @@ const ItwClaimsWrapper = ({ displayData, children, type }: Props) => (
           <H6 color={displayData.textColor}>{displayData.title}</H6>
         </View>
       </ImageBackground>
-      <View style={styles.container}>{children}</View>
+      {children && <View style={styles.container}>{children}</View>}
     </View>
   </>
 );
