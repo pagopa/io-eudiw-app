@@ -200,13 +200,13 @@ export const getPidCredentialCatalogItem = (): PidCredentialCatalogItem => ({
 export const getImageFromCredentialType = (type: string) => {
   switch (type) {
     case CredentialType.EUROPEAN_DISABILITY_CARD:
-      return require("../assets/img/credentials/cards/europeanDisabilityCardFront.png");
+      return require("../../../../img/features/itwallet/cards/dc.png");
     case CredentialType.EUROPEAN_HEALTH_INSURANCE_CARD:
-      return require("../assets/img/credentials/cards/europeanHealthInsuranceCardFront.png");
+      return require("../../../../img/features/itwallet/cards/ts.png");
     case CredentialType.PID:
-      return require("../assets/img/credentials/cards/pidFront.png");
+      return require("../../../../img/features/itwallet/cards/eid.png");
     case CredentialType.DRIVING_LICENSE:
-      return require("../assets/img/credentials/cards/drivingLicenseFront.png");
+      return require("../../../../img/features/itwallet/cards/mdl.png");
     default:
       return require("../assets/img/credentials/cards/default.png");
   }

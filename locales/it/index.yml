@@ -133,7 +133,7 @@ global:
     choose: "Scegli"
     copy: Copia
   navigator:
-    itwallet: Portafoglio
+    itwallet: Wallet
     scan: Inquadra
     profile: Profilo
   remoteStates:
@@ -177,9 +177,9 @@ features:
     title: "IT Wallet"
     tos: "Proseguendo accetti i [Termini e condizioni d’uso](https://io.italia.it/privacy-policy/) del servizio e confermi di avere letto l’[Informativa Privacy](https://io.italia.it/privacy-policy/)."
     actionBanner:
-      title: "Novità IT Wallet"
-      description: "Da oggi puoi collezionare le tue credenziali digitali (come Licenza di Guida, Tessera Sanitaria, etc.) e accedere ai servizi online con IT Wallet."
-      action: "Attiva IT Wallet"
+      title: "I tuoi documenti digitali sempre con te!"
+      description: "Attiva il Wallet e porta sempre con te la tua identità digitale e i tuoi documenti personali."
+      action: "Inizia"
       hideLabel: "Nascondi questo banner"
     innerActionBanner: 
       title: "Novità credenziali digitali"
@@ -206,7 +206,7 @@ features:
           confirm: "Conferma reset"
           cancel: "Annulla"
       buttons:
-        addCredential: "Aggiungi documento"
+        addCredential: "Aggiungi"
     infoAuthScreen:
       title: "Attiva il Wallet con CIE + PIN"
       subTitle: "Assicurati di avere la tua Carta di identità eletrtonica (CE) e il suo codice di 8 cifre."

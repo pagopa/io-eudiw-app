@@ -177,9 +177,9 @@ features:
     title: "IT Wallet"
     tos: "By continuing, you accept the [Terms and conditions of use]() of the service and confirm that you have read the [Privacy Policy]() of {{relayingParty}}."
     actionBanner:
-      title: "Novità IT Wallet"
-      description: "Starting today, you can collect your digital credentials (such as Driver's License, Health Card, etc.) and access online services with IT Wallet."
-      action: "Enable IT Wallet"
+      title: "I tuoi documenti digitali sempre con te!"
+      description: "Attiva il Wallet e porta sempre con te la tua identità digitale e i tuoi documenti personali."
+      action: "Start"
       hideLabel: "Hide this banner"
     innerActionBanner: 
       title: "Digital credential news"
@@ -206,7 +206,7 @@ features:
           confirm: "Confirm reset"
           cancel: "Cancel"
       buttons:
-        addCredential: "Add credential"
+        addCredential: "Add"
     infoAuthScreen:
       title: "Attiva il Wallet con CIE + PIN"
       subTitle: "Assicurati di avere la tua Carta di identità eletrtonica (CE) e il suo codice di 8 cifre."
