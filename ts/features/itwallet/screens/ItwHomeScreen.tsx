@@ -86,6 +86,9 @@ const ItwHomeScreen = () => {
         {credentials
           .filter(O.isSome)
           .map(_ => _.value)
+          .filter(
+            credential => credential.credentialType !== CredentialType.PID
+          )
           .map((credential, idx) => (
             <Pressable
               accessibilityRole="button"

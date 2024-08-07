@@ -53,6 +53,7 @@ export type CredentialCatalogDisplay = {
   firstLine?: Array<string>;
   secondLine?: Array<string>;
   order?: Array<string>;
+  isActive?: boolean;
 };
 
 // A credential shown in the catalog but yet to be requested
@@ -89,80 +90,81 @@ export type PidCredentialCatalogItem = {
  * firstLine and secondLine are used to display the credential attributes in the credential card.
  * The order parameter is used to display the attributes in the correct order.
  */
-export const getCredentialsCatalog = (): Array<CredentialCatalogItem> => [
-  {
-    type: CredentialType.EUROPEAN_DISABILITY_CARD,
-    issuerUrl: walletCredentialProviderUrl,
-    title: I18n.t(
-      "features.itWallet.verifiableCredentials.type.disabilityCard"
-    ),
-    icon: "disabilityCard",
-    incoming: false,
-    textColor: "black",
-    firstLine: ["given_name", "family_name"],
-    secondLine: ["serial_number"],
-    order: [
-      "given_name",
-      "family_name",
-      "birthdate",
-      "accompanying_person_right",
-      "expiration_date",
-      "fiscal_code",
-      "serial_number",
-      "evidence"
-    ]
-  },
-  {
-    type: CredentialType.EUROPEAN_HEALTH_INSURANCE_CARD,
-    issuerUrl: walletCredentialProviderUrl,
-    incoming: false,
-    title: I18n.t("features.itWallet.verifiableCredentials.type.healthCard"),
-    icon: "healthCard",
-    textColor: "black",
-    firstLine: ["given_name", "family_name"],
-    secondLine: ["fiscal_code"],
-    order: [
-      "given_name",
-      "family_name",
-      "birthdate",
-      "place_of_birth",
-      "sex",
-      "fiscal_code",
-      "expiry_date",
-      "province",
-      "nation",
-      "institution_number_team",
-      "document_number_team",
-      "evidence"
-    ]
-  },
-  {
-    type: CredentialType.DRIVING_LICENSE,
-    issuerUrl: walletCredentialProviderUrl,
-    title: I18n.t(
-      "features.itWallet.verifiableCredentials.type.drivingLicense"
-    ),
-    icon: "driverLicense",
-    incoming: false,
-    textColor: "black",
-    firstLine: ["given_name", "family_name"],
-    secondLine: ["document_number"],
-    order: [
-      "given_name",
-      "family_name",
-      "birthdate",
-      "issue_date",
-      "expiry_date",
-      "issuing_country",
-      "issuing_authority",
-      "document_number",
-      "un_distinguishing_sign",
-      "portrait",
-      "driving_privileges",
-      "evidence"
-    ]
-  }
-];
+export const getCredentialsCatalog =
+  (): Array<CredentialCatalogAvailableItem> => [
+    {
+      type: CredentialType.PID,
+      issuerUrl: walletCredentialProviderUrl,
+      title: I18n.t(
+        "features.itWallet.verifiableCredentials.type.digitalCredential"
+      ),
+      icon: "fingerprint",
+      incoming: false,
+      textColor: "black",
+      firstLine: ["given_name", "family_name"],
+      secondLine: ["serial_number"],
+      order: [
+        "given_name",
+        "family_name",
+        "birthdate",
+        "accompanying_person_right",
+        "expiration_date",
+        "fiscal_code",
+        "serial_number",
+        "evidence"
+      ]
+    },
+    {
+      type: CredentialType.DRIVING_LICENSE,
+      issuerUrl: walletCredentialProviderUrl,
+      title: I18n.t(
+        "features.itWallet.verifiableCredentials.type.drivingLicense"
+      ),
+      icon: "driverLicense",
+      incoming: false,
+      textColor: "black",
+      firstLine: ["given_name", "family_name"],
+      secondLine: ["document_number"],
+      order: [
+        "given_name",
+        "family_name",
+        "birthdate",
+        "issue_date",
+        "expiry_date",
+        "issuing_country",
+        "issuing_authority",
+        "document_number",
+        "un_distinguishing_sign",
+        "portrait",
+        "driving_privileges",
+        "evidence"
+      ]
+    },
+    {
+      type: CredentialType.EUROPEAN_HEALTH_INSURANCE_CARD,
+      issuerUrl: walletCredentialProviderUrl,
+      incoming: false,
+      title: I18n.t("features.itWallet.verifiableCredentials.type.healthCard"),
+      icon: "healthCard",
+      textColor: "black",
+      firstLine: ["given_name", "family_name"],
+      secondLine: ["fiscal_code"],
+      order: [
+        "given_name",
+        "family_name",
+        "birthdate",
+        "place_of_birth",
+        "sex",
+        "fiscal_code",
+        "expiry_date",
+        "province",
+        "nation",
+        "institution_number_team",
+        "document_number_team",
+        "evidence"
+      ]
+    }
+  ];
 
 /**
  * Hard coded display feature for PID

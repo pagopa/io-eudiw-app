@@ -288,8 +288,11 @@ features:
           content: "Ora puoi aggiungere i tuoi documenti e accedere ai servizi online."
           button: "Vai al Wallet"
       credentialsCatalogScreen:
-        title: "Aggiungi altri documenti"
+        title: "Cosa vuoi aggiungere al Wallet?"
+        subTitle: "Wallet"
+        walletStatus: "Attivo"
         incomingFeature: "In arrivo"
+        alreadyRegistered: "Già presente"
       credentialsChecksScreen:
         loading:
           title: "Stiamo facendo alcune verifiche di sicurezza"

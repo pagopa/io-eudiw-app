@@ -288,8 +288,11 @@ features:
           content: "Now you can add other cards and use your digital identity to access online services."
           button: "Go to Wallet"
       credentialsCatalogScreen:
-        title: "Add more credentials"
+        title: "Cosa vuoi aggiungere al Wallet?"
+        subTitle: "Wallet"
+        walletStatus: "Attivo"
         incomingFeature: "Coming soon"
+        alreadyRegistered: "Already existing"
       credentialsChecksScreen:
         loading:
           title: "We are performing some security checks"
