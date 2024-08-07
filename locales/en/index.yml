@@ -343,6 +343,10 @@ features:
       credentialDetails: 
         buttons: 
           qrCode: "Show QR code"
+        lastUpdated: "Last updated on {{lastUpdateTime}}"
+        actions:
+          removeFromWallet: "Remove from Wallet"
+          requestAssistance: "Something wrong? Contact {{authSource}}"
       pidAttributesScreen: 
         headerTitle: "Data presentation"
         title: "Do you confirm this data?"

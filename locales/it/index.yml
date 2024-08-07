@@ -344,6 +344,10 @@ features:
       credentialDetails: 
         buttons: 
           qrCode: "Mostra QR code"
+        lastUpdated: "Dati aggiornati al {{lastUpdateTime}}"
+        actions:
+          removeFromWallet: "Rimuovi dal Wallet"
+          requestAssistance: "Qualcosa non torna? Contatta {{authSource}}"
       pidAttributesScreen: 
         headerTitle: "Presentazione dati"
         title: "Confermi questi dati?"
