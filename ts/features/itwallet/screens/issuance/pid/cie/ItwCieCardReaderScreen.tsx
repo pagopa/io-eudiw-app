@@ -502,7 +502,6 @@ const mapStateToProps = (state: GlobalState) => {
 const ReaderScreen = (props: Props) => {
   useHeaderSecondLevel({
     title: "",
-    goBack: () => {},
     supportRequest: true
   });
 
