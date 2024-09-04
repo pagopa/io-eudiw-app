@@ -13,6 +13,7 @@ export const INPUT_PLACEHOLDER_HEIGHT = 60;
 const styles = StyleSheet.create({
   placeholder: {
     height: INPUT_PLACEHOLDER_HEIGHT,
+    flex: 1,
     alignItems: "center",
     justifyContent: "center"
   },

@@ -31,8 +31,7 @@ import { useIODispatch } from "../../../../../../store/hooks";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingLeft: 16
+    flex: 1
   }
 });
 
