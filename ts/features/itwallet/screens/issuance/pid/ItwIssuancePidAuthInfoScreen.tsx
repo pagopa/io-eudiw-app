@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SafeAreaView, View } from "react-native";
+import { Pressable, SafeAreaView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {
   Body,
@@ -25,6 +25,14 @@ import {
 import { IOStackNavigationProp } from "../../../../../navigation/params/AppParamsList";
 import { ItwParamsList } from "../../../navigation/ItwParamsList";
 import { useHeaderSecondLevel } from "../../../../../hooks/useHeaderSecondLevel";
+import {
+  profileBirthDateSelector,
+  profileFiscalCodeSelector,
+  profileNameSelector,
+  profileSurnameSelector
+} from "../../../../../store/reducers/profile";
+import { formatDateToYYYYMMDD } from "../../../../../utils/dates";
+import { pidDataMock } from "../../../utils/itwMocksUtils";
 
 /**
  * Renders the screen which displays the information about the authentication process to obtain a Wallet Instance.
@@ -33,11 +41,31 @@ const ItwIssuancePidAuthInfoScreen = () => {
   const navigation = useNavigation<IOStackNavigationProp<ItwParamsList>>();
   const dispatch = useIODispatch();
   const wia = useIOSelector(itwWiaStateSelector);
+  const name = useIOSelector(profileNameSelector);
+  const surname = useIOSelector(profileSurnameSelector);
+  const fiscalCode = useIOSelector(profileFiscalCodeSelector);
+  const birthDate = useIOSelector(profileBirthDateSelector);
 
   useOnFirstRender(() => {
     dispatch(itwWiaRequest.request());
   });
 
+  /**
+   * Bypass the CIE authentication process and navigate to the PID preview screen by sending
+   * PID data from the profile store or a mock if the data is not available.
+   */
+  const bypassCieLogin = () => {
+    navigation.navigate(ITW_ROUTES.ISSUANCE.PID.REQUEST, {
+      pidData: {
+        name: name ?? pidDataMock.name,
+        surname: surname ?? pidDataMock.surname,
+        birthDate: birthDate
+          ? formatDateToYYYYMMDD(birthDate)
+          : pidDataMock.birthDate,
+        fiscalCode: fiscalCode ?? pidDataMock.fiscalCode
+      }
+    });
+  };
   /**
    * Loading view component.
    */
@@ -69,7 +97,14 @@ const ItwIssuancePidAuthInfoScreen = () => {
               IOStyles.centerJustified
             ]}
           >
-            <Pictogram name="identityCheck" size={180} />
+            <Pressable
+              onLongPress={bypassCieLogin}
+              accessibilityLabel={I18n.t(
+                "features.itWallet.infoAuthScreen.title"
+              )}
+            >
+              <Pictogram name="identityCheck" size={180} />
+            </Pressable>
           </View>
           <View>
             <ButtonSolid
