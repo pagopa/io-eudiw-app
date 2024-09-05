@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pressable, SafeAreaView, View } from "react-native";
+import { Pressable, SafeAreaView, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {
   Body,
@@ -85,7 +85,7 @@ const ItwIssuancePidAuthInfoScreen = () => {
     });
 
     return (
-      <SafeAreaView style={[IOStyles.flex]}>
+      <SafeAreaView style={styles.wrapper}>
         <View style={[IOStyles.flex, IOStyles.horizontalContentPadding]}>
           <H2>{I18n.t("features.itWallet.infoAuthScreen.title")}</H2>
           <VSpacer size={24} />
@@ -147,3 +147,10 @@ const ItwIssuancePidAuthInfoScreen = () => {
 };
 
 export default ItwIssuancePidAuthInfoScreen;
+
+const styles = StyleSheet.create({
+  wrapper: {
+    ...IOStyles.flex,
+    paddingBottom: 16
+  }
+});

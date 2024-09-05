@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IOColors, IOStyles } from "@pagopa/io-app-design-system";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { OnboardingWallet } from "../../components/screens/OnboardingWallet/OnboardingWallet";
 
 /**
@@ -8,12 +8,14 @@ import { OnboardingWallet } from "../../components/screens/OnboardingWallet/Onbo
  */
 const CarouselWalletScreen = () => {
   return (
-    <SafeAreaView
-      style={[IOStyles.flex, { backgroundColor: IOColors["blueIO-600"] }]}
-    >
+    <SafeAreaView style={[IOStyles.flex, styles.wrapper]}>
       <OnboardingWallet />
     </SafeAreaView>
   );
 };
 
 export default CarouselWalletScreen;
+
+const styles = StyleSheet.create({
+  wrapper: { backgroundColor: IOColors["blueIO-600"], paddingVertical: 16 }
+});

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Image, ScrollView, View } from "react-native";
+import { Image, ScrollView, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import {
   ButtonSolidProps,
@@ -32,7 +32,7 @@ const ItwIssuancePidInfoScreen = () => {
   };
 
   return (
-    <SafeAreaView edges={["bottom"]} style={IOStyles.flex}>
+    <SafeAreaView edges={["bottom"]} style={styles.wrapper}>
       <ScrollView>
         {/* Header card image */}
         <Image
@@ -70,3 +70,10 @@ const ItwIssuancePidInfoScreen = () => {
 };
 
 export default ItwIssuancePidInfoScreen;
+
+const styles = StyleSheet.create({
+  wrapper: {
+    ...IOStyles.flex,
+    paddingBottom: 16
+  }
+});
