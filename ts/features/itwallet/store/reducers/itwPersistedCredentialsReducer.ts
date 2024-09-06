@@ -36,10 +36,7 @@ const reducer = (
   switch (action.type) {
     case getType(itwPersistedCredentialsStore):
       if (action.payload.credentialType === CredentialType.PID) {
-        return {
-          credentials: [O.some(action.payload)],
-          pid: O.some(action.payload)
-        }; // Reset the credential array when a new PID is added
+        return { credentials: [], pid: O.some(action.payload) }; // Reset the credential array when a new PID is added
       } else {
         if (O.isSome(state.pid)) {
           return {
@@ -89,13 +86,16 @@ export const itwPersistedCredentialsValueSelector = (state: GlobalState) =>
  */
 export const selectExistingCredentials = createSelector(
   itwPersistedCredentialsValueSelector,
-  storedCredentials =>
-    getCredentialsCatalog().map(current => {
-      const found = storedCredentials
+  itwPersistedCredentialsValuePidSelector,
+  (storedCredentials, pid) => {
+    const credentialsList = [...storedCredentials, pid];
+    return getCredentialsCatalog().map(current => {
+      const found = credentialsList
         .filter(O.isSome)
         .find(e => e.value.credentialType === current.type);
       return { ...current, isActive: !!found };
-    })
+    });
+  }
 );
 
 export default reducer;

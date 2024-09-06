@@ -89,39 +89,42 @@ const ItwIssuancePidPreviewScreen = () => {
       <SafeAreaView style={IOStyles.flex}>
         <ScrollView>
           <VSpacer />
-          <View style={IOStyles.horizontalContentPadding}>
-            <H2>
-              {I18n.t("features.itWallet.issuing.pidPreviewScreen.title", {
-                credentialName: pid.displayData.title
-              })}
-            </H2>
+          <View>
+            <View style={IOStyles.horizontalContentPadding}>
+              <H2>
+                {I18n.t("features.itWallet.issuing.pidPreviewScreen.title", {
+                  credentialName: pid.displayData.title
+                })}
+              </H2>
+            </View>
             <VSpacer size={24} />
             <ItwClaimsWrapper
               displayData={{ ...pid.displayData, textColor: "black" }}
               type={CredentialType.PID}
-            />
-            <VSpacer />
-            <ItwCredentialClaimsList data={pid} />
-            <VSpacer />
-            <Banner
-              color="neutral"
-              pictogramName="security"
-              title={I18n.t(
-                "features.itWallet.issuing.pidPreviewScreen.banner.title"
-              )}
-              size="big"
-              content={I18n.t(
-                "features.itWallet.issuing.pidPreviewScreen.banner.content"
-              )}
-              action={I18n.t(
-                "features.itWallet.issuing.pidPreviewScreen.banner.actionTitle"
-              )}
-              onPress={() =>
-                navigation.navigate(ITW_ROUTES.GENERIC.NOT_AVAILABLE)
-              }
-              viewRef={bannerViewRef}
-            />
-            <VSpacer />
+            >
+              <>
+                <ItwCredentialClaimsList data={pid} />
+                <VSpacer />
+                <Banner
+                  color="neutral"
+                  pictogramName="security"
+                  title={I18n.t(
+                    "features.itWallet.issuing.pidPreviewScreen.banner.title"
+                  )}
+                  size="big"
+                  content={I18n.t(
+                    "features.itWallet.issuing.pidPreviewScreen.banner.content"
+                  )}
+                  action={I18n.t(
+                    "features.itWallet.issuing.pidPreviewScreen.banner.actionTitle"
+                  )}
+                  onPress={() =>
+                    navigation.navigate(ITW_ROUTES.GENERIC.NOT_AVAILABLE)
+                  }
+                  viewRef={bannerViewRef}
+                />
+              </>
+            </ItwClaimsWrapper>
           </View>
         </ScrollView>
         <ItwFooterVerticalButtons
