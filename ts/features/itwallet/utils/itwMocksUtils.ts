@@ -223,7 +223,7 @@ export const getColorFromCredentialType = (type: string) => {
     case CredentialType.EUROPEAN_HEALTH_INSURANCE_CARD: // TODO[EUDIW-58] -> add right color
       return "black";
     case CredentialType.PID: // TODO[EUDIW-58] -> missing color in design system
-      return "blueIO-850";
+      return "bluegreyDark";
     case CredentialType.DRIVING_LICENSE: // TODO[EUDIW-58] ->  missing color in design system
       return "antiqueFuchsia";
     default:
