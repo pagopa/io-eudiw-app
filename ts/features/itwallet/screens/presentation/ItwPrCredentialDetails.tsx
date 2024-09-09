@@ -1,10 +1,6 @@
 import React from "react";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import {
-  IOColors,
-  ContentWrapper,
-  IOVisualCostants
-} from "@pagopa/io-app-design-system";
+import { ContentWrapper, IOVisualCostants } from "@pagopa/io-app-design-system";
 import { ScrollView } from "react-native-gesture-handler";
 import { StyleSheet, View } from "react-native";
 import { ItwParamsList } from "../../navigation/ItwParamsList";
@@ -14,8 +10,8 @@ import { useHeaderSecondLevel } from "../../../../hooks/useHeaderSecondLevel";
 import FocusAwareStatusBar from "../../../../components/ui/FocusAwareStatusBar";
 import ItwCredentialCard from "../../components/ItwCredentialCard";
 import { ItwPresentationDetailFooter } from "../../components/ItwPresentationDetailFooter";
+import { getBackgroundFromCredentialType } from "../../utils/itwMocksUtils";
 
-const themeColor = IOColors["blueItalia-600"];
 // TODO: use the real credential update time
 const today = new Date();
 
@@ -35,18 +31,19 @@ const ItwPrCredentialDetailsScreen = () => {
   const route = useRoute<ItwCredentialDetailscreenRouteProps>();
   const { credential } = route.params;
 
-  useHeaderSecondLevel({
-    title: "",
-    supportRequest: true,
-    variant: "contrast",
-    backgroundColor: themeColor
-  });
-
   /**
    * Content view which asks the user to confirm the issuance of the credential.
    * @param data - the issuance result data of the credential used to display the credential.
    */
   const ContentView = ({ data }: { data: StoredCredential }) => {
+    const themeColor = getBackgroundFromCredentialType(data.credentialType);
+
+    useHeaderSecondLevel({
+      title: "",
+      supportRequest: true,
+      variant: "contrast",
+      backgroundColor: themeColor
+    });
     return (
       <>
         <FocusAwareStatusBar

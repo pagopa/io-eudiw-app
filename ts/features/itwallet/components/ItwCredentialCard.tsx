@@ -5,10 +5,11 @@ import { sequenceS } from "fp-ts/lib/Apply";
 import * as O from "fp-ts/lib/Option";
 import * as E from "fp-ts/lib/Either";
 import { pipe } from "fp-ts/lib/function";
-import { Body, H6, IOColors, Label } from "@pagopa/io-app-design-system";
+import { Body, H6, IOColors } from "@pagopa/io-app-design-system";
 import customVariables from "../../../theme/variables";
 import {
   CredentialCatalogDisplay,
+  getColorFromCredentialType,
   getImageFromCredentialType
 } from "../utils/itwMocksUtils";
 import { ParsedCredential } from "../utils/itwTypesUtils";
@@ -80,14 +81,13 @@ const OverlayLines = ({
     // in case we have both lines, we can render them
     E.map(({ firstLine, secondLine }) => (
       <>
-        <Label
-          weight="Regular"
+        <Body
           color={textColor}
           style={[styles.text, styles.nameText]}
           accessibilityLabel={firstLine}
         >
           {firstLine}
-        </Label>
+        </Body>
 
         <Body
           weight="Semibold"
@@ -139,9 +139,10 @@ const ItwCredentialCard = (props: CredentialCardProps) => {
     }
   }; */
 
-  const { textColor, title } = props.display;
+  const { title } = props.display;
 
   const image = getImageFromCredentialType(props.type);
+  const textColor = getColorFromCredentialType(props.type);
 
   return (
     <View>
@@ -157,7 +158,7 @@ const ItwCredentialCard = (props: CredentialCardProps) => {
       >
         {props.display.title}
       </H6>
-      <OverlayLines {...props} />
+      <OverlayLines {...props} display={{ ...props.display, textColor }} />
     </View>
   );
 };
@@ -174,7 +175,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     marginLeft: TEXT_LEFT_MARGIN,
     color: IOColors.white,
-    fontWeight: "700"
+    fontWeight: "700",
+    textTransform: "uppercase"
   },
   fiscalCodeText: {
     marginTop: FISCAL_CODE_MARGIN_TOP,

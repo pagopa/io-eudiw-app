@@ -1,5 +1,5 @@
 import { PidData } from "@pagopa/io-react-native-cie-pid";
-import { IOIcons } from "@pagopa/io-app-design-system";
+import { IOColors, IOIcons } from "@pagopa/io-app-design-system";
 import I18n from "../../../i18n";
 import { BulletItem } from "../components/ItwBulletList";
 import { ItwOptionalClaimItem } from "../components/ItwOptionalClaimsList";
@@ -47,7 +47,7 @@ export enum CredentialType {
 }
 
 export type CredentialCatalogDisplay = {
-  textColor: "black" | "white";
+  textColor: ReturnType<typeof getColorFromCredentialType>;
   title: string;
   icon?: IOIcons;
   firstLine?: Array<string>;
@@ -209,6 +209,45 @@ export const getImageFromCredentialType = (type: string) => {
       return require("../../../../img/features/itwallet/cards/mdl.png");
     default:
       return require("../assets/img/credentials/cards/default.png");
+  }
+};
+/**
+ * Returns the mocked text color for the credential.
+ * @param type - the credential type
+ * @returns the mocked text color.
+ */
+export const getColorFromCredentialType = (type: string) => {
+  switch (type) {
+    case CredentialType.EUROPEAN_DISABILITY_CARD: // TODO[EUDIW-58] -> add right color
+      return "black";
+    case CredentialType.EUROPEAN_HEALTH_INSURANCE_CARD: // TODO[EUDIW-58] -> add right color
+      return "black";
+    case CredentialType.PID: // TODO[EUDIW-58] -> missing color in design system
+      return "blueIO-850";
+    case CredentialType.DRIVING_LICENSE: // TODO[EUDIW-58] ->  missing color in design system
+      return "antiqueFuchsia";
+    default:
+      return "white";
+  }
+};
+
+/**
+ * Returns the mocked background color for the credential.
+ * @param type - the credential type
+ * @returns the mocked background color.
+ */
+export const getBackgroundFromCredentialType = (type: string) => {
+  switch (type) {
+    case CredentialType.EUROPEAN_DISABILITY_CARD: // TODO[EUDIW-58] -> add right color
+      return IOColors["blueItalia-600"];
+    case CredentialType.EUROPEAN_HEALTH_INSURANCE_CARD: // TODO[EUDIW-58] -> add right color
+      return IOColors["blueItalia-600"];
+    case CredentialType.PID:
+      return IOColors["blueItalia-600"];
+    case CredentialType.DRIVING_LICENSE:
+      return IOColors.antiqueFuchsia;
+    default:
+      return IOColors["blueItalia-600"];
   }
 };
 

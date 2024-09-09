@@ -9,7 +9,7 @@ import {
   Pictogram,
   VSpacer
 } from "@pagopa/io-app-design-system";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import I18n from "../../../../../i18n";
 import {
   AppParamsList,
@@ -26,7 +26,12 @@ const ItwIssuancePidStoreScreen = () => {
   return (
     <SafeAreaView style={IOStyles.flex}>
       <View
-        style={[IOStyles.flex, IOStyles.alignCenter, IOStyles.centerJustified]}
+        style={[
+          IOStyles.flex,
+          IOStyles.alignCenter,
+          IOStyles.centerJustified,
+          IOStyles.horizontalContentPadding
+        ]}
       >
         <Pictogram name="success" size={180} />
         <VSpacer size={24} />
@@ -34,7 +39,11 @@ const ItwIssuancePidStoreScreen = () => {
           {I18n.t("features.itWallet.issuing.pidActivationScreen.typ.title")}
         </H3>
         <VSpacer size={8} />
-        <LabelSmall color="grey-650" weight="Regular">
+        <LabelSmall
+          color="grey-650"
+          weight="Regular"
+          style={styles.description}
+        >
           {I18n.t("features.itWallet.issuing.pidActivationScreen.typ.content")}
         </LabelSmall>
         <VSpacer size={32} />
@@ -59,3 +68,9 @@ const ItwIssuancePidStoreScreen = () => {
 };
 
 export default ItwIssuancePidStoreScreen;
+
+const styles = StyleSheet.create({
+  description: {
+    textAlign: "center"
+  }
+});

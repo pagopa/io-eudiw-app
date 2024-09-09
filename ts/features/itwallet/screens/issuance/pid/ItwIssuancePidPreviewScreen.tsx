@@ -99,7 +99,7 @@ const ItwIssuancePidPreviewScreen = () => {
             </View>
             <VSpacer size={24} />
             <ItwClaimsWrapper
-              displayData={{ ...pid.displayData, textColor: "black" }}
+              displayData={{ ...pid.displayData, textColor: "blueIO-850" }}
               type={CredentialType.PID}
             >
               <>

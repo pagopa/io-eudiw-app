@@ -417,7 +417,7 @@ features:
         digitalCredential: "Identità digitale"
         disabilityCard: "Tessera Europa della disabilità"
         healthCard: "Tessera Sanitaria"
-        drivingLicense: "Licenza di guida"
+        drivingLicense: "Patente di guida"
       claims:
         uniqueId: "ID univoco"
         givenName: "Nome"
