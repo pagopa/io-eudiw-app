@@ -53,56 +53,7 @@ const NAME_MARGIN_TOP = 380 * SCALE_FACTOR;
 
 const FISCAL_CODE_MARGIN_TOP = NAME_MARGIN_TOP + 55 * SCALE_FACTOR;
 
-const TITLE_MARGIN_TOP = 50 * SCALE_FACTOR;
-
-/**
- * Encapsulate the logic for displaying the lines in the bottom left corner of the card.
- */
-const OverlayLines = ({
-  parsedCredential,
-  display: { textColor, firstLine, secondLine }
-}: CredentialCardProps) => {
-  const maybeComposedLine = (line?: Array<string>) =>
-    pipe(
-      line,
-      O.fromNullable,
-      O.map(item => item.map(item => O.fromNullable(parsedCredential[item]))),
-      O.chain(sequence(O.option)),
-      O.map(item => item.map(item => item.value).join(" "))
-    );
-
-  return pipe(
-    // either we can have both lines or none
-    sequenceS(O.option)({
-      firstLine: maybeComposedLine(firstLine),
-      secondLine: maybeComposedLine(secondLine)
-    }),
-    E.fromOption(() => undefined),
-    // in case we have both lines, we can render them
-    E.map(({ firstLine, secondLine }) => (
-      <>
-        <Body
-          color={textColor}
-          style={[styles.text, styles.nameText]}
-          accessibilityLabel={firstLine}
-        >
-          {firstLine}
-        </Body>
-
-        <Body
-          weight="Semibold"
-          color={textColor}
-          style={[styles.text, styles.fiscalCodeText]}
-          accessibilityLabel={secondLine}
-        >
-          {secondLine}
-        </Body>
-      </>
-    )),
-    E.mapLeft(() => <></> /* nothing to render */),
-    E.toUnion
-  );
-};
+const TITLE_MARGIN_TOP = 40 * SCALE_FACTOR;
 
 /**
  * Renders a card for the PID credential with the name and fiscal code of the owner.
@@ -158,7 +109,6 @@ const ItwCredentialCard = (props: CredentialCardProps) => {
       >
         {props.display.title}
       </H6>
-      <OverlayLines {...props} display={{ ...props.display, textColor }} />
     </View>
   );
 };
