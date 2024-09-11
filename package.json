@@ -1,6 +1,6 @@
 {
   "name": "io-eudiw-app",
-  "version": "0.2.0-rc.0",
+  "version": "0.2.0-rc.15",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
