@@ -133,7 +133,7 @@ global:
     choose: "Scegli"
     copy: Copia
   navigator:
-    itwallet: Portafoglio
+    itwallet: Wallet
     scan: Inquadra
     profile: Profilo
   remoteStates:
@@ -177,9 +177,9 @@ features:
     title: "IT Wallet"
     tos: "Proseguendo accetti i [Termini e condizioni d’uso](https://io.italia.it/privacy-policy/) del servizio e confermi di avere letto l’[Informativa Privacy](https://io.italia.it/privacy-policy/)."
     actionBanner:
-      title: "Novità IT Wallet"
-      description: "Da oggi puoi collezionare le tue credenziali digitali (come Licenza di Guida, Tessera Sanitaria, etc.) e accedere ai servizi online con IT Wallet."
-      action: "Attiva IT Wallet"
+      title: "I tuoi documenti digitali sempre con te!"
+      description: "Attiva il Wallet e porta sempre con te la tua identità digitale e i tuoi documenti personali."
+      action: "Inizia"
       hideLabel: "Nascondi questo banner"
     innerActionBanner: 
       title: "Novità credenziali digitali"
@@ -187,11 +187,10 @@ features:
       action: "Attiva IT Wallet"
       hideLabel: "Nascondi questo banner"
     activationScreen:
-      intro: "## IT Wallet: cos'è e come funziona\n\nIT Wallet è una funzionalità che ti permette di aggiungere nel Portafoglio di IO la tua identità digitale, ovvero l'**insieme dei dati personali che ti permette di autenticarti online**, e i tuoi documenti personali, come la patente di guida, la tessera sanitaria e la Carta Europea della disabilità."
-      subContentOne: "###### Online e dal vivo\n\nUsa l'identità digitale per **accedere ai servizi online, sia pubblici che privati**. Usa i documenti per **condividere con altri i dati che contengono**, online e dal vivo, ogni volta che ne hai bisogno."
-      subContentTwo: "###### Facile da attivare\n\nAvrai bisogno della **Carta d'Identità Elettronica (CIE) e del suo PIN**. I dati della tua CIE faranno parte della tua identità digitale, il primo documento del tuo IT Wallet."
-      cancel: "Non ora"
-      confirm: "Attiva IT Wallet"
+      intro: "## Attiva il Wallet"
+      subContentOne: "###### Cos’è e come funziona\n\nWallet ti permette di salvare e portare sempre con te la versione digitale della tua **Identità** e **di alcuni dei documenti fisici** che già possiedi"
+      subContentTwo: "###### È facile e veloce\n\nPotrai autenticarti in Italia e all’estero a molti servizi digitali, o verificare in presenza le tue attestazioni semplicemente scansionando il codice QR abbinato alle versioni digitali dei tuoi documenti."
+      confirm: "Continua"
     homeScreen:
       categories: 
         any: "Tutto"
@@ -207,10 +206,11 @@ features:
           confirm: "Conferma reset"
           cancel: "Annulla"
       buttons:
-        addCredential: "Aggiungi documento"
+        addCredential: "Aggiungi"
     infoAuthScreen:
-      title: "Iniziamo!"
-      subTitle: "Prendi la tua CIE e il suo PIN."
+      title: "Attiva il Wallet con CIE + PIN"
+      subTitle: "Assicurati di avere la tua Carta di identità eletrtonica (CE) e il suo codice di 8 cifre."
+      start: "Inizia"
       readMoreUrl: "https://www.cartaidentita.interno.gov.it/"
       noCieInfo: "Non hai la CIE?"
       errors:
@@ -260,10 +260,10 @@ features:
         title: "Sto caricando i dati dal Ministero dell’Interno"
         subtitle: "Attendi qualche secondo"
       pidPreviewScreen: 
-        title: "Ecco un’anteprima della tua Identità Digitale"
+        title: "{{credentialName}}: ecco l'anteprima"
         checkNotice: "Verifica che le informazioni siano corrette e aggiungila per completare l’attivazione di IT Wallet."
         buttons:
-          add: "Aggiungi"
+          add: "Aggiungi al Wallet"
           cancel: "Annulla"
         banner:
           title: "Qualcosa non torna?"
@@ -284,12 +284,15 @@ features:
           title: "Sto attivando il tuo IT Wallet"
           subtitle: "Attendi qualche secondo"
         typ:
-          title: "IT Wallet è attivo!"
-          content: "Vai al Portafoglio: puoi già aggiungere altre tessere e usare la tua identità digitale per accedere ai servizi online."
-          button: "Vai al Portafoglio"
+          title: "Il Wallet è attivo!"
+          content: "Ora puoi aggiungere i tuoi documenti e accedere ai servizi online."
+          button: "Vai al Wallet"
       credentialsCatalogScreen:
-        title: "Aggiungi altri documenti"
+        title: "Cosa vuoi aggiungere al Wallet?"
+        subTitle: "Wallet"
+        walletStatus: "Attivo"
         incomingFeature: "In arrivo"
+        alreadyRegistered: "Già presente"
       credentialsChecksScreen:
         loading:
           title: "Stiamo facendo alcune verifiche di sicurezza"
@@ -320,7 +323,7 @@ features:
             secondBodyContent: "App IO consente la condivisione dei tuoi dati solo con enti verificati e iscritti alle liste che ne garantiscono l’affidabilità."
         tos: "Per maggiori informazioni leggi l’[Informativa Privacy](https://io.italia.it/privacy-policy/) e i [Termini e condizioni d’uso](https://io.italia.it/privacy-policy/)"
       credentialPreviewScreen:
-        title: "Ecco un’anteprima della tua tessera"
+        title: "Stiamo aggiungendo i seguenti dati al Wallet:"
         subtitle: "Prima di aggiungerla, verifica che tutte le informazioni siano
             corrette."
         banner:
@@ -341,6 +344,10 @@ features:
       credentialDetails: 
         buttons: 
           qrCode: "Mostra QR code"
+        lastUpdated: "Dati aggiornati al {{lastUpdateTime}}"
+        actions:
+          removeFromWallet: "Rimuovi dal Wallet"
+          requestAssistance: "Qualcosa non torna? Contatta {{authSource}}"
       pidAttributesScreen: 
         headerTitle: "Presentazione dati"
         title: "Confermi questi dati?"
@@ -410,7 +417,7 @@ features:
         digitalCredential: "Identità digitale"
         disabilityCard: "Tessera Europa della disabilità"
         healthCard: "Tessera Sanitaria"
-        drivingLicense: "Licenza di guida"
+        drivingLicense: "Patente di guida"
       claims:
         uniqueId: "ID univoco"
         givenName: "Nome"

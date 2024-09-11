@@ -10,6 +10,7 @@ type Props = Readonly<{
   digits: number;
   activeColor: string;
   inactiveColor: string;
+  focusedColor?: string;
   inputValue: string;
   customHorizontalMargin?: number;
   accessibilityLabel: string;
@@ -17,8 +18,7 @@ type Props = Readonly<{
 
 const styles = StyleSheet.create({
   placeholderContainer: {
-    flexDirection: "row",
-    justifyContent: "center"
+    flexDirection: "row"
   }
 });
 
@@ -31,12 +31,14 @@ const InputPlaceHolder: React.FunctionComponent<Props> = (props: Props) => {
     const {
       activeColor,
       inactiveColor,
+      focusedColor,
       digits,
       customHorizontalMargin,
       inputValue
     } = props;
-
     const margin = customHorizontalMargin || 0;
+
+    const isFocused = i === inputValue.length;
 
     const isPlaceholderPopulated = i < inputValue.length;
 
@@ -59,11 +61,11 @@ const InputPlaceHolder: React.FunctionComponent<Props> = (props: Props) => {
           />
         ) : (
           <Baseline
-            color={inactiveColor}
+            color={isFocused && focusedColor ? focusedColor : inactiveColor}
             scalableDimension={scalableDimension}
           />
         )}
-        {i < digits && <HSpacer size={16} />}
+        {i < digits && <HSpacer size={8} />}
       </React.Fragment>
     );
   };

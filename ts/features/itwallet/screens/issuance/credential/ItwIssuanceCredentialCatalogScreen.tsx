@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { FlatList, SafeAreaView, View } from "react-native";
 import {
   Badge,
+  Body,
   H2,
   IOStyles,
   Icon,
@@ -9,13 +10,8 @@ import {
 } from "@pagopa/io-app-design-system";
 import { useNavigation } from "@react-navigation/native";
 import * as pot from "@pagopa/ts-commons/lib/pot";
-import ItwSearchBar from "../../../components/ItwSearchBar";
 import I18n from "../../../../../i18n";
-import {
-  getCredentialsCatalog,
-  CredentialCatalogAvailableItem,
-  CredentialCatalogItem
-} from "../../../utils/itwMocksUtils";
+import { CredentialCatalogAvailableItem } from "../../../utils/itwMocksUtils";
 import ListItemLoadingItw from "../../../components/ListItems/ListItemLoadingItw";
 import { IOStackNavigationProp } from "../../../../../navigation/params/AppParamsList";
 import { ItwParamsList } from "../../../navigation/ItwParamsList";
@@ -24,6 +20,7 @@ import { useIODispatch, useIOSelector } from "../../../../../store/hooks";
 import { itwIssuanceCredentialChecksSelector } from "../../../store/reducers/itwIssuanceCredentialReducer";
 import { itwIssuanceCredentialChecks } from "../../../store/actions/itwIssuanceCredentialActions";
 import { useHeaderSecondLevel } from "../../../../../hooks/useHeaderSecondLevel";
+import { selectExistingCredentials } from "../../../store/reducers/itwPersistedCredentialsReducer";
 
 const NONE_LOADING = -1;
 
@@ -35,7 +32,7 @@ const ItwIssuanceCredentialCatalogScreen = () => {
   const navigation = useNavigation<IOStackNavigationProp<ItwParamsList>>();
   const preliminaryChecks = useIOSelector(itwIssuanceCredentialChecksSelector);
   const [loadingIndex, setLoadingIndex] = React.useState<number>(NONE_LOADING);
-  const catalog = getCredentialsCatalog();
+  const currentCatalog = useIOSelector(selectExistingCredentials);
 
   useHeaderSecondLevel({
     title: "",
@@ -88,23 +85,23 @@ const ItwIssuanceCredentialCatalogScreen = () => {
     loading = false,
     index
   }: {
-    catalogItem: CredentialCatalogItem;
+    catalogItem: CredentialCatalogAvailableItem;
     loading: boolean;
     index: number;
   }) => (
     <>
       <ListItemLoadingItw
         onPress={() =>
-          !catalogItem.incoming && onCredentialSelect({ ...catalogItem, index })
+          !catalogItem.isActive && onCredentialSelect({ ...catalogItem, index })
         }
         accessibilityLabel={catalogItem.title}
         title={catalogItem.title}
         icon={catalogItem.icon}
         rightNode={
-          catalogItem.incoming ? (
+          catalogItem.isActive ? (
             <Badge
               text={I18n.t(
-                "features.itWallet.issuing.credentialsCatalogScreen.incomingFeature"
+                "features.itWallet.issuing.credentialsCatalogScreen.alreadyRegistered"
               )}
               variant="success"
             />
@@ -126,10 +123,22 @@ const ItwIssuanceCredentialCatalogScreen = () => {
         </H2>
         <View style={IOStyles.flex}>
           <VSpacer />
-          <ItwSearchBar />
+          <View style={IOStyles.rowSpaceBetween}>
+            <Body>
+              {I18n.t(
+                "features.itWallet.issuing.credentialsCatalogScreen.subTitle"
+              )}
+            </Body>
+            <Badge
+              text={I18n.t(
+                "features.itWallet.issuing.credentialsCatalogScreen.walletStatus"
+              )}
+              variant="blue"
+            />
+          </View>
           <VSpacer />
           <FlatList
-            data={catalog}
+            data={currentCatalog}
             renderItem={({ item, index }) => (
               <CatalogItem
                 index={index}

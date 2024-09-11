@@ -1,11 +1,15 @@
 import { getType } from "typesafe-actions";
 import * as O from "fp-ts/lib/Option";
+import { createSelector } from "reselect";
 import { Action } from "../../../../store/actions/types";
 import { GlobalState } from "../../../../store/reducers/types";
 import { itwPersistedCredentialsStore } from "../actions/itwPersistedCredentialsActions";
 import { StoredCredential } from "../../utils/itwTypesUtils";
 import { itwLifecycleOperational } from "../actions/itwLifecycleActions";
-import { CredentialType } from "../../utils/itwMocksUtils";
+import {
+  CredentialType,
+  getCredentialsCatalog
+} from "../../utils/itwMocksUtils";
 
 export type ItwPersistedCredentialsState = {
   pid: O.Option<StoredCredential>;
@@ -76,5 +80,22 @@ export const itwPersistedCredentialsValuePidSelector = (state: GlobalState) =>
  */
 export const itwPersistedCredentialsValueSelector = (state: GlobalState) =>
   state.features.itWallet.credentials.credentials;
+
+/**
+ * Selects the credentials stored in the wallet.
+ */
+export const selectExistingCredentials = createSelector(
+  itwPersistedCredentialsValueSelector,
+  itwPersistedCredentialsValuePidSelector,
+  (storedCredentials, pid) => {
+    const credentialsList = [...storedCredentials, pid];
+    return getCredentialsCatalog().map(current => {
+      const found = credentialsList
+        .filter(O.isSome)
+        .find(e => e.value.credentialType === current.type);
+      return { ...current, isActive: !!found };
+    });
+  }
+);
 
 export default reducer;
