@@ -1,5 +1,5 @@
 import { PidData } from "@pagopa/io-react-native-cie-pid";
-import { IOIcons } from "@pagopa/io-app-design-system";
+import { IOColors, IOIcons } from "@pagopa/io-app-design-system";
 import I18n from "../../../i18n";
 import { BulletItem } from "../components/ItwBulletList";
 import { ItwOptionalClaimItem } from "../components/ItwOptionalClaimsList";
@@ -47,12 +47,13 @@ export enum CredentialType {
 }
 
 export type CredentialCatalogDisplay = {
-  textColor: "black" | "white";
+  textColor: ReturnType<typeof getColorFromCredentialType>;
   title: string;
   icon?: IOIcons;
   firstLine?: Array<string>;
   secondLine?: Array<string>;
   order?: Array<string>;
+  isActive?: boolean;
 };
 
 // A credential shown in the catalog but yet to be requested
@@ -89,80 +90,81 @@ export type PidCredentialCatalogItem = {
  * firstLine and secondLine are used to display the credential attributes in the credential card.
  * The order parameter is used to display the attributes in the correct order.
  */
-export const getCredentialsCatalog = (): Array<CredentialCatalogItem> => [
-  {
-    type: CredentialType.EUROPEAN_DISABILITY_CARD,
-    issuerUrl: walletCredentialProviderUrl,
-    title: I18n.t(
-      "features.itWallet.verifiableCredentials.type.disabilityCard"
-    ),
-    icon: "disabilityCard",
-    incoming: false,
-    textColor: "black",
-    firstLine: ["given_name", "family_name"],
-    secondLine: ["serial_number"],
-    order: [
-      "given_name",
-      "family_name",
-      "birthdate",
-      "accompanying_person_right",
-      "expiration_date",
-      "fiscal_code",
-      "serial_number",
-      "evidence"
-    ]
-  },
-  {
-    type: CredentialType.EUROPEAN_HEALTH_INSURANCE_CARD,
-    issuerUrl: walletCredentialProviderUrl,
-    incoming: false,
-    title: I18n.t("features.itWallet.verifiableCredentials.type.healthCard"),
-    icon: "healthCard",
-    textColor: "black",
-    firstLine: ["given_name", "family_name"],
-    secondLine: ["fiscal_code"],
-    order: [
-      "given_name",
-      "family_name",
-      "birthdate",
-      "place_of_birth",
-      "sex",
-      "fiscal_code",
-      "expiry_date",
-      "province",
-      "nation",
-      "institution_number_team",
-      "document_number_team",
-      "evidence"
-    ]
-  },
-  {
-    type: CredentialType.DRIVING_LICENSE,
-    issuerUrl: walletCredentialProviderUrl,
-    title: I18n.t(
-      "features.itWallet.verifiableCredentials.type.drivingLicense"
-    ),
-    icon: "driverLicense",
-    incoming: false,
-    textColor: "black",
-    firstLine: ["given_name", "family_name"],
-    secondLine: ["document_number"],
-    order: [
-      "given_name",
-      "family_name",
-      "birthdate",
-      "issue_date",
-      "expiry_date",
-      "issuing_country",
-      "issuing_authority",
-      "document_number",
-      "un_distinguishing_sign",
-      "portrait",
-      "driving_privileges",
-      "evidence"
-    ]
-  }
-];
+export const getCredentialsCatalog =
+  (): Array<CredentialCatalogAvailableItem> => [
+    {
+      type: CredentialType.PID,
+      issuerUrl: walletCredentialProviderUrl,
+      title: I18n.t(
+        "features.itWallet.verifiableCredentials.type.digitalCredential"
+      ),
+      icon: "fingerprint",
+      incoming: false,
+      textColor: "black",
+      firstLine: ["given_name", "family_name"],
+      secondLine: ["serial_number"],
+      order: [
+        "given_name",
+        "family_name",
+        "birthdate",
+        "accompanying_person_right",
+        "expiration_date",
+        "fiscal_code",
+        "serial_number",
+        "evidence"
+      ]
+    },
+    {
+      type: CredentialType.DRIVING_LICENSE,
+      issuerUrl: walletCredentialProviderUrl,
+      title: I18n.t(
+        "features.itWallet.verifiableCredentials.type.drivingLicense"
+      ),
+      icon: "driverLicense",
+      incoming: false,
+      textColor: "black",
+      firstLine: ["given_name", "family_name"],
+      secondLine: ["document_number"],
+      order: [
+        "given_name",
+        "family_name",
+        "birthdate",
+        "issue_date",
+        "expiry_date",
+        "issuing_country",
+        "issuing_authority",
+        "document_number",
+        "un_distinguishing_sign",
+        "portrait",
+        "driving_privileges",
+        "evidence"
+      ]
+    },
+    {
+      type: CredentialType.EUROPEAN_HEALTH_INSURANCE_CARD,
+      issuerUrl: walletCredentialProviderUrl,
+      incoming: false,
+      title: I18n.t("features.itWallet.verifiableCredentials.type.healthCard"),
+      icon: "healthCard",
+      textColor: "black",
+      firstLine: ["given_name", "family_name"],
+      secondLine: ["fiscal_code"],
+      order: [
+        "given_name",
+        "family_name",
+        "birthdate",
+        "place_of_birth",
+        "sex",
+        "fiscal_code",
+        "expiry_date",
+        "province",
+        "nation",
+        "institution_number_team",
+        "document_number_team",
+        "evidence"
+      ]
+    }
+  ];
 
 /**
  * Hard coded display feature for PID
@@ -198,15 +200,54 @@ export const getPidCredentialCatalogItem = (): PidCredentialCatalogItem => ({
 export const getImageFromCredentialType = (type: string) => {
   switch (type) {
     case CredentialType.EUROPEAN_DISABILITY_CARD:
-      return require("../assets/img/credentials/cards/europeanDisabilityCardFront.png");
+      return require("../../../../img/features/itwallet/cards/dc.png");
     case CredentialType.EUROPEAN_HEALTH_INSURANCE_CARD:
-      return require("../assets/img/credentials/cards/europeanHealthInsuranceCardFront.png");
+      return require("../../../../img/features/itwallet/cards/ts.png");
     case CredentialType.PID:
-      return require("../assets/img/credentials/cards/pidFront.png");
+      return require("../../../../img/features/itwallet/cards/eid.png");
     case CredentialType.DRIVING_LICENSE:
-      return require("../assets/img/credentials/cards/drivingLicenseFront.png");
+      return require("../../../../img/features/itwallet/cards/mdl.png");
     default:
       return require("../assets/img/credentials/cards/default.png");
+  }
+};
+/**
+ * Returns the mocked text color for the credential.
+ * @param type - the credential type
+ * @returns the mocked text color.
+ */
+export const getColorFromCredentialType = (type: string) => {
+  switch (type) {
+    case CredentialType.EUROPEAN_DISABILITY_CARD: // TODO[EUDIW-58] -> add right color
+      return "black";
+    case CredentialType.EUROPEAN_HEALTH_INSURANCE_CARD: // TODO[EUDIW-58] -> add right color
+      return "black";
+    case CredentialType.PID: // TODO[EUDIW-58] -> missing color in design system
+      return "bluegreyDark";
+    case CredentialType.DRIVING_LICENSE: // TODO[EUDIW-58] ->  missing color in design system
+      return "antiqueFuchsia";
+    default:
+      return "white";
+  }
+};
+
+/**
+ * Returns the mocked background color for the credential.
+ * @param type - the credential type
+ * @returns the mocked background color.
+ */
+export const getBackgroundFromCredentialType = (type: string) => {
+  switch (type) {
+    case CredentialType.EUROPEAN_DISABILITY_CARD: // TODO[EUDIW-58] -> add right color
+      return IOColors["blueItalia-600"];
+    case CredentialType.EUROPEAN_HEALTH_INSURANCE_CARD: // TODO[EUDIW-58] -> add right color
+      return IOColors["blueItalia-600"];
+    case CredentialType.PID:
+      return IOColors["blueItalia-600"];
+    case CredentialType.DRIVING_LICENSE:
+      return IOColors.antiqueFuchsia;
+    default:
+      return IOColors["blueItalia-600"];
   }
 };
 

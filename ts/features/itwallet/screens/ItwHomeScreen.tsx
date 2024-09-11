@@ -72,7 +72,8 @@ const ItwHomeScreen = () => {
           accessibilityRole="button"
           onPress={() =>
             navigation.navigate(ITW_ROUTES.MAIN, {
-              screen: ITW_ROUTES.PRESENTATION.PID.DETAILS
+              screen: ITW_ROUTES.PRESENTATION.CREDENTIAL.DETAILS,
+              params: { credential: pid }
             })
           }
         >

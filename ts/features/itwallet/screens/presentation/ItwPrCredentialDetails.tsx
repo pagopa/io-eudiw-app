@@ -1,22 +1,19 @@
 import React from "react";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import {
-  Banner,
-  BlockButtonProps,
-  FooterWithButtons,
-  VSpacer,
-  IOStyles
-} from "@pagopa/io-app-design-system";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { ContentWrapper, IOVisualCostants } from "@pagopa/io-app-design-system";
 import { ScrollView } from "react-native-gesture-handler";
-import { SafeAreaView, View } from "react-native";
-import { IOStackNavigationProp } from "../../../../navigation/params/AppParamsList";
-import I18n from "../../../../i18n";
+import { StyleSheet, View } from "react-native";
 import { ItwParamsList } from "../../navigation/ItwParamsList";
 import ItwCredentialClaimsList from "../../components/ItwCredentialClaimsList";
-import ItwClaimsWrapper from "../../components/ItwClaimsWrapper";
-import { ITW_ROUTES } from "../../navigation/ItwRoutes";
 import { StoredCredential } from "../../utils/itwTypesUtils";
 import { useHeaderSecondLevel } from "../../../../hooks/useHeaderSecondLevel";
+import FocusAwareStatusBar from "../../../../components/ui/FocusAwareStatusBar";
+import ItwCredentialCard from "../../components/ItwCredentialCard";
+import { ItwPresentationDetailFooter } from "../../components/ItwPresentationDetailFooter";
+import { getBackgroundFromCredentialType } from "../../utils/itwMocksUtils";
+
+// TODO: use the real credential update time
+const today = new Date();
 
 export type ItwPrCredentialDetailsScreenNavigationParams = {
   credential: StoredCredential;
@@ -32,70 +29,44 @@ type ItwCredentialDetailscreenRouteProps = RouteProp<
  */
 const ItwPrCredentialDetailsScreen = () => {
   const route = useRoute<ItwCredentialDetailscreenRouteProps>();
-  const navigation = useNavigation<IOStackNavigationProp<ItwParamsList>>();
   const { credential } = route.params;
-  const bannerViewRef = React.createRef<View>();
-  const spacerSize = 32;
-
-  useHeaderSecondLevel({
-    title: "",
-    supportRequest: true
-  });
 
   /**
    * Content view which asks the user to confirm the issuance of the credential.
    * @param data - the issuance result data of the credential used to display the credential.
    */
   const ContentView = ({ data }: { data: StoredCredential }) => {
-    const presentationButton: BlockButtonProps = {
-      type: "Solid",
-      buttonProps: {
-        label: I18n.t(
-          "features.itWallet.presentation.credentialDetails.buttons.qrCode"
-        ),
-        accessibilityLabel: I18n.t(
-          "features.itWallet.presentation.credentialDetails.buttons.qrCode"
-        ),
-        onPress: () =>
-          navigation.navigate(ITW_ROUTES.PRESENTATION.PROXIMITY.QRCODE)
-      }
-    };
+    const themeColor = getBackgroundFromCredentialType(data.credentialType);
 
+    useHeaderSecondLevel({
+      title: "",
+      supportRequest: true,
+      variant: "contrast",
+      backgroundColor: themeColor
+    });
     return (
-      <SafeAreaView style={{ ...IOStyles.flex }}>
-        <ScrollView>
-          <View style={IOStyles.horizontalContentPadding}>
-            <ItwClaimsWrapper
-              displayData={data.displayData}
+      <>
+        <FocusAwareStatusBar
+          backgroundColor={themeColor}
+          barStyle="light-content"
+        />
+        <ScrollView contentContainerStyle={{ paddingBottom: 16 }}>
+          <View style={styles.cardContainer}>
+            <ItwCredentialCard
+              parsedCredential={data.parsedCredential}
+              display={data.displayData}
               type={data.credentialType}
-            >
-              <ItwCredentialClaimsList data={data} />
-            </ItwClaimsWrapper>
-            <VSpacer size={spacerSize} />
-            <Banner
-              testID={"ItwBannerTestID"}
-              viewRef={bannerViewRef}
-              color={"neutral"}
-              size="big"
-              title={I18n.t(
-                "features.itWallet.issuing.credentialPreviewScreen.banner.title"
-              )}
-              content={I18n.t(
-                "features.itWallet.issuing.credentialPreviewScreen.banner.content"
-              )}
-              pictogramName={"security"}
-              action={I18n.t(
-                "features.itWallet.issuing.credentialPreviewScreen.banner.actionTitle"
-              )}
-              onPress={() =>
-                navigation.navigate(ITW_ROUTES.GENERIC.NOT_AVAILABLE)
-              }
+            />
+            <View
+              style={[styles.cardBackdrop, { backgroundColor: themeColor }]}
             />
           </View>
-          <VSpacer size={spacerSize} />
+          <ContentWrapper>
+            <ItwCredentialClaimsList data={data} />
+            <ItwPresentationDetailFooter lastUpdateTime={today} />
+          </ContentWrapper>
         </ScrollView>
-        <FooterWithButtons type={"SingleButton"} primary={presentationButton} />
-      </SafeAreaView>
+      </>
     );
   };
 
@@ -103,3 +74,18 @@ const ItwPrCredentialDetailsScreen = () => {
 };
 
 export default ItwPrCredentialDetailsScreen;
+
+const styles = StyleSheet.create({
+  cardContainer: {
+    position: "relative",
+    paddingHorizontal: IOVisualCostants.appMarginDefault
+  },
+  cardBackdrop: {
+    height: "200%", // Twice the card in order to avoid the white background when the scrollview bounces
+    position: "absolute",
+    top: "-130%", // Offset by the card height + a 30%
+    right: 0,
+    left: 0,
+    zIndex: -1
+  }
+});

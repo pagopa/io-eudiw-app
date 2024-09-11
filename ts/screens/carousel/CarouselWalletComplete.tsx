@@ -31,7 +31,7 @@ const CarouselWalletCompleteScreen = () => {
   }, [navigation]);
 
   return (
-    <SafeAreaView style={IOStyles.flex}>
+    <SafeAreaView style={styles.wrapper}>
       <View
         style={[IOStyles.alignCenter, IOStyles.flex, IOStyles.centerJustified]}
       >
@@ -72,6 +72,10 @@ const CarouselWalletCompleteScreen = () => {
 export default CarouselWalletCompleteScreen;
 
 const styles = StyleSheet.create({
+  wrapper: {
+    ...IOStyles.flex,
+    paddingVertical: 16
+  },
   footer: { ...IOStyles.horizontalContentPadding, rowGap: 16 },
   text: { textAlign: "center" }
 });

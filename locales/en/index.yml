@@ -177,9 +177,9 @@ features:
     title: "IT Wallet"
     tos: "By continuing, you accept the [Terms and conditions of use]() of the service and confirm that you have read the [Privacy Policy]() of {{relayingParty}}."
     actionBanner:
-      title: "Novità IT Wallet"
-      description: "Starting today, you can collect your digital credentials (such as Driver's License, Health Card, etc.) and access online services with IT Wallet."
-      action: "Enable IT Wallet"
+      title: "I tuoi documenti digitali sempre con te!"
+      description: "Attiva il Wallet e porta sempre con te la tua identità digitale e i tuoi documenti personali."
+      action: "Start"
       hideLabel: "Hide this banner"
     innerActionBanner: 
       title: "Digital credential news"
@@ -187,11 +187,10 @@ features:
       action: "Enable IT Wallet"
       hideLabel: "Hide this banner"
     activationScreen:
-      intro: "## IT Wallet: what it is and how it works\n\nIT Wallet is a feature that allows you to add your digital identity to the IO Wallet, i.e. the **set of personal data that allows you to authenticate yourself online**, and the your personal documents, such as your driving license, health card and European Disability Card."
-      subContentOne: "###### Online and live\n\nUse your digital identity to **access online services, both public and private**. Use documents to **share the data they contain with others**, online and live, whenever you need it."
-      subContentTwo: "###### Easy to activate\n\nYou will need the **Electronic Identity Card (CIE) and its PIN**. Your CIE data will be part of your digital identity, the first document in your IT Wallet."
-      cancel: "Not now"
-      confirm: "Activate IT Wallet"
+      intro: "## Attiva il Wallet"
+      subContentOne: "###### Cos’è e come funziona\n\nWallet ti permette di salvare e portare sempre con te la versione digitale della tua **Identità** e **di alcuni dei documenti fisici** che già possiedi"
+      subContentTwo: "###### È facile e veloce\n\nPotrai autenticarti in Italia e all’estero a molti servizi digitali, o verificare in presenza le tue attestazioni semplicemente scansionando il codice QR abbinato alle versioni digitali dei tuoi documenti."
+      confirm: "Continua"
     homeScreen:
       categories: 
         any: "Any"
@@ -207,10 +206,11 @@ features:
           confirm: "Confirm reset"
           cancel: "Cancel"
       buttons:
-        addCredential: "Add credential"
+        addCredential: "Add"
     infoAuthScreen:
-      title: "Let's begin!"
-      subTitle: "Get your CIE and its PIN."
+      title: "Attiva il Wallet con CIE + PIN"
+      subTitle: "Assicurati di avere la tua Carta di identità eletrtonica (CE) e il suo codice di 8 cifre."
+      start: "Inizia"
       readMoreUrl: "https://www.cartaidentita.interno.gov.it/"
       noCieInfo: "Don't you have the CIE?"
       errors:
@@ -260,10 +260,10 @@ features:
         title: "I am loading the data from the Ministry of the Interior"
         subtitle: "Wait a few seconds"
       pidPreviewScreen: 
-        title: "Do you want to add this data to the IT Wallet?"
+        title: "{{credentialName}}: here the preview"
         checkNotice: "Verify that the following data is correct."
         buttons:
-          add: "Add"
+          add: "Add to Wallet"
           cancel: "Cancel"
         banner:
           title: "Something doesn't add up?"
@@ -284,12 +284,15 @@ features:
           title: "I'm activating your IT Wallet"
           subtitle: "Wait a few seconds"
         typ:
-          title: "IT Wallet is active!"
-          content: "Go to Wallet: you can already add other cards and use your digital identity to access online services."
+          title: "Wallet is active!"
+          content: "Now you can add other cards and use your digital identity to access online services."
           button: "Go to Wallet"
       credentialsCatalogScreen:
-        title: "Add more credentials"
+        title: "Cosa vuoi aggiungere al Wallet?"
+        subTitle: "Wallet"
+        walletStatus: "Attivo"
         incomingFeature: "Coming soon"
+        alreadyRegistered: "Already existing"
       credentialsChecksScreen:
         loading:
           title: "We are performing some security checks"
@@ -320,7 +323,7 @@ features:
             secondBodyContent: "App IO allows the sharing of your data only with verified bodies registered on the lists that guarantee its reliability."
         tos: "For more information, read the [Privacy Policy](https://io.italia.it/privacy-policy/) and the [Terms and Conditions](https://io.italia.it/privacy-policy/)"
       credentialPreviewScreen:
-        title: "Here's a preview of your credential"
+        title: "We are adding the following data to the Wallet:"
         subtitle: "Before adding it, check if the data is correct."
         banner:
           title: "Something doesn't add up?"
@@ -340,6 +343,10 @@ features:
       credentialDetails: 
         buttons: 
           qrCode: "Show QR code"
+        lastUpdated: "Last updated on {{lastUpdateTime}}"
+        actions:
+          removeFromWallet: "Remove from Wallet"
+          requestAssistance: "Something wrong? Contact {{authSource}}"
       pidAttributesScreen: 
         headerTitle: "Data presentation"
         title: "Do you confirm this data?"
