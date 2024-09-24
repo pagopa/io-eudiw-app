@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 import { IOColors, TabNavigation, TabItem } from "@pagopa/io-app-design-system";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useIsFocused } from "@react-navigation/native";
 import {
   ContextualHelpProps,
@@ -78,7 +77,6 @@ const BarcodeScanBaseScreenComponent = ({
   contextualHelpMarkdown
 }: Props) => {
   const isFocused = useIsFocused();
-  const insets = useSafeAreaInsets();
 
   const {
     cameraComponent,
@@ -103,7 +101,7 @@ const BarcodeScanBaseScreenComponent = ({
   }, [openCameraSettings]);
 
   const cameraView = React.useMemo(() => {
-    if (cameraPermissionStatus === "authorized") {
+    if (cameraPermissionStatus === "granted") {
       return cameraComponent;
     }
     if (cameraPermissionStatus === "not-determined") {
@@ -151,7 +149,7 @@ const BarcodeScanBaseScreenComponent = ({
   }, [toggleTorch]);
 
   const shouldDisplayTorchButton =
-    cameraPermissionStatus === "authorized" && hasTorch;
+    cameraPermissionStatus === "granted" && hasTorch;
 
   useHeaderSecondLevel({
     title: "",
