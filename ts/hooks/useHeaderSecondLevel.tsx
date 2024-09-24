@@ -152,6 +152,8 @@ export const useHeaderSecondLevel = ({
     thirdAction
   ]);
 
+  const animatedRef = React.useRef();
+
   useLayoutEffect(() => {
     navigation.setOptions({
       header: () => (
@@ -161,6 +163,8 @@ export const useHeaderSecondLevel = ({
           variant={variant}
           backgroundColor={backgroundColor}
           {...headerComponentProps}
+          animatedRef={animatedRef}
+          enableDiscreteTransition
         />
       ),
       headerShown,
