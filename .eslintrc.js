@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   extends: [
-    "@react-native-community",
+    "@react-native",
     "plugin:react-native-a11y/all",
     "plugin:import/recommended",
     "plugin:import/typescript"

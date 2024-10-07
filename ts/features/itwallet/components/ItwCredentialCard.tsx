@@ -138,6 +138,6 @@ const styles = StyleSheet.create({
   },
   titleText: {
     marginTop: TITLE_MARGIN_TOP,
-    colors: IOColors.white
+    color: IOColors.white
   }
 });
