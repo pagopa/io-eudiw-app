@@ -29,7 +29,7 @@ import {
 } from "react-native";
 import { easeGradient } from "react-native-easing-gradient";
 import LinearGradient from "react-native-linear-gradient";
-// eslint-disable-next-line import/default
+
 import Animated, {
   Easing,
   Extrapolate,
