@@ -2001,7 +2001,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@pagopa/io-app-design-system@^1.39.4":
+"@pagopa/io-app-design-system@1.46.2":
   version "1.46.2"
   resolved "https://registry.yarnpkg.com/@pagopa/io-app-design-system/-/io-app-design-system-1.46.2.tgz#c8c3a122a318e3843b23e82c0a77d1bbc51df7d5"
   integrity sha512-ePQfgzS/HcWseeVSHRGFCRmM/p3sEppLlvrDQjw/wbVXGvCX/AX+syESX9asU/QPENjwKh6FuB//5pcx6qQoig==
