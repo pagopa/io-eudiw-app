@@ -22,8 +22,9 @@ import {
   itwPersistedCredentialsValueSelector
 } from "../store/reducers/itwPersistedCredentialsReducer";
 import {
+  DPOP_KEYTAG,
   ITW_PID_KEY_TAG,
-  ITW_WIA_KEY_TAG,
+  WIA_KEYTAG,
   getOrGenerateCyptoKey
 } from "../utils/itwSecureStorageUtils";
 import {
@@ -33,7 +34,10 @@ import {
 import I18n from "../../../i18n";
 import NavigationService from "../../../navigation/NavigationService";
 import ROUTES from "../../../navigation/routes";
-import { walletProviderBaseUrl } from "../../../config";
+import {
+  itWalletIssuanceRedirectUri,
+  walletProviderBaseUrl
+} from "../../../config";
 import { StoredCredential } from "../utils/itwTypesUtils";
 import { verifyPin } from "../utils/itwSagaUtils";
 import { itwPersistedCredentialsStore } from "../store/actions/itwPersistedCredentialsActions";
@@ -67,17 +71,6 @@ export function* handleItwIssuanceCredentialChecks({
       issuerUrl
     );
 
-    const [credentialConfigurationSchema] =
-      issuerConf.openid_credential_issuer.credentials_supported
-        .filter(_ => _.format === "vc+sd-jwt")
-        .filter(_ => _.credential_definition.type.includes(credentialType))
-        .map(_ => _.credential_definition.credentialSubject);
-    if (!credentialConfigurationSchema) {
-      throw new Error(
-        `Cannot find configuration schema for credential of type ${credentialType}`
-      );
-    }
-
     // check if credential is already in the wallet
     const storedCredentials = yield* select(
       itwPersistedCredentialsValueSelector
@@ -97,7 +90,6 @@ export function* handleItwIssuanceCredentialChecks({
           credentialType,
           issuerUrl,
           displayData,
-          credentialConfigurationSchema,
           issuerConf
         })
       );
@@ -127,13 +119,8 @@ export function* handleItwIssuanceCredential(): SagaIterator {
       throw new Error("Unexpected issuanceData");
     }
 
-    const {
-      credentialType,
-      issuerUrl,
-      issuerConf,
-      credentialConfigurationSchema,
-      displayData
-    } = issuanceData.value;
+    const { credentialType, issuerUrl, issuerConf, displayData } =
+      issuanceData.value;
 
     const [walletInstanceAttestation, wiaCryptoContext] = yield* call(
       getWalletInstanceAttestation
@@ -141,22 +128,23 @@ export function* handleItwIssuanceCredential(): SagaIterator {
     const keyTag = `${Math.random()}`;
     yield* call(getOrGenerateCyptoKey, keyTag);
     const credentialCryptoContext = createCryptoContextFor(keyTag);
-
+    const dPopCryptoContext = yield* call(createCryptoContextFor, DPOP_KEYTAG);
     // start user authz
-    const { requestUri, clientId } = yield* call(
-      Credential.Issuance.startUserAuthorization,
-      issuerConf,
-      credentialType,
-      {
-        walletInstanceAttestation,
-        walletProviderBaseUrl,
-        wiaCryptoContext
-      }
-    );
+    const { clientId, issuerRequestUri, codeVerifier, credentialDefinition } =
+      yield* call(
+        Credential.Issuance.startUserAuthorization,
+        issuerConf,
+        credentialType,
+        {
+          walletInstanceAttestation,
+          redirectUri: walletProviderBaseUrl,
+          wiaCryptoContext
+        }
+      );
 
     const { code } = yield* call(
       completeUserAuthorizationWithPID,
-      requestUri,
+      issuerRequestUri,
       issuerUrl,
       {
         wiaCryptoContext,
@@ -165,14 +153,17 @@ export function* handleItwIssuanceCredential(): SagaIterator {
     );
 
     // access authz
-    const { accessToken, nonce } = yield* call(
+    const { accessToken } = yield* call(
       Credential.Issuance.authorizeAccess,
       issuerConf,
       code,
       clientId,
+      itWalletIssuanceRedirectUri,
+      codeVerifier,
       {
         walletInstanceAttestation,
-        walletProviderBaseUrl
+        wiaCryptoContext,
+        dPopCryptoContext
       }
     );
 
@@ -181,12 +172,10 @@ export function* handleItwIssuanceCredential(): SagaIterator {
       Credential.Issuance.obtainCredential,
       issuerConf,
       accessToken,
-      nonce,
       clientId,
-      credentialType,
-      "vc+sd-jwt",
+      credentialDefinition,
       {
-        walletProviderBaseUrl,
+        dPopCryptoContext,
         credentialCryptoContext
       }
     );
@@ -206,7 +195,6 @@ export function* handleItwIssuanceCredential(): SagaIterator {
         credential,
         format,
         parsedCredential,
-        credentialConfigurationSchema,
         credentialType,
         displayData
       })
@@ -241,7 +229,9 @@ function* completeUserAuthorizationWithPID(
   }: { wiaCryptoContext: CryptoContext; walletInstanceAttestation: string }
 ): Iterator<
   any,
-  Awaited<ReturnType<Credential.Issuance.CompleteUserAuthorization>>
+  Awaited<
+    ReturnType<Credential.Issuance.CompleteUserAuthorizationWithFormPostJwtMode>
+  >
 > {
   const { rpConf } = yield* call(
     Credential.Presentation.evaluateRelyingPartyTrust,
@@ -269,7 +259,7 @@ function* completeUserAuthorizationWithPID(
   ];
 
   // access authz
-  const { response_code } = yield* call(
+  const { response_code, status } = yield* call(
     Credential.Presentation.sendAuthorizationResponse,
     requestObject,
     rpConf,
@@ -285,7 +275,7 @@ function* completeUserAuthorizationWithPID(
     throw new Error(message);
   }
 
-  return { code: response_code };
+  return { code: response_code, state: status };
 }
 
 /**
@@ -305,7 +295,7 @@ function* getWalletInstanceAttestation(): Iterator<
     throw errorOrWia.payload;
   } else if (isActionOf(itwWiaRequest.success, errorOrWia)) {
     const wia = errorOrWia.payload;
-    const wiaCryptoContext = createCryptoContextFor(ITW_WIA_KEY_TAG);
+    const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
     return yield* call(() => [wia, wiaCryptoContext] as const);
   } else {
     throw new Error(`Unexpected action type: ${errorOrWia.type}`);

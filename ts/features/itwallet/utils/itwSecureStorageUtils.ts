@@ -8,7 +8,8 @@ export const ITW_PID_KEY_TAG = "ITW_PID_KEY_TAG";
 /**
  * The key alias used to store the WIA crypto key in the keychain.
  */
-export const ITW_WIA_KEY_TAG = "ITW_WIA_CRYTPO";
+export const WIA_KEYTAG = "WIA_KEYTAG";
+export const DPOP_KEYTAG = "DPOP_KEYTAG";
 
 /**
  * Getter for the public key used to sign the WIA attestation.

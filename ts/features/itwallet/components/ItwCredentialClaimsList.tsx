@@ -102,7 +102,8 @@ const ItwCredentialClaimsList = ({
     if (credentialType === CredentialType.PID) {
       const { sdJwt } = SdJwt.decode(credential, SdJwt.SdJwt4VC);
       const assuranceLevel = mapAssuranceLevel(
-        sdJwt.payload.verified_claims.verification.assurance_level
+        //TODO check if this value is correct --- prev: .verified_claims.verification.assurance_level
+        sdJwt.payload.vct
       );
       return (
         <ListItemInfo

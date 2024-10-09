@@ -43,6 +43,10 @@ export const walletCredentialProviderUrl: string = pipe(
 // IT Wallet Feature Flag
 export const itWalletEnabled = Config.IT_WALLET_ENABLED === "YES";
 
+export const itWalletIssuanceRedirectUri = Config.ITW_ISSUANCE_REDIRECT_URI;
+export const itwGoogleCloudProjectNumber =
+  Config.ITW_GOOGLE_CLOUD_PROJECT_NUMBER;
+
 const DEFAULT_BACKGROUND_ACTIVITY_TIMEOUT_S = 30;
 
 export const backgroundActivityTimeout = pipe(

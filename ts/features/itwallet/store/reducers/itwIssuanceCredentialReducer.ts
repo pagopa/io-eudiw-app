@@ -10,7 +10,6 @@ import {
 } from "../actions/itwIssuanceCredentialActions";
 import { CredentialCatalogDisplay } from "../../utils/itwMocksUtils";
 import {
-  CredentialConfigurationSchema,
   CredentialDefinition,
   IssuerConfiguration,
   StoredCredential
@@ -20,7 +19,6 @@ export type ItwIssuanceCredentialData = {
   credentialType: string;
   issuerUrl: string;
   displayData: CredentialCatalogDisplay;
-  credentialConfigurationSchema: CredentialConfigurationSchema;
   issuerConf: IssuerConfiguration;
 } & CredentialDefinition;
 

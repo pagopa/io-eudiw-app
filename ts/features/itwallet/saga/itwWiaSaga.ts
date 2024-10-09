@@ -14,9 +14,14 @@ import { itwIsCIEAuthenticationSupported } from "../utils/itwCieUtils";
 import { itwWiaRequest } from "../store/actions/itwWiaActions";
 import { walletProviderBaseUrl } from "../../../config";
 import {
-  ITW_WIA_KEY_TAG,
+  WIA_KEYTAG,
   getOrGenerateCyptoKey
 } from "../utils/itwSecureStorageUtils";
+import {
+  ensureIntegrityServiceIsReady,
+  generateIntegrityHardwareKeyTag,
+  getIntegrityContext
+} from "./itwIntegrityUtils";
 
 /**
  * Watcher for the IT wallet instance attestation related sagas.
@@ -45,16 +50,16 @@ export function* handleWiaRequest(): SagaIterator {
         walletProviderBaseUrl
       );
 
-      yield* call(getOrGenerateCyptoKey, ITW_WIA_KEY_TAG);
-      const wiaCryptoContext = yield* call(
-        createCryptoContextFor,
-        ITW_WIA_KEY_TAG
-      );
-      const issuingAttestation = yield* call(
-        WalletInstanceAttestation.getAttestation,
-        { wiaCryptoContext }
-      );
-      const wia = yield* call(issuingAttestation, entityConfiguration);
+      yield* call(getOrGenerateCyptoKey, WIA_KEYTAG);
+      yield* call(ensureIntegrityServiceIsReady);
+      const hardwareKeyTag = yield* call(generateIntegrityHardwareKeyTag);
+      const integrityContext = getIntegrityContext(hardwareKeyTag);
+      const wiaCryptoContext = yield* call(createCryptoContextFor, WIA_KEYTAG);
+      const wia = yield* call(WalletInstanceAttestation.getAttestation, {
+        wiaCryptoContext,
+        integrityContext,
+        walletProviderBaseUrl
+      });
       yield* put(itwWiaRequest.success(wia));
     } catch (e) {
       const { message } = toError(e);

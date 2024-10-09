@@ -10,10 +10,11 @@ import { CommonActions } from "@react-navigation/native";
 import { itwWiaSelector } from "../store/reducers/itwWiaReducer";
 import { ItWalletErrorTypes } from "../utils/itwErrorsUtils";
 import { itwLifecycleValid } from "../store/actions/itwLifecycleActions";
-import { walletProviderBaseUrl } from "../../../config";
+import { itWalletIssuanceRedirectUri } from "../../../config";
 import {
   ITW_PID_KEY_TAG,
-  ITW_WIA_KEY_TAG,
+  WIA_KEYTAG,
+  DPOP_KEYTAG,
   getOrGenerateCyptoKey
 } from "../utils/itwSecureStorageUtils";
 import {
@@ -31,8 +32,12 @@ import { ITW_ROUTES } from "../navigation/ItwRoutes";
  * Waiting for the Issuer to implement CIE authorization
  * TODO: [SIW-630]
  */
-const completeUserAuthorizationWithCIE: Credential.Issuance.CompleteUserAuthorization =
-  async (_, __) => ({ code: "static_code" });
+const completeUserAuthorizationWithCIE: (
+  clientId: string,
+  requestUri: string
+) => Promise<{
+  code: string;
+}> = async (_, __) => ({ code: "static_code" });
 
 /**
  * Watcher for the IT wallet PID related sagas.
@@ -61,9 +66,10 @@ export function* handleItwIssuancePidSaga({
     if (isSome(wiaOption)) {
       const walletInstanceAttestation = wiaOption.value;
 
-      const wiaCryptoContext = yield* call(
+      const wiaCryptoContext = yield* call(createCryptoContextFor, WIA_KEYTAG);
+      const dPopCryptoContext = yield* call(
         createCryptoContextFor,
-        ITW_WIA_KEY_TAG
+        DPOP_KEYTAG
       );
 
       const { issuerConf } = yield* call(
@@ -71,53 +77,38 @@ export function* handleItwIssuancePidSaga({
         issuerUrl
       );
 
-      const [credentialConfigurationSchema] =
-        issuerConf.openid_credential_issuer.credentials_supported
-          .filter(_ => _.format === "vc+sd-jwt")
-          .filter(_ => _.credential_definition.type.includes(type))
-          .map(_ => _.credential_definition.credentialSubject);
-      if (!credentialConfigurationSchema) {
-        throw new Error(
-          `Cannot find configuration schema for credential of type ${type}`
-        );
-      }
-
       // Auth Token request
-      const { clientId, requestUri } = yield* call(
-        Credential.Issuance.startUserAuthorization,
-        issuerConf,
-        type,
-        {
-          walletInstanceAttestation,
-          walletProviderBaseUrl,
-          wiaCryptoContext,
-          additionalParams:
-            // TODO: [SIW-630] do not pass CIE data
-            {
-              birth_date: pidData.birthDate,
-              fiscal_code: pidData.fiscalCode,
-              name: pidData.name,
-              surname: pidData.surname
-            }
-        }
-      );
+      const { clientId, issuerRequestUri, codeVerifier, credentialDefinition } =
+        yield* call(
+          Credential.Issuance.startUserAuthorization,
+          issuerConf,
+          type,
+          {
+            walletInstanceAttestation,
+            redirectUri: itWalletIssuanceRedirectUri,
+            wiaCryptoContext
+          }
+        );
 
       // Perform strong user authorozation to the PID Issuer
       const { code } = yield* call(
         completeUserAuthorizationWithCIE,
-        requestUri,
+        issuerRequestUri,
         clientId
       );
 
       // Authorize the User to access the resource (Credential)
-      const { accessToken, nonce } = yield* call(
+      const { accessToken } = yield* call(
         Credential.Issuance.authorizeAccess,
         issuerConf,
         code,
         clientId,
+        itWalletIssuanceRedirectUri,
+        codeVerifier,
         {
           walletInstanceAttestation,
-          walletProviderBaseUrl
+          wiaCryptoContext,
+          dPopCryptoContext
         }
       );
 
@@ -130,12 +121,10 @@ export function* handleItwIssuancePidSaga({
         Credential.Issuance.obtainCredential,
         issuerConf,
         accessToken,
-        nonce,
         clientId,
-        type,
-        "vc+sd-jwt",
+        credentialDefinition,
         {
-          walletProviderBaseUrl,
+          dPopCryptoContext,
           credentialCryptoContext
         }
       );
@@ -155,7 +144,6 @@ export function* handleItwIssuancePidSaga({
           credential,
           format,
           parsedCredential,
-          credentialConfigurationSchema,
           displayData,
           credentialType: type
         })

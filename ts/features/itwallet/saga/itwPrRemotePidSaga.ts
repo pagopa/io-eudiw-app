@@ -13,10 +13,7 @@ import {
 } from "../store/actions/itwPrRemotePidActions";
 import { itwPrRemotePidInitValueSelector } from "../store/reducers/itwPrRemotePidReducer";
 import { itwPersistedCredentialsValuePidSelector } from "../store/reducers/itwPersistedCredentialsReducer";
-import {
-  ITW_PID_KEY_TAG,
-  ITW_WIA_KEY_TAG
-} from "../utils/itwSecureStorageUtils";
+import { ITW_PID_KEY_TAG, WIA_KEYTAG } from "../utils/itwSecureStorageUtils";
 import { itwWiaSelector } from "../store/reducers/itwWiaReducer";
 import { ItWalletErrorTypes } from "../utils/itwErrorsUtils";
 import { verifyPin } from "../utils/itwSagaUtils";
@@ -67,7 +64,7 @@ export function* handleItwPrRemotePidInitSaga(
     const wia = yield* take(itwWiaRequest.success);
 
     // Create crypto context
-    const wiaCryptoContext = createCryptoContextFor(ITW_WIA_KEY_TAG);
+    const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
 
     // Get entity configuration for RP
     const {

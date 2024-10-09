@@ -65,7 +65,6 @@ export type ClaimDisplayFormat = {
  * If there's no locale that matches the current locale then we take the attribute key as the name.
  * The value is taken from the attribute value.
  * @param parsedCredential - the parsed credential.
- * @param schema - the issuance credentialConfigurationSchema of parsedCredential.
  * @returns the array of {@link ClaimDisplayFormat} of the credential contained in its configuration schema.
  */
 export const parseClaims = (
@@ -75,7 +74,7 @@ export const parseClaims = (
     const attributeName =
       typeof attribute.name === "string"
         ? attribute.name
-        : attribute.name[getClaimsFullLocale()] || key;
+        : attribute?.name?.[getClaimsFullLocale()] || key;
 
     return { label: attributeName, value: attribute.value };
   });
