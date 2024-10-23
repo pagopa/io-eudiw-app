@@ -1,12 +1,22 @@
 import * as React from "react";
-import { StyleSheet, Pressable, SafeAreaView, View, Text } from "react-native";
+import {
+  StyleSheet,
+  Pressable,
+  SafeAreaView,
+  View,
+  Text,
+  TextStyle
+} from "react-native";
 import { useState } from "react";
 import {
   IOColors,
+  IOFontWeight,
   IOStyles,
+  fontWeights,
   hexToRgba,
   makeFontStyleObject
 } from "@pagopa/io-app-design-system";
+import { FontWeight } from "react-native-svg";
 import { getAppVersion } from "../utils/appVersion";
 import { clipboardSetStringWithFeedback } from "../utils/clipboard";
 import { useIOSelector } from "../store/hooks";
@@ -24,14 +34,12 @@ const styles = StyleSheet.create({
     zIndex: 1000
   },
   versionText: {
-    fontSize: 12,
     color: IOColors["grey-850"],
-    ...makeFontStyleObject("Semibold")
+    ...makeFontStyleObject(12, undefined, undefined, "Semibold")
   },
   screenDebugText: {
-    fontSize: 12,
     color: IOColors["grey-850"],
-    ...makeFontStyleObject("Regular")
+    ...makeFontStyleObject(12, undefined, undefined, "Regular")
   },
   versionTextWrapper: {
     display: "flex",

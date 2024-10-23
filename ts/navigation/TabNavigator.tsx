@@ -56,8 +56,7 @@ export const MainTabNavigator = () => {
         screenOptions={{
           headerShown: false,
           tabBarLabelStyle: {
-            fontSize: 10,
-            ...makeFontStyleObject("Regular", false, "ReadexPro")
+            ...makeFontStyleObject(12, "ReadexPro", undefined, "Regular")
           },
           tabBarHideOnKeyboard: true,
           tabBarAllowFontScaling: false,
