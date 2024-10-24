@@ -695,6 +695,7 @@ onboarding:
         step5: Attiva le notifiche
 identification:
   instructions:
+    title: "Autorizza l'operazione"
     unlockCode: codice di sblocco
     unlockCodepPrefix: inserisci il
     fingerprint: impronta

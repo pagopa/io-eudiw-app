@@ -47,9 +47,12 @@ I18n.defaultLocale = localeFallback.locale;
 // Define the supported translations
 // eslint-disable-next-line
 I18n.translations = {
-  it: locales.localeIT,
-  en: locales.localeEN,
-  de: locales.localeDE
+  [localeToPreferredLanguageMapping.get("it") ?? PreferredLanguageEnum.it_IT]:
+    locales.localeIT,
+  [localeToPreferredLanguageMapping.get("en") ?? PreferredLanguageEnum.it_IT]:
+    locales.localeEN,
+  [localeToPreferredLanguageMapping.get("de") ?? PreferredLanguageEnum.it_IT]:
+    locales.localeDE
 };
 
 export const availableTranslations: ReadonlyArray<locales.Locales> =

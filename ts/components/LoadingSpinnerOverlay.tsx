@@ -43,7 +43,8 @@ const LoadingSpinnerOverlay = ({
           caption={
             <View style={styles.textCaption}>
               <Body accessible={true} style={{ textAlign: "center" }}>
-                {loadingCaption || I18n.t("global.remoteStates.wait")}
+                {loadingCaption ||
+                  I18n.t("global.remoteStates.wait", { defaultValue: "..." })}
               </Body>
             </View>
           }

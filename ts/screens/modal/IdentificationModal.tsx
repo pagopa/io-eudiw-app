@@ -229,7 +229,7 @@ const IdentificationModal = () => {
     ? I18n.t("identification.titleValidation")
     : name
     ? I18n.t("identification.title", { name })
-    : "";
+    : I18n.t("identification.instructions.title");
 
   const onPinValidated = useCallback(
     (isValidated: boolean) => {
