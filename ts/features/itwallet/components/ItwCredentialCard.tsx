@@ -1,11 +1,6 @@
 import * as React from "react";
 import { View, Dimensions, Image, StyleSheet } from "react-native";
-import { sequence } from "fp-ts/lib/Array";
-import { sequenceS } from "fp-ts/lib/Apply";
-import * as O from "fp-ts/lib/Option";
-import * as E from "fp-ts/lib/Either";
-import { pipe } from "fp-ts/lib/function";
-import { Body, H6, IOColors } from "@pagopa/io-app-design-system";
+import { H6, IOColors } from "@pagopa/io-app-design-system";
 import customVariables from "../../../theme/variables";
 import {
   CredentialCatalogDisplay,
