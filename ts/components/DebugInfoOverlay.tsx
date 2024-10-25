@@ -35,11 +35,13 @@ const styles = StyleSheet.create({
   },
   versionText: {
     color: IOColors["grey-850"],
-    ...makeFontStyleObject(12, undefined, undefined, "Semibold")
+    fontSize: 10,
+    ...makeFontStyleObject("Semibold")
   },
   screenDebugText: {
     color: IOColors["grey-850"],
-    ...makeFontStyleObject(12, undefined, undefined, "Regular")
+    fontSize: 10,
+    ...makeFontStyleObject("Regular")
   },
   versionTextWrapper: {
     display: "flex",

@@ -13,8 +13,9 @@ const BADGE_SIZE = 20;
 const styles = StyleSheet.create({
   textStyle: {
     color: IOColors.white,
+    fontSize: 10,
     textAlign: "center",
-    ...makeFontStyleObject(12, undefined, undefined, "Bold")
+    ...makeFontStyleObject("Bold")
   },
   badgeStyle: {
     width: BADGE_SIZE,
