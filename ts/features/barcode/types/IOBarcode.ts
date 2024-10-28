@@ -18,3 +18,11 @@ export type IOBarcode = {
 } & DecodedIOBarcode;
 
 export type IOBarcodeOrigin = "camera";
+
+export enum BarcodeFormat {
+  "CODE_128" = "code-128",
+  "CODE_39" = "code-39",
+  "ITF" = "itf",
+  "DATA_MATRIX" = "data-matrix",
+  "QR_CODE" = "qr"
+}
