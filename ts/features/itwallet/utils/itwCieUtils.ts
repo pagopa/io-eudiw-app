@@ -1,16 +1,15 @@
-import cieSdk from "@pagopa/io-react-native-cie-pid";
 import { Platform } from "react-native";
 
-const realIsCIEAuthenticationSupported = cieSdk.isCIEAuthenticationSupported;
+const realIsCIEAuthenticationSupported = true;
 const mockIsCIEAuthenticationSupported = () => Promise.resolve(true);
 
-const realIsNfcEnabled = () => cieSdk.isNFCEnabled();
+const realIsNfcEnabled = () => true;
 const mockIsNfcEnabled = () => Promise.resolve(true);
 
-const realOpenNfcSettings = cieSdk.openNFCSettings;
+const realOpenNfcSettings = true;
 const mockOpenNfcSettings = () => Promise.resolve();
 
-const realLaunchCieID = cieSdk.launchCieID;
+const realLaunchCieID = true;
 const mockLaunchCieID = () => Promise.reject("ops");
 
 const test = Platform.OS !== "android";

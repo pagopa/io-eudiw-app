@@ -6,7 +6,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Alert, BackHandler } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { type Route } from "@react-navigation/core";
-import { PidData } from "@pagopa/io-react-native-cie-pid";
 import WebView from "react-native-webview";
 import { WebViewHttpErrorEvent } from "react-native-webview/lib/WebViewTypes";
 import { FooterWithButtons, VSpacer } from "@pagopa/io-app-design-system";
@@ -19,9 +18,9 @@ import { itwLoginFailure } from "../../../../store/actions/itwIssuancePidCieActi
 import { useIODispatch } from "../../../../../../store/hooks";
 import { useHeaderSecondLevel } from "../../../../../../hooks/useHeaderSecondLevel";
 import { ItwParamsList } from "../../../../navigation/ItwParamsList";
+import { PidData } from "../../../../utils/itwMocksUtils";
 
 export type ItwCieConsentDataUsageScreenNavigationParams = {
-  cieConsentUri: string;
   pidData: PidData;
 };
 

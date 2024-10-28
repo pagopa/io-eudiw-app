@@ -3,10 +3,6 @@
  * TODO: isolate cie event listener as saga
  * TODO: when 100% is reached, the animation end
  */
-import cieManager, {
-  Event as CEvent,
-  CieData
-} from "@pagopa/io-react-native-cie-pid";
 import * as pot from "@pagopa/ts-commons/lib/pot";
 import { Millisecond } from "@pagopa/ts-commons/lib/units";
 import { constNull, pipe } from "fp-ts/lib/function";
@@ -82,44 +78,6 @@ type State = {
   errorMessage?: string;
   isScreenReaderEnabled: boolean;
 };
-
-type setErrorParameter = {
-  eventReason: ItwCieAuthenticationErrorReason;
-  errorDescription?: string;
-  navigation?: () => void;
-};
-
-// A subset of Cie Events (errors) which is of interest to analytics
-const analyticActions = new Map<ItwCieAuthenticationErrorReason, string>([
-  // Reading interrupted before the sdk complete the reading
-  ["Transmission Error", I18n.t("authentication.cie.card.error.onTagLost")],
-  ["ON_TAG_LOST", I18n.t("authentication.cie.card.error.onTagLost")],
-  [
-    "TAG_ERROR_NFC_NOT_SUPPORTED",
-    I18n.t("authentication.cie.card.error.unknownCardContent")
-  ],
-  [
-    "ON_TAG_DISCOVERED_NOT_CIE",
-    I18n.t("authentication.cie.card.error.unknownCardContent")
-  ],
-  ["PIN Locked", I18n.t("authentication.cie.card.error.generic")],
-  ["ON_CARD_PIN_LOCKED", I18n.t("authentication.cie.card.error.generic")],
-  ["ON_PIN_ERROR", I18n.t("authentication.cie.card.error.tryAgain")],
-  ["PIN_INPUT_ERROR", ""],
-  ["CERTIFICATE_EXPIRED", I18n.t("authentication.cie.card.error.generic")],
-  ["CERTIFICATE_REVOKED", I18n.t("authentication.cie.card.error.generic")],
-  ["AUTHENTICATION_ERROR", I18n.t("authentication.cie.card.error.generic")],
-  [
-    "EXTENDED_APDU_NOT_SUPPORTED",
-    I18n.t("authentication.cie.nfc.apduNotSupported")
-  ],
-  [
-    "ON_NO_INTERNET_CONNECTION",
-    I18n.t("authentication.cie.card.error.tryAgain")
-  ],
-  ["STOP_NFC_ERROR", ""],
-  ["START_NFC_ERROR", ""]
-]);
 
 // the timeout we sleep until move to consent form screen when authentication goes well
 const WAIT_TIMEOUT_NAVIGATION = 1700 as Millisecond;
@@ -208,40 +166,6 @@ class ItwCieCardReaderScreen extends React.PureComponent<Props, State> {
   get ciePin(): string {
     return this.props.route.params.ciePin;
   }
-
-  private setError = ({
-    eventReason,
-    errorDescription,
-    navigation
-  }: setErrorParameter) => {
-    const cieDescription =
-      errorDescription ??
-      pipe(
-        analyticActions.get(eventReason),
-        O.fromNullable,
-        O.getOrElse(() => "")
-      );
-
-    this.dispatchAnalyticEvent({
-      reason: eventReason,
-      cieDescription
-    });
-
-    this.setState(
-      {
-        readingState: ReadingState.error,
-        errorMessage: cieDescription
-      },
-      () => {
-        Vibration.vibrate(VIBRATION);
-        navigation?.();
-      }
-    );
-  };
-
-  private dispatchAnalyticEvent = (error: ItwCieAuthenticationErrorPayload) => {
-    this.props.dispatch(itwCieAuthenticationError(error));
-  };
 
   private handleCieEvent = async (event: CEvent) => {
     switch (event.event) {

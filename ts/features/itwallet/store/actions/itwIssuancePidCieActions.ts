@@ -1,4 +1,3 @@
-import { Event as CEvent } from "@pagopa/io-react-native-cie-pid";
 /**
  * Action types and action creator related to authentication by CIE
  */
@@ -51,7 +50,7 @@ export const itwLoginFailure = createStandardAction("ITW_LOGIN_FAILURE")<{
   idp: keyof IdpData | undefined;
 }>();
 
-export type ItwCieAuthenticationErrorReason = CEvent["event"] | "GENERIC";
+export type ItwCieAuthenticationErrorReason = "GENERIC";
 
 export type ItwCieAuthenticationErrorPayload = {
   reason: ItwCieAuthenticationErrorReason;
