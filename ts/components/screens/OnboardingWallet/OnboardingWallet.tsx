@@ -82,7 +82,7 @@ export const OnboardingWallet = () => {
           accessibilityLabel="features.itWallet.onboarding.complete"
           fullWidth={true}
           color={"contrast"}
-          label={I18n.t("features.itWallet.onboarding.complete")}
+          label={I18n.t("features.itWallet.onboarding.next")}
           onPress={skipCarousel}
         />
       </ContentWrapper>

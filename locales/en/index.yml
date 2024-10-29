@@ -284,8 +284,8 @@ features:
           title: "I'm activating your IT Wallet"
           subtitle: "Wait a few seconds"
         typ:
-          title: "Wallet is active!"
-          content: "Now you can add other cards and use your digital identity to access online services."
+          title: "It's all ready!"
+          content: "You can now start adding your documents and accessing online services."
           button: "Go to Wallet"
       credentialsCatalogScreen:
         title: "Cosa vuoi aggiungere al Wallet?"
@@ -413,7 +413,7 @@ features:
         label: "I understand"
     verifiableCredentials:
       type:
-        digitalCredential: "Identità Digitale"
+        digitalCredential: "Digital Identity"
         disabilityCard: "European Disability Card"
         healthCard: "Health Insurance Card"
         drivingLicense: "Driving License"
@@ -461,22 +461,23 @@ features:
         organizationName: "Issuer name not available"
     onboarding:
       skip: Skip
-      complete: Next
+      complete: Start
+      next: Next
       closeApp: Close the app
-      completeTitle: Start using the Wallet
+      completeTitle: Start with Wallet
       completeDescription: |
-        Store your document securely
+        Store your documents securely.
         
-        By pressing **Next** you you declare that you have read and understood the [Privacy Policy](https://io.italia.it/privacy-policy/) and the [Terms and Conditions of use](https://io.italia.it/privacy-policy/)
+        By pressing **Start** you you declare that you have read and understood the [Privacy Policy](https://io.italia.it/privacy-policy/) and the [Terms and Conditions of use](https://io.italia.it/privacy-policy/)
       card1:
-        title: This is the Wallet app!
-        content: Let's see what you can do
+        title: Welcome to the Wallet app!
+        content: Discover what you can do
       card2:
         title: Add your documents
-        content: Save and store the digital version of your documents in the Wallet
+        content: Securely save and store digital versions of your documents
       card3:
-        title: Authenticate with the Wallet
-        content: With this app, present your documents and access online services
+        title: Authenticate with Wallet
+        content: Use this app to present your documents and access online services
 authentication:
   landing:
     expiredCardTitle: The CIE verification failed
@@ -501,7 +502,7 @@ authentication:
         placeholderLabel: PIN of Electronic Identity Card
         label: Insertion field for Electronic Identity Card pins
         hint: Enter the 8 digits pin of your Electronic Identity Card in this field.
-      pinCardTitle: Enter the PIN of your ID Card
+      pinCardTitle: Enter the PIN of the CIE
       pinCardHeader: Login with CIE
       pinCardContent: The PIN code consists of 8 digits. Four digits have been delivered to you at the registry office and another four digits have been sent to your home along with the card. Put them together, in that order, and enter them here please.
       incorrectCiePinTitle: Incorrect PIN, you still have {{remainingCount}} attempts
@@ -621,23 +622,23 @@ onboarding:
       title: Enable biometric recognition
       settings: You can always change your choice in Profile > Security
       body:
-        text: You can use biometric recognition instead of the unlock code. This will allow you to access the app and authorize operations with your face or fingerprint, more quickly and securely
+        text: You can use your face or fingerprint instead of the unlock code. This will allow you to access the app and authorize operations more quickly and securely.
         infoStart: You can use biometric recognition in place of the unlock code. This will let you access the app and authorize operations and payments with your
         biometricType: face or fingerprint
         infoEnd: more quickly and securely.
         enrolledText: The biometric information is stored in your phone's memory. it will not be disclosed in any way to IO systems or stored anywhere else.
         notEnrolled:
-          text: You need to configure this in your device settings.
+          text: To do this, you first need to configure it in your device's system settings.
           label: How to
           step1: 
             label: Step 1
             value: Go to your device settings
           step2: 
             label: Step 2
-            value: Set up face or fingerprint
+            value: Configure the face or fingerprint
           step3: 
             label: Step 3
-            value: Enable it in IO under Profile > Security
+            value: Enable it in Wallet under Profile > Security
     unavailable:
       title: Protect your device
       firstInfoStart: Io ti invia le comunicazioni che ti riguardano
