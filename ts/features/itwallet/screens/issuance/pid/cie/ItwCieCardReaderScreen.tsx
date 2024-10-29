@@ -3,21 +3,18 @@
  * TODO: isolate cie event listener as saga
  * TODO: when 100% is reached, the animation end
  */
-import * as pot from "@pagopa/ts-commons/lib/pot";
 import { Millisecond } from "@pagopa/ts-commons/lib/units";
-import { constNull, pipe } from "fp-ts/lib/function";
-import * as O from "fp-ts/lib/Option";
+import { constNull } from "fp-ts/lib/function";
 import * as React from "react";
 import {
   View,
   AccessibilityInfo,
   Platform,
   StyleSheet,
-  Vibration,
   Text,
-  SafeAreaView
+  SafeAreaView,
+  Pressable
 } from "react-native";
-import { connect } from "react-redux";
 import {
   VSpacer,
   IOColors,
@@ -30,8 +27,6 @@ import {
 } from "@pagopa/io-app-design-system";
 import I18n from "../../../../../../i18n";
 import { IOStackNavigationRouteProps } from "../../../../../../navigation/params/AppParamsList";
-import { ReduxProps } from "../../../../../../store/actions/types";
-import { GlobalState } from "../../../../../../store/reducers/types";
 import { isScreenReaderEnabled } from "../../../../../../utils/accessibility";
 import { isIos } from "../../../../../../utils/platform";
 import { ITW_ROUTES } from "../../../../navigation/ItwRoutes";
@@ -39,14 +34,8 @@ import { ItwParamsList } from "../../../../navigation/ItwParamsList";
 import CieReadingCardAnimation, {
   ReadingState
 } from "../../../../components/cie/CieReadingCardAnimation";
-import {
-  ItwCieAuthenticationErrorPayload,
-  ItwCieAuthenticationErrorReason,
-  itwCieAuthenticationError
-} from "../../../../store/actions/itwIssuancePidCieActions";
-import { itwIsNfcEnabledSelector } from "../../../../store/reducers/itwIssuancePidCieAuthReducer";
-import CieNfcOverlay from "../../../../components/cie/CieNfcOverlay";
 import { useHeaderSecondLevel } from "../../../../../../hooks/useHeaderSecondLevel";
+import { pidDataMock } from "../../../../utils/itwMocksUtils";
 
 export type ItwCieCardReaderScreenNavigationParams = {
   ciePin: string;
@@ -57,7 +46,7 @@ type NavigationProps = IOStackNavigationRouteProps<
   "ITW_ISSUANCE_PID_CIE_CARD_READER_SCREEN"
 >;
 
-type Props = NavigationProps & ReduxProps & ReturnType<typeof mapStateToProps>;
+type Props = NavigationProps;
 
 const styles = StyleSheet.create({
   container: {
@@ -77,12 +66,8 @@ type State = {
   content?: string;
   errorMessage?: string;
   isScreenReaderEnabled: boolean;
+  tapCounter: number;
 };
-
-// the timeout we sleep until move to consent form screen when authentication goes well
-const WAIT_TIMEOUT_NAVIGATION = 1700 as Millisecond;
-const WAIT_TIMEOUT_NAVIGATION_ACCESSIBILITY = 5000 as Millisecond;
-const VIBRATION = 100 as Millisecond;
 
 type TextForState = {
   title: string;
@@ -98,36 +83,18 @@ const getTextForState = (
   const texts: Record<
     ReadingState.waiting_card | ReadingState.error,
     TextForState
-  > = Platform.select({
-    ios: {
-      [ReadingState.waiting_card]: {
-        title: I18n.t("authentication.cie.card.titleiOS"),
-        subtitle: I18n.t("authentication.cie.card.layCardMessageHeaderiOS"),
-        // the native alert hides the screen content and shows a message it self
-        content: ""
-      },
-      [ReadingState.error]: {
-        title: I18n.t("authentication.cie.card.error.readerCardLostTitleiOS"),
-        subtitle: I18n.t(
-          "authentication.cie.card.error.readerCardLostHeaderiOS"
-        ),
-        // the native alert hides the screen content and shows a message it self
-        content: ""
-      }
+  > = {
+    [ReadingState.waiting_card]: {
+      title: I18n.t("features.itWallet.issuing.cie.waiting.title"),
+      subtitle: I18n.t("authentication.cie.card.layCardMessageHeader"),
+      content: I18n.t("features.itWallet.issuing.cie.waiting.content")
     },
-    default: {
-      [ReadingState.waiting_card]: {
-        title: I18n.t("features.itWallet.issuing.cie.waiting.title"),
-        subtitle: I18n.t("authentication.cie.card.layCardMessageHeader"),
-        content: I18n.t("features.itWallet.issuing.cie.waiting.content")
-      },
-      [ReadingState.error]: {
-        title: I18n.t("features.itWallet.issuing.cie.error.title"),
-        subtitle: "",
-        content: ""
-      }
+    [ReadingState.error]: {
+      title: I18n.t("features.itWallet.issuing.cie.error.title"),
+      subtitle: "",
+      content: ""
     }
-  });
+  };
   return texts[state];
 };
 
@@ -149,10 +116,9 @@ class ItwCieCardReaderScreen extends React.PureComponent<Props, State> {
       */
       readingState: ReadingState.waiting_card,
       ...getTextForState(ReadingState.waiting_card),
-      isScreenReaderEnabled: false
+      isScreenReaderEnabled: false,
+      tapCounter: 0
     };
-    this.startCieiOS = this.startCieiOS.bind(this);
-    this.startCieAndroid = this.startCieAndroid.bind(this);
     this.props.navigation.setOptions({
       header: () => (
         <HeaderSecondLevel
@@ -162,74 +128,6 @@ class ItwCieCardReaderScreen extends React.PureComponent<Props, State> {
       )
     });
   }
-
-  get ciePin(): string {
-    return this.props.route.params.ciePin;
-  }
-
-  private handleCieEvent = async (event: CEvent) => {
-    switch (event.event) {
-      // Reading starts
-      case "ON_TAG_DISCOVERED":
-        if (this.state.readingState !== ReadingState.reading) {
-          this.setState({ readingState: ReadingState.reading }, () => {
-            Vibration.vibrate(VIBRATION);
-          });
-        }
-        break;
-      case "Transmission Error":
-      case "ON_TAG_LOST":
-      case "TAG_ERROR_NFC_NOT_SUPPORTED":
-      case "ON_TAG_DISCOVERED_NOT_CIE":
-      case "AUTHENTICATION_ERROR":
-      case "ON_NO_INTERNET_CONNECTION":
-      case "EXTENDED_APDU_NOT_SUPPORTED":
-        this.setError({ eventReason: event.event });
-        break;
-
-      // The card is temporarily locked. Unlock is available by CieID app
-      case "PIN Locked":
-      case "ON_CARD_PIN_LOCKED":
-        this.setError({
-          eventReason: event.event,
-          navigation: () =>
-            this.props.navigation.navigate(ITW_ROUTES.MAIN, {
-              screen: ITW_ROUTES.ISSUANCE.PID.CIE.PIN_TEMP_LOCKED_SCREEN
-            })
-        });
-        break;
-
-      // The inserted pin is incorrect
-      case "ON_PIN_ERROR":
-        this.setError({
-          eventReason: event.event,
-          navigation: () =>
-            this.props.navigation.navigate(ITW_ROUTES.MAIN, {
-              screen: ITW_ROUTES.ISSUANCE.PID.CIE.WRONG_PIN_SCREEN,
-              params: {
-                remainingCount: event.attemptsLeft
-              }
-            })
-        });
-        break;
-
-      // CIE is Expired or Revoked
-      case "CERTIFICATE_EXPIRED":
-      case "CERTIFICATE_REVOKED":
-        this.setError({
-          eventReason: event.event,
-          navigation: () =>
-            this.props.navigation.navigate(ITW_ROUTES.MAIN, {
-              screen: ITW_ROUTES.ISSUANCE.PID.CIE.EXPIRED_SCREEN
-            })
-        });
-        break;
-
-      default:
-        break;
-    }
-    this.updateContent();
-  };
 
   private announceUpdate = () => {
     if (this.state.content) {
@@ -275,98 +173,27 @@ class ItwCieCardReaderScreen extends React.PureComponent<Props, State> {
     }
   };
 
-  // TODO: It should reset authentication process
-  private handleCieError = (error: Error) => {
-    this.setError({ eventReason: "GENERIC", errorDescription: error.message });
-  };
-
-  private handleCieSuccess = (cieData: string) => {
-    const cieDataParsed: CieData = JSON.parse(cieData);
-    const cieConsentUri = cieDataParsed.url;
-    const pidData = cieDataParsed.pidData;
-    if (this.state.readingState === ReadingState.completed) {
-      return;
-    }
-    this.setState({ readingState: ReadingState.completed }, () => {
-      this.updateContent();
-      setTimeout(
-        async () => {
-          this.props.navigation.navigate(ITW_ROUTES.MAIN, {
-            screen: ITW_ROUTES.ISSUANCE.PID.CIE.CONSENT_DATA_USAGE,
-            params: {
-              cieConsentUri,
-              pidData
-            }
-          });
-          // if screen reader is enabled, give more time to read the success message
-        },
-        this.state.isScreenReaderEnabled
-          ? WAIT_TIMEOUT_NAVIGATION_ACCESSIBILITY
-          : // if is iOS don't wait. The thank you page is shown natively
-            Platform.select({ ios: 0, default: WAIT_TIMEOUT_NAVIGATION })
-      );
-    });
-  };
-
-  public async startCieAndroid() {
-    cieManager
-      .start()
-      .then(async () => {
-        cieManager.onEvent(this.handleCieEvent);
-        cieManager.onError(this.handleCieError);
-        cieManager.onSuccess(this.handleCieSuccess);
-        await cieManager.setPin(this.ciePin);
-        await cieManager.startListeningNFC();
-        this.setState({ readingState: ReadingState.waiting_card });
-      })
-      .catch(() => {
-        this.setState({ readingState: ReadingState.error });
-      });
-  }
-
-  public async startCieiOS() {
-    cieManager.onEvent(this.handleCieEvent);
-    cieManager.onError(this.handleCieError);
-    cieManager.onSuccess(this.handleCieSuccess);
-    await cieManager.setPin(this.ciePin);
-    await cieManager.startListeningNFC();
-    this.setState({ readingState: ReadingState.waiting_card });
-
-    cieManager
-      .start({
-        readingInstructions: I18n.t(
-          "authentication.cie.card.iosAlert.readingInstructions"
-        ),
-        moreTags: I18n.t("authentication.cie.card.iosAlert.moreTags"),
-        readingInProgress: I18n.t(
-          "authentication.cie.card.iosAlert.readingInProgress"
-        ),
-        readingSuccess: I18n.t(
-          "authentication.cie.card.iosAlert.readingSuccess"
-        ),
-        invalidCard: I18n.t("authentication.cie.card.iosAlert.invalidCard"),
-        tagLost: I18n.t("authentication.cie.card.iosAlert.tagLost"),
-        cardLocked: I18n.t("authentication.cie.card.iosAlert.cardLocked"),
-        wrongPin1AttemptLeft: I18n.t(
-          "authentication.cie.card.iosAlert.wrongPin1AttemptLeft"
-        ),
-        wrongPin2AttemptLeft: I18n.t(
-          "authentication.cie.card.iosAlert.wrongPin2AttemptLeft"
-        )
-      })
-      .catch(() => {
-        this.setState({ readingState: ReadingState.error });
-      });
-  }
-
   public async componentDidMount() {
-    const startCie = Platform.select({
-      ios: this.startCieiOS,
-      default: this.startCieAndroid
-    });
-    await startCie();
+    this.setState({ readingState: ReadingState.waiting_card });
     const srEnabled = await isScreenReaderEnabled();
     this.setState({ isScreenReaderEnabled: srEnabled });
+  }
+
+  componentDidUpdate() {
+    if (this.state.tapCounter === 1) {
+      this.setState({ readingState: ReadingState.reading });
+      this.updateContent();
+    } else if (this.state.tapCounter === 2) {
+      this.setState({ readingState: ReadingState.completed });
+      this.updateContent();
+    } else if (this.state.tapCounter === 3) {
+      this.props.navigation.navigate(ITW_ROUTES.MAIN, {
+        screen: ITW_ROUTES.ISSUANCE.PID.CIE.CONSENT_DATA_USAGE,
+        params: {
+          pidData: pidDataMock
+        }
+      });
+    }
   }
 
   private getFooter = () => (
@@ -385,7 +212,14 @@ class ItwCieCardReaderScreen extends React.PureComponent<Props, State> {
         <SafeAreaView style={IOStyles.flex}>
           <Stepper steps={3} currentStep={2} />
           <VSpacer size={16} />
-          <CieReadingCardAnimation readingState={this.state.readingState} />
+          <Pressable
+            onPress={() =>
+              this.setState({ tapCounter: this.state.tapCounter + 1 })
+            }
+            accessibilityRole="button"
+          >
+            <CieReadingCardAnimation readingState={this.state.readingState} />
+          </Pressable>
           {isIos && <VSpacer size={16} />}
           <View style={IOStyles.horizontalContentPadding}>
             <H2 style={styles.textCenter}>{this.state.title}</H2>
@@ -416,13 +250,6 @@ class ItwCieCardReaderScreen extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = (state: GlobalState) => {
-  const isEnabled = itwIsNfcEnabledSelector(state);
-  return {
-    isNfcEnabled: pot.getOrElse(isEnabled, false)
-  };
-};
-
 const ReaderScreen = (props: Props) => {
   useHeaderSecondLevel({
     title: "",
@@ -431,13 +258,9 @@ const ReaderScreen = (props: Props) => {
 
   return (
     <View style={styles.container}>
-      {props.isNfcEnabled ? (
-        <ItwCieCardReaderScreen {...props} />
-      ) : (
-        <CieNfcOverlay {...props} />
-      )}
+      <ItwCieCardReaderScreen {...props} />
     </View>
   );
 };
 
-export default connect(mapStateToProps)(ReaderScreen);
+export default ReaderScreen;
