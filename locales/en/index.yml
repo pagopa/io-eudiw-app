@@ -375,7 +375,7 @@ features:
             subtitle: To present a credential, you need to activate it first.
             actionLabel: Activate IT Wallet
       dataScreen: 
-        title: "Allow the reading of your data"
+        title: "Allow your data to be read"
         subtitle: "Authorizes {{organizationName}} to process your data to provide you with the services you request."
         why: "Why?"
         requiredClaims: "Required data"
@@ -395,7 +395,7 @@ features:
           title: "We are sharing your data with {{organizationName}}" 
         success: 
           title: "Done!"
-          subtitle: "Go back to the {{organizationName}} website to continue."
+          subtitle: "Continue on the partner site."
       qrCodeScreen:
         title: "Personal QR code"
         proximity:
