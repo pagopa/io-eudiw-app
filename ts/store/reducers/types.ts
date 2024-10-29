@@ -5,13 +5,11 @@ import { NavigationState } from "./navigation";
 import { DebugState } from "./debug";
 import { PersistedStartupState } from "./startup";
 import { PersistedPreferencesState } from "./persistedPreferences";
-import { PersistedAuthenticationState } from "./authentication";
 import { PersistedIdentificationState } from "./identification";
 import { PersistedOnboardingState } from "./onboarding";
 
 export type GlobalState = Readonly<{
   appState: AppState;
-  authentication: PersistedAuthenticationState;
   onboarding: PersistedOnboardingState;
   navigation: NavigationState;
   identification: PersistedIdentificationState;

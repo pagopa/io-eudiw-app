@@ -8,7 +8,6 @@ import {
 } from "@pagopa/io-react-native-wallet";
 import DeviceInfo from "react-native-device-info";
 import { toError } from "fp-ts/lib/Either";
-import { idpSelector } from "../../../store/reducers/authentication";
 import { ItWalletErrorTypes } from "../utils/itwErrorsUtils";
 import { itwWiaRequest } from "../store/actions/itwWiaActions";
 import { walletProviderBaseUrl } from "../../../config";
@@ -33,40 +32,29 @@ export function* watchItwWiaSaga(): SagaIterator {
  * Then it tries to get the wallet instance attestation and dispatches the result.
  */
 export function* handleWiaRequest(): SagaIterator {
-  const idp = yield* select(idpSelector);
-  const hasLoggedInWithCie = isSome(idp) && idp.value.name === "cie";
-  const isEmulator = yield* call(DeviceInfo.isEmulator);
-  if (hasLoggedInWithCie || isEmulator) {
-    try {
-      const entityConfiguration = yield* call(
-        Trust.getWalletProviderEntityConfiguration,
-        walletProviderBaseUrl
-      );
+  try {
+    const entityConfiguration = yield* call(
+      Trust.getWalletProviderEntityConfiguration,
+      walletProviderBaseUrl
+    );
 
-      yield* call(getOrGenerateCyptoKey, ITW_WIA_KEY_TAG);
-      const wiaCryptoContext = yield* call(
-        createCryptoContextFor,
-        ITW_WIA_KEY_TAG
-      );
-      const issuingAttestation = yield* call(
-        WalletInstanceAttestation.getAttestation,
-        { wiaCryptoContext }
-      );
-      const wia = yield* call(issuingAttestation, entityConfiguration);
-      yield* put(itwWiaRequest.success(wia));
-    } catch (e) {
-      const { message } = toError(e);
-      yield* put(
-        itwWiaRequest.failure({
-          code: ItWalletErrorTypes.WIA_ISSUANCE_ERROR,
-          message
-        })
-      );
-    }
-  } else {
+    yield* call(getOrGenerateCyptoKey, ITW_WIA_KEY_TAG);
+    const wiaCryptoContext = yield* call(
+      createCryptoContextFor,
+      ITW_WIA_KEY_TAG
+    );
+    const issuingAttestation = yield* call(
+      WalletInstanceAttestation.getAttestation,
+      { wiaCryptoContext }
+    );
+    const wia = yield* call(issuingAttestation, entityConfiguration);
+    yield* put(itwWiaRequest.success(wia));
+  } catch (e) {
+    const { message } = toError(e);
     yield* put(
       itwWiaRequest.failure({
-        code: ItWalletErrorTypes.NFC_NOT_SUPPORTED
+        code: ItWalletErrorTypes.WIA_ISSUANCE_ERROR,
+        message
       })
     );
   }

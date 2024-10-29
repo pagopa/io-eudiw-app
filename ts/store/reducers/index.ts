@@ -16,7 +16,6 @@ import startupReducer, { StartupState } from "./startup";
 import persistedPreferencesReducer, {
   PreferencesState
 } from "./persistedPreferences";
-import authenticationReducer, { AuthenticationState } from "./authentication";
 import identificationReducer, { IdentificationState } from "./identification";
 import onboardingReducer, { OnboardingState } from "./onboarding";
 
@@ -76,11 +75,6 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
   appState: appStateReducer,
   navigation: navigationReducer,
   startup: persistReducer<StartupState, Action>(startupConfig, startupReducer),
-  // custom persistor (uses secure storage)
-  authentication: persistReducer<AuthenticationState, Action>(
-    authenticationPersistConfig,
-    authenticationReducer
-  ),
 
   // standard persistor, see configureStoreAndPersistor.ts
   // standard persistor, see configureStoreAndPersistor.ts
