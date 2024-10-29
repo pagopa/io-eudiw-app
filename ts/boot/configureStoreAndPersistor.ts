@@ -47,7 +47,7 @@ const rootPersistConfig: PersistConfig = {
 const persistedReducer: Reducer<PersistedGlobalState, Action> = persistReducer<
   GlobalState,
   Action
->(rootPersistConfig, createRootReducer([rootPersistConfig]));
+>(rootPersistConfig, createRootReducer());
 
 const logger = createLogger({
   predicate: (): boolean => isDebuggingInChrome,

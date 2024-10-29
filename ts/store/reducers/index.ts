@@ -16,7 +16,6 @@ import startupReducer, { StartupState } from "./startup";
 import persistedPreferencesReducer, {
   PreferencesState
 } from "./persistedPreferences";
-import profileReducer from "./profile";
 import authenticationReducer, { AuthenticationState } from "./authentication";
 import identificationReducer, { IdentificationState } from "./identification";
 import onboardingReducer, { OnboardingState } from "./onboarding";
@@ -94,7 +93,6 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
     onboardingPersistConfig,
     onboardingReducer
   ),
-  profile: profileReducer,
   debug: debugReducer,
   persistedPreferences: persistReducer<PreferencesState, Action>(
     persistedPreferencesConfig,
@@ -102,9 +100,8 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
   )
 });
 
-export function createRootReducer(
-  persistConfigs: ReadonlyArray<PersistConfig>
-) {
+// persistConfigs: ReadonlyArray<PersistConfig> as input
+export function createRootReducer() {
   return (state: GlobalState | undefined, action: Action): GlobalState => {
     return appReducer(state, action);
   };
