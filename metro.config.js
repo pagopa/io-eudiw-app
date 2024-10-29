@@ -21,9 +21,7 @@ module.exports = mergeConfig(defaultConfig, {
     assetExts: defaultConfig.resolver.assetExts.filter(ext => ext !== 'svg'),
     sourceExts: [...withE2ESourceExts, 'svg'],
     extraNodeModules: {
-      crypto: require.resolve('react-native-crypto'),
-      stream: require.resolve('stream-browserify'),
-      buffer: require.resolve('buffer'),
+      crypto: require.resolve('@pagopa/react-native-nodelibs')
     },
   },
 });
