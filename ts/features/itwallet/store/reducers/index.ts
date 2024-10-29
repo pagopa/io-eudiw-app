@@ -18,9 +18,6 @@ import itwPrRemoteCredentialReducer, {
 import itwIssuanceCredentialReducer, {
   ItwIssuanceCredentialState
 } from "./itwIssuanceCredentialReducer";
-import itwPrProximityReducer, {
-  ItwPrProximityState
-} from "./itwPrProximityReducer";
 
 const CURRENT_REDUX_ITW_STORE_VERSION = 1;
 const CURRENT_REDUX_ITW_CREDENTIALS_STORE_VERSION = 1;
@@ -37,7 +34,6 @@ export type ItWalletState = {
   /* PRESENTATION REMOTE */
   prRemotePid: ItwPrRemotePidState;
   prRemoteCredential: ItwPrRemoteCredentialState;
-  prProximity: ItwPrProximityState;
 };
 
 export type PersistedItWalletState = ItWalletState & PersistPartial;
@@ -66,8 +62,7 @@ const reducers = combineReducers<ItWalletState, Action>({
   credentials: persistReducer(credentialsPersistConfig, itwCredentials),
   /* PRESENTATION REMOTE */
   prRemotePid: itwPrRemotePidReducer,
-  prRemoteCredential: itwPrRemoteCredentialReducer,
-  prProximity: itwPrProximityReducer
+  prRemoteCredential: itwPrRemoteCredentialReducer
 });
 
 const itwReducer = persistReducer<ItWalletState, Action>(
