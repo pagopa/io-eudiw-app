@@ -5,7 +5,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { combineReducers, Reducer } from "redux";
 import { PersistConfig, persistReducer } from "redux-persist";
 import { featuresPersistor } from "../../features/common/store/reducers";
-import createSecureStorage from "../storages/keychain";
 import { Action } from "../actions/types";
 import { DateISO8601Transform } from "../transforms/dateISO8601Tranform";
 import appStateReducer from "./appState";
@@ -18,13 +17,6 @@ import persistedPreferencesReducer, {
 } from "./persistedPreferences";
 import identificationReducer, { IdentificationState } from "./identification";
 import onboardingReducer, { OnboardingState } from "./onboarding";
-
-// A custom configuration to store the authentication into the Keychain
-export const authenticationPersistConfig: PersistConfig = {
-  key: "authentication",
-  storage: createSecureStorage(),
-  blacklist: ["deepLink"]
-};
 
 // A custom configuration to store the fail information of the identification section
 export const identificationPersistConfig: PersistConfig = {
