@@ -97,13 +97,15 @@ const ItwCredentialCard = (props: CredentialCardProps) => {
         style={styles.cardBackground}
         accessibilityIgnoresInvertColors
       />
-      <H6
-        color={textColor}
-        accessibilityLabel={title}
-        style={[styles.text, styles.titleText]}
-      >
-        {props.display.title}
-      </H6>
+      <View style={styles.titleView}>
+        <H6
+          color={textColor}
+          accessibilityLabel={title}
+          textStyle={styles.titleText}
+        >
+          {props.display.title}
+        </H6>
+      </View>
     </View>
   );
 };
@@ -116,11 +118,12 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     width: CARD_WIDTH
   },
-  text: {
+  titleView: {
     position: "absolute",
     marginLeft: TEXT_LEFT_MARGIN,
-    color: IOColors.white,
-    fontWeight: "700",
+    marginTop: TITLE_MARGIN_TOP
+  },
+  titleText: {
     textTransform: "uppercase"
   },
   fiscalCodeText: {
@@ -129,10 +132,6 @@ const styles = StyleSheet.create({
   },
   nameText: {
     marginTop: NAME_MARGIN_TOP,
-    color: IOColors.white
-  },
-  titleText: {
-    marginTop: TITLE_MARGIN_TOP,
     color: IOColors.white
   }
 });

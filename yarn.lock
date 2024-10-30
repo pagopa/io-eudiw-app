@@ -2006,10 +2006,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@pagopa/io-app-design-system@^1.46.2":
-  version "1.46.2"
-  resolved "https://registry.yarnpkg.com/@pagopa/io-app-design-system/-/io-app-design-system-1.46.2.tgz#c8c3a122a318e3843b23e82c0a77d1bbc51df7d5"
-  integrity sha512-ePQfgzS/HcWseeVSHRGFCRmM/p3sEppLlvrDQjw/wbVXGvCX/AX+syESX9asU/QPENjwKh6FuB//5pcx6qQoig==
+"@pagopa/io-app-design-system@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@pagopa/io-app-design-system/-/io-app-design-system-2.0.2.tgz#63c745dfcb8ed14b560bf9c52c8541f4b91ffef0"
+  integrity sha512-xK8yi9W+F10JOegQNkGTxAfemHoG1wf7uZh00tv7twulDaro88eEqyqj/v1EXzseGznLm69peC+nPlAhVnNEbg==
   dependencies:
     "@pagopa/ts-commons" "^12.0.0"
     "@testing-library/jest-native" "^5.4.2"
@@ -8825,6 +8825,11 @@ react-native-redash@^16.1.1:
     abs-svg-path "^0.1.1"
     normalize-svg-path "^1.0.1"
     parse-svg-path "^0.1.2"
+
+react-native-responsive-screen@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/react-native-responsive-screen/-/react-native-responsive-screen-1.4.2.tgz#45280826d24f9accbfdf46a36cb8e6d780f76f28"
+  integrity sha512-BLYz0UUpeohrib7jbz6wDmtBD5OmiuMRko4IT8kIF63taXPod/c5iZgmWnr5qOnK8hMuKiGMvsM3sC+eHX/lEQ==
 
 react-native-safe-area-context@^3.3.2:
   version "3.4.1"

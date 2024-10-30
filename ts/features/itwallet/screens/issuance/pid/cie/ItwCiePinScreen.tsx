@@ -13,6 +13,7 @@ import {
   ButtonSolid,
   H2,
   IOStyles,
+  OTPInput,
   Stepper,
   VSpacer
 } from "@pagopa/io-app-design-system";
@@ -23,7 +24,6 @@ import { ItwParamsList } from "../../../../navigation/ItwParamsList";
 import { ITW_ROUTES } from "../../../../navigation/ItwRoutes";
 import { itwNfcIsEnabled } from "../../../../store/actions/itwIssuancePidCieActions";
 import ItwTextInfo from "../../../../components/ItwTextInfo";
-import CiePinpad from "../../../../components/cie/CiePinpad";
 import { useHeaderSecondLevel } from "../../../../../../hooks/useHeaderSecondLevel";
 import { useIODispatch } from "../../../../../../store/hooks";
 
@@ -70,11 +70,12 @@ const ItwCiePinScreen = () => {
         <H2>{I18n.t("features.itWallet.cie.pinScreen.title")}</H2>
         <VSpacer size={16} />
         <View style={styles.container} accessible={true} ref={pinPadViewRef}>
-          <CiePinpad
-            pin={pin}
-            pinLength={CIE_PIN_LENGTH}
-            onPinChanged={setPin}
-            onSubmit={navigateToCardReaderScreen}
+          <OTPInput
+            ref={pinPadViewRef}
+            secret
+            value={pin}
+            onValueChange={setPin}
+            length={CIE_PIN_LENGTH}
           />
         </View>
         <VSpacer size={32} />
