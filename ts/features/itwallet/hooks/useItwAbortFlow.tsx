@@ -16,7 +16,7 @@ export const useItwAbortFlow = () => {
   const dispatch = useIODispatch();
   const BottomSheetBody = () => (
     <View style={IOStyles.flex}>
-      <H4 color={"bluegreyDark"} weight={"Regular"}>
+      <H4 color={"bluegreyDark"}>
         {I18n.t("features.itWallet.issuing.pidPreviewScreen.bottomSheet.body")}
       </H4>
     </View>
