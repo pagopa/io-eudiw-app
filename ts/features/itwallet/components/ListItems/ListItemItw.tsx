@@ -22,7 +22,7 @@ import {
   GestureResponderEvent,
   View
 } from "react-native";
-// eslint-disable-next-line import/default
+
 import Animated, {
   useSharedValue,
   useAnimatedStyle,

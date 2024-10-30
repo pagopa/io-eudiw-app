@@ -118,7 +118,6 @@ export const ScreenContentHeader = ({
             <H1
               accessible={true}
               accessibilityRole="header"
-              weight="Semibold"
               testID={"screen-content-header-title"}
               color={dark ? "white" : "bluegreyDark"}
             >

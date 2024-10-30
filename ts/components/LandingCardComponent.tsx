@@ -28,6 +28,7 @@ type Props = {
   accessibilityHint?: string;
   titleColor?: IOColors;
   contentColor?: IOColors;
+  pictogramStyle?: React.ComponentProps<typeof Pictogram>["pictogramStyle"];
 };
 
 const VERTICAL_SPACING = 16;
@@ -46,7 +47,8 @@ export const LandingCardComponent = React.forwardRef<View, Props>(
       title,
       content,
       titleColor,
-      contentColor
+      contentColor,
+      pictogramStyle
     } = props;
 
     return (
@@ -62,7 +64,11 @@ export const LandingCardComponent = React.forwardRef<View, Props>(
           accessibilityLabel={accessibilityLabel}
           accessibilityHint={accessibilityHint}
         >
-          <Pictogram size={180} name={pictogramName} />
+          <Pictogram
+            size={180}
+            name={pictogramName}
+            pictogramStyle={pictogramStyle}
+          />
           <VSpacer size={VERTICAL_SPACING} />
           <H3
             importantForAccessibility="no"

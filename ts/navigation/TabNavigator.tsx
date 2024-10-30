@@ -1,7 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
-import { StyleSheet } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IOColors, makeFontStyleObject } from "@pagopa/io-app-design-system";
 import LoadingSpinnerOverlay from "../components/LoadingSpinnerOverlay";
 import { TabIconComponent } from "../components/ui/TabIconComponent";
@@ -9,43 +7,17 @@ import I18n from "../i18n";
 import { useIOSelector } from "../store/hooks";
 import ProfileMainScreen from "../screens/profile/ProfileMainScreen";
 import { StartupStatusEnum, isStartupLoaded } from "../store/reducers/startup";
-import variables from "../theme/variables";
 import ItwHomeScreen from "../features/itwallet/screens/ItwHomeScreen";
-
 import { BarcodeScanScreen } from "../features/barcode/screens/BarcodeScanScreen";
+import { useBottomTabNavigatorStyle } from "../hooks/useBottomTabNavigatorStyle";
 import { MainTabParamsList } from "./params/MainTabParamsList";
 import ROUTES from "./routes";
-
-const styles = StyleSheet.create({
-  tabBarStyle: {
-    backgroundColor: IOColors.white,
-    paddingLeft: 3,
-    paddingRight: 3,
-    borderTopWidth: 0,
-    paddingTop: 8,
-    // iOS shadow
-    shadowColor: variables.footerShadowColor,
-    shadowOffset: {
-      width: variables.footerShadowOffsetWidth,
-      height: variables.footerShadowOffsetHeight
-    },
-    zIndex: 999,
-    shadowOpacity: variables.footerShadowOpacity,
-    shadowRadius: variables.footerShadowRadius,
-    // Android shadow
-    elevation: variables.footerElevation
-  }
-});
 
 const Tab = createBottomTabNavigator<MainTabParamsList>();
 
 export const MainTabNavigator = () => {
-  const insets = useSafeAreaInsets();
   const startupLoaded = useIOSelector(isStartupLoaded);
-
-  const tabBarHeight = 54;
-  const additionalPadding = 10;
-  const bottomInset = insets.bottom === 0 ? additionalPadding : insets.bottom;
+  const tabBarStyle = useBottomTabNavigatorStyle();
 
   return (
     <LoadingSpinnerOverlay
@@ -56,18 +28,13 @@ export const MainTabNavigator = () => {
         screenOptions={{
           headerShown: false,
           tabBarLabelStyle: {
-            fontSize: 10,
-            ...makeFontStyleObject("Regular", false, "ReadexPro")
+            ...makeFontStyleObject(12, "ReadexPro", undefined)
           },
           tabBarHideOnKeyboard: true,
           tabBarAllowFontScaling: false,
           tabBarActiveTintColor: IOColors["blueIO-500"],
           tabBarInactiveTintColor: IOColors["grey-850"],
-          tabBarStyle: [
-            styles.tabBarStyle,
-            { height: tabBarHeight + bottomInset },
-            insets.bottom === 0 ? { paddingBottom: additionalPadding } : {}
-          ]
+          tabBarStyle
         }}
       >
         <Tab.Screen
