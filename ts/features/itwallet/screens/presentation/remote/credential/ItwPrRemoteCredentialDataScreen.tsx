@@ -10,9 +10,9 @@ import {
   IOStyles,
   Icon,
   IconContained,
-  LabelLink,
   VSpacer,
-  ForceScrollDownView
+  ForceScrollDownView,
+  Label
 } from "@pagopa/io-app-design-system";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
@@ -117,9 +117,9 @@ const ItwPrRemoteCredentialDataScreen = () => {
           </Body>
           <VSpacer />
           {/* INFO LINK */}
-          <LabelLink onPress={() => present()}>
+          <Label asLink onPress={() => present()}>
             {I18n.t("features.itWallet.presentation.dataScreen.why")}
-          </LabelLink>
+          </Label>
           <VSpacer size={24} />
           {/* REQUIRED DATA SECTION */}
           <View style={styles.requireDataSection}>
