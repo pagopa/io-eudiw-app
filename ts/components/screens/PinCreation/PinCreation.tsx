@@ -59,7 +59,6 @@ export const PinCreation = ({ isOnboarding = false }: Props) => {
   const carouselRef = useRef<FlatList>(null);
   const titleCreationRef = useRef<View>(null);
   const titleConfirmationRef = useRef<View>(null);
-  const isFirstOnBoarding = useIOSelector(isProfileFirstOnBoardingSelector);
   const { present, bottomSheet } = usePinValidationBottomSheet();
   const { showAlert } = useOnboardingAbortAlert();
 

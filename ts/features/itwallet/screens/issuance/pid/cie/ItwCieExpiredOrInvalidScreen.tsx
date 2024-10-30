@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
   Body,
   FooterWithButtons,
-  LabelLink,
+  LabelSmall,
   VSpacer,
   ContentWrapper,
   IOStyles
@@ -43,9 +43,9 @@ const ItwCieExpiredOrInvalidScreen = () => {
         <ContentWrapper>
           <Body>{I18n.t("authentication.landing.expiredCardContent")}</Body>
           <VSpacer size={16} />
-          <LabelLink onPress={browseToLink}>
+          <LabelSmall onPress={browseToLink}>
             {I18n.t("authentication.landing.expiredCardHelp")}
-          </LabelLink>
+          </LabelSmall>
         </ContentWrapper>
       </View>
       <FooterWithButtons

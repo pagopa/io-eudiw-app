@@ -67,13 +67,13 @@ export const decodeIOBarcode = (
     O.fromNullable,
     O.map(NonEmptyString.decode),
     O.chain(O.fromEither),
-    O.map(value =>
+    O.map(data =>
       Object.entries(IOBarcodeDecoders)
         .filter(
           ([type]) =>
             options?.barcodeTypes?.includes(type as IOBarcodeType) ?? true
         )
-        .map(([_, decode]) => decode(value.trim()))
+        .map(([_, decode]) => decode(data.trim()))
     ),
     O.map(A.compact),
     O.chain(A.head)
