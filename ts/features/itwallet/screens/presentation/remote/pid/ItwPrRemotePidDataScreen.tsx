@@ -11,7 +11,7 @@ import {
   IOStyles,
   Icon,
   IconContained,
-  LabelLink,
+  LabelSmall,
   VSpacer,
   ForceScrollDownView
 } from "@pagopa/io-app-design-system";
@@ -119,9 +119,9 @@ const ItwPrRemotePidDataScreen = () => {
           </Body>
           <VSpacer />
           {/* INFO LINK */}
-          <LabelLink onPress={() => present()}>
+          <LabelSmall onPress={() => present()}>
             {I18n.t("features.itWallet.presentation.dataScreen.why")}
-          </LabelLink>
+          </LabelSmall>
           <VSpacer size={24} />
           {/* REQUIRED DATA SECTION */}
           <View style={styles.requireDataSection}>

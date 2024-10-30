@@ -29,7 +29,7 @@ import {
 } from "react-native";
 import { easeGradient } from "react-native-easing-gradient";
 import LinearGradient from "react-native-linear-gradient";
-// eslint-disable-next-line import/default
+
 import Animated, {
   Easing,
   Extrapolate,
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
   }
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const IOScrollView = ({
   headerConfig,
   children,
