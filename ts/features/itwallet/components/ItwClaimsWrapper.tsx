@@ -28,7 +28,7 @@ const BORDER_RADIUS = 16;
 const ItwClaimsWrapper = ({ displayData, children, type }: Props) => (
   <>
     <View style={styles.body}>
-      <View style={styles.imageWrapper}>
+      <View style={[styles.imageWrapper, { height: "auto" }]}>
         <ImageBackground
           source={getImageFromCredentialType(type)}
           resizeMode="stretch"

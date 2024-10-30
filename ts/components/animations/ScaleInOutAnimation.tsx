@@ -1,6 +1,6 @@
 import React from "react";
 import { ViewStyle, StyleProp } from "react-native";
-// eslint-disable-next-line import/default
+
 import Animated, {
   LayoutAnimation,
   WithSpringConfig,

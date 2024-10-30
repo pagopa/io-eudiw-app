@@ -120,7 +120,7 @@ export const getCredentialsCatalog =
       title: I18n.t(
         "features.itWallet.verifiableCredentials.type.drivingLicense"
       ),
-      icon: "driverLicense",
+      icon: "car",
       incoming: false,
       textColor: "black",
       firstLine: ["given_name", "family_name"],

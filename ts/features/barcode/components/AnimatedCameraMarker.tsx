@@ -30,10 +30,10 @@ const AnimatedCameraMarker = ({
     axis: "y"
   });
 
-  const drawMarkerCorner = (rotation: number, size: number) => (
+  const drawMarkerCorner = (rotation: number, markerSize: number) => (
     <CameraMarkerCorner
-      width={size}
-      height={size}
+      width={markerSize}
+      height={markerSize}
       style={{
         transform: [{ rotate: `${rotation}deg` }]
       }}
