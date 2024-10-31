@@ -84,9 +84,6 @@ PODS:
     - JOSESwift (~> 2.3)
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - pagopa-io-react-native-proximity (0.1.8):
-    - RCT-Folly (= 2021.07.22.00)
-    - React-Core
   - RCT-Folly (2021.07.22.00):
     - boost
     - DoubleConversion
@@ -592,7 +589,6 @@ DEPENDENCIES:
   - OpenSSL-Universal (= 1.1.1100)
   - "pagopa-io-react-native-crypto (from `../node_modules/@pagopa/io-react-native-crypto`)"
   - "pagopa-io-react-native-jwt (from `../node_modules/@pagopa/io-react-native-jwt`)"
-  - "pagopa-io-react-native-proximity (from `../node_modules/@pagopa/io-react-native-proximity`)"
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -688,8 +684,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@pagopa/io-react-native-crypto"
   pagopa-io-react-native-jwt:
     :path: "../node_modules/@pagopa/io-react-native-jwt"
-  pagopa-io-react-native-proximity:
-    :path: "../node_modules/@pagopa/io-react-native-proximity"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -822,7 +816,6 @@ SPEC CHECKSUMS:
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   pagopa-io-react-native-crypto: 6aa9f33e4bf64ef420ad97c720c1ad0f876cd470
   pagopa-io-react-native-jwt: 662d4e722715996758b079774abea1996b057467
-  pagopa-io-react-native-proximity: 05cedd542379d623234b1a1fe62674a53ae7f47f
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: fb207f74935626041e7308c9e88dcdda680f1073
   RCTTypeSafety: 146fd11361680250b7580dd1f7f601995cfad1b1
