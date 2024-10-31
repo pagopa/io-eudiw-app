@@ -181,7 +181,7 @@ features:
       description: "Attiva il Wallet e porta sempre con te la tua identità digitale e i tuoi documenti personali."
       action: "Start"
       hideLabel: "Hide this banner"
-    innerActionBanner: 
+    innerActionBanner:
       title: "Digital credential news"
       description: "Enable IT Wallet and add your digital credentials (e.g. driving license, health insurance card, etc.)"
       action: "Enable IT Wallet"
@@ -192,15 +192,15 @@ features:
       subContentTwo: "###### È facile e veloce\n\nPotrai autenticarti in Italia e all’estero a molti servizi digitali, o verificare in presenza le tue attestazioni semplicemente scansionando il codice QR abbinato alle versioni digitali dei tuoi documenti."
       confirm: "Continua"
     homeScreen:
-      categories: 
+      categories:
         any: "Any"
         itWallet: "IT Wallet"
         health: "Health"
         payments: "Payments methods"
         bonus: "Bonuses and discounts"
-      reset: 
+      reset:
         label: "Reset"
-        bottomSheet: 
+        bottomSheet:
           title: "Do you want to reset IT Wallet?"
           body: "By deactivating IT Wallet, you will lose your Digital Identity and return to the initial state. You can reactivate it later."
           confirm: "Confirm reset"
@@ -240,7 +240,7 @@ features:
     issuing:
       title: "IT Wallet activation"
       cie:
-        waiting: 
+        waiting:
           title: "Place the CIE on the back of the device"
           content: "If the reading doesn't start, move the card to different places and wait a few seconds until you feel a vibration."
         reading:
@@ -251,7 +251,6 @@ features:
         error:
           title: "You removed the CIE too early"
           retry: "Retry"
-        help: "See how to do it"
       infoConsent:
         footer:
           cancel: "Cancel"
@@ -259,7 +258,7 @@ features:
       loading:
         title: "I am loading the data from the Ministry of the Interior"
         subtitle: "Wait a few seconds"
-      pidPreviewScreen: 
+      pidPreviewScreen:
         title: "{{credentialName}}: here the preview"
         checkNotice: "Verify that the following data is correct."
         buttons:
@@ -270,17 +269,17 @@ features:
           content: "If you want to delve deeper into some data or report errors, contact support."
           actionTitle: "Contact support"
           closeTitle: "Close"
-        bottomSheet: 
+        bottomSheet:
           title: "Cancel the IT Wallet activation"
           body: "Do you want to cancel the obtaining of the digital identity and therefore the activation of the IT Wallet?"
-          buttons: 
+          buttons:
             back: "Go back"
             cancel: "Cancel activation"
         loading:
           title: "I am loading the data from the Ministry of the Interior"
           subtitle: "Wait a few seconds"
-      pidActivationScreen: 
-        loading: 
+      pidActivationScreen:
+        loading:
           title: "I'm activating your IT Wallet"
           subtitle: "Wait a few seconds"
         typ:
@@ -298,17 +297,17 @@ features:
           title: "We are performing some security checks"
         success:
           title: You are adding {{credentialName}} to your Wallet
-        toast: 
+        toast:
           cancel: "The credential was not added to the wallet."
-        failure: 
-          alreadyExisting: 
+        failure:
+          alreadyExisting:
             title: "You already have this credential."
             subtitle: "This credential is already in your wallet. If you don't see it, contact us."
             actionLabel: "Go to the Wallet"
       credentialAddScreen:
         loading:
           title: "We're adding your credential to your walleto"
-        toast: 
+        toast:
           success: "Card added!"
       credentialsIssuingInfoScreen:
         title: "Data needed to add the card"
@@ -329,8 +328,8 @@ features:
           title: "Something doesn't add up?"
           content: "If you want to delve deeper into some data or report errors, contact support."
           actionTitle: "Contact support"
-        bottomSheet: 
-          about: 
+        bottomSheet:
+          about:
             title: "Who is it?"
             subtitle: "it is the source that manages and protects your data. The IO app allows you to view them because it can verify and protect your identity through important security procedures."
           data:
@@ -339,48 +338,48 @@ features:
         toast:
           success: "Credential added!"
           failure: "We were not able to add this card, try again later."
-    presentation: 
-      credentialDetails: 
-        buttons: 
+    presentation:
+      credentialDetails:
+        buttons:
           qrCode: "Show QR code"
         lastUpdated: "Last updated on {{lastUpdateTime}}"
         actions:
           removeFromWallet: "Remove from Wallet"
           requestAssistance: "Something wrong? Contact {{authSource}}"
-      pidAttributesScreen: 
+      pidAttributesScreen:
         headerTitle: "Data presentation"
         title: "Do you confirm this data?"
         subTitle: "Here you can find the data regarding your Digital Identity and the Authority to which you are presenting them."
-        requiredData: 
+        requiredData:
           title: "Required data"
           subTitle: "Required to access the services you are requesting."
-        wrongClaims: 
+        wrongClaims:
           title: "Something wrong? "
           reportLink: "Report an error"
-        privacy: 
+        privacy:
           thirdParty: "Data is not shared with third parties"
           preservation: "Data will be retained for {{numberOfMonths}} months"
           deletion: "You can delete your data at any time"
           conditionsLink: "Terms of Service"
-        buttons: 
+        buttons:
           confirmData: "Confirm data"
           deny: "Deny"
         tos: "By continuing, you accept the [Terms and conditions of use]() of the service and confirm that you have read the [Privacy Policy]() of {{relayingParty}}."
-      checksScreen: 
+      checksScreen:
         loading: "We are checking that this organization is verified"
         success: "{{organizationName}} is a verified organization"
         errors:
-          walletNotValid: 
+          walletNotValid:
             title: IT Wallet is not active
             subtitle: To present a credential, you need to activate it first.
             actionLabel: Activate IT Wallet
-      dataScreen: 
+      dataScreen:
         title: "Allow the reading of your data"
         subtitle: "Authorizes {{organizationName}} to process your data to provide you with the services you request."
         why: "Why?"
         requiredClaims: "Required data"
         optionalClaims: "Optional data"
-        privacy: 
+        privacy:
           usage: "The data is only used for the purposes shown"
           deletion: "You can request its removal at any time"
         infoBottomSheet:
@@ -391,9 +390,9 @@ features:
             secondBody: "App IO allows the sharing of your data only with verified bodies registered on the lists that guarantee its reliability."
         tos: "For more information, read the [Privacy Policy](https://io.italia.it/privacy-policy/) and the [Terms and Conditions](https://io.italia.it/privacy-policy/)"
       resultScreen:
-        loading: 
-          title: "We are sharing your data with {{organizationName}}" 
-        success: 
+        loading:
+          title: "We are sharing your data with {{organizationName}}"
+        success:
           title: "Done!"
           subtitle: "Go back to the {{organizationName}} website to continue."
       qrCodeScreen:
@@ -405,11 +404,11 @@ features:
           sessionEstablished: "A session has been established with the verification device"
           documentRequestReceived: "Credential checking in progress"
           documentPresentationCompleted: "Credential check completed"
-    missingFeatureScreen: 
+    missingFeatureScreen:
       headerTitle: "Screen not available"
       title: "This screen will be available soon."
       subtitle: "At this moment, it doesn't exist yet, but we are working on its implementation."
-      button: 
+      button:
         label: "I understand"
     verifiableCredentials:
       type:
@@ -430,11 +429,11 @@ features:
         issuedByNew: "Issued by"
         releasedBy: "Released by"
         info: "Further information about this data"
-        mdl: 
+        mdl:
           category: "License {{category}}"
           issuedDate: "Valid from"
           expirationDate: "Valid until"
-      unrecognizedData: 
+      unrecognizedData:
         title: "Not recognizing some data?"
         body: "If there are errors in the data or if you want to better understand their meaning, you can contact the {{issuer}}."
         cta: "Ask for information or report errors"
@@ -447,10 +446,10 @@ features:
       trusted: "Trusted"
       search: "Cerca"
       alert:
-          title: "Do you want to interrupt the operation?"
-          confirm: "Yes, interrupt it."
-          cancel: "No, go back"
-      dataSource: 
+        title: "Do you want to interrupt the operation?"
+        confirm: "Yes, interrupt it."
+        cancel: "No, go back"
+      dataSource:
         multi: "Provided by {{credentialSource}}"
         single: "Provided by {{credentialSource}}"
       credential: "Credential"
@@ -464,7 +463,7 @@ features:
       complete: Continue
       closeApp: Close the app
       completeTitle: Start using the Wallet
-      completeDescription:  To proceed, read the [Privacy Policy](https://io.italia.it/privacy-policy/) and the[Terms and Conditions of use](https://io.italia.it/privacy-policy/)
+      completeDescription: To proceed, read the [Privacy Policy](https://io.italia.it/privacy-policy/) and the[Terms and Conditions of use](https://io.italia.it/privacy-policy/)
       card1:
         title: This is the wallet app!
         content: Let's see together what you can do
@@ -626,13 +625,13 @@ onboarding:
         notEnrolled:
           text: You need to configure this in your device settings.
           label: How to
-          step1: 
+          step1:
             label: Step 1
             value: Go to your device settings
-          step2: 
+          step2:
             label: Step 2
             value: Set up face or fingerprint
-          step3: 
+          step3:
             label: Step 3
             value: Enable it in IO under Profile > Security
     unavailable:
@@ -644,10 +643,10 @@ onboarding:
       subtitle: IO sends you messages that are relevant to you. Make sure that only you can access the app by setting a code or sign to unlock the device.
       body:
         label: How to
-        step1: 
+        step1:
           label: Step 1
           value: Go to your device settings
-        step2: 
+        step2:
           label: Step 2
           value: Set a code or sign to unlock the device
   shareData:

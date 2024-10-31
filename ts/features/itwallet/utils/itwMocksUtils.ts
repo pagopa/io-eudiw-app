@@ -1,4 +1,3 @@
-import { PidData } from "@pagopa/io-react-native-cie-pid";
 import { IOColors, IOIcons } from "@pagopa/io-app-design-system";
 import I18n from "../../../i18n";
 import { BulletItem } from "../components/ItwBulletList";
@@ -9,6 +8,13 @@ import {
 } from "../../../config";
 
 export const ISSUER_URL = "https://www.interno.gov.it/pid/";
+
+export type PidData = {
+  name: string;
+  surname: string;
+  fiscalCode: string;
+  birthDate: string;
+};
 
 export const pidDataMock: PidData = {
   name: "Mario",

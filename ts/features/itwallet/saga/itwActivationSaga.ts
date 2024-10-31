@@ -1,5 +1,5 @@
 import { SagaIterator } from "redux-saga";
-import { call, takeLatest, cancel, fork, take } from "typed-redux-saga/macro";
+import { call, takeLatest } from "typed-redux-saga/macro";
 import { CommonActions } from "@react-navigation/native";
 import NavigationService from "../../../navigation/NavigationService";
 import ROUTES from "../../../navigation/routes";
@@ -10,13 +10,6 @@ import {
   itwActivationStop
 } from "../store/actions/itwActivationActions";
 import { ITW_ROUTES } from "../navigation/ItwRoutes";
-import { ReduxSagaEffect } from "../../../types/utils";
-import { SessionToken } from "../../../types/SessionToken";
-import { itwLoginSuccess } from "../store/actions/itwIssuancePidCieActions";
-import {
-  itwStopCieManager,
-  watchItwPidIssuingCieAuthSaga
-} from "./itwIssuancePidCieAuthSaga";
 
 /**
  * Watcher for the IT wallet activation related sagas.
@@ -38,39 +31,6 @@ export function* watchItwActivationSaga(): SagaIterator {
   yield* takeLatest(itwActivationCompleted, handleActivationCompleted);
 }
 
-/**
- * A saga that makes the user go through the authentication process until
- * a SessionToken gets produced.
- */
-export function* handleStartAuthenticationSaga(): Generator<
-  ReduxSagaEffect,
-  SessionToken,
-  any
-> {
-  // Watch for login by CIE
-  const watchCieAuthentication = yield* fork(watchItwPidIssuingCieAuthSaga);
-
-  // Wait until the user has successfully authenticated with CIE
-  // FIXME: show an error on LOGIN_FAILED?
-  const action = yield* take(itwLoginSuccess);
-
-  yield* cancel(watchCieAuthentication);
-
-  // stop cie manager from listening nfc
-  yield* call(itwStopCieManager);
-
-  return action.payload.token;
-}
-
-export function* handleStopAuthenticationSaga(): Generator<
-  ReduxSagaEffect,
-  void,
-  any
-> {
-  // stop cie manager from listening nfc
-  yield* call(itwStopCieManager);
-}
-
 export function* handleActivationStart(): SagaIterator {
   yield* call(
     NavigationService.dispatchNavigationAction,
@@ -78,7 +38,6 @@ export function* handleActivationStart(): SagaIterator {
       screen: ITW_ROUTES.ISSUANCE.PID.INFO
     })
   );
-  yield* call(handleStartAuthenticationSaga);
 }
 
 export function* handleActivationStop(): SagaIterator {
@@ -88,7 +47,6 @@ export function* handleActivationStop(): SagaIterator {
       screen: ROUTES.ITWALLET_HOME
     })
   );
-  yield* call(handleStopAuthenticationSaga);
 }
 
 export function* handleActivationCompleted(): SagaIterator {
@@ -98,5 +56,4 @@ export function* handleActivationCompleted(): SagaIterator {
       screen: ROUTES.ITWALLET_HOME
     })
   );
-  yield* call(handleStopAuthenticationSaga);
 }
