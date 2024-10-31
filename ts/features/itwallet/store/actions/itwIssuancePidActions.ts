@@ -3,8 +3,7 @@ import {
   createAsyncAction,
   createStandardAction
 } from "typesafe-actions";
-import { PidData } from "@pagopa/io-react-native-cie-pid";
-import { PidCredentialCatalogItem } from "../../utils/itwMocksUtils";
+import { PidCredentialCatalogItem, PidData } from "../../utils/itwMocksUtils";
 import { StoredCredential } from "../../utils/itwTypesUtils";
 import { ItWalletError } from "../../utils/itwErrorsUtils";
 

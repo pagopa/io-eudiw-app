@@ -1,5 +1,4 @@
 import { ItwPersistedCredentialsActions } from "./itwPersistedCredentialsActions";
-import { ItwIssuancePidCieAuthActions } from "./itwIssuancePidCieActions";
 import { ItwActivationActions } from "./itwActivationActions";
 import { ItwWiaActions } from "./itwWiaActions";
 import { ItwLifecycleActions } from "./itwLifecycleActions";
@@ -18,7 +17,6 @@ export type ItWalletActions =
   | ItwWiaActions
   | ItwActivationActions
   /* ISSUANCE */
-  | ItwIssuancePidCieAuthActions
   | ItwIssuancePidActions
   | ItwIssuanceCredentialActions
   /* PERSISTED CREDENTIALS */

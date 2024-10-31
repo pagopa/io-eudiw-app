@@ -3,7 +3,6 @@ import { SafeAreaView } from "react-native";
 import { Route, useRoute } from "@react-navigation/core";
 import { useNavigation } from "@react-navigation/native";
 import * as pot from "@pagopa/ts-commons/lib/pot";
-import { PidData } from "@pagopa/io-react-native-cie-pid";
 import { IOStyles } from "@pagopa/io-app-design-system";
 import I18n from "../../../../../i18n";
 import { useOnFirstRender } from "../../../../../utils/hooks/useOnFirstRender";
@@ -19,7 +18,10 @@ import {
   ItWalletError,
   getItwGenericMappedError
 } from "../../../utils/itwErrorsUtils";
-import { getPidCredentialCatalogItem } from "../../../utils/itwMocksUtils";
+import {
+  getPidCredentialCatalogItem,
+  PidData
+} from "../../../utils/itwMocksUtils";
 import { itwIssuancePid } from "../../../store/actions/itwIssuancePidActions";
 import { useHeaderSecondLevel } from "../../../../../hooks/useHeaderSecondLevel";
 

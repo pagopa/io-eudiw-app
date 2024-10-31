@@ -3,9 +3,6 @@ import { PersistConfig, PersistPartial, persistReducer } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Action } from "../../../../store/actions/types";
 import itwCreateCredentialsStorage from "../storages/itwCredentialStorage";
-import itwIssuancePidAuthCieReducer, {
-  ItwIssuancePidCieAuthState
-} from "./itwIssuancePidCieAuthReducer";
 import itwWia, { ItwWiaState } from "./itwWiaReducer";
 import itwCredentials, {
   ItwPersistedCredentialsState
@@ -33,7 +30,6 @@ export type ItWalletState = {
   lifecycle: ItwLifecycleState;
   wia: ItwWiaState;
   /* ISSUANCE */
-  issuancePidCieAuth: ItwIssuancePidCieAuthState;
   issuancePid: ItwIssuancePidState;
   issuanceCredential: ItwIssuanceCredentialState;
   /* PERSISTED CREDENTIALS */
@@ -64,7 +60,6 @@ const reducers = combineReducers<ItWalletState, Action>({
   lifecycle: itwLifeCycle,
   wia: itwWia,
   /* ISSUANCE */
-  issuancePidCieAuth: itwIssuancePidAuthCieReducer,
   issuancePid: itwPidReducer,
   issuanceCredential: itwIssuanceCredentialReducer,
   /* PERSISTED CREDENTIALS */
