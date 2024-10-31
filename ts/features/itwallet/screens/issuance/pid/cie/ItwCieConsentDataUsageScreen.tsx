@@ -44,11 +44,12 @@ const jsCode = `
   article.className = 'u-padding-left-xl';
   const div = document.createElement('div');
   div.innerHTML = \`
-    <p class="u-padding-bottom-l">I seguenti dati stanno per essere inviati a: <br/><b>IO - l'app dei servizi pubblici</b></p>
-    <p class="u-padding-bottom-xs">Nome</p>
-    <p class="u-padding-bottom-xs">Cognome</p>
-    <p class="u-padding-bottom-xs">Data di nascita</p>
-    <p class="u-padding-bottom-xs">Codice Fiscale</p>
+    <p class="u-padding-bottom-l">Request for CIE access Level 3<br>The following data is about to be sent to:</p>
+    <p class="u-padding-bottom-l">EUDIW - the European Wallet app</p>
+    <p class="u-padding-bottom-xs">First Name</p>
+    <p class="u-padding-bottom-xs">Last Name</p>
+    <p class="u-padding-bottom-xs">Date of Birth</p>
+    <p class="u-padding-bottom-xs">Taxe code</p>
   \`;
   article.replaceChildren(div);
 `;

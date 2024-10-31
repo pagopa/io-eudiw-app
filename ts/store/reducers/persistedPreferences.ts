@@ -5,7 +5,6 @@ import * as O from "fp-ts/lib/Option";
 import { createSelector } from "reselect";
 import { isActionOf } from "typesafe-actions";
 import { PersistPartial } from "redux-persist";
-import { NativeModules, Platform } from "react-native";
 import { Locales } from "../../../locales/locales";
 import {
   preferenceFingerprintIsEnabledSaveSuccess,
@@ -23,10 +22,7 @@ export type PreferencesState = Readonly<{
 export type PersistedPreferencesState = PreferencesState & PersistPartial;
 
 export const initialPreferencesState: PreferencesState = {
-  preferredLanguage:
-    Platform.OS === "ios"
-      ? NativeModules.SettingsManager.settings.AppleLocale
-      : NativeModules.I18nManager.localeIdentifier
+  preferredLanguage: "en_GB"
 };
 
 export default function preferencesReducer(
