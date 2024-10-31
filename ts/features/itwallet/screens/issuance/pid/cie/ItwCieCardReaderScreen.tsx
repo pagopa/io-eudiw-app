@@ -196,16 +196,6 @@ class ItwCieCardReaderScreen extends React.PureComponent<Props, State> {
     }
   }
 
-  private getFooter = () => (
-    <ButtonSolid
-      onPress={constNull}
-      label={I18n.t("features.itWallet.issuing.cie.help")}
-      accessibilityLabel={I18n.t("features.itWallet.issuing.cie.help")}
-      fullWidth={true}
-      color={"contrast"}
-    />
-  );
-
   public render(): React.ReactNode {
     return (
       <>
@@ -243,8 +233,6 @@ class ItwCieCardReaderScreen extends React.PureComponent<Props, State> {
             )}
           </View>
         </SafeAreaView>
-        {this.state.readingState !== ReadingState.completed && // TODO: validate - the screen has the back button on top left so it includes cancel also on reading success
-          this.getFooter()}
       </>
     );
   }
