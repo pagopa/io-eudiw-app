@@ -1,12 +1,10 @@
 import { SagaIterator } from "redux-saga";
-import { put, select, call, takeLatest } from "typed-redux-saga/macro";
-import { isSome } from "fp-ts/lib/Option";
+import { put, call, takeLatest } from "typed-redux-saga/macro";
 import {
   Trust,
   WalletInstanceAttestation,
   createCryptoContextFor
 } from "@pagopa/io-react-native-wallet";
-import DeviceInfo from "react-native-device-info";
 import { toError } from "fp-ts/lib/Either";
 import { ItWalletErrorTypes } from "../utils/itwErrorsUtils";
 import { itwWiaRequest } from "../store/actions/itwWiaActions";
