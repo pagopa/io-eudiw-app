@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">ioeudiw</string>
+  <string name="app_name">ioeudiw</string>
+ <string name="io_eudiw_title">EUDIW</string>
+ <string name="io_eudiw_subtitle">The app that keeps you safe your digital identities</string>
 </resources>

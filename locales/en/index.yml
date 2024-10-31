@@ -58,6 +58,9 @@ date:
     - "am"
     - "pm"
 global:
+  symbols:
+    question: "?"
+    asterisk: "*"
   date:
     invalid: "invalid date"
     today: "today"
@@ -88,3 +91,694 @@ global:
     dayMonthYear: "D MMMM YYYY"
     weekdayDayMonthYear: "dddd D MMMM YYYY"
     dateTimePicker: "gg/mm/yyyy"
+  genericError: There is a temporary problem, please try again.
+  genericAlert: Warning!
+  genericWaiting: Wait a few seconds..
+  genericThanks: Thank you
+  genericShare: Share
+  genericSave: Save
+  genericRetry: Try again
+  jserror:
+    title: Unexpected error occurred
+    message: We have reported this to our team! Please close the app and start again!
+  buttons:
+    deny: "Deny"
+    share: Share
+    delete: Delete
+    cancel: Cancel
+    settings: Settings
+    ok: OK
+    ok2: Ok
+    continue: Continue
+    notNow: Maybe later
+    retry: Retry
+    back: Back
+    confirm: Confirm
+    close: Close
+    exit: Exit
+    saveSelection: Save the selection
+    search: Search
+    skip: "Skip"
+    add: Add
+    edit: "Edit"
+    info: "Info"
+    activate: "Enable"
+    activate2: Enable
+    deactivate: "Disable"
+    show: "Show"
+    update: "Update"
+    updateIO: "Update IO"
+    findOutMore: "Find out more"
+    details: "Details"
+    choose: "Scegli"
+    copy: Copy
+  navigator:
+    itwallet: Wallet
+    scan: Scan
+    profile: Profile
+  remoteStates:
+    loading: Loading...
+    wait: Wait a few seconds..
+    notAvailable: Not available
+  accessibility:
+    minusSymbol: minus
+    switchLabel: "Select to activate"
+    reload: "Reload"
+    search: "Search"
+    inputLabel: "{{header}}, Header"
+    textField: "{{inputLabel}}, text field"
+    description: Description
+    dateField: 2 digits for the month, 2 for the year
+    threeDigits: 3 digits
+    fourDigits: 4 digits
+    dateFormat: MMMM Do YYYY
+    expanded: Expanded paragraph
+    collapsed: Collapsed paragraph
+    active: State active
+    inactive: State inactive
+    linkHint: Activating this item you will be redirected to the web browser of your device
+    alert: Alert
+    activityIndicator:
+      label: Loading
+      hint: Wait for the content load
+    header:
+      label: Application header
+    contextualHelp:
+      close: Close the contextual help
+      open:
+        label: Contextual Help
+        hint: Access information about the contents of the current screen
+  media:
+    email: "Email"
+    pec: "Certified email"
+    phone: "Phone"
+features:
+  itWallet:
+    title: "IT Wallet"
+    tos: "By continuing, you accept the [Terms and conditions of use]() of the service and confirm that you have read the [Privacy Policy]() of {{relayingParty}}."
+    actionBanner:
+      title: "I tuoi documenti digitali sempre con te!"
+      description: "Attiva il Wallet e porta sempre con te la tua identità digitale e i tuoi documenti personali."
+      action: "Start"
+      hideLabel: "Hide this banner"
+    innerActionBanner: 
+      title: "Digital credential news"
+      description: "Enable IT Wallet and add your digital credentials (e.g. driving license, health insurance card, etc.)"
+      action: "Enable IT Wallet"
+      hideLabel: "Hide this banner"
+    activationScreen:
+      intro: "## Attiva il Wallet"
+      subContentOne: "###### Cos’è e come funziona\n\nWallet ti permette di salvare e portare sempre con te la versione digitale della tua **Identità** e **di alcuni dei documenti fisici** che già possiedi"
+      subContentTwo: "###### È facile e veloce\n\nPotrai autenticarti in Italia e all’estero a molti servizi digitali, o verificare in presenza le tue attestazioni semplicemente scansionando il codice QR abbinato alle versioni digitali dei tuoi documenti."
+      confirm: "Continua"
+    homeScreen:
+      categories: 
+        any: "Any"
+        itWallet: "IT Wallet"
+        health: "Health"
+        payments: "Payments methods"
+        bonus: "Bonuses and discounts"
+      reset: 
+        label: "Reset"
+        bottomSheet: 
+          title: "Do you want to reset IT Wallet?"
+          body: "By deactivating IT Wallet, you will lose your Digital Identity and return to the initial state. You can reactivate it later."
+          confirm: "Confirm reset"
+          cancel: "Cancel"
+      buttons:
+        addCredential: "Add"
+    infoAuthScreen:
+      title: "Attiva il Wallet con CIE + PIN"
+      subTitle: "Assicurati di avere la tua Carta di identità eletrtonica (CE) e il suo codice di 8 cifre."
+      start: "Inizia"
+      readMoreUrl: "https://www.cartaidentita.interno.gov.it/"
+      noCieInfo: "Don't you have the CIE?"
+      errors:
+        nfc:
+          title: "Your device does not support NFC which is required to enable IT Wallet"
+          body: "To proceed, the NFC function of the device is required."
+    featuresInfoScreen:
+      title: "How do you want to activate the IT Wallet?"
+      showDiff:
+        title: "The difference between activation methods"
+        content: "If you activate IT Wallet with 'Log in with CIE', you will be able to use all its features. If you activate it with SPID or CieID, you will only be able to use some of them.\n\nThis is because the CIE (Electronic Identity Card) has a higher level of security than SPID and CieID. If you have it, we therefore recommend using the CIE."
+      list:
+        allFeaturesSection: "Recommended method"
+        mainFeaturesSection: "Other methods"
+        incomingFeature: "Coming soon"
+        cie: "Enter with CIE"
+        cieSubTitle: "Use Electronic Identity Card and PIN"
+        spid: "SPID"
+        spidSubTitle: "Use credentials and app (or SMS)"
+        cieId: "CieID"
+        cieIdSubTitle: "Use CieID app or credentials"
+      compareFeatures: "What is the difference?"
+    cie:
+      pinScreen:
+        title: "Enter your CIE PIN"
+        description: "It is an 8 digit code. It was communicated to you in two moments:\n- you received the first 4 digits at the registry office;\n- you received the last 4 digits at home with the CIE.\nPut them together and enter them in this order.\n\n[Have you forgotten your PIN?](https://www.cartaidentita.interno.gov.it/info-utili/codici-di-sicurezza-pin-e-puk/)"
+    issuing:
+      title: "IT Wallet activation"
+      cie:
+        waiting: 
+          title: "Place the CIE on the back of the device"
+          content: "If the reading doesn't start, move the card to different places and wait a few seconds until you feel a vibration."
+        reading:
+          title: "Hold it still for a few seconds"
+        success:
+          title: "Reading completed!"
+          content: "Continue to add your digital identity and complete IT Wallet activation."
+        error:
+          title: "You removed the CIE too early"
+          retry: "Retry"
+        help: "See how to do it"
+      infoConsent:
+        footer:
+          cancel: "Cancel"
+          confirm: "Continue"
+      loading:
+        title: "I am loading the data from the Ministry of the Interior"
+        subtitle: "Wait a few seconds"
+      pidPreviewScreen: 
+        title: "{{credentialName}}: here the preview"
+        checkNotice: "Verify that the following data is correct."
+        buttons:
+          add: "Add to Wallet"
+          cancel: "Cancel"
+        banner:
+          title: "Something doesn't add up?"
+          content: "If you want to delve deeper into some data or report errors, contact support."
+          actionTitle: "Contact support"
+          closeTitle: "Close"
+        bottomSheet: 
+          title: "Cancel the IT Wallet activation"
+          body: "Do you want to cancel the obtaining of the digital identity and therefore the activation of the IT Wallet?"
+          buttons: 
+            back: "Go back"
+            cancel: "Cancel activation"
+        loading:
+          title: "I am loading the data from the Ministry of the Interior"
+          subtitle: "Wait a few seconds"
+      pidActivationScreen: 
+        loading: 
+          title: "I'm activating your IT Wallet"
+          subtitle: "Wait a few seconds"
+        typ:
+          title: "Wallet is active!"
+          content: "Now you can add other cards and use your digital identity to access online services."
+          button: "Go to Wallet"
+      credentialsCatalogScreen:
+        title: "Cosa vuoi aggiungere al Wallet?"
+        subTitle: "Wallet"
+        walletStatus: "Attivo"
+        incomingFeature: "Coming soon"
+        alreadyRegistered: "Already existing"
+      credentialsChecksScreen:
+        loading:
+          title: "We are performing some security checks"
+        success:
+          title: You are adding {{credentialName}} to your Wallet
+        toast: 
+          cancel: "The credential was not added to the wallet."
+        failure: 
+          alreadyExisting: 
+            title: "You already have this credential."
+            subtitle: "This credential is already in your wallet. If you don't see it, contact us."
+            actionLabel: "Go to the Wallet"
+      credentialAddScreen:
+        loading:
+          title: "We're adding your credential to your walleto"
+        toast: 
+          success: "Card added!"
+      credentialsIssuingInfoScreen:
+        title: "Data needed to add the card"
+        subtitle: "{{authsource}} will send them to {{organization}}."
+        readMore: "Find out more"
+        infoBottomSheet:
+          title: "Data processing"
+          body:
+            firstHeaderTitle: "Why is it necessary?"
+            firstBodyContent: "To obtain the issuance of the card The body authorized to issue this card needs to read your data to verify your identity."
+            secondHeaderTitle: "Safety of treatment"
+            secondBodyContent: "App IO allows the sharing of your data only with verified bodies registered on the lists that guarantee its reliability."
+        tos: "For more information, read the [Privacy Policy](https://io.italia.it/privacy-policy/) and the [Terms and Conditions](https://io.italia.it/privacy-policy/)"
+      credentialPreviewScreen:
+        title: "We are adding the following data to the Wallet:"
+        subtitle: "Before adding it, check if the data is correct."
+        banner:
+          title: "Something doesn't add up?"
+          content: "If you want to delve deeper into some data or report errors, contact support."
+          actionTitle: "Contact support"
+        bottomSheet: 
+          about: 
+            title: "Who is it?"
+            subtitle: "it is the source that manages and protects your data. The IO app allows you to view them because it can verify and protect your identity through important security procedures."
+          data:
+            title: "Data protection"
+            subtitle: "our data is not saved on this device but stored in the Wallet Instance, and you can choose to revoke them at any time."
+        toast:
+          success: "Credential added!"
+          failure: "We were not able to add this card, try again later."
+    presentation: 
+      credentialDetails: 
+        buttons: 
+          qrCode: "Show QR code"
+        lastUpdated: "Last updated on {{lastUpdateTime}}"
+        actions:
+          removeFromWallet: "Remove from Wallet"
+          requestAssistance: "Something wrong? Contact {{authSource}}"
+      pidAttributesScreen: 
+        headerTitle: "Data presentation"
+        title: "Do you confirm this data?"
+        subTitle: "Here you can find the data regarding your Digital Identity and the Authority to which you are presenting them."
+        requiredData: 
+          title: "Required data"
+          subTitle: "Required to access the services you are requesting."
+        wrongClaims: 
+          title: "Something wrong? "
+          reportLink: "Report an error"
+        privacy: 
+          thirdParty: "Data is not shared with third parties"
+          preservation: "Data will be retained for {{numberOfMonths}} months"
+          deletion: "You can delete your data at any time"
+          conditionsLink: "Terms of Service"
+        buttons: 
+          confirmData: "Confirm data"
+          deny: "Deny"
+        tos: "By continuing, you accept the [Terms and conditions of use]() of the service and confirm that you have read the [Privacy Policy]() of {{relayingParty}}."
+      checksScreen: 
+        loading: "We are checking that this organization is verified"
+        success: "{{organizationName}} is a verified organization"
+        errors:
+          walletNotValid: 
+            title: IT Wallet is not active
+            subtitle: To present a credential, you need to activate it first.
+            actionLabel: Activate IT Wallet
+      dataScreen: 
+        title: "Allow the reading of your data"
+        subtitle: "Authorizes {{organizationName}} to process your data to provide you with the services you request."
+        why: "Why?"
+        requiredClaims: "Required data"
+        optionalClaims: "Optional data"
+        privacy: 
+          usage: "The data is only used for the purposes shown"
+          deletion: "You can request its removal at any time"
+        infoBottomSheet:
+          body:
+            firstHeader: "Why is it necessary?"
+            firstBody: "To obtain the issuance of the card The body authorized to issue this card needs to read your data to verify your identity."
+            secondHeader: "Safety of treatment"
+            secondBody: "App IO allows the sharing of your data only with verified bodies registered on the lists that guarantee its reliability."
+        tos: "For more information, read the [Privacy Policy](https://io.italia.it/privacy-policy/) and the [Terms and Conditions](https://io.italia.it/privacy-policy/)"
+      resultScreen:
+        loading: 
+          title: "We are sharing your data with {{organizationName}}" 
+        success: 
+          title: "Done!"
+          subtitle: "Go back to the {{organizationName}} website to continue."
+      qrCodeScreen:
+        title: "Personal QR code"
+        proximity:
+          start: "Proximity check started"
+          stop: "Proximity check completed"
+          peripheralConnected: "Verification device connected"
+          sessionEstablished: "A session has been established with the verification device"
+          documentRequestReceived: "Credential checking in progress"
+          documentPresentationCompleted: "Credential check completed"
+    missingFeatureScreen: 
+      headerTitle: "Screen not available"
+      title: "This screen will be available soon."
+      subtitle: "At this moment, it doesn't exist yet, but we are working on its implementation."
+      button: 
+        label: "I understand"
+    verifiableCredentials:
+      type:
+        digitalCredential: "Identità Digitale"
+        disabilityCard: "European Disability Card"
+        healthCard: "Health Insurance Card"
+        drivingLicense: "Driving License"
+      claims:
+        uniqueId: "Unique ID"
+        givenName: "Name"
+        familyName: "Surname"
+        taxIdCode: "Fiscal Code"
+        birthdate: "Birth date"
+        placeOfBirth: "Place of birth"
+        expirationDate: "Expiration date"
+        securityLevel: "Security level"
+        issuedBy: "Credential issued by"
+        issuedByNew: "Issued by"
+        releasedBy: "Released by"
+        info: "Further information about this data"
+        mdl: 
+          category: "License {{category}}"
+          issuedDate: "Valid from"
+          expirationDate: "Valid until"
+      unrecognizedData: 
+        title: "Not recognizing some data?"
+        body: "If there are errors in the data or if you want to better understand their meaning, you can contact the {{issuer}}."
+        cta: "Ask for information or report errors"
+    generic:
+      error:
+        title: "There's a problem on our systems"
+        body: "Try again in a few minutes. If it happens again, contact support."
+      close: "Close"
+      rp: "Relying Party"
+      trusted: "Trusted"
+      search: "Cerca"
+      alert:
+          title: "Do you want to interrupt the operation?"
+          confirm: "Yes, interrupt it."
+          cancel: "No, go back"
+      dataSource: 
+        multi: "Provided by {{credentialSource}}"
+        single: "Provided by {{credentialSource}}"
+      credential: "Credential"
+      attribute: "Attribute"
+      placeholders:
+        claimNotAvailable: "Claim not available"
+        claimLabelNotAvailable: "Claim label not available"
+        organizationName: "Issuer name not available"
+    onboarding:
+      skip: Skip
+      complete: Continue
+      closeApp: Close the app
+      completeTitle: Start using the Wallet
+      completeDescription:  To proceed, read the [Privacy Policy](https://io.italia.it/privacy-policy/) and the[Terms and Conditions of use](https://io.italia.it/privacy-policy/)
+      card1:
+        title: This is the wallet app!
+        content: Let's see together what you can do
+      card2:
+        title: Add your documents
+        content: You can save and store digital versions of your documents in the wallet
+      card3:
+        title: Authenticate with the Wallet
+        content: You can verify your credentials and access services, including online, by scanning the QR code
+authentication:
+  landing:
+    expiredCardTitle: The CIE verification failed
+    expiredCardHeaderTitle: Login with CIE
+    expiredCardContent: The card used is no longer valid or has expired. Use SPID to enter the app.
+    expiredCardHelp: How to renew your Electronic Identity Card?
+  cie:
+    genericTitle: Login with CIE
+    cie: CIE
+    noDataTitle: To use IO you must authorize the sending of data
+    authToSendData: !include cie/auth_to_send_data.md
+    nfc:
+      apduNotSupported: "The operating system doesn't support the reading of your CIE. For further details, please contact your device manufacturer."
+      retry: Retry
+      noNfcConnectionTitle: Are you sure you put the card down?
+      noNfcConnectionContent: !include cie/noNfcConnection.md
+      enableNfcTitle: Enable NFC
+      enableNfcHeader: Check NFC
+      enableNfcContent: For allowing the app to verify your Electronic Identity Card, you must first activate the NFC function of your device. Come back here when you're done!
+    pin:
+      accessibility:
+        placeholderLabel: PIN of Electronic Identity Card
+        label: Insertion field for Electronic Identity Card pins
+        hint: Enter the 8 digits pin of your Electronic Identity Card in this field.
+      pinCardTitle: Enter the PIN of your ID Card
+      pinCardHeader: Login with CIE
+      pinCardContent: The PIN code consists of 8 digits. Four digits have been delivered to you at the registry office and another four digits have been sent to your home along with the card. Put them together, in that order, and enter them here please.
+      incorrectCiePinTitle: Incorrect PIN, you still have {{remainingCount}} attempts
+      incorrectCiePinHeaderTitle: Wrong PIN
+      incorrectCiePinContent1: For your security, you can try entering the card PIN no more than three times. Then you will have to unlock the card by entering the PUK.
+      incorrectCiePinContent2: Keep in mind that the PIN code of your Electronic Identity Card (CIE) is composed of 8 digits. Four digits that were given to you at the registry office and another four digits that were sent to you at home, along with the card.
+      alert: Are you sure you want to go back?
+      subtitleHelp: The PIN code consists of 8 digits.
+      subtitleCTA: Where can I find it?
+      bottomSheetCTA: Did you forget your PIN?
+      contextualHelpTitle: Where can I find my PIN and PUK?
+      contextualHelpBody: !include help/ciePinHelpBody.md
+      contextualHelpCTA: Did you forget your PIN/PUK?
+    pinTempLocked:
+      header: Login with CIE
+      title: Card temporarily locked
+      content: !include cie/temporary_blocked_cie.md
+      button: "Load/open CieID"
+    card:
+      headerTitle: Login with CIE
+      titleiOS: Hold the card still
+      title: Hold the card again
+      layCardMessageHeader: Hold your Electronic ID Card on the back of your phone for a few seconds.
+      layCardMessageHeaderiOS: The sensor is located on top of the device.
+      layCardMessageFooter: If you don't know exactly where the NFC sensor is, move the card to different points and wait a few seconds until you feel a vibration.
+      cieCardValid: Ok, your card is valid! You can remove it.
+      readerCardTitle: Hold the card for a few seconds
+      readerCardHeader: We are reading the data of your CIE and verifying its validity.
+      readerCardFooter: Hold the card in this position for a few more seconds
+      iosAlert:
+        readingInstructions: Keep your electronic ID card on the top of the iPhone.
+        moreTags: More cards have been identified. Please bring one card at a time.
+        readingInProgress: "READING IN PROGRESS\nHold the card still for a few seconds..."
+        readingSuccess: "Successful reading.\nYou can remove the card while we complete the data verification."
+        invalidCard: It seems that this card is not an Electronic Identity Card (CIE).
+        tagLost: You removed the card too soon.
+        cardLocked: CIE card locked
+        wrongPin1AttemptLeft: Wrong PIN, you still have 1 attempt
+        wrongPin2AttemptLeft: Wrong PIN, you still have 2 attempts
+      error:
+        readerCardLostTitle: Hold the card again for a few seconds
+        readerCardLostTitleiOS: You removed the card too soon.
+        readerCardLostHeader: We have not yet finished reading the card data.
+        readerCardLostHeaderiOS: We have not yet finished reading the card data. Please try again.
+        onTagLost: You removed the card too soon. Hold the card as close as possible to the back of the device until a confirmation appears on the screen. It will take a few seconds.
+        tryAgain: Something did not work as expected while we read your CIE. It's probably a temporary issue, please try again!
+        generic: Something did not work as expected while we read your CIE.
+        unknownCardTitle: Unknown card
+        unknownCardContent: The card used does not seem to be an Electronic Identity Card (CIE).
+        unknownCardHelpLink: What is the Electronic Identity Card?
+    dataUsageConsent:
+      retryCTA: Entra
+  errors:
+    notoken: The session is not ready or is invalid
+    logout: Error on logout
+    network:
+      title: Access problem
+      body: The selected identity provider is not available at this time, you can try again later. If you have another SPID, choose an alternative provider. You can report the problem with the '?' icon at the top right of the screen.
+    login:
+      title: Login error
+      body: There was an error with the login, please retry!
+    spid:
+      unknown: Unknown error
+      error_19: "You have entered an incorrect username or password too many times: try again in a few minutes or contact your SPID identity provider to change your credentials."
+      error_20: "For security reasons IO requires a login with a second authentication factor: contact your SPID identity provider to understand how to use it."
+      error_21: "It's been too long since you started accessing: please start over again."
+      error_22: "To use IO, you have to consent access to some data. Enter again and consent."
+      error_23: "Your SPID identity is suspended or revoked. To reactivate your account, contact your SPID identity provider."
+      error_25: "You have canceled the login operation: you can try again whenever you want."
+      error_1001: "Access Denied: You are not of the minimum age required to use IO"
+onboarding:
+  contextualHelpTitle: How does the biometric recognition work
+  contextualHelpContent: !include onboarding/onboarding_fingerprint.md
+  tos:
+    headerTitle: Configure IO
+    accept: Accept and continue
+    error: Loading error
+    alert:
+      title: Attention
+      message: Please, read the full content of the Terms of Service and Privacy Policy to continue
+  unlockCode:
+    reset: Change the code
+    contextualHelpTitle: What your unlock code is
+    contextualHelpContent: !include onboarding/onboarding_pin.md
+  pin:
+    headerTitle: IO Settings
+    title: Create an unlock code
+    subTitle: It's a six-digit code you'll use to login and authorize some in-app operations.
+    pinLabel: Create unlock code
+    pinConfirmationLabel: Repeat unlock code
+    errors:
+      invalid:
+        title: Too easy!
+        description: Choose a code that is hard to guess and doesn't contain a single repeated number (e.g. 000000) or a list of ordered numbers (e.g. 123456 or 654321).
+        cta: Choose another code
+      match: The code doesn’t match
+    policy:
+      title: How to choose the code?
+      description: It's a six-digit code you'll use to login and authorize some in-app operations.
+      bulletListTitle: "Choose a code that's hard to guess and doesn't contain::"
+      firstItem: a single repeated number (e.g. 000000)
+      secondItem: a list of ordered numbers (e.g. 123456 or 654321)
+    success:
+      message: Done!
+  pinConfirmation:
+    title: Confirm unlock code
+    errors:
+      match:
+        title: The code you enter is different than the first one
+        cta: Try again
+  alert:
+    title: Do you really want to log out?
+    description: You will have to log in again to use the app
+  biometric:
+    headerTitle: Configure IO
+    available:
+      title: Enable biometric recognition
+      settings: You can always change your choice in Profile > Security
+      body:
+        text: You can use your face or fingerprint to enter instead of the unlock code. This will let you access the app and authorise operation and payments more easily and safely.
+        infoStart: You can use biometric recognition in place of the unlock code. This will let you access the app and authorize operations and payments with your
+        biometricType: face or fingerprint
+        infoEnd: more quickly and securely.
+        enrolledText: The biometric information is stored in your phone's memory. it will not be disclosed in any way to IO systems or stored anywhere else.
+        notEnrolled:
+          text: You need to configure this in your device settings.
+          label: How to
+          step1: 
+            label: Step 1
+            value: Go to your device settings
+          step2: 
+            label: Step 2
+            value: Set up face or fingerprint
+          step3: 
+            label: Step 3
+            value: Enable it in IO under Profile > Security
+    unavailable:
+      title: Protect your device
+      firstInfoStart: Io ti invia le comunicazioni che ti riguardano
+      firstInfoEnd: personalmente.
+      secondInfoStart: Proteggi il tuo dispositivo da accessi indesiderati e assicurati che solo tu possa accedere all'app. Per farlo, vai alle impostazioni del tuo dispositivo, imposta un
+      secondInfoEnd: codice di sblocco o configura il riconoscimento biometrico.
+      subtitle: IO sends you messages that are relevant to you. Make sure that only you can access the app by setting a code or sign to unlock the device.
+      body:
+        label: How to
+        step1: 
+          label: Step 1
+          value: Go to your device settings
+        step2: 
+          label: Step 2
+          value: Set a code or sign to unlock the device
+  shareData:
+    title: "Configure IO"
+  thankYouPage:
+    title: Setup completed!
+  notifications:
+    badge: New
+    headerTitle: IO Settings
+    continue: Continue
+    preview:
+      accessibilityLabelPrefix: "Here's an example:"
+      reminderOnPreviewOnTitle: You have a notice due soon
+      reminderOnPreviewOnMessage: Log in to pay the notice issued by ACI
+      reminderOffPreviewOnTitle: Comune di Ipazia
+      reminderOffPreviewOnMessage: Summer camp registration is now open
+      reminderOnPreviewOffTitle: You have a notice due tomorrow
+      reminderOnPreviewOffMessage: Log in to pay for it
+      reminderOffPreviewOffTitle: You have a new message
+      reminderOffPreviewOffMessage: Open the app to read the content
+    contextualHelpTitle: Push notifications
+    contextualHelpContent: !include onboarding/onboarding_notifications.md
+  infoConsent:
+    headerTitle: IO Settings
+    title: Enable push notifications not to miss important messages!
+    subTitle: To do so, you'll have to edit the preferences in your device settings.
+    openSettings: Go to Settings
+    continue: Not now
+    contextualHelpTitle: Push notifications
+    contextualHelpContent: !include onboarding/onboarding_notifications_info_consent.md
+    instructions:
+      title: "Here's how:"
+      label: Step
+      ios:
+        step1: Go to "Settings"
+        step2: Select "Notifications"
+        step3: Enable "Allow Notifications"
+      android:
+        step1: Go to "Settings"
+        step2: Select "Applications"
+        step3: Select "IO"
+        step4: Select "Notifications"
+        step5: Enable notifications
+identification:
+  instructions:
+    unlockCode: unlock code
+    unlockCodepPrefix: use your
+    fingerprint: fingerprint
+    fingerprintPrefix: use your
+    faceId: face
+    faceIdPrefix: use your
+    congiunction: or
+  title: Hi {{name}}!
+  titleProfileName: Hi {{profileName}}!
+  titleValidation: Confirm the procedure
+  logout: Logout
+  logoutProfileName: Not {{profileName}}?
+  logoutDescription: You can login with your SPID or CIE credentials. This session will be disconnected.
+  logoutDescriptionProfileName: You can login with your SPID or CIE credentials. {{profileName}}'s session will be disconnected.
+  biometric:
+    fingerprintType: Fingerprint
+    title: Biometric identification
+    popup:
+      reason: Identification by touch ID failed
+      title: Identification required
+      sensorDescription: Login quickly
+  fail:
+    remainingAttempts: You have {{attempts}} attempts left
+    remainingAttemptSingle: You have {{attempts}} attempt left
+    tooManyAttempts: Too many attempts.
+    waitMessage: "Try again in:"
+  unlockCode:
+    accessibility:
+      unlockHint: You entered {{number}} digits of {{length}}
+      fingerprint: Login with your fingerprint
+      faceId: Login with the Face ID
+      delete: Remove last inserted digit
+    reset:
+      button: Did you forget the
+      code: unlock code
+      button_short: Change the unlock code
+      subtitle: Set a new 6-digit code.
+    confirmValid: Correct unlock code
+  forgetCode:
+    confirmTitle: Did you forget the unlock code?
+    confirmMsg: To be able to choose a new unlock code you will need to log in again.
+    confirmMsgWithTask: To be able to choose a new unlock code you will need to cancel the current procedure and log in again.
+cie:
+  title: Touch the card
+  layCardMessageHeader: Touch your Electronic ID Card on the back of your phone for a few seconds.
+  layCardMessageFooter: If you don't know exactly where is the NFC sensor, move the card to different points and wait a few seconds until you hear a sound.
+  booking_url: https://www.cartaidentita.interno.gov.it/cittadini/sistema-di-prenotazione-della-cie/
+barcodeScan:
+  error: IO non riconosce questo codice
+  tabs:
+    scan: Inquadra
+    upload: Carica
+    input: Digita
+    a11y:
+      scan: Inquadra, 1 di 3
+      upload: Carica, 2 di 3
+      input: Digita, 3 di 3
+  upload:
+    image: Carica un'immagine
+    file: Carica un file
+  manual:
+    authorize: Autorizza una transazione
+    notice: Paga un avviso pagoPA
+  permissions:
+    undefined:
+      title: Ci serve il tuo permesso
+      label: Consenti l’accesso per inquadrare codici QR con la fotocamera del tuo dispositivo.
+      action: Consenti l’accesso
+    denied:
+      title: Non hai dato il permesso di usare la fotocamera
+      label: Per concederlo, accedi alle impostazioni del tuo sistema operativo.
+      action: Vai alle impostazioni
+  multipleResultsAlert:
+    title: Hai inquadrato più codici
+    body: Inquadra un solo codice alla volta
+    action: Riprova
+clipboard:
+  copyIntoClipboard: copy to clipboard
+  copyFeedback: Copied to clipboard
+  copyText: copy
+  copyFeedbackButton: copied
+profile:
+  main:
+    title: Profile
+    developerModeOn: Developer mode enabled
+    closeAppWarning: Close the app to restart
+    debugMode: Debug mode
+    reset: Reset to the first start
+    appVersion: Version

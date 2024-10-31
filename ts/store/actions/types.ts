@@ -8,10 +8,28 @@ import {
   StoreEnhancer as ReduxStoreEnhancer
 } from "redux";
 import { GlobalState } from "../reducers/types";
+import { ItWalletActions } from "../../features/itwallet/store/actions";
 import { ApplicationActions } from "./application";
 import { DebugActions } from "./debug";
+import { StartupActions } from "./startup";
+import { PersistedPreferencesActions } from "./persistedPreferences";
+import { AuthenticationActions } from "./authentication";
+import { ProfileActions } from "./profile";
+import { IdentificationActions } from "./identification";
+import { PinSetActions } from "./pinset";
+import { OnboardingActions } from "./onboarding";
 
-export type Action = ApplicationActions | DebugActions;
+export type Action =
+  | ApplicationActions
+  | ProfileActions
+  | DebugActions
+  | StartupActions
+  | PersistedPreferencesActions
+  | AuthenticationActions
+  | IdentificationActions
+  | ItWalletActions
+  | PinSetActions
+  | OnboardingActions;
 
 export type Dispatch = DispatchAPI<Action>;
 

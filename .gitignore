@@ -1,6 +1,7 @@
 # OSX
 #
 .DS_Store
+*.log
 
 # Xcode
 #
@@ -20,25 +21,48 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
-ios/.xcode.env.local
+project.xcworkspace
+
+# Ruby / CocoaPods
+/ios/Pods/
+/vendor/bundle/
 
 # Android/IntelliJ
 #
 build/
 .idea
 .gradle
+.history
 local.properties
 *.iml
 *.hprof
+Google Play Android Developer-04750d2c0cf8.json
 .cxx/
-*.keystore
-!debug.keystore
+
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
 
 # node.js
 #
 node_modules/
 npm-debug.log
 yarn-error.log
+
+# Ignore package-lock since we use yarn
+package-lock.json
+
+# Test js
+/coverage
+
+# App Config
+.env
+
+# BUCK
+buck-out/
+\.buckd/
+*.keystore
 
 # fastlane
 #
@@ -47,23 +71,40 @@ yarn-error.log
 # For more information about the recommended setup visit:
 # https://docs.fastlane.tools/best-practices/source-control/
 
-**/fastlane/report.xml
-**/fastlane/Preview.html
-**/fastlane/screenshots
-**/fastlane/test_output
+*/fastlane/report.xml
+*/fastlane/Preview.html
+*/fastlane/screenshots
 
 # Bundle artifact
 *.jsbundle
 
-# Ruby / CocoaPods
-/ios/Pods/
-/vendor/bundle/
+# Visual Studio Code settings
+.vscode
 
-# Temporary files created by Metro to check the health of the file watcher
-.metro-health-check*
+# Bundler
+vendor
+
+# MITMProxy
+__pycache__
 
 # Auto generated definitions
 definitions
 
 # Auto generated locales
 locales/locales.ts
+
+# Certificates
+**/*.p12
+**/*.pem
+**/*.pkey
+
+# rn-nodeify
+shim.js
+
+# Google services definition
+android/app/google-services.json
+# React native config generated file
+GeneratedDotEnv.m
+
+# XState Typegen
+**/*.typegen.*

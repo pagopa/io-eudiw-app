@@ -1,13 +1,61 @@
 /**
  * Aggregates all defined reducers
  */
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { combineReducers, Reducer } from "redux";
-import { PersistConfig } from "redux-persist";
+import { PersistConfig, persistReducer } from "redux-persist";
+import { featuresPersistor } from "../../features/common/store/reducers";
+import createSecureStorage from "../storages/keychain";
 import { Action } from "../actions/types";
+import { DateISO8601Transform } from "../transforms/dateISO8601Tranform";
 import appStateReducer from "./appState";
 import { navigationReducer } from "./navigation";
 import { GlobalState } from "./types";
 import { debugReducer } from "./debug";
+import startupReducer, { StartupState } from "./startup";
+import persistedPreferencesReducer, {
+  PreferencesState
+} from "./persistedPreferences";
+import profileReducer from "./profile";
+import authenticationReducer, { AuthenticationState } from "./authentication";
+import identificationReducer, { IdentificationState } from "./identification";
+import onboardingReducer, { OnboardingState } from "./onboarding";
+
+// A custom configuration to store the authentication into the Keychain
+export const authenticationPersistConfig: PersistConfig = {
+  key: "authentication",
+  storage: createSecureStorage(),
+  blacklist: ["deepLink"]
+};
+
+// A custom configuration to store the fail information of the identification section
+export const identificationPersistConfig: PersistConfig = {
+  key: "identification",
+  storage: AsyncStorage,
+  blacklist: ["progress"],
+  transforms: [DateISO8601Transform]
+};
+
+export const onboardingPersistConfig: PersistConfig = {
+  key: "onboarding",
+  storage: AsyncStorage,
+  blacklist: [],
+  transforms: [DateISO8601Transform]
+};
+
+export const persistedPreferencesConfig: PersistConfig = {
+  key: "persistedPreferences",
+  storage: AsyncStorage,
+  blacklist: [],
+  transforms: [DateISO8601Transform]
+};
+
+export const startupConfig: PersistConfig = {
+  key: "startup",
+  storage: AsyncStorage,
+  blacklist: [],
+  transforms: [DateISO8601Transform]
+};
 
 /**
  * Here we combine all the reducers.
@@ -28,9 +76,30 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
   //
   appState: appStateReducer,
   navigation: navigationReducer,
+  startup: persistReducer<StartupState, Action>(startupConfig, startupReducer),
+  // custom persistor (uses secure storage)
+  authentication: persistReducer<AuthenticationState, Action>(
+    authenticationPersistConfig,
+    authenticationReducer
+  ),
 
   // standard persistor, see configureStoreAndPersistor.ts
-  debug: debugReducer
+  // standard persistor, see configureStoreAndPersistor.ts
+  identification: persistReducer<IdentificationState, Action>(
+    identificationPersistConfig,
+    identificationReducer
+  ),
+  features: featuresPersistor,
+  onboarding: persistReducer<OnboardingState, Action>(
+    onboardingPersistConfig,
+    onboardingReducer
+  ),
+  profile: profileReducer,
+  debug: debugReducer,
+  persistedPreferences: persistReducer<PreferencesState, Action>(
+    persistedPreferencesConfig,
+    persistedPreferencesReducer
+  )
 });
 
 export function createRootReducer(

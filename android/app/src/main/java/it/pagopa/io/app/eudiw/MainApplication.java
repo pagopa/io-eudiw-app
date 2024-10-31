@@ -1,4 +1,4 @@
-package it.pagopa.io.app.eudiw;
+package it.pagopa.io.app.poc.eudiw;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
