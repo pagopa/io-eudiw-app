@@ -187,8 +187,8 @@ features:
       action: "Enable IT Wallet"
       hideLabel: "Hide this banner"
     activationScreen:
-      intro: "## Activate the Wallet"
-      subContentOne: "###### What it is and how it works\n\nThe Wallet allows you to save and always carry with you the digital version of your Identity and some of the physical documents you already own."
+      intro: "## Your digital documents at your fingertips"
+      subContentOne: "###### How it works\n\nWallet allows you to save and keep on your device the digital version of your Identity and some of the physical documents you already own."
       subContentTwo: "###### It's easy and fast\n\nYou can authenticate yourself in Italy and abroad for many digital services, or verify your credentials in person by showing the QR code linked to the digital versions of your documents."
       confirm: "Continue"
     homeScreen:
@@ -285,7 +285,7 @@ features:
           subtitle: "Wait a few seconds"
         typ:
           title: "It's all ready!"
-          content: "You can now start adding your documents and accessing online services."
+          content: "You can now add your documents and access online services."
           button: "Go to Wallet"
       credentialsCatalogScreen:
         title: "Cosa vuoi aggiungere al Wallet?"
@@ -367,7 +367,7 @@ features:
           deny: "Deny"
         tos: "By continuing, you accept the [Terms and conditions of use]() of the service and confirm that you have read the [Privacy Policy]() of {{relayingParty}}."
       checksScreen: 
-        loading: "We are checking that this organization is verified"
+        loading: "We are doing some security checks"
         success: "{{organizationName}} is a verified organization"
         errors:
           walletNotValid: 
@@ -376,7 +376,7 @@ features:
             actionLabel: Activate IT Wallet
       dataScreen: 
         title: "Allow your data to be read"
-        subtitle: "Authorizes {{organizationName}} to process your data to provide you with the services you request."
+        subtitle: "They will be shared with the {{organizationName}} for access to services."
         why: "Why?"
         requiredClaims: "Required data"
         optionalClaims: "Optional data"
