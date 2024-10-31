@@ -53,14 +53,14 @@ const ItwBulletList = ({ data }: Props) => (
             <Body style={{ marginBottom: 8 }} weight="Regular" color="grey-700">
               {section.title}
             </Body>
-            {section.data.map((claim, index) => (
+            {section.data.map((claim, sectionIndex) => (
               <View
                 style={
-                  index !== section.data.length - 1
+                  sectionIndex !== section.data.length - 1
                     ? styles.bulletItem
                     : styles.lastBulletItem
                 }
-                key={`${index}-${claim}`}
+                key={`${sectionIndex}-${claim}`}
               >
                 <H6>{`${BULLET_ITEM} ${claim}`}</H6>
               </View>

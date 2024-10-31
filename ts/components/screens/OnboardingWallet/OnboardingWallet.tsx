@@ -26,33 +26,36 @@ export const OnboardingWallet = () => {
     () => [
       {
         id: 0,
-        pictogramName: "cie", //TODO-> insert the right pictogram
+        pictogramName: "smile",
         title: I18n.t("features.itWallet.onboarding.card1.title"),
         content: I18n.t("features.itWallet.onboarding.card1.content"),
         accessibilityLabel: I18n.t("features.itWallet.onboarding.card1.title"),
         accessibilityHint: I18n.t("features.itWallet.onboarding.card1.content"),
         titleColor: MAIN_COLOR,
-        contentColor: MAIN_COLOR
+        contentColor: MAIN_COLOR,
+        pictogramStyle: "light-content"
       },
       {
         id: 1,
-        pictogramName: "cie", //TODO-> insert the right pictogram
+        pictogramName: "walletDoc",
         title: I18n.t("features.itWallet.onboarding.card2.title"),
         content: I18n.t("features.itWallet.onboarding.card2.content"),
         accessibilityLabel: I18n.t("features.itWallet.onboarding.card2.title"),
         accessibilityHint: I18n.t("features.itWallet.onboarding.card2.content"),
         titleColor: MAIN_COLOR,
-        contentColor: MAIN_COLOR
+        contentColor: MAIN_COLOR,
+        pictogramStyle: "light-content"
       },
       {
         id: 2,
-        pictogramName: "cie", //TODO-> insert the right pictogram
+        pictogramName: "fingerprint",
         title: I18n.t("features.itWallet.onboarding.card3.title"),
         content: I18n.t("features.itWallet.onboarding.card3.content"),
         accessibilityLabel: I18n.t("features.itWallet.onboarding.card3.title"),
         accessibilityHint: I18n.t("features.itWallet.onboarding.card3.content"),
         titleColor: MAIN_COLOR,
-        contentColor: MAIN_COLOR
+        contentColor: MAIN_COLOR,
+        pictogramStyle: "light-content"
       }
     ],
     []

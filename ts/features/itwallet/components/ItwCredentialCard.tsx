@@ -1,11 +1,6 @@
 import * as React from "react";
 import { View, Dimensions, Image, StyleSheet } from "react-native";
-import { sequence } from "fp-ts/lib/Array";
-import { sequenceS } from "fp-ts/lib/Apply";
-import * as O from "fp-ts/lib/Option";
-import * as E from "fp-ts/lib/Either";
-import { pipe } from "fp-ts/lib/function";
-import { Body, H6, IOColors } from "@pagopa/io-app-design-system";
+import { H6, IOColors } from "@pagopa/io-app-design-system";
 import customVariables from "../../../theme/variables";
 import {
   CredentialCatalogDisplay,
@@ -102,13 +97,15 @@ const ItwCredentialCard = (props: CredentialCardProps) => {
         style={styles.cardBackground}
         accessibilityIgnoresInvertColors
       />
-      <H6
-        color={textColor}
-        accessibilityLabel={title}
-        style={[styles.text, styles.titleText]}
-      >
-        {props.display.title}
-      </H6>
+      <View style={styles.titleView}>
+        <H6
+          color={textColor}
+          accessibilityLabel={title}
+          textStyle={styles.titleText}
+        >
+          {props.display.title}
+        </H6>
+      </View>
     </View>
   );
 };
@@ -121,11 +118,12 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     width: CARD_WIDTH
   },
-  text: {
+  titleView: {
     position: "absolute",
     marginLeft: TEXT_LEFT_MARGIN,
-    color: IOColors.white,
-    fontWeight: "700",
+    marginTop: TITLE_MARGIN_TOP
+  },
+  titleText: {
     textTransform: "uppercase"
   },
   fiscalCodeText: {
@@ -135,9 +133,5 @@ const styles = StyleSheet.create({
   nameText: {
     marginTop: NAME_MARGIN_TOP,
     color: IOColors.white
-  },
-  titleText: {
-    marginTop: TITLE_MARGIN_TOP,
-    colors: IOColors.white
   }
 });
