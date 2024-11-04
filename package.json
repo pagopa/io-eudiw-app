@@ -23,8 +23,6 @@
     "test": "jest",
     "prepare": "husky",
     "bundle:android-release": "node node_modules/react-native/local-cli/cli.js bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
-    "generate:api-definitions": "rimraf definitions/backend && mkdir -p definitions/backend && gen-api-models --api-spec $npm_package_io_public_api --out-dir ./definitions/backend && gen-api-models --api-spec $npm_package_io_backend_api --out-dir ./definitions/backend --no-strict --request-types --response-decoders --client",
-    "generate:content-definitions": "rimraf definitions/content && mkdir -p definitions/content && gen-api-models --api-spec $npm_package_io_content_specs --out-dir ./definitions/content",
     "generate:mock-google-services-json": "cp mock-google-services.json ./android/app/google-services.json",
     "generate:locales": "ts-node --skip-project -O '{\"lib\":[\"es2015\"]}' scripts/make-locales.ts",
     "generate": "npm-run-all generate:*",
@@ -37,7 +35,6 @@
     "@pagopa/io-pagopa-commons": "^3.1.0",
     "@pagopa/io-react-native-crypto": "^0.3.0",
     "@pagopa/io-react-native-jwt": "^1.2.0",
-    "@pagopa/io-react-native-proximity": "^0.1.8",
     "@pagopa/io-react-native-wallet": "0.11.1",
     "@pagopa/openapi-codegen-ts": "^13.2.0",
     "@pagopa/ts-commons": "^10.15.0",
@@ -146,8 +143,5 @@
   },
   "engines": {
     "node": ">=16"
-  },
-  "io_backend_api": "https://raw.githubusercontent.com/pagopa/io-backend/v13.20.0-RELEASE/api_backend.yaml",
-  "io_public_api": "https://raw.githubusercontent.com/pagopa/io-backend/v13.20.0-RELEASE/api_public.yaml",
-  "io_content_specs": "https://raw.githubusercontent.com/pagopa/io-services-metadata/1.0.28/definitions.yml"
+  }
 }

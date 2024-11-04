@@ -3,13 +3,10 @@
  * TODO: isolate cie event listener as saga
  * TODO: when 100% is reached, the animation end
  */
-import { Millisecond } from "@pagopa/ts-commons/lib/units";
-import { constNull } from "fp-ts/lib/function";
 import * as React from "react";
 import {
   View,
   AccessibilityInfo,
-  Platform,
   StyleSheet,
   Text,
   SafeAreaView,
