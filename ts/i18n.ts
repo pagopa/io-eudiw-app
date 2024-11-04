@@ -5,12 +5,12 @@ import I18n from "react-native-i18n";
 import * as locales from "../locales/locales";
 
 type FallBackLocale = {
-  locale: "it";
+  locale: "en";
 };
 
 // define the locale fallback used in the whole app code
 export const localeFallback: FallBackLocale = {
-  locale: "it"
+  locale: "en"
 };
 
 // eslint-disable-next-line
@@ -22,12 +22,7 @@ I18n.defaultLocale = localeFallback.locale;
 // Define the supported translations
 // eslint-disable-next-line
 I18n.translations = {
-  [localeToPreferredLanguageMapping.get("it") ?? localeFallback.localeEnum]:
-    locales.localeIT,
-  [localeToPreferredLanguageMapping.get("en") ?? localeFallback.localeEnum]:
-    locales.localeEN,
-  [localeToPreferredLanguageMapping.get("de") ?? localeFallback.localeEnum]:
-    locales.localeDE
+  en: locales.localeEN
 };
 
 export const availableTranslations: ReadonlyArray<locales.Locales> =

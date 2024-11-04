@@ -47,7 +47,7 @@ const jsCode = `
     <p class="u-padding-bottom-xs">First Name</p>
     <p class="u-padding-bottom-xs">Last Name</p>
     <p class="u-padding-bottom-xs">Date of Birth</p>
-    <p class="u-padding-bottom-xs">Taxe code</p>
+    <p class="u-padding-bottom-xs">Tax code</p>
   \`;
   article.replaceChildren(div);
 `;
