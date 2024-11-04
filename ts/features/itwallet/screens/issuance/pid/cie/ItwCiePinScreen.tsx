@@ -13,6 +13,7 @@ import {
   ButtonSolid,
   H2,
   IOStyles,
+  OTPInput,
   Stepper,
   VSpacer
 } from "@pagopa/io-app-design-system";
@@ -21,11 +22,8 @@ import { IOStackNavigationProp } from "../../../../../../navigation/params/AppPa
 import variables from "../../../../../../theme/variables";
 import { ItwParamsList } from "../../../../navigation/ItwParamsList";
 import { ITW_ROUTES } from "../../../../navigation/ItwRoutes";
-import { itwNfcIsEnabled } from "../../../../store/actions/itwIssuancePidCieActions";
 import ItwTextInfo from "../../../../components/ItwTextInfo";
-import CiePinpad from "../../../../components/cie/CiePinpad";
 import { useHeaderSecondLevel } from "../../../../../../hooks/useHeaderSecondLevel";
-import { useIODispatch } from "../../../../../../store/hooks";
 
 // TODO: swap <Body> with <Markdown>
 
@@ -43,8 +41,6 @@ const getContextualHelp = () => ({
 });
 
 const ItwCiePinScreen = () => {
-  const dispatch = useIODispatch();
-
   useHeaderSecondLevel({
     title: I18n.t("features.itWallet.cie.pinScreen.title"),
     contextualHelp: getContextualHelp(),
@@ -56,11 +52,10 @@ const ItwCiePinScreen = () => {
   const pinPadViewRef = useRef<View>(null);
 
   const navigateToCardReaderScreen = useCallback(() => {
-    dispatch(itwNfcIsEnabled.request());
     navigation.navigate(ITW_ROUTES.ISSUANCE.PID.CIE.CARD_READER_SCREEN, {
       ciePin: pin
     });
-  }, [navigation, pin, dispatch]);
+  }, [navigation, pin]);
 
   return (
     <SafeAreaView style={IOStyles.flex}>
@@ -70,11 +65,12 @@ const ItwCiePinScreen = () => {
         <H2>{I18n.t("features.itWallet.cie.pinScreen.title")}</H2>
         <VSpacer size={16} />
         <View style={styles.container} accessible={true} ref={pinPadViewRef}>
-          <CiePinpad
-            pin={pin}
-            pinLength={CIE_PIN_LENGTH}
-            onPinChanged={setPin}
-            onSubmit={navigateToCardReaderScreen}
+          <OTPInput
+            ref={pinPadViewRef}
+            secret
+            value={pin}
+            onValueChange={setPin}
+            length={CIE_PIN_LENGTH}
           />
         </View>
         <VSpacer size={32} />

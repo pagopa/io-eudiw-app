@@ -69,7 +69,7 @@ const ItwPrRemoteCredentialInitScreen = () => {
           subtitle: I18n.t(
             "features.itWallet.presentation.checksScreen.errors.walletNotValid.subtitle"
           ),
-          pictogram: "umbrella",
+          pictogram: "umbrellaNew",
           action: {
             accessibilityLabel: I18n.t(
               "features.itWallet.presentation.checksScreen.errors.walletNotValid.actionLabel"

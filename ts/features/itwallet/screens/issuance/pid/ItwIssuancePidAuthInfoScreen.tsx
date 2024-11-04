@@ -25,13 +25,6 @@ import {
 import { IOStackNavigationProp } from "../../../../../navigation/params/AppParamsList";
 import { ItwParamsList } from "../../../navigation/ItwParamsList";
 import { useHeaderSecondLevel } from "../../../../../hooks/useHeaderSecondLevel";
-import {
-  profileBirthDateSelector,
-  profileFiscalCodeSelector,
-  profileNameSelector,
-  profileSurnameSelector
-} from "../../../../../store/reducers/profile";
-import { formatDateToYYYYMMDD } from "../../../../../utils/dates";
 import { pidDataMock } from "../../../utils/itwMocksUtils";
 
 /**
@@ -41,10 +34,6 @@ const ItwIssuancePidAuthInfoScreen = () => {
   const navigation = useNavigation<IOStackNavigationProp<ItwParamsList>>();
   const dispatch = useIODispatch();
   const wia = useIOSelector(itwWiaStateSelector);
-  const name = useIOSelector(profileNameSelector);
-  const surname = useIOSelector(profileSurnameSelector);
-  const fiscalCode = useIOSelector(profileFiscalCodeSelector);
-  const birthDate = useIOSelector(profileBirthDateSelector);
 
   useOnFirstRender(() => {
     dispatch(itwWiaRequest.request());
@@ -57,12 +46,10 @@ const ItwIssuancePidAuthInfoScreen = () => {
   const bypassCieLogin = () => {
     navigation.navigate(ITW_ROUTES.ISSUANCE.PID.REQUEST, {
       pidData: {
-        name: name ?? pidDataMock.name,
-        surname: surname ?? pidDataMock.surname,
-        birthDate: birthDate
-          ? formatDateToYYYYMMDD(birthDate)
-          : pidDataMock.birthDate,
-        fiscalCode: fiscalCode ?? pidDataMock.fiscalCode
+        name: pidDataMock.name,
+        surname: pidDataMock.surname,
+        birthDate: pidDataMock.birthDate,
+        fiscalCode: pidDataMock.fiscalCode
       }
     });
   };
@@ -70,7 +57,10 @@ const ItwIssuancePidAuthInfoScreen = () => {
    * Loading view component.
    */
   const LoadingView = () => (
-    <ItwLoadingSpinnerOverlay isLoading>
+    <ItwLoadingSpinnerOverlay
+      isLoading
+      captionTitle={I18n.t("global.genericWaiting")}
+    >
       <></>
     </ItwLoadingSpinnerOverlay>
   );

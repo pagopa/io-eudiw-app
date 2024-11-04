@@ -3,39 +3,14 @@ import I18n from "react-native-i18n";
 // If the following import is missing, generate it by running:
 // npm run generate:locales
 import * as locales from "../locales/locales";
-import { Locales } from "../locales/locales";
-import { PreferredLanguageEnum } from "../definitions/backend/PreferredLanguage";
-import { BackendStatusMessage } from "../definitions/content/BackendStatusMessage";
 
-export type LocalizedMessageKeys = keyof BackendStatusMessage;
 type FallBackLocale = {
-  localizedMessageKey: LocalizedMessageKeys;
-  locale: "en";
-  localeEnum: PreferredLanguageEnum;
+  locale: "it";
 };
-
-export const localeToLocalizedMessageKey = new Map<
-  Locales,
-  LocalizedMessageKeys
->([
-  ["it", "it-IT"],
-  ["en", "en-EN"]
-]);
-
-export const localeToPreferredLanguageMapping = new Map<
-  Locales,
-  PreferredLanguageEnum
->([
-  ["it", PreferredLanguageEnum.it_IT],
-  ["en", PreferredLanguageEnum.en_GB],
-  ["de", PreferredLanguageEnum.de_DE]
-]);
 
 // define the locale fallback used in the whole app code
 export const localeFallback: FallBackLocale = {
-  localizedMessageKey: "en-EN",
-  locale: "en",
-  localeEnum: PreferredLanguageEnum.en_GB
+  locale: "it"
 };
 
 // eslint-disable-next-line

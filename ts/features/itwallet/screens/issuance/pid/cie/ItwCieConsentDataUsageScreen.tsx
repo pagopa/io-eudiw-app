@@ -6,7 +6,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Alert, BackHandler } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { type Route } from "@react-navigation/core";
-import { PidData } from "@pagopa/io-react-native-cie-pid";
 import WebView from "react-native-webview";
 import { WebViewHttpErrorEvent } from "react-native-webview/lib/WebViewTypes";
 import { FooterWithButtons, VSpacer } from "@pagopa/io-app-design-system";
@@ -15,13 +14,12 @@ import I18n from "../../../../../../i18n";
 import { IOStackNavigationProp } from "../../../../../../navigation/params/AppParamsList";
 import { originSchemasWhiteList } from "../../../../../../utils/authentication";
 import { ITW_ROUTES } from "../../../../navigation/ItwRoutes";
-import { itwLoginFailure } from "../../../../store/actions/itwIssuancePidCieActions";
 import { useIODispatch } from "../../../../../../store/hooks";
 import { useHeaderSecondLevel } from "../../../../../../hooks/useHeaderSecondLevel";
 import { ItwParamsList } from "../../../../navigation/ItwParamsList";
+import { PidData } from "../../../../utils/itwMocksUtils";
 
 export type ItwCieConsentDataUsageScreenNavigationParams = {
-  cieConsentUri: string;
   pidData: PidData;
 };
 
@@ -122,7 +120,6 @@ const ItwCieConsentDataUsageScreen = () => {
     const error = new Error(
       `HTTP error ${event.nativeEvent.description} with Authorization uri`
     );
-    dispatch(itwLoginFailure({ error, idp: "cie" }));
   };
 
   const getContent = () => (

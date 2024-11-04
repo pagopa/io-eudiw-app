@@ -3,9 +3,6 @@ import { PersistConfig, PersistPartial, persistReducer } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Action } from "../../../../store/actions/types";
 import itwCreateCredentialsStorage from "../storages/itwCredentialStorage";
-import itwIssuancePidAuthCieReducer, {
-  ItwIssuancePidCieAuthState
-} from "./itwIssuancePidCieAuthReducer";
 import itwWia, { ItwWiaState } from "./itwWiaReducer";
 import itwCredentials, {
   ItwPersistedCredentialsState
@@ -21,9 +18,6 @@ import itwPrRemoteCredentialReducer, {
 import itwIssuanceCredentialReducer, {
   ItwIssuanceCredentialState
 } from "./itwIssuanceCredentialReducer";
-import itwPrProximityReducer, {
-  ItwPrProximityState
-} from "./itwPrProximityReducer";
 
 const CURRENT_REDUX_ITW_STORE_VERSION = 1;
 const CURRENT_REDUX_ITW_CREDENTIALS_STORE_VERSION = 1;
@@ -33,7 +27,6 @@ export type ItWalletState = {
   lifecycle: ItwLifecycleState;
   wia: ItwWiaState;
   /* ISSUANCE */
-  issuancePidCieAuth: ItwIssuancePidCieAuthState;
   issuancePid: ItwIssuancePidState;
   issuanceCredential: ItwIssuanceCredentialState;
   /* PERSISTED CREDENTIALS */
@@ -41,7 +34,6 @@ export type ItWalletState = {
   /* PRESENTATION REMOTE */
   prRemotePid: ItwPrRemotePidState;
   prRemoteCredential: ItwPrRemoteCredentialState;
-  prProximity: ItwPrProximityState;
 };
 
 export type PersistedItWalletState = ItWalletState & PersistPartial;
@@ -64,15 +56,13 @@ const reducers = combineReducers<ItWalletState, Action>({
   lifecycle: itwLifeCycle,
   wia: itwWia,
   /* ISSUANCE */
-  issuancePidCieAuth: itwIssuancePidAuthCieReducer,
   issuancePid: itwPidReducer,
   issuanceCredential: itwIssuanceCredentialReducer,
   /* PERSISTED CREDENTIALS */
   credentials: persistReducer(credentialsPersistConfig, itwCredentials),
   /* PRESENTATION REMOTE */
   prRemotePid: itwPrRemotePidReducer,
-  prRemoteCredential: itwPrRemoteCredentialReducer,
-  prProximity: itwPrProximityReducer
+  prRemoteCredential: itwPrRemoteCredentialReducer
 });
 
 const itwReducer = persistReducer<ItWalletState, Action>(

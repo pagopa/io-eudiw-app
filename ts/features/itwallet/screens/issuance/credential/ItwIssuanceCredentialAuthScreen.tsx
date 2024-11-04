@@ -8,7 +8,7 @@ import {
   IOStyles,
   Icon,
   IconContained,
-  LabelLink,
+  LabelSmall,
   VSpacer,
   useIOToast
 } from "@pagopa/io-app-design-system";
@@ -143,11 +143,11 @@ const ItwIssuanceCredentialAuthScreen = () => {
           )}
         </Body>
         <VSpacer size={16} />
-        <LabelLink onPress={() => present()}>
+        <LabelSmall onPress={() => present()}>
           {I18n.t(
             "features.itWallet.issuing.credentialsIssuingInfoScreen.readMore"
           )}
-        </LabelLink>
+        </LabelSmall>
         <VSpacer size={24} />
 
         {/* Render a list of claims that will be shared with the credential issuer */}

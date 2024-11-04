@@ -16,7 +16,6 @@ import { defaultPin } from "../../../config";
 import { isValidPinNumber } from "../../../utils/pin";
 import I18n from "../../../i18n";
 import { useIOSelector } from "../../../store/hooks";
-import { isProfileFirstOnBoardingSelector } from "../../../store/reducers/profile";
 import { PinString } from "../../../types/PinString";
 import { isDevEnv } from "../../../utils/environment";
 import { useCreatePin } from "../../../hooks/useCreatePin";
@@ -59,7 +58,6 @@ export const PinCreation = ({ isOnboarding = false }: Props) => {
   const carouselRef = useRef<FlatList>(null);
   const titleCreationRef = useRef<View>(null);
   const titleConfirmationRef = useRef<View>(null);
-  const isFirstOnBoarding = useIOSelector(isProfileFirstOnBoardingSelector);
   const { present, bottomSheet } = usePinValidationBottomSheet();
   const { showAlert } = useOnboardingAbortAlert();
 

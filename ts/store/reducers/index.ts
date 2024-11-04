@@ -5,7 +5,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { combineReducers, Reducer } from "redux";
 import { PersistConfig, persistReducer } from "redux-persist";
 import { featuresPersistor } from "../../features/common/store/reducers";
-import createSecureStorage from "../storages/keychain";
 import { Action } from "../actions/types";
 import { DateISO8601Transform } from "../transforms/dateISO8601Tranform";
 import appStateReducer from "./appState";
@@ -16,17 +15,8 @@ import startupReducer, { StartupState } from "./startup";
 import persistedPreferencesReducer, {
   PreferencesState
 } from "./persistedPreferences";
-import profileReducer from "./profile";
-import authenticationReducer, { AuthenticationState } from "./authentication";
 import identificationReducer, { IdentificationState } from "./identification";
 import onboardingReducer, { OnboardingState } from "./onboarding";
-
-// A custom configuration to store the authentication into the Keychain
-export const authenticationPersistConfig: PersistConfig = {
-  key: "authentication",
-  storage: createSecureStorage(),
-  blacklist: ["deepLink"]
-};
 
 // A custom configuration to store the fail information of the identification section
 export const identificationPersistConfig: PersistConfig = {
@@ -77,11 +67,6 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
   appState: appStateReducer,
   navigation: navigationReducer,
   startup: persistReducer<StartupState, Action>(startupConfig, startupReducer),
-  // custom persistor (uses secure storage)
-  authentication: persistReducer<AuthenticationState, Action>(
-    authenticationPersistConfig,
-    authenticationReducer
-  ),
 
   // standard persistor, see configureStoreAndPersistor.ts
   // standard persistor, see configureStoreAndPersistor.ts
@@ -94,7 +79,6 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
     onboardingPersistConfig,
     onboardingReducer
   ),
-  profile: profileReducer,
   debug: debugReducer,
   persistedPreferences: persistReducer<PreferencesState, Action>(
     persistedPreferencesConfig,
@@ -102,9 +86,8 @@ export const appReducer: Reducer<GlobalState, Action> = combineReducers<
   )
 });
 
-export function createRootReducer(
-  persistConfigs: ReadonlyArray<PersistConfig>
-) {
+// persistConfigs: ReadonlyArray<PersistConfig> as input
+export function createRootReducer() {
   return (state: GlobalState | undefined, action: Action): GlobalState => {
     return appReducer(state, action);
   };

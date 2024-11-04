@@ -43,7 +43,6 @@ import {
   maxAttempts,
   progressSelector
 } from "../../store/reducers/identification";
-import { profileNameSelector } from "../../store/reducers/profile";
 import { setAccessibilityFocus } from "../../utils/accessibility";
 import { biometricAuthenticationRequest } from "../../utils/biometrics";
 import { useAppBackgroundAccentColorName } from "../../utils/hooks/theme";
@@ -86,7 +85,6 @@ const IdentificationModal = () => {
     // to avoid unnecessary re-renders.
     (l, r) => _.isEqual(l, r)
   );
-  const name = useIOSelector(profileNameSelector);
   const { biometricType, isFingerprintEnabled } = useBiometricType();
 
   // eslint-disable-next-line functional/no-let
@@ -314,6 +312,7 @@ const IdentificationModal = () => {
       (previousIdentificationProgressState?.kind !== "started" &&
         identificationProgressState.kind === "started"))
   ) {
+    // eslint-disable-next-line no-void
     void onFingerprintRequest();
   }
 

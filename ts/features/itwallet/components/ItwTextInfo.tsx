@@ -3,7 +3,7 @@ import {
   Body,
   H2,
   H6,
-  LabelLink,
+  LabelSmall,
   useIOToast
 } from "@pagopa/io-app-design-system";
 import { pipe } from "fp-ts/lib/function";
@@ -39,7 +39,7 @@ const RenderHeaderLevel6 = (text: string, index: number) => (
 const RenderLink = (text: string, url: string, index: number) => {
   const toast = useIOToast();
   return (
-    <LabelLink
+    <LabelSmall
       key={`link-${index}`}
       onPress={() =>
         openWebUrl(url, () => toast.error(I18n.t("global.jserror.title")))
@@ -47,7 +47,7 @@ const RenderLink = (text: string, url: string, index: number) => {
       numberOfLines={1}
     >
       {text}
-    </LabelLink>
+    </LabelSmall>
   );
 };
 
