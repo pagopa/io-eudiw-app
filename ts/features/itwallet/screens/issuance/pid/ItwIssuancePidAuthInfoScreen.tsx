@@ -57,7 +57,10 @@ const ItwIssuancePidAuthInfoScreen = () => {
    * Loading view component.
    */
   const LoadingView = () => (
-    <ItwLoadingSpinnerOverlay isLoading>
+    <ItwLoadingSpinnerOverlay
+      isLoading
+      captionTitle={I18n.t("global.genericWaiting")}
+    >
       <></>
     </ItwLoadingSpinnerOverlay>
   );
