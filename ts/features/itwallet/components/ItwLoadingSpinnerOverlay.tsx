@@ -53,7 +53,7 @@ const ItwLoadingSpinnerOverlay: React.FunctionComponent<Props> = (
       foreground={
         isLoading && (
           <View style={styles.main}>
-            <LoadingSpinner size={76} />
+            <LoadingSpinner size={48} />
             <VSpacer size={48} />
             <H3
               style={styles.textAlignCenter}

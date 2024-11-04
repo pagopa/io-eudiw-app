@@ -5,7 +5,6 @@ import { ItwLifecycleActions } from "./itwLifecycleActions";
 import { ItwRpActions } from "./itwPrRemotePidActions";
 import { itwPrRemoteCredentialInit } from "./itwPrRemoteCredentialActions";
 import { ItwIssuanceCredentialActions } from "./itwIssuanceCredentialActions";
-import { ItwProximityActions } from "./itwProximityActions";
 import { ItwIssuancePidActions } from "./itwIssuancePidActions";
 
 /**
@@ -23,5 +22,4 @@ export type ItWalletActions =
   | ItwPersistedCredentialsActions
   /* PRESENTATION */
   | ItwRpActions
-  | itwPrRemoteCredentialInit
-  | ItwProximityActions;
+  | itwPrRemoteCredentialInit;
