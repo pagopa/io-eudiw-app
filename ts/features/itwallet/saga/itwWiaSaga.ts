@@ -26,8 +26,7 @@ export function* watchItwWiaSaga(): SagaIterator {
 
 /*
  * This saga handles the wallet instance attestation issuing.
- * Currently it checks if the user logged in with CIE or if the device has NFC support.
- * Then it tries to get the wallet instance attestation and dispatches the result.
+ * it tries to get the wallet instance attestation and dispatches the result.
  */
 export function* handleWiaRequest(): SagaIterator {
   try {
