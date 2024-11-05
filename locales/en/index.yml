@@ -68,7 +68,6 @@ global:
   locales:
     it: Italian
     en: English
-    de: German
   dateFormats:
     shortFormat: "%d/%m/%Y"
     shortFormatWithTime: "%d/%m/%Y, %H:%M"
