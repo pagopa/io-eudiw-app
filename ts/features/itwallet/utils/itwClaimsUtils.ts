@@ -133,9 +133,7 @@ const localeToClaimsLocales = new Map<Locales, ClaimsLocales>([
  * @returns a enum value for the claims locale.
  */
 export const getClaimsFullLocale = (): ClaimsLocales =>
-  localeToClaimsLocales.get(I18n.currentLocale()) ??
-  localeToClaimsLocales.get(localeFallback.locale) ??
-  ClaimsLocales.en;
+  localeToClaimsLocales.get(I18n.currentLocale()) ?? ClaimsLocales.en;
 
 /**
  *
