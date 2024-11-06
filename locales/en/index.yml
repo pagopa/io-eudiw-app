@@ -3,8 +3,8 @@ accessibility:
   doubleTapToActivateHint: "Double tap to activate"
   buttons:
     torch:
-      turnOn: "Accendi la torcia"
-      turnOff: "Spegni la torcia"
+      turnOn: "Turn on the torch"
+      turnOff: "Turn off the torch"
 date:
   formats:
     default: "%d/%m/%Y"
@@ -68,7 +68,6 @@ global:
   locales:
     it: Italian
     en: English
-    de: German
   dateFormats:
     shortFormat: "%d/%m/%Y"
     shortFormatWithTime: "%d/%m/%Y, %H:%M"
@@ -123,18 +122,18 @@ global:
     edit: "Edit"
     info: "Info"
     activate: "Enable"
-    activate2: Enable
+    activate2: Activate
     deactivate: "Disable"
     show: "Show"
     update: "Update"
     updateIO: "Update IO"
     findOutMore: "Find out more"
     details: "Details"
-    choose: "Scegli"
+    choose: "Choose"
     copy: Copy
   navigator:
     itwallet: Wallet
-    scan: Scan
+    scan: Scan QR
     profile: Profile
   remoteStates:
     loading: Loading...
@@ -177,8 +176,8 @@ features:
     title: "IT Wallet"
     tos: "By continuing, you accept the [Terms and conditions of use]() of the service and confirm that you have read the [Privacy Policy]() of {{relayingParty}}."
     actionBanner:
-      title: "I tuoi documenti digitali sempre con te!"
-      description: "Attiva il Wallet e porta sempre con te la tua identità digitale e i tuoi documenti personali."
+      title: Your digital documents always with you!
+      description: "Activate the Wallet to keep your digital identity and personal documents on your device."
       action: "Start"
       hideLabel: "Hide this banner"
     innerActionBanner:
@@ -187,10 +186,10 @@ features:
       action: "Enable IT Wallet"
       hideLabel: "Hide this banner"
     activationScreen:
-      intro: "## Attiva il Wallet"
-      subContentOne: "###### Cos’è e come funziona\n\nWallet ti permette di salvare e portare sempre con te la versione digitale della tua **Identità** e **di alcuni dei documenti fisici** che già possiedi"
-      subContentTwo: "###### È facile e veloce\n\nPotrai autenticarti in Italia e all’estero a molti servizi digitali, o verificare in presenza le tue attestazioni semplicemente scansionando il codice QR abbinato alle versioni digitali dei tuoi documenti."
-      confirm: "Continua"
+      intro: "## Your digital documents at your fingertips"
+      subContentOne: "###### How it works\n\nWallet allows you to save and keep on your device the digital version of your Identity and some of the physical documents you already own."
+      subContentTwo: "###### It's easy and fast\n\nYou can authenticate yourself in Italy and abroad for many digital services, or verify your credentials in person by showing the QR code linked to the digital versions of your documents."
+      confirm: "Continue"
     homeScreen:
       categories:
         any: "Any"
@@ -206,11 +205,11 @@ features:
           confirm: "Confirm reset"
           cancel: "Cancel"
       buttons:
-        addCredential: "Add"
+        addCredential: "Add Document"
     infoAuthScreen:
-      title: "Attiva il Wallet con CIE + PIN"
-      subTitle: "Assicurati di avere la tua Carta di identità eletrtonica (CE) e il suo codice di 8 cifre."
-      start: "Inizia"
+      title: "Activate the Wallet with CIE + PIN"
+      subTitle: "Make sure you have your Electronic Identity Card (CIE) and its 8-digit code."
+      start: "Start"
       readMoreUrl: "https://www.cartaidentita.interno.gov.it/"
       noCieInfo: "Don't you have the CIE?"
       errors:
@@ -242,12 +241,11 @@ features:
       cie:
         waiting:
           title: "Place the CIE on the back of the device"
-          content: "If the reading doesn't start, move the card to different places and wait a few seconds until you feel a vibration."
+          content: "If the reading does not start, move the card to different spots and wait a few seconds until you feel a vibration."
         reading:
           title: "Hold it still for a few seconds"
         success:
           title: "Reading completed!"
-          content: "Continue to add your digital identity and complete IT Wallet activation."
         error:
           title: "You removed the CIE too early"
           retry: "Retry"
@@ -256,8 +254,7 @@ features:
           cancel: "Cancel"
           confirm: "Continue"
       loading:
-        title: "I am loading the data from the Ministry of the Interior"
-        subtitle: "Wait a few seconds"
+        title: "Wait a few seconds"
       pidPreviewScreen:
         title: "{{credentialName}}: here the preview"
         checkNotice: "Verify that the following data is correct."
@@ -283,15 +280,15 @@ features:
           title: "I'm activating your IT Wallet"
           subtitle: "Wait a few seconds"
         typ:
-          title: "Wallet is active!"
-          content: "Now you can add other cards and use your digital identity to access online services."
+          title: "It's all ready!"
+          content: "You can now add your documents and access online services."
           button: "Go to Wallet"
       credentialsCatalogScreen:
-        title: "Cosa vuoi aggiungere al Wallet?"
+        title: "What do you want to add to the Wallet?"
         subTitle: "Wallet"
-        walletStatus: "Attivo"
+        walletStatus: "Active"
         incomingFeature: "Coming soon"
-        alreadyRegistered: "Already existing"
+        alreadyRegistered: "Already existing"    
       credentialsChecksScreen:
         loading:
           title: "We are performing some security checks"
@@ -365,17 +362,17 @@ features:
           confirmData: "Confirm data"
           deny: "Deny"
         tos: "By continuing, you accept the [Terms and conditions of use]() of the service and confirm that you have read the [Privacy Policy]() of {{relayingParty}}."
-      checksScreen:
-        loading: "We are checking that this organization is verified"
+      checksScreen: 
+        loading: "We are doing some security checks"
         success: "{{organizationName}} is a verified organization"
         errors:
           walletNotValid:
             title: IT Wallet is not active
             subtitle: To present a credential, you need to activate it first.
             actionLabel: Activate IT Wallet
-      dataScreen:
-        title: "Allow the reading of your data"
-        subtitle: "Authorizes {{organizationName}} to process your data to provide you with the services you request."
+      dataScreen: 
+        title: "Allow your data to be read"
+        subtitle: "They will be shared with the {{organizationName}} for access to services."
         why: "Why?"
         requiredClaims: "Required data"
         optionalClaims: "Optional data"
@@ -394,7 +391,7 @@ features:
           title: "We are sharing your data with {{organizationName}}"
         success:
           title: "Done!"
-          subtitle: "Go back to the {{organizationName}} website to continue."
+          subtitle: "Continue on the partner site."
       qrCodeScreen:
         title: "Personal QR code"
         proximity:
@@ -412,7 +409,7 @@ features:
         label: "I understand"
     verifiableCredentials:
       type:
-        digitalCredential: "Identità Digitale"
+        digitalCredential: "Digital Identity"
         disabilityCard: "European Disability Card"
         healthCard: "Health Insurance Card"
         drivingLicense: "Driving License"
@@ -444,7 +441,7 @@ features:
       close: "Close"
       rp: "Relying Party"
       trusted: "Trusted"
-      search: "Cerca"
+      search: "Search"
       alert:
         title: "Do you want to interrupt the operation?"
         confirm: "Yes, interrupt it."
@@ -460,19 +457,23 @@ features:
         organizationName: "Issuer name not available"
     onboarding:
       skip: Skip
-      complete: Continue
+      complete: Start
+      next: Next
       closeApp: Close the app
-      completeTitle: Start using the Wallet
-      completeDescription: To proceed, read the [Privacy Policy](https://io.italia.it/privacy-policy/) and the[Terms and Conditions of use](https://io.italia.it/privacy-policy/)
+      completeTitle: Start with Wallet
+      completeDescription: |
+        Store your documents securely.
+        
+        By pressing **Start** you you declare that you have read and understood the [Privacy Policy](https://io.italia.it/privacy-policy/) and the [Terms and Conditions of use](https://io.italia.it/privacy-policy/)
       card1:
-        title: This is the wallet app!
-        content: Let's see together what you can do
+        title: Welcome to the Wallet app!
+        content: Discover what you can do
       card2:
         title: Add your documents
-        content: You can save and store digital versions of your documents in the wallet
+        content: Securely save and store digital versions of your documents
       card3:
-        title: Authenticate with the Wallet
-        content: You can verify your credentials and access services, including online, by scanning the QR code
+        title: Authenticate with Wallet
+        content: Use this app to present your documents and access online services
 authentication:
   landing:
     expiredCardTitle: The CIE verification failed
@@ -497,7 +498,7 @@ authentication:
         placeholderLabel: PIN of Electronic Identity Card
         label: Insertion field for Electronic Identity Card pins
         hint: Enter the 8 digits pin of your Electronic Identity Card in this field.
-      pinCardTitle: Enter the PIN of your ID Card
+      pinCardTitle: Enter the PIN of the CIE
       pinCardHeader: Login with CIE
       pinCardContent: The PIN code consists of 8 digits. Four digits have been delivered to you at the registry office and another four digits have been sent to your home along with the card. Put them together, in that order, and enter them here please.
       incorrectCiePinTitle: Incorrect PIN, you still have {{remainingCount}} attempts
@@ -585,19 +586,19 @@ onboarding:
   pin:
     headerTitle: IO Settings
     title: Create an unlock code
-    subTitle: It's a six-digit code you'll use to login and authorize some in-app operations.
+    subTitle: This is the 6-digit code to access and authorize certain operations in the app.
     pinLabel: Create unlock code
     pinConfirmationLabel: Repeat unlock code
     errors:
       invalid:
         title: Too easy!
-        description: Choose a code that is hard to guess and doesn't contain a single repeated number (e.g. 000000) or a list of ordered numbers (e.g. 123456 or 654321).
+        description: Choose a code that is hard to guess, which does not contain a single repeated number (e.g. 000000) or a sequence of ordered numbers (e.g. 123456 or 654321).
         cta: Choose another code
       match: The code doesn’t match
     policy:
       title: How to choose the code?
-      description: It's a six-digit code you'll use to login and authorize some in-app operations.
-      bulletListTitle: "Choose a code that's hard to guess and doesn't contain::"
+      description: The unlock code is made up of 6 digits and will be used to access and authorize certain operations in the app
+      bulletListTitle: "Choose a code that is hard to guess and does not contain:"
       firstItem: a single repeated number (e.g. 000000)
       secondItem: a list of ordered numbers (e.g. 123456 or 654321)
     success:
@@ -617,30 +618,30 @@ onboarding:
       title: Enable biometric recognition
       settings: You can always change your choice in Profile > Security
       body:
-        text: You can use your face or fingerprint to enter instead of the unlock code. This will let you access the app and authorise operation and payments more easily and safely.
+        text: You can use your face or fingerprint instead of the unlock code. This will allow you to access the app and authorize operations more quickly and securely.
         infoStart: You can use biometric recognition in place of the unlock code. This will let you access the app and authorize operations and payments with your
         biometricType: face or fingerprint
         infoEnd: more quickly and securely.
         enrolledText: The biometric information is stored in your phone's memory. it will not be disclosed in any way to IO systems or stored anywhere else.
         notEnrolled:
-          text: You need to configure this in your device settings.
+          text: To do this, you first need to configure it in your device's system settings.
           label: How to
           step1:
             label: Step 1
             value: Go to your device settings
           step2:
             label: Step 2
-            value: Set up face or fingerprint
-          step3:
+            value: Configure the face or fingerprint
+          step3: 
             label: Step 3
-            value: Enable it in IO under Profile > Security
+            value: Enable it in Wallet under Profile > Security
     unavailable:
       title: Protect your device
-      firstInfoStart: Io ti invia le comunicazioni che ti riguardano
-      firstInfoEnd: personalmente.
-      secondInfoStart: Proteggi il tuo dispositivo da accessi indesiderati e assicurati che solo tu possa accedere all'app. Per farlo, vai alle impostazioni del tuo dispositivo, imposta un
-      secondInfoEnd: codice di sblocco o configura il riconoscimento biometrico.
-      subtitle: IO sends you messages that are relevant to you. Make sure that only you can access the app by setting a code or sign to unlock the device.
+      firstInfoStart: Wallet sends you communications that personally concern you
+      firstInfoEnd: personally.
+      secondInfoStart: Protect your device from unauthorized access and ensure that only you can access the app. To do this, go to your device settings, set a
+      secondInfoEnd: unlock code or configure biometric recognition.    
+      subtitle: Wallet sends you communications that personally concern you. Ensure that only you can access the app by setting up a code or a pattern to unlock the device.
       body:
         label: How to
         step1:
@@ -692,6 +693,7 @@ onboarding:
         step5: Enable notifications
 identification:
   instructions:
+    title: "Authorize the operation"
     unlockCode: unlock code
     unlockCodepPrefix: use your
     fingerprint: fingerprint
@@ -699,7 +701,7 @@ identification:
     faceId: face
     faceIdPrefix: use your
     congiunction: or
-  title: Hi {{name}}!
+  title: Hi!
   titleProfileName: Hi {{profileName}}!
   titleValidation: Confirm the procedure
   logout: Logout
@@ -742,32 +744,32 @@ cie:
 barcodeScan:
   error: IO non riconosce questo codice
   tabs:
-    scan: Inquadra
-    upload: Carica
-    input: Digita
+    scan: Scan
+    upload: Upload
+    input: Type
     a11y:
-      scan: Inquadra, 1 di 3
-      upload: Carica, 2 di 3
-      input: Digita, 3 di 3
+      scan: Scan, 1 of 3
+      upload: Upload, 2 of 3
+      input: Type, 3 of 3
   upload:
-    image: Carica un'immagine
-    file: Carica un file
+    image: Upload an image
+    file: Upload a file
   manual:
     authorize: Autorizza una transazione
     notice: Paga un avviso pagoPA
   permissions:
     undefined:
-      title: Ci serve il tuo permesso
-      label: Consenti l’accesso per inquadrare codici QR con la fotocamera del tuo dispositivo.
-      action: Consenti l’accesso
+      title: We need your permission
+      label: Allow access to scan QR codes with your device's camera.
+      action: Allow access
     denied:
-      title: Non hai dato il permesso di usare la fotocamera
-      label: Per concederlo, accedi alle impostazioni del tuo sistema operativo.
-      action: Vai alle impostazioni
+      title: You have not given permission to use the camera
+      label: To grant it, go to your operating system settings.
+      action: Go to settings
   multipleResultsAlert:
-    title: Hai inquadrato più codici
-    body: Inquadra un solo codice alla volta
-    action: Riprova
+    title: You have scanned multiple codes
+    body: Scan only one code at a time
+    action: Retry
 clipboard:
   copyIntoClipboard: copy to clipboard
   copyFeedback: Copied to clipboard

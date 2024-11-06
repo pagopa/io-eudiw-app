@@ -27,6 +27,7 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
+import { pidDataMock } from "../../features/itwallet/utils/itwMocksUtils";
 import I18n from "../../i18n";
 import {
   identificationCancel,
@@ -223,7 +224,9 @@ const IdentificationModal = () => {
     [isValidatingTask, onPinResetHandler]
   );
 
-  const titleLabel = I18n.t("identification.titleValidation");
+  const titleLabel = isValidatingTask
+    ? I18n.t("identification.titleValidation")
+    : I18n.t("identification.title");
 
   const onPinValidated = useCallback(
     (isValidated: boolean) => {

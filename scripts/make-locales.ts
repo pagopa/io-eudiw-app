@@ -38,7 +38,7 @@ interface LocaleDocWithCheckedKeys extends LocaleDocWithKeys {
 
 const root = path.join(__dirname, "../locales");
 // these locales can contains a subset of keys defined in "it"/"en" locales where all translations strings are required
-const partialLocales = new Set<string>(["de"]);
+const partialLocales = new Set<string>([]);
 
 /**
  * Custom YAML type for including files
@@ -190,7 +190,7 @@ async function run(rootPath: string): Promise<void> {
   try {
     console.log(chalk.whiteBright("Translations builder"));
 
-    const masterLocale = "it";
+    const masterLocale = "en";
 
     const locales = fs
       .readdirSync(root)

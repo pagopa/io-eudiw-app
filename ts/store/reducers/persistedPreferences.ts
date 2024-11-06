@@ -22,7 +22,7 @@ export type PreferencesState = Readonly<{
 export type PersistedPreferencesState = PreferencesState & PersistPartial;
 
 export const initialPreferencesState: PreferencesState = {
-  preferredLanguage: "it" // Start with it for now
+  preferredLanguage: "en"
 };
 
 export default function preferencesReducer(

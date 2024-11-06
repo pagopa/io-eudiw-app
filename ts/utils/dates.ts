@@ -18,7 +18,7 @@ type DateFnsLocale = typeof import("date-fns/locale/it");
 
 type DFNSLocales = Record<Locales, DateFnsLocale>;
 
-const locales: DFNSLocales = { it: dfns_it, en: dfns_en, de: dfns_de };
+const locales: DFNSLocales = { it: dfns_it, en: dfns_en };
 
 export const pad = (n: number) => n.toString().padStart(2, "0");
 

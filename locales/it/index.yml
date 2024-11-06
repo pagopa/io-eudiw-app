@@ -68,7 +68,6 @@ global:
   locales:
     it: Italiano
     en: Inglese
-    de: Tedesco
   dateFormats:
     shortFormat: "%d/%m/%Y"
     shortFormatWithTime: "%d/%m/%Y, %H:%M"
@@ -247,7 +246,6 @@ features:
           title: "Tienila ferma per qualche secondo"
         success:
           title: "Lettura completata!"
-          content: "Continua per aggiungere la tua identità digitale e completare l’attivazione di IT Wallet."
         error:
           title: "Hai rimosso la CIE troppo presto"
           retry: "Riprova"
@@ -257,7 +255,6 @@ features:
           confirm: "Continua"
       loading:
         title: "Sto caricando i dati dal Ministero dell’Interno"
-        subtitle: "Attendi qualche secondo"
       pidPreviewScreen:
         title: "{{credentialName}}: ecco l'anteprima"
         checkNotice: "Verifica che le informazioni siano corrette e aggiungila per completare l’attivazione di IT Wallet."
@@ -463,6 +460,7 @@ features:
     onboarding:
       skip: Salta
       complete: Continua
+      next: Avanti
       closeApp: Chiudi l'app
       completeTitle: Inizia a usare il Wallet
       completeDescription: Per proseguire, leggi l’[informativa Privacy](https://io.italia.it/privacy-policy/) e i [Termini e Condizioni d’uso](https://io.italia.it/privacy-policy/)
@@ -695,6 +693,7 @@ onboarding:
         step5: Attiva le notifiche
 identification:
   instructions:
+    title: "Autorizza l'operazione"
     unlockCode: codice di sblocco
     unlockCodepPrefix: inserisci il
     fingerprint: impronta
