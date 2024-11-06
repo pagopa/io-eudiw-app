@@ -246,7 +246,6 @@ features:
           title: "Tienila ferma per qualche secondo"
         success:
           title: "Lettura completata!"
-          content: "Continua per aggiungere la tua identità digitale e completare l’attivazione di IT Wallet."
         error:
           title: "Hai rimosso la CIE troppo presto"
           retry: "Riprova"
@@ -256,7 +255,6 @@ features:
           confirm: "Continua"
       loading:
         title: "Sto caricando i dati dal Ministero dell’Interno"
-        subtitle: "Attendi qualche secondo"
       pidPreviewScreen:
         title: "{{credentialName}}: ecco l'anteprima"
         checkNotice: "Verifica che le informazioni siano corrette e aggiungila per completare l’attivazione di IT Wallet."

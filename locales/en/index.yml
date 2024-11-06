@@ -177,7 +177,7 @@ features:
     tos: "By continuing, you accept the [Terms and conditions of use]() of the service and confirm that you have read the [Privacy Policy]() of {{relayingParty}}."
     actionBanner:
       title: Your digital documents always with you!
-      description: "Activate the Wallet and always carry your digital identity and personal documents with you."
+      description: "Activate the Wallet to keep your digital identity and personal documents on your device."
       action: "Start"
       hideLabel: "Hide this banner"
     innerActionBanner:
@@ -246,7 +246,6 @@ features:
           title: "Hold it still for a few seconds"
         success:
           title: "Reading completed!"
-          content: "Continue to add your digital identity and complete IT Wallet activation."
         error:
           title: "You removed the CIE too early"
           retry: "Retry"
@@ -255,8 +254,7 @@ features:
           cancel: "Cancel"
           confirm: "Continue"
       loading:
-        title: "I am loading the data from the Ministry of the Interior"
-        subtitle: "Wait a few seconds"
+        title: "Wait a few seconds"
       pidPreviewScreen:
         title: "{{credentialName}}: here the preview"
         checkNotice: "Verify that the following data is correct."
@@ -703,7 +701,7 @@ identification:
     faceId: face
     faceIdPrefix: use your
     congiunction: or
-  title: Hi {{name}}!
+  title: Hi {{name}},
   titleProfileName: Hi {{profileName}}!
   titleValidation: Confirm the procedure
   logout: Logout

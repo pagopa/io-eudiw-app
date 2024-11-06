@@ -154,9 +154,8 @@ class ItwCieCardReaderScreen extends React.PureComponent<Props, State> {
         this.setState(
           {
             title: I18n.t("features.itWallet.issuing.cie.success.title"),
-            subtitle: I18n.t("authentication.cie.card.cieCardValid"),
+            subtitle: I18n.t("authentication.cie.card.cieCardValid")
             // duplicate message so screen reader can read the updated message
-            content: I18n.t("features.itWallet.issuing.cie.success.content")
           },
           this.announceUpdate
         );

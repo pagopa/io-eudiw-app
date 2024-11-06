@@ -84,7 +84,6 @@ const ItwIssuancePidRequestScreen = () => {
     <ItwLoadingSpinnerOverlay
       captionTitle={I18n.t("features.itWallet.issuing.loading.title")}
       isLoading
-      captionSubtitle={I18n.t("features.itWallet.issuing.loading.subtitle")}
     >
       <></>
     </ItwLoadingSpinnerOverlay>
