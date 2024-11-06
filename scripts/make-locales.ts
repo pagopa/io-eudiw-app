@@ -190,7 +190,7 @@ async function run(rootPath: string): Promise<void> {
   try {
     console.log(chalk.whiteBright("Translations builder"));
 
-    const masterLocale = "it";
+    const masterLocale = "en";
 
     const locales = fs
       .readdirSync(root)
