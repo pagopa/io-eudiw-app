@@ -701,7 +701,7 @@ identification:
     faceId: face
     faceIdPrefix: use your
     congiunction: or
-  title: Hi {{name}},
+  title: Hi!
   titleProfileName: Hi {{profileName}}!
   titleValidation: Confirm the procedure
   logout: Logout
