@@ -3,8 +3,8 @@ accessibility:
   doubleTapToActivateHint: "Double tap to activate"
   buttons:
     torch:
-      turnOn: "Accendi la torcia"
-      turnOff: "Spegni la torcia"
+      turnOn: "Turn on the torch"
+      turnOff: "Turn off the torch"
 date:
   formats:
     default: "%d/%m/%Y"
@@ -129,7 +129,7 @@ global:
     updateIO: "Update IO"
     findOutMore: "Find out more"
     details: "Details"
-    choose: "Scegli"
+    choose: "Choose"
     copy: Copy
   navigator:
     itwallet: Wallet
@@ -286,11 +286,11 @@ features:
           content: "You can now add your documents and access online services."
           button: "Go to Wallet"
       credentialsCatalogScreen:
-        title: "Cosa vuoi aggiungere al Wallet?"
+        title: "What do you want to add to the Wallet?"
         subTitle: "Wallet"
-        walletStatus: "Attivo"
+        walletStatus: "Active"
         incomingFeature: "Coming soon"
-        alreadyRegistered: "Already existing"
+        alreadyRegistered: "Already existing"    
       credentialsChecksScreen:
         loading:
           title: "We are performing some security checks"
@@ -443,7 +443,7 @@ features:
       close: "Close"
       rp: "Relying Party"
       trusted: "Trusted"
-      search: "Cerca"
+      search: "Search"
       alert:
         title: "Do you want to interrupt the operation?"
         confirm: "Yes, interrupt it."
@@ -639,10 +639,10 @@ onboarding:
             value: Enable it in Wallet under Profile > Security
     unavailable:
       title: Protect your device
-      firstInfoStart: Io ti invia le comunicazioni che ti riguardano
-      firstInfoEnd: personalmente.
-      secondInfoStart: Proteggi il tuo dispositivo da accessi indesiderati e assicurati che solo tu possa accedere all'app. Per farlo, vai alle impostazioni del tuo dispositivo, imposta un
-      secondInfoEnd: codice di sblocco o configura il riconoscimento biometrico.
+      firstInfoStart: Wallet sends you communications that personally concern you
+      firstInfoEnd: personally.
+      secondInfoStart: Protect your device from unauthorized access and ensure that only you can access the app. To do this, go to your device settings, set a
+      secondInfoEnd: unlock code or configure biometric recognition.    
       subtitle: Wallet sends you communications that personally concern you. Ensure that only you can access the app by setting up a code or a pattern to unlock the device.
       body:
         label: How to
@@ -746,32 +746,32 @@ cie:
 barcodeScan:
   error: IO non riconosce questo codice
   tabs:
-    scan: Inquadra
-    upload: Carica
-    input: Digita
+    scan: Scan
+    upload: Upload
+    input: Type
     a11y:
-      scan: Inquadra, 1 di 3
-      upload: Carica, 2 di 3
-      input: Digita, 3 di 3
+      scan: Scan, 1 of 3
+      upload: Upload, 2 of 3
+      input: Type, 3 of 3
   upload:
-    image: Carica un'immagine
-    file: Carica un file
+    image: Upload an image
+    file: Upload a file
   manual:
     authorize: Autorizza una transazione
     notice: Paga un avviso pagoPA
   permissions:
     undefined:
-      title: Ci serve il tuo permesso
-      label: Consenti l’accesso per inquadrare codici QR con la fotocamera del tuo dispositivo.
-      action: Consenti l’accesso
+      title: We need your permission
+      label: Allow access to scan QR codes with your device's camera.
+      action: Allow access
     denied:
-      title: Non hai dato il permesso di usare la fotocamera
-      label: Per concederlo, accedi alle impostazioni del tuo sistema operativo.
-      action: Vai alle impostazioni
+      title: You have not given permission to use the camera
+      label: To grant it, go to your operating system settings.
+      action: Go to settings
   multipleResultsAlert:
-    title: Hai inquadrato più codici
-    body: Inquadra un solo codice alla volta
-    action: Riprova
+    title: You have scanned multiple codes
+    body: Scan only one code at a time
+    action: Retry
 clipboard:
   copyIntoClipboard: copy to clipboard
   copyFeedback: Copied to clipboard
