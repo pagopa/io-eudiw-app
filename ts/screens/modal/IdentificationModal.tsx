@@ -226,9 +226,7 @@ const IdentificationModal = () => {
 
   const titleLabel = isValidatingTask
     ? I18n.t("identification.titleValidation")
-    : pidDataMock.name
-    ? I18n.t("identification.title", { name: pidDataMock.name })
-    : I18n.t("identification.instructions.title");
+    : I18n.t("identification.title");
 
   const onPinValidated = useCallback(
     (isValidated: boolean) => {
