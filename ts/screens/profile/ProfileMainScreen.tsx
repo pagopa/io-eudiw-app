@@ -4,6 +4,7 @@ import {
   ButtonText,
   ContentWrapper,
   HeaderFirstLevel,
+  ListItemNav,
   ListItemSwitch,
   useIOToast
 } from "@pagopa/io-app-design-system";
@@ -17,11 +18,17 @@ import I18n from "../../i18n";
 import { resetFirstOnboarding } from "../../store/actions/onboarding";
 import { deletePin } from "../../utils/keychain";
 import { resetPreferences } from "../../store/actions/persistedPreferences";
+import { useHeaderSecondLevel } from "../../hooks/useHeaderSecondLevel";
+import { IOScrollViewWithLargeHeader } from "../../components/ui/IOScrollViewWithLargeHeader";
 
 const consecutiveTapRequired = 4;
 const RESET_COUNTER_TIMEOUT = 2000 as Millisecond;
 
 const ProfileMainScreen = () => {
+  useHeaderSecondLevel({
+    title: ""
+  });
+
   const [tapsOnAppVersion, setTapsOnAppVersion] = useState(0);
   const idResetTap = useRef<ReturnType<typeof setInterval>>();
 
@@ -73,25 +80,30 @@ const ProfileMainScreen = () => {
   }, [reduxDispatch, show]);
   return (
     <>
-      <HeaderFirstLevel title={I18n.t("profile.main.title")} type="base" />
-      <ContentWrapper>
-        <Body>Profile screen - TODO</Body>
-        {isDebugModeEnabled ? (
-          <>
-            <ListItemSwitch
-              label={I18n.t("profile.main.debugMode")}
-              value={isDebugModeEnabled}
-              onSwitchValueChange={enabled =>
-                dispatch(setDebugModeEnabled(enabled))
-              }
-            />
-            <ButtonText color="error-400" onPress={resetAppStart}>
-              {I18n.t("profile.main.reset")}
-            </ButtonText>
-          </>
-        ) : null}
-        <AppVersion onPress={onTapAppVersion} />
-      </ContentWrapper>
+      <IOScrollViewWithLargeHeader
+        title={{
+          label: I18n.t("global.buttons.settings")
+        }}
+        headerActionsProp={{ showHelp: true }}
+      >
+        <ContentWrapper>
+          {isDebugModeEnabled ? (
+            <>
+              <ListItemSwitch
+                label={I18n.t("profile.main.debugMode")}
+                value={isDebugModeEnabled}
+                onSwitchValueChange={enabled =>
+                  dispatch(setDebugModeEnabled(enabled))
+                }
+              />
+              <ButtonText color="error-400" onPress={resetAppStart}>
+                {I18n.t("profile.main.reset")}
+              </ButtonText>
+            </>
+          ) : null}
+          <AppVersion onPress={onTapAppVersion} />
+        </ContentWrapper>
+      </IOScrollViewWithLargeHeader>
     </>
   );
 };
