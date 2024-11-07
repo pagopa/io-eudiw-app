@@ -1,26 +1,43 @@
 import * as React from "react";
-import { View, SafeAreaView, Image, ScrollView } from "react-native";
 import {
+  View,
+  SafeAreaView,
+  Image,
+  ScrollView,
+  StyleSheet
+} from "react-native";
+import {
+  Avatar,
   Body,
+  ContentWrapper,
+  FeatureInfo,
+  FooterActions,
   FooterWithButtons,
+  ForceScrollDownView,
   H1,
+  H2,
   HSpacer,
   IOStyles,
   Icon,
   IconContained,
   LabelSmall,
+  ListItemHeader,
   VSpacer,
   useIOToast
 } from "@pagopa/io-app-design-system";
 import { useNavigation } from "@react-navigation/native";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
+import * as pot from "@pagopa/ts-commons/lib/pot";
 import interno from "../../../../../../img/features/itwallet/interno.png";
 import { useIOSelector } from "../../../../../store/hooks";
 import { IOStackNavigationProp } from "../../../../../navigation/params/AppParamsList";
 import I18n from "../../../../../i18n";
 import ItwBulletList from "../../../components/ItwBulletList";
-import { getRequestedClaims } from "../../../utils/itwMocksUtils";
+import {
+  getRequestedClaims,
+  ISSUER_MOCK_NAME
+} from "../../../utils/itwMocksUtils";
 import { itwShowCancelAlert } from "../../../utils/itwAlertsUtils";
 import ROUTES from "../../../../../navigation/routes";
 import { ITW_ROUTES } from "../../../navigation/ItwRoutes";
@@ -30,9 +47,21 @@ import ItwTextInfo from "../../../components/ItwTextInfo";
 import { useItwInfoBottomSheet } from "../../../hooks/useItwInfoBottomSheet";
 import { itwPersistedCredentialsValuePidSelector } from "../../../store/reducers/itwPersistedCredentialsReducer";
 import { StoredCredential } from "../../../utils/itwTypesUtils";
-import { itwIssuanceCredentialChecksValueSelector } from "../../../store/reducers/itwIssuanceCredentialReducer";
-import { getEvidenceOrganizationName } from "../../../utils/itwClaimsUtils";
+import {
+  itwIssuanceCredentialChecksSelector,
+  itwIssuanceCredentialChecksValueSelector
+} from "../../../store/reducers/itwIssuanceCredentialReducer";
+import {
+  getEvidenceOrganizationName,
+  parseClaims
+} from "../../../utils/itwClaimsUtils";
 import { ItwParamsList } from "../../../navigation/ItwParamsList";
+import ItwMarkdown from "../../../components/ItwMarkdown";
+import { useHeaderSecondLevel } from "../../../../../hooks/useHeaderSecondLevel";
+import {
+  ItwRequiredClaimsList,
+  RequiredClaim
+} from "../../../components/ItwRequiredClaimsList";
 
 /**
  * This screen displays the information about the credential that is going to be shared
@@ -40,41 +69,16 @@ import { ItwParamsList } from "../../../navigation/ItwParamsList";
  */
 const ItwIssuanceCredentialAuthScreen = () => {
   const pid = useIOSelector(itwPersistedCredentialsValuePidSelector);
-  const checks = useIOSelector(itwIssuanceCredentialChecksValueSelector);
   const navigation = useNavigation<IOStackNavigationProp<ItwParamsList>>();
-  const toast = useIOToast();
-  const organization = pipe(
-    checks,
-    O.fold(
-      () => I18n.t("features.itWallet.generic.placeholders.organizationName"),
-      some =>
-        some.issuerConf.federation_entity.organization_name ??
-        I18n.t("features.itWallet.generic.placeholders.organizationName")
-    )
+  const preliminaryChecks = useIOSelector(
+    itwIssuanceCredentialChecksValueSelector
   );
-  const { present, bottomSheet } = useItwInfoBottomSheet({
-    title: I18n.t(
-      "features.itWallet.issuing.credentialsIssuingInfoScreen.infoBottomSheet.title"
-    ),
-    content: [
-      {
-        title: I18n.t(
-          "features.itWallet.issuing.credentialsIssuingInfoScreen.infoBottomSheet.body.firstHeaderTitle"
-        ),
-        body: I18n.t(
-          "features.itWallet.issuing.credentialsIssuingInfoScreen.infoBottomSheet.body.firstBodyContent"
-        )
-      },
-      {
-        title: I18n.t(
-          "features.itWallet.issuing.credentialsIssuingInfoScreen.infoBottomSheet.body.secondHeaderTitle"
-        ),
-        body: I18n.t(
-          "features.itWallet.issuing.credentialsIssuingInfoScreen.infoBottomSheet.body.secondBodyContent"
-        )
-      }
-    ]
-  });
+  const credentialName = O.isSome(preliminaryChecks)
+    ? preliminaryChecks.value.displayData.title
+    : "";
+  const toast = useIOToast();
+
+  useHeaderSecondLevel({ title: "" });
 
   /**
    * Callback to be used in case of cancel button press alert to navigate to the home screen and show a toast.
@@ -86,32 +90,31 @@ const ItwIssuanceCredentialAuthScreen = () => {
     navigation.navigate(ROUTES.MAIN, { screen: ROUTES.ITWALLET_HOME });
   };
 
-  const ContentView = ({ pid }: { pid: StoredCredential }) => (
-    <SafeAreaView style={IOStyles.flex}>
-      <ScrollView style={IOStyles.horizontalContentPadding}>
-        <VSpacer size={32} />
-        {/* SECOND HEADER */}
-        <View
-          style={{
-            flexDirection: "row",
-            alignContent: "center",
-            alignItems: "center"
-          }}
-        >
-          {/* LEFT */}
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center"
-            }}
-          >
+  const ContentView = ({ pid }: { pid: StoredCredential }) => {
+    const claims = parseClaims(pid.parsedCredential);
+    const requiredClaims = claims.map(
+      claim =>
+        ({
+          claim,
+          source: pid.credentialType
+        } as RequiredClaim)
+    );
+    return (
+      <ForceScrollDownView>
+        <ContentWrapper>
+          <VSpacer size={24} />
+          <View style={styles.header}>
             <IconContained
               icon={"device"}
               color={"neutral"}
               variant={"tonal"}
             />
             <HSpacer size={8} />
-            <Icon name={"transactions"} color={"grey-450"} size={24} />
+            <IconContained
+              icon={"transactions"}
+              color={"neutral"}
+              variant={"tonal"}
+            />
             <HSpacer size={8} />
             <IconContained
               icon={"institution"}
@@ -119,71 +122,73 @@ const ItwIssuanceCredentialAuthScreen = () => {
               variant={"tonal"}
             />
           </View>
-          {/* RIGHT */}
-          <Image
-            source={interno}
-            resizeMode={"contain"}
-            style={{ width: "100%", height: 32 }}
-            accessibilityIgnoresInvertColors
+          <VSpacer size={24} />
+          <H2>
+            {I18n.t(
+              "features.itWallet.issuing.credentialsIssuingInfoScreen.title",
+              { credentialName }
+            )}
+          </H2>
+          <ItwMarkdown>
+            {I18n.t(
+              "features.itWallet.issuing.credentialsIssuingInfoScreen.subtitle",
+              {
+                authSource: ISSUER_MOCK_NAME
+              }
+            )}
+          </ItwMarkdown>
+          <VSpacer size={8} />
+          <ListItemHeader
+            label={I18n.t(
+              "features.itWallet.issuing.credentialsIssuingInfoScreen.requiredClaims"
+            )}
+            iconName="security"
+            iconColor="grey-700"
           />
-        </View>
-        <VSpacer size={24} />
-        <H1>
-          {I18n.t(
-            "features.itWallet.issuing.credentialsIssuingInfoScreen.title"
-          )}
-        </H1>
-        <Body>
-          {I18n.t(
-            "features.itWallet.issuing.credentialsIssuingInfoScreen.subtitle",
-            {
-              authsource: getEvidenceOrganizationName(pid.parsedCredential),
-              organization
-            }
-          )}
-        </Body>
-        <VSpacer size={16} />
-        <LabelSmall onPress={() => present()}>
-          {I18n.t(
-            "features.itWallet.issuing.credentialsIssuingInfoScreen.readMore"
-          )}
-        </LabelSmall>
-        <VSpacer size={24} />
 
-        {/* Render a list of claims that will be shared with the credential issuer */}
-        <ItwBulletList data={getRequestedClaims(pid.displayData.title)} />
-        <VSpacer size={32} />
-        <ItwTextInfo
-          content={I18n.t(
-            "features.itWallet.issuing.credentialsIssuingInfoScreen.tos"
-          )}
+          <ItwRequiredClaimsList items={requiredClaims} />
+          <VSpacer size={24} />
+          <FeatureInfo
+            iconName="fornitori"
+            body={I18n.t(
+              "features.itWallet.issuing.credentialsIssuingInfoScreen.disclaimer.0"
+            )}
+          />
+          <VSpacer size={24} />
+          <FeatureInfo
+            iconName="trashcan"
+            body={I18n.t(
+              "features.itWallet.issuing.credentialsIssuingInfoScreen.disclaimer.1"
+            )}
+          />
+          <VSpacer size={32} />
+          <ItwMarkdown
+            styles={{ body: { fontSize: 14 } }}
+            onLinkOpen={() => null}
+          >
+            {I18n.t(
+              "features.itWallet.issuing.credentialsIssuingInfoScreen.tos"
+            )}
+          </ItwMarkdown>
+        </ContentWrapper>
+        <FooterActions
+          fixed={false}
+          actions={{
+            type: "TwoButtons",
+            primary: {
+              label: I18n.t("global.buttons.continue"),
+              onPress: () =>
+                navigation.navigate(ITW_ROUTES.ISSUANCE.CREDENTIAL.PREVIEW)
+            },
+            secondary: {
+              label: I18n.t("global.buttons.cancel"),
+              onPress: () => itwShowCancelAlert(alertOnPress)
+            }
+          }}
         />
-        <VSpacer size={32} />
-      </ScrollView>
-      <FooterWithButtons
-        primary={{
-          type: "Outline",
-          buttonProps: {
-            color: "primary",
-            accessibilityLabel: I18n.t("global.buttons.cancel"),
-            onPress: () => itwShowCancelAlert(alertOnPress),
-            label: I18n.t("global.buttons.cancel")
-          }
-        }}
-        secondary={{
-          type: "Solid",
-          buttonProps: {
-            color: "primary",
-            accessibilityLabel: I18n.t("global.buttons.continue"),
-            onPress: () =>
-              navigation.navigate(ITW_ROUTES.ISSUANCE.CREDENTIAL.PREVIEW),
-            label: I18n.t("global.buttons.continue")
-          }
-        }}
-        type="TwoButtonsInlineHalf"
-      />
-    </SafeAreaView>
-  );
+      </ForceScrollDownView>
+    );
+  };
 
   const ErrorView = () => {
     const onPress = () => navigation.goBack();
@@ -200,11 +205,13 @@ const ItwIssuanceCredentialAuthScreen = () => {
       )
     );
 
-  return (
-    <>
-      <PidOrErrorView />
-      {bottomSheet}
-    </>
-  );
+  return <PidOrErrorView />;
 };
 export default ItwIssuanceCredentialAuthScreen;
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: "row",
+    alignItems: "center"
+  }
+});
