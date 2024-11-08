@@ -46,7 +46,7 @@ const ClaimText = ({ claim }: { claim: ClaimDisplayFormat }) => {
         return <H6 key={`${index}_${value}`}>{value}</H6>;
       })}
     </>
-  ) : isStringNullyOrEmpty(displayValue) ? null : ( // We want to exclude empty strings and null values
+  ) : isStringNullyOrEmpty(displayValue) ? null : ( // Do not render empty strings and null values
     <H6>{displayValue}</H6>
   );
 };
