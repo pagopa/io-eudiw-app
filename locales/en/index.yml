@@ -310,17 +310,13 @@ features:
         toast:
           success: "Card added!"
       credentialsIssuingInfoScreen:
-        title: "Data needed to add the card"
-        subtitle: "{{authsource}} will send them to {{organization}}."
-        readMore: "Find out more"
-        infoBottomSheet:
-          title: "Data processing"
-          body:
-            firstHeaderTitle: "Why is it necessary?"
-            firstBodyContent: "To obtain the issuance of the card The body authorized to issue this card needs to read your data to verify your identity."
-            secondHeaderTitle: "Safety of treatment"
-            secondBodyContent: "App IO allows the sharing of your data only with verified bodies registered on the lists that guarantee its reliability."
-        tos: "For more information, read the [Privacy Policy](https://io.italia.it/privacy-policy/) and the [Terms and Conditions](https://io.italia.it/privacy-policy/)"
+        title: "{{credentialName}}: Required Data"
+        subtitle: "The data will be shared with the {{authSource}} for the issuance of the digital version of the document."
+        requiredClaims: "Required Data"
+        disclaimer:
+          0: Your data is secure and will only be processed for the purposes described in the Privacy Notice.
+          1: The data will only be shared for the time necessary to issue the digital version of the document.
+        tos: "By pressing **Next**, you declare that you have read and understood the [Privacy Notice](https://io.italia.it/privacy-policy/)."
       credentialPreviewScreen:
         title: "We are adding the following data to the Wallet:"
         subtitle: "Before adding it, check if the data is correct."

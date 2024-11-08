@@ -24,6 +24,7 @@ import ItwCredentialCard from "../components/ItwCredentialCard";
 import { CredentialType } from "../utils/itwMocksUtils";
 import ItwKoView from "../components/ItwKoView";
 import { StoredCredential } from "../utils/itwTypesUtils";
+import { isDebugModeEnabledSelector } from "../../../store/reducers/debug";
 import ROUTES from "../../../navigation/routes";
 
 /**
@@ -39,6 +40,7 @@ const ItwHomeScreen = () => {
   const decodedPid = useIOSelector(itwPersistedCredentialsValuePidSelector);
   const credentials = useIOSelector(itwPersistedCredentialsValueSelector);
   const pidType = CredentialType.PID;
+  const isDebugModeEnabled = useIOSelector(isDebugModeEnabledSelector);
 
   /**
    * Condionally navigate to the credentials catalog screen if the experimental feature flag is true.
@@ -67,7 +69,7 @@ const ItwHomeScreen = () => {
         justifyContent: "flex-start"
       }}
     >
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <VSpacer />
         <Pressable
           accessibilityRole="button"
@@ -124,13 +126,19 @@ const ItwHomeScreen = () => {
         </View>
       </ScrollView>
       <View style={{ justifyContent: "flex-end" }}>
-        <View style={IOStyles.selfCenter}>
-          <ButtonLink
-            label={I18n.t("features.itWallet.homeScreen.reset.label")}
-            onPress={() => present()}
-          />
-        </View>
-        <VSpacer />
+        {isDebugModeEnabled ? (
+          <>
+            <View style={IOStyles.selfCenter}>
+              <ButtonLink
+                label={I18n.t("features.itWallet.homeScreen.reset.label")}
+                onPress={() => present()}
+              />
+            </View>
+            <VSpacer />
+          </>
+        ) : (
+          <></>
+        )}
         <ButtonSolid
           icon="add"
           onPress={onPressAddCredentials}

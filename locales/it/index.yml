@@ -310,17 +310,13 @@ features:
         toast:
           success: "Tessera aggiunta!"
       credentialsIssuingInfoScreen:
-        title: "Dati necessari per aggiungere la tessera"
-        subtitle: "{{authsource}} li invierà a {{organization}}."
-        readMore: "Scopri di più"
-        infoBottomSheet:
-          title: "Trattamento dei dati"
-          body:
-            firstHeaderTitle: "Perché è necessario?"
-            firstBodyContent: "Per ottenere il rilascio della tessera L’ente autorizzato ad emettere questa tessera ha bisogno di leggere i tuoi dati per verificarne l’identità."
-            secondHeaderTitle: "Sicurezza del trattamento"
-            secondBodyContent: "App IO consente la condivisione dei tuoi dati solo con enti verificati e iscritti alle liste che ne garantiscono l’affidabilità."
-        tos: "Per maggiori informazioni leggi l’[Informativa Privacy](https://io.italia.it/privacy-policy/) e i [Termini e condizioni d’uso](https://io.italia.it/privacy-policy/)"
+        title: "{{credentialName}}: Required Data"
+        subtitle: "The data will be shared with the {{authSource}} for the issuance of the digital version of the document."
+        requiredClaims: "Required Data"
+        disclaimer:
+          0: Your data is secure and will only be processed for the purposes described in the Privacy Notice.
+          1: The data will only be shared for the time necessary to issue the digital version of the document.
+        tos: "By pressing **Next**, you declare that you have read and understood the [Privacy Notice](https://io.italia.it/privacy-policy/)."
       credentialPreviewScreen:
         title: "Stiamo aggiungendo i seguenti dati al Wallet:"
         subtitle:
