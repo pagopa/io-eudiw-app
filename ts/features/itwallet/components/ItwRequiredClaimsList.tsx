@@ -35,7 +35,7 @@ type ItwRequiredClaimsListProps = {
 /**
  * Component which renders the claim value or multiple values in case of an array.
  * If the claim is an empty string or null, it will not render it.
- * @param claim The claim to render.
+ * @param claim - the claim to render.
  * @returns An {@link H6} element with the claim value or multiple {@link H6} elements in case of an array.
  */
 const ClaimText = ({ claim }: { claim: ClaimDisplayFormat }) => {
