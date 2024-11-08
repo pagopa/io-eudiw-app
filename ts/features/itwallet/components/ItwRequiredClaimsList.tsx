@@ -54,7 +54,7 @@ const ClaimText = ({ claim }: { claim: ClaimDisplayFormat }) => {
 /**
  * Component which renders a claim.
  * It renders a different component based on the type of the claim.
- * @param claim - the claim to render
+ * @param claim - the claim to render.
  */
 const getClaimDisplayValue = (claim: ClaimDisplayFormat) =>
   pipe(
