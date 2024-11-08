@@ -25,7 +25,7 @@ import I18n from "../../../i18n";
 import { openWebUrl } from "../../../utils/url";
 
 type ItwMarkdownProps = {
-  // We can provide styles to override the default ones
+  // Provide new styles to override the default ones
   styles?: Partial<typeof styles>;
   onLinkOpen?: () => void;
 };
