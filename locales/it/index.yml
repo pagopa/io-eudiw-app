@@ -134,7 +134,10 @@ global:
   navigator:
     itwallet: Wallet
     scan: Inquadra
-    profile: Profilo
+    show:
+      label: Show QR
+      bottomSheet:
+        body: Display the QR code to verify the validity of the documents in your Wallet.
   remoteStates:
     loading: In caricamento...
     wait: Attendi qualche secondo...

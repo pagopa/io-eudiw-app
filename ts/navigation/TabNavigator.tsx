@@ -5,11 +5,11 @@ import LoadingSpinnerOverlay from "../components/LoadingSpinnerOverlay";
 import { TabIconComponent } from "../components/ui/TabIconComponent";
 import I18n from "../i18n";
 import { useIOSelector } from "../store/hooks";
-import ProfileMainScreen from "../screens/profile/ProfileMainScreen";
 import { StartupStatusEnum, isStartupLoaded } from "../store/reducers/startup";
 import ItwHomeScreen from "../features/itwallet/screens/ItwHomeScreen";
 import { BarcodeScanScreen } from "../features/barcode/screens/BarcodeScanScreen";
 import { useBottomTabNavigatorStyle } from "../hooks/useBottomTabNavigatorStyle";
+import ProximityShowQrBottomSheet from "../features/itwallet/components/ProximityShowQrBottomSheet";
 import { MainTabParamsList } from "./params/MainTabParamsList";
 import ROUTES from "./routes";
 
@@ -18,6 +18,10 @@ const Tab = createBottomTabNavigator<MainTabParamsList>();
 export const MainTabNavigator = () => {
   const startupLoaded = useIOSelector(isStartupLoaded);
   const tabBarStyle = useBottomTabNavigatorStyle();
+  const { present, bottomSheet } = ProximityShowQrBottomSheet();
+
+  // Prevents warning when passing it as inline function
+  const EmptyScreen = () => null;
 
   return (
     <LoadingSpinnerOverlay
@@ -68,14 +72,20 @@ export const MainTabNavigator = () => {
           }}
         />
         <Tab.Screen
-          name={ROUTES.PROFILE_MAIN}
-          component={ProfileMainScreen}
+          name={ROUTES.SHOW_QR_CODE}
+          component={EmptyScreen}
+          listeners={() => ({
+            tabPress: e => {
+              e.preventDefault(); // Prevents navigation
+              present();
+            }
+          })}
           options={{
-            title: I18n.t("global.navigator.profile"),
+            title: I18n.t("global.navigator.scan"),
             tabBarIcon: ({ color, focused }) => (
               <TabIconComponent
-                iconName="navProfile"
-                iconNameFocused="navProfileFocused"
+                iconName={"navQrWallet"}
+                iconNameFocused={"navQrWallet"}
                 color={color}
                 focused={focused}
               />
@@ -83,6 +93,7 @@ export const MainTabNavigator = () => {
           }}
         />
       </Tab.Navigator>
+      {bottomSheet}
     </LoadingSpinnerOverlay>
   );
 };

@@ -25,6 +25,7 @@ import { CredentialType } from "../utils/itwMocksUtils";
 import ItwKoView from "../components/ItwKoView";
 import { StoredCredential } from "../utils/itwTypesUtils";
 import { isDebugModeEnabledSelector } from "../../../store/reducers/debug";
+import ROUTES from "../../../navigation/routes";
 
 /**
  * IT-Wallet home screen which contains a top bar with categories, an activation banner and a list of wallet items based on the selected category.
@@ -189,9 +190,9 @@ const ItwHomeScreen = () => {
         secondAction={{
           icon: "coggle",
           onPress: () => {
-            Alert.alert("Contextual coggle");
+            navigation.navigate(ROUTES.PROFILE_MAIN);
           },
-          accessibilityLabel: ""
+          accessibilityLabel: I18n.t("profile.main.title")
         }}
       />
       <View style={{ ...IOStyles.flex, ...IOStyles.horizontalContentPadding }}>
