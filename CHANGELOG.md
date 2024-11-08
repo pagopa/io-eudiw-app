@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0-rc.1](https://github.com/pagopa/io-eudiw-app/compare/0.3.0-rc.0...0.3.0-rc.1) (2024-11-08)
+
+
+### Chores
+
+* Update Gemfile.lock ([03ae1fe](https://github.com/pagopa/io-eudiw-app/commit/03ae1fedb4a02b0a4d75d43669124908557ef5f5))
+
 ## 0.3.0-rc.0 (2024-11-08)
 
 
