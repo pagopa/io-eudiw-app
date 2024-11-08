@@ -56,13 +56,10 @@ const ItwPrRemotePidDataScreen = () => {
 
   const ContentView = ({ pid }: { pid: StoredCredential }) => {
     const claims = parseClaims(pid.parsedCredential);
-    const requiredClaims = claims.map(
-      claim =>
-        ({
-          claim,
-          source: pid.credentialType
-        } as RequiredClaim)
-    );
+    const requiredClaims = claims.map(claim => ({
+      claim,
+      source: pid.credentialType
+    }));
     return (
       <ForceScrollDownView>
         <ContentWrapper>
