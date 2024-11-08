@@ -22,8 +22,11 @@ const ROUTES = {
   // IT Wallet
   ITWALLET_HOME: "IT_WALLET_HOME",
 
-  // Scan
+  // Scan QR Code Tab
   QR_CODE_SCAN: "QR_CODE_SCAN",
+
+  // Show QR Code Tab
+  SHOW_QR_CODE: "SHOW_QR_CODE",
 
   // Profile
   PROFILE_MAIN: "PROFILE_MAIN",

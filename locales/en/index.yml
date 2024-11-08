@@ -134,7 +134,10 @@ global:
   navigator:
     itwallet: Wallet
     scan: Scan QR
-    profile: Profile
+    show:
+      label: Show QR
+      bottomSheet:
+        body: Display the QR code to verify the validity of the documents in your Wallet.
   remoteStates:
     loading: Loading...
     wait: Wait a few seconds..
@@ -288,7 +291,7 @@ features:
         subTitle: "Wallet"
         walletStatus: "Active"
         incomingFeature: "Coming soon"
-        alreadyRegistered: "Already existing"    
+        alreadyRegistered: "Already existing"
       credentialsChecksScreen:
         loading:
           title: "We are performing some security checks"
@@ -362,7 +365,7 @@ features:
           confirmData: "Confirm data"
           deny: "Deny"
         tos: "By continuing, you accept the [Terms and conditions of use]() of the service and confirm that you have read the [Privacy Policy]() of {{relayingParty}}."
-      checksScreen: 
+      checksScreen:
         loading: "We are doing some security checks"
         success: "{{organizationName}} is a verified organization"
         errors:
@@ -370,7 +373,7 @@ features:
             title: IT Wallet is not active
             subtitle: To present a credential, you need to activate it first.
             actionLabel: Activate IT Wallet
-      dataScreen: 
+      dataScreen:
         title: "Allow your data to be read"
         subtitle: "They will be shared with the {{organizationName}} for access to services."
         why: "Why?"
@@ -463,7 +466,7 @@ features:
       completeTitle: Start with Wallet
       completeDescription: |
         Store your documents securely.
-        
+
         By pressing **Start** you you declare that you have read and understood the [Privacy Policy](https://io.italia.it/privacy-policy/) and the [Terms and Conditions of use](https://io.italia.it/privacy-policy/)
       card1:
         title: Welcome to the Wallet app!
@@ -632,7 +635,7 @@ onboarding:
           step2:
             label: Step 2
             value: Configure the face or fingerprint
-          step3: 
+          step3:
             label: Step 3
             value: Enable it in Wallet under Profile > Security
     unavailable:
@@ -640,7 +643,7 @@ onboarding:
       firstInfoStart: Wallet sends you communications that personally concern you
       firstInfoEnd: personally.
       secondInfoStart: Protect your device from unauthorized access and ensure that only you can access the app. To do this, go to your device settings, set a
-      secondInfoEnd: unlock code or configure biometric recognition.    
+      secondInfoEnd: unlock code or configure biometric recognition.
       subtitle: Wallet sends you communications that personally concern you. Ensure that only you can access the app by setting up a code or a pattern to unlock the device.
       body:
         label: How to
