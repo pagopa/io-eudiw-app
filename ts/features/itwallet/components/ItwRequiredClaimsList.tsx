@@ -89,7 +89,6 @@ const ItwRequiredClaimsList = ({ items }: ItwRequiredClaimsListProps) => (
   <View style={styles.container}>
     {pipe(
       items,
-      RA.map(a => a),
       RA.mapWithIndex((index, { claim, source }) => (
         <View key={`${index}-${claim.label}-${source}`}>
           {/* Add a separator view between sections */}
