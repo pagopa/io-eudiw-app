@@ -1,10 +1,7 @@
 import React, { useCallback, useRef, useState } from "react";
 import {
-  Body,
   ButtonText,
   ContentWrapper,
-  HeaderFirstLevel,
-  ListItemNav,
   ListItemSwitch,
   useIOToast
 } from "@pagopa/io-app-design-system";
@@ -16,7 +13,6 @@ import { isDebugModeEnabledSelector } from "../../store/reducers/debug";
 import { setDebugModeEnabled } from "../../store/actions/debug";
 import I18n from "../../i18n";
 import { resetFirstOnboarding } from "../../store/actions/onboarding";
-import { deletePin } from "../../utils/keychain";
 import { resetPreferences } from "../../store/actions/persistedPreferences";
 import { useHeaderSecondLevel } from "../../hooks/useHeaderSecondLevel";
 import { IOScrollViewWithLargeHeader } from "../../components/ui/IOScrollViewWithLargeHeader";
@@ -75,7 +71,6 @@ const ProfileMainScreen = () => {
   const resetAppStart = useCallback(() => {
     reduxDispatch(resetFirstOnboarding());
     reduxDispatch(resetPreferences());
-    deletePin();
     show(I18n.t("profile.main.closeAppWarning"));
   }, [reduxDispatch, show]);
   return (
