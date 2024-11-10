@@ -1,9 +1,12 @@
 import { StackActions } from "@react-navigation/native";
-import { call, select, take } from "typed-redux-saga/macro";
+import { call, put, select, take } from "typed-redux-saga/macro";
 import { ReduxSagaEffect } from "../../types/utils";
 import NavigationService from "../../navigation/NavigationService";
 import ROUTES from "../../navigation/routes";
-import { onBoardingCarouselCompleted } from "../../store/actions/onboarding";
+import {
+  firstOnboardingCompleted,
+  onBoardingCarouselCompleted
+} from "../../store/actions/onboarding";
 import { isFirstAppRun } from "../../store/reducers/onboarding";
 
 export function* checkIsFirstOnboardingSaga(): Generator<ReduxSagaEffect> {
@@ -18,6 +21,7 @@ export function* checkIsFirstOnboardingSaga(): Generator<ReduxSagaEffect> {
     );
 
     const resultAction = yield* take(onBoardingCarouselCompleted);
+    yield* put(firstOnboardingCompleted());
     return resultAction.payload;
   }
   return;
