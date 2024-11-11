@@ -459,7 +459,6 @@ features:
       skip: Skip
       complete: Start
       next: Next
-      closeApp: Close the app
       completeTitle: Start with Wallet
       completeDescription: |
         Store your documents securely.

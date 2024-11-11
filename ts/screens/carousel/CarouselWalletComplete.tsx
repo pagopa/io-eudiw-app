@@ -14,12 +14,18 @@ import I18n from "../../i18n";
 import ItwTextInfo from "../../features/itwallet/components/ItwTextInfo";
 import { useIONavigation } from "../../navigation/params/AppParamsList";
 import ROUTES from "../../navigation/routes";
+import { useHeaderSecondLevel } from "../../hooks/useHeaderSecondLevel";
 /**
  * A screen where the user can start using Wallet
  */
 const CarouselWalletCompleteScreen = () => {
   const dispatch = useDispatch();
   const navigation = useIONavigation();
+
+  useHeaderSecondLevel({
+    title: "",
+    goBack: () => navigation.goBack()
+  });
 
   const onContinue = React.useCallback(
     () => dispatch(onBoardingCarouselCompleted()),
@@ -59,11 +65,6 @@ const CarouselWalletCompleteScreen = () => {
           fullWidth
           onPress={onContinue}
         />
-        <View style={{ alignItems: "center" }}>
-          <ButtonText color="blueIO-600" onPress={onCloseApp}>
-            {I18n.t("features.itWallet.onboarding.closeApp")}
-          </ButtonText>
-        </View>
       </View>
     </SafeAreaView>
   );

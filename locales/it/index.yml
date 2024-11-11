@@ -461,7 +461,6 @@ features:
       skip: Salta
       complete: Continua
       next: Avanti
-      closeApp: Chiudi l'app
       completeTitle: Inizia a usare il Wallet
       completeDescription: Per proseguire, leggi l’[informativa Privacy](https://io.italia.it/privacy-policy/) e i [Termini e Condizioni d’uso](https://io.italia.it/privacy-policy/)
       card1:
