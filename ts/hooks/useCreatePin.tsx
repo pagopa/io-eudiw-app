@@ -32,12 +32,10 @@ export const useCreatePin = (props = { isOnboarding: false }) => {
           // handleSendAssistanceLog(assistanceTool, `createPinSuccess`);
           dispatch(createPinSuccess(pin));
           // trackCreatePinSuccess(getFlowType(isOnboarding, isFirstOnBoarding));
-          if (!isOnboarding) {
-            const successMessage = I18n.t("onboarding.pin.success.message");
-            toastSuccess(successMessage);
-            if (Platform.OS === "android") {
-              AccessibilityInfo.announceForAccessibility(successMessage);
-            }
+          const successMessage = I18n.t("onboarding.pin.success.message");
+          toastSuccess(successMessage);
+          if (Platform.OS === "android") {
+            AccessibilityInfo.announceForAccessibility(successMessage);
           }
         })
         .catch(() => {
@@ -48,7 +46,7 @@ export const useCreatePin = (props = { isOnboarding: false }) => {
           // end user probably.
         });
     },
-    [isOnboarding, dispatch, toastSuccess]
+    [dispatch, toastSuccess]
   );
 
   return { handleSubmit };
