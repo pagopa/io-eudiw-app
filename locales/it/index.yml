@@ -282,7 +282,8 @@ features:
         typ:
           title: "Il Wallet è attivo!"
           content: "Ora puoi aggiungere i tuoi documenti e accedere ai servizi online."
-          button: "Vai al Wallet"
+          addDocument: "Aggiungi un documento"
+          later: Dopo
       credentialsCatalogScreen:
         title: "Cosa vuoi aggiungere al Wallet?"
         subTitle: "Wallet"

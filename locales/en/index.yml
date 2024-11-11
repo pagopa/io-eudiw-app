@@ -282,7 +282,8 @@ features:
         typ:
           title: "It's all ready!"
           content: "You can now add your documents and access online services."
-          button: "Go to Wallet"
+          addDocument: "Add your first document"
+          later: Later
       credentialsCatalogScreen:
         title: "What do you want to add to the Wallet?"
         subTitle: "Wallet"
