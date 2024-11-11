@@ -15,7 +15,7 @@ export function* checkIsFirstOnboardingSaga(): Generator<ReduxSagaEffect> {
   const isFirstOnboarding = yield* select(isFirstAppRun);
 
   if (isFirstOnboarding) {
-    // Reset pin if it exists because on iOS keychain perstitence survives app deletion
+    // Reset pin if it exists because on iOS keychain persistence survives app deletion
     yield* call(deletePin);
     yield* call(
       NavigationService.dispatchNavigationAction,
