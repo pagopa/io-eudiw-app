@@ -6,7 +6,11 @@ import { useNavigation } from "@react-navigation/native";
 import I18n from "../../../i18n";
 import { useItwInfoBottomSheet } from "../hooks/useItwInfoBottomSheet";
 import { StoredCredential } from "../utils/itwTypesUtils";
-import { parseClaims, sortClaims } from "../utils/itwClaimsUtils";
+import {
+  ClaimDisplayFormat,
+  parseClaims,
+  sortClaims
+} from "../utils/itwClaimsUtils";
 import { CredentialType, mapAssuranceLevel } from "../utils/itwMocksUtils";
 import { IOStackNavigationProp } from "../../../navigation/params/AppParamsList";
 import { ItwParamsList } from "../navigation/ItwParamsList";
@@ -17,6 +21,18 @@ import ItwCredentialClaim from "./ItwCredentialClaim";
  * It dinamically renders the list of claims passed as claims prop in the order they are passed.
  * @param data - the {@link StoredCredential} of the credential.
  */
+
+const taxIdNumberHotfix = (claims: ClaimDisplayFormat[]) => {
+  return claims
+    .filter(claim => claim.label !== "Tax ID Number")
+    .map(claim => {
+      if (claim.label === "tax_id_number") {
+        return { ...claim, label: "Tax ID Number" };
+      }
+      return claim;
+    });
+};
+
 const ItwCredentialClaimsList = ({
   data: {
     parsedCredential,
@@ -28,7 +44,9 @@ const ItwCredentialClaimsList = ({
 }: {
   data: StoredCredential;
 }) => {
-  const claims = parseClaims(sortClaims(displayData.order, parsedCredential));
+  const claims = taxIdNumberHotfix(
+    parseClaims(sortClaims(displayData.order, parsedCredential))
+  );
   const navigation = useNavigation<IOStackNavigationProp<ItwParamsList>>();
 
   /**
