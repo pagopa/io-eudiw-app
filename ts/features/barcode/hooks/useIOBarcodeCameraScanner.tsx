@@ -19,6 +19,7 @@ import {
   useCameraDevice,
   useCodeScanner
 } from "react-native-vision-camera";
+import { useIsFocused } from "@react-navigation/native";
 import { usePrevious } from "../../../utils/hooks/usePrevious";
 import { AnimatedCameraMarker } from "../components/AnimatedCameraMarker";
 import {
@@ -176,6 +177,9 @@ export const useIOBarcodeCameraScanner = ({
     [barcodeFormats]
   );
 
+  const [toggleCamera, setToggleCamera] = React.useState<boolean>(true);
+  const isFocused = useIsFocused();
+
   const prevDisabled = usePrevious(isDisabled);
   const device = useCameraDevice("back", {
     physicalDevices: ["ultra-wide-angle-camera"]
@@ -199,8 +203,9 @@ export const useIOBarcodeCameraScanner = ({
    * Returns an Either with the {@link BarcodeFailure} or the {@link IOBarcode}
    */
   const handleDetectedBarcode = React.useCallback(
-    (detectedBarcode: Code): E.Either<BarcodeFailure, IOBarcode> =>
-      pipe(
+    (detectedBarcode: Code): E.Either<BarcodeFailure, IOBarcode> => {
+      setToggleCamera(false);
+      return pipe(
         convertToIOBarcodeFormat(detectedBarcode.type as BarcodeFormat),
         O.filter(format => acceptedFormats?.includes(format) ?? true),
         E.fromOption<BarcodeFailure>(() => ({
@@ -219,9 +224,14 @@ export const useIOBarcodeCameraScanner = ({
             E.map(barcode => ({ ...barcode, format }))
           )
         )
-      ),
+      );
+    },
     [acceptedFormats, barcodeTypes]
   );
+
+  React.useEffect(() => {
+    setToggleCamera(true);
+  }, [isFocused]);
 
   /**
    * Handles the scanned barcodes and calls the callbacks for the results
@@ -315,7 +325,7 @@ export const useIOBarcodeCameraScanner = ({
    */
   const cameraComponent = (
     <View style={styles.cameraContainer} testID="BarcodeScannerCameraTestID">
-      {device && (
+      {device && toggleCamera && (
         <Camera
           style={styles.camera}
           device={device}
