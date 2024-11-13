@@ -10,7 +10,8 @@ import {
   IOStyles,
   LabelSmall,
   Pictogram,
-  VSpacer
+  VSpacer,
+  useIOToast
 } from "@pagopa/io-app-design-system";
 import { StyleSheet, View } from "react-native";
 import I18n from "../../../../../i18n";
@@ -26,6 +27,7 @@ import { ITW_ROUTES } from "../../../navigation/ItwRoutes";
  */
 const ItwIssuancePidStoreScreen = () => {
   const navigation = useNavigation<IOStackNavigationProp<AppParamsList>>();
+  const { success: toastSuccess } = useIOToast();
 
   return (
     <SafeAreaView style={IOStyles.flex}>
@@ -73,11 +75,16 @@ const ItwIssuancePidStoreScreen = () => {
               accessibilityLabel={I18n.t(
                 "features.itWallet.issuing.pidActivationScreen.typ.later"
               )}
-              onPress={() =>
+              onPress={() => {
                 navigation.navigate(ROUTES.MAIN, {
                   screen: ROUTES.ITWALLET_HOME
-                })
-              }
+                });
+                toastSuccess(
+                  I18n.t(
+                    "features.itWallet.issuing.pidActivationScreen.typ.done"
+                  )
+                );
+              }}
             />
           </View>
         </View>
