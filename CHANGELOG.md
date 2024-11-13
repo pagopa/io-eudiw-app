@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0-rc.2](https://github.com/pagopa/io-eudiw-app/compare/0.5.0-rc.1...0.5.0-rc.2) (2024-11-13)
+
+
+### Bug Fixes
+
+* [EUDIW-156] Pin not asked after app reinstallation ([#41](https://github.com/pagopa/io-eudiw-app/issues/41)) ([d760984](https://github.com/pagopa/io-eudiw-app/commit/d760984a0ffccdcdb5f7c07e797824057ec0fb6e))
+* [EUDIW-158] Tests and fixes ([#42](https://github.com/pagopa/io-eudiw-app/issues/42)) ([55fe508](https://github.com/pagopa/io-eudiw-app/commit/55fe5084407b548f2cc5dbcb256529e34b905d2d))
+
 ## [0.5.0-rc.1](https://github.com/pagopa/io-eudiw-app/compare/0.5.0-rc.0...0.5.0-rc.1) (2024-11-08)
 
 ## [0.5.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/0.4.0-rc.0...0.5.0-rc.0) (2024-11-08)
