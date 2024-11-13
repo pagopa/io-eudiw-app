@@ -9,6 +9,8 @@ import {
 
 export const ISSUER_URL = "https://www.interno.gov.it/pid/";
 
+export const ISSUER_MOCK_NAME = "Istituto Poligrafico e Zecca dello Stato";
+
 export type PidData = {
   name: string;
   surname: string;

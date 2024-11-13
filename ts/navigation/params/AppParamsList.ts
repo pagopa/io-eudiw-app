@@ -17,10 +17,11 @@ export type AppParamsList = {
   [ROUTES.UNSUPPORTED_DEVICE]: undefined;
   [ROUTES.BACKGROUND]: undefined;
   [ROUTES.MAIN]: NavigatorScreenParams<MainTabParamsList>;
-  [ITW_ROUTES.MAIN]: NavigatorScreenParams<ItwParamsList>;
   [ROUTES.ONBOARDING_WALLET]: undefined;
   [ROUTES.ONBOARDING_PIN]: undefined;
   [ROUTES.ONBOARDING_WALLET_COMPLETE]: undefined;
+  [ROUTES.PROFILE_MAIN]: undefined;
+  [ITW_ROUTES.MAIN]: NavigatorScreenParams<ItwParamsList>;
 };
 
 /**
