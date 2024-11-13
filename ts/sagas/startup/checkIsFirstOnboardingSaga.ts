@@ -8,12 +8,15 @@ import {
   onBoardingCarouselCompleted
 } from "../../store/actions/onboarding";
 import { isFirstAppRun } from "../../store/reducers/onboarding";
+import { deletePin } from "../../utils/keychain";
 
 export function* checkIsFirstOnboardingSaga(): Generator<ReduxSagaEffect> {
   // We check whether the user has already open the app at least once
   const isFirstOnboarding = yield* select(isFirstAppRun);
 
   if (isFirstOnboarding) {
+    // Reset pin if it exists because on iOS keychain persistence survives app deletion
+    yield* call(deletePin);
     yield* call(
       NavigationService.dispatchNavigationAction,
       // We use navigate to go to the Onboarding Screen
