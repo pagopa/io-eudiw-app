@@ -287,7 +287,7 @@ features:
           content: "You can now add your documents and access online services."
           addDocument: "Add your first document"
           later: Later
-          done: Done
+          done: Done!
       credentialsCatalogScreen:
         title: "What do you want to add to the Wallet?"
         subTitle: "Wallet"
