@@ -1,5 +1,5 @@
 import React, { ComponentProps, useCallback } from "react";
-import { View } from "react-native";
+import { ScrollView, useWindowDimensions, View } from "react-native";
 import {
   ButtonLink,
   ButtonSolid,
@@ -15,10 +15,24 @@ import { Carousel } from "../../../screens/carousel/Carousel";
 const MAIN_COLOR = "white";
 export const OnboardingWallet = () => {
   const navigation = useIONavigation();
+  const carouselRef = React.useRef<ScrollView>(null);
+  const [step, setStep] = React.useState(0);
+  const screenDimension = useWindowDimensions();
 
   const skipCarousel = useCallback(() => {
     navigation.navigate(ROUTES.ONBOARDING_WALLET_COMPLETE);
   }, [navigation]);
+
+  const nextStep = useCallback(() => {
+    if (step === 2) {
+      skipCarousel();
+    } else {
+      carouselRef.current?.scrollTo({
+        x: screenDimension.width * (step + 1),
+        animated: true
+      });
+    }
+  }, [step, screenDimension.width, skipCarousel]);
 
   const carouselCards: ReadonlyArray<
     ComponentProps<typeof LandingCardComponent>
@@ -78,7 +92,12 @@ export const OnboardingWallet = () => {
           />
         </View>
       </ContentWrapper>
-      <Carousel carouselCards={carouselCards} dotColor={IOColors.white} />
+      <Carousel
+        carouselCards={carouselCards}
+        dotColor={IOColors.white}
+        scrollViewRef={carouselRef}
+        setStep={setStep}
+      />
       <ContentWrapper>
         <ButtonSolid
           testID="continue-button-onboarding-wallet"
@@ -86,7 +105,7 @@ export const OnboardingWallet = () => {
           fullWidth={true}
           color={"contrast"}
           label={I18n.t("features.itWallet.onboarding.next")}
-          onPress={skipCarousel}
+          onPress={nextStep}
         />
       </ContentWrapper>
     </>

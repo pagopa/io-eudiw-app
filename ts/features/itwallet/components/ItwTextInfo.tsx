@@ -3,6 +3,7 @@ import {
   Body,
   H2,
   H6,
+  IOColors,
   LabelSmall,
   useIOToast
 } from "@pagopa/io-app-design-system";
@@ -45,6 +46,7 @@ const RenderLink = (text: string, url: string, index: number) => {
         openWebUrl(url, () => toast.error(I18n.t("global.jserror.title")))
       }
       numberOfLines={1}
+      style={{ color: IOColors.blue }}
     >
       {text}
     </LabelSmall>

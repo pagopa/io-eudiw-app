@@ -285,7 +285,9 @@ features:
         typ:
           title: "It's all ready!"
           content: "You can now add your documents and access online services."
-          button: "Go to Wallet"
+          addDocument: "Add your first document"
+          later: Later
+          done: Done!
       credentialsCatalogScreen:
         title: "What do you want to add to the Wallet?"
         subTitle: "Wallet"
@@ -458,12 +460,10 @@ features:
       skip: Skip
       complete: Start
       next: Next
-      closeApp: Close the app
       completeTitle: Start with Wallet
       completeDescription: |
         Store your documents securely.
-
-        By pressing **Start** you you declare that you have read and understood the [Privacy Policy](https://io.italia.it/privacy-policy/) and the [Terms and Conditions of use](https://io.italia.it/privacy-policy/)
+        By pressing **Start**, you declare that you have read and understood the [Privacy Policy](https://io.italia.it/privacy-policy/) and the [Terms and Conditions of Use](https://io.italia.it/privacy-policy/)
       card1:
         title: Welcome to the Wallet app!
         content: Discover what you can do
@@ -596,10 +596,10 @@ onboarding:
       match: The code doesn’t match
     policy:
       title: How to choose the code?
-      description: The unlock code is made up of 6 digits and will be used to access and authorize certain operations in the app
+      description: The unlock code is made up of 6 digits and will be used to access and authorize certain operations in the app.
       bulletListTitle: "Choose a code that is hard to guess and does not contain:"
-      firstItem: a single repeated number (e.g. 000000)
-      secondItem: a list of ordered numbers (e.g. 123456 or 654321)
+      firstItem: a single repeated number (e.g. 000000);
+      secondItem: a list of ordered numbers (e.g. 123456 or 654321).
     success:
       message: Done!
   pinConfirmation:

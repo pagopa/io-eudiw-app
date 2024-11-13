@@ -34,12 +34,17 @@ type CarouselProps = {
   >;
   dotEasterEggCallback?: () => void;
   dotColor?: string;
+  scrollViewRef: React.RefObject<ScrollView>;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
 };
 
-type CarouselDotsProps = CarouselProps & {
-  scrollX: Animated.Value;
-  dotColor?: string;
-};
+type CarouselDotsProps = Omit<
+  CarouselProps & {
+    scrollX: Animated.Value;
+    dotColor?: string;
+  },
+  "scrollViewRef" | "setStep"
+>;
 
 const CarouselDots = (props: CarouselDotsProps) => {
   const { carouselCards, dotEasterEggCallback, scrollX, dotColor } = props;
@@ -98,6 +103,18 @@ const CarouselDots = (props: CarouselDotsProps) => {
 export const Carousel = React.forwardRef<View, CarouselProps>((props, ref) => {
   const { carouselCards, dotEasterEggCallback, dotColor } = props;
   const scrollX = React.useRef(new Animated.Value(0)).current;
+  const scrollEvent = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: {
+            x: scrollX
+          }
+        }
+      }
+    ],
+    { useNativeDriver: false }
+  );
 
   const renderCardComponents = React.useCallback(
     () =>
@@ -118,19 +135,15 @@ export const Carousel = React.forwardRef<View, CarouselProps>((props, ref) => {
       <ScrollView
         horizontal={true}
         pagingEnabled
+        ref={props.scrollViewRef}
         showsHorizontalScrollIndicator={false}
-        onScroll={Animated.event(
-          [
-            {
-              nativeEvent: {
-                contentOffset: {
-                  x: scrollX
-                }
-              }
-            }
-          ],
-          { useNativeDriver: false }
-        )}
+        onScroll={event => {
+          props.setStep(
+            event.nativeEvent.contentOffset.x /
+              event.nativeEvent.layoutMeasurement.width
+          );
+          scrollEvent(event);
+        }}
         scrollEventThrottle={1}
       >
         {cardComponents}
