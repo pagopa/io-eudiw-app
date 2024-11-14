@@ -1627,6 +1627,27 @@ PODS:
     - React-logger (= 0.76.1)
     - React-perflogger (= 0.76.1)
     - React-utils (= 0.76.1)
+  - RNBootSplash (6.3.1):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNCAsyncStorage (2.0.0):
     - DoubleConversion
     - glog
@@ -1939,6 +1960,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
@@ -2090,6 +2112,8 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNBootSplash:
+    :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNGestureHandler:
@@ -2175,6 +2199,7 @@ SPEC CHECKSUMS:
   React-utils: 0c825829a8e2ca39bb049d95f270a2dbf39ecb05
   ReactCodegen: 3b0ff1c9015e3ebcf2bd2f8559995c74bfacf8a1
   ReactCommon: c21a3d6a8d3e98b6e99730139a52f59f0beea89d
+  RNBootSplash: 2f3d6c7dd96a2f145b96bd741ce8e170714e0514
   RNCAsyncStorage: 9e99a3fbfeb326223e002df036a6522de3c99ad1
   RNGestureHandler: 16ef3dc2d7ecb09f240f25df5255953c4098819b
   RNReactNativeHapticFeedback: 8397b76d1ca8d3336545ce8bc8723e3b6cb551eb

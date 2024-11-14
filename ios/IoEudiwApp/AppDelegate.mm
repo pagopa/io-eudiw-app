@@ -1,6 +1,7 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
+#import "RNBootSplash.h" // Required by react-native-bootsplash
 
 @implementation AppDelegate
 
@@ -26,6 +27,12 @@
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
+
+// Required by react-native-bootsplash
+- (void)customizeRootView:(RCTRootView *)rootView {
+  [super customizeRootView:rootView];
+  [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView]; // initialize the splash screen
 }
 
 @end

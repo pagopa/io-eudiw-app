@@ -25,6 +25,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions
 } from 'react-native/Libraries/NewAppScreen';
+import BootSplash from 'react-native-bootsplash';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -62,6 +63,10 @@ function App(): React.JSX.Element {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter
   };
+
+  React.useEffect(() => {
+    BootSplash.hide({fade: true}).finally(() => void 0);
+  }, []);
 
   return (
     <GestureHandlerRootView style={styles.gestureHandlerRoot}>

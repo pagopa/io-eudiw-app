@@ -14,6 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		153258B5A8014C229DA2915B /* Titillio-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 16DCDF1CC7914B908C0F8372 /* Titillio-Thin.otf */; };
 		20257F0513344925981616E0 /* Titillio-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2952A5D938E048C5A2AEF46A /* Titillio-BoldItalic.otf */; };
+		2EEF4C1A508E48A581D6C4CD /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C296C8331724E5A8D625A3D /* BootSplash.storyboard */; };
 		4C13490BE3324FD184F8961D /* Titillio-ExtraboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = D938A785FE5040D782F67F6D /* Titillio-ExtraboldItalic.otf */; };
 		579B9EE23A714346868EBF46 /* Titillio-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3D14F16E886945CA81BE6923 /* Titillio-Regular.otf */; };
 		7699B88040F8A987B510C191 /* libPods-IoEudiwApp-IoEudiwAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-IoEudiwApp-IoEudiwAppTests.a */; };
@@ -27,6 +28,7 @@
 		D2C9C0B4D21D4897BBE8C7E5 /* Titillio-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 412E41A5EC7149FF88D5017C /* Titillio-SemiboldItalic.otf */; };
 		D43DD1DFC1BA46BC9B3951EF /* Titillio-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = A576DAF08CD44F519D75F061 /* Titillio-Black.otf */; };
 		D9C513F97A8145FCA2E76A0D /* Titillio-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 71A03975F7D0486F8F96C290 /* Titillio-BlackItalic.otf */; };
+		DE00EB060A6F4986BA153C53 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A570A0E3122543A0951F42F7 /* Colors.xcassets */; };
 		E211664D96AB4A4E82B1222C /* Titillio-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 20CC44893D4B4A11A7B8CFFD /* Titillio-LightItalic.otf */; };
 		ED2C56653CE143748B24D283 /* Titillio-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7AF01324EC994271A4CF81F9 /* Titillio-Light.otf */; };
 		EF3422F8FE074342BBAA1A77 /* Titillio-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5BF0A78CF1054DF899C4E8A4 /* Titillio-Semibold.otf */; };
@@ -76,6 +78,8 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = IoEudiwApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-IoEudiwApp-IoEudiwAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IoEudiwApp-IoEudiwAppTests.release.xcconfig"; path = "Target Support Files/Pods-IoEudiwApp-IoEudiwAppTests/Pods-IoEudiwApp-IoEudiwAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		89C84FA06CDB4FF785D0570C /* Titillio-ExtrablackItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-ExtrablackItalic.otf"; path = "../assets/fonts/Titillio/Titillio-ExtrablackItalic.otf"; sourceTree = "<group>"; };
+		8C296C8331724E5A8D625A3D /* BootSplash.storyboard */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = BootSplash.storyboard; path = IoEudiwApp/BootSplash.storyboard; sourceTree = "<group>"; };
+		A570A0E3122543A0951F42F7 /* Colors.xcassets */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = Colors.xcassets; path = IoEudiwApp/Colors.xcassets; sourceTree = "<group>"; };
 		A576DAF08CD44F519D75F061 /* Titillio-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Black.otf"; path = "../assets/fonts/Titillio/Titillio-Black.otf"; sourceTree = "<group>"; };
 		B795C86EE2FA4061BE89851B /* DMMono-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "DMMono-Medium.ttf"; path = "../assets/fonts/DMMono/DMMono-Medium.ttf"; sourceTree = "<group>"; };
 		D938A785FE5040D782F67F6D /* Titillio-ExtraboldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-ExtraboldItalic.otf"; path = "../assets/fonts/Titillio/Titillio-ExtraboldItalic.otf"; sourceTree = "<group>"; };
@@ -129,6 +133,8 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				8C296C8331724E5A8D625A3D /* BootSplash.storyboard */,
+				A570A0E3122543A0951F42F7 /* Colors.xcassets */,
 			);
 			name = IoEudiwApp;
 			sourceTree = "<group>";
@@ -324,6 +330,8 @@
 				153258B5A8014C229DA2915B /* Titillio-Thin.otf in Resources */,
 				C9201F2961A542E2AC9C79CE /* Titillio-ThinItalic.otf in Resources */,
 				BFD7676908A4455690B2F1EB /* DMMono-Medium.ttf in Resources */,
+				2EEF4C1A508E48A581D6C4CD /* BootSplash.storyboard in Resources */,
+				DE00EB060A6F4986BA153C53 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

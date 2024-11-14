@@ -4,7 +4,8 @@ import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
-import android.os.Bundle;
+import android.os.Bundle
+import com.zoontek.rnbootsplash.RNBootSplash // Required by react-native-bootsplash
 
 class MainActivity : ReactActivity() {
 
@@ -23,6 +24,7 @@ class MainActivity : ReactActivity() {
 
   
   override fun onCreate(savedInstanceState: Bundle?) {
+      RNBootSplash.init(this, R.style.BootTheme)  // Required by react-native-bootsplash, initialize the splash screen
       /**
         * This is required by react-native-screen. It discards any Activity state persisted during the Activity restart process,
         * to avoid inconsistencies that lead to crashes as in Android view state is not persisted consistently across Activity restarts.
