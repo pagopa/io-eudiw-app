@@ -1,135 +1,79 @@
-<p align="center">
-  <img src="img/icons/app-icon.png" width="100" style="display: block" /></br>
-  <h3 align="center">io-eudiw-app</h3>
-</p>
+This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-# Getting started
+# Getting Started
 
-The following sections provide instructions to build and run the app for development purposes.
+>**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
-## Prerequisites
+## Step 1: Start the Metro Server
 
-### NodeJS and Ruby
+First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
 
-To run the project you need to install the correct version of NodeJS and Ruby.
-We recommend the use of a virtual environment of your choice. For ease of use, this guide adopts [nodenv](https://github.com/nodenv/nodenv) for NodeJS, [rbenv](https://github.com/rbenv/rbenv) for Ruby.
-
-The node version used in this project is stored in [.node-version](.node-version),
-while the version of Ruby is stored in [.ruby-version](.ruby-version).
-
-### React Native
-
-Follow the [official tutorial](https://reactnative.dev/docs/environment-setup?guide=native) for installing the `React Native CLI` for your operating system.
-
-If you have a macOS system, you can follow both the tutorial for iOS and for Android. If you have a Linux or Windows system, you need only to install the development environment for Android.
-
-## Build the app
-
-In order to build the app, we use [yarn](https://yarnpkg.com/) for managing javascript dependencies.
-As stated [previously](#nodejs-and-ruby), we also use `nodenv` and `rbenv` for managing the environment:
+To start Metro, run the following command from the _root_ of your React Native project:
 
 ```bash
-# Clone the repository
-$ git clone https://github.com/pagopa/io-eudiw-app
+# using npm
+npm start
 
-# CD into the repository
-$ cd io-eudiw-app
-
-# Install NodeJS with nodenv, the returned version should match the one in the .node-version file
-$ nodenv install && nodenv version
-
-# Install Ruby with rbenv, the returned version should match the one in the .ruby-version file
-$ rbenv install && rbenv version
-
-# Install yarn and rehash to install shims
-$ npm install -g yarn && nodenv rehash
-
-# Install bundle
-$ gem install bundle
-
-# Install the required Gems from the Gemfile
-# Run this only during the first setup and when Gems dependencies change
-$ bundle install
-
-# Install dependencies
-# Run this only during the first setup and when JS dependencies change
-$ yarn install
-
-# Install podfiles when targeting iOS (ignore this step for Android)
-# Run this only during the first setup and when Pods dependencies change
-$ cd iOS && bundle exec pod install && cd ..
+# OR using Yarn
+yarn start
 ```
 
-## Environment variables
+## Step 2: Start your Application
 
-### Production
+Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
 
-You can target the production server by copying the included `.env.production` file to `.env`:
+### For Android
 
 ```bash
-$ cp .env.production .env
+# using npm
+npm run android
+
+# OR using Yarn
+yarn android
 ```
 
-> [!NOTE]
-> The sample configuration sets the app to interface with our test environment, on which we work continuously; therefore, it may occur that some features are not always available or fully working. Check the comments in the file for more informations about environment variables.
-
-### development
-
-You can target the development server by copying the included `.env.local` file to `.env`:
+### For iOS
 
 ```bash
-$ cp .env.local .env
+# using npm
+npm run ios
+
+# OR using Yarn
+yarn ios
 ```
 
-## Run the app
+If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
 
-### Android Emulator
+This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
-An Android Emulator must be [created and launched manually](https://developer.android.com/studio/run/managing-avds).
+## Step 3: Modifying your App
 
-Then, from your command line, run these commands:
+Now that you have successfully run the app, let's modify it.
 
-```bash
-# Perform the port forwarding
-$ adb reverse tcp:8081 tcp:8081;adb reverse tcp:3000 tcp:3000;adb reverse tcp:9090 tcp:9090
+1. Open `App.tsx` in your text editor of choice and edit some lines.
+2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
 
-# Run Android build
-$ yarn run-android
-```
+   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
 
-However the Android Emulator is not fully supported because it doesn't support the hardware-backed keystore.
+## Congratulations! :tada:
 
-### iOS Simulator
+You've successfully run and modified your React Native App. :partying_face:
 
-```bash
-# Run iOS build
-$ yarn run-ios
-```
+### Now what?
 
-### Physical devices
+- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
+- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
 
-The React Native documentation provides a [useful guide](https://reactnative.dev/docs/running-on-device) for running projects on physical devices.
+# Troubleshooting
 
-> [!IMPORTANT]  
-> For building the app on an iOS physical device, a few additional steps are necessary:
->
-> - Navigate to `Build Phases` in Xcode and expand `Bundle React Native code and images`. Update the `NODE_BINARY` variable with the path to your Node.js environment. You can find the correct path by running `which node` in a terminal from the app's root directory;
-> - If you're not part of the PagoPA S.p.A. organization then you must change the `Bundle Identifier` to something unique. This adjustment can be made in the `Signing (Debug)`
->   section of Xcode;
+If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
 
-# Architecture
+# Learn More
 
-## Main technologies used
+To learn more about React Native, take a look at the following resources:
 
-- [`TypeScript`](https://www.typescriptlang.org/)
-- [`React Native`](https://facebook.github.io/react-native)
-- [`Redux`](http://redux.js.org/)
-- [`Redux Saga`](https://redux-saga.js.org/)
-
-## Wallet libraries ecosystem
-
-- [`io-react-native-wallet`](https://github.com/pagopa/io-react-native-wallet)
-
-## Design System
-
-- [`io-app-design-system`](https://github.com/pagopa/io-app-design-system/)
+- [React Native Website](https://reactnative.dev) - learn more about React Native.
+- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
+- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
+- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
+- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.

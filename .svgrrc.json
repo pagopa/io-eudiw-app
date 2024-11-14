@@ -1,6 +1,0 @@
-{
-  "dimensions": false,
-  "replaceAttrValues": {
-    "@fillColor": "{props.fill}"
-  }
-}

@@ -1,9 +1,8 @@
+// eslint-disable-next-line functional/immutable-data
 module.exports = {
-  assets: [
-    "./assets/fonts/TitilliumWeb",
-    "./assets/fonts/TitilliumSansPro",
-    "./assets/fonts/ReadexPro",
-    "./assets/fonts/RobotoMono",
-    "./assets/fonts/DMMono"
-  ]
+  project: {
+    ios: {},
+    android: {}
+  },
+  assets: ['./assets/fonts']
 };
