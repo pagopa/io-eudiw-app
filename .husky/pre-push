@@ -9,7 +9,7 @@ echo "$unstagedFiles"
 
 # Compile the project
 echo "🔨 compiling..."
-yarn tsc:noemit
+yarn tsc
 
 # Run lintier
 echo "🧹 runnning linter..."  
