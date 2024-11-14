@@ -9,7 +9,8 @@
     "start": "react-native start",
     "test": "jest",
     "locales": "i18next-resources-for-ts interface -i ./locales/en -o ./ts/@types/resources.d.ts",
-    "nuke": "rm -rf ios/Pods && rm -rf ios/DerivedDate && cd android && ./gradlew clean && cd .. && m -rf node_modules"
+    "nuke": "rm -rf ios/Pods && rm -rf ios/DerivedDate && cd android && ./gradlew clean && cd .. && m -rf node_modules",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
