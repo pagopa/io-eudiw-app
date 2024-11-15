@@ -8,14 +8,22 @@ import {onboardingReset} from '../features/onboarding/store/reducer';
 import {useAppDispatch} from '../store';
 import ROUTES from './utils/routes';
 
-export type MainTabParamsList = {
+/**
+ * Screen parameters for the tab navigator.
+ * New screens should be added here along with their parameters.
+ */
+export type TabNavigatorParamsList = {
   [ROUTES.MAIN.HOME]: undefined;
   [ROUTES.MAIN.SCAN_QR]: undefined;
   [ROUTES.MAIN.SHOW_QR]: undefined;
 };
 
-const Tab = createBottomTabNavigator<MainTabParamsList>();
+const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
 
+/**
+ * Tab navigator which contains the main screens of the application.
+ * It is used to navigate between the main screens of the application which are currently the home, scan qr and show qr screens.
+ */
 export const TabNavigation = () => {
   const {t} = useTranslation('main');
   const dispatch = useAppDispatch();

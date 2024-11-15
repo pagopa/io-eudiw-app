@@ -8,7 +8,8 @@ import {TabNavigation} from './TabNavigator';
 import ROUTES from './utils/routes';
 
 /**
- * MainStackNav parameters list for each defined screen.
+ * Screen parameters for the main stack navigator.
+ * New screens should be added here along with their parameters.
  */
 export type MainStackNavParamList = {
   [ROUTES.MAIN.HOME]: undefined;
@@ -17,6 +18,10 @@ export type MainStackNavParamList = {
 
 const Stack = createNativeStackNavigator<MainStackNavParamList>();
 
+/**
+ * Entry point stack navigator for the application. This is the main navigation which orchestrates the whole app navigation.
+ * It checks if the onboarding is not completed and shows the onboarding navigator, otherwise it shows the main tab navigator.
+ */
 export const MainStackNavigator = () => {
   const isOnboardingCompleted = useAppSelector(selectisOnboardingComplete);
 

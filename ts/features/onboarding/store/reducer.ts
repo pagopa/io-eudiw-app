@@ -18,7 +18,7 @@ const initialState: OnboardingState = {
 };
 
 /**
- * Redux slice for the session state. It contains the IO auth token.
+ * Redux slice for the onboarding state. It contains information about the onboarding state.
  */
 export const onboardingSlice = createSlice({
   name: 'onboarding',
@@ -33,14 +33,14 @@ export const onboardingSlice = createSlice({
 });
 
 /**
- * Exports the actions for the session slice.
+ * Exports the actions for the onboarding slice.
  */
 export const {onboardingSetIsComplete, onboardingReset} =
   onboardingSlice.actions;
 
 /**
- * Redux persist configuration for the session slice.
- * Currently it uses AsyncStorage as the storage engine which stores it in clear.
+ * Redux persist configuration for the onboarding slice.
+ * Currently it uses AsyncStorage as the storage engine which stores it unencrypted in the device storage.
  */
 const persistConfig: PersistConfig<OnboardingState> = {
   key: 'onboarding',
@@ -48,7 +48,7 @@ const persistConfig: PersistConfig<OnboardingState> = {
 };
 
 /**
- * Persisted reducer for the session slice.
+ * Persisted reducer for the onboarding slice.
  */
 export const onboardingReducer = persistReducer(
   persistConfig,
