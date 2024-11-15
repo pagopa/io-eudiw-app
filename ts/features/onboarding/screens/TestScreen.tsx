@@ -3,9 +3,9 @@ import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useAppDispatch} from '../../../store';
 import {onboardingSetIsComplete} from '../store/reducer';
-import {TabNavigatorParamsList} from '../../../navigation/TabNavigator';
+import {OnboardingNavigatorParamsList} from '../navigation/OnboardingNavigator';
 
-type Props = NativeStackScreenProps<TabNavigatorParamsList, 'HOME'>;
+type Props = NativeStackScreenProps<OnboardingNavigatorParamsList, 'TEST'>;
 
 const TestScreen = (_: Props) => {
   const dispatch = useAppDispatch();

@@ -3,7 +3,15 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ROUTES from '../../../navigation/utils/routes';
 import TestScreen from '../screens/TestScreen';
 
-const Stack = createNativeStackNavigator();
+/**
+ * Screen parameters for the onboarding navigator.
+ * New screens should be added here along with their parameters.
+ */
+export type OnboardingNavigatorParamsList = {
+  [ROUTES.ONBOARDING.TEST]: undefined;
+};
+
+const Stack = createNativeStackNavigator<OnboardingNavigatorParamsList>();
 
 /**
  * The onboarding related stack which is used to navigate between onboarding screens on the first app launch.
