@@ -16,7 +16,7 @@ jobs:
       - id: setup
         uses: ./.github/actions/setup
       - id: run-tsc
-        run: yarn tsc:noemit
+        run: yarn tsc
       - id: run-lint
         run: yarn lint
       - id: run-prettier
