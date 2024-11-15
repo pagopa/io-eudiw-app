@@ -23,6 +23,3 @@ runs:
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn install --frozen-lockfile
       shell: bash
-    - id: generate-api-client
-      run: yarn generate
-      shell: bash
