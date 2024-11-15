@@ -11,7 +11,8 @@
     "locales": "i18next-resources-for-ts interface -i ./locales/en -o ./ts/@types/resources.d.ts",
     "nuke": "rm -rf ios/Pods && rm -rf ios/DerivedDate && cd android && ./gradlew clean && cd .. && m -rf node_modules",
     "prepare": "husky",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "prettier:check": "prettier --check \"ts/**/*.(ts|tsx)\""
   },
   "lint-staged": {
     "*.{ts,tsx}": [
