@@ -1,6 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 # Get current unstaged files
 unstagedFiles=`git diff --name-only --diff-filter=ACM | grep -E '\.(ts|tsx)$' | sed 's| |\\ |g'`
 unstagedCount=`echo "$unstagedFiles" | wc -l | sed 's/ //g'`
@@ -9,14 +6,14 @@ echo "$unstagedFiles"
 
 # Compile the project
 echo "🔨 compiling..."
-yarn tsc:noemit
+yarn tsc
 
 # Run lintier
 echo "🧹 runnning linter..."  
-yarn lint-autofix
+yarn eslint . -c .eslintrc.js --ext .ts,.tsx --fix
 # Run prettifier
 echo "🧼 runnning prettier..."
-yarn prettify
+yarn prettier --write "ts/**/*.(ts|tsx)"
 
 # If we have any modified files don't push
 if [ -n "$(git status --porcelain)" ]; then

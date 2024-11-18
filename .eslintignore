@@ -1,4 +1,5 @@
-locales/locales.ts
-ts/utils/__tests__/xss.test.ts
-definitions/*
-**/*.typegen.ts
+// Config files that should not be linted
+.eslintrc.js
+jest.config.js
+metro.config.js
+babel.config.js
