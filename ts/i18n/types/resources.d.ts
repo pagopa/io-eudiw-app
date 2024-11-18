@@ -1,6 +1,10 @@
 interface Resources {
-  ns1: {
-    test: 'test en';
+  main: {
+    tabNavigator: {
+      home: 'Wallet';
+      scanQr: 'Scan QR';
+      showQr: 'Show QR';
+    };
   };
 }
 
