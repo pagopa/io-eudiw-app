@@ -99,24 +99,7 @@ module.exports = {
     'react-native/split-platform-components': 'off',
     'react-native/no-inline-styles': 'off',
     'react-native/no-color-literals': 'error',
-    'react-native/no-single-element-style-arrays': 'warn',
-    'no-restricted-imports': [
-      'error',
-      {
-        paths: [
-          {
-            name: 'react-redux',
-            importNames: ['useDispatch'],
-            message: 'Please use useAppDispatch instead.'
-          },
-          {
-            name: 'react-redux',
-            importNames: ['useSelector'],
-            message: 'Please use useAppSelector instead.'
-          }
-        ]
-      }
-    ]
+    'react-native/no-single-element-style-arrays': 'warn'
   },
   overrides: [
     {
