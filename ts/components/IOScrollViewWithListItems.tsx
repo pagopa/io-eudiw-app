@@ -22,18 +22,18 @@ export type IOScrollViewWithListItems = {
 };
 
 const ItemsList = ({items}: {items: Array<ListItemInfo>}) => (
-    <>
-      {items.map((item, index) => (
-        <View key={`${item.value}-${index}`}>
-          <ListItemInfo
-            {...item}
-            accessibilityLabel={`${item.label}; ${item.value}`}
-          />
-          {index < items.length - 1 && <Divider />}
-        </View>
-      ))}
-    </>
-  );
+  <>
+    {items.map((item, index) => (
+      <View key={`${item.value}-${index}`}>
+        <ListItemInfo
+          {...item}
+          accessibilityLabel={`${item.label}; ${item.value}`}
+        />
+        {index < items.length - 1 && <Divider />}
+      </View>
+    ))}
+  </>
+);
 
 export const IOScrollViewWithListItems = ({
   title,
