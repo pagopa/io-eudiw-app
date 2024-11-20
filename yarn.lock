@@ -1665,9 +1665,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gorhom/bottom-sheet@npm:^5":
-  version: 5.0.5
-  resolution: "@gorhom/bottom-sheet@npm:5.0.5"
+"@gorhom/bottom-sheet@npm:^5.0.6":
+  version: 5.0.6
+  resolution: "@gorhom/bottom-sheet@npm:5.0.6"
   dependencies:
     "@gorhom/portal": 1.0.14
     invariant: ^2.2.4
@@ -1677,13 +1677,13 @@ __metadata:
     react: "*"
     react-native: "*"
     react-native-gesture-handler: ">=2.16.1"
-    react-native-reanimated: ">=3.10.1"
+    react-native-reanimated: ">=3.16.0"
   peerDependenciesMeta:
     "@types/react":
       optional: true
     "@types/react-native":
       optional: true
-  checksum: 52c4b1abf0e5d3ec2956cc86e1deabb080fba39d84a1695fe74d3a899ad114f664ca5bc41e6617678531c70f19d25beeefb33aa9fc8925467f2e3c9d3070a50c
+  checksum: 46e25c973763afab7532386b2624e4a6d08c732691dad7c93a2325d9f4f84ba1b65262ee0f43a104f7c01a94a5cfcb4195483784fa7a86609de42c3f4ae0bbd6
   languageName: node
   linkType: hard
 
@@ -1778,13 +1778,6 @@ __metadata:
   version: 0.1.3
   resolution: "@istanbuljs/schema@npm:0.1.3"
   checksum: 5282759d961d61350f33d9118d16bcaed914ebf8061a52f4fa474b2cb08720c9c81d165e13b82f2e5a8a212cc5af482f0c6fc1ac27b9e067e5394c9a6ed186c9
-  languageName: node
-  linkType: hard
-
-"@jambit/eslint-plugin-typed-redux-saga@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "@jambit/eslint-plugin-typed-redux-saga@npm:0.4.0"
-  checksum: 4d4bd498b13a17d6afaae7790872fccdc02ef7142a43f18f3cd38a71bb1edc880d8f1923097388e16c6cc6642cd77366e4cf34f30ad41cb3444dfd4420490c32
   languageName: node
   linkType: hard
 
@@ -2180,7 +2173,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-jwt@npm:^1.4.0":
+"@pagopa/io-react-native-jwt@npm:1.4.0":
   version: 1.4.0
   resolution: "@pagopa/io-react-native-jwt@npm:1.4.0"
   dependencies:
@@ -2682,25 +2675,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/bottom-tabs@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "@react-navigation/bottom-tabs@npm:7.0.1"
+"@react-navigation/bottom-tabs@npm:^7.0.5":
+  version: 7.0.5
+  resolution: "@react-navigation/bottom-tabs@npm:7.0.5"
   dependencies:
-    "@react-navigation/elements": ^2.0.0
+    "@react-navigation/elements": ^2.0.4
     color: ^4.2.3
   peerDependencies:
-    "@react-navigation/native": ^7.0.0
+    "@react-navigation/native": ^7.0.3
     react: ">= 18.2.0"
     react-native: "*"
     react-native-safe-area-context: ">= 4.0.0"
     react-native-screens: ">= 4.0.0"
-  checksum: 5692a82d8ee0feb944d331aabdec65116c75125fefe407d88e5347e41fcad92ed9ec4ab0178f36a0d9f092703e3ff0060b7279a89c980b05595592f664148e10
+  checksum: 0f6ba4dadd171c19df76ca7325224420eaa7c77c77a94f8e7af7ef13bb0188101591a0b81b2e34f0474105777caca40096e1c20c3c405c4a8c17e21bdc1a2d93
   languageName: node
   linkType: hard
 
-"@react-navigation/core@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@react-navigation/core@npm:7.0.0"
+"@react-navigation/core@npm:^7.0.3":
+  version: 7.0.3
+  resolution: "@react-navigation/core@npm:7.0.3"
   dependencies:
     "@react-navigation/routers": ^7.0.0
     escape-string-regexp: ^4.0.0
@@ -2711,49 +2704,49 @@ __metadata:
     use-sync-external-store: ^1.2.2
   peerDependencies:
     react: "*"
-  checksum: 50ba544a9e3017d079ab5937d8f274f9e49dead31df22ad96f4c5b275eded5347aa9d3479782fba20c5f7d4cf20a958bfa8f0c0c8f4395587c0d6da814727789
+  checksum: 5ec628ef592b475d41483115f311cc9ce61cf10cb9987d24cd44e7dea61b727d6256ee0d6fb526608db15c7eba4bfa42d7c625b6afa5346ec5d669476ff998f4
   languageName: node
   linkType: hard
 
-"@react-navigation/elements@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@react-navigation/elements@npm:2.0.0"
+"@react-navigation/elements@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "@react-navigation/elements@npm:2.0.4"
   dependencies:
     color: ^4.2.3
   peerDependencies:
     "@react-native-masked-view/masked-view": ">= 0.2.0"
-    "@react-navigation/native": ^7.0.0
+    "@react-navigation/native": ^7.0.3
     react: ">= 18.2.0"
     react-native: "*"
     react-native-safe-area-context: ">= 4.0.0"
   peerDependenciesMeta:
     "@react-native-masked-view/masked-view":
       optional: true
-  checksum: 40f99d71a6335734ec222e4a903bd5fe8e0067bf65ca9e2342bde20ba6682ae94ef64ff1b47ee470e37a42da93bfed2cda751a1a22d3252508350a8fdca6180e
+  checksum: b8fc4ae0d96920a37cdb471f89508462ac24e7d3e27542d86e9a1203b3d03aff6a39f6df5199abd641d2e326d5e8e9624ed80330a053546dc59627051c19a499
   languageName: node
   linkType: hard
 
-"@react-navigation/native-stack@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@react-navigation/native-stack@npm:7.0.0"
+"@react-navigation/native-stack@npm:^7.0.4":
+  version: 7.0.4
+  resolution: "@react-navigation/native-stack@npm:7.0.4"
   dependencies:
-    "@react-navigation/elements": ^2.0.0
+    "@react-navigation/elements": ^2.0.4
     warn-once: ^0.1.1
   peerDependencies:
-    "@react-navigation/native": ^7.0.0
+    "@react-navigation/native": ^7.0.3
     react: ">= 18.2.0"
     react-native: "*"
     react-native-safe-area-context: ">= 4.0.0"
     react-native-screens: ">= 4.0.0"
-  checksum: f79936afea266f213477320f515322291224f087c82a4dc039107124e395853fe7bd98ae34fc842d581531372fc3185d8c1f0ad0582651fe5fd4a4cd895fab6e
+  checksum: 5be58d97020b68a1348295a869bceb5e2b142b2fdd6392778e6784033a811b4a0411ebe3433c0a5322c99798eae926bbad267eff89dc3462e5b94b177f7e0d08
   languageName: node
   linkType: hard
 
-"@react-navigation/native@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@react-navigation/native@npm:7.0.0"
+"@react-navigation/native@npm:^7.0.3":
+  version: 7.0.3
+  resolution: "@react-navigation/native@npm:7.0.3"
   dependencies:
-    "@react-navigation/core": ^7.0.0
+    "@react-navigation/core": ^7.0.3
     escape-string-regexp: ^4.0.0
     fast-deep-equal: ^3.1.3
     nanoid: 3.3.7
@@ -2761,7 +2754,7 @@ __metadata:
   peerDependencies:
     react: ">= 18.2.0"
     react-native: "*"
-  checksum: e7e6a6a1af09ff18d4bb470c22e38d9b2c27de55d7a3a84ce064c9adb4c4c78ff3b8e88b24fc9588a815d7503cfa49e2247b1ea0fef6b20bee602027b37f5509
+  checksum: 0c2fa0402c5047f6cbc1653ace7b90b8e6314a06b52c59f46547a5a12ea2578bf29d6e86d72a178d2d200ef694475219db860edacd48b4bd377378339f272d83
   languageName: node
   linkType: hard
 
@@ -6643,10 +6636,9 @@ __metadata:
     "@babel/core": ^7.25.2
     "@babel/preset-env": ^7.25.3
     "@babel/runtime": ^7.25.0
-    "@gorhom/bottom-sheet": ^5
-    "@jambit/eslint-plugin-typed-redux-saga": ^0.4.0
+    "@gorhom/bottom-sheet": ^5.0.6
     "@pagopa/io-app-design-system": ^3.1.0
-    "@pagopa/io-react-native-jwt": ^1.4.0
+    "@pagopa/io-react-native-jwt": 1.4.0
     "@pagopa/io-react-native-wallet": ^0.23.0
     "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native-community/cli": 15.0.0
@@ -6656,9 +6648,9 @@ __metadata:
     "@react-native/eslint-config": 0.76.1
     "@react-native/metro-config": 0.76.1
     "@react-native/typescript-config": 0.76.1
-    "@react-navigation/bottom-tabs": ^7.0.1
-    "@react-navigation/native": ^7.0.0
-    "@react-navigation/native-stack": ^7.0.0
+    "@react-navigation/bottom-tabs": ^7.0.5
+    "@react-navigation/native": ^7.0.3
+    "@react-navigation/native-stack": ^7.0.4
     "@reduxjs/toolkit": ^2.3.0
     "@types/react": ^18.2.6
     "@types/react-test-renderer": ^18.0.0
@@ -6682,8 +6674,9 @@ __metadata:
     react-native: 0.76.1
     react-native-bootsplash: ^6.3.1
     react-native-config: ^1.5.3
+    react-native-device-info: ^14.0.0
     react-native-easing-gradient: ^1.1.1
-    react-native-fingerprint-scanner: "git+https://github.com/hieuvp/react-native-fingerprint-scanner.git#9cecc0db326471c571553ea85f7c016fee2f803d"
+    react-native-fingerprint-scanner: ^6.0.0
     react-native-gesture-handler: ^2.20.2
     react-native-haptic-feedback: ^2.3.3
     react-native-linear-gradient: ^2.8.3
@@ -6697,6 +6690,7 @@ __metadata:
     redux-saga: ^1.3.0
     typed-redux-saga: ^1.5.0
     typescript: 5.0.4
+    zod: ^3.23.8
   languageName: unknown
   linkType: soft
 
@@ -9640,6 +9634,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-device-info@npm:^14.0.0":
+  version: 14.0.0
+  resolution: "react-native-device-info@npm:14.0.0"
+  peerDependencies:
+    react-native: "*"
+  checksum: d9990fce678c6c179f498866d5042f08dc9c3fec1a139fc12a83341b3289f4ee954e86613b1794047d7646d25f04a902d96927b0a52db9d324e194ffb99e8946
+  languageName: node
+  linkType: hard
+
 "react-native-easing-gradient@npm:^1.1.1":
   version: 1.1.1
   resolution: "react-native-easing-gradient@npm:1.1.1"
@@ -9650,12 +9653,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-fingerprint-scanner@git+https://github.com/hieuvp/react-native-fingerprint-scanner.git#9cecc0db326471c571553ea85f7c016fee2f803d":
+"react-native-fingerprint-scanner@npm:^6.0.0":
   version: 6.0.0
-  resolution: "react-native-fingerprint-scanner@https://github.com/hieuvp/react-native-fingerprint-scanner.git#commit=9cecc0db326471c571553ea85f7c016fee2f803d"
+  resolution: "react-native-fingerprint-scanner@npm:6.0.0"
   peerDependencies:
     react-native: ">=0.60 <1.0.0"
-  checksum: 284289702a913af9eeff7649d8990d8b8472b3e7c06d5b0295e94a2a8cf9e70a65eb0c3614c086384ac86e46490c0cbdf4ea6abca650e4b0027b6683b9bac14b
+  checksum: 67e1dcbf20d1a6119db4667162ff87c6ba606132c0cda790ef5c4d315e403f3253f8f4827373313562a261fca2d7cb77c8598f5f32d805ac07956b5301bce238
   languageName: node
   linkType: hard
 
@@ -12101,7 +12104,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.21.4, zod@npm:^3.22.4":
+"zod@npm:^3.21.4, zod@npm:^3.22.4, zod@npm:^3.23.8":
   version: 3.23.8
   resolution: "zod@npm:3.23.8"
   checksum: 15949ff82118f59c893dacd9d3c766d02b6fa2e71cf474d5aa888570c469dbf5446ac5ad562bb035bf7ac9650da94f290655c194f4a6de3e766f43febd432c5c

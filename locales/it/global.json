@@ -1,0 +1,13 @@
+{
+  "tabNavigator": {
+    "home": "Wallet",
+    "scanQr": "Scan QR",
+    "showQr": "Show QR"
+  },
+  "buttons": {
+    "next": "Next",
+    "skip": "Skip",
+    "start": "Start",
+    "close": "Close"
+  }
+}

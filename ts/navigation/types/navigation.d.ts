@@ -1,4 +1,4 @@
-import type {MainStackNavParamList} from '../MainStackNavigator';
+import {RootStackParamList} from '../params';
 
 /**
  * Global type for the root navigator which is used as default type.
@@ -7,6 +7,6 @@ import type {MainStackNavParamList} from '../MainStackNavigator';
  */
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends MainStackNavParamList {}
+    interface RootParamList extends RootStackParamList {}
   }
 }

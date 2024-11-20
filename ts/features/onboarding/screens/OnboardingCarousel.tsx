@@ -1,0 +1,119 @@
+import React, {ComponentProps, useCallback} from 'react';
+import {ScrollView, StyleSheet, useWindowDimensions, View} from 'react-native';
+import {
+  ButtonLink,
+  ButtonSolid,
+  ContentWrapper,
+  IOColors,
+  IOStyles
+} from '@pagopa/io-app-design-system';
+import {useNavigation} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {useTranslation} from 'react-i18next';
+import {Carousel} from '../../../components/Carousel';
+import {LandingCardComponent} from '../../../components/LandingCardComponent';
+
+const TEXT_COLOR = 'white';
+
+export const OnboardingCarousel = () => {
+  const navigation = useNavigation();
+  const carouselRef = React.useRef<ScrollView>(null);
+  const [step, setStep] = React.useState(0);
+  const windowDimensions = useWindowDimensions();
+  const {t} = useTranslation(['global', 'onboarding']);
+
+  const skipCarousel = useCallback(() => {
+    navigation.navigate('ONBOARDING_MAIN', {screen: 'ONBOARDING_START'});
+  }, [navigation]);
+
+  const nextStep = useCallback(() => {
+    if (step === 2) {
+      skipCarousel();
+    } else {
+      carouselRef.current?.scrollTo({
+        x: windowDimensions.width * (step + 1),
+        animated: true
+      });
+    }
+  }, [step, windowDimensions.width, skipCarousel]);
+
+  const carouselCards: ReadonlyArray<
+    ComponentProps<typeof LandingCardComponent>
+  > = React.useMemo(
+    () => [
+      {
+        id: 0,
+        pictogramName: 'smile',
+        title: t('onboarding:carousel.first.title'),
+        content: t('onboarding:carousel.first.content'),
+        accessibilityLabel: t('onboarding:carousel.first.title'),
+        accessibilityHint: t('onboarding:carousel.first.content'),
+        titleColor: TEXT_COLOR,
+        contentColor: TEXT_COLOR,
+        pictogramStyle: 'light-content'
+      },
+      {
+        id: 1,
+        pictogramName: 'walletDoc',
+        title: t('onboarding:carousel.second.title'),
+        content: t('onboarding:carousel.second.content'),
+        accessibilityLabel: t('onboarding:carousel.second.title'),
+        accessibilityHint: t('onboarding:carousel.second.content'),
+        titleColor: TEXT_COLOR,
+        contentColor: TEXT_COLOR,
+        pictogramStyle: 'light-content'
+      },
+      {
+        id: 2,
+        pictogramName: 'fingerprint',
+        title: t('onboarding:carousel.third.title'),
+        content: t('onboarding:carousel.third.content'),
+        accessibilityLabel: t('onboarding:carousel.third.title'),
+        accessibilityHint: t('onboarding:carousel.third.content'),
+        titleColor: TEXT_COLOR,
+        contentColor: TEXT_COLOR,
+        pictogramStyle: 'light-content'
+      }
+    ],
+    []
+  );
+  return (
+    <SafeAreaView style={[IOStyles.flex, styles.wrapper]}>
+      <ContentWrapper>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end'
+          }}>
+          <ButtonLink
+            testID="skip-button-onboarding-wallet"
+            accessibilityLabel="features.itWallet.onboarding.skip"
+            color={'contrast'}
+            label={t('global:buttons.skip')}
+            onPress={skipCarousel}
+          />
+        </View>
+      </ContentWrapper>
+      <Carousel
+        carouselCards={carouselCards}
+        dotColor={IOColors.white}
+        scrollViewRef={carouselRef}
+        setStep={setStep}
+      />
+      <ContentWrapper>
+        <ButtonSolid
+          testID="continue-button-onboarding-wallet"
+          accessibilityLabel="features.itWallet.onboarding.complete"
+          fullWidth={true}
+          color={'contrast'}
+          label={t('global:buttons.next')}
+          onPress={nextStep}
+        />
+      </ContentWrapper>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  wrapper: {backgroundColor: IOColors['blueIO-500']}
+});
