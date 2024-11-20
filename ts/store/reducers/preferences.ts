@@ -10,13 +10,13 @@ import {RootState} from '../types';
  */
 export type PreferencesState = {
   isOnboardingComplete: boolean;
-  isFingerprintEnabled: boolean;
+  isBiometricEnabled: boolean;
 };
 
 // Initial state for the preferences slice
 const initialState: PreferencesState = {
   isOnboardingComplete: false,
-  isFingerprintEnabled: false
+  isBiometricEnabled: false
 };
 
 /**
@@ -30,11 +30,11 @@ const preferencesSlice = createSlice({
       state.isOnboardingComplete = true;
     },
     // Fingerpint
-    preferencesSetIsFingerprintEnabled: (
+    preferencesSetIsBiometricEnabled: (
       state,
       action: PayloadAction<boolean>
     ) => {
-      state.isFingerprintEnabled = action.payload;
+      state.isBiometricEnabled = action.payload;
     },
     preferencesReset: () => initialState
   }
@@ -45,7 +45,7 @@ const preferencesSlice = createSlice({
  */
 export const {
   preferencesSetIsOnboardingDone,
-  preferencesSetIsFingerprintEnabled,
+  preferencesSetIsBiometricEnabled,
   preferencesReset
 } = preferencesSlice.actions;
 

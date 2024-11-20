@@ -1,7 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useEffect} from 'react';
-import {Text, View} from 'react-native';
 import {useIOThemeContext} from '@pagopa/io-app-design-system';
 import OnboardingNavigator from '../features/onboarding/navigation/OnboardingNavigator';
 import {useAppDispatch, useAppSelector} from '../store';
@@ -27,7 +26,7 @@ export const RootStackNavigator = () => {
 
   useEffect(() => {
     dispatch(startupSetLoading());
-  }, []);
+  }, [dispatch]);
 
   return (
     <NavigationContainer

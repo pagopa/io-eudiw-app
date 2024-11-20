@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {useHeaderSecondLevel} from '../../../hooks/useHeaderSecondLevel';
 import {useAppDispatch} from '../../../store';
 import {
-  preferencesSetIsFingerprintEnabled,
+  preferencesSetIsBiometricEnabled,
   preferencesSetIsOnboardingDone
 } from '../../../store/reducers/preferences';
 import {IOScrollView} from '../../../components/IOScrollView';
@@ -30,10 +30,10 @@ const OnboardingBiometricAvailable = () => {
       await mayUserActivateBiometric(
         t('onboarding:biometric.popup.sensorDescription')
       );
-      dispatch(preferencesSetIsFingerprintEnabled(true));
+      dispatch(preferencesSetIsBiometricEnabled(true));
     } catch (err) {
       if (err === 'PERMISSION_DENIED') {
-        dispatch(preferencesSetIsFingerprintEnabled(false));
+        dispatch(preferencesSetIsBiometricEnabled(false));
       }
     } finally {
       dispatch(preferencesSetIsOnboardingDone());
@@ -41,7 +41,7 @@ const OnboardingBiometricAvailable = () => {
   };
 
   const onPressSecondary = () => {
-    dispatch(preferencesSetIsFingerprintEnabled(false));
+    dispatch(preferencesSetIsBiometricEnabled(false));
     dispatch(preferencesSetIsOnboardingDone());
   };
 
