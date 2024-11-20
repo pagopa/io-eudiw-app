@@ -2173,7 +2173,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-jwt@npm:1.4.0":
+"@pagopa/io-react-native-jwt@npm:^1.4.0":
   version: 1.4.0
   resolution: "@pagopa/io-react-native-jwt@npm:1.4.0"
   dependencies:
@@ -6638,7 +6638,7 @@ __metadata:
     "@babel/runtime": ^7.25.0
     "@gorhom/bottom-sheet": ^5.0.6
     "@pagopa/io-app-design-system": ^3.1.0
-    "@pagopa/io-react-native-jwt": 1.4.0
+    "@pagopa/io-react-native-jwt": ^1.4.0
     "@pagopa/io-react-native-wallet": ^0.23.0
     "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native-community/cli": 15.0.0
@@ -6676,7 +6676,7 @@ __metadata:
     react-native-config: ^1.5.3
     react-native-device-info: ^14.0.0
     react-native-easing-gradient: ^1.1.1
-    react-native-fingerprint-scanner: ^6.0.0
+    react-native-fingerprint-scanner: "git+https://github.com/hieuvp/react-native-fingerprint-scanner.git#9cecc0db326471c571553ea85f7c016fee2f803d"
     react-native-gesture-handler: ^2.20.2
     react-native-haptic-feedback: ^2.3.3
     react-native-linear-gradient: ^2.8.3
@@ -9653,12 +9653,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-fingerprint-scanner@npm:^6.0.0":
+"react-native-fingerprint-scanner@git+https://github.com/hieuvp/react-native-fingerprint-scanner.git#9cecc0db326471c571553ea85f7c016fee2f803d":
   version: 6.0.0
-  resolution: "react-native-fingerprint-scanner@npm:6.0.0"
+  resolution: "react-native-fingerprint-scanner@https://github.com/hieuvp/react-native-fingerprint-scanner.git#commit=9cecc0db326471c571553ea85f7c016fee2f803d"
   peerDependencies:
     react-native: ">=0.60 <1.0.0"
-  checksum: 67e1dcbf20d1a6119db4667162ff87c6ba606132c0cda790ef5c4d315e403f3253f8f4827373313562a261fca2d7cb77c8598f5f32d805ac07956b5301bce238
+  checksum: 284289702a913af9eeff7649d8990d8b8472b3e7c06d5b0295e94a2a8cf9e70a65eb0c3614c086384ac86e46490c0cbdf4ea6abca650e4b0027b6683b9bac14b
   languageName: node
   linkType: hard
 
