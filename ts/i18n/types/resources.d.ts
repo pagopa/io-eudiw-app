@@ -16,6 +16,13 @@ interface Resources {
       notNow: 'Non ora';
     };
   };
+  main: {
+    tabNavigator: {
+      home: 'Wallet';
+      scanQr: 'Scan QR';
+      showQr: 'Show QR';
+    };
+  };
   onboarding: {
     carousel: {
       first: {

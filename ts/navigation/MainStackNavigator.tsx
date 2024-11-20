@@ -3,7 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import OnboardingNavigator from '../features/onboarding/navigation/OnboardingNavigator';
 import {useAppSelector} from '../store';
-import {selectisOnboardingComplete} from '../features/onboarding/store/reducer';
+import {selectisOnboardingComplete} from '../store/reducers/preferences';
 import {TabNavigation} from './TabNavigator';
 import ROUTES from './utils/routes';
 

@@ -53,28 +53,14 @@ export const RootStackNavigator = () => {
         {
           // Startup failed, render the error screen
           isStartupDone === 'ERROR' && (
-            <Stack.Screen
-              name={ROUTES.MAIN_ERROR}
-              component={() => (
-                <View>
-                  <Text>Error</Text>
-                </View>
-              )}
-            />
+            <Stack.Screen name={ROUTES.MAIN_ERROR} component={() => <></>} /> // TODO: Add error screen
           )
         }
 
         {
           // Startup is loading or not started, render the loading screen
           (isStartupDone === 'LOADING' || isStartupDone === 'NOT_STARTED') && (
-            <Stack.Screen
-              name={ROUTES.MAIN_LOADING}
-              component={() => (
-                <View>
-                  <Text>Loading</Text>
-                </View>
-              )}
-            />
+            <Stack.Screen name={ROUTES.MAIN_LOADING} component={() => <></>} /> // TODO: Add loading screen
           )
         }
       </Stack.Navigator>
