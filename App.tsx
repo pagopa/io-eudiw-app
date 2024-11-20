@@ -8,7 +8,6 @@
 import React from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {
