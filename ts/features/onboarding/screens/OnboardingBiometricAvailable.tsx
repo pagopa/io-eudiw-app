@@ -1,5 +1,5 @@
 import {Banner, Body, H2, VSpacer} from '@pagopa/io-app-design-system';
-import React, {ComponentProps, useMemo} from 'react';
+import React, {ComponentProps} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useHeaderSecondLevel} from '../../../hooks/useHeaderSecondLevel';
 import {useAppDispatch} from '../../../store';
@@ -45,22 +45,19 @@ const OnboardingBiometricAvailable = () => {
     dispatch(preferencesSetIsOnboardingDone());
   };
 
-  const actions = useMemo<IOScrollViewActions>(
-    () => ({
-      type: 'TwoButtons',
-      primary: {
-        label: t('global:buttons.activate'),
-        accessibilityLabel: t('global:buttons.activate'),
-        onPress: onPressPrimary
-      },
-      secondary: {
-        label: t('global:buttons.notNow'),
-        accessibilityLabel: t('global:buttons.notNow'),
-        onPress: onPressSecondary
-      }
-    }),
-    [dispatch, onPressPrimary, onPressSecondary, t]
-  );
+  const actions: IOScrollViewActions = {
+    type: 'TwoButtons',
+    primary: {
+      label: t('global:buttons.activate'),
+      accessibilityLabel: t('global:buttons.activate'),
+      onPress: onPressPrimary
+    },
+    secondary: {
+      label: t('global:buttons.notNow'),
+      accessibilityLabel: t('global:buttons.notNow'),
+      onPress: onPressSecondary
+    }
+  };
 
   return (
     <IOScrollView actions={actions}>

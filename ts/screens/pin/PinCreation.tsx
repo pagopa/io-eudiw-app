@@ -1,8 +1,8 @@
 /* eslint-disable functional/immutable-data */
 import {
   ButtonLink,
-  ButtonOutline,
   ContentWrapper,
+  FooterActions,
   IOStyles,
   NumberPad,
   Pictogram,
@@ -265,13 +265,18 @@ export const PinCreation = () => {
         </ContentWrapper>
       </View>
       {isDevEnv && (
-        <View style={{alignSelf: 'center'}}>
-          <ButtonOutline
-            label={`Enter Pin: ${DEFAULT_PIN} (DevEnv Only)`}
-            accessibilityLabel=""
-            onPress={insertValidPin}
+        <>
+          <VSpacer />
+          <FooterActions
+            actions={{
+              primary: {
+                label: `Enter Pin: ${DEFAULT_PIN} (DevEnv Only)`,
+                onPress: insertValidPin
+              },
+              type: 'SingleButton'
+            }}
           />
-        </View>
+        </>
       )}
     </SafeAreaView>
   );

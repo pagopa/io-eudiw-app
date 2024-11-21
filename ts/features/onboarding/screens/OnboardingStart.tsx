@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
   Body,
-  ButtonSolid,
+  FooterActions,
   H3,
   IOStyles,
   Pictogram,
@@ -39,14 +39,15 @@ const OnboardingStart = () => {
           <Body style={styles.text}>{t('onboarding:start.subtitle')}</Body>
         </View>
       </View>
-
-      <View style={styles.footer}>
-        <ButtonSolid
-          label={t('global:buttons.start')}
-          fullWidth
-          onPress={onStartPress}
-        />
-      </View>
+      <FooterActions
+        actions={{
+          primary: {
+            label: t('global:buttons.start'),
+            onPress: onStartPress
+          },
+          type: 'SingleButton'
+        }}
+      />
     </SafeAreaView>
   );
 };
@@ -54,6 +55,5 @@ const OnboardingStart = () => {
 export default OnboardingStart;
 
 const styles = StyleSheet.create({
-  footer: {...IOStyles.horizontalContentPadding, rowGap: 16},
   text: {textAlign: 'center'}
 });

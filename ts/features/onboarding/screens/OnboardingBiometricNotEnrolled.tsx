@@ -38,7 +38,7 @@ const OnboardingBiometricNotEnrolled = () => {
         icon: 'systemToggleInstructions'
       }
     ],
-    []
+    [t]
   );
 
   const primaryActionProps = {

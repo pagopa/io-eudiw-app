@@ -23,21 +23,21 @@ import {RootStackNavigator} from './ts/navigation/RootStacknavigator';
 function App(): React.JSX.Element {
   return (
     <GestureHandlerRootView style={IOStyles.flex}>
-      <IOThemeContextProvider theme={'light'}>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <IODSExperimentalContextProvider isExperimentaEnabled={true}>
-              <SafeAreaProvider>
+      <SafeAreaProvider>
+        <IOThemeContextProvider theme={'light'}>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <IODSExperimentalContextProvider isExperimentaEnabled={true}>
                 <ToastProvider>
                   <BottomSheetModalProvider>
                     <RootStackNavigator />
                   </BottomSheetModalProvider>
                 </ToastProvider>
-              </SafeAreaProvider>
-            </IODSExperimentalContextProvider>
-          </PersistGate>
-        </Provider>
-      </IOThemeContextProvider>
+              </IODSExperimentalContextProvider>
+            </PersistGate>
+          </Provider>
+        </IOThemeContextProvider>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }

@@ -2,8 +2,7 @@ import React, {ComponentProps, useCallback} from 'react';
 import {ScrollView, StyleSheet, useWindowDimensions, View} from 'react-native';
 import {
   ButtonLink,
-  ButtonSolid,
-  ContentWrapper,
+  FooterActions,
   IOColors,
   IOStyles
 } from '@pagopa/io-app-design-system';
@@ -75,41 +74,40 @@ export const OnboardingCarousel = () => {
         pictogramStyle: 'light-content'
       }
     ],
-    []
+    [t]
   );
   return (
     <SafeAreaView style={[IOStyles.flex, styles.wrapper]}>
-      <ContentWrapper>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-end'
-          }}>
-          <ButtonLink
-            testID="skip-button-onboarding-wallet"
-            accessibilityLabel="features.itWallet.onboarding.skip"
-            color={'contrast'}
-            label={t('global:buttons.skip')}
-            onPress={skipCarousel}
-          />
-        </View>
-      </ContentWrapper>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-end'
+        }}>
+        <ButtonLink
+          testID="skip-button-onboarding-wallet"
+          accessibilityLabel="features.itWallet.onboarding.skip"
+          color={'contrast'}
+          label={t('global:buttons.skip')}
+          onPress={skipCarousel}
+        />
+      </View>
       <Carousel
         carouselCards={carouselCards}
         dotColor={IOColors.white}
         scrollViewRef={carouselRef}
         setStep={setStep}
       />
-      <ContentWrapper>
-        <ButtonSolid
-          testID="continue-button-onboarding-wallet"
-          accessibilityLabel="features.itWallet.onboarding.complete"
-          fullWidth={true}
-          color={'contrast'}
-          label={t('global:buttons.next')}
-          onPress={nextStep}
-        />
-      </ContentWrapper>
+      <FooterActions
+        actions={{
+          primary: {
+            label: t('global:buttons.next'),
+            onPress: nextStep,
+            color: 'contrast'
+          },
+          type: 'SingleButton'
+        }}
+        transparent
+      />
     </SafeAreaView>
   );
 };

@@ -84,8 +84,8 @@ export const BulletList = memo(
      * @returns {JSX.Element} The rendered list.
      */
     const renderListItems = useCallback(
-      (list?: Array<BulletListItem>, count: number = 0) =>
-        list?.map(({id, value, textProps = {}, ...rest}) => (
+      (toRenderList?: Array<BulletListItem>, count: number = 0) =>
+        toRenderList?.map(({id, value, textProps = {}, ...rest}) => (
           <View key={id} style={IOStyles.row}>
             <HSpacer size={spacing} />
             <Body>{BULLET_ITEM}</Body>

@@ -36,7 +36,7 @@ const OnboardingBiometricNoScreenLock = () => {
         })
       }
     ],
-    []
+    [t]
   );
 
   const actionProps = useMemo(
@@ -45,7 +45,7 @@ const OnboardingBiometricNoScreenLock = () => {
       accessibilityLabel: t('global:buttons.continue'),
       onPress: () => dispatch(preferencesSetIsOnboardingDone())
     }),
-    [dispatch]
+    [dispatch, t]
   );
 
   return (
