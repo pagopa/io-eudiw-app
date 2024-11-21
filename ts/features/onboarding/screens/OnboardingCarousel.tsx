@@ -86,7 +86,8 @@ export const OnboardingCarousel = () => {
       <View
         style={{
           flexDirection: 'row',
-          justifyContent: 'flex-end'
+          justifyContent: 'flex-end',
+          padding: IOStyles.horizontalContentPadding.paddingHorizontal
         }}>
         <ButtonLink
           testID="skip-button-onboarding-wallet"
