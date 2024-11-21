@@ -3,9 +3,10 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../types';
 import {BiometricState} from '../../features/onboarding/utils/biometric';
 
-/* State type definition for the onboarding slice
- * isFingerprintAck - Indicates if the user has acknowledged the fingerprint prompt which asks to enable biometric authentication
- * firstOnboardingCompleted - Indicates if the first onboarding has been completed
+/* State type definition for the startup slice
+ * startUpStatus - Status of the startup process
+ * hasScreenLock - Indicates if the device has a screen lock
+ * biometricState - Indicates the state of the biometric on the device
  */
 export type StartupState = {
   startUpStatus: 'DONE' | 'LOADING' | 'ERROR' | 'NOT_STARTED';
@@ -13,7 +14,7 @@ export type StartupState = {
   biometricState: BiometricState;
 };
 
-// Initial state for the onboarding slice
+// Initial state for the startup slice
 const initialState: StartupState = {
   startUpStatus: 'NOT_STARTED',
   hasScreenLock: false,
@@ -21,7 +22,7 @@ const initialState: StartupState = {
 };
 
 /**
- * Redux slice for the onboarding state. It contains information about the onboarding state.
+ * Redux slice for the startup state.
  */
 export const startupSlice = createSlice({
   name: 'startup',
@@ -42,13 +43,12 @@ export const startupSlice = createSlice({
     startupSetLoading: state => {
       state.startUpStatus = 'LOADING';
     },
-    // Resets the session state when logging out
     startupReset: () => initialState
   }
 });
 
 /**
- * Exports the actions for the onboarding slice.
+ * Exports the actions for the startup slice.
  */
 export const {
   startupSetDone,
@@ -58,15 +58,25 @@ export const {
 } = startupSlice.actions;
 
 /**
- * Selects if the onboarding has been completed.
+ * Selects the startup state of the app.
  * @param state - The root state of the Redux store
- * @returns a boolean indicating weather the onboarding has been completed
+ * @returns the startup state of the app
  */
 export const selectStartupState = (state: RootState) =>
   state.startup.startUpStatus;
 
+/**
+ * Selects the biometric state of the app.
+ * @param state - The root state of the Redux store
+ * @returns the biometric state of the device
+ */
 export const selectStartupBiometricState = (state: RootState) =>
   state.startup.biometricState;
 
+/**
+ * Selects if the device has a screen lock.
+ * @param state - The root state of the Redux store
+ * @returns a boolean indicating if the device has a screen lock
+ */
 export const selectStartupHasScreenLock = (state: RootState) =>
   state.startup.hasScreenLock;

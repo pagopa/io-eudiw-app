@@ -8,8 +8,8 @@ import {IOScrollViewWithListItems} from '../../../components/IOScrollViewWithLis
 import {preferencesSetIsOnboardingDone} from '../../../store/reducers/preferences';
 
 /**
- * A screen to show, if the fingerprint is supported by the device,
- * the instruction to enable the fingerprint/faceID usage
+ * A screen to be shown if the user has not set a screen lock with intructions on how to set it.
+ * It concludes the onboarding once the user has read the instructions.
  */
 const OnboardingBiometricNoScreenLock = () => {
   const dispatch = useAppDispatch();

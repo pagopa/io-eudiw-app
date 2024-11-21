@@ -5,8 +5,9 @@ import {
 } from '@pagopa/io-app-design-system';
 import {DarkTheme, DefaultTheme} from '@react-navigation/native';
 
-// React Navigation Themes
-// Dark & Light mode
+/**
+ * React navigation dark theme.
+ */
 export const IONavigationDarkTheme = {
   ...DarkTheme,
   colors: {
@@ -16,6 +17,9 @@ export const IONavigationDarkTheme = {
   }
 };
 
+/**
+ * React navigation light theme.
+ */
 export const IONavigationLightTheme = {
   ...DefaultTheme,
   colors: {

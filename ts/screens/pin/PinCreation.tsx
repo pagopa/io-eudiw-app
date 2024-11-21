@@ -44,10 +44,10 @@ export type PinCreationScreenProps = RouteProp<
 >;
 
 type PinMode = 'creation' | 'confirmation';
+
 /**
  * The Pin Creation component is used in both the onboarding
  * process and the profile settings.
- *
  * This component will allow the user to create a new pin or change the existing one.
  */
 export const PinCreation = () => {
@@ -69,6 +69,10 @@ export const PinCreation = () => {
   const handleSubmit = React.useCallback(
     (pinParam: PinString) => {
       dispatch(pinSet(pinParam));
+
+      /* If an onboarding flow is in progress, we need to navigate to the next screen based on the biometric state
+       * the onboarding flow will continue in the respective biometric screen.
+       */
       if (isOnboarding) {
         if (biometricState === 'Available') {
           navigation.navigate('ONBOARDING_MAIN', {

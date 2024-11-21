@@ -5,9 +5,11 @@ import {useHeaderSecondLevel} from '../../../hooks/useHeaderSecondLevel';
 import {IOScrollViewWithListItems} from '../../../components/IOScrollViewWithListItems';
 import {useAppDispatch} from '../../../store';
 import {preferencesSetIsOnboardingDone} from '../../../store/reducers/preferences';
+
 /**
- * A screen to show, if the fingerprint is supported by the device,
- * the instruction to enable the fingerprint/faceID usage
+ * Screen to be shown if the user has not enrolled in biometric authentication but the device supports it.
+ * It provides instructions on how to enable biometric authentication.
+ * It concludes the onboarding once the user has read the instructions.
  */
 const OnboardingBiometricNotEnrolled = () => {
   const dispatch = useAppDispatch();

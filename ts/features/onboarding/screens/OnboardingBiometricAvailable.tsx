@@ -13,8 +13,8 @@ import {mayUserActivateBiometric} from '../utils/biometric';
 type IOScrollViewActions = ComponentProps<typeof IOScrollView>['actions'];
 
 /**
- * A screen to show, if the fingerprint is supported by the device,
- * the instruction to enable the fingerprint/faceID usage
+ * A screen to show, if the fingerprint is supported by the device and the instruction to enable the fingerprint/faceID usage
+ * It concludes the onboarding once the user has read the instructions.
  */
 const OnboardingBiometricAvailable = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +25,10 @@ const OnboardingBiometricAvailable = () => {
     title: ''
   });
 
+  /**
+   * Activates the biometric authentication, sets it as enabled and concludes the onboarding.
+   * If an error occurs while activating the biometric authentication, it sets it as disabled.
+   */
   const onPressPrimary = async () => {
     try {
       await mayUserActivateBiometric(
@@ -40,6 +44,9 @@ const OnboardingBiometricAvailable = () => {
     }
   };
 
+  /**
+   * Sets the biometric authentication as disabled and concludes the onboarding.
+   */
   const onPressSecondary = () => {
     dispatch(preferencesSetIsBiometricEnabled(false));
     dispatch(preferencesSetIsOnboardingDone());

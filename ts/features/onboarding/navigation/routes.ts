@@ -1,3 +1,6 @@
+/**
+ * Routes configuration for the {@link OnboardingNavigator.tsx}
+ */
 const ONBOARDING_ROUTES = {
   // Onboarding section
   MAIN: 'ONBOARDING_MAIN',

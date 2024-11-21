@@ -46,6 +46,15 @@ type CarouselDotsProps = Omit<
   'scrollViewRef' | 'setStep'
 >;
 
+/**
+ * Carousel component with dots based on `ScrollView` which shows a list of `LandingCardComponent` horizontally.
+ * The three dots can be tapped three times to trigger the dotEasterEggCallback.
+ * @param carouselCards - The list of `LandingCardComponent` to show
+ * @param dotEasterEggCallback - The callback to call when the user taps the dots three times
+ * @param dotColor - The color of the active dot
+ * @param scrollViewRef - The ref of the ScrollView
+ * @param setStep - The function to call when the user scrolls the ScrollView
+ */
 const CarouselDots = (props: CarouselDotsProps) => {
   const {carouselCards, dotEasterEggCallback, scrollX, dotColor} = props;
   const dotTouchCount = React.useRef(0);

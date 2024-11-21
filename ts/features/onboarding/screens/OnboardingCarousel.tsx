@@ -14,6 +14,11 @@ import {LandingCardComponent} from '../../../components/LandingCardComponent';
 
 const TEXT_COLOR = 'white';
 
+/**
+ * A screen with a carousel which shows the main features of the app.
+ * It is the first screen shown to the user when the app is opened for the first time.
+ * The user can skip the carousel and go to the main onboarding flow or swipe through the cards.
+ */
 export const OnboardingCarousel = () => {
   const navigation = useNavigation();
   const carouselRef = React.useRef<ScrollView>(null);

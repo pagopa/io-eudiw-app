@@ -40,15 +40,6 @@ export type IOBottomSheetModal = {
   bottomSheet: JSX.Element;
 };
 
-/**
- * @typedef BottomSheetOptions
- * @type {BottomSheetOptions}
- * @property {component} component The React.Element to be rendered inside the bottom sheet body
- * @property {title} title String or React.Element to be rendered as bottom-sheet header title
- * @property {footer} footer React.Element or undefined to be rendered as sticky footer of our bottom sheet
- * @property {snapPoint} snapPoint The array of points used to pin the height of the bottom sheet
- * @property {onDismiss} onDismiss The possible function to be used as an effect of the dismissal of the bottom sheet
- */
 type BottomSheetOptions = {
   component: React.ReactNode;
   title: string | React.ReactNode;
@@ -60,8 +51,12 @@ type BottomSheetOptions = {
 
 /**
  * Hook to generate a bottomSheet with a title, snapPoint and a component, in order to wrap the invocation of bottomSheetContent
- * @param bottomSheetOptions
- * @see {BottomSheetOptions}
+ * @param component - React component to be rendered inside the bottom sheet body
+ * @param title -  String or React component to be rendered as bottom-sheet header title
+ * @param snapPoint -  Optional array of points used to pin the height of the bottom sheet. If that's not provided then the bottom sheet automatically adjust its height based on the content
+ * @param footer - Optional React component to be rendered as sticky footer of our bottom sheet
+ * @param fullScreen - Optional flag to set the bottom sheet as full screen
+ * @param onDismiss - Optional callback function to be called when the bottom sheet is dismissed
  */
 export const useIOBottomSheetModal = ({
   component,

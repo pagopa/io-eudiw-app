@@ -26,6 +26,11 @@ type Props = {
   onClose: () => void;
 };
 
+/**
+ * Header for the bottom sheet exposed by the {@link useBottomSheet.tsx} hook. It renders a title and a close button.
+ * @param title - The title of the bottom sheet.
+ * @param onClose - The function to call when the close button is pressed.
+ */
 export const BottomSheetHeader: React.FunctionComponent<Props> = ({
   title,
   onClose

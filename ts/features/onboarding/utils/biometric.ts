@@ -58,6 +58,7 @@ export const isBiometricsValidType = (
 ): biometrics is BiometricsValidType =>
   !biometricErrors.some(err => biometrics === err);
 
+// CURRENTLY UNUSED BUT KEPT FOR FUTURE REFERENCE
 // export const biometricAuthenticationRequest = (
 //   onSuccess: () => void,
 //   onError: (e: FingerprintScannerError) => void

@@ -21,6 +21,16 @@ export type PinCarouselItemProps = WithTestID<{
   onValueChange: (val: string) => void;
 }>;
 
+/**
+ * A carousel item for the PIN creation process.
+ * @param title - Title of the item
+ * @param titleRef - Reference to the title
+ * @param description -Description of the item
+ * @param value - Value of the item
+ * @param maxLength - Naximum length of the value
+ * @param handleOnValidate - Function to validate the value
+ * @param onValueChange - Function to handle the value change
+ */
 export const PinCarouselItem = memo(
   ({
     title,

@@ -67,12 +67,8 @@ type HeaderProps = ComponentProps<typeof HeaderSecondLevel>;
 
 /**
  * This hook sets the `HeaderSecondLevel` in a screen using the `useLayoutEffect` hook.
- * It handles two basic use cases:
- * * With support request: the header is rendered with the (?) icon. You can configure the remaining actions.
- * * Without support request: the header is rendered just with the `Back` button.
- *
- * @param {boolean} [canGoBack=true] - Completely disable `Back` button.
- * @param {boolean} [headerShown=true] - Hide the header programmatically.
+ * @param canGoBack - Completely disable `Back` button.
+ * @param headerShown - Hide the header programmatically.
  * @param props - Props to configure the header. Not all original props are supported.
  */
 export const useHeaderSecondLevel = ({

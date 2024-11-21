@@ -6,6 +6,9 @@ import {useTranslation} from 'react-i18next';
 import {useIOBottomSheetModal} from '../../../hooks/useBottomSheet';
 import {BulletList} from '../../../components/BulletList';
 
+/**
+ * Bottom sheet which contains the PIN policy for the app.
+ */
 const BottomSheetContent = memo(() => {
   const {bottom} = useSafeAreaInsets();
   const {t} = useTranslation('onboarding');

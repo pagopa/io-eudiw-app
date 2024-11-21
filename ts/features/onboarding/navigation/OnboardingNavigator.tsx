@@ -26,6 +26,8 @@ const Stack = createNativeStackNavigator<OnboardingNavigatorParamsList>();
 
 /**
  * The onboarding related stack which is used to navigate between onboarding screens on the first app launch.
+ * It includes the initial carousel screen, the start screen, the PIN creation screen and the biometric screens.
+ * The three biometric screens are shown based on the device's biometric capabilities and the user's settings.
  */
 const OnboardingNavigator = () => (
   <Stack.Navigator

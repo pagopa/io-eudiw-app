@@ -4,9 +4,9 @@ import {persistReducer, type PersistConfig} from 'redux-persist';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../types';
 
-/* State type definition for the onboarding slice
- * isFingerprintAck - Indicates if the user has acknowledged the fingerprint prompt which asks to enable biometric authentication
- * firstOnboardingCompleted - Indicates if the first onboarding has been completed
+/* State type definition for the preferences slice
+ * isOnboardingComplete - Indicates if the user has completed the onboarding flow.
+ * isBiometricEnabled - Indicates if the biometric is enabled for the user.
  */
 export type PreferencesState = {
   isOnboardingComplete: boolean;
@@ -73,3 +73,11 @@ export const preferencesReducer = persistReducer(
  */
 export const selectisOnboardingComplete = (state: RootState) =>
   state.preferences.isOnboardingComplete;
+
+/**
+ * Selects if the biometric is enabled.
+ * @param state - The root state of the Redux store
+ * @returns a boolean indicating weather the biometric is enabled
+ */
+export const selectIsBiometricEnabled = (state: RootState) =>
+  state.preferences.isBiometricEnabled;

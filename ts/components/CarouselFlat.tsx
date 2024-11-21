@@ -20,21 +20,9 @@ const WINDOW_WIDTH = Dimensions.get('window').width;
 type Nullable<T> = T | null;
 
 type Props<T> = {
-  /**
-   * The array used to build the carousel items.
-   */
   data: Array<T>;
-  /**
-   * The component used to render the single item.
-   */
   Component: JSXElementConstructor<T>;
-  /**
-   * The horizontal space between carousel items.
-   */
   itemsGap?: IOAppMargin | 0;
-  /**
-   * The number of items displayed simultaneously.
-   */
   itemsPerTime?: number;
 } & Pick<
   FlatListProps<T>,
@@ -51,8 +39,12 @@ type Props<T> = {
 >;
 
 /**
- * This component renders a carousel of elements from a given `data` entry and a `Component` of your choice.
+ * This component renders a carousel of elements from a given `data` entry and a `Component` of your choice. It's based on the `FlatList` component.
  * It allows you to define how many items to display at a time, how many space between the rendered elements and other important features inherited from the `FlatList` component.
+ * @param data - The array used to build the carousel items
+ * @param Component - The component used to render the single item
+ * @param itemsGap - The horizontal space between carousel items
+ * @param itemsPerTime - The number of items displayed simultaneously
  */
 function CarouselComponent<T extends Record<string, unknown>>(
   {

@@ -12,6 +12,10 @@ import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import {useHeaderSecondLevel} from '../../../hooks/useHeaderSecondLevel';
 
+/**
+ * Onboarding screen which is shown after the initial carousel.
+ * It has a button to start the PIN creation process.
+ */
 const OnboardingStart = () => {
   const navigation = useNavigation();
   const {t} = useTranslation(['global', 'onboarding']);

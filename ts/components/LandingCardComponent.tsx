@@ -26,6 +26,18 @@ type Props = {
   pictogramStyle?: React.ComponentProps<typeof Pictogram>['pictogramStyle'];
 };
 
+/**
+ * Cards displayed through the {@link Carousel.tsx} component. Each card contains a pictogram, a title and a content and can be customized.
+ * @param id - The id of the card
+ * @param pictogramName - The name of the pictogram to be displayed
+ * @param title - The title of the card
+ * @param content - The content of the card
+ * @param accessibilityLabel - The accessibility label for the card
+ * @param accessibilityHint - The accessibility hint for the card
+ * @param titleColor - The color of the `title` prop
+ * @param contentColor - The color of the `content` prop
+ * @param pictogramStyle - The style of the pictogram
+ */
 export const LandingCardComponent = React.forwardRef<View, Props>(
   (props, ref) => {
     const screenDimension = useWindowDimensions();
