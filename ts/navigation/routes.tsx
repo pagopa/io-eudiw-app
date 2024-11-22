@@ -1,16 +1,14 @@
 /**
- * Routes definition for every navigation. This is done here to avoid circular dependencies.
- * Each time a new route is added, it should be added here.
+ * Routes definition for the tab navigator.
  */
-const ROUTES = {
+const ROOT_ROUTES = {
   // Main section
-  MAIN_HOME: 'MAIN_HOME',
-  MAIN_WALLET: 'MAIN_WALLET',
-  MAIN_SCAN_QR: 'MAIN_SCAN_QR',
-  MAIN_SHOW_QR: 'MAIN_SHOW_QR',
-  MAIN_ERROR: 'MAIN_ERROR',
-  MAIN_LOADING: 'MAIN_LOADING',
-  MAIN_ONBOARDING: 'MAIN_ONBOARDING'
+  TAB_NAV: 'ROOT_TAB_NAV',
+  ERROR: 'ROOT_ERROR',
+  LOADING: 'ROOT_LOADING',
+
+  // Onboarding
+  ONBOARDING: 'ROOT_ONBOARDING'
 } as const;
 
-export default ROUTES;
+export default ROOT_ROUTES;

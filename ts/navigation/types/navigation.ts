@@ -1,4 +1,4 @@
-import {RootStackParamList} from '../params';
+import {RootStackParamList} from '../RootStacknavigator';
 
 /**
  * Global type for the root navigator which is used as default type.

@@ -75,19 +75,19 @@ export const PinCreation = () => {
        */
       if (isOnboarding) {
         if (biometricState === 'Available') {
-          navigation.navigate('ONBOARDING_MAIN', {
+          navigation.navigate('ROOT_ONBOARDING', {
             screen: 'ONBOARDING_BIOMETRIC_AVAILABLE'
           });
           return;
         } else {
           if (!hasDeviceScreenLock) {
-            navigation.navigate('ONBOARDING_MAIN', {
+            navigation.navigate('ROOT_ONBOARDING', {
               screen: 'ONBOARDING_BIOMETRIC_NO_SCREEN_LOCK'
             });
             return;
           }
           if (biometricState === 'NotEnrolled') {
-            navigation.navigate('ONBOARDING_MAIN', {
+            navigation.navigate('ROOT_ONBOARDING', {
               screen: 'ONBOARDING_BIOMETRIC_NOT_ENROLLED'
             });
             return;

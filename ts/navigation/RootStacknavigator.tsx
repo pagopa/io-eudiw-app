@@ -1,16 +1,32 @@
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  NavigatorScreenParams
+} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect} from 'react';
 import {useIOThemeContext} from '@pagopa/io-app-design-system';
-import OnboardingNavigator from '../features/onboarding/navigation/OnboardingNavigator';
+import OnboardingNavigator, {
+  OnboardingNavigatorParamsList
+} from '../features/onboarding/navigation/OnboardingNavigator';
 import {useAppDispatch, useAppSelector} from '../store';
 import {selectStartupState, startupSetLoading} from '../store/reducers/startup';
-import ONBOARDING_ROUTES from '../features/onboarding/navigation/routes';
 import {selectisOnboardingComplete} from '../store/reducers/preferences';
-import {TabNavigation} from './TabNavigator';
-import ROUTES from './routes';
-import {RootStackParamList} from './params';
 import {IONavigationDarkTheme, IONavigationLightTheme} from './theme';
+import ROOT_ROUTES from './routes';
+import MainStackNavigator, {
+  MainNavigatorParamsList
+} from './main/MainStackNavigator';
+
+export type RootStackParamList = {
+  // Main
+  [ROOT_ROUTES.TAB_NAV]: NavigatorScreenParams<MainNavigatorParamsList>;
+  [ROOT_ROUTES.ERROR]: undefined;
+  [ROOT_ROUTES.LOADING]: undefined;
+  [ROOT_ROUTES.ERROR]: undefined;
+
+  // Onboarding
+  [ROOT_ROUTES.ONBOARDING]: NavigatorScreenParams<OnboardingNavigatorParamsList>;
+};
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -41,15 +57,15 @@ export const RootStackNavigator = () => {
       case 'DONE':
         // Startup is done, check if onboarding is completed
         return isOnboardingCompleted
-          ? {name: ROUTES.MAIN_HOME, component: TabNavigation}
-          : {name: ONBOARDING_ROUTES.MAIN, component: OnboardingNavigator};
+          ? {name: ROOT_ROUTES.TAB_NAV, component: MainStackNavigator}
+          : {name: ROOT_ROUTES.ONBOARDING, component: OnboardingNavigator};
       case 'ERROR':
         // An error occurred during startup
-        return {name: ROUTES.MAIN_ERROR, component: () => <></>}; // TODO: Add error screen
+        return {name: ROOT_ROUTES.ERROR, component: () => <></>}; // TODO: Add error screen
       case 'LOADING':
       case 'NOT_STARTED':
       default:
-        return {name: ROUTES.MAIN_LOADING, component: () => <></>}; // TODO: Add loading screen
+        return {name: ROOT_ROUTES.LOADING, component: () => <></>}; // TODO: Add loading screen
     }
   }, [isStartupDone, isOnboardingCompleted]);
 

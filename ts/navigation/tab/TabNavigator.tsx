@@ -4,19 +4,19 @@ import {IOColors} from '@pagopa/io-app-design-system';
 import {useTranslation} from 'react-i18next';
 import {Pressable, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {TabIconComponent} from '../components/TabIconComponent';
-import {useAppDispatch} from '../store';
-import {preferencesReset} from '../store/reducers/preferences';
-import ROUTES from './routes';
+import {TabIconComponent} from '../../components/TabIconComponent';
+import {useAppDispatch} from '../../store';
+import {preferencesReset} from '../../store/reducers/preferences';
+import TAB_ROUTES from './routes';
 
 /**
  * Screen parameters for the tab navigator.
  * New screens should be added here along with their parameters.
  */
 export type TabNavigatorParamsList = {
-  [ROUTES.MAIN_WALLET]: undefined;
-  [ROUTES.MAIN_SCAN_QR]: undefined;
-  [ROUTES.MAIN_SHOW_QR]: undefined;
+  [TAB_ROUTES.WALLET]: undefined;
+  [TAB_ROUTES.SCAN_QR]: undefined;
+  [TAB_ROUTES.SHOW_QR]: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
@@ -25,7 +25,7 @@ const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
  * Tab navigator which contains the main screens of the application.
  * It is used to navigate between the main screens of the application which are currently the home, scan qr and show qr screens.
  */
-export const TabNavigation = () => {
+export const TabNavigator = () => {
   const {t} = useTranslation('global');
   const dispatch = useAppDispatch();
 
@@ -48,7 +48,7 @@ export const TabNavigation = () => {
         tabBarInactiveTintColor: IOColors['grey-850']
       }}>
       <Tab.Screen
-        name={ROUTES.MAIN_WALLET}
+        name={TAB_ROUTES.WALLET}
         component={EmptyScreen}
         options={{
           title: t('tabNavigator.home'),
@@ -63,7 +63,7 @@ export const TabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name={ROUTES.MAIN_SCAN_QR}
+        name={TAB_ROUTES.SCAN_QR}
         component={EmptyScreen}
         options={{
           title: t('tabNavigator.scanQr'),
@@ -78,7 +78,7 @@ export const TabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name={ROUTES.MAIN_SHOW_QR}
+        name={TAB_ROUTES.SHOW_QR}
         component={EmptyScreen}
         options={{
           title: t('tabNavigator.showQr'),
