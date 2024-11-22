@@ -1,6 +1,6 @@
 {
   "tabNavigator": {
-    "home": "Wallet",
+    "wallet": "Wallet",
     "scanQr": "Scan QR",
     "showQr": "Show QR"
   },
@@ -12,6 +12,13 @@
     "delete": "Delete",
     "continue": "Continue",
     "activate": "Activate",
-    "notNow": "Not now"
+    "notNow": "Not now",
+    "back": "Back"
+  },
+  "errors": {
+    "generic": {
+      "title": "There's an issue with our systems",
+      "body": "Please try again in a few minutes."
+    }
   }
 }

@@ -2,6 +2,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {persistReducer, type PersistConfig} from 'redux-persist';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import uuid from 'react-native-uuid';
 import {RootState} from '../types';
 
 /* State type definition for the preferences slice
@@ -9,12 +10,14 @@ import {RootState} from '../types';
  * isBiometricEnabled - Indicates if the biometric is enabled for the user.
  */
 export type PreferencesState = {
+  sessionId: string;
   isOnboardingComplete: boolean;
   isBiometricEnabled: boolean;
 };
 
 // Initial state for the preferences slice
 const initialState: PreferencesState = {
+  sessionId: uuid.v4().toString(),
   isOnboardingComplete: false,
   isBiometricEnabled: false
 };
@@ -81,3 +84,6 @@ export const selectisOnboardingComplete = (state: RootState) =>
  */
 export const selectIsBiometricEnabled = (state: RootState) =>
   state.preferences.isBiometricEnabled;
+
+export const selectSessionId = (state: RootState) =>
+  state.preferences.sessionId;
