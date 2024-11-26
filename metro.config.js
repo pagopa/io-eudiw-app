@@ -6,12 +6,16 @@ const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
  *
  * @type {import('metro-config').MetroConfig}
  */
-const config = {};
+const config = {
+  resolver: {
+    extraNodeModules: require('@pagopa/react-native-nodelibs')
+  }
+};
 
 const {
-  wrapWithReanimatedMetroConfig,
+  wrapWithReanimatedMetroConfig
 } = require('react-native-reanimated/metro-config');
 
 module.exports = wrapWithReanimatedMetroConfig(
-  mergeConfig(getDefaultConfig(__dirname), config),
+  mergeConfig(getDefaultConfig(__dirname), config)
 );

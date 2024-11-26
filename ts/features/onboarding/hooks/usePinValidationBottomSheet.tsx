@@ -1,10 +1,10 @@
-import {VSpacer, Body} from '@pagopa/io-app-design-system';
+import {VSpacer} from '@pagopa/io-app-design-system';
 import React, {memo} from 'react';
 import {View} from 'react-native';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 import {useIOBottomSheetModal} from '../../../hooks/useBottomSheet';
-import {BulletList} from '../../../components/BulletList';
+import Markdown from '../../../components/markdown';
 
 /**
  * Bottom sheet which contains the PIN policy for the app.
@@ -15,9 +15,7 @@ const BottomSheetContent = memo(() => {
 
   return (
     <View>
-      <Body>{t('pin.policy.description')}</Body>
-      <VSpacer size={16} />
-      <Markdown
+      <Markdown content={t('pin.policy.description')} />
       {bottom === 0 && <VSpacer size={16} />}
     </View>
   );
