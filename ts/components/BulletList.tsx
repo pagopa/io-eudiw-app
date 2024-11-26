@@ -48,7 +48,7 @@ export const BulletList = memo(
             <HSpacer size={spacing} />
             <Body>{BULLET_ITEM}</Body>
             <HSpacer size={spacing} />
-            <Body {...textProps}>
+            <Body {...textProps} >
               {Array.isArray(value) ? (
                 <ComposedBodyFromArray body={value} />
               ) : (

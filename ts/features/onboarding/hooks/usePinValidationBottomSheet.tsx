@@ -1,7 +1,7 @@
 import {VSpacer, Body} from '@pagopa/io-app-design-system';
 import React, {memo} from 'react';
 import {View} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 import {useIOBottomSheetModal} from '../../../hooks/useBottomSheet';
 import {BulletList} from '../../../components/BulletList';
@@ -17,20 +17,7 @@ const BottomSheetContent = memo(() => {
     <View>
       <Body>{t('pin.policy.description')}</Body>
       <VSpacer size={16} />
-      <BulletList
-        title={t('pin.policy.bulletList.title')}
-        list={[
-          {
-            value: t('pin.policy.bulletList.firstItem'),
-            id: 'first_item'
-          },
-          {
-            value: t('pin.policy.bulletList.secondItem'),
-            id: 'second_item'
-          }
-        ]}
-        spacing={16}
-      />
+      <Markdown
       {bottom === 0 && <VSpacer size={16} />}
     </View>
   );
