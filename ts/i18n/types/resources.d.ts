@@ -50,12 +50,7 @@ interface Resources {
       };
       policy: {
         title: 'How to choose the code?';
-        description: 'The unlock code is made up of 6 digits and will be used to access and authorize certain operations in the app.';
-        bulletList: {
-          title: 'Choose a code that is hard to guess and does not contain:';
-          firstItem: 'a single repeated number (e.g. 000000);';
-          secondItem: 'a sequence of ordered numbers (e.g. 123456 or 654321).';
-        };
+        description: 'The unlock code is made up of 6 digits and will be used to access and authorize certain operations in the app. \n\n Choose a code that is hard to guess and does not contain: * a single repeated number (e.g. 000000); * a sequence of ordered numbers (e.g. 123456 or 654321).';
       };
       errors: {
         invalid: {

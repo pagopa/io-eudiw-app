@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 require('@pagopa/react-native-nodelibs/globals');
 import React from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
