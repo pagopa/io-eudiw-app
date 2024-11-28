@@ -2,7 +2,6 @@ import Config from 'react-native-config';
 import {URL as PolyfillURL} from 'react-native-url-polyfill';
 
 interface AuthHeaders {
-  'x-functions-key'?: string;
   'x-user-id'?: string;
 }
 
@@ -31,7 +30,10 @@ const addAuthHeaders = (authHeaders: AuthHeaders, init?: RequestInit) => ({
  * @throws {@link TypeError} if the wallet provider URL is not valid
  * @returns An object containing the Authorization header if conditions are met, otherwise an empty object
  */
-const getAuthHeadersForWalletProvider = (url: string, sessionId: string) => {
+const getAuthHeadersForWalletProvider = (
+  url: string,
+  sessionId: string
+): AuthHeaders => {
   const urlTarget = new PolyfillURL(url);
   const urlWp = new PolyfillURL(Config.WALLET_PROVIDER_BASE_URL);
   if (urlTarget.origin === urlWp.origin) {
