@@ -17,6 +17,7 @@ import {
   selectInstanceStatus,
   setInstanceRequest
 } from '../../store/pidIssuance';
+import {selectAttestation} from '../../store/attestation';
 
 /**
  * Screen which shows the information about the wallet and then registers a wallet instance.
@@ -26,6 +27,7 @@ const WalletInstanceCreation = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const {error, success, loading} = useAppSelector(selectInstanceStatus);
+  const attestation = useAppSelector(selectAttestation);
 
   useEffect(() => {
     dispatch(resetInstanceStatus());
@@ -34,9 +36,9 @@ const WalletInstanceCreation = () => {
   useEffect(() => {
     if (success) {
       // eslint-disable-next-line no-console
-      console.log('Success');
+      console.log('Attestation: ', attestation);
     }
-  }, [success]);
+  }, [success, attestation]);
 
   useEffect(() => {
     if (error.status === true) {
