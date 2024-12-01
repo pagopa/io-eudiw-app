@@ -16,15 +16,12 @@ export type HardwareSignatureWithAuthData = {
 };
 
 /**
- * Const defined for parameters which are not needed in this implementation but are required from  {@link io-react-native-wallet} interfaces.
- * Mostly because integrity is not really implemented in this project.
- */
-const NOT_NEEDED = 'NOT_NEEDED';
-
-/**
- * Generates the hardware signature with the authentication data. The implementation differs between iOS and Android.
- * This will later be used to verify the signature on the server side.
+ * Generates the hardware signature with the authentication data.
+ * In the EUDIW wallet the trust model of the wallet provider is not implemented, thus the authenticator data is not needed and
+ * we are not implementing any app's integrity check on the device running the wallet. Thus we only return the signed client data with
+ * a hardware backed key on both platforms.
  * @param hardwareKeyTag - the hardware key tag to use for the signature.
+ * @param clientData - the client data to sign.
  * @returns a function that takes the client data as string and returns a promise that resolves with the signature and the authenticator data or rejects with an error.
  */
 const getHardwareSignatureWithAuthData = async (
@@ -35,7 +32,7 @@ const getHardwareSignatureWithAuthData = async (
    * Client data should be hashed however it is not done in this implementation.
    */
   const signature = await sign(clientData, hardwareKeyTag);
-  return {signature, authenticatorData: NOT_NEEDED};
+  return {signature, authenticatorData: 'NOT_NEEDED'};
 };
 
 /**
@@ -49,7 +46,12 @@ const generateIntegrityHardwareKeyTag = async () => {
 };
 
 /**
- * Ensures that the hardwareKeyTag as padding added before calling {@link getAttestationIntegrity}
+ * Generates a device attestation to attest that hardware key are stored in a secure environment.
+ * In the EUDIW wallet the trust model of the wallet provider is not implemented, thus this check is skipped.
+ * This implementation only returns the public key associated with the provider hardware key tag.
+ * @param _ - the challenge, currently not used.
+ * @param hardwareKeyTag - the hardware keytag from which to extract the public key
+ * @returns a promise that resolves with the JSON stringified public key or rejects with an error.
  */
 const getAttestation = async (
   _: string,
@@ -60,6 +62,11 @@ const getAttestation = async (
   return encode(JSON.stringify(fixedPk));
 };
 
+/**
+ * Implementation of the {@link IntegrityContext} from `io-react-native-wallet` interface.
+ * @param hardwareKeyTag - the hardware key tag to use for the integrity context which is bound to the wallet instance.
+ * @returns a context object which Adheres to the {@link IntegrityContext} interface
+ */
 const getIntegrityContext = (hardwareKeyTag: string): IntegrityContext => ({
   getHardwareKeyTag: () => hardwareKeyTag,
   getAttestation: (nonce: string) => getAttestation(nonce, hardwareKeyTag),
