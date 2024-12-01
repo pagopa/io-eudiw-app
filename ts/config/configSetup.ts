@@ -1,5 +1,5 @@
 import Config from 'react-native-config';
-import {configSchema} from '../utils/zod';
+import {configSchema} from './types/react-native-config';
 
 /**
  * This function checks the Config object to ensure that all required values are defined.

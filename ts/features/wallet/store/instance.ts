@@ -22,8 +22,8 @@ export const instanceSlice = createSlice({
   name: 'instance',
   initialState,
   reducers: {
-    setInstanceKeyTag: (state, action: PayloadAction<{keyTag: string}>) => {
-      state.keyTag = action.payload.keyTag;
+    setInstanceKeyTag: (state, action: PayloadAction<string>) => {
+      state.keyTag = action.payload;
     },
     resetInstanceKeyTag: () => initialState
   }

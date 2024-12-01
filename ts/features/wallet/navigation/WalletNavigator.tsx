@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Discovery from '../screens/pidIssuance/Discovery';
+import Discovery from '../screens/pidIssuance/WalletInstanceCreation';
 
 import PidIssuanceResultError, {
   PidIssuanceResultErrorNavigationParams
@@ -8,7 +8,7 @@ import PidIssuanceResultError, {
 import WALLET_ROUTES from './routes';
 
 /**
- * Screen parameters for the onboarding navigator.
+ * Screen parameters for the wallet navigator.
  * New screens should be added here along with their parameters.
  */
 export type WalletNavigatorParamsList = {
@@ -20,9 +20,8 @@ export type WalletNavigatorParamsList = {
 const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();
 
 /**
- * The onboarding related stack which is used to navigate between onboarding screens on the first app launch.
- * It includes the initial carousel screen, the start screen, the PIN creation screen and the biometric screens.
- * The three biometric screens are shown based on the device's biometric capabilities and the user's settings.
+ * The wallted related stack which is used to navigate between wallet related screens.
+ * It includes the pid issuance flow.
  */
 const WalletNavigator = () => (
   <Stack.Navigator

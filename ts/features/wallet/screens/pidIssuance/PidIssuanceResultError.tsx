@@ -8,7 +8,7 @@ import {
   PidIssuanceStatusKeys,
   resetPidIssuanceStatus
 } from '../../store/pidIssuance';
-import {OperationResultScreenContent} from '../../../../components/screens/OperationalResutlScreenContent';
+import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
 
 export type PidIssuanceResultErrorNavigationParams = {
   key: PidIssuanceStatusKeys;

@@ -1,3 +1,6 @@
+/**
+ * Constants for wallet routes.
+ */
 const WALLET_ROUTES = {
   PID_ISSUANCE: {
     DISCOVERY: 'DISCOVERY',

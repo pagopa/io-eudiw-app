@@ -39,6 +39,18 @@ type OperationResultScreenContentProps = WithTestID<{
   isHeaderVisible?: boolean;
 }>;
 
+/**
+ * A screen component which displays the result of an operation.
+ * I can either be a successfull operation or a failed one.
+ * It shows a pictogram, a title, a subtitle, and action buttons.
+ * @param pictogram - The pictogram to display.
+ * @param title - The title of the screen.
+ * @param subtitle - The subtitle of the screen.
+ * @param action - The primary action button.
+ * @param secondaryAction - The secondary action button.
+ * @param isHeaderVisible - Whether the header should be visible or not.
+ * @param testID - The testID to be used for testing.
+ */
 const OperationResultScreenContent = forwardRef<
   View,
   PropsWithChildren<OperationResultScreenContentProps>

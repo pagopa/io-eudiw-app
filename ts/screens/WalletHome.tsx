@@ -7,8 +7,9 @@ import {lifecycleIsOperationalSelector} from '../features/wallet/store/lifecycle
 import {ActivationBanner} from '../features/wallet/components/ActivationBanner';
 
 /**
- * IT-Wallet home screen which contains a top bar with categories, an activation banner and a list of wallet items based on the selected category.
- * It also a label to reset the wallet credentials and a button to add a new credential which only works if the experimental feature flag is true.
+ * Wallet home to be rendered as the first page in the tab navigator.
+ * It shows a banner when the wallet is in OPERATIONL status, otherwise it shows the lists of the credentials
+ * available in the wallet.
  */
 const WalletHome = () => {
   const {t} = useTranslation(['wallet', 'global']);
@@ -21,7 +22,7 @@ const WalletHome = () => {
         type="singleAction"
         firstAction={{
           icon: 'coggle',
-          onPress: () => void 0,
+          onPress: () => void 0, // Currently not used
           accessibilityLabel: ''
         }}
       />
@@ -35,7 +36,7 @@ const WalletHome = () => {
             />
           </View>
         ) : (
-          <></>
+          <></> // Needs to
         )}
       </View>
     </>

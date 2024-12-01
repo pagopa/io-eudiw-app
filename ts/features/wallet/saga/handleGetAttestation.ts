@@ -10,6 +10,12 @@ import {getIntegrityContext} from '../utils/integrity';
 import {createWalletProviderFetch} from '../utils/fetch';
 import {selectSessionId} from '../../../store/reducers/preferences';
 
+/**
+ * Utility generator function to obtain a wallet attestation.
+ * @param instanceKeyTag - the keytag bound to the wallet instance for which the attestation is requested.
+ * @returns the attestation for the wallet instance.
+ * @throws {@link Errors.WalletProviderResponseError} if the wallet provider returns an error.
+ */
 export function* getAttestation(instanceKeyTag: string) {
   const sessionId = yield* select(selectSessionId);
   const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;

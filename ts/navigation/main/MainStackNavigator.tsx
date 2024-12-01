@@ -19,8 +19,8 @@ export type MainNavigatorParamsList = {
 const Stack = createNativeStackNavigator<MainNavigatorParamsList>();
 
 /**
- * The onboarding navigator contains all the screens and nested navigator which should be shown
- * after the onboarding is completed.
+ * The main stack navigator which renders screen after the onboarding has been completed.
+ * It mounts the tab navigator and any other inner navigator.
  */
 const MainStackNavigator = () => (
   <Stack.Navigator

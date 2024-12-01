@@ -19,12 +19,9 @@ import {
 } from '../../store/pidIssuance';
 
 /**
- * This is the screen that shows the information about the discovery process
- * about the activation of the DIW. It uses a markdown component to render
- * the content of the screen. The screen is wrapped in a GradientScrollView
- * with a primary and secondary action.
+ * Screen which shows the information about the wallet and then registers a wallet instance.
  */
-const Discovery = () => {
+const WalletInstanceCreation = () => {
   const {t} = useTranslation(['wallet', 'global']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -58,14 +55,14 @@ const Discovery = () => {
     <>
       <ScrollView>
         <AnimatedImage
-          source={require('../../../../../assets/img/features/wallet/discovery/itw_hero.png')}
+          source={require('../../assets/img/itw_hero.png')}
           style={styles.banner}
         />
         <VSpacer size={24} />
         <ContentWrapper>
-          <H1>{t('wallet:discovery.title')}</H1>
+          <H1>{t('wallet:walletInstanceCreation.title')}</H1>
           <VSpacer size={24} />
-          <Markdown content={t('wallet:discovery.description')} />
+          <Markdown content={t('wallet:walletInstanceCreation.description')} />
         </ContentWrapper>
       </ScrollView>
       <FooterActions
@@ -88,4 +85,4 @@ const styles = StyleSheet.create({
   banner: {resizeMode: 'cover', width: '100%'}
 });
 
-export default Discovery;
+export default WalletInstanceCreation;
