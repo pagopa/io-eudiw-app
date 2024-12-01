@@ -14,7 +14,7 @@ module.exports = {
       jsx: true
     }
   },
-  plugins: ['import', 'sonarjs', '@jambit/typed-redux-saga', 'functional'],
+  plugins: ['import', 'sonarjs', 'functional'],
   rules: {
     'comma-dangle': ['error', 'never'],
     'no-case-declarations': 'off',
@@ -117,15 +117,5 @@ module.exports = {
         ]
       }
     ]
-  },
-  overrides: [
-    {
-      files: ['./**/*.ts'],
-      excludedFiles: ['./**/*.test.ts'],
-      rules: {
-        '@jambit/typed-redux-saga/use-typed-effects': ['error', 'macro'],
-        '@jambit/typed-redux-saga/delegate-effects': 'error'
-      }
-    }
-  ]
+  }
 };

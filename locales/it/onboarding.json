@@ -1,0 +1,20 @@
+{
+  "carousel": {
+    "first": {
+      "title": "Welcome to the Wallet app!",
+      "content": "Discover what you can do"
+    },
+    "second": {
+      "title": "Add your documents",
+      "content": "Securely save and store digital versions of your documents"
+    },
+    "third": {
+      "title": "Authenticate with Wallet",
+      "content": "Use this app to present your documents and access online services"
+    }
+  },
+  "start": {
+    "title": "Start with Wallet",
+    "subtitle": "Store your documents securely."
+  }
+}
