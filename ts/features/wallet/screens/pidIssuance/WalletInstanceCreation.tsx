@@ -13,9 +13,9 @@ import {AnimatedImage} from '../../../../components/AnimatedImage';
 import Markdown from '../../../../components/markdown';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
-  resetInstanceStatus,
+  resetPidIssuanceFirstFlow,
   selectInstanceStatus,
-  setInstanceRequest
+  setPidIssuanceFirstFlowRequest
 } from '../../store/pidIssuance';
 import {selectAttestation} from '../../store/attestation';
 
@@ -30,21 +30,21 @@ const WalletInstanceCreation = () => {
   const attestation = useAppSelector(selectAttestation);
 
   useEffect(() => {
-    dispatch(resetInstanceStatus());
+    dispatch(resetPidIssuanceFirstFlow());
   }, [dispatch]);
 
   useEffect(() => {
     if (success) {
-      // eslint-disable-next-line no-console
-      console.log('Attestation: ', attestation);
+      navigation.navigate('MAIN_WALLET', {
+        screen: 'STRONG_AUTHENTICATION'
+      });
     }
-  }, [success, attestation]);
+  }, [success, attestation, navigation]);
 
   useEffect(() => {
     if (error.status === true) {
       navigation.navigate('MAIN_WALLET', {
-        screen: 'RESULT_ERROR',
-        params: {key: 'INSTANCE'}
+        screen: 'RESULT_ERROR'
       });
     }
   }, [error, navigation]);
@@ -75,7 +75,7 @@ const WalletInstanceCreation = () => {
             loading,
             label: t('global:buttons.continue'),
             accessibilityLabel: t('global:buttons.continue'),
-            onPress: () => dispatch(setInstanceRequest())
+            onPress: () => dispatch(setPidIssuanceFirstFlowRequest())
           }
         }}
       />

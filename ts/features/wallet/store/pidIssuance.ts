@@ -2,26 +2,25 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../../store/types';
 import {
-  asyncStateError,
-  asyncStateLoading,
-  asyncStateSuccess,
-  asyncStatusInitial,
-  AsyncStatusValues
+  AsyncStatusValues,
+  setError,
+  setInitial,
+  setLoading,
+  setSuccess
 } from '../../../store/utils/asyncStatus';
-
-export type PidIssuanceStatusKeys = 'INSTANCE';
 
 /* State type definition for the pin slice
  * pin - Application PIN set by the user
  */
-export type PidIssuanceStatusState = Record<
-  PidIssuanceStatusKeys,
-  AsyncStatusValues
->;
+export type PidIssuanceStatusState = {
+  FIRST_FLOW: AsyncStatusValues<{authUrl: string}>;
+  SECOND_FLOW: AsyncStatusValues<{credential: string}>;
+};
 
 // Initial state for the pin slice
 const initialState: PidIssuanceStatusState = {
-  ['INSTANCE']: asyncStatusInitial
+  FIRST_FLOW: setInitial(),
+  SECOND_FLOW: setInitial()
 };
 
 /**
@@ -32,23 +31,25 @@ export const pidIssuanceStatusSlice = createSlice({
   name: 'pidIssuanceStatus',
   initialState,
   reducers: {
-    setInstanceRequest: state => {
-      state.INSTANCE = asyncStateLoading;
+    setPidIssuanceFirstFlowRequest: state => {
+      state.FIRST_FLOW = setLoading();
     },
-    setInstanceError: (state, action: PayloadAction<{error: unknown}>) => {
-      state.INSTANCE = asyncStateError(action.payload.error);
-    },
-    setInstanceSuccess: state => {
-      state.INSTANCE = asyncStateSuccess;
-    },
-    resetInstanceStatus: state => {
-      state.INSTANCE = asyncStatusInitial;
-    },
-    resetPidIssuanceStatus: (
+    setPidIssuanceFirstFlowError: (
       state,
-      action: PayloadAction<{key: PidIssuanceStatusKeys}>
+      action: PayloadAction<{error: unknown}>
     ) => {
-      state[action.payload.key] = asyncStatusInitial;
+      state.FIRST_FLOW = setError(action.payload.error);
+    },
+    setPidIssuanceFirstFlowSuccess: (
+      state,
+      action: PayloadAction<{authUrl: string}>
+    ) => {
+      state.FIRST_FLOW = setSuccess({
+        authUrl: action.payload.authUrl
+      });
+    },
+    resetPidIssuanceFirstFlow: state => {
+      state.FIRST_FLOW = setInitial();
     }
   }
 });
@@ -57,16 +58,16 @@ export const pidIssuanceStatusSlice = createSlice({
  * Exports the actions for the pin slice.
  */
 export const {
-  setInstanceRequest,
-  setInstanceError,
-  setInstanceSuccess,
-  resetInstanceStatus,
-  resetPidIssuanceStatus
+  setPidIssuanceFirstFlowError,
+  setPidIssuanceFirstFlowRequest,
+  setPidIssuanceFirstFlowSuccess,
+  resetPidIssuanceFirstFlow
 } = pidIssuanceStatusSlice.actions;
 
 export const selectInstanceStatus = (state: RootState) =>
-  state.wallet.pidIssuanceStatus.INSTANCE;
+  state.wallet.pidIssuanceStatus.FIRST_FLOW;
 
-export const selectStatusError =
-  (key: PidIssuanceStatusKeys) => (state: RootState) =>
-    state.wallet.pidIssuanceStatus[key].error;
+export const selectAuthUrl = (state: RootState) =>
+  state.wallet.pidIssuanceStatus.FIRST_FLOW.success.status === true
+    ? state.wallet.pidIssuanceStatus.FIRST_FLOW.success.data.authUrl
+    : undefined;

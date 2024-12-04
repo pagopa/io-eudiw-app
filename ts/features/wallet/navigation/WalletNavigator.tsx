@@ -2,9 +2,8 @@ import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Discovery from '../screens/pidIssuance/WalletInstanceCreation';
 
-import PidIssuanceResultError, {
-  PidIssuanceResultErrorNavigationParams
-} from '../screens/pidIssuance/PidIssuanceResultError';
+import PidIssuanceResultError from '../screens/pidIssuance/PidIssuanceResultError';
+import StrongAuthentication from '../screens/pidIssuance/StrongAuthentication';
 import WALLET_ROUTES from './routes';
 
 /**
@@ -13,8 +12,8 @@ import WALLET_ROUTES from './routes';
  */
 export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.PID_ISSUANCE.DISCOVERY]: undefined;
-  [WALLET_ROUTES.PID_ISSUANCE
-    .RESULT_ERROR]: PidIssuanceResultErrorNavigationParams;
+  [WALLET_ROUTES.PID_ISSUANCE.RESULT_ERROR]: undefined;
+  [WALLET_ROUTES.PID_ISSUANCE.STRONG_AUTHENTICATION]: undefined;
 };
 
 const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();
@@ -27,14 +26,20 @@ const WalletNavigator = () => (
   <Stack.Navigator
     initialRouteName={WALLET_ROUTES.PID_ISSUANCE.DISCOVERY}
     screenOptions={{headerShown: false}}>
-    <Stack.Screen
-      name={WALLET_ROUTES.PID_ISSUANCE.DISCOVERY}
-      component={Discovery}
-    />
-    <Stack.Screen
-      name={WALLET_ROUTES.PID_ISSUANCE.RESULT_ERROR}
-      component={PidIssuanceResultError}
-    />
+    <Stack.Group>
+      <Stack.Screen
+        name={WALLET_ROUTES.PID_ISSUANCE.DISCOVERY}
+        component={Discovery}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PID_ISSUANCE.RESULT_ERROR}
+        component={PidIssuanceResultError}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PID_ISSUANCE.STRONG_AUTHENTICATION}
+        component={StrongAuthentication}
+      />
+    </Stack.Group>
   </Stack.Navigator>
 );
 

@@ -1,4 +1,5 @@
 {
+  "genericWaiting": "Wait a few seconds..",
   "tabNavigator": {
     "wallet": "Wallet",
     "scanQr": "Scan QR",
@@ -19,6 +20,12 @@
     "generic": {
       "title": "There's an issue with our systems",
       "body": "Please try again in a few minutes."
+    }
+  },
+  "accessibility": {
+    "activityIndicator": {
+      "label": "Loading",
+      "hint": "Wait for the content load"
     }
   }
 }

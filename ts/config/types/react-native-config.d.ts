@@ -3,15 +3,11 @@ import * as z from 'zod';
 declare module 'react-native-config' {
   export interface NativeConfig {
     WALLET_PROVIDER_BASE_URL: string;
+    PID_PROVIDER_BASE_URL: string;
+    PID_REDIRECT_URI: string;
+    PID_IDP_HINT: string;
   }
 
   export const Config: NativeConfig;
   export default Config;
 }
-
-/**
- * Zod schema for the configuration variables specified in the env files for runtime validation.
- */
-export const configSchema = z.object({
-  WALLET_PROVIDER_BASE_URL: z.string()
-});

@@ -1,5 +1,5 @@
 import {takeLatest} from 'typed-redux-saga';
-import {setInstanceRequest} from '../store/pidIssuance';
+import {setPidIssuanceFirstFlowRequest} from '../store/pidIssuance';
 import {handleCreateInstance} from './handleCreateInstance';
 
 /**
@@ -7,5 +7,5 @@ import {handleCreateInstance} from './handleCreateInstance';
  * New sagas related to the wallet which are triggered by actions should be added here.
  */
 export function* walletSaga() {
-  yield* takeLatest(setInstanceRequest, handleCreateInstance);
+  yield* takeLatest(setPidIssuanceFirstFlowRequest, handleCreateInstance);
 }
