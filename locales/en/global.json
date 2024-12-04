@@ -1,5 +1,5 @@
 {
-  "genericWaiting": "Wait a few seconds..",
+  "genericWaiting": "Wait few seconds",
   "tabNavigator": {
     "wallet": "Wallet",
     "scanQr": "Scan QR",
@@ -14,7 +14,8 @@
     "continue": "Continue",
     "activate": "Activate",
     "notNow": "Not now",
-    "back": "Back"
+    "back": "Back",
+    "cancel": "Cancel"
   },
   "errors": {
     "generic": {

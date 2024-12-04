@@ -13,9 +13,9 @@ import {AnimatedImage} from '../../../../components/AnimatedImage';
 import Markdown from '../../../../components/markdown';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
-  resetPidIssuanceFirstFlow,
+  resetInstanceCreation,
   selectInstanceStatus,
-  setPidIssuanceFirstFlowRequest
+  setInstanceCreationRequest
 } from '../../store/pidIssuance';
 import {selectAttestation} from '../../store/attestation';
 
@@ -27,19 +27,15 @@ const WalletInstanceCreation = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const {error, success, loading} = useAppSelector(selectInstanceStatus);
-  const attestation = useAppSelector(selectAttestation);
 
   useEffect(() => {
-    dispatch(resetPidIssuanceFirstFlow());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (success) {
+    if (success.status === true) {
       navigation.navigate('MAIN_WALLET', {
-        screen: 'STRONG_AUTHENTICATION'
+        screen: 'AUTHENTICATION'
       });
+      dispatch(resetInstanceCreation());
     }
-  }, [success, attestation, navigation]);
+  }, [success, navigation, dispatch]);
 
   useEffect(() => {
     if (error.status === true) {
@@ -75,7 +71,7 @@ const WalletInstanceCreation = () => {
             loading,
             label: t('global:buttons.continue'),
             accessibilityLabel: t('global:buttons.continue'),
-            onPress: () => dispatch(setPidIssuanceFirstFlowRequest())
+            onPress: () => dispatch(setInstanceCreationRequest())
           }
         }}
       />

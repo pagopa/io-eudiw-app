@@ -2195,6 +2195,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pagopa/io-react-native-login-utils@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "@pagopa/io-react-native-login-utils@npm:1.0.7"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: bdf066e70c8e732ce42b7e5d44e7126c88e1f9c97873cc16c56a613b889c5c8ab03d1e7e46f755327a1f41fa936def1ac1aa65c8b55fe40c0e087e6ba782a21a
+  languageName: node
+  linkType: hard
+
 "@pagopa/io-react-native-wallet@npm:^0.26.0":
   version: 0.26.0
   resolution: "@pagopa/io-react-native-wallet@npm:0.26.0"
@@ -7145,6 +7155,7 @@ __metadata:
     "@pagopa/io-app-design-system": ^3.1.0
     "@pagopa/io-react-native-crypto": ^1.0.1
     "@pagopa/io-react-native-jwt": ^1.4.0
+    "@pagopa/io-react-native-login-utils": ^1.0.7
     "@pagopa/io-react-native-wallet": ^0.26.0
     "@pagopa/react-native-cie": ^1.4.0
     "@pagopa/react-native-nodelibs": ^0.1.0

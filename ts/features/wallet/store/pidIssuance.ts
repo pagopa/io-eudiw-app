@@ -13,14 +13,14 @@ import {
  * pin - Application PIN set by the user
  */
 export type PidIssuanceStatusState = {
-  FIRST_FLOW: AsyncStatusValues<{authUrl: string}>;
-  SECOND_FLOW: AsyncStatusValues<{credential: string}>;
+  instanceCreation: AsyncStatusValues;
+  issuance: AsyncStatusValues;
 };
 
 // Initial state for the pin slice
 const initialState: PidIssuanceStatusState = {
-  FIRST_FLOW: setInitial(),
-  SECOND_FLOW: setInitial()
+  instanceCreation: setInitial(),
+  issuance: setInitial()
 };
 
 /**
@@ -31,25 +31,32 @@ export const pidIssuanceStatusSlice = createSlice({
   name: 'pidIssuanceStatus',
   initialState,
   reducers: {
-    setPidIssuanceFirstFlowRequest: state => {
-      state.FIRST_FLOW = setLoading();
+    setInstanceCreationRequest: state => {
+      state.instanceCreation = setLoading();
     },
-    setPidIssuanceFirstFlowError: (
+    setInstanceCreationError: (
       state,
       action: PayloadAction<{error: unknown}>
     ) => {
-      state.FIRST_FLOW = setError(action.payload.error);
+      state.instanceCreation = setError(action.payload.error);
     },
-    setPidIssuanceFirstFlowSuccess: (
-      state,
-      action: PayloadAction<{authUrl: string}>
-    ) => {
-      state.FIRST_FLOW = setSuccess({
-        authUrl: action.payload.authUrl
-      });
+    setInstanceCreationSuccess: state => {
+      state.instanceCreation = setSuccess();
     },
-    resetPidIssuanceFirstFlow: state => {
-      state.FIRST_FLOW = setInitial();
+    resetInstanceCreation: state => {
+      state.instanceCreation = setInitial();
+    },
+    setPidIssuanceRequest: state => {
+      state.issuance = setLoading();
+    },
+    setPidIssuanceError: (state, action: PayloadAction<{error: unknown}>) => {
+      state.issuance = setError(action.payload.error);
+    },
+    setPidIssuanceSuccess: state => {
+      state.issuance = setSuccess();
+    },
+    resetPidIssuance: state => {
+      state.issuance = setInitial();
     }
   }
 });
@@ -58,16 +65,17 @@ export const pidIssuanceStatusSlice = createSlice({
  * Exports the actions for the pin slice.
  */
 export const {
-  setPidIssuanceFirstFlowError,
-  setPidIssuanceFirstFlowRequest,
-  setPidIssuanceFirstFlowSuccess,
-  resetPidIssuanceFirstFlow
+  setInstanceCreationRequest,
+  setInstanceCreationError,
+  setInstanceCreationSuccess,
+  resetInstanceCreation,
+  setPidIssuanceRequest,
+  setPidIssuanceError,
+  setPidIssuanceSuccess
 } = pidIssuanceStatusSlice.actions;
 
 export const selectInstanceStatus = (state: RootState) =>
-  state.wallet.pidIssuanceStatus.FIRST_FLOW;
+  state.wallet.pidIssuanceStatus.instanceCreation;
 
-export const selectAuthUrl = (state: RootState) =>
-  state.wallet.pidIssuanceStatus.FIRST_FLOW.success.status === true
-    ? state.wallet.pidIssuanceStatus.FIRST_FLOW.success.data.authUrl
-    : undefined;
+export const selectPidIssuanceStatus = (state: RootState) =>
+  state.wallet.pidIssuanceStatus.issuance;

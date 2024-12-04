@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import React from 'react';
 import {useAppDispatch} from '../../../../store';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
-import {resetPidIssuanceFirstFlow} from '../../store/pidIssuance';
+import {resetInstanceCreation} from '../../store/pidIssuance';
 
 const PidIssuanceResultError = () => {
   const {t} = useTranslation(['global']);
@@ -19,7 +19,7 @@ const PidIssuanceResultError = () => {
         accessibilityLabel: t('global:buttons.back'),
         label: t('global:buttons.back'),
         onPress: () => {
-          dispatch(resetPidIssuanceFirstFlow());
+          dispatch(resetInstanceCreation());
           navigation.navigate('MAIN_TAB_NAV');
         }
       }}

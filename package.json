@@ -25,6 +25,7 @@
     "@pagopa/io-app-design-system": "^3.1.0",
     "@pagopa/io-react-native-crypto": "^1.0.1",
     "@pagopa/io-react-native-jwt": "^1.4.0",
+    "@pagopa/io-react-native-login-utils": "^1.0.7",
     "@pagopa/io-react-native-wallet": "^0.26.0",
     "@pagopa/react-native-cie": "^1.4.0",
     "@pagopa/react-native-nodelibs": "^0.1.0",

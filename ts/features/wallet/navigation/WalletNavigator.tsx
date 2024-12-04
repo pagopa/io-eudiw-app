@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Discovery from '../screens/pidIssuance/WalletInstanceCreation';
-
 import PidIssuanceResultError from '../screens/pidIssuance/PidIssuanceResultError';
-import StrongAuthentication from '../screens/pidIssuance/StrongAuthentication';
+import WalletInstanceCreation from '../screens/pidIssuance/WalletInstanceCreation';
+import Authentication from '../screens/pidIssuance/Authentication';
 import WALLET_ROUTES from './routes';
 
 /**
@@ -11,9 +10,9 @@ import WALLET_ROUTES from './routes';
  * New screens should be added here along with their parameters.
  */
 export type WalletNavigatorParamsList = {
-  [WALLET_ROUTES.PID_ISSUANCE.DISCOVERY]: undefined;
+  [WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION]: undefined;
+  [WALLET_ROUTES.PID_ISSUANCE.AUTHENTICATION]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.RESULT_ERROR]: undefined;
-  [WALLET_ROUTES.PID_ISSUANCE.STRONG_AUTHENTICATION]: undefined;
 };
 
 const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();
@@ -24,20 +23,20 @@ const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();
  */
 const WalletNavigator = () => (
   <Stack.Navigator
-    initialRouteName={WALLET_ROUTES.PID_ISSUANCE.DISCOVERY}
+    initialRouteName={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
     screenOptions={{headerShown: false}}>
     <Stack.Group>
       <Stack.Screen
-        name={WALLET_ROUTES.PID_ISSUANCE.DISCOVERY}
-        component={Discovery}
+        name={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
+        component={WalletInstanceCreation}
       />
       <Stack.Screen
         name={WALLET_ROUTES.PID_ISSUANCE.RESULT_ERROR}
         component={PidIssuanceResultError}
       />
       <Stack.Screen
-        name={WALLET_ROUTES.PID_ISSUANCE.STRONG_AUTHENTICATION}
-        component={StrongAuthentication}
+        name={WALLET_ROUTES.PID_ISSUANCE.AUTHENTICATION}
+        component={Authentication}
       />
     </Stack.Group>
   </Stack.Navigator>

@@ -11,7 +11,7 @@
 type AsyncStatusValues<T = undefined> = {
   loading: boolean;
   error: {status: false; error: undefined} | {status: true; error: unknown};
-  success: {status: false} | {status: true; data: T};
+  success: {status: false} | {status: true; data?: T};
 };
 
 /**
@@ -26,7 +26,7 @@ const setInitial = <T>(): AsyncStatusValues<T> => ({
 /**
  * Async status object for a successfull {@link AsyncStatusValues} state
  */
-const setSuccess = <T>(data: T): AsyncStatusValues<T> => ({
+const setSuccess = <T>(data?: T): AsyncStatusValues<T> => ({
   loading: false,
   error: {status: false, error: undefined},
   success: {status: true, data}
