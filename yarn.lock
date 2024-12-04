@@ -11034,6 +11034,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-webview@npm:^13.12.5":
+  version: 13.12.5
+  resolution: "react-native-webview@npm:13.12.5"
+  dependencies:
+    escape-string-regexp: ^4.0.0
+    invariant: 2.2.4
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: e8cd5c260e41cf3434e390fbfd55934a65d4a996d56868eb3c64f4219e06e934bb2012f3520eb9d3867f5d0821333c46c96e31904460b2ec5832aaaa14f4dd62
+  languageName: node
+  linkType: hard
+
 "react-native@npm:0.75.4":
   version: 0.75.4
   resolution: "react-native@npm:0.75.4"
