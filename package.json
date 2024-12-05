@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.0.6",
-    "@pagopa/io-app-design-system": "^3.1.0",
+    "@pagopa/io-app-design-system": "^4.0.1",
     "@pagopa/io-react-native-crypto": "^1.0.1",
     "@pagopa/io-react-native-jwt": "^1.4.0",
     "@pagopa/io-react-native-login-utils": "^1.0.7",
@@ -53,7 +53,7 @@
     "react-native-reanimated": "^3.16.1",
     "react-native-safe-area-context": "^4.14.0",
     "react-native-screens": "^4.0.0",
-    "react-native-svg": "^15.8.0",
+    "react-native-svg": "^15.10.1",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-webview": "^13.12.5",
     "react-redux": "^9.1.2",
@@ -92,6 +92,8 @@
     "lint-staged": "^15.2.10",
     "prettier": "2.8.8",
     "react-test-renderer": "18.3.1",
+    "reactotron-react-native": "^5.1.10",
+    "reactotron-redux": "^3.1.10",
     "typescript": "5.0.4"
   },
   "engines": {

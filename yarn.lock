@@ -2218,9 +2218,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-app-design-system@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "@pagopa/io-app-design-system@npm:3.1.0"
+"@pagopa/io-app-design-system@npm:^4.0.1":
+  version: 4.2.0
+  resolution: "@pagopa/io-app-design-system@npm:4.2.0"
   dependencies:
     "@testing-library/jest-native": ^5.4.2
     "@types/react-test-renderer": ^18.0.0
@@ -2244,7 +2244,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-safe-area-context: "*"
     react-native-svg: "*"
-  checksum: f61255e857d86a88f24725595c92c0aacef1064f180a7ca7880a45b842dd54112e38f8c31f3af30cd1b3b53455a90728452fc97e0cbd11158379bd07af09fb20
+  checksum: 5a34b4cce3412e47c1fdcc62c1a6fca207cd018cf88d9a4e7a29611a433ea1f2e4e35a950a78fe678e35a7200f8f470e559e6cd62a00f8ba0db8e6b028ce796e
   languageName: node
   linkType: hard
 
@@ -7370,7 +7370,7 @@ __metadata:
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
     "@gorhom/bottom-sheet": ^5.0.6
-    "@pagopa/io-app-design-system": ^3.1.0
+    "@pagopa/io-app-design-system": ^4.0.1
     "@pagopa/io-react-native-crypto": ^1.0.1
     "@pagopa/io-react-native-jwt": ^1.4.0
     "@pagopa/io-react-native-login-utils": ^1.0.7
@@ -7425,11 +7425,13 @@ __metadata:
     react-native-reanimated: ^3.16.1
     react-native-safe-area-context: ^4.14.0
     react-native-screens: ^4.0.0
-    react-native-svg: ^15.8.0
+    react-native-svg: ^15.10.1
     react-native-url-polyfill: ^2.0.0
     react-native-webview: ^13.12.5
     react-redux: ^9.1.2
     react-test-renderer: 18.3.1
+    reactotron-react-native: ^5.1.10
+    reactotron-redux: ^3.1.10
     redux-persist: ^6.0.0
     redux-saga: ^1.3.0
     typed-redux-saga: ^1.5.0
@@ -9637,6 +9639,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mitt@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "mitt@npm:3.0.1"
+  checksum: b55a489ac9c2949ab166b7f060601d3b6d893a852515ae9eca4e11df01c013876df777ea109317622b5c1c60e8aae252558e33c8c94e14124db38f64a39614b1
+  languageName: node
+  linkType: hard
+
 "mkdirp-classic@npm:^0.5.2, mkdirp-classic@npm:^0.5.3":
   version: 0.5.3
   resolution: "mkdirp-classic@npm:0.5.3"
@@ -11002,7 +11011,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-svg@npm:^15.1.0, react-native-svg@npm:^15.8.0":
+"react-native-svg@npm:^15.1.0":
   version: 15.10.0
   resolution: "react-native-svg@npm:15.10.0"
   dependencies:
@@ -11013,6 +11022,20 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: b895065cf8297bbdfbbd2e2e7935be6acbe25fc7a63450a7e68a8a21b696aa10d9cae553ed76a4958b24b17724b164d33cc9bf8e0c21e4938e249917c7ace713
+  languageName: node
+  linkType: hard
+
+"react-native-svg@npm:^15.10.1":
+  version: 15.10.1
+  resolution: "react-native-svg@npm:15.10.1"
+  dependencies:
+    css-select: ^5.1.0
+    css-tree: ^1.1.3
+    warn-once: 0.1.1
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: c210426b424e99730ba35d6bbf18335a99f04f2f234cb5bb578ac685c31cfca5e39d48ebf05f9189edd61c028405f4ff242b5edc98ee3e3f41c8bfa960f5bff4
   languageName: node
   linkType: hard
 
@@ -11159,6 +11182,44 @@ __metadata:
   dependencies:
     loose-envify: ^1.1.0
   checksum: a27bcfa8ff7c15a1e50244ad0d0c1cb2ad4375eeffefd266a64889beea6f6b64c4966c9b37d14ee32d6c9fcd5aa6ba183b6988167ab4d127d13e7cb5b386a376
+  languageName: node
+  linkType: hard
+
+"reactotron-core-client@npm:2.9.6":
+  version: 2.9.6
+  resolution: "reactotron-core-client@npm:2.9.6"
+  dependencies:
+    reactotron-core-contract: 0.2.4
+  checksum: 4d09b501cbcac44cd06f1c7210429b6acc486e348ca0dd9e2e4268d635cec11a22e101e306395066bd769f470a8cea9b44a26c0d285fc907479aef5b4eb3350e
+  languageName: node
+  linkType: hard
+
+"reactotron-core-contract@npm:0.2.4":
+  version: 0.2.4
+  resolution: "reactotron-core-contract@npm:0.2.4"
+  checksum: b3c3e21f3137202d3089b00eda409ec1fb72b8ec296d710883dca07dfb98fa8c48564347854b40b031adcbeb17842730adebac53890f516a5304d03d90d1c1c7
+  languageName: node
+  linkType: hard
+
+"reactotron-react-native@npm:^5.1.10":
+  version: 5.1.10
+  resolution: "reactotron-react-native@npm:5.1.10"
+  dependencies:
+    mitt: ^3.0.1
+    reactotron-core-client: 2.9.6
+  peerDependencies:
+    react-native: ">=0.40.0"
+  checksum: d6f52c23b8c636aee456627aaaa8ce5630b25c90921d2eb7e2d28cb1367a2471d4f4ef35db91a5d518614289b5f0950100b5580b25b4f2179b1e8423575b7cb8
+  languageName: node
+  linkType: hard
+
+"reactotron-redux@npm:^3.1.10":
+  version: 3.1.10
+  resolution: "reactotron-redux@npm:3.1.10"
+  peerDependencies:
+    reactotron-core-client: "*"
+    redux: ">=4.0.0"
+  checksum: 5922ba94240bb6d221e58e798a30aff35f5de3b4e3bfc0a8ae7d4e9554b6328a4a33e771fd6a9ca8c0fdfc65cd16fd82b583361c41b7e17aa823c3850947392b
   languageName: node
   linkType: hard
 

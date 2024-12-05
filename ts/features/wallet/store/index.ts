@@ -2,23 +2,26 @@ import {combineReducers} from '@reduxjs/toolkit';
 import {PersistConfig, persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {PersistPartial} from 'redux-persist/es/persistReducer';
-import {lifecycleState, LifecycleState} from './lifecycle';
+import {lifecycleReducer, LifecycleState} from './lifecycle';
 import {attestationReducer, AttestationState} from './attestation';
-import {instanceSlice, InstanceState} from './instance';
-import {pidIssuanceStatusSlice, PidIssuanceStatusState} from './pidIssuance';
+import {instanceReducer, InstanceState} from './instance';
+import {pidIssuanceStatusReducer, PidIssuanceStatusState} from './pidIssuance';
+import {credentialsReducer, CredentialsState} from './credentials';
 
 export type WalletState = {
   lifecycle: LifecycleState;
   instance: InstanceState;
   attestation: AttestationState & PersistPartial;
   pidIssuanceStatus: PidIssuanceStatusState;
+  credentials: CredentialsState & PersistPartial;
 };
 
 const walletReducer = combineReducers({
-  lifecycle: lifecycleState.reducer,
-  instance: instanceSlice.reducer,
+  lifecycle: lifecycleReducer,
+  instance: instanceReducer,
   attestation: attestationReducer,
-  pidIssuanceStatus: pidIssuanceStatusSlice.reducer
+  pidIssuanceStatus: pidIssuanceStatusReducer,
+  credentials: credentialsReducer
 });
 
 const itwPersistConfig: PersistConfig<WalletState> = {

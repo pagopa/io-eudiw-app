@@ -12,7 +12,7 @@ import {
 import * as React from 'react';
 import {AccessibilityInfo, Platform, StyleSheet, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {LoadingIndicator} from './ui/LoadingIndicator';
+import {LoadingIndicator} from './LoadingIndicator';
 
 const styles = StyleSheet.create({
   container: {

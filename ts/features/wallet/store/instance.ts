@@ -18,7 +18,7 @@ const initialState: InstanceState = {
  * Redux slice for the pin state. It allows to set and reset the pin.
  * This must be a separate slice because the pin is sored using a custom persistor.
  */
-export const instanceSlice = createSlice({
+const instanceSlice = createSlice({
   name: 'instance',
   initialState,
   reducers: {
@@ -33,6 +33,8 @@ export const instanceSlice = createSlice({
  * Exports the actions for the pin slice.
  */
 export const {setInstanceKeyTag, resetInstanceKeyTag} = instanceSlice.actions;
+
+export const {reducer: instanceReducer} = instanceSlice;
 
 export const selectInstanceKeyTag = (state: RootState) =>
   state.wallet.instance.keyTag;

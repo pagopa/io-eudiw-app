@@ -1,4 +1,4 @@
-import {call, put, select, takeLatest} from 'typed-redux-saga';
+import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
 import Config from 'react-native-config';
 import {Errors, WalletInstance} from '@pagopa/io-react-native-wallet';
 import {
@@ -10,14 +10,21 @@ import {selectSessionId} from '../../../store/reducers/preferences';
 import {selectInstanceKeyTag, setInstanceKeyTag} from '../store/instance';
 import {createWalletProviderFetch} from '../utils/fetch';
 import {
+  resetInstanceCreation,
   setInstanceCreationError,
   setInstanceCreationRequest,
   setInstanceCreationSuccess
 } from '../store/pidIssuance';
+import {resetCredentials} from '../store/credentials';
 import {getAttestation} from './attestation';
 
 export function* watchInstanceSaga() {
-  yield* takeLatest(setInstanceCreationRequest, handleCreateInstance);
+  yield* takeLatest([setInstanceCreationRequest], function* (...args) {
+    yield* race({
+      task: call(handleCreateInstance, ...args),
+      cancel: take(resetInstanceCreation)
+    });
+  });
 }
 
 /**
@@ -58,9 +65,8 @@ export function* handleCreateInstance() {
     yield* put(setInstanceKeyTag(keyTag));
     yield* put(setAttestation(attestation));
     yield* put(setInstanceCreationSuccess());
-    console.log(attestation);
     // Reset the credential state before obtaining a new PID
-    // dispatch(credentialReset());
+    yield* put(resetCredentials());
   } catch (err: unknown) {
     yield* put(setInstanceCreationError({error: JSON.stringify(err)}));
   }

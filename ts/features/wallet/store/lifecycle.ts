@@ -24,7 +24,7 @@ const initialState: LifecycleState = {
  * Redux slice for the pin state. It allows to set and reset the pin.
  * This must be a separate slice because the pin is sored using a custom persistor.
  */
-export const lifecycleState = createSlice({
+const lifecycleSlice = createSlice({
   name: 'lifecycle',
   initialState,
   reducers: {
@@ -38,7 +38,9 @@ export const lifecycleState = createSlice({
 /**
  * Exports the actions for the pin slice.
  */
-export const {setLifecycle} = lifecycleState.actions;
+export const {setLifecycle} = lifecycleSlice.actions;
+
+export const {reducer: lifecycleReducer} = lifecycleSlice;
 
 export const selectLifecycle = (state: RootState) =>
   state.wallet.lifecycle.lifecycle;

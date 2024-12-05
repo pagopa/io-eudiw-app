@@ -11,6 +11,7 @@ import {
 } from 'redux-persist';
 import {useDispatch, useSelector} from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
+import reactotron from '../../ReactotronConfig';
 import rootSaga from '../saga';
 import walletReducer from '../features/wallet/store/index';
 import {AppDispatch, RootState} from './types';
@@ -37,7 +38,11 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER] // Ignore all the action types dispatched by Redux Persist
       }
-    }).concat(sagaMiddleware)
+    }).concat(sagaMiddleware),
+  enhancers: getDefaultEnhancers =>
+    __DEV__
+      ? getDefaultEnhancers().concat(reactotron.createEnhancer())
+      : getDefaultEnhancers()
 });
 
 /**
