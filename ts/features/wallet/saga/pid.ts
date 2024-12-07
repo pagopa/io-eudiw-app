@@ -80,7 +80,7 @@ function* obtainPid() {
       throw new Error('Custom tabs are not supported');
     }
 
-    const baseRedirectUri = new URL('eudiwpid://cb').protocol.replace(':', '');
+    const baseRedirectUri = new URL(redirectUri).protocol.replace(':', '');
 
     // Open the authorization URL in the custom tab
     const authRedirectUrl = yield* call(
@@ -148,8 +148,6 @@ function* obtainPid() {
       })
     );
   } catch (error) {
-    console.log(error);
-    console.log(JSON.stringify(error));
     yield* put(setPidIssuanceError({error: JSON.stringify(error)}));
   }
 }
