@@ -5,6 +5,7 @@ import {TabNavigator} from '../tab/TabNavigator';
 import WalletNavigator, {
   WalletNavigatorParamsList
 } from '../../features/wallet/navigation/WalletNavigator';
+import Settings from '../../screens/Settings';
 import MAIN_ROUTES from './routes';
 
 /**
@@ -14,6 +15,7 @@ import MAIN_ROUTES from './routes';
 export type MainNavigatorParamsList = {
   [MAIN_ROUTES.TAB_NAV]: undefined;
   [MAIN_ROUTES.WALLET]: NavigatorScreenParams<WalletNavigatorParamsList>;
+  [MAIN_ROUTES.SETTINGS]: undefined;
 };
 
 const Stack = createNativeStackNavigator<MainNavigatorParamsList>();
@@ -28,6 +30,7 @@ const MainStackNavigator = () => (
     screenOptions={{headerShown: false}}>
     <Stack.Screen name={MAIN_ROUTES.TAB_NAV} component={TabNavigator} />
     <Stack.Screen name={MAIN_ROUTES.WALLET} component={WalletNavigator} />
+    <Stack.Screen name={MAIN_ROUTES.SETTINGS} component={Settings} />
   </Stack.Navigator>
 );
 
