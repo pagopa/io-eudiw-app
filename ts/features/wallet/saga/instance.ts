@@ -45,8 +45,8 @@ export function* handleCreateInstance() {
       try {
         const attestation = yield* call(getAttestation, existingInstanceKeyTag);
         yield* put(setAttestation(attestation));
-        // yield* put(setInstanceSuccess());
-        // return;
+        yield* put(setInstanceCreationSuccess());
+        return;
       } catch (e) {
         // An error occurred while obtaining an attestation
         const err = e as Errors.WalletProviderResponseError;
@@ -68,6 +68,8 @@ export function* handleCreateInstance() {
     // Reset the credential state before obtaining a new PID
     yield* put(resetCredentials());
   } catch (err: unknown) {
+    console.log(err);
+    console.log(JSON.stringify(err));
     yield* put(setInstanceCreationError({error: JSON.stringify(err)}));
   }
 }
@@ -77,6 +79,7 @@ export function* handleCreateInstance() {
  * @returns the keytag used to create the wallet instance.
  */
 export function* createInstance() {
+  console.log(JSON.stringify(Config));
   const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;
   const sessionId = yield* select(selectSessionId);
   const appFetch = createWalletProviderFetch(walletProviderBaseUrl, sessionId);

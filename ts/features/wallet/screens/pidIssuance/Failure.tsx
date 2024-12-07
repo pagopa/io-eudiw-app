@@ -11,7 +11,7 @@ const Failure = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
-  useHardwareBackButton(() => false);
+  useHardwareBackButton(() => true);
 
   const onPress = () => {
     dispatch(resetInstanceCreation());
