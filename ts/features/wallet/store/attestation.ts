@@ -4,21 +4,20 @@ import {PersistConfig, persistReducer} from 'redux-persist';
 import {RootState} from '../../../store/types';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
 
-/* State type definition for the pin slice
- * pin - Application PIN set by the user
+/* State type definition for the attestation slice
+ * attestation - The wallet instance attestation
  */
 export type AttestationState = {
   attestation: string | undefined;
 };
 
-// Initial state for the pin slice
+// Initial state for the attestation slice
 const initialState: AttestationState = {
   attestation: undefined
 };
 
 /**
- * Redux slice for the pin state. It allows to set and reset the pin.
- * This must be a separate slice because the pin is sored using a custom persistor.
+ * Redux slice for the attestation state. It allows to set and reset the attestation.
  */
 const attestationSlice = createSlice({
   name: 'attestation',
@@ -32,7 +31,7 @@ const attestationSlice = createSlice({
 });
 
 /**
- * Redux persist configuration for the pin slice.
+ * Redux persist configuration for the attestation slice.
  * Currently it uses `io-react-native-secure-storage` as the storage engine which stores it encrypted.
  */
 const attestationPersist: PersistConfig<AttestationState> = {
@@ -41,7 +40,7 @@ const attestationPersist: PersistConfig<AttestationState> = {
 };
 
 /**
- * Persisted reducer for the pin slice.
+ * Persisted reducer for the attestation slice.
  */
 export const attestationReducer = persistReducer(
   attestationPersist,
@@ -49,9 +48,14 @@ export const attestationReducer = persistReducer(
 );
 
 /**
- * Exports the actions for the pin slice.
+ * Exports the actions for the attestation slice.
  */
 export const {setAttestation, resetAttestation} = attestationSlice.actions;
 
+/**
+ * Select the wallet instance attestation.
+ * @param state - The root state
+ * @returns the wallet instance attestation
+ */
 export const selectAttestation = (state: RootState) =>
   state.wallet.attestation.attestation;
