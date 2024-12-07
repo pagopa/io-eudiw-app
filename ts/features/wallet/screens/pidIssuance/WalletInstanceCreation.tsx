@@ -20,7 +20,7 @@ import {
 } from '../../store/pidIssuance';
 
 /**
- * Screen which shows the information about the wallet and then registers a wallet instance.
+ * Screen which shows the information about the wallet, then registers a wallet instance and gets an attestation.
  */
 const WalletInstanceCreation = () => {
   const {t} = useTranslation(['wallet', 'global']);

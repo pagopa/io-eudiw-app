@@ -19,10 +19,18 @@ import {
   setPidIssuanceSuccess
 } from '../store/pidIssuance';
 
+/**
+ * Saga watcher for PID related actions.
+ */
 export function* watchPidSaga() {
   yield* takeLatest(setPidIssuanceRequest, obtainPid);
 }
 
+/**
+ * Saga to obtain the PID credential. It contains the whole issuance flow for a PID, including
+ * the strong authentication with `@pagopa/io-react-native-login-utils`.
+ * The result is a credential ready to be stored.
+ */
 function* obtainPid() {
   try {
     const {

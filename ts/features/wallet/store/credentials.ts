@@ -4,23 +4,24 @@ import {PersistConfig, persistReducer} from 'redux-persist';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
 import {StoredCredential} from '../utils/types';
 
-/* State type definition for the pin slice
- * pin - Application PIN set by the user
+/* State type definition for the credentials slice
+ * pid - The PID credential
+ * credentials - A map of all the stored credentials
  */
 export type CredentialsState = {
   pid: StoredCredential | undefined;
   credentials: Record<string, StoredCredential>;
 };
 
-// Initial state for the pin slice
+// Initial state for the credential slice
 const initialState: CredentialsState = {
   pid: undefined,
   credentials: {}
 };
 
 /**
- * Redux slice for the pin state. It allows to set and reset the pin.
- * This must be a separate slice because the pin is sored using a custom persistor.
+ * Redux slice for the credential state. It allows to store the PID and other credentials.
+ * This must be a separate slice because the credentials are stored using a custom persistor.
  */
 const credentialsSlice = createSlice({
   name: 'credentials',
@@ -48,7 +49,7 @@ const credentialsSlice = createSlice({
 });
 
 /**
- * Redux persist configuration for the pin slice.
+ * Redux persist configuration for the credential slice.
  * Currently it uses `io-react-native-secure-storage` as the storage engine which stores it encrypted.
  */
 const credentialsPersistor: PersistConfig<CredentialsState> = {
@@ -57,7 +58,7 @@ const credentialsPersistor: PersistConfig<CredentialsState> = {
 };
 
 /**
- * Persisted reducer for the pin slice.
+ * Persisted reducer for the credential slice.
  */
 export const credentialsReducer = persistReducer(
   credentialsPersistor,
@@ -65,7 +66,7 @@ export const credentialsReducer = persistReducer(
 );
 
 /**
- * Exports the actions for the pin slice.
+ * Exports the actions for the credentials slice.
  */
 export const {addPid, addCredential, removeCredential, resetCredentials} =
   credentialsSlice.actions;

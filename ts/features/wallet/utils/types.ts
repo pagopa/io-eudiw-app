@@ -13,6 +13,9 @@ export type ClaimDisplayFormat = {
   value: unknown;
 };
 
+/**
+ * Type for a credential which is stored in the wallet.
+ */
 export type StoredCredential = {
   parsedCredential: ParsedCredential;
   credential: string;

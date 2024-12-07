@@ -41,7 +41,7 @@ export const store = configureStore({
     }).concat(sagaMiddleware),
   enhancers: getDefaultEnhancers =>
     __DEV__
-      ? getDefaultEnhancers().concat(reactotron.createEnhancer())
+      ? getDefaultEnhancers().concat(reactotron.createEnhancer()) // Adding Reactotron enhancer in development
       : getDefaultEnhancers()
 });
 

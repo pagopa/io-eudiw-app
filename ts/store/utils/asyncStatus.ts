@@ -3,8 +3,10 @@
  */
 
 /**
- * Type definition for the async values, it includes:
- * success - which indicates wether or not the async status has been successful or not.
+ * Type definition for the async values.
+ * The generic type T is the data type that the async status will carry.
+ *  it includes:
+ * success - which indicates wether or not the async status has been successful or not, along with an optional data object.
  * loading - which indicates wether or not the asyn status is currently loading.
  * error - which indicates if an error occurred and carries the error object as well.
  */

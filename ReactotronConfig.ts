@@ -6,8 +6,8 @@ const Reactotron = require('reactotron-react-native').default;
 const {reactotronRedux} = require('reactotron-redux');
 
 const reactotron = Reactotron.configure({})
-  .useReactNative() // add all built-in react native plugins
-  .use(reactotronRedux()) // add redux plugin
-  .connect(); // let's connect!
+  .useReactNative()
+  .use(reactotronRedux())
+  .connect();
 
 export default reactotron;

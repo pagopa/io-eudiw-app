@@ -29,6 +29,12 @@ type LoadingScreenContentProps = WithTestID<{
   headerVisible?: boolean;
 }>;
 
+/**
+ * Screen content for a loading screen with a spinner and a title
+ * @param contentTitle - The title of the loading screen.
+ * @param children - Children nodes to be rendered after the spinner.
+ * @param headerVisible - If true, the header will be visible.
+ */
 export const LoadingScreenContent = (props: LoadingScreenContentProps) => {
   const theme = useIOTheme();
   const {contentTitle, children, headerVisible, testID} = props;

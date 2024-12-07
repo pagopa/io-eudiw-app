@@ -10,23 +10,24 @@ import {
 } from '../../../store/utils/asyncStatus';
 import {StoredCredential} from '../utils/types';
 
-/* State type definition for the pin slice
- * pin - Application PIN set by the user
+/* State type definition for the pidIssuance slice
+ * issuanceCreation - Async status for the instance creation
+ * issuance - Async status for the PID issuance
  */
 export type PidIssuanceStatusState = {
   instanceCreation: AsyncStatusValues;
   issuance: AsyncStatusValues<StoredCredential>;
 };
 
-// Initial state for the pin slice
+// Initial state for the pidIssuance slice
 const initialState: PidIssuanceStatusState = {
   instanceCreation: setInitial(),
   issuance: setInitial()
 };
 
 /**
- * Redux slice for the pin state. It allows to set and reset the pin.
- * This must be a separate slice because the pin is sored using a custom persistor.
+ * Redux slice for the pidIssuance state. It holds the status of flows related to the PID issuance
+ * allowing to handle the UI accordingly with a request, loading and success/error states along with their data, if necessary.
  */
 export const pidIssuanceStatusSlice = createSlice({
   name: 'pidIssuanceStatus',
@@ -66,7 +67,7 @@ export const pidIssuanceStatusSlice = createSlice({
 });
 
 /**
- * Exports the actions for the pin slice.
+ * Exports the actions for the pidIssuance slice.
  */
 export const {
   setInstanceCreationRequest,
@@ -79,15 +80,33 @@ export const {
   resetPidIssuance
 } = pidIssuanceStatusSlice.actions;
 
+/**
+ * Exports the reducer for the pidIssuance slice.
+ */
 export const {reducer: pidIssuanceStatusReducer} = pidIssuanceStatusSlice;
 
+/**
+ * Selects the instanceCreation async status.
+ * @param state - The root state
+ * @returns The instanceCreation async status
+ */
 export const selectInstanceStatus = (state: RootState) =>
   state.wallet.pidIssuanceStatus.instanceCreation;
 
+/**
+ * Selects the issuance async status.
+ * @param state - The root state
+ * @returns The issuance async status
+ */
 export const selectPidIssuanceStatus = (state: RootState) =>
   state.wallet.pidIssuanceStatus.issuance;
 
-export const selectPidIssuance = (state: RootState) =>
+/**
+ * Selects the issuance data if the status is success.
+ * @param state - The root state
+ * @returns The issuance data if the status is success, otherwise undefined
+ */
+export const selectPidIssuanceData = (state: RootState) =>
   state.wallet.pidIssuanceStatus.issuance.success.status === true
     ? state.wallet.pidIssuanceStatus.issuance.success.data
     : undefined;

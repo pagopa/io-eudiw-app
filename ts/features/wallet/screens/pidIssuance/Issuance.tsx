@@ -13,7 +13,7 @@ import {StyleSheet, View} from 'react-native';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
-  selectPidIssuance,
+  selectPidIssuanceData,
   selectPidIssuanceStatus,
   setPidIssuanceRequest
 } from '../../store/pidIssuance';
@@ -24,14 +24,17 @@ import {addPid} from '../../store/credentials';
 import {Lifecycle, setLifecycle} from '../../store/lifecycle';
 
 /**
- * Screen which shows the information about the wallet and then registers a wallet instance.
+ * Screen which starts and handles the PID issuance flow.
+ * As soon as the screen is rendered, the PID issuance related action is dispatched and the flow stars.
+ * A loading screen is shown until the PID is issued, then the user can see a preview of the PID and decide to add it to the wallet.
+ * If the PID issuance fails, the user is redirected to the failure screen.
  */
 const Issuance = () => {
   const {t} = useTranslation(['wallet', 'global']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const {error, success, loading} = useAppSelector(selectPidIssuanceStatus);
-  const pid = useAppSelector(selectPidIssuance);
+  const pid = useAppSelector(selectPidIssuanceData);
 
   useEffect(() => {
     dispatch(setPidIssuanceRequest());

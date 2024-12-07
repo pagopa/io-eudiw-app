@@ -18,6 +18,16 @@ type Props = {
   style?: ViewStyle;
 };
 
+/**
+ * Cmponent which provides a scaling animation for its children.
+ * The component scales in when it becomes visible and scales out when it becomes invisible.
+ * @param visible - Whether the component is visible or not.
+ * @param springConfig - Configuration for the spring animation.
+ * @param delayOut - Delay in milliseconds before the scale out animation starts.
+ * @param delayIn - Delay in milliseconds before the scale in animation starts.
+ * @param children - The content to be animated.
+ * @param style - Style for the animated view.
+ */
 const ScaleInOutAnimation = ({
   visible = true,
   springConfig = {damping: 500, mass: 3, stiffness: 1000},

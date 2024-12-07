@@ -6,6 +6,10 @@ import {OperationResultScreenContent} from '../../../../components/screens/Opera
 import {resetInstanceCreation, resetPidIssuance} from '../../store/pidIssuance';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 
+/**
+ * Filure screen of the pid issuance flow.
+ * Currently it only shows a message and a button to go back to the main screen.
+ */
 const Failure = () => {
   const {t} = useTranslation(['global', 'wallet']);
   const navigation = useNavigation();
