@@ -1,11 +1,12 @@
 import {
   ContentWrapper,
   FooterActions,
+  ForceScrollDownView,
   H1,
   VSpacer
 } from '@pagopa/io-app-design-system';
 import React, {useEffect} from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
@@ -53,19 +54,17 @@ const WalletInstanceCreation = () => {
   });
 
   return (
-    <>
-      <ScrollView>
-        <AnimatedImage
-          source={require('../../assets/img/itw_hero.png')}
-          style={styles.banner}
-        />
+    <ForceScrollDownView threshold={50}>
+      <AnimatedImage
+        source={require('../../assets/img/itw_hero.png')}
+        style={styles.banner}
+      />
+      <VSpacer size={24} />
+      <ContentWrapper>
+        <H1>{t('wallet:walletInstanceCreation.title')}</H1>
         <VSpacer size={24} />
-        <ContentWrapper>
-          <H1>{t('wallet:walletInstanceCreation.title')}</H1>
-          <VSpacer size={24} />
-          <Markdown content={t('wallet:walletInstanceCreation.description')} />
-        </ContentWrapper>
-      </ScrollView>
+        <Markdown content={t('wallet:walletInstanceCreation.description')} />
+      </ContentWrapper>
       <FooterActions
         fixed={false}
         actions={{
@@ -78,7 +77,7 @@ const WalletInstanceCreation = () => {
           }
         }}
       />
-    </>
+    </ForceScrollDownView>
   );
 };
 
