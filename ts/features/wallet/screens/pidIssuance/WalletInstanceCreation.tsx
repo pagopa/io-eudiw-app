@@ -6,7 +6,7 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import React, {useEffect} from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
