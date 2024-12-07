@@ -1,5 +1,3 @@
-import * as z from 'zod';
-
 declare module 'react-native-config' {
   export interface NativeConfig {
     WALLET_PROVIDER_BASE_URL: string;
