@@ -11,11 +11,13 @@ import OnboardingNavigator, {
 import {useAppDispatch, useAppSelector} from '../store';
 import {selectStartupState, startupSetLoading} from '../store/reducers/startup';
 import {selectisOnboardingComplete} from '../store/reducers/preferences';
+import {WalletNavigatorParamsList} from '../features/wallet/navigation/WalletNavigator';
 import {IONavigationDarkTheme, IONavigationLightTheme} from './theme';
 import ROOT_ROUTES from './routes';
 import MainStackNavigator, {
   MainNavigatorParamsList
 } from './main/MainStackNavigator';
+import MAIN_ROUTES from './main/routes';
 
 export type RootStackParamList = {
   // Main
@@ -26,6 +28,10 @@ export type RootStackParamList = {
 
   // Onboarding
   [ROOT_ROUTES.ONBOARDING]: NavigatorScreenParams<OnboardingNavigatorParamsList>;
+
+  // Main navigator when onboarding is completed
+  [MAIN_ROUTES.TAB_NAV]: undefined;
+  [MAIN_ROUTES.WALLET]: NavigatorScreenParams<WalletNavigatorParamsList>;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

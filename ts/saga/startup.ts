@@ -10,10 +10,12 @@ import {
   getBiometricState,
   hasDeviceScreenLock
 } from '../features/onboarding/utils/biometric';
+import {checkConfig} from '../config/configSetup';
 
 function* setupSaga() {
   try {
     yield* call(initI18n);
+    yield* call(checkConfig);
     const biometricState = yield* call(getBiometricState);
     const hasScreenLock = yield* call(hasDeviceScreenLock);
     yield* put(
