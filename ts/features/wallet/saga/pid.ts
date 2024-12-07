@@ -148,6 +148,8 @@ function* obtainPid() {
       })
     );
   } catch (error) {
+    console.log(error);
+    console.log(JSON.stringify(error));
     yield* put(setPidIssuanceError({error: JSON.stringify(error)}));
   }
 }
