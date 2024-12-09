@@ -1,9 +1,23 @@
 interface Resources {
   global: {
+    generics: {
+      waiting: 'Wait few seconds';
+      success: 'Success';
+    };
     tabNavigator: {
       wallet: 'Wallet';
       scanQr: 'Scan QR';
       showQr: 'Show QR';
+    };
+    settings: {
+      title: 'Settings';
+      listHeaders: {
+        test: {
+          title: 'Test';
+          walletReset: 'Reset wallet';
+          onboardingReset: 'Reset onboarding';
+        };
+      };
     };
     buttons: {
       next: 'Next';
@@ -15,11 +29,18 @@ interface Resources {
       activate: 'Activate';
       notNow: 'Not now';
       back: 'Back';
+      cancel: 'Cancel';
     };
     errors: {
       generic: {
         title: "There's an issue with our systems";
         body: 'Please try again in a few minutes.';
+      };
+    };
+    accessibility: {
+      activityIndicator: {
+        label: 'Loading';
+        hint: 'Wait for the content load';
       };
     };
   };
@@ -118,6 +139,31 @@ interface Resources {
     walletInstanceCreation: {
       title: 'Your digital documents at your fingertips';
       description: "###### How it works \n Wallet allows you to save and keep on your device the digital version of your Identity and some of the physical documents you already own.  \n\n ###### It's easy and fast \n You can authenticate yourself in Italy and abroad for many digital services, or verify your credentials in person by showing the QR code linked to the digital versions of your documents.";
+    };
+    pidIssuance: {
+      preview: {
+        title: 'Digital Idenitity:';
+        subtitle: "Here's a preview of your data";
+        button: 'Add to Wallet';
+      };
+      success: {
+        title: "It's all ready!";
+        subtitle: 'You can now add your documents and access online services.';
+        buttons: {
+          add: 'Add your first document';
+          later: 'Later';
+        };
+      };
+      failure: {
+        title: 'An unexpected error occurred';
+        subtitle: 'Your request to the issuing entity was not successful.';
+        button: 'I understand';
+      };
+    };
+    claims: {
+      generic: {
+        notAvailable: 'Claim not available';
+      };
     };
   };
 }

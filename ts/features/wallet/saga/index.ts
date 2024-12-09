@@ -1,11 +1,11 @@
-import {takeLatest} from 'typed-redux-saga';
-import {setInstanceRequest} from '../store/pidIssuance';
-import {handleCreateInstance} from './handleCreateInstance';
+import {all} from 'typed-redux-saga';
+import {watchInstanceSaga} from './instance';
+import {watchPidSaga} from './pid';
 
 /**
  * Main saga for the wallet feature.
  * New sagas related to the wallet which are triggered by actions should be added here.
  */
 export function* walletSaga() {
-  yield* takeLatest(setInstanceRequest, handleCreateInstance);
+  yield* all([yield* watchInstanceSaga(), yield* watchPidSaga()]);
 }

@@ -1,4 +1,4 @@
-import {call, put, select} from 'typed-redux-saga';
+import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
 import Config from 'react-native-config';
 import {Errors, WalletInstance} from '@pagopa/io-react-native-wallet';
 import {
@@ -9,8 +9,23 @@ import {setAttestation} from '../store/attestation';
 import {selectSessionId} from '../../../store/reducers/preferences';
 import {selectInstanceKeyTag, setInstanceKeyTag} from '../store/instance';
 import {createWalletProviderFetch} from '../utils/fetch';
-import {setInstanceError, setInstanceSuccess} from '../store/pidIssuance';
-import {getAttestation} from './handleGetAttestation';
+import {
+  resetInstanceCreation,
+  setInstanceCreationError,
+  setInstanceCreationRequest,
+  setInstanceCreationSuccess
+} from '../store/pidIssuance';
+import {resetCredentials} from '../store/credentials';
+import {getAttestation} from './attestation';
+
+export function* watchInstanceSaga() {
+  yield* takeLatest([setInstanceCreationRequest], function* (...args) {
+    yield* race({
+      task: call(handleCreateInstance, ...args),
+      cancel: take(resetInstanceCreation)
+    });
+  });
+}
 
 /**
  * Saga which handles the creation of a wallet instance.
@@ -30,7 +45,7 @@ export function* handleCreateInstance() {
       try {
         const attestation = yield* call(getAttestation, existingInstanceKeyTag);
         yield* put(setAttestation(attestation));
-        yield* put(setInstanceSuccess());
+        yield* put(setInstanceCreationSuccess());
         return;
       } catch (e) {
         // An error occurred while obtaining an attestation
@@ -49,9 +64,11 @@ export function* handleCreateInstance() {
     const attestation = yield* call(getAttestation, keyTag);
     yield* put(setInstanceKeyTag(keyTag));
     yield* put(setAttestation(attestation));
-    yield* put(setInstanceSuccess());
+    yield* put(setInstanceCreationSuccess());
+    // Reset the credential state before obtaining a new PID
+    yield* put(resetCredentials());
   } catch (err: unknown) {
-    yield* put(setInstanceError({error: JSON.stringify(err)}));
+    yield* put(setInstanceCreationError({error: JSON.stringify(err)}));
   }
 }
 

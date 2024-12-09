@@ -2,6 +2,7 @@ import React from 'react';
 import {View} from 'react-native';
 import {IOStyles, HeaderFirstLevel} from '@pagopa/io-app-design-system';
 import {useTranslation} from 'react-i18next';
+import {useNavigation} from '@react-navigation/native';
 import {useAppSelector} from '../store';
 import {lifecycleIsOperationalSelector} from '../features/wallet/store/lifecycle';
 import {ActivationBanner} from '../features/wallet/components/ActivationBanner';
@@ -13,6 +14,7 @@ import {ActivationBanner} from '../features/wallet/components/ActivationBanner';
  */
 const WalletHome = () => {
   const {t} = useTranslation(['wallet', 'global']);
+  const navigation = useNavigation();
   const isWalletOperational = useAppSelector(lifecycleIsOperationalSelector);
 
   return (
@@ -22,8 +24,9 @@ const WalletHome = () => {
         type="singleAction"
         firstAction={{
           icon: 'coggle',
-          onPress: () => void 0, // Currently not used
-          accessibilityLabel: ''
+          onPress: () =>
+            navigation.navigate('ROOT_TAB_NAV', {screen: 'MAIN_SETTINGS'}),
+          accessibilityLabel: t('global:settings.title')
         }}
       />
       <View style={{...IOStyles.flex, ...IOStyles.horizontalContentPadding}}>
