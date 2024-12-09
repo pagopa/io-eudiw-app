@@ -2,19 +2,24 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {persistReducer, type PersistConfig} from 'redux-persist';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import uuid from 'react-native-uuid';
 import {RootState} from '../types';
 
 /* State type definition for the preferences slice
+ * sessionId - Randomly generated session id which identifies a wallet when creating a wallet instance. It gets resetted when the onboarding
+ * gets resetted as well.
  * isOnboardingComplete - Indicates if the user has completed the onboarding flow.
  * isBiometricEnabled - Indicates if the biometric is enabled for the user.
  */
 export type PreferencesState = {
+  sessionId: string;
   isOnboardingComplete: boolean;
   isBiometricEnabled: boolean;
 };
 
 // Initial state for the preferences slice
 const initialState: PreferencesState = {
+  sessionId: uuid.v4().toString(),
   isOnboardingComplete: false,
   isBiometricEnabled: false
 };
@@ -26,6 +31,7 @@ const preferencesSlice = createSlice({
   name: 'preferences',
   initialState,
   reducers: {
+    // Onboarding
     preferencesSetIsOnboardingDone: state => {
       state.isOnboardingComplete = true;
     },
@@ -81,3 +87,11 @@ export const selectisOnboardingComplete = (state: RootState) =>
  */
 export const selectIsBiometricEnabled = (state: RootState) =>
   state.preferences.isBiometricEnabled;
+
+/**
+ * Selects the session id of the wallet
+ * @param state - The root state of the Redux store
+ * @returns a randomly generated uuid
+ */
+export const selectSessionId = (state: RootState) =>
+  state.preferences.sessionId;

@@ -1,7 +1,7 @@
 interface Resources {
   global: {
     tabNavigator: {
-      home: 'Wallet';
+      wallet: 'Wallet';
       scanQr: 'Scan QR';
       showQr: 'Show QR';
     };
@@ -14,6 +14,7 @@ interface Resources {
       continue: 'Continue';
       activate: 'Activate';
       notNow: 'Not now';
+      back: 'Back';
     };
     errors: {
       generic: {
@@ -49,7 +50,7 @@ interface Resources {
       };
       policy: {
         title: 'How to choose the code?';
-        description: 'The unlock code is made up of 6 digits and will be used to access and authorize certain operations in the app. \n\n Choose a code that is hard to guess and does not contain: * a single repeated number (e.g. 000000); * a sequence of ordered numbers (e.g. 123456 or 654321).';
+        description: 'The unlock code is made up of 6 digits and will be used to access and authorize certain operations in the app. \n\n Choose a code that is hard to guess and does not contain: \n - a single repeated number (e.g. 000000); \n - a sequence of ordered numbers (e.g. 123456 or 654321).';
       };
       errors: {
         invalid: {
@@ -106,6 +107,17 @@ interface Resources {
       popup: {
         sensorDescription: 'Login quickly';
       };
+    };
+  };
+  wallet: {
+    activationBanner: {
+      title: 'Your digital documents always with you!';
+      description: 'Activate the Wallet to keep your digital identity and personal documents on your device.';
+      action: 'Start';
+    };
+    walletInstanceCreation: {
+      title: 'Your digital documents at your fingertips';
+      description: "###### How it works \n Wallet allows you to save and keep on your device the digital version of your Identity and some of the physical documents you already own.  \n\n ###### It's easy and fast \n You can authenticate yourself in Italy and abroad for many digital services, or verify your credentials in person by showing the QR code linked to the digital versions of your documents.";
     };
   };
 }

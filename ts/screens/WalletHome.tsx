@@ -1,0 +1,46 @@
+import React from 'react';
+import {View} from 'react-native';
+import {IOStyles, HeaderFirstLevel} from '@pagopa/io-app-design-system';
+import {useTranslation} from 'react-i18next';
+import {useAppSelector} from '../store';
+import {lifecycleIsOperationalSelector} from '../features/wallet/store/lifecycle';
+import {ActivationBanner} from '../features/wallet/components/ActivationBanner';
+
+/**
+ * Wallet home to be rendered as the first page in the tab navigator.
+ * It shows a banner when the wallet is in OPERATIONL status, otherwise it shows the lists of the credentials
+ * available in the wallet.
+ */
+const WalletHome = () => {
+  const {t} = useTranslation(['wallet', 'global']);
+  const isWalletOperational = useAppSelector(lifecycleIsOperationalSelector);
+
+  return (
+    <>
+      <HeaderFirstLevel
+        title={t('global:tabNavigator.wallet')}
+        type="singleAction"
+        firstAction={{
+          icon: 'coggle',
+          onPress: () => void 0, // Currently not used
+          accessibilityLabel: ''
+        }}
+      />
+      <View style={{...IOStyles.flex, ...IOStyles.horizontalContentPadding}}>
+        {isWalletOperational ? (
+          <View style={{...IOStyles.flex, justifyContent: 'flex-start'}}>
+            <ActivationBanner
+              title={t('wallet:activationBanner.title')}
+              content={t('wallet:activationBanner.description')}
+              action={t('wallet:activationBanner.action')}
+            />
+          </View>
+        ) : (
+          <></> // Needs to
+        )}
+      </View>
+    </>
+  );
+};
+
+export default WalletHome;

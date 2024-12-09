@@ -12,6 +12,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../saga';
+import walletReducer from '../features/wallet/store/index';
 import {AppDispatch, RootState} from './types';
 import {startupSlice} from './reducers/startup';
 import {pinReducer} from './reducers/pin';
@@ -28,7 +29,8 @@ export const store = configureStore({
   reducer: {
     startup: startupSlice.reducer,
     preferences: preferencesReducer,
-    pin: pinReducer
+    pin: pinReducer,
+    wallet: walletReducer
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
