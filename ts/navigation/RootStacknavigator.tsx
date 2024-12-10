@@ -18,6 +18,7 @@ import MainStackNavigator, {
   MainNavigatorParamsList
 } from './main/MainStackNavigator';
 import MAIN_ROUTES from './main/routes';
+import {navigationRef} from './utils';
 
 export type RootStackParamList = {
   // Main
@@ -81,7 +82,8 @@ export const RootStackNavigator = () => {
     <NavigationContainer
       theme={
         themeType === 'light' ? IONavigationLightTheme : IONavigationDarkTheme
-      }>
+      }
+      ref={navigationRef}>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen
           name={initialScreen.name}

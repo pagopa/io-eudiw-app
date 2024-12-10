@@ -7,7 +7,7 @@ import {
   Credential
 } from '@pagopa/io-react-native-wallet';
 import Config from 'react-native-config';
-import {call, put, select, takeLatest} from 'typed-redux-saga';
+import {call, put, select, take, takeLatest} from 'typed-redux-saga';
 import uuid from 'react-native-uuid';
 import {generate} from '@pagopa/io-react-native-crypto';
 import {regenerateCryptoKey} from '../../../utils/crypto';
@@ -18,12 +18,21 @@ import {
   setPidIssuanceRequest,
   setPidIssuanceSuccess
 } from '../store/pidIssuance';
+import {addPid, addPidWithIdentification} from '../store/credentials';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '../../../store/reducers/identification';
+import {Lifecycle, setLifecycle} from '../store/lifecycle';
+import {navigate} from '../../../navigation/utils';
 
 /**
  * Saga watcher for PID related actions.
  */
 export function* watchPidSaga() {
   yield* takeLatest(setPidIssuanceRequest, obtainPid);
+  yield* takeLatest(addPidWithIdentification, storePidWithIdentification);
 }
 
 /**
@@ -157,5 +166,24 @@ function* obtainPid() {
     );
   } catch (error) {
     yield* put(setPidIssuanceError({error: JSON.stringify(error)}));
+  }
+}
+
+function* storePidWithIdentification(
+  action: ReturnType<typeof addPidWithIdentification>
+) {
+  yield* put(
+    setIdentificationStarted({canResetPin: false, isValidatingTask: true})
+  );
+  const resAction = yield* take([
+    setIdentificationIdentified,
+    setIdentificationUnidentified
+  ]);
+  if (setIdentificationIdentified.match(resAction)) {
+    yield* put(addPid({pid: action.payload.pid}));
+    yield* put(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
+    navigate('MAIN_WALLET', {screen: 'SUCCESS'});
+  } else {
+    return;
   }
 }

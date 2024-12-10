@@ -5,6 +5,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import * as React from 'react';
 import {ComponentProps, useLayoutEffect, useMemo} from 'react';
+import {useTranslation} from 'react-i18next';
 
 type SpecificHookProps = {
   canGoBack?: boolean;
@@ -89,6 +90,7 @@ export const useHeaderSecondLevel = ({
   animatedRef
 }: HeaderSecondLevelHookProps) => {
   const navigation = useNavigation();
+  const {t} = useTranslation('global');
 
   const backProps = useMemo(
     () =>
@@ -135,7 +137,7 @@ export const useHeaderSecondLevel = ({
     const helpAction: HeaderActionProps = {
       icon: 'help',
       onPress: () => void 0,
-      accessibilityLabel: 'TEST'
+      accessibilityLabel: t('buttons.help')
     };
 
     // Three actions

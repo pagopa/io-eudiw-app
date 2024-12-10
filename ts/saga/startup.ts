@@ -1,36 +1,32 @@
-import BootSplash from 'react-native-bootsplash';
-import {call, put, takeLatest} from 'typed-redux-saga';
-import initI18n from '../i18n/i18n';
+import {fork, put, select, take, takeLatest} from 'typed-redux-saga';
+import {startupSetDone} from '../store/reducers/startup';
 import {
-  startupSetDone,
-  startupSetError,
-  startupSetLoading
-} from '../store/reducers/startup';
-import {
-  getBiometricState,
-  hasDeviceScreenLock
-} from '../features/onboarding/utils/biometric';
-import {checkConfig} from '../config/configSetup';
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '../store/reducers/identification';
+import {walletSaga} from '../features/wallet/saga';
+import {selectisOnboardingComplete} from '../store/reducers/preferences';
 
-function* setupSaga() {
-  try {
-    yield* call(initI18n);
-    yield* call(checkConfig);
-    const biometricState = yield* call(getBiometricState);
-    const hasScreenLock = yield* call(hasDeviceScreenLock);
+function* startup() {
+  const isOnboardingCompleted = yield* select(selectisOnboardingComplete);
+  if (isOnboardingCompleted) {
     yield* put(
-      startupSetDone({
-        biometricState,
-        hasScreenLock
+      setIdentificationStarted({
+        canResetPin: true,
+        isValidatingTask: false
       })
     );
-  } catch {
-    yield* put(startupSetError());
-  } finally {
-    yield* call(BootSplash.hide, {fade: true});
+    const action = yield* take([
+      setIdentificationIdentified,
+      setIdentificationUnidentified
+    ]);
+    if (setIdentificationIdentified.match(action)) {
+      yield* fork(walletSaga);
+    }
   }
 }
 
 export function* startupSaga() {
-  yield* takeLatest(startupSetLoading, setupSaga);
+  yield* takeLatest(startupSetDone, startup);
 }

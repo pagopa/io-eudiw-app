@@ -2,6 +2,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../types';
 import {BiometricState} from '../../features/onboarding/utils/biometric';
+import {preferencesReset} from './preferences';
 
 /* State type definition for the startup slice
  * startUpStatus - Status of the startup process
@@ -44,6 +45,10 @@ export const startupSlice = createSlice({
       state.startUpStatus = 'LOADING';
     },
     startupReset: () => initialState
+  },
+  extraReducers: builder => {
+    // This happens when the whole app state is reset
+    builder.addCase(preferencesReset, _ => initialState);
   }
 });
 

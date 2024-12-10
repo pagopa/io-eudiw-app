@@ -20,8 +20,7 @@ import {
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/CredentialPreviewClaimsList';
 import {StoredCredential} from '../../utils/types';
-import {addPid} from '../../store/credentials';
-import {Lifecycle, setLifecycle} from '../../store/lifecycle';
+import {addPidWithIdentification} from '../../store/credentials';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -57,12 +56,6 @@ const Issuance = () => {
     navigation.navigate('MAIN_TAB_NAV');
   };
 
-  const onAdd = (pidToAdd: StoredCredential) => {
-    dispatch(addPid({pid: pidToAdd}));
-    dispatch(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
-    navigation.navigate('MAIN_WALLET', {screen: 'SUCCESS'});
-  };
-
   const PidPreview = ({credential}: {credential: StoredCredential}) => (
     <>
       <ForceScrollDownView contentContainerStyle={styles.scroll}>
@@ -79,7 +72,8 @@ const Issuance = () => {
         actions={{
           primary: {
             label: t('wallet:pidIssuance.preview.button'),
-            onPress: () => onAdd(credential),
+            onPress: () =>
+              dispatch(addPidWithIdentification({pid: credential})),
             icon: 'add',
             iconPosition: 'end'
           },

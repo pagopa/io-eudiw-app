@@ -3,6 +3,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {PersistConfig, persistReducer} from 'redux-persist';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
 import {StoredCredential} from '../utils/types';
+import {preferencesReset} from '../../../store/reducers/preferences';
 
 /* State type definition for the credentials slice
  * pid - The PID credential
@@ -30,6 +31,11 @@ const credentialsSlice = createSlice({
     addPid: (state, action: PayloadAction<{pid: StoredCredential}>) => {
       state.pid = action.payload.pid;
     },
+    // Empty action which will be intercepted by the saga and trigger the identification before storing the PID
+    addPidWithIdentification: (
+      _,
+      __: PayloadAction<{pid: StoredCredential}>
+    ) => {},
     addCredential: (
       state,
       action: PayloadAction<{credential: StoredCredential}>
@@ -45,6 +51,10 @@ const credentialsSlice = createSlice({
       delete state.credentials[credentialType];
     },
     resetCredentials: () => initialState
+  },
+  extraReducers: builder => {
+    // This happens when the whole app state is reset
+    builder.addCase(preferencesReset, _ => initialState);
   }
 });
 
@@ -68,5 +78,10 @@ export const credentialsReducer = persistReducer(
 /**
  * Exports the actions for the credentials slice.
  */
-export const {addPid, addCredential, removeCredential, resetCredentials} =
-  credentialsSlice.actions;
+export const {
+  addPid,
+  addCredential,
+  removeCredential,
+  resetCredentials,
+  addPidWithIdentification
+} = credentialsSlice.actions;
