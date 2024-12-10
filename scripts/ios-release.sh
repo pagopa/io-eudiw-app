@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cp .env.production .env
+cp .env.prod .env
 yarn postinstall
 # yarn cie-ios:ci
 touch ./ios/fastlane/AuthKey_$APP_STORE_API_KEY_ID.p8
