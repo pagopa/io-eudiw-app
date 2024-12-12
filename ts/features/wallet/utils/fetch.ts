@@ -61,3 +61,36 @@ export function createWalletProviderFetch(
   return (input: RequestInfo | URL, init?: RequestInit) =>
     fetch(input, addAuthHeaders(authHeader, init));
 }
+
+type FetchOptions = RequestInit & {
+  headers?: Record<string, string>;
+};
+
+export async function fetchWithExponentialBackoff(
+  url: string,
+  options: FetchOptions,
+  maxRetries = 5,
+  baseDelay = 500,
+  retries = 0
+): Promise<Response> {
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error(`HTTP Error: ${response.status}`);
+    }
+    return response;
+  } catch (error) {
+    if (retries < maxRetries) {
+      const delay = baseDelay * Math.pow(2, retries);
+      await new Promise(resolve => setTimeout(resolve, delay));
+      return fetchWithExponentialBackoff(
+        url,
+        options,
+        maxRetries,
+        baseDelay,
+        retries + 1
+      );
+    }
+    throw error;
+  }
+}
