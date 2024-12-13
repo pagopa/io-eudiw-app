@@ -169,6 +169,11 @@ function* obtainPid() {
   }
 }
 
+/**
+ * Saga to store the PID credential after pin validation.
+ * It dispatches the action which shows the pin validation modal and awaits for the result.
+ * If the pin is correct, the PID is stored and the lifecycle is set to `LIFECYCLE_VALID`.
+ */
 function* storePidWithIdentification(
   action: ReturnType<typeof addPidWithIdentification>
 ) {

@@ -3,6 +3,12 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../types';
 import {preferencesReset} from './preferences';
 
+/**
+ * The identification state.
+ * - status: The status of the identification process.
+ * - canResetPin: If the pin can be reset in the identification modal.
+ * - isValidatingTask: If the identification is validating a task and thus a different text and pictogram are shown.
+ */
 type IdentificationState = {
   status: 'started' | 'identified' | 'unidentified';
   canResetPin: boolean;
@@ -16,8 +22,7 @@ export const initialState: IdentificationState = {
 };
 
 /**
- * Redux slice for the pin state. It allows to set and reset the pin.
- * This must be a separate slice because the pin is sored using a custom persistor.
+ * Redux slice for the identification state. It allows to show the identification modal.
  */
 const identificationSlice = createSlice({
   name: 'identification',
@@ -46,7 +51,7 @@ const identificationSlice = createSlice({
 });
 
 /**
- * Exports the actions for the pin slice.
+ * Exports the actions for the identification slice.
  */
 export const {
   setIdentificationStarted,
@@ -57,9 +62,19 @@ export const {
 
 export const identificationReducer = identificationSlice.reducer;
 
+/**
+ * Select the identification status.
+ * @param state - The root state.
+ * @returns The identification state.
+ */
 export const selectIdentificationStatus = (state: RootState) =>
   state.identification;
 
+/**
+ * Select if the identification is validating a task.
+ * @param state - The root state.
+ * @returns true if the identification is validating a task, false otherwise.
+ */
 export const selectIsValidationTask = (state: RootState) =>
   state.identification.status === 'started'
     ? state.identification.isValidatingTask

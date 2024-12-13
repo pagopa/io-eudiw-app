@@ -34,6 +34,11 @@ type IdentificationNumberPadProps = {
   biometricsConfig: BiometricConfigType;
 };
 
+/**
+ * Number pad for identification screen which allows to insert a pin code.
+ * It also shows an error animation if the pin is not correct.
+ * If the environment is development, a button to automatically insert the correct pin is shown.
+ */
 export const IdentificationNumberPad = (
   props: IdentificationNumberPadProps
 ) => {

@@ -7,6 +7,11 @@ import FingerprintScanner, {
   FingerprintScannerError
 } from 'react-native-fingerprint-scanner';
 
+/**
+ * Returns the icon name based on the biometry type.
+ * @param biometryPrintableSimpleType - The biometry type.
+ * @returns The icon name.
+ */
 export const getBiometryIconName = (
   biometryPrintableSimpleType: BiometricsValidType
 ) => {
@@ -23,6 +28,12 @@ export const getBiometryIconName = (
   }
 };
 
+/**
+ * Performs the biometric authentication request, calling the onSuccess callback if the authentication is successful, otherwise the onError callback.
+ * @param onSuccess - The callback to be called if the authentication is successful.
+ * @param onError - The callback to be called if the authentication fails.
+ * @returns A promise that resolves when the authentication is completed.
+ */
 export const biometricAuthenticationRequest = (
   onSuccess: () => void,
   onError: (e: FingerprintScannerError) => void

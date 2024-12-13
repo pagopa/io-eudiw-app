@@ -7,6 +7,10 @@ import {
   isBiometricsValidType
 } from '../features/onboarding/utils/biometric';
 
+/**
+ * Hook to get the biometric type if it's enabled.
+ * @returns the biometric type and the biometric enabled status.
+ */
 export const useBiometricType = () => {
   const isFingerprintEnabled = useAppSelector(selectIsBiometricEnabled);
 

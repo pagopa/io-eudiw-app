@@ -27,7 +27,7 @@ import {useAppBackgroundAccentColorName} from '../hooks/theme';
 import {
   biometricAuthenticationRequest,
   getBiometryIconName
-} from '../store/utils/identifcation';
+} from '../store/utils/identification';
 import {useBiometricType} from '../hooks/useBiometricType';
 import {IdentificationNumberPad} from '../components/IdentificationNumberPad';
 import {useAppDispatch, useAppSelector} from '../store';
@@ -41,6 +41,12 @@ import {preferencesReset} from '../store/reducers/preferences';
 
 const onRequestCloseHandler = () => undefined;
 
+/**
+ * Identification modal screen which asks for the pin code or biometric authentication.
+ * It depends on the status of the identification redux state {@link ts/store/reducers/identification.ts} and can be started by dispatching the setIdentificationStarted action.
+ * If the identification is successful, the setIdentificationIdentified action is dispatched, otherwise the setIdentificationUnidentified action is dispatched.
+ * The middleware can listen for these actions to perform additional tasks.
+ */
 const IdentificationModal = () => {
   const showRetryText = useRef(false);
   const headerRef = useRef<View>(null);

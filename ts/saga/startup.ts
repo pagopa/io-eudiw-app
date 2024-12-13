@@ -8,6 +8,10 @@ import {
 import {walletSaga} from '../features/wallet/saga';
 import {selectisOnboardingComplete} from '../store/reducers/preferences';
 
+/**
+ * Startup saga which initializes the app.
+ * It checks if the onboarding is completed and starts the wallet saga.
+ */
 function* startup() {
   const isOnboardingCompleted = yield* select(selectisOnboardingComplete);
   if (isOnboardingCompleted) {
@@ -27,6 +31,10 @@ function* startup() {
   }
 }
 
+/**
+ * The startup saga which listens for the startup action.
+ * It stats when the startup is complete, thus the app has all the resources to start.
+ */
 export function* startupSaga() {
   yield* takeLatest(startupSetDone, startup);
 }

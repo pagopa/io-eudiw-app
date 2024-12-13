@@ -13,6 +13,10 @@ import {
 import {checkConfig} from '../config/configSetup';
 import {preferencesReset} from '../store/reducers/preferences';
 
+/**
+ * Setup saga to initialize the app and load all the required resources.
+ * It checks if env file is correct, initializes the translation library and checks the biometric state.
+ */
 function* setup() {
   try {
     yield* call(initI18n);
