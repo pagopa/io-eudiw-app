@@ -9,7 +9,7 @@ import {
 import * as React from 'react';
 import {useCallback, useState} from 'react';
 import {View} from 'react-native';
-import {useTranslation} from 'react-i18next';
+import i18next from 'i18next';
 import {isDevEnv} from '../utils/env';
 
 const PIN_LENGTH = 6;
@@ -37,7 +37,6 @@ type IdentificationNumberPadProps = {
 export const IdentificationNumberPad = (
   props: IdentificationNumberPadProps
 ) => {
-  const {t} = useTranslation();
   const [value, setValue] = useState('');
 
   const {pin, pinValidation, numberPadVariant, biometricsConfig} = props;
@@ -112,7 +111,7 @@ export const IdentificationNumberPad = (
       <VSpacer size={48} />
       <View>
         <NumberPad
-          deleteAccessibilityLabel={t('global.buttons.delete')}
+          deleteAccessibilityLabel={i18next.t('buttons.delete', {ns: 'global'})}
           onDeletePress={onDeletePress}
           onNumberPress={onValueChange}
           variant={numberPadVariant}
