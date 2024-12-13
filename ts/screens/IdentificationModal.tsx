@@ -37,7 +37,10 @@ import {
   setIdentificationIdentified,
   setIdentificationUnidentified
 } from '../store/reducers/identification';
-import {preferencesReset} from '../store/reducers/preferences';
+import {
+  preferencesReset,
+  selectIsBiometricEnabled
+} from '../store/reducers/preferences';
 
 const onRequestCloseHandler = () => undefined;
 
@@ -58,6 +61,7 @@ const IdentificationModal = () => {
   const {status, isValidatingTask} = useAppSelector(selectIdentificationStatus);
   const blueColor = useAppBackgroundAccentColorName();
   const {top: topInset} = useSafeAreaInsets();
+  const isBiometricEnabled = useAppSelector(selectIsBiometricEnabled);
 
   const pictogramKey: IOPictograms = isValidatingTask ? 'passcode' : 'key';
 
@@ -161,6 +165,12 @@ const IdentificationModal = () => {
   // to avoid the biometric request to be triggered when the modal is not shown.
   if (status !== 'started') {
     return null;
+  }
+  /**
+   * Shows the biometric request if the biometric is enabled.
+   */
+  if (isBiometricEnabled) {
+    void onFingerprintRequest();
   }
 
   return (
