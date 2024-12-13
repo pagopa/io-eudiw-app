@@ -164,7 +164,7 @@ export const useHeaderSecondLevel = ({
       type: 'singleAction',
       firstAction: helpAction
     };
-  }, [supportRequest, secondAction, thirdAction]);
+  }, [supportRequest, t, secondAction, thirdAction]);
 
   const headerComponentProps = useMemo(
     () => ({
