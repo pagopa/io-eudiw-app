@@ -1,5 +1,4 @@
 import {
-  Badge,
   IOVisualCostants,
   ListItemHeader,
   VStack
@@ -8,7 +7,6 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useAppSelector} from '../../../../store';
-import {lifecycleIsValidSelector} from '../../store/lifecycle';
 import {IOScrollViewWithLargeHeader} from '../../../../components/IOScrollViewWithLargeHeader';
 import {wellKnownCredential} from '../../utils/credentials';
 import {ItwOnboardingModuleCredential} from '../../components/OnboardingModuleCredential';
@@ -16,19 +14,15 @@ import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {selectCredentials} from '../../store/credentials';
 
 const IssuanceList = () => {
-  const isWalletValid = useAppSelector(lifecycleIsValidSelector);
   const {t} = useTranslation('wallet');
   const credentials = useAppSelector(selectCredentials);
-  const pid = useAppSelector(selectPid);
-
-  const activeBadge: Badge = {
-    variant: 'success',
-    text: t('home.badges.saved')
-  };
 
   useHeaderSecondLevel({
     title: ''
   });
+
+  const isCredentialSaved = (type: string) =>
+    credentials.find(c => c.credentialType === type) !== undefined;
 
   return (
     <IOScrollViewWithLargeHeader
@@ -42,7 +36,7 @@ const IssuanceList = () => {
             <ItwOnboardingModuleCredential
               key={`itw_credential_${type}`}
               type={type}
-              isSaved={false}
+              isSaved={isCredentialSaved(type)}
               isFetching={false}
               onPress={() => void 0}
             />
