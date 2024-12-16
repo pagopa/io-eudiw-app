@@ -82,9 +82,6 @@ export const selectCredentials = (state: RootState) =>
   state.wallet.credentials.credentials;
 
 export const selectCredential = (credentialType: string) =>
-  createSelector(selectCredentials, credentials => {
-    const filtered = credentials.filter(
-      c => c.credentialType === credentialType
-    );
-    return filtered.length > 0 ? filtered : undefined;
-  });
+  createSelector(selectCredentials, credentials =>
+    credentials.find(c => c.credentialType === credentialType)
+  );
