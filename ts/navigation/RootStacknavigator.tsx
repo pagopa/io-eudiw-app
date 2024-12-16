@@ -13,13 +13,13 @@ import {selectStartupState, startupSetLoading} from '../store/reducers/startup';
 import {selectisOnboardingComplete} from '../store/reducers/preferences';
 import {WalletNavigatorParamsList} from '../features/wallet/navigation/WalletNavigator';
 import GenericError from '../screens/GenericError';
+import Loading from '../screens/Loading';
 import {IONavigationDarkTheme, IONavigationLightTheme} from './theme';
 import ROOT_ROUTES from './routes';
 import MainStackNavigator, {
   MainNavigatorParamsList
 } from './main/MainStackNavigator';
 import MAIN_ROUTES from './main/routes';
-import Loading from '../screens/Loading';
 
 export type RootStackParamList = {
   // Main
@@ -69,11 +69,11 @@ export const RootStackNavigator = () => {
           : {name: ROOT_ROUTES.ONBOARDING, component: OnboardingNavigator};
       case 'ERROR':
         // An error occurred during startup
-        return {name: ROOT_ROUTES.ERROR, component: GenericError}; // TODO: Add error screen
+        return {name: ROOT_ROUTES.ERROR, component: GenericError};
       case 'LOADING':
       case 'NOT_STARTED':
       default:
-        return {name: ROOT_ROUTES.LOADING, component: Loading}; // TODO: Add loading screen
+        return {name: ROOT_ROUTES.LOADING, component: Loading};
     }
   }, [isStartupDone, isOnboardingCompleted]);
 
