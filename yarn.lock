@@ -2218,9 +2218,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-app-design-system@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "@pagopa/io-app-design-system@npm:3.1.0"
+"@pagopa/io-app-design-system@npm:^4.0.1":
+  version: 4.2.0
+  resolution: "@pagopa/io-app-design-system@npm:4.2.0"
   dependencies:
     "@testing-library/jest-native": ^5.4.2
     "@types/react-test-renderer": ^18.0.0
@@ -2244,7 +2244,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-safe-area-context: "*"
     react-native-svg: "*"
-  checksum: f61255e857d86a88f24725595c92c0aacef1064f180a7ca7880a45b842dd54112e38f8c31f3af30cd1b3b53455a90728452fc97e0cbd11158379bd07af09fb20
+  checksum: 5a34b4cce3412e47c1fdcc62c1a6fca207cd018cf88d9a4e7a29611a433ea1f2e4e35a950a78fe678e35a7200f8f470e559e6cd62a00f8ba0db8e6b028ce796e
   languageName: node
   linkType: hard
 
@@ -2271,9 +2271,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-wallet@npm:^0.25.0":
-  version: 0.25.0
-  resolution: "@pagopa/io-react-native-wallet@npm:0.25.0"
+"@pagopa/io-react-native-login-utils@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "@pagopa/io-react-native-login-utils@npm:1.0.7"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: bdf066e70c8e732ce42b7e5d44e7126c88e1f9c97873cc16c56a613b889c5c8ab03d1e7e46f755327a1f41fa936def1ac1aa65c8b55fe40c0e087e6ba782a21a
+  languageName: node
+  linkType: hard
+
+"@pagopa/io-react-native-wallet@npm:^0.27.0":
+  version: 0.27.0
+  resolution: "@pagopa/io-react-native-wallet@npm:0.27.0"
   dependencies:
     js-base64: ^3.7.7
     js-sha256: ^0.9.0
@@ -2284,18 +2294,9 @@ __metadata:
   peerDependencies:
     "@pagopa/io-react-native-crypto": "*"
     "@pagopa/io-react-native-jwt": "*"
-    "@pagopa/react-native-cie": "*"
     react: "*"
     react-native: "*"
-    react-native-webview: "*"
-  checksum: 6da2dd0acfe7494c315e63e3a8bd1be193a03c1986b2d501fca7b31ea97e4edff654fd1c1af204c80c06e3f5630e9f81991ddeba10b83d8d50ea59ed15ff871e
-  languageName: node
-  linkType: hard
-
-"@pagopa/react-native-cie@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "@pagopa/react-native-cie@npm:1.4.0"
-  checksum: 742b53251d0bd5a530ee63dcb7a9e604b7a06fc848f4a5643b3fdc841935c92fa5f8453e3c7cb8006bcab7c27563ff88efb53528a1df0256cf53cb7c57f251b1
+  checksum: f0791ff17726ed5aaf859fd45f377e7914abbd3a656c9281859d36f08c97db25042cc40051e2240fa315b656b49692908b50f646708aa53793d11cd56aeef742
   languageName: node
   linkType: hard
 
@@ -3426,6 +3427,13 @@ __metadata:
   version: 2.0.11
   resolution: "@types/unist@npm:2.0.11"
   checksum: 6d436e832bc35c6dde9f056ac515ebf2b3384a1d7f63679d12358766f9b313368077402e9c1126a14d827f10370a5485e628bf61aa91117cf4fc882423191a4e
+  languageName: node
+  linkType: hard
+
+"@types/url-parse@npm:^1.4.11":
+  version: 1.4.11
+  resolution: "@types/url-parse@npm:1.4.11"
+  checksum: 3e289d184b03d0b0203bccdff00efc1388db2ad8bba4af094201bf3ea5d001f36674ce1ee1764b8906b786a2de625dbc5d76b63ac68e2a3383a93acfe49e01b8
   languageName: node
   linkType: hard
 
@@ -7326,7 +7334,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"invariant@npm:2.2.4, invariant@npm:^2.2.4":
+"invariant@npm:^2.2.4":
   version: 2.2.4
   resolution: "invariant@npm:2.2.4"
   dependencies:
@@ -7353,11 +7361,11 @@ __metadata:
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
     "@gorhom/bottom-sheet": ^5.0.6
-    "@pagopa/io-app-design-system": ^3.1.0
+    "@pagopa/io-app-design-system": ^4.0.1
     "@pagopa/io-react-native-crypto": ^1.0.1
     "@pagopa/io-react-native-jwt": ^1.4.0
-    "@pagopa/io-react-native-wallet": ^0.25.0
-    "@pagopa/react-native-cie": ^1.4.0
+    "@pagopa/io-react-native-login-utils": ^1.0.7
+    "@pagopa/io-react-native-wallet": ^0.27.0
     "@pagopa/react-native-nodelibs": ^0.1.0
     "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native-community/cli": 15.0.0
@@ -7375,6 +7383,7 @@ __metadata:
     "@types/lodash": ^4.17.13
     "@types/react": ^18.2.6
     "@types/react-test-renderer": ^18.0.0
+    "@types/url-parse": ^1.4.11
     "@typescript-eslint/eslint-plugin": ^5.9.1
     babel-jest: ^29.6.3
     eslint: ^8.19.0
@@ -7406,11 +7415,12 @@ __metadata:
     react-native-reanimated: ^3.16.1
     react-native-safe-area-context: ^4.14.0
     react-native-screens: ^4.0.0
-    react-native-svg: ^15.8.0
+    react-native-svg: ^15.10.1
     react-native-url-polyfill: ^2.0.0
-    react-native-webview: ^13.12.4
     react-redux: ^9.1.2
     react-test-renderer: 18.3.1
+    reactotron-react-native: ^5.1.10
+    reactotron-redux: ^3.1.10
     redux-persist: ^6.0.0
     redux-saga: ^1.3.0
     typed-redux-saga: ^1.5.0
@@ -9617,6 +9627,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mitt@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "mitt@npm:3.0.1"
+  checksum: b55a489ac9c2949ab166b7f060601d3b6d893a852515ae9eca4e11df01c013876df777ea109317622b5c1c60e8aae252558e33c8c94e14124db38f64a39614b1
+  languageName: node
+  linkType: hard
+
 "mkdirp-classic@npm:^0.5.2, mkdirp-classic@npm:^0.5.3":
   version: 0.5.3
   resolution: "mkdirp-classic@npm:0.5.3"
@@ -10975,7 +10992,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-svg@npm:^15.1.0, react-native-svg@npm:^15.8.0":
+"react-native-svg@npm:^15.1.0":
   version: 15.10.0
   resolution: "react-native-svg@npm:15.10.0"
   dependencies:
@@ -10986,6 +11003,20 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: b895065cf8297bbdfbbd2e2e7935be6acbe25fc7a63450a7e68a8a21b696aa10d9cae553ed76a4958b24b17724b164d33cc9bf8e0c21e4938e249917c7ace713
+  languageName: node
+  linkType: hard
+
+"react-native-svg@npm:^15.10.1":
+  version: 15.10.1
+  resolution: "react-native-svg@npm:15.10.1"
+  dependencies:
+    css-select: ^5.1.0
+    css-tree: ^1.1.3
+    warn-once: 0.1.1
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: c210426b424e99730ba35d6bbf18335a99f04f2f234cb5bb578ac685c31cfca5e39d48ebf05f9189edd61c028405f4ff242b5edc98ee3e3f41c8bfa960f5bff4
   languageName: node
   linkType: hard
 
@@ -11004,19 +11035,6 @@ __metadata:
   version: 2.0.3
   resolution: "react-native-uuid@npm:2.0.3"
   checksum: e47774481feaed5d38f75fb4b03f5189c03e7452038f1b0fa56677add8a8bdef64ec7ad5e83f9fa761d8788cac5c8e554ade07e82a2818145337df7c883e2124
-  languageName: node
-  linkType: hard
-
-"react-native-webview@npm:^13.12.4":
-  version: 13.12.5
-  resolution: "react-native-webview@npm:13.12.5"
-  dependencies:
-    escape-string-regexp: ^4.0.0
-    invariant: 2.2.4
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: e8cd5c260e41cf3434e390fbfd55934a65d4a996d56868eb3c64f4219e06e934bb2012f3520eb9d3867f5d0821333c46c96e31904460b2ec5832aaaa14f4dd62
   languageName: node
   linkType: hard
 
@@ -11132,6 +11150,44 @@ __metadata:
   dependencies:
     loose-envify: ^1.1.0
   checksum: a27bcfa8ff7c15a1e50244ad0d0c1cb2ad4375eeffefd266a64889beea6f6b64c4966c9b37d14ee32d6c9fcd5aa6ba183b6988167ab4d127d13e7cb5b386a376
+  languageName: node
+  linkType: hard
+
+"reactotron-core-client@npm:2.9.6":
+  version: 2.9.6
+  resolution: "reactotron-core-client@npm:2.9.6"
+  dependencies:
+    reactotron-core-contract: 0.2.4
+  checksum: 4d09b501cbcac44cd06f1c7210429b6acc486e348ca0dd9e2e4268d635cec11a22e101e306395066bd769f470a8cea9b44a26c0d285fc907479aef5b4eb3350e
+  languageName: node
+  linkType: hard
+
+"reactotron-core-contract@npm:0.2.4":
+  version: 0.2.4
+  resolution: "reactotron-core-contract@npm:0.2.4"
+  checksum: b3c3e21f3137202d3089b00eda409ec1fb72b8ec296d710883dca07dfb98fa8c48564347854b40b031adcbeb17842730adebac53890f516a5304d03d90d1c1c7
+  languageName: node
+  linkType: hard
+
+"reactotron-react-native@npm:^5.1.10":
+  version: 5.1.10
+  resolution: "reactotron-react-native@npm:5.1.10"
+  dependencies:
+    mitt: ^3.0.1
+    reactotron-core-client: 2.9.6
+  peerDependencies:
+    react-native: ">=0.40.0"
+  checksum: d6f52c23b8c636aee456627aaaa8ce5630b25c90921d2eb7e2d28cb1367a2471d4f4ef35db91a5d518614289b5f0950100b5580b25b4f2179b1e8423575b7cb8
+  languageName: node
+  linkType: hard
+
+"reactotron-redux@npm:^3.1.10":
+  version: 3.1.10
+  resolution: "reactotron-redux@npm:3.1.10"
+  peerDependencies:
+    reactotron-core-client: "*"
+    redux: ">=4.0.0"
+  checksum: 5922ba94240bb6d221e58e798a30aff35f5de3b4e3bfc0a8ae7d4e9554b6328a4a33e771fd6a9ca8c0fdfc65cd16fd82b583361c41b7e17aa823c3850947392b
   languageName: node
   linkType: hard
 

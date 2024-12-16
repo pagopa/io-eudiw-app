@@ -5,7 +5,10 @@ import * as z from 'zod';
  * Zod schema for the configuration variables specified in the env files for runtime validation.
  */
 export const configSchema = z.object({
-  WALLET_PROVIDER_BASE_URL: z.string()
+  WALLET_PROVIDER_BASE_URL: z.string().url(),
+  PID_PROVIDER_BASE_URL: z.string().url(),
+  PID_REDIRECT_URI: z.string(),
+  PID_IDP_HINT: z.string().url()
 });
 
 /**

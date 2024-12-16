@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Discovery from '../screens/pidIssuance/WalletInstanceCreation';
-
-import PidIssuanceResultError, {
-  PidIssuanceResultErrorNavigationParams
-} from '../screens/pidIssuance/PidIssuanceResultError';
+import Failure from '../screens/pidIssuance/Failure';
+import WalletInstanceCreation from '../screens/pidIssuance/WalletInstanceCreation';
+import Issuance from '../screens/pidIssuance/Issuance';
+import Success from '../screens/pidIssuance/Success';
 import WALLET_ROUTES from './routes';
 
 /**
@@ -12,9 +11,10 @@ import WALLET_ROUTES from './routes';
  * New screens should be added here along with their parameters.
  */
 export type WalletNavigatorParamsList = {
-  [WALLET_ROUTES.PID_ISSUANCE.DISCOVERY]: undefined;
-  [WALLET_ROUTES.PID_ISSUANCE
-    .RESULT_ERROR]: PidIssuanceResultErrorNavigationParams;
+  [WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION]: undefined;
+  [WALLET_ROUTES.PID_ISSUANCE.ISSUANCE]: undefined;
+  [WALLET_ROUTES.PID_ISSUANCE.SUCCESS]: undefined;
+  [WALLET_ROUTES.PID_ISSUANCE.FAILURE]: undefined;
 };
 
 const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();
@@ -25,16 +25,26 @@ const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();
  */
 const WalletNavigator = () => (
   <Stack.Navigator
-    initialRouteName={WALLET_ROUTES.PID_ISSUANCE.DISCOVERY}
+    initialRouteName={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
     screenOptions={{headerShown: false}}>
-    <Stack.Screen
-      name={WALLET_ROUTES.PID_ISSUANCE.DISCOVERY}
-      component={Discovery}
-    />
-    <Stack.Screen
-      name={WALLET_ROUTES.PID_ISSUANCE.RESULT_ERROR}
-      component={PidIssuanceResultError}
-    />
+    <Stack.Group>
+      <Stack.Screen
+        name={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
+        component={WalletInstanceCreation}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PID_ISSUANCE.FAILURE}
+        component={Failure}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PID_ISSUANCE.ISSUANCE}
+        component={Issuance}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PID_ISSUANCE.SUCCESS}
+        component={Success}
+      />
+    </Stack.Group>
   </Stack.Navigator>
 );
 
