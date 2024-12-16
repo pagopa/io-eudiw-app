@@ -2,6 +2,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../types';
 import {BiometricState} from '../../features/onboarding/utils/biometric';
+import {preferencesReset} from './preferences';
 
 /* State type definition for the startup slice
  * startUpStatus - Status of the startup process
@@ -9,7 +10,13 @@ import {BiometricState} from '../../features/onboarding/utils/biometric';
  * biometricState - Indicates the state of the biometric on the device
  */
 export type StartupState = {
-  startUpStatus: 'DONE' | 'LOADING' | 'ERROR' | 'NOT_STARTED';
+  startUpStatus:
+    | 'DONE'
+    | 'WAIT_ONBOARDING'
+    | 'WAIT_IDENTIFICATION'
+    | 'LOADING'
+    | 'ERROR'
+    | 'NOT_STARTED';
   hasScreenLock: boolean;
   biometricState: BiometricState;
 };
@@ -28,12 +35,16 @@ export const startupSlice = createSlice({
   name: 'startup',
   initialState,
   reducers: {
-    // Startup section
-    startupSetDone: (
+    startupSetStatus: (
+      state,
+      action: PayloadAction<StartupState['startUpStatus']>
+    ) => {
+      state.startUpStatus = action.payload;
+    },
+    startupSetAttributes: (
       state,
       action: PayloadAction<Omit<StartupState, 'startUpStatus'>>
     ) => {
-      state.startUpStatus = 'DONE';
       state.biometricState = action.payload.biometricState;
       state.hasScreenLock = action.payload.hasScreenLock;
     },
@@ -44,6 +55,10 @@ export const startupSlice = createSlice({
       state.startUpStatus = 'LOADING';
     },
     startupReset: () => initialState
+  },
+  extraReducers: builder => {
+    // This happens when the whole app state is reset
+    builder.addCase(preferencesReset, _ => initialState);
   }
 });
 
@@ -51,9 +66,10 @@ export const startupSlice = createSlice({
  * Exports the actions for the startup slice.
  */
 export const {
-  startupSetDone,
   startupSetError,
   startupSetLoading,
+  startupSetStatus,
+  startupSetAttributes,
   startupReset
 } = startupSlice.actions;
 

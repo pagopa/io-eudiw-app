@@ -1,5 +1,4 @@
 import {all, call} from 'typed-redux-saga';
-import {walletSaga} from '../features/wallet/saga';
 import {startupSaga} from './startup';
 
 /**
@@ -10,5 +9,5 @@ export default function* rootSaga() {
    * Currently runs the startup saga and the wallet saga. However in the future
    * the wallet saga must be forked only after user pin identification.
    */
-  yield* all([call(startupSaga), call(walletSaga)]);
+  yield* all([call(startupSaga)]);
 }
