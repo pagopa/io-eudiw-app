@@ -54,10 +54,11 @@ function* startOnboarding() {
 }
 
 /**
- * Setup saga to initialize the app and load all the required resources.
+ * Startup saga to initialize the app and load all the required resources.
  * It checks if env file is correct, initializes the translation library and checks the biometric state.
+ * Then it starts the identification process if the onboarding is completed, otherwise it starts the onboarding.
  */
-function* setup() {
+function* startup() {
   try {
     yield* call(initI18n);
     yield* call(checkConfig);
@@ -81,6 +82,6 @@ function* setup() {
   }
 }
 
-export function* setupSaga() {
-  yield* takeLatest([startupSetLoading, preferencesReset], setup);
+export function* startupSaga() {
+  yield* takeLatest([startupSetLoading, preferencesReset], startup);
 }
