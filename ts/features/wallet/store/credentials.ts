@@ -4,6 +4,7 @@ import {PersistConfig, persistReducer} from 'redux-persist';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
 import {StoredCredential} from '../utils/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
+import {RootState} from '../../../store/types';
 
 /* State type definition for the credentials slice
  * pid - The PID credential
@@ -63,7 +64,7 @@ const credentialsSlice = createSlice({
  * Currently it uses `io-react-native-secure-storage` as the storage engine which stores it encrypted.
  */
 const credentialsPersistor: PersistConfig<CredentialsState> = {
-  key: 'attestation',
+  key: 'credentials',
   storage: secureStoragePersistor()
 };
 
@@ -85,3 +86,8 @@ export const {
   resetCredentials,
   addPidWithIdentification
 } = credentialsSlice.actions;
+
+export const selectPid = (state: RootState) => state.wallet.credentials.pid;
+
+export const selectCredentials = (state: RootState) =>
+  state.wallet.credentials.credentials;

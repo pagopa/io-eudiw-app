@@ -7,7 +7,10 @@ const WALLET_ROUTES = {
     ISSUANCE: 'ISSUANCE',
     SUCCESS: 'SUCCESS',
     FAILURE: 'FAILURE'
-  } as const
+  } as const,
+  CREDENTIAL_ISSUANCE: {
+    LIST: 'WALLET_CREDENTIAL_ISSUANCE_LIST'
+  }
 } as const;
 
 export default WALLET_ROUTES;

@@ -193,6 +193,25 @@ interface Resources {
         notAvailable: 'Claim not available';
       };
     };
+    credentials: {
+      names: {
+        pid: 'National ID';
+        mdl: "Driver's License";
+        unknown: 'Unknwon credential';
+      };
+    };
+    home: {
+      addCredential: 'Add document';
+      badges: {
+        saved: 'Saved';
+      };
+    };
+    credentialIssuance: {
+      list: {
+        title: 'What would you like to add to the Wallet?';
+        header: 'Documents';
+      };
+    };
   };
 }
 
