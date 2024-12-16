@@ -1,23 +1,24 @@
 /* eslint-disable functional/immutable-data */
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {PersistConfig, persistReducer} from 'redux-persist';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
 import {StoredCredential} from '../utils/types';
+import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
 
-/* State type definition for the credentials slice
+/* State type definition for the credentials slice.
+ * This is stored as an array to avoid overhead due to map not being serializable,
+ * thus needing to be converted to an array with a transformation.
  * pid - The PID credential
  * credentials - A map of all the stored credentials
  */
 export type CredentialsState = {
-  pid: StoredCredential | undefined;
-  credentials: Record<string, StoredCredential>;
+  credentials: Array<StoredCredential>;
 };
 
 // Initial state for the credential slice
 const initialState: CredentialsState = {
-  pid: undefined,
-  credentials: {}
+  credentials: []
 };
 
 /**
@@ -28,27 +29,28 @@ const credentialsSlice = createSlice({
   name: 'credentials',
   initialState,
   reducers: {
-    addPid: (state, action: PayloadAction<{pid: StoredCredential}>) => {
-      state.pid = action.payload.pid;
-    },
-    // Empty action which will be intercepted by the saga and trigger the identification before storing the PID
-    addPidWithIdentification: (
-      _,
-      __: PayloadAction<{pid: StoredCredential}>
-    ) => {},
     addCredential: (
       state,
       action: PayloadAction<{credential: StoredCredential}>
     ) => {
       const {credential} = action.payload;
-      state.credentials[credential.credentialType] = credential;
+      const existingIndex = state.credentials.findIndex(
+        c => c.credentialType === credential.credentialType
+      );
+      if (existingIndex !== -1) {
+        // If the credential already exists, replace it
+        state.credentials[existingIndex] = credential;
+      } else {
+        // Otherwise add it
+        state.credentials.push(credential);
+      }
     },
     removeCredential: (
       state,
       action: PayloadAction<{credentialType: string}>
     ) => {
       const {credentialType} = action.payload;
-      delete state.credentials[credentialType];
+      state.credentials.filter(c => c.credentialType !== credentialType);
     },
     resetCredentials: () => initialState
   },
@@ -63,7 +65,7 @@ const credentialsSlice = createSlice({
  * Currently it uses `io-react-native-secure-storage` as the storage engine which stores it encrypted.
  */
 const credentialsPersistor: PersistConfig<CredentialsState> = {
-  key: 'attestation',
+  key: 'credentials',
   storage: secureStoragePersistor()
 };
 
@@ -78,10 +80,16 @@ export const credentialsReducer = persistReducer(
 /**
  * Exports the actions for the credentials slice.
  */
-export const {
-  addPid,
-  addCredential,
-  removeCredential,
-  resetCredentials,
-  addPidWithIdentification
-} = credentialsSlice.actions;
+export const {addCredential, removeCredential, resetCredentials} =
+  credentialsSlice.actions;
+
+export const selectCredentials = (state: RootState) =>
+  state.wallet.credentials.credentials;
+
+export const selectCredential = (credentialType: string) =>
+  createSelector(selectCredentials, credentials => {
+    const filtered = credentials.filter(
+      c => c.credentialType === credentialType
+    );
+    return filtered.length > 0 ? filtered : undefined;
+  });
