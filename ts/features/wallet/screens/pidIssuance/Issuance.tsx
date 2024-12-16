@@ -20,7 +20,7 @@ import {
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/CredentialPreviewClaimsList';
 import {StoredCredential} from '../../utils/types';
-import {addPidWithIdentification} from '../../store/credentials';
+import {addCredentialWithIdentification} from '../../store/credentials';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -73,7 +73,7 @@ const Issuance = () => {
           primary: {
             label: t('wallet:pidIssuance.preview.button'),
             onPress: () =>
-              dispatch(addPidWithIdentification({pid: credential})),
+              dispatch(addCredentialWithIdentification({credential})),
             icon: 'add',
             iconPosition: 'end'
           },

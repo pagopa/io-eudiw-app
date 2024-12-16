@@ -18,7 +18,6 @@ import {
   setPidIssuanceRequest,
   setPidIssuanceSuccess
 } from '../store/pidIssuance';
-import {addPid, addPidWithIdentification} from '../store/credentials';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
@@ -26,13 +25,20 @@ import {
 } from '../../../store/reducers/identification';
 import {Lifecycle, setLifecycle} from '../store/lifecycle';
 import {navigate} from '../../../navigation/utils';
+import {
+  addCredential,
+  addCredentialWithIdentification
+} from '../store/credentials';
 
 /**
  * Saga watcher for PID related actions.
  */
 export function* watchPidSaga() {
   yield* takeLatest(setPidIssuanceRequest, obtainPid);
-  yield* takeLatest(addPidWithIdentification, storePidWithIdentification);
+  yield* takeLatest(
+    addCredentialWithIdentification,
+    storePidWithIdentification
+  );
 }
 
 /**
@@ -175,7 +181,7 @@ function* obtainPid() {
  * If the pin is correct, the PID is stored and the lifecycle is set to `LIFECYCLE_VALID`.
  */
 function* storePidWithIdentification(
-  action: ReturnType<typeof addPidWithIdentification>
+  action: ReturnType<typeof addCredentialWithIdentification>
 ) {
   yield* put(
     setIdentificationStarted({canResetPin: false, isValidatingTask: true})
@@ -185,7 +191,7 @@ function* storePidWithIdentification(
     setIdentificationUnidentified
   ]);
   if (setIdentificationIdentified.match(resAction)) {
-    yield* put(addPid({pid: action.payload.pid}));
+    yield* put(addCredential({credential: action.payload.credential}));
     yield* put(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
     navigate('MAIN_WALLET', {screen: 'SUCCESS'});
   } else {
