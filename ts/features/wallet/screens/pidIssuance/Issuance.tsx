@@ -20,8 +20,8 @@ import {
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/CredentialPreviewClaimsList';
 import {StoredCredential} from '../../utils/types';
-import {addPid} from '../../store/credentials';
 import {Lifecycle, setLifecycle} from '../../store/lifecycle';
+import {addCredential} from '../../store/credentials';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -58,7 +58,7 @@ const Issuance = () => {
   };
 
   const onAdd = (pidToAdd: StoredCredential) => {
-    dispatch(addPid({pid: pidToAdd}));
+    dispatch(addCredential({credential: pidToAdd}));
     dispatch(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
     navigation.navigate('MAIN_WALLET', {screen: 'SUCCESS'});
   };
