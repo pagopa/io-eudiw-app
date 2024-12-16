@@ -2281,9 +2281,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-wallet@npm:^0.26.0":
-  version: 0.26.0
-  resolution: "@pagopa/io-react-native-wallet@npm:0.26.0"
+"@pagopa/io-react-native-wallet@npm:^0.27.0":
+  version: 0.27.0
+  resolution: "@pagopa/io-react-native-wallet@npm:0.27.0"
   dependencies:
     js-base64: ^3.7.7
     js-sha256: ^0.9.0
@@ -2294,18 +2294,9 @@ __metadata:
   peerDependencies:
     "@pagopa/io-react-native-crypto": "*"
     "@pagopa/io-react-native-jwt": "*"
-    "@pagopa/react-native-cie": "*"
     react: "*"
     react-native: "*"
-    react-native-webview: "*"
-  checksum: c1d077c902b8ac6931ca4cfabd3099a9dc5f1895f726071d01ed024907c682a29504fefbc743d8e317c2967a6ff916a6ee00432d4cc53a0702e596f8e52e5c43
-  languageName: node
-  linkType: hard
-
-"@pagopa/react-native-cie@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "@pagopa/react-native-cie@npm:1.4.0"
-  checksum: 742b53251d0bd5a530ee63dcb7a9e604b7a06fc848f4a5643b3fdc841935c92fa5f8453e3c7cb8006bcab7c27563ff88efb53528a1df0256cf53cb7c57f251b1
+  checksum: f0791ff17726ed5aaf859fd45f377e7914abbd3a656c9281859d36f08c97db25042cc40051e2240fa315b656b49692908b50f646708aa53793d11cd56aeef742
   languageName: node
   linkType: hard
 
@@ -7343,7 +7334,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"invariant@npm:2.2.4, invariant@npm:^2.2.4":
+"invariant@npm:^2.2.4":
   version: 2.2.4
   resolution: "invariant@npm:2.2.4"
   dependencies:
@@ -7374,8 +7365,7 @@ __metadata:
     "@pagopa/io-react-native-crypto": ^1.0.1
     "@pagopa/io-react-native-jwt": ^1.4.0
     "@pagopa/io-react-native-login-utils": ^1.0.7
-    "@pagopa/io-react-native-wallet": ^0.26.0
-    "@pagopa/react-native-cie": ^1.4.0
+    "@pagopa/io-react-native-wallet": ^0.27.0
     "@pagopa/react-native-nodelibs": ^0.1.0
     "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native-community/cli": 15.0.0
@@ -7427,7 +7417,6 @@ __metadata:
     react-native-screens: ^4.0.0
     react-native-svg: ^15.10.1
     react-native-url-polyfill: ^2.0.0
-    react-native-webview: ^13.12.5
     react-redux: ^9.1.2
     react-test-renderer: 18.3.1
     reactotron-react-native: ^5.1.10
@@ -11046,19 +11035,6 @@ __metadata:
   version: 2.0.3
   resolution: "react-native-uuid@npm:2.0.3"
   checksum: e47774481feaed5d38f75fb4b03f5189c03e7452038f1b0fa56677add8a8bdef64ec7ad5e83f9fa761d8788cac5c8e554ade07e82a2818145337df7c883e2124
-  languageName: node
-  linkType: hard
-
-"react-native-webview@npm:^13.12.5":
-  version: 13.12.5
-  resolution: "react-native-webview@npm:13.12.5"
-  dependencies:
-    escape-string-regexp: ^4.0.0
-    invariant: 2.2.4
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: e8cd5c260e41cf3434e390fbfd55934a65d4a996d56868eb3c64f4219e06e934bb2012f3520eb9d3867f5d0821333c46c96e31904460b2ec5832aaaa14f4dd62
   languageName: node
   linkType: hard
 
