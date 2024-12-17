@@ -7,6 +7,10 @@ import {attestationReducer, AttestationState} from './attestation';
 import {instanceReducer, InstanceState} from './instance';
 import {pidIssuanceStatusReducer, PidIssuanceStatusState} from './pidIssuance';
 import {credentialsReducer, CredentialsState} from './credentials';
+import {
+  credentialIssuanceStatusReducer,
+  CredentialIssuanceStatusState
+} from './credentialIssuance';
 
 export type WalletState = {
   lifecycle: LifecycleState;
@@ -14,6 +18,7 @@ export type WalletState = {
   attestation: AttestationState & PersistPartial;
   pidIssuanceStatus: PidIssuanceStatusState;
   credentials: CredentialsState & PersistPartial;
+  credentialIssuanceStatus: CredentialIssuanceStatusState;
 };
 
 const walletReducer = combineReducers({
@@ -21,7 +26,8 @@ const walletReducer = combineReducers({
   instance: instanceReducer,
   attestation: attestationReducer,
   pidIssuanceStatus: pidIssuanceStatusReducer,
-  credentials: credentialsReducer
+  credentials: credentialsReducer,
+  credentialIssuanceStatus: credentialIssuanceStatusReducer
 });
 
 const itwPersistConfig: PersistConfig<WalletState> = {
