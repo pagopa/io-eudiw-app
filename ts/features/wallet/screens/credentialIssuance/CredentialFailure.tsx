@@ -3,14 +3,14 @@ import {useTranslation} from 'react-i18next';
 import React from 'react';
 import {useAppDispatch} from '../../../../store';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
-import {resetInstanceCreation, resetPidIssuance} from '../../store/pidIssuance';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
+import {resetCredentialIssuance} from '../../store/credentialIssuance';
 
 /**
  * Filure screen of the pid issuance flow.
  * Currently it only shows a message and a button to go back to the main screen.
  */
-const Failure = () => {
+const CredentialFailure = () => {
   const {t} = useTranslation(['global', 'wallet']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -18,8 +18,7 @@ const Failure = () => {
   useHardwareBackButton(() => true);
 
   const onPress = () => {
-    dispatch(resetInstanceCreation());
-    dispatch(resetPidIssuance());
+    dispatch(resetCredentialIssuance());
     navigation.navigate('MAIN_TAB_NAV');
   };
 
@@ -37,4 +36,4 @@ const Failure = () => {
   );
 };
 
-export default Failure;
+export default CredentialFailure;

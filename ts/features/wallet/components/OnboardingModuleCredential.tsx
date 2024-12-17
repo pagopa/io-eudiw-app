@@ -55,4 +55,4 @@ const OnboardingModuleCredential = ({
 };
 
 const MemoizedComponent = memo(OnboardingModuleCredential);
-export {MemoizedComponent as ItwOnboardingModuleCredential};
+export {MemoizedComponent as OnboardingModuleCredential};

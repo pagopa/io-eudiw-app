@@ -21,11 +21,6 @@
         "add": "Add your first document",
         "later": "Later"
       }
-    },
-    "failure": {
-      "title": "An unexpected error occurred",
-      "subtitle": "Your request to the issuing entity was not successful.",
-      "button": "I understand"
     }
   },
   "claims": {
@@ -50,6 +45,21 @@
     "list": {
       "title": "What would you like to add to the Wallet?",
       "header": "Documents"
+    },
+    "trust": {
+      "title": "{{credential}}: Required Data",
+      "subtitle": "The data will be shared with the **{{authority}}** for the issuance of the digital version of the document.",
+      "requiredData": "Required data",
+      "disclaimer": {
+        "store": "Your data is secure and will only be processed for the purposes described in the Privacy Notice.",
+        "retention": "The data will only be shared for the time necessary to issue the digital version of the document."
+      },
+      "dataSource": "Provided by {{source}}"
+    },
+    "failure": {
+      "title": "An unexpected error occurred",
+      "subtitle": "Your request to the issuing entity was not successful.",
+      "button": "I understand"
     }
   }
 }

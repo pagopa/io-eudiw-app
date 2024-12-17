@@ -29,7 +29,7 @@ const initialState: PidIssuanceStatusState = {
  * Redux slice for the pidIssuance state. It holds the status of flows related to the PID issuance
  * allowing to handle the UI accordingly with a request, loading and success/error states along with their data, if necessary.
  */
-export const pidIssuanceStatusSlice = createSlice({
+const pidIssuanceStatusSlice = createSlice({
   name: 'pidIssuanceStatus',
   initialState,
   reducers: {
