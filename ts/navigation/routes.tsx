@@ -3,7 +3,7 @@
  */
 const ROOT_ROUTES = {
   // Main section
-  TAB_NAV: 'ROOT_TAB_NAV',
+  MAIN: 'ROOT_MAIN',
   ERROR: 'ROOT_ERROR',
   LOADING: 'ROOT_LOADING',
 

@@ -21,7 +21,7 @@ import MAIN_ROUTES from './main/routes';
 
 export type RootStackParamList = {
   // Main
-  [ROOT_ROUTES.TAB_NAV]: NavigatorScreenParams<MainNavigatorParamsList>;
+  [ROOT_ROUTES.MAIN]: NavigatorScreenParams<MainNavigatorParamsList>;
   [ROOT_ROUTES.ERROR]: undefined;
   [ROOT_ROUTES.LOADING]: undefined;
   [ROOT_ROUTES.ERROR]: undefined;
@@ -63,7 +63,7 @@ export const RootStackNavigator = () => {
       case 'DONE':
         // Startup is done, check if onboarding is completed
         return isOnboardingCompleted
-          ? {name: ROOT_ROUTES.TAB_NAV, component: MainStackNavigator}
+          ? {name: ROOT_ROUTES.MAIN, component: MainStackNavigator}
           : {name: ROOT_ROUTES.ONBOARDING, component: OnboardingNavigator};
       case 'ERROR':
         // An error occurred during startup

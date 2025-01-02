@@ -49,7 +49,7 @@ export const ActivationBanner = ({
         labelClose={labelClose}
         onPress={() =>
           navigation.navigate('MAIN_WALLET', {
-            screen: 'INSTANCE_CREATION'
+            screen: 'PID_ISSUANCE_INSTANCE_CREATION'
           })
         }
         onClose={onClose}
