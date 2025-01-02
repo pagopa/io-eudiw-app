@@ -25,7 +25,7 @@ const WalletHome = () => {
         firstAction={{
           icon: 'coggle',
           onPress: () =>
-            navigation.navigate('ROOT_MAIN', {screen: 'MAIN_SETTINGS'}),
+            navigation.navigate('ROOT_MAIN_NAV', {screen: 'MAIN_SETTINGS'}),
           accessibilityLabel: t('global:settings.title')
         }}
       />

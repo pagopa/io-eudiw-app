@@ -14,7 +14,7 @@ import MAIN_ROUTES from './routes';
  */
 export type MainNavigatorParamsList = {
   [MAIN_ROUTES.TAB_NAV]: undefined;
-  [MAIN_ROUTES.WALLET]: NavigatorScreenParams<WalletNavigatorParamsList>;
+  [MAIN_ROUTES.WALLET_NAV]: NavigatorScreenParams<WalletNavigatorParamsList>;
   [MAIN_ROUTES.SETTINGS]: undefined;
 };
 
@@ -29,7 +29,7 @@ const MainStackNavigator = () => (
     initialRouteName={MAIN_ROUTES.TAB_NAV}
     screenOptions={{headerShown: false}}>
     <Stack.Screen name={MAIN_ROUTES.TAB_NAV} component={TabNavigator} />
-    <Stack.Screen name={MAIN_ROUTES.WALLET} component={WalletNavigator} />
+    <Stack.Screen name={MAIN_ROUTES.WALLET_NAV} component={WalletNavigator} />
     <Stack.Screen name={MAIN_ROUTES.SETTINGS} component={Settings} />
   </Stack.Navigator>
 );

@@ -42,7 +42,7 @@ const PidIssuanceRequest = () => {
 
   useEffect(() => {
     if (error.status === true) {
-      navigation.navigate('MAIN_WALLET', {
+      navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PID_ISSUANCE_FAILURE'
       });
     }
@@ -60,7 +60,7 @@ const PidIssuanceRequest = () => {
   const onAdd = (pidToAdd: StoredCredential) => {
     dispatch(addCredential({credential: pidToAdd}));
     dispatch(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
-    navigation.navigate('MAIN_WALLET', {screen: 'PID_ISSUANCE_SUCCESS'});
+    navigation.navigate('MAIN_WALLET_NAV', {screen: 'PID_ISSUANCE_SUCCESS'});
   };
 
   const PidPreview = ({credential}: {credential: StoredCredential}) => (

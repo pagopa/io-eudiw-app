@@ -3,12 +3,12 @@
  */
 const ROOT_ROUTES = {
   // Main section
-  MAIN: 'ROOT_MAIN',
+  MAIN_NAV: 'ROOT_MAIN_NAV',
   ERROR: 'ROOT_ERROR',
   LOADING: 'ROOT_LOADING',
 
   // Onboarding
-  ONBOARDING: 'ROOT_ONBOARDING'
+  ONBOARDING_NAV: 'ROOT_ONBOARDING_NAV'
 } as const;
 
 export default ROOT_ROUTES;
