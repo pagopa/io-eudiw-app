@@ -67,6 +67,7 @@ export const IdentificationNumberPad = (
       } else {
         setTimeout(() => {
           pinValidation(false);
+          setValue('');
         }, CODE_INPUT_ERROR_ANIMATION_DURATION);
         return false;
       }
