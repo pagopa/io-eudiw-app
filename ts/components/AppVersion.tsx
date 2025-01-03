@@ -15,6 +15,9 @@ const styles = StyleSheet.create({
   }
 });
 
+/**
+ * This component renders a text with the current app version, to be shown in the settings screen.
+ */
 const AppVersion = () => {
   const appVersion = getAppVersion();
   const {t} = useTranslation('global');

@@ -6,16 +6,9 @@ import {getAppVersion} from '../../utils/device';
 import {DebugDataIndicator} from './DebugDataIndicator';
 import {DebugDataOverlay} from './DebugDataOverlay';
 
-const styles = StyleSheet.create({
-  versionContainer: {
-    ...StyleSheet.absoluteFillObject,
-    top: Platform.OS === 'android' ? 0 : -8,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    zIndex: 1000
-  }
-});
-
+/**
+ * Overlay which shows the debug data stored in the debug state.
+ */
 const DebugInfoOverlay = () => {
   const theme = useIOTheme();
   const appVersion = getAppVersion();
@@ -46,5 +39,15 @@ const DebugInfoOverlay = () => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  versionContainer: {
+    ...StyleSheet.absoluteFillObject,
+    top: Platform.OS === 'android' ? 0 : -8,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    zIndex: 1000
+  }
+});
 
 export default DebugInfoOverlay;

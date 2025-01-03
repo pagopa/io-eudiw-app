@@ -15,6 +15,10 @@ type DebugDataIndicatorProps = {
   onPress: () => void;
 };
 
+/**
+ * This component renders an icon with a ladybug which opens the debug info overlay when pressed.
+ * Used in {@link DebugInfoOverlay}
+ */
 export const DebugDataIndicator = (props: DebugDataIndicatorProps) => {
   const data = useAppSelector(selectDebugData);
   const dataSize = _.size(data);
@@ -27,7 +31,6 @@ export const DebugDataIndicator = (props: DebugDataIndicatorProps) => {
     <Pressable
       style={styles.wrapper}
       accessibilityRole="button"
-      accessibilityHint={'Opend the debug data'}
       onPress={props.onPress}>
       <HStack space={4} style={{alignItems: 'center'}}>
         <Icon name="ladybug" size={16} color="warning-850" />

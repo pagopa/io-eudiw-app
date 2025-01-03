@@ -14,6 +14,10 @@ type DebugDataOverlayProps = {
   onDismissed?: () => void;
 };
 
+/**
+ * Debug overlay to show all the debug data in a list for each entry in the debug state via {@link DebugPrettyPrint}.
+ * Used in {@link DebugInfoOverlay}
+ */
 export const DebugDataOverlay = ({onDismissed}: DebugDataOverlayProps) => {
   const debugData = useAppSelector(selectDebugData);
 
