@@ -110,3 +110,6 @@ export const selectPidIssuanceData = (state: RootState) =>
   state.wallet.pidIssuanceStatus.issuance.success.status === true
     ? state.wallet.pidIssuanceStatus.issuance.success.data
     : undefined;
+
+export const selectPidIssuanceError = (state: RootState) =>
+  state.wallet.pidIssuanceStatus.issuance.error.error;

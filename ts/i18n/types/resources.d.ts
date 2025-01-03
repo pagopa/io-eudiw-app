@@ -11,13 +11,13 @@ interface Resources {
     };
     settings: {
       title: 'Settings';
-      listHeaders: {
-        test: {
-          title: 'Test';
-          walletReset: 'Reset wallet';
-          onboardingReset: 'Reset onboarding';
-        };
+      reset: {
+        title: 'Reset App';
+        walletReset: 'Reset wallet';
+        onboardingReset: 'Reset onboarding';
       };
+      debug: 'Enable debug mode';
+      version: 'Version';
     };
     buttons: {
       next: 'Next';
@@ -42,6 +42,9 @@ interface Resources {
         label: 'Loading';
         hint: 'Wait for the content load';
       };
+    };
+    clipboard: {
+      copyFeedback: 'Copied to clipboard';
     };
   };
   onboarding: {
