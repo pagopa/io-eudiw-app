@@ -6,19 +6,24 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 import {RootState} from '../types';
 
+/*
+ * State type definition for the debug  slice
+ * isDebugModeEnabled - Indicates if the debug mode is enabled or not
+ * debugData - Data that is used for debugging purposes
+ */
 type DebugState = Readonly<{
   isDebugModeEnabled: boolean;
   debugData: Record<string, any>;
 }>;
 
+// Initial state for the debug slice
 const initialState: DebugState = {
   isDebugModeEnabled: false,
   debugData: {}
 };
 
 /**
- * Redux slice for the pin state. It allows to set and reset the pin.
- * This must be a separate slice because the pin is sored using a custom persistor.
+ * Redux slice for the debug state. It allows to enable and disable the debug mode and set debug data.
  */
 const debugSlice = createSlice({
   name: 'debug',
@@ -42,7 +47,7 @@ const debugSlice = createSlice({
 });
 
 /**
- * Exports the actions for the pin slice.
+ * Exports the actions for the debug slice.
  */
 export const {setDebugModeEnabled, setDebugData, resetDebugData} =
   debugSlice.actions;
@@ -54,12 +59,21 @@ const debugPersist: PersistConfig<DebugState> = {
 };
 
 /**
- * Persisted reducer for the pin slice.
+ * Persisted reducer for the debug slice.
  */
 export const debugReducer = persistReducer(debugPersist, debugSlice.reducer);
 
-// Selector
+/**
+ * Selects the debug mode state.
+ * @param state - The root state of the Redux store
+ * @returns a boolean indicating if the debug mode is enabled
+ */
 export const selectIsDebugModeEnabled = (state: RootState) =>
   state.debug.isDebugModeEnabled;
 
+/**
+ * Selects the debug data.
+ * @param state - The root state of the Redux store
+ * @returns a record with the debug data
+ */
 export const selectDebugData = (state: RootState) => state.debug.debugData;

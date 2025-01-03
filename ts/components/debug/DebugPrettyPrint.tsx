@@ -1,7 +1,3 @@
-/*
-WARNING: This component is not referenced anywhere, but is used
-for development purposes. Please, Don't REMOVE it, thank you!
-*/
 import {
   BodySmall,
   HStack,
@@ -37,7 +33,7 @@ type Props = Prettify<
 
 /**
  * This component allows to print the content of an object in an elegant and readable way.
- * and to copy its content to the clipboard by pressing on the title.
+ * and to copy its content to the clipboard by pressing on the copy button.
  * The component it is rendered only if debug mode is enabled
  */
 export const DebugPrettyPrint = withDebugEnabled(

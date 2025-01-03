@@ -1,6 +1,10 @@
 import {Platform} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
+/**
+ * Returns the application version.
+ * @returns a string representing the application version
+ */
 export const getAppVersion = () =>
   Platform.select({
     ios: DeviceInfo.getReadableVersion(),
