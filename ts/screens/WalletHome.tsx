@@ -1,6 +1,10 @@
 import React from 'react';
 import {View} from 'react-native';
-import {IOStyles, HeaderFirstLevel} from '@pagopa/io-app-design-system';
+import {
+  IOStyles,
+  HeaderFirstLevel,
+  ButtonSolid
+} from '@pagopa/io-app-design-system';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {useAppSelector} from '../store';
@@ -39,7 +43,18 @@ const WalletHome = () => {
             />
           </View>
         ) : (
-          <></> // Needs to
+          <ButtonSolid
+            label={t('wallet:home.addCredential')}
+            accessibilityLabel={t('wallet:home.addCredential')}
+            onPress={() =>
+              navigation.navigate('MAIN_WALLET', {
+                screen: 'WALLET_CREDENTIAL_ISSUANCE_LIST'
+              })
+            }
+            icon="addSmall"
+            iconPosition="end"
+            fullWidth={true}
+          />
         )}
       </View>
     </>
