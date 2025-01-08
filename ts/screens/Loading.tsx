@@ -1,15 +1,12 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {OperationResultScreenContent} from '../components/screens/OperationResultScreenContent';
+import {LoadingScreenContent} from '../components/LoadingScreenContent';
 
 const Loading = () => {
   const {t} = useTranslation(['global']);
   return (
     <>
-      <OperationResultScreenContent
-        pictogram="loading"
-        title={t('global:loading.body')}
-      />
+      <LoadingScreenContent contentTitle={t('global:loading.body')} />
     </>
   );
 };
