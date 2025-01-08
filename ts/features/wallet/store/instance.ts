@@ -17,7 +17,7 @@ const initialState: InstanceState = {
 /**
  * Redux slice for the instance state. It allows to store and reset the keytag bound to the wallet instance.
  */
-export const instanceSlice = createSlice({
+const instanceSlice = createSlice({
   name: 'instance',
   initialState,
   reducers: {
@@ -32,6 +32,8 @@ export const instanceSlice = createSlice({
  * Exports the actions for the instance slice.
  */
 export const {setInstanceKeyTag, resetInstanceKeyTag} = instanceSlice.actions;
+
+export const {reducer: instanceReducer} = instanceSlice;
 
 /**
  * Select the wallet instance keytag.

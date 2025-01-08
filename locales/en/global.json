@@ -1,8 +1,22 @@
 {
+  "generics": {
+    "waiting": "Wait few seconds",
+    "success": "Success"
+  },
   "tabNavigator": {
     "wallet": "Wallet",
     "scanQr": "Scan QR",
     "showQr": "Show QR"
+  },
+  "settings": {
+    "title": "Settings",
+    "listHeaders": {
+      "test": {
+        "title": "Test",
+        "walletReset": "Reset wallet",
+        "onboardingReset": "Reset onboarding"
+      }
+    }
   },
   "buttons": {
     "next": "Next",
@@ -13,7 +27,8 @@
     "continue": "Continue",
     "activate": "Activate",
     "notNow": "Not now",
-    "back": "Back"
+    "back": "Back",
+    "cancel": "Cancel"
   },
   "loading": {
     "body": "Please wait a moment"
@@ -23,6 +38,12 @@
       "title": "There's an issue with our systems",
       "body": "Please try again in a few minutes.",
       "learnMore": "Learn more"
+    }
+  },
+  "accessibility": {
+    "activityIndicator": {
+      "label": "Loading",
+      "hint": "Wait for the content load"
     }
   }
 }
