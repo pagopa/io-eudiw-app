@@ -7,6 +7,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {TabIconComponent} from '../../components/TabIconComponent';
 import {useAppDispatch} from '../../store';
 import {preferencesReset} from '../../store/reducers/preferences';
+import WalletHome from '../../screens/WalletHome';
 import TAB_ROUTES from './routes';
 
 /**
@@ -49,9 +50,9 @@ export const TabNavigator = () => {
       }}>
       <Tab.Screen
         name={TAB_ROUTES.WALLET}
-        component={EmptyScreen}
+        component={WalletHome}
         options={{
-          title: t('tabNavigator.home'),
+          title: t('tabNavigator.wallet'),
           tabBarIcon: ({color, focused}) => (
             <TabIconComponent
               iconName={'navWallet'}
