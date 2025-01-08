@@ -4,6 +4,7 @@ import {PersistConfig, persistReducer} from 'redux-persist';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
 import {StoredCredential} from '../utils/types';
 import {RootState} from '../../../store/types';
+import {preferencesReset} from '../../../store/reducers/preferences';
 
 /* State type definition for the credentials slice.
  * This is stored as an array to avoid overhead due to map not being serializable,
@@ -44,6 +45,11 @@ const credentialsSlice = createSlice({
         state.credentials.push(credential);
       }
     },
+    // Empty action which will be intercepted by the saga and trigger the identification before storing the PID
+    addCredentialWithIdentification: (
+      _,
+      __: PayloadAction<{credential: StoredCredential}>
+    ) => {},
     removeCredential: (
       state,
       action: PayloadAction<{credentialType: string}>
@@ -52,6 +58,10 @@ const credentialsSlice = createSlice({
       state.credentials.filter(c => c.credentialType !== credentialType);
     },
     resetCredentials: () => initialState
+  },
+  extraReducers: builder => {
+    // This happens when the whole app state is reset
+    builder.addCase(preferencesReset, _ => initialState);
   }
 });
 
@@ -75,8 +85,12 @@ export const credentialsReducer = persistReducer(
 /**
  * Exports the actions for the credentials slice.
  */
-export const {addCredential, removeCredential, resetCredentials} =
-  credentialsSlice.actions;
+export const {
+  addCredential,
+  removeCredential,
+  addCredentialWithIdentification,
+  resetCredentials
+} = credentialsSlice.actions;
 
 export const selectCredentials = (state: RootState) =>
   state.wallet.credentials.credentials;
