@@ -5,6 +5,7 @@ import {
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect} from 'react';
 import {useIOThemeContext} from '@pagopa/io-app-design-system';
+import {useTranslation} from 'react-i18next';
 import OnboardingNavigator, {
   OnboardingNavigatorParamsList
 } from '../features/onboarding/navigation/OnboardingNavigator';
@@ -12,8 +13,8 @@ import {useAppDispatch, useAppSelector} from '../store';
 import {selectStartupState, startupSetLoading} from '../store/reducers/startup';
 import {selectisOnboardingComplete} from '../store/reducers/preferences';
 import {WalletNavigatorParamsList} from '../features/wallet/navigation/WalletNavigator';
-import GenericError from '../screens/GenericError';
-import Loading from '../screens/Loading';
+import {OperationResultScreenContent} from '../components/screens/OperationResultScreenContent';
+import LoadingScreenContent from '../components/LoadingScreenContent';
 import {IONavigationDarkTheme, IONavigationLightTheme} from './theme';
 import ROOT_ROUTES from './routes';
 import MainStackNavigator, {
@@ -44,6 +45,22 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 type Screens = {
   name: keyof RootStackParamList;
   component: React.ComponentType<any>;
+};
+
+const GenericError = () => {
+  const {t} = useTranslation(['global']);
+  return (
+    <OperationResultScreenContent
+      pictogram="umbrellaNew"
+      title={t('errors.generic.title')}
+      subtitle={t('errors.generic.body')}
+    />
+  );
+};
+
+const Loading = () => {
+  const {t} = useTranslation(['global']);
+  return <LoadingScreenContent contentTitle={t('global:generics.waiting')} />;
 };
 
 /**

@@ -10,7 +10,6 @@ import {
   IOPictograms,
   IOStyles,
   IOVisualCostants,
-  LoadingSpinner,
   Pictogram,
   VSpacer,
   WithTestID
@@ -26,7 +25,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 type OperationResultScreenContentProps = WithTestID<{
-  pictogram?: IOPictograms | 'loading';
+  pictogram?: IOPictograms;
   title: string;
   subtitle?: string | Array<BodyProps>;
   action?: Pick<
@@ -81,18 +80,12 @@ const OperationResultScreenContent = forwardRef<
           /* Android fallback because `centerContent` is only an iOS property */
           Platform.OS === 'android' && styles.wrapper_android
         ]}>
-        {(pictogram && pictogram !== 'loading' && (
+        {(pictogram && (
           <View style={IOStyles.alignCenter}>
             <Pictogram name={pictogram} size={120} />
             <VSpacer size={24} />
           </View>
-        )) ||
-          (pictogram && pictogram === 'loading' && (
-            <View style={IOStyles.alignCenter}>
-              <LoadingSpinner size={76} />
-              <VSpacer size={24} />
-            </View>
-          ))}
+        ))}
         <H3 style={{textAlign: 'center'}}>{title}</H3>
         {subtitle && (
           <>
