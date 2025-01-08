@@ -193,7 +193,7 @@ function* storePidWithIdentification(
   if (setIdentificationIdentified.match(resAction)) {
     yield* put(addCredential({credential: action.payload.credential}));
     yield* put(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
-    navigate('MAIN_WALLET', {screen: 'SUCCESS'});
+    navigate('MAIN_WALLET_NAV', {screen: 'PID_ISSUANCE_SUCCESS'});
   } else {
     return;
   }
