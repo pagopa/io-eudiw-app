@@ -12,6 +12,7 @@ import {
 } from '@pagopa/io-app-design-system';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {persistor, store} from './ts/store';
+import IdentificationModal from './ts/screens/IdentificationModal';
 import RootContainer from './ts/screens/RootContainer';
 
 function App(): React.JSX.Element {
@@ -25,6 +26,7 @@ function App(): React.JSX.Element {
                 <ToastProvider>
                   <BottomSheetModalProvider>
                     <RootContainer />
+                    <IdentificationModal />
                   </BottomSheetModalProvider>
                 </ToastProvider>
               </IODSExperimentalContextProvider>

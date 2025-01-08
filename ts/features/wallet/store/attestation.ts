@@ -3,6 +3,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {PersistConfig, persistReducer} from 'redux-persist';
 import {RootState} from '../../../store/types';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
+import {preferencesReset} from '../../../store/reducers/preferences';
 
 /* State type definition for the attestation slice
  * attestation - The wallet instance attestation
@@ -27,6 +28,10 @@ const attestationSlice = createSlice({
       state.attestation = action.payload;
     },
     resetAttestation: () => initialState
+  },
+  extraReducers: builder => {
+    // This happens when the whole app state is reset
+    builder.addCase(preferencesReset, _ => initialState);
   }
 });
 

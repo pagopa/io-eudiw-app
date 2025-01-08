@@ -46,9 +46,7 @@ const Settings = () => {
     {
       label: t('settings.reset.onboardingReset'),
       onPress: () => {
-        dispatch(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_OPERATIONAL}));
         dispatch(preferencesReset());
-        toast.success(t('generics.success'));
       }
     }
   ];

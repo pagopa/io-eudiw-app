@@ -19,6 +19,7 @@ import {startupSlice} from './reducers/startup';
 import {pinReducer} from './reducers/pin';
 import {preferencesReducer} from './reducers/preferences';
 import {debugReducer} from './reducers/debug';
+import {identificationReducer} from './reducers/identification';
 
 // Create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -33,6 +34,7 @@ export const store = configureStore({
     preferences: preferencesReducer,
     pin: pinReducer,
     wallet: walletReducer,
+    identification: identificationReducer,
     debug: debugReducer
   },
   middleware: getDefaultMiddleware =>
