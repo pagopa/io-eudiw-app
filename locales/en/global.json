@@ -28,7 +28,9 @@
     "activate": "Activate",
     "notNow": "Not now",
     "back": "Back",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "help": "Help"
   },
   "loading": {
     "body": "Please wait a moment"
@@ -44,6 +46,32 @@
     "activityIndicator": {
       "label": "Loading",
       "hint": "Wait for the content load"
+    }
+  },
+  "identification": {
+    "title": {
+      "validation": "Authorise the operation.",
+      "access": "Hi!"
+    },
+    "forgot": {
+      "title": "Did you forget the the unlock code?",
+      "confirmTitle": "Did you forget the unlock code?",
+      "confirmMsg": "To be able to choose a new unlock code you will need to log in again.",
+      "confirmMsgWithTask": "To be able to choose a new unlock code you will need to cancel the current procedure and log in again."
+    },
+    "error": {
+      "deviceLocked": "Authentication was not successful, the device currently in a lockout of 30 seconds",
+      "DeviceLockedPermanent": "Authentication was not successful, device must be unlocked via password"
+    },
+    "unlockCode": {
+      "accessibility": {
+        "fingerprint": "Login with your fingerprint",
+        "faceId": "Login with the Face ID"
+      }
+    },
+    "biometric": {
+      "title": "Biometric identification",
+      "sensorDescription": "Login quickly"
     }
   }
 }
