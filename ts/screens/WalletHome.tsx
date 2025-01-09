@@ -1,13 +1,5 @@
-import React, {useEffect} from 'react';
-import {
-  FlatList,
-  FlatListProps,
-  ImageBackground,
-  Pressable,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import React from 'react';
+import {FlatList, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {
   IOStyles,
   HeaderFirstLevel,

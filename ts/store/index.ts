@@ -14,11 +14,12 @@ import createSagaMiddleware from 'redux-saga';
 import reactotron from '../../ReactotronConfig';
 import rootSaga from '../saga';
 import walletReducer from '../features/wallet/store/index';
+import {credentialsReducer} from '../features/wallet/store/credentials';
 import {AppDispatch, RootState} from './types';
 import {startupSlice} from './reducers/startup';
 import {pinReducer} from './reducers/pin';
 import {preferencesReducer} from './reducers/preferences';
-import {credentialsReducer} from '../features/wallet/store/credentials';
+import {identificationReducer} from './reducers/identification';
 
 // Create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -33,7 +34,8 @@ export const store = configureStore({
     preferences: preferencesReducer,
     pin: pinReducer,
     wallet: walletReducer,
-    credentials: credentialsReducer
+    credentials: credentialsReducer,
+    identification: identificationReducer
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
