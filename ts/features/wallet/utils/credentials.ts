@@ -10,10 +10,10 @@ export const wellKnownCredential: Record<CredentialsKeys, string> = {
 export const getCredentialNameByType = (type: string): string => {
   switch (type) {
     case wellKnownCredential.DRIVING_LICENSE:
-      return i18next.t('credentials.names.mdl', {ns: 'wallet'});
+      return i18next.t(['wallet:credentials.names.mdl', 'Credential']);
     case wellKnownCredential.PID:
-      return i18next.t('credentials.names.pid', {ns: 'wallet'});
+      return i18next.t(['wallet:credentials.names.pid', 'Credential']);
     default:
-      return i18next.t('credentials.names.unknown', {ns: 'wallet'});
+      return i18next.t(['wallet:credentials.names.unknown', 'Credential']);
   }
 };
