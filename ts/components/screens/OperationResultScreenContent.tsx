@@ -80,12 +80,12 @@ const OperationResultScreenContent = forwardRef<
           /* Android fallback because `centerContent` is only an iOS property */
           Platform.OS === 'android' && styles.wrapper_android
         ]}>
-        {(pictogram && (
+        {pictogram && (
           <View style={IOStyles.alignCenter}>
             <Pictogram name={pictogram} size={120} />
             <VSpacer size={24} />
           </View>
-        ))}
+        )}
         <H3 style={{textAlign: 'center'}}>{title}</H3>
         {subtitle && (
           <>
