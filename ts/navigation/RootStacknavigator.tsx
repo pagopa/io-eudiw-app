@@ -47,22 +47,6 @@ type Screens = {
   component: React.ComponentType<any>;
 };
 
-const GenericError = () => {
-  const {t} = useTranslation(['global']);
-  return (
-    <OperationResultScreenContent
-      pictogram="umbrellaNew"
-      title={t('errors.generic.title')}
-      subtitle={t('errors.generic.body')}
-    />
-  );
-};
-
-const Loading = () => {
-  const {t} = useTranslation(['global']);
-  return <LoadingScreenContent contentTitle={t('global:generics.waiting')} />;
-};
-
 /**
  * Entry point stack navigator for the application. This is the main navigation which orchestrates the whole app navigation.
  * It's based on the startup state and the onboarding completion state and renders the appropriate screen based on these states.
@@ -71,6 +55,22 @@ export const RootStackNavigator = () => {
   const isStartupDone = useAppSelector(selectStartupState);
   const {themeType} = useIOThemeContext();
   const dispatch = useAppDispatch();
+
+  const Loading = () => {
+    const {t} = useTranslation(['global']);
+    return <LoadingScreenContent contentTitle={t('generics.waiting')} />;
+  };
+
+  const GenericError = () => {
+    const {t} = useTranslation(['global']);
+    return (
+      <OperationResultScreenContent
+        pictogram="umbrellaNew"
+        title={t('errors.generic.title')}
+        subtitle={t('errors.generic.body')}
+      />
+    );
+  };
 
   useEffect(() => {
     dispatch(startupSetLoading());
