@@ -10,7 +10,7 @@ import {useAppDispatch} from '../../../../store';
  * It currently shows a message and two buttons: one to add the PID to the wallet and one to add it later.
  * They both redirect to the main screen.
  */
-const Success = () => {
+const PidIssuanceSuccess = () => {
   const {t} = useTranslation(['wallet']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -40,4 +40,4 @@ const Success = () => {
   );
 };
 
-export default Success;
+export default PidIssuanceSuccess;

@@ -23,17 +23,17 @@ import {navigationRef} from './utils';
 
 export type RootStackParamList = {
   // Main
-  [ROOT_ROUTES.TAB_NAV]: NavigatorScreenParams<MainNavigatorParamsList>;
+  [ROOT_ROUTES.MAIN_NAV]: NavigatorScreenParams<MainNavigatorParamsList>;
   [ROOT_ROUTES.ERROR]: undefined;
   [ROOT_ROUTES.LOADING]: undefined;
   [ROOT_ROUTES.ERROR]: undefined;
 
   // Onboarding
-  [ROOT_ROUTES.ONBOARDING]: NavigatorScreenParams<OnboardingNavigatorParamsList>;
+  [ROOT_ROUTES.ONBOARDING_NAV]: NavigatorScreenParams<OnboardingNavigatorParamsList>;
 
   // Main navigator when onboarding is completed
   [MAIN_ROUTES.TAB_NAV]: undefined;
-  [MAIN_ROUTES.WALLET]: NavigatorScreenParams<WalletNavigatorParamsList>;
+  [MAIN_ROUTES.WALLET_NAV]: NavigatorScreenParams<WalletNavigatorParamsList>;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -68,10 +68,13 @@ export const RootStackNavigator = () => {
   const getInitialScreen = useCallback((): Screens => {
     switch (isStartupDone) {
       case 'DONE':
-        return {name: ROOT_ROUTES.TAB_NAV, component: MainStackNavigator};
+        return {name: ROOT_ROUTES.MAIN_NAV, component: MainStackNavigator};
 
       case 'WAIT_ONBOARDING':
-        return {name: ROOT_ROUTES.ONBOARDING, component: OnboardingNavigator};
+        return {
+          name: ROOT_ROUTES.ONBOARDING_NAV,
+          component: OnboardingNavigator
+        };
 
       case 'ERROR':
         // An error occurred during startup
