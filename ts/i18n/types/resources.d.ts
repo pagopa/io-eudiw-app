@@ -71,6 +71,12 @@ interface Resources {
         sensorDescription: 'Login quickly';
       };
     };
+    errors: {
+      generic: {
+        title: "There's an issue with our systems";
+        body: 'Please try again in a few minutes.';
+      };
+    };
   };
   onboarding: {
     carousel: {
