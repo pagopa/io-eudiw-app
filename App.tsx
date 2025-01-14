@@ -12,8 +12,8 @@ import {
 } from '@pagopa/io-app-design-system';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {persistor, store} from './ts/store';
-import {RootStackNavigator} from './ts/navigation/RootStacknavigator';
 import IdentificationModal from './ts/screens/IdentificationModal';
+import RootContainer from './ts/screens/RootContainer';
 
 function App(): React.JSX.Element {
   return (
@@ -25,7 +25,7 @@ function App(): React.JSX.Element {
               <IODSExperimentalContextProvider isExperimentaEnabled={true}>
                 <ToastProvider>
                   <BottomSheetModalProvider>
-                    <RootStackNavigator />
+                    <RootContainer />
                     <IdentificationModal />
                   </BottomSheetModalProvider>
                 </ToastProvider>
