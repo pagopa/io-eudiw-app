@@ -6,7 +6,8 @@ import {PinString} from '../../features/onboarding/types/PinString';
 import secureStoragePersistor from '../persistors/secureStorage';
 import {preferencesReset} from './preferences';
 
-/* State type definition for the pin slice
+/*
+ * State type definition for the pin slice
  * pin - Application PIN set by the user
  */
 export type PreferencesState = Readonly<{
