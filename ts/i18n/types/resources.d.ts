@@ -36,13 +36,6 @@ interface Resources {
     loading: {
       body: 'Please wait a moment';
     };
-    errors: {
-      generic: {
-        title: "There's an issue with our systems";
-        body: 'Please try again in a few minutes.';
-        learnMore: 'Learn more';
-      };
-    };
     accessibility: {
       activityIndicator: {
         label: 'Loading';

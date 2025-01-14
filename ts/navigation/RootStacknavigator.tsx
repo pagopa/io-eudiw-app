@@ -5,7 +5,7 @@ import {
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect} from 'react';
 import {useIOThemeContext} from '@pagopa/io-app-design-system';
-import {useTranslation} from 'react-i18next';
+import i18next from 'i18next';
 import OnboardingNavigator, {
   OnboardingNavigatorParamsList
 } from '../features/onboarding/navigation/OnboardingNavigator';
@@ -57,17 +57,18 @@ export const RootStackNavigator = () => {
   const dispatch = useAppDispatch();
 
   const Loading = () => {
-    const {t} = useTranslation(['global']);
+    const t = i18next.t;
     return <LoadingScreenContent contentTitle={t('generics.waiting')} />;
   };
 
   const GenericError = () => {
-    const {t} = useTranslation(['global']);
+    const title = "There's an issue with our systems";
+    const body = 'Please try again in a few minutes.';
     return (
       <OperationResultScreenContent
         pictogram="umbrellaNew"
-        title={t('errors.generic.title')}
-        subtitle={t('errors.generic.body')}
+        title={title}
+        subtitle={body}
       />
     );
   };
