@@ -1,5 +1,5 @@
 /**
- * Routes configuration for the {@link OnboardingNavigator.tsx}
+ * Routes configuration for the {@link OnBoardingNavigator.tsx}
  */
 const ONBOARDING_ROUTES = {
   // Onboarding section

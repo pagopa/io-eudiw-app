@@ -15,7 +15,7 @@ import {useDebugInfo} from '../../../../hooks/useDebugInfo';
  * Filure screen of the pid issuance flow.
  * Currently it only shows a message and a button to go back to the main screen.
  */
-const Failure = () => {
+const PidIssuanceFailure = () => {
   const {t} = useTranslation(['global', 'wallet']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -45,4 +45,4 @@ const Failure = () => {
   );
 };
 
-export default Failure;
+export default PidIssuanceFailure;
