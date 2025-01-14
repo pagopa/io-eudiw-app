@@ -18,6 +18,8 @@ interface Resources {
           "onboardingReset": "Reset onboarding";
         };
       };
+      debug: 'Enable debug mode';
+      version: 'Version';
     };
     "buttons": {
       "next": "Next";
@@ -45,10 +47,13 @@ interface Resources {
         "hint": "Wait for the content load";
       };
     };
+    "clipboard": {
+      "copyFeedback": 'Copied to clipboard';
+    };
     "identification": {
       "title": {
-        "validation": "Authorise the operation.";
-        "access": "Hi!";
+        "validation": 'Authorise the operation.';
+        "access": 'Hi!';
       };
       "forgot": {
         "title": "Did you forget the the unlock code?";
