@@ -129,11 +129,12 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     borderRadius: 8,
-    borderWidth: 2
+    borderWidth: 2,
+    borderColor: IOColors['grey-50']
   },
   label: {
     flex: 1,
-    ...makeFontStyleObject(16, 'Titillio', 20, 'Semibold')
+    ...makeFontStyleObject(16, 'TitilliumSansPro', 20, 'Bold')
   },
   header: {
     display: 'flex',
