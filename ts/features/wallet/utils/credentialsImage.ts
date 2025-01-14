@@ -7,7 +7,7 @@ type CredentialAsset = {
 
 const credentialsImage: Record<string, CredentialAsset> = {
   PersonIdentificationData: {
-    asset: require('../../assets/credentials/pid.png'),
+    asset: require('../../../../assets/credentials/pid.png'),
     textColor: '#000'
   }
 };

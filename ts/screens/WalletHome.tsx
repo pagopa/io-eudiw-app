@@ -13,7 +13,7 @@ import {lifecycleIsOperationalSelector} from '../features/wallet/store/lifecycle
 import {ActivationBanner} from '../features/wallet/components/ActivationBanner';
 import {credentialsSelector} from '../features/wallet/store/credentials';
 import {getCredentialNameByType} from '../features/wallet/utils/credentials';
-import credentialsImage from '../credentialsImage/credentialsImage';
+import credentialsImage from '../features/wallet/utils/credentialsImage';
 
 /**
  * Wallet home to be rendered as the first page in the tab navigator.
