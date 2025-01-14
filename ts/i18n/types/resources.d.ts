@@ -11,15 +11,13 @@ interface Resources {
     };
     "settings": {
       "title": "Settings";
-      "listHeaders": {
-        "test": {
-          "title": "Test";
-          "walletReset": "Reset wallet";
-          "onboardingReset": "Reset onboarding";
-        };
+      "reset": {
+        "title": "Reset App";
+        "walletReset": "Reset wallet";
+        "onboardingReset": "Reset onboarding";
       };
-      debug: 'Enable debug mode';
-      version: 'Version';
+      "debug": "Enable debug mode";
+      "version": "Version";
     };
     "buttons": {
       "next": "Next";
@@ -48,12 +46,12 @@ interface Resources {
       };
     };
     "clipboard": {
-      "copyFeedback": 'Copied to clipboard';
+      "copyFeedback": "Copied to clipboard";
     };
     "identification": {
       "title": {
-        "validation": 'Authorise the operation.';
-        "access": 'Hi!';
+        "validation": "Authorise the operation.";
+        "access": "Hi!";
       };
       "forgot": {
         "title": "Did you forget the the unlock code?";
