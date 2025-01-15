@@ -165,6 +165,13 @@ interface Resources {
     };
   };
   wallet: {
+    credentials: {
+      names: {
+        mdl: 'Driving License';
+        pid: 'Digital Identity';
+        unknown: 'Unknown';
+      };
+    };
     activationBanner: {
       title: 'Your digital documents always with you!';
       description: 'Activate the Wallet to keep your digital identity and personal documents on your device.';
