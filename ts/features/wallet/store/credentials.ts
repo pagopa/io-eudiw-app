@@ -82,8 +82,8 @@ export const credentialsReducer = persistReducer(
   credentialsSlice.reducer
 );
 
-export const credentialsSelector = (state: {credentials: CredentialsState}) =>
-  state.credentials;
+export const credentialsSelector = (state: RootState) =>
+  state.wallet.credentials;
 
 /**
  * Exports the actions for the credentials slice.
