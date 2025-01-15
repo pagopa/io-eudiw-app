@@ -26,7 +26,7 @@ const OnboardingStart = () => {
   });
 
   const onStartPress = () =>
-    navigation.navigate('ROOT_ONBOARDING', {
+    navigation.navigate('ROOT_ONBOARDING_NAV', {
       screen: 'ONBOARDING_PIN_CREATION',
       params: {isOnboarding: true}
     });

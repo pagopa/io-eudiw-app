@@ -1,21 +1,29 @@
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import React from 'react';
-import {useAppDispatch} from '../../../../store';
+import {useAppDispatch, useAppSelector} from '../../../../store';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
-import {resetInstanceCreation, resetPidIssuance} from '../../store/pidIssuance';
+import {
+  resetInstanceCreation,
+  resetPidIssuance,
+  selectPidIssuanceError
+} from '../../store/pidIssuance';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
+import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 
 /**
  * Filure screen of the pid issuance flow.
  * Currently it only shows a message and a button to go back to the main screen.
  */
-const Failure = () => {
+const PidIssuanceFailure = () => {
   const {t} = useTranslation(['global', 'wallet']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const error = useAppSelector(selectPidIssuanceError);
 
   useHardwareBackButton(() => true);
+
+  useDebugInfo({error});
 
   const onPress = () => {
     dispatch(resetInstanceCreation());
@@ -37,4 +45,4 @@ const Failure = () => {
   );
 };
 
-export default Failure;
+export default PidIssuanceFailure;

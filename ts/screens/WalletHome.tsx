@@ -1,11 +1,19 @@
 import React from 'react';
-import {View} from 'react-native';
-import {IOStyles, HeaderFirstLevel} from '@pagopa/io-app-design-system';
+import {FlatList, ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {
+  IOStyles,
+  HeaderFirstLevel,
+  IOColors,
+  makeFontStyleObject
+} from '@pagopa/io-app-design-system';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {useAppSelector} from '../store';
 import {lifecycleIsOperationalSelector} from '../features/wallet/store/lifecycle';
 import {ActivationBanner} from '../features/wallet/components/ActivationBanner';
+import {credentialsSelector} from '../features/wallet/store/credentials';
+import {getCredentialNameByType} from '../features/wallet/utils/credentials';
+import credentialsImage from '../features/wallet/utils/credentialsImage';
 
 /**
  * Wallet home to be rendered as the first page in the tab navigator.
@@ -16,6 +24,7 @@ const WalletHome = () => {
   const {t} = useTranslation(['wallet', 'global']);
   const navigation = useNavigation();
   const isWalletOperational = useAppSelector(lifecycleIsOperationalSelector);
+  const credentials = useAppSelector(credentialsSelector);
 
   return (
     <>
@@ -25,7 +34,7 @@ const WalletHome = () => {
         firstAction={{
           icon: 'coggle',
           onPress: () =>
-            navigation.navigate('ROOT_TAB_NAV', {screen: 'MAIN_SETTINGS'}),
+            navigation.navigate('ROOT_MAIN_NAV', {screen: 'MAIN_SETTINGS'}),
           accessibilityLabel: t('global:settings.title')
         }}
       />
@@ -39,11 +48,102 @@ const WalletHome = () => {
             />
           </View>
         ) : (
-          <></> // Needs to
+          <>
+            <FlatList
+              data={credentials.credentials}
+              renderItem={({item, index}) => {
+                if (index !== credentials.credentials.length - 1) {
+                  return (
+                    <View style={styles.previewContainer}>
+                      <View style={styles.cardContainer}>
+                        <View style={styles.card}>
+                          <View style={styles.border} />
+                          <View style={styles.header}>
+                            <Text style={styles.label}>
+                              {`${getCredentialNameByType(
+                                item.credentialType
+                              )}`}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  );
+                } else {
+                  return (
+                    <View style={styles.cardContainer}>
+                      <ImageBackground
+                        source={credentialsImage[item.credentialType].asset}
+                        style={styles.card}>
+                        <View style={styles.border} />
+                        <View style={styles.header}>
+                          <Text
+                            style={[
+                              styles.label,
+                              {
+                                color:
+                                  credentialsImage[item.credentialType]
+                                    .textColor
+                              }
+                            ]}>
+                            {`${getCredentialNameByType(
+                              item.credentialType
+                            ).toUpperCase()}`}
+                          </Text>
+                        </View>
+                      </ImageBackground>
+                    </View>
+                  );
+                }
+              }}
+            />
+          </>
         )}
       </View>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  previewContainer: {
+    aspectRatio: 9 / 2,
+    overflow: 'hidden'
+  },
+  cardContainer: {
+    aspectRatio: 16 / 10,
+    borderRadius: 8,
+    overflow: 'hidden'
+  },
+  card: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: IOColors['grey-100']
+  },
+  border: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: IOColors['grey-50']
+  },
+  label: {
+    flex: 1,
+    ...makeFontStyleObject(16, 'TitilliumSansPro', 20, 'Bold')
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingTop: 14
+  }
+});
 
 export default WalletHome;

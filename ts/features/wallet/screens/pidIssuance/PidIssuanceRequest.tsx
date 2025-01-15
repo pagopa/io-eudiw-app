@@ -28,7 +28,7 @@ import {addCredentialWithIdentification} from '../../store/credentials';
  * A loading screen is shown until the PID is issued, then the user can see a preview of the PID and decide to add it to the wallet.
  * If the PID issuance fails, the user is redirected to the failure screen.
  */
-const Issuance = () => {
+const PidIssuanceRequest = () => {
   const {t} = useTranslation(['wallet', 'global']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -41,8 +41,8 @@ const Issuance = () => {
 
   useEffect(() => {
     if (error.status === true) {
-      navigation.navigate('MAIN_WALLET', {
-        screen: 'FAILURE'
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PID_ISSUANCE_FAILURE'
       });
     }
   }, [error, navigation]);
@@ -97,7 +97,7 @@ const Issuance = () => {
   );
 };
 
-export default Issuance;
+export default PidIssuanceRequest;
 
 const styles = StyleSheet.create({
   scroll: {

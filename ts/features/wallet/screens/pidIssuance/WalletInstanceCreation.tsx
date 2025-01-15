@@ -30,8 +30,8 @@ const WalletInstanceCreation = () => {
 
   useEffect(() => {
     if (success.status === true) {
-      navigation.navigate('MAIN_WALLET', {
-        screen: 'ISSUANCE'
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PID_ISSUANCE_REQUEST'
       });
       dispatch(resetInstanceCreation());
     }
@@ -39,8 +39,8 @@ const WalletInstanceCreation = () => {
 
   useEffect(() => {
     if (error.status === true) {
-      navigation.navigate('MAIN_WALLET', {
-        screen: 'FAILURE'
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PID_ISSUANCE_FAILURE'
       });
     }
   }, [error, navigation]);

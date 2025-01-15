@@ -1578,6 +1578,8 @@ PODS:
     - React-Core
   - RNCAsyncStorage (2.1.0):
     - React-Core
+  - RNCClipboard (1.15.0):
+    - React-Core
   - RNDeviceInfo (14.0.1):
     - React-Core
   - RNGestureHandler (2.21.2):
@@ -1810,6 +1812,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
@@ -1967,6 +1970,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNCClipboard:
+    :path: "../node_modules/@react-native-clipboard/clipboard"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
@@ -2055,6 +2060,7 @@ SPEC CHECKSUMS:
   ReactCommon: 36d48f542b4010786d6b2bcee615fe5f906b7105
   RNBootSplash: 74d11cdbe6bfafa66014fc54a7105b79350333bd
   RNCAsyncStorage: c91d753ede6dc21862c4922cd13f98f7cfde578e
+  RNCClipboard: dbcf25b8f666b4685c02eeb65be981d30198e505
   RNDeviceInfo: afc27b3f24bd0e97181bf3e9f23cfa4c9040dd32
   RNGestureHandler: 5b24d10761754ad271b714e536c457fd89b17c54
   RNReactNativeHapticFeedback: 00ba111b82aa266bb3ee1aa576831c2ea9a9dfad

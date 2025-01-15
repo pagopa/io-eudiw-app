@@ -2371,6 +2371,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-clipboard/clipboard@npm:^1.15.0":
+  version: 1.15.0
+  resolution: "@react-native-clipboard/clipboard@npm:1.15.0"
+  peerDependencies:
+    react: ">= 16.9.0"
+    react-native: ">= 0.61.5"
+    react-native-macos: ">= 0.61.0"
+    react-native-windows: ">= 0.61.0"
+  peerDependenciesMeta:
+    react-native-macos:
+      optional: true
+    react-native-windows:
+      optional: true
+  checksum: b0c071368e46ce0676bbe68de2812c31ba67c477a85163b3f6392d04d13e4134c42040dc485361bfa059a7713baceb25afd4e15b77bfcaabe136fa499d9d5e19
+  languageName: node
+  linkType: hard
+
 "@react-native-community/cli-clean@npm:14.1.0":
   version: 14.1.0
   resolution: "@react-native-community/cli-clean@npm:14.1.0"
@@ -7813,6 +7830,7 @@ __metadata:
     "@pagopa/io-react-native-wallet": ^0.27.0
     "@pagopa/react-native-nodelibs": ^0.1.0
     "@react-native-async-storage/async-storage": ^2.0.0
+    "@react-native-clipboard/clipboard": ^1.15.0
     "@react-native-community/cli": 15.0.0
     "@react-native-community/cli-platform-android": 15.0.0
     "@react-native-community/cli-platform-ios": 15.0.0

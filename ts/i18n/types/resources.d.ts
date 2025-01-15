@@ -11,13 +11,13 @@ interface Resources {
     };
     settings: {
       title: 'Settings';
-      listHeaders: {
-        test: {
-          title: 'Test';
-          walletReset: 'Reset wallet';
-          onboardingReset: 'Reset onboarding';
-        };
+      reset: {
+        title: 'Reset App';
+        walletReset: 'Reset wallet';
+        onboardingReset: 'Reset onboarding';
       };
+      debug: 'Enable debug mode';
+      version: 'Version';
     };
     buttons: {
       next: 'Next';
@@ -44,6 +44,9 @@ interface Resources {
         label: 'Loading';
         hint: 'Wait for the content load';
       };
+    };
+    clipboard: {
+      copyFeedback: 'Copied to clipboard';
     };
     identification: {
       title: {
@@ -159,6 +162,13 @@ interface Resources {
     };
   };
   wallet: {
+    credentials: {
+      names: {
+        mdl: 'Driving License';
+        pid: 'Digital Identity';
+        unknown: 'Unknown';
+      };
+    };
     activationBanner: {
       title: 'Your digital documents always with you!';
       description: 'Activate the Wallet to keep your digital identity and personal documents on your device.';
