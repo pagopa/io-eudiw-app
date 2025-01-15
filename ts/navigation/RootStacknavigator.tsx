@@ -61,6 +61,7 @@ export const RootStackNavigator = () => {
   );
 
   const GenericError = () => {
+    // Title and body are hardcoded to minimize the risk of errors while displaying the error screen
     const title = "There's an issue with our systems";
     const body = 'Please try again in a few minutes.';
     return (
