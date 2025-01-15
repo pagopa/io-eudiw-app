@@ -180,7 +180,7 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
   Link(link: TxtLinkNode, render: Renderer) {
     const handleOpenLink = () => {
       openWebUrl(link.url, () => {
-        IOToast.error(i18next.t('global:errors.generic.title'));
+        IOToast.error(i18next.t('errors.generic.title', {ns: 'global'}));
       });
     };
 

@@ -56,10 +56,9 @@ export const RootStackNavigator = () => {
   const {themeType} = useIOThemeContext();
   const dispatch = useAppDispatch();
 
-  const Loading = () => {
-    const t = i18next.t;
-    return <LoadingScreenContent contentTitle={t('generics.waiting')} />;
-  };
+  const Loading = () => (
+    <LoadingScreenContent contentTitle={i18next.t('generics.waiting')} />
+  );
 
   const GenericError = () => {
     const title = "There's an issue with our systems";
