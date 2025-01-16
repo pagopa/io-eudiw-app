@@ -33,11 +33,8 @@ interface Resources {
       confirm: 'Confirm';
       help: 'Help';
     };
-    errors: {
-      generic: {
-        title: "There's an issue with our systems";
-        body: 'Please try again in a few minutes.';
-      };
+    loading: {
+      body: 'Please wait a moment';
     };
     accessibility: {
       activityIndicator: {
@@ -72,6 +69,12 @@ interface Resources {
       biometric: {
         title: 'Biometric identification';
         sensorDescription: 'Login quickly';
+      };
+    };
+    errors: {
+      generic: {
+        title: "There's an issue with our systems";
+        body: 'Please try again in a few minutes.';
       };
     };
   };
