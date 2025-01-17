@@ -1,0 +1,155 @@
+name: Build and Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseLevel:
+        description: 'Version to bump'
+        required: true
+        type: choice
+        default: minor
+        options:
+          - major
+          - minor
+          - patch
+
+jobs:
+  run-static-checks:
+    uses: ./statics.yml
+  bump-app-version:
+    needs: run-static-checks
+    runs-on: ubuntu-latest
+    environment: prod
+    outputs:
+      currentAppVersion: ${{ steps.github-release-creation.outputs.CURRENT_APP_VERSION }}
+    steps:
+      - id: checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab #v3.5.2
+        with:
+          fetch-depth: 0
+          ssh-key: ${{ secrets.SSH_DEPLOY_KEY }}
+      - id: setup-node
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
+        with:
+          node-version-file: '.node-version'
+      - id: yarn-cache
+        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+      - id: install-packages
+        run: yarn install --frozen-lockfile
+      - id: bump-version
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          if [[ ${{ github.event.inputs.releaseLevel }} == "major" ]]; then
+            echo "Bumping the major version"
+            yarn start-breaking-cycle
+          elif [[ ${{ github.event.inputs.releaseLevel }} == "minor" ]]; then
+            echo "Bumping the minor version"
+            yarn start-release-cycle
+          elif [[ ${{ github.event.inputs.releaseLevel }} == "patch" ]]; then
+            echo "Bumping the patch version"
+            yarn start-fix-cycle
+          else
+            echo "Unknown release level: ${{ github.event.inputs.releaseLevel }}"
+            exit 1
+          fi
+      - id: push-tags
+        run: |
+          git push --no-verify --follow-tags origin HEAD:${GITHUB_REF#refs/heads/}
+      - id: github-release-creation
+        run: |
+          APP_VERSION=$(node -p -e "require('./package.json').version")
+          echo "CURRENT_APP_VERSION=$APP_VERSION" >> $GITHUB_OUTPUT
+          gh release create $APP_VERSION --latest --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  release-android:
+    needs: bump-app-version
+    environment: prod
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab #v3.5.2
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.bump-app-version.outputs.currentAppVersion }}
+      - id: setup
+        uses: ./.github/actions/setup
+      - id: setup-jdk-17
+        uses: actions/setup-java@5ffc13f4174014e2d4d4572b3d74c3fa61aeb2c2 #v3.11.0
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+      - id: setup-android-sdk
+        uses: android-actions/setup-android@00854ea68c109d98c75d956347303bf7c45b0277 #v3.2.1
+      - id: setup-ruby
+        uses: ruby/setup-ruby@401c19e14f474b54450cd3905bb8b86e2c8509cf #v1.204.0
+        with:
+          bundler-cache: true
+      - id: build-release-android
+        run: |
+          ./scripts/android-release.sh ./android/app
+          cd android && bundle exec fastlane alpha
+        shell: bash
+        env:
+          RUBYOPT: '-rostruct' # TODO: Remove when https://github.com/fastlane/fastlane/pull/21950 gets released
+          ENCODED_IOAPP_JSON_KEY_FILE: ${{secrets.ENCODED_IOAPP_JSON_KEY_FILE}}
+          ENCODED_IO_APP_RELEASE_KEYSTORE: ${{secrets.ENCODED_IO_APP_RELEASE_KEYSTORE}}
+          IO_APP_RELEASE_STORE_FILE: ${{secrets.IO_APP_RELEASE_STORE_FILE}}
+          IO_APP_RELEASE_STORE_PASSWORD: ${{secrets.IO_APP_RELEASE_STORE_PASSWORD}}
+          IO_APP_RELEASE_KEY_ALIAS: ${{secrets.IO_APP_RELEASE_KEY_ALIAS}}
+          IO_APP_RELEASE_KEY_PASSWORD: ${{secrets.IO_APP_RELEASE_KEY_PASSWORD}}
+  release-ios:
+    needs: bump-app-version
+    environment: prod
+    runs-on: macos-14
+    steps:
+      - id: set-xcode-version
+        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
+        shell: bash
+      - id: checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab #v3.5.2
+        with:
+          fetch-depth: 0
+      - id: setup
+        uses: ./.github/actions/setup
+      - id: setup-ruby
+        uses: ruby/setup-ruby@401c19e14f474b54450cd3905bb8b86e2c8509cf #v1.204.0
+        with:
+          bundler-cache: true
+      - id: prepare-ios-build
+        run: ./scripts/ios-release-build.sh
+        env:
+          APP_STORE_API_KEY_ID: ${{secrets.APP_STORE_API_KEY_ID}}
+          APP_STORE_API_PRIVATE_KEY: ${{secrets.APP_STORE_API_PRIVATE_KEY}}
+      - id: add-ssh-deploy-key
+        run: |
+          echo -e "Host github.com
+            AddKeysToAgent yes
+            IdentityFile ~/.ssh/id_ed25519" > ~/.ssh/config
+          echo -e "$SSH_DEPLOY_KEY" > ~/.ssh/id_ed25519
+          chmod 400 ~/.ssh/id_ed25519
+          ssh-add ~/.ssh/id_ed25519
+        env:
+          SSH_DEPLOY_KEY: ${{secrets.SSH_DEPLOY_KEY}}
+      - id: build-upload-app-store
+        name: Build & submit to App store
+        run: |
+          cd ios
+          bundle exec fastlane beta_circleci_testflight
+        env:
+          LC_ALL: en_US.UTF-8
+          LANG: en_US.UTF-8
+          APP_STORE_API_KEY_ID: ${{secrets.APP_STORE_API_KEY_ID}}
+          APP_STORE_API_PRIVATE_KEY: ${{secrets.APP_STORE_API_PRIVATE_KEY}}
+          APP_STORE_API_KEY_ISSUER_ID: ${{secrets.APP_STORE_API_KEY_ISSUER_ID}}
+          ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD: ${{secrets.ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD}}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}

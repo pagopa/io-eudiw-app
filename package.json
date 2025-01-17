@@ -12,7 +12,11 @@
     "nuke": "rm -rf ios/Pods && rm -rf ios/DerivedData && cd android && ./gradlew clean && cd .. && rm -rf node_modules",
     "prepare": "husky",
     "tsc": "tsc --noEmit",
-    "prettier:check": "prettier --check \"ts/**/*.(ts|tsx)\""
+    "prettier:check": "prettier --check \"ts/**/*.(ts|tsx)\"",
+    "pre-cycle": "scripts/changelog/check_git_status.sh",
+    "start-fix-cycle": "yarn pre-cycle && standard-version -t \"\" --release-as patch --no-verify",
+    "start-release-cycle": "yarn pre-cycle && standard-version -t \"\"  --release-as minor --no-verify",
+    "start-breaking-cycle": "yarn pre-cycle && standard-version -t \"\" --release-as major --no-verify"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -92,6 +96,7 @@
     "react-test-renderer": "18.3.1",
     "reactotron-react-native": "^5.1.10",
     "reactotron-redux": "^3.1.10",
+    "standard-version": "^9.5.0",
     "typescript": "5.0.4"
   },
   "engines": {
