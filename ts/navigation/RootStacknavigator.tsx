@@ -12,6 +12,7 @@ import OnboardingNavigator, {
 import {useAppDispatch, useAppSelector} from '../store';
 import {selectStartupState, startupSetLoading} from '../store/reducers/startup';
 import {WalletNavigatorParamsList} from '../features/wallet/navigation/WalletNavigator';
+import {OperationResultScreenContent} from '../components/screens/OperationResultScreenContent';
 import LoadingScreenContent from '../components/LoadingScreenContent';
 import {IONavigationDarkTheme, IONavigationLightTheme} from './theme';
 import ROOT_ROUTES from './routes';
@@ -55,15 +56,26 @@ export const RootStackNavigator = () => {
   const {themeType} = useIOThemeContext();
   const dispatch = useAppDispatch();
 
+  const Loading = () => (
+    <LoadingScreenContent contentTitle={i18next.t('generics.waiting')} />
+  );
+
+  const GenericError = () => {
+    // Title and body are hardcoded to minimize the risk of errors while displaying the error screen
+    const title = "There's an issue with our systems";
+    const body = 'Please try again in a few minutes.';
+    return (
+      <OperationResultScreenContent
+        pictogram="umbrellaNew"
+        title={title}
+        subtitle={body}
+      />
+    );
+  };
+
   useEffect(() => {
     dispatch(startupSetLoading());
   }, [dispatch]);
-
-  const LoadingScreen = () => (
-    <LoadingScreenContent
-      contentTitle={i18next.t('generics.waiting', {ns: 'global'})}
-    />
-  );
 
   const getInitialScreen = useCallback((): Screens => {
     switch (isStartupDone) {
@@ -78,15 +90,13 @@ export const RootStackNavigator = () => {
 
       case 'ERROR':
         // An error occurred during startup
-        return {name: ROOT_ROUTES.ERROR, component: () => <></>}; // TODO: Add error screen
+        return {name: ROOT_ROUTES.ERROR, component: GenericError};
+
       case 'LOADING':
       case 'NOT_STARTED':
       case 'WAIT_IDENTIFICATION':
       default:
-        return {
-          name: ROOT_ROUTES.LOADING,
-          component: LoadingScreen
-        }; // TODO: Add loading screen
+        return {name: ROOT_ROUTES.LOADING, component: Loading};
     }
   }, [isStartupDone]);
 
