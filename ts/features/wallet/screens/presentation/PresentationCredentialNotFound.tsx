@@ -7,6 +7,11 @@ import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNa
 import {wellKnownCredential} from '../../utils/credentials';
 import MAIN_ROUTES from '../../../../navigation/main/routes';
 
+/**
+ * Component to be rendered as fallback when a credential is not found and the user tries to open its details.
+ * This should be possible as only credentials present in the store are rendered, however it's still used as a fallback.
+ * If the credential doesn't exists, the user can request it by opening the issuance flow.
+ */
 const PresentationCredentialNotFound = ({
   credentialType
 }: {

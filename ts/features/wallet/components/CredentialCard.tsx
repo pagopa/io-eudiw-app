@@ -29,6 +29,10 @@ const getStyleProps = (credentialType: string): StyleProps => {
   };
 };
 
+/**
+ * Renders a credential card based on the credential type.
+ * Each credential type is mapped to a specific background image.
+ */
 export const CredentialCard = ({credentialType}: CredentialCard) => {
   const styleProps = getStyleProps(credentialType);
 

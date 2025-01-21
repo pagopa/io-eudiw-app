@@ -11,6 +11,10 @@ type PresentationDetailFooterProps = {
   credential: StoredCredential;
 };
 
+/**
+ * Footer component which is supposed to be rendered at the bottom of the credential details screen.
+ * It renders a button to remove the credential.
+ */
 const PresentationDetailsFooter = ({
   credential
 }: PresentationDetailFooterProps) => {

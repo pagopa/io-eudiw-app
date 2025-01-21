@@ -35,6 +35,11 @@ const gradientSafeArea: IOSpacingScale = 80;
 const contentEndMargin: IOSpacingScale = 32;
 const spaceBetweenActions: IOSpacer = 24;
 
+/**
+ * This component renders the base layout for the credential details screen.
+ * It contains an animated scrollview and a footer with a gradient background.
+ * Each child component forming the presentation details screen should be rendered inside this component.
+ */
 const PresentationDetailsScreenBase = ({
   credential,
   children,
