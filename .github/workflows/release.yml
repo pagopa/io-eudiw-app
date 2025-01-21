@@ -13,7 +13,7 @@ on:
           - patch
 jobs:
   run-static-checks:
-    uses: ./statics.yml
+    uses: ./.github/workflows/staticcheck.yaml
   bump-app-version:
     needs: run-static-checks
     runs-on: ubuntu-latest
@@ -184,7 +184,7 @@ jobs:
           chmod 400 ~/.ssh/id_ed25519
           ssh-add ~/.ssh/id_ed25519
         env:
-          SSH_DEPLOY_KEY: ${{secrets.SSH_DEPLOY_KEY}}
+          SSH_DEPLOY_KEY: ${{secrets.SSH_CERTS_DEPLOY_KEY}}
       - id: build-upload-app-store
         name: Build & submit to App store
         run: |
