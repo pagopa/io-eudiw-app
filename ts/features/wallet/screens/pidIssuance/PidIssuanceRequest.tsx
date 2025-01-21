@@ -18,7 +18,7 @@ import {
   setPidIssuanceRequest
 } from '../../store/pidIssuance';
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
-import CredentialPreviewClaimsList from '../../components/CredentialPreviewClaimsList';
+import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import {StoredCredential} from '../../utils/types';
 import {addCredentialWithIdentification} from '../../store/credentials';
 

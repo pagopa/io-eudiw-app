@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import {
   IOStyles,
   HeaderFirstLevel,
@@ -13,7 +13,7 @@ import {lifecycleIsOperationalSelector} from '../features/wallet/store/lifecycle
 import {ActivationBanner} from '../features/wallet/components/ActivationBanner';
 import {credentialsSelector} from '../features/wallet/store/credentials';
 import {getCredentialNameByType} from '../features/wallet/utils/credentials';
-import credentialsImage from '../features/wallet/utils/credentialsImage';
+import {CredentialCard} from '../features/wallet/components/CredentialCard';
 
 /**
  * Wallet home to be rendered as the first page in the tab navigator.
@@ -71,28 +71,15 @@ const WalletHome = () => {
                   );
                 } else {
                   return (
-                    <View style={styles.cardContainer}>
-                      <ImageBackground
-                        source={credentialsImage[item.credentialType].asset}
-                        style={styles.card}>
-                        <View style={styles.border} />
-                        <View style={styles.header}>
-                          <Text
-                            style={[
-                              styles.label,
-                              {
-                                color:
-                                  credentialsImage[item.credentialType]
-                                    .textColor
-                              }
-                            ]}>
-                            {`${getCredentialNameByType(
-                              item.credentialType
-                            ).toUpperCase()}`}
-                          </Text>
-                        </View>
-                      </ImageBackground>
-                    </View>
+                    <Pressable
+                      onPress={() =>
+                        navigation.navigate('MAIN_WALLET_NAV', {
+                          screen: 'PRESENTATION_CREDENTIAL_DETAILS',
+                          params: {credentialType: item.credentialType}
+                        })
+                      }>
+                      <CredentialCard credentialType={item.credentialType} />
+                    </Pressable>
                   );
                 }
               }}
