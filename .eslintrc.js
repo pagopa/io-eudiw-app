@@ -15,6 +15,7 @@ module.exports = {
     }
   },
   plugins: ['import', 'sonarjs', 'functional'],
+  ignorePatterns: ['ts/i18n/types/resources.d.ts'],
   rules: {
     'comma-dangle': ['error', 'never'],
     'no-case-declarations': 'off',
