@@ -1,5 +1,3 @@
-name: Code static checks
-
 on:
   - pull_request
   - workflow_call
@@ -13,7 +11,7 @@ jobs:
     steps:
       - id: checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
-        id: setup
+      - id: setup
         uses: ./.github/actions/setup-composite
       - id: run-tsc
         run: yarn tsc
