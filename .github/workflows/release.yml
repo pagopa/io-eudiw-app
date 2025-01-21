@@ -155,7 +155,7 @@ jobs:
         uses: actions/download-artifact@6b208ae046db98c579e8a3aa621ab581ff575935 # v4.1.1
         with:
           name: locales
-          path: locales/
+          path: ts/i18n/types/resources.d.ts
       - id: setup-ruby
         uses: ruby/setup-ruby@401c19e14f474b54450cd3905bb8b86e2c8509cf #v1.204.0
         with:
