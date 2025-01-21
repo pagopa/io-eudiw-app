@@ -1,8 +1,8 @@
 import {ListItemInfo} from '@pagopa/io-app-design-system';
 import React from 'react';
 import i18next from 'i18next';
-import {claimScheme, dateSchema, stringSchema} from '../utils/claims';
-import {ClaimDisplayFormat} from '../utils/types';
+import {claimScheme, dateSchema, stringSchema} from '../../utils/claims';
+import {ClaimDisplayFormat} from '../../utils/types';
 
 /**
  * Component which renders a generic text type claim.

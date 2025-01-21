@@ -201,6 +201,24 @@ interface Resources {
         button: 'I understand';
       };
     };
+    presentation: {
+      credentialNotFound: {
+        title: 'Aggiungi il documento al Portafoglio';
+        subtitle: 'Per usare i documenti su IO, prima aggiungili al Portafoglio. È facile e veloce.';
+      };
+      credentialDetails: {
+        footer: {
+          removal: {
+            remove: 'Remove from wallet';
+            dialog: {
+              title: 'Do you want to remove the document from the wallet?';
+              content: 'If you change your mind, you can add it again later.';
+              confirm: 'Yes, remove';
+            };
+          };
+        };
+      };
+    };
     claims: {
       generic: {
         notAvailable: 'Claim not available';
