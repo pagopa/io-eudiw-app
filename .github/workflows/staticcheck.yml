@@ -20,4 +20,4 @@ jobs:
       - id: run-prettier
         run: yarn prettier:check
       - id: run-test
-        run: yarn test:ci
+        run: yarn test
