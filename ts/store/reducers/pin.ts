@@ -4,8 +4,10 @@ import {PersistConfig, persistReducer} from 'redux-persist';
 import {RootState} from '../types';
 import {PinString} from '../../features/onboarding/types/PinString';
 import secureStoragePersistor from '../persistors/secureStorage';
+import {preferencesReset} from './preferences';
 
-/* State type definition for the pin slice
+/*
+ * State type definition for the pin slice
  * pin - Application PIN set by the user
  */
 export type PreferencesState = Readonly<{
@@ -29,6 +31,10 @@ const pinSlice = createSlice({
       state.pin = action.payload;
     },
     pinReset: () => initialState
+  },
+  extraReducers: builder => {
+    // This happens when the whole app state is reset
+    builder.addCase(preferencesReset, _ => initialState);
   }
 });
 

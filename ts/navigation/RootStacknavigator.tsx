@@ -5,33 +5,36 @@ import {
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect} from 'react';
 import {useIOThemeContext} from '@pagopa/io-app-design-system';
+import i18next from 'i18next';
 import OnboardingNavigator, {
   OnboardingNavigatorParamsList
 } from '../features/onboarding/navigation/OnboardingNavigator';
 import {useAppDispatch, useAppSelector} from '../store';
 import {selectStartupState, startupSetLoading} from '../store/reducers/startup';
-import {selectisOnboardingComplete} from '../store/reducers/preferences';
 import {WalletNavigatorParamsList} from '../features/wallet/navigation/WalletNavigator';
+import {OperationResultScreenContent} from '../components/screens/OperationResultScreenContent';
+import LoadingScreenContent from '../components/LoadingScreenContent';
 import {IONavigationDarkTheme, IONavigationLightTheme} from './theme';
 import ROOT_ROUTES from './routes';
 import MainStackNavigator, {
   MainNavigatorParamsList
 } from './main/MainStackNavigator';
 import MAIN_ROUTES from './main/routes';
+import {navigationRef} from './utils';
 
 export type RootStackParamList = {
   // Main
-  [ROOT_ROUTES.TAB_NAV]: NavigatorScreenParams<MainNavigatorParamsList>;
+  [ROOT_ROUTES.MAIN_NAV]: NavigatorScreenParams<MainNavigatorParamsList>;
   [ROOT_ROUTES.ERROR]: undefined;
   [ROOT_ROUTES.LOADING]: undefined;
   [ROOT_ROUTES.ERROR]: undefined;
 
   // Onboarding
-  [ROOT_ROUTES.ONBOARDING]: NavigatorScreenParams<OnboardingNavigatorParamsList>;
+  [ROOT_ROUTES.ONBOARDING_NAV]: NavigatorScreenParams<OnboardingNavigatorParamsList>;
 
   // Main navigator when onboarding is completed
   [MAIN_ROUTES.TAB_NAV]: undefined;
-  [MAIN_ROUTES.WALLET]: NavigatorScreenParams<WalletNavigatorParamsList>;
+  [MAIN_ROUTES.WALLET_NAV]: NavigatorScreenParams<WalletNavigatorParamsList>;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -50,9 +53,25 @@ type Screens = {
  */
 export const RootStackNavigator = () => {
   const isStartupDone = useAppSelector(selectStartupState);
-  const isOnboardingCompleted = useAppSelector(selectisOnboardingComplete);
   const {themeType} = useIOThemeContext();
   const dispatch = useAppDispatch();
+
+  const Loading = () => (
+    <LoadingScreenContent contentTitle={i18next.t('generics.waiting')} />
+  );
+
+  const GenericError = () => {
+    // Title and body are hardcoded to minimize the risk of errors while displaying the error screen
+    const title = "There's an issue with our systems";
+    const body = 'Please try again in a few minutes.';
+    return (
+      <OperationResultScreenContent
+        pictogram="umbrellaNew"
+        title={title}
+        subtitle={body}
+      />
+    );
+  };
 
   useEffect(() => {
     dispatch(startupSetLoading());
@@ -61,19 +80,25 @@ export const RootStackNavigator = () => {
   const getInitialScreen = useCallback((): Screens => {
     switch (isStartupDone) {
       case 'DONE':
-        // Startup is done, check if onboarding is completed
-        return isOnboardingCompleted
-          ? {name: ROOT_ROUTES.TAB_NAV, component: MainStackNavigator}
-          : {name: ROOT_ROUTES.ONBOARDING, component: OnboardingNavigator};
+        return {name: ROOT_ROUTES.MAIN_NAV, component: MainStackNavigator};
+
+      case 'WAIT_ONBOARDING':
+        return {
+          name: ROOT_ROUTES.ONBOARDING_NAV,
+          component: OnboardingNavigator
+        };
+
       case 'ERROR':
         // An error occurred during startup
-        return {name: ROOT_ROUTES.ERROR, component: () => <></>}; // TODO: Add error screen
+        return {name: ROOT_ROUTES.ERROR, component: GenericError};
+
       case 'LOADING':
       case 'NOT_STARTED':
+      case 'WAIT_IDENTIFICATION':
       default:
-        return {name: ROOT_ROUTES.LOADING, component: () => <></>}; // TODO: Add loading screen
+        return {name: ROOT_ROUTES.LOADING, component: Loading};
     }
-  }, [isStartupDone, isOnboardingCompleted]);
+  }, [isStartupDone]);
 
   const initialScreen = getInitialScreen();
 
@@ -81,7 +106,8 @@ export const RootStackNavigator = () => {
     <NavigationContainer
       theme={
         themeType === 'light' ? IONavigationLightTheme : IONavigationDarkTheme
-      }>
+      }
+      ref={navigationRef}>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen
           name={initialScreen.name}

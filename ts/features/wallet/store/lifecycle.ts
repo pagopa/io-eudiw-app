@@ -1,6 +1,7 @@
 /* eslint-disable functional/immutable-data */
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../../store/types';
+import {preferencesReset} from '../../../store/reducers/preferences';
 
 /**
  * Enum for the lifecycle state of the wallet.
@@ -29,7 +30,7 @@ const initialState: LifecycleState = {
 /**
  * Redux slice for the lifecycle state. It allows to set and reset the pin.
  */
-export const lifecycleState = createSlice({
+const lifecycleSlice = createSlice({
   name: 'lifecycle',
   initialState,
   reducers: {
@@ -37,13 +38,19 @@ export const lifecycleState = createSlice({
       state.lifecycle = action.payload.lifecycle;
     },
     resetLifecycle: () => initialState
+  },
+  extraReducers: builder => {
+    // This happens when the whole app state is reset
+    builder.addCase(preferencesReset, _ => initialState);
   }
 });
 
 /**
  * Exports the actions for the lifecycle slice.
  */
-export const {setLifecycle} = lifecycleState.actions;
+export const {setLifecycle} = lifecycleSlice.actions;
+
+export const {reducer: lifecycleReducer} = lifecycleSlice;
 
 /**
  * Select the current wallet lifecycle.

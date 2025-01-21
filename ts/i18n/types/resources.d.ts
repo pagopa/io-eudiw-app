@@ -1,9 +1,23 @@
 interface Resources {
   global: {
+    generics: {
+      waiting: 'Wait few seconds';
+      success: 'Success';
+    };
     tabNavigator: {
       wallet: 'Wallet';
       scanQr: 'Scan QR';
       showQr: 'Show QR';
+    };
+    settings: {
+      title: 'Settings';
+      reset: {
+        title: 'Reset App';
+        walletReset: 'Reset wallet';
+        onboardingReset: 'Reset onboarding';
+      };
+      debug: 'Enable debug mode';
+      version: 'Version';
     };
     buttons: {
       next: 'Next';
@@ -15,6 +29,47 @@ interface Resources {
       activate: 'Activate';
       notNow: 'Not now';
       back: 'Back';
+      cancel: 'Cancel';
+      confirm: 'Confirm';
+      help: 'Help';
+    };
+    loading: {
+      body: 'Please wait a moment';
+    };
+    accessibility: {
+      activityIndicator: {
+        label: 'Loading';
+        hint: 'Wait for the content load';
+      };
+    };
+    clipboard: {
+      copyFeedback: 'Copied to clipboard';
+    };
+    identification: {
+      title: {
+        validation: 'Authorise the operation.';
+        access: 'Hi!';
+      };
+      forgot: {
+        title: 'Did you forget the the unlock code?';
+        confirmTitle: 'Did you forget the unlock code?';
+        confirmMsg: 'To be able to choose a new unlock code you will need to log in again.';
+        confirmMsgWithTask: 'To be able to choose a new unlock code you will need to cancel the current procedure and log in again.';
+      };
+      error: {
+        deviceLocked: 'Authentication was not successful, the device currently in a lockout of 30 seconds';
+        DeviceLockedPermanent: 'Authentication was not successful, device must be unlocked via password';
+      };
+      unlockCode: {
+        accessibility: {
+          fingerprint: 'Login with your fingerprint';
+          faceId: 'Login with the Face ID';
+        };
+      };
+      biometric: {
+        title: 'Biometric identification';
+        sensorDescription: 'Login quickly';
+      };
     };
     errors: {
       generic: {
@@ -110,6 +165,13 @@ interface Resources {
     };
   };
   wallet: {
+    credentials: {
+      names: {
+        mdl: 'Driving License';
+        pid: 'Digital Identity';
+        unknown: 'Unknown';
+      };
+    };
     activationBanner: {
       title: 'Your digital documents always with you!';
       description: 'Activate the Wallet to keep your digital identity and personal documents on your device.';
@@ -118,6 +180,31 @@ interface Resources {
     walletInstanceCreation: {
       title: 'Your digital documents at your fingertips';
       description: "###### How it works \n Wallet allows you to save and keep on your device the digital version of your Identity and some of the physical documents you already own.  \n\n ###### It's easy and fast \n You can authenticate yourself in Italy and abroad for many digital services, or verify your credentials in person by showing the QR code linked to the digital versions of your documents.";
+    };
+    pidIssuance: {
+      preview: {
+        title: 'Digital Idenitity:';
+        subtitle: "Here's a preview of your data";
+        button: 'Add to Wallet';
+      };
+      success: {
+        title: "It's all ready!";
+        subtitle: 'You can now add your documents and access online services.';
+        buttons: {
+          add: 'Add your first document';
+          later: 'Later';
+        };
+      };
+      failure: {
+        title: 'An unexpected error occurred';
+        subtitle: 'Your request to the issuing entity was not successful.';
+        button: 'I understand';
+      };
+    };
+    claims: {
+      generic: {
+        notAvailable: 'Claim not available';
+      };
     };
   };
 }

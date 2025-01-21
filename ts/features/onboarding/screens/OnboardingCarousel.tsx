@@ -27,7 +27,7 @@ export const OnboardingCarousel = () => {
   const {t} = useTranslation(['global', 'onboarding']);
 
   const skipCarousel = useCallback(() => {
-    navigation.navigate('ROOT_ONBOARDING', {screen: 'ONBOARDING_START'});
+    navigation.navigate('ROOT_ONBOARDING_NAV', {screen: 'ONBOARDING_START'});
   }, [navigation]);
 
   const nextStep = useCallback(() => {

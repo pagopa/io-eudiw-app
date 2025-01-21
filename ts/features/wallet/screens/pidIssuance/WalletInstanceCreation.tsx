@@ -14,44 +14,43 @@ import {AnimatedImage} from '../../../../components/AnimatedImage';
 import Markdown from '../../../../components/markdown';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
-  resetInstanceStatus,
+  resetInstanceCreation,
   selectInstanceStatus,
-  setInstanceRequest
+  setInstanceCreationRequest
 } from '../../store/pidIssuance';
-import {selectAttestation} from '../../store/attestation';
 
 /**
- * Screen which shows the information about the wallet and then registers a wallet instance.
+ * Screen which shows the information about the wallet, then registers a wallet instance and gets an attestation.
  */
 const WalletInstanceCreation = () => {
   const {t} = useTranslation(['wallet', 'global']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const {error, success, loading} = useAppSelector(selectInstanceStatus);
-  const attestation = useAppSelector(selectAttestation);
 
   useEffect(() => {
-    dispatch(resetInstanceStatus());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (success) {
-      // eslint-disable-next-line no-console
-      console.log('Attestation: ', attestation);
+    if (success.status === true) {
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PID_ISSUANCE_REQUEST'
+      });
+      dispatch(resetInstanceCreation());
     }
-  }, [success, attestation]);
+  }, [success, navigation, dispatch]);
 
   useEffect(() => {
     if (error.status === true) {
-      navigation.navigate('MAIN_WALLET', {
-        screen: 'RESULT_ERROR',
-        params: {key: 'INSTANCE'}
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PID_ISSUANCE_FAILURE'
       });
     }
   }, [error, navigation]);
 
   useHeaderSecondLevel({
-    title: ''
+    title: '',
+    goBack: () => {
+      dispatch(resetInstanceCreation());
+      navigation.goBack();
+    }
   });
 
   return (
@@ -74,7 +73,7 @@ const WalletInstanceCreation = () => {
             loading,
             label: t('global:buttons.continue'),
             accessibilityLabel: t('global:buttons.continue'),
-            onPress: () => dispatch(setInstanceRequest())
+            onPress: () => dispatch(setInstanceCreationRequest())
           }
         }}
       />

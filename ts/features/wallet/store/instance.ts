@@ -1,6 +1,7 @@
 /* eslint-disable functional/immutable-data */
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../../store/types';
+import {preferencesReset} from '../../../store/reducers/preferences';
 
 /* State type definition for the instance slice
  * keyTag - The keytag bound to the wallet instance
@@ -17,7 +18,7 @@ const initialState: InstanceState = {
 /**
  * Redux slice for the instance state. It allows to store and reset the keytag bound to the wallet instance.
  */
-export const instanceSlice = createSlice({
+const instanceSlice = createSlice({
   name: 'instance',
   initialState,
   reducers: {
@@ -25,6 +26,10 @@ export const instanceSlice = createSlice({
       state.keyTag = action.payload;
     },
     resetInstanceKeyTag: () => initialState
+  },
+  extraReducers: builder => {
+    // This happens when the whole app state is reset
+    builder.addCase(preferencesReset, _ => initialState);
   }
 });
 
@@ -32,6 +37,8 @@ export const instanceSlice = createSlice({
  * Exports the actions for the instance slice.
  */
 export const {setInstanceKeyTag, resetInstanceKeyTag} = instanceSlice.actions;
+
+export const {reducer: instanceReducer} = instanceSlice;
 
 /**
  * Select the wallet instance keytag.

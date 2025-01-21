@@ -11,12 +11,15 @@ import {
 } from 'redux-persist';
 import {useDispatch, useSelector} from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
+import reactotron from '../../ReactotronConfig';
 import rootSaga from '../saga';
 import walletReducer from '../features/wallet/store/index';
 import {AppDispatch, RootState} from './types';
 import {startupSlice} from './reducers/startup';
 import {pinReducer} from './reducers/pin';
 import {preferencesReducer} from './reducers/preferences';
+import {debugReducer} from './reducers/debug';
+import {identificationReducer} from './reducers/identification';
 
 // Create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -30,14 +33,20 @@ export const store = configureStore({
     startup: startupSlice.reducer,
     preferences: preferencesReducer,
     pin: pinReducer,
-    wallet: walletReducer
+    wallet: walletReducer,
+    identification: identificationReducer,
+    debug: debugReducer
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER] // Ignore all the action types dispatched by Redux Persist
       }
-    }).concat(sagaMiddleware)
+    }).concat(sagaMiddleware),
+  enhancers: getDefaultEnhancers =>
+    __DEV__
+      ? getDefaultEnhancers().concat(reactotron.createEnhancer()) // Adding Reactotron enhancer in development
+      : getDefaultEnhancers()
 });
 
 /**
