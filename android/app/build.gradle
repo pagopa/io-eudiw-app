@@ -90,11 +90,13 @@ android {
         resValue "string", "build_config_package", "com.ioeudiwapp"
     }
     signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+        release {
+            if (System.getenv('IO_APP_RELEASE_STORE_FILE')) {
+                storeFile file(System.getenv('IO_APP_RELEASE_STORE_FILE'))
+                storePassword System.getenv('IO_APP_RELEASE_STORE_PASSWORD')
+                keyAlias System.getenv('IO_APP_RELEASE_KEY_ALIAS')
+                keyPassword System.getenv('IO_APP_RELEASE_KEY_PASSWORD')
+            }
         }
     }
     buildTypes {

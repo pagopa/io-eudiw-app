@@ -61,7 +61,7 @@ platform :ios do
     # Build the app
     xcodebuild(
       workspace: "IoEudiwApp.xcworkspace",
-      scheme: "ioeudiw",
+      scheme: "IoEudiwApp",
       configuration: "Debug",
       clean: options[:clean],
       build: true,
@@ -82,7 +82,7 @@ platform :ios do
 
     # build the app
     gym(
-      scheme: "ioeudiw",
+      scheme: "IoEudiwApp",
       clean: true,
       export_method: "app-store",
       workspace: "IoEudiwApp.xcworkspace",
@@ -163,7 +163,7 @@ platform :ios do
 
     # build the app
     gym(
-      scheme: "ioeudiw",
+      scheme: "IoEudiwApp",
       clean: true,
       export_method: "app-store",
       workspace: "IoEudiwApp.xcworkspace",
