@@ -60,7 +60,7 @@ platform :ios do
 
     # Build the app
     xcodebuild(
-      workspace: "ioeudiw.xcworkspace",
+      workspace: "IoEudiwApp.xcworkspace",
       scheme: "ioeudiw",
       configuration: "Debug",
       clean: options[:clean],
@@ -85,7 +85,7 @@ platform :ios do
       scheme: "ioeudiw",
       clean: true,
       export_method: "app-store",
-      workspace: "ioeudiw.xcworkspace",
+      workspace: "IoEudiwApp.xcworkspace",
       include_symbols: false
     )
   end
@@ -166,7 +166,7 @@ platform :ios do
       scheme: "ioeudiw",
       clean: true,
       export_method: "app-store",
-      workspace: "ioeudiw.xcworkspace",
+      workspace: "IoEudiwApp.xcworkspace",
       include_symbols: false
     )
 

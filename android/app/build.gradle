@@ -82,7 +82,7 @@ android {
 
     namespace "com.ioeudiwapp"
     defaultConfig {
-        applicationId "it.pagopa.app.io.poc.eudiw"
+        applicationId "it.pagopa.io.app.poc.eudiw"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

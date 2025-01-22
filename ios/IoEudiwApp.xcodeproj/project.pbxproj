@@ -515,7 +515,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
+				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.io.app.poc.eudiw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IoEudiwApp.app/IoEudiwApp";
 			};
@@ -539,7 +539,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
+				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.io.app.poc.eudiw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IoEudiwApp.app/IoEudiwApp";
 			};
@@ -564,7 +564,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
+				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.io.app.poc.eudiw;
 				PRODUCT_NAME = IoEudiwApp;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -590,7 +590,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
+				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.io.app.poc.eudiw;
 				PRODUCT_NAME = IoEudiwApp;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
