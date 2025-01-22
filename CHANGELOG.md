@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.1.0-rc.0...1.2.0-rc.0) (2025-01-22)
+
+
+### Chores
+
+* bump Android version code ([e58c1c0](https://github.com/pagopa/io-eudiw-app/commit/e58c1c09f8fecb6c006f9d61fff7e5fce0eeea2f))
+
 ## [1.1.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/0.3.4-rc.0...1.1.0-rc.0) (2025-01-22)
 
 
