@@ -13,10 +13,10 @@
     "prepare": "husky",
     "tsc": "tsc --noEmit",
     "prettier:check": "prettier --check \"ts/**/*.(ts|tsx)\"",
-    "pre-cycle": "scripts/changelog/check_git_status.sh",
-    "start-fix-cycle": "yarn pre-cycle && standard-version -t \"\" --release-as patch --no-verify",
-    "start-release-cycle": "yarn pre-cycle && standard-version -t \"\"  --release-as minor --no-verify",
-    "start-breaking-cycle": "yarn pre-cycle && standard-version -t \"\" --release-as major --no-verify"
+    "pre-cycle": "scripts/changelog/check_git_status.sh && node scripts/changelog/prepare_to_new_cycle.js",
+    "start-fix-cycle": "yarn pre-cycle && standard-version -t \"\" --prerelease rc --release-as patch --no-verify && yarn push-hint",
+    "start-release-cycle": "yarn pre-cycle && standard-version -t \"\" --prerelease rc --release-as minor --no-verify && yarn push-hint",
+    "start-breaking-cycle": "yarn pre-cycle && standard-version -t \"\" --prerelease rc --release-as major --no-verify && yarn push-hint"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
