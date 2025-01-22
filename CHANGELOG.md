@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.15-rc.0](https://github.com/pagopa/io-eudiw-app/compare/0.2.14-rc.0...0.2.15-rc.0) (2025-01-22)
+
+
+### Chores
+
+* Update filename in versionrc ([5056119](https://github.com/pagopa/io-eudiw-app/commit/5056119fbd73abe0eebaf33b9f28880a325d3d9d))
+
 ### [0.2.14-rc.0](https://github.com/pagopa/io-eudiw-app/compare/0.2.13-rc.0...0.2.14-rc.0) (2025-01-22)
 
 ### [0.2.13-rc.0](https://github.com/pagopa/io-eudiw-app/compare/0.2.12-rc.0...0.2.13-rc.0) (2025-01-22)

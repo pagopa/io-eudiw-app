@@ -1,6 +1,6 @@
 {
   "name": "ioeudiwapp",
-  "version": "0.2.14-rc.0",
+  "version": "0.2.15-rc.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
