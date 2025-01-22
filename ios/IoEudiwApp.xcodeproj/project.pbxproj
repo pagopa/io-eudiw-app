@@ -564,6 +564,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = M2X5YQ4BJ7;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = IoEudiwApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -578,7 +579,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
 				PRODUCT_NAME = IoEudiwApp;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development it.pagopa.app.io.poc.eudiw";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore it.pagopa.app.io.poc.eudiw";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -594,6 +596,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = M2X5YQ4BJ7;
 				INFOPLIST_FILE = IoEudiwApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -607,7 +610,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
 				PRODUCT_NAME = IoEudiwApp;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore it.pagopa.app.io.poc.eudiw";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore it.pagopa.app.io.poc.eudiw";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
