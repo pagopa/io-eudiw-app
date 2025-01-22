@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/0.2.7...0.3.0-rc.0) (2025-01-22)
+
+
+### Chores
+
+* **release:** 0.2.10-rc.0 ([89f3892](https://github.com/pagopa/io-eudiw-app/commit/89f38925feb6c68033e85576b4f9e466311ecc8b))
+* **release:** 0.2.11-rc.0 ([0a13643](https://github.com/pagopa/io-eudiw-app/commit/0a13643bfdb36e690d8403a054e6c782008ff6a4))
+* **release:** 0.2.12-rc.0 ([a865353](https://github.com/pagopa/io-eudiw-app/commit/a86535349029b23201333edc97ebd645261b391e))
+* **release:** 0.2.13-rc.0 ([caded75](https://github.com/pagopa/io-eudiw-app/commit/caded750ff200430e623a7327d6c022acf5a7c4d))
+* **release:** 0.2.14-rc.0 ([5049118](https://github.com/pagopa/io-eudiw-app/commit/5049118441af2efc20e923bedaca017deecc5233))
+* **release:** 0.2.15-rc.0 ([8cf3476](https://github.com/pagopa/io-eudiw-app/commit/8cf3476b6d1453da33a59db364c4288d1535d4e5))
+* **release:** 0.2.8 ([4fabbb9](https://github.com/pagopa/io-eudiw-app/commit/4fabbb9ea824bde84dc139789ff0b1596ba1432e))
+* **release:** 0.2.9-rc.0 ([5dea34e](https://github.com/pagopa/io-eudiw-app/commit/5dea34ee4622db4686e628fa3a50126fcf26bb09))
+* Update filename in versionrc ([5056119](https://github.com/pagopa/io-eudiw-app/commit/5056119fbd73abe0eebaf33b9f28880a325d3d9d))
+
 ### [0.2.15-rc.0](https://github.com/pagopa/io-eudiw-app/compare/0.2.14-rc.0...0.2.15-rc.0) (2025-01-22)
 
 
