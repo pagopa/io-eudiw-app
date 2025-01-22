@@ -500,7 +500,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = M2X5YQ4BJ7;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -519,7 +519,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development it.pagopa.app.io.poc.eudiw";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IoEudiwApp.app/IoEudiwApp";
 			};
 			name = Debug;
@@ -531,7 +531,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = M2X5YQ4BJ7;
 				INFOPLIST_FILE = IoEudiwAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -546,7 +546,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore it.pagopa.app.io.poc.eudiw";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IoEudiwApp.app/IoEudiwApp";
 			};
 			name = Release;
