@@ -97,7 +97,7 @@
     "react-test-renderer": "18.3.1",
     "reactotron-react-native": "^5.1.10",
     "reactotron-redux": "^3.1.10",
-    "standard-version": "^9.5.0",
+    "standard-version": "^8.0.2",
     "typescript": "5.0.4"
   },
   "engines": {
