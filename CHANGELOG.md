@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.3-rc.0](https://github.com/pagopa/io-eudiw-app/compare/0.3.2-rc.0...0.3.3-rc.0) (2025-01-22)
+
 ### [0.3.2-rc.0](https://github.com/pagopa/io-eudiw-app/compare/0.3.1-rc.0...0.3.2-rc.0) (2025-01-22)
 
 ### [0.3.1-rc.0](https://github.com/pagopa/io-eudiw-app/compare/0.3.0-rc.0...0.3.1-rc.0) (2025-01-22)
