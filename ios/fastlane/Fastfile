@@ -115,9 +115,9 @@ platform :ios do
     )
 
     versioning_paths = [
-      "ioeudiw.xcodeproj/project.pbxproj",
-      "ioeudiw/Info.plist",
-      "ioeudiwTests/Info.plist"
+      "IoEudiwApp.xcodeproj/project.pbxproj",
+      "IoEudiwApp/Info.plist",
+      "IoEudiwApp/Info.plist"
     ]
     # git_add(path: versioning_paths)
     # git_commit(path: versioning_paths, message: "[fastlane] New iOS/TestFlight build v#{version_number} (build #{build_number}) [skip ci]")
