@@ -4,7 +4,7 @@ type CredentialsKeys = 'DRIVING_LICENSE' | 'PID';
 
 export const wellKnownCredential: Record<CredentialsKeys, string> = {
   DRIVING_LICENSE: 'MDL',
-  PID: 'PersonIdentificationData'
+  PID: 'urn:eu.europa.ec.eudi:pid:1'
 };
 
 export const getCredentialNameByType = (type: string): string => {
