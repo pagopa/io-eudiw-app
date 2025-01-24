@@ -16,10 +16,6 @@
 default_platform(:ios)
 
 platform :ios do
-  before_all do
-    ITUNES_USER = ENV["ITUNES_USER"]
-  end
-
   desc 'Fetch certificates and provisioning profiles'
   lane :certificates do
     # match(type: 'development')
@@ -75,7 +71,7 @@ platform :ios do
 
   # Builds the app for TestFlight releases
   lane :do_testflight_build do
-    sync_code_signing(type: "appstore", username: ITUNES_USER)
+    sync_code_signing(type: "appstore")
 
     # Install pods
     cocoapods
@@ -131,7 +127,6 @@ platform :ios do
 
     # upload to itunes store
     pilot(
-      username: ITUNES_USER,
       changelog: changelog,
       skip_waiting_for_build_processing: true
     )
