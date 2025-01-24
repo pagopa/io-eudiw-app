@@ -48,11 +48,7 @@ export function* watchPidSaga() {
  */
 function* obtainPid() {
   try {
-    const {
-      PID_PROVIDER_BASE_URL,
-      PID_REDIRECT_URI: redirectUri,
-      PID_IDP_HINT: idpHint
-    } = Config;
+    const {PID_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
 
     const walletInstanceAttestation = yield* select(selectAttestation);
 
@@ -65,14 +61,14 @@ function* obtainPid() {
     // Start the issuance flow
     const startFlow: Credential.Issuance.StartFlow = () => ({
       issuerUrl: PID_PROVIDER_BASE_URL,
-      credentialType: 'PersonIdentificationData'
+      credentialType: 'urn:eu.europa.ec.eudi:pid:1'
     });
 
     const {issuerUrl, credentialType} = startFlow();
 
     // Evaluate issuer trust
     const {issuerConf} = yield* call(
-      Credential.Issuance.evaluateIssuerTrust,
+      Credential.Issuance.getIssuerConfig,
       issuerUrl
     );
 
@@ -94,8 +90,7 @@ function* obtainPid() {
       Credential.Issuance.buildAuthorizationUrl,
       issuerRequestUri,
       clientId,
-      issuerConf,
-      idpHint
+      issuerConf
     );
 
     const supportsCustomTabs = yield* call(supportsInAppBrowser);
