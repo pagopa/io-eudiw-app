@@ -43,7 +43,7 @@ import Animated, {
   useSharedValue
 } from 'react-native-reanimated';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {WithTestID} from '../utils/types';
+import {WithTestID} from '../types/utils';
 
 export type IOScrollViewActions =
   | {

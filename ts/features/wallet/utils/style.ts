@@ -32,7 +32,6 @@ export const getHeaderPropsByCredentialType = (
     default:
       return {
         title: getCredentialNameByType(credentialType),
-        supportRequest: true,
         variant: 'contrast',
         backgroundColor
       };

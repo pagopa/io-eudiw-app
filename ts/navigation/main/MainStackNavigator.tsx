@@ -6,8 +6,8 @@ import WalletNavigator, {
   WalletNavigatorParamsList
 } from '../../features/wallet/navigation/WalletNavigator';
 import Settings from '../../screens/Settings';
+import {QrCodeScanScreen} from '../../features/qrcode/scan/screens/QrCodeScanScreen';
 import MAIN_ROUTES from './routes';
-
 /**
  * Screen parameters for the main navigator.
  * New screens should be added here along with their parameters.
@@ -16,6 +16,7 @@ export type MainNavigatorParamsList = {
   [MAIN_ROUTES.TAB_NAV]: undefined;
   [MAIN_ROUTES.WALLET_NAV]: NavigatorScreenParams<WalletNavigatorParamsList>;
   [MAIN_ROUTES.SETTINGS]: undefined;
+  [MAIN_ROUTES.SCAN_QR]: undefined;
 };
 
 const Stack = createNativeStackNavigator<MainNavigatorParamsList>();
@@ -30,6 +31,11 @@ const MainStackNavigator = () => (
     screenOptions={{headerShown: false}}>
     <Stack.Screen name={MAIN_ROUTES.TAB_NAV} component={TabNavigator} />
     <Stack.Screen name={MAIN_ROUTES.WALLET_NAV} component={WalletNavigator} />
+    <Stack.Screen
+      name={MAIN_ROUTES.SCAN_QR}
+      component={QrCodeScanScreen}
+      options={{}}
+    />
     <Stack.Screen name={MAIN_ROUTES.SETTINGS} component={Settings} />
   </Stack.Navigator>
 );

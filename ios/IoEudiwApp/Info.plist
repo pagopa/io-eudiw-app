@@ -35,6 +35,8 @@
     <string/>
     <key>NSFaceIDUsageDescription</key>
     <string>$(PRODUCT_NAME) requires FaceID access to allows you quick and secure access.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>$(PRODUCT_NAME) needs access to your Camera.</string>
     <key>UILaunchStoryboardName</key>
     <string>BootSplash</string>
     <key>UIRequiredDeviceCapabilities</key>

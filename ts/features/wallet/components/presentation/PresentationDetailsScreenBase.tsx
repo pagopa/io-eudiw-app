@@ -76,7 +76,6 @@ const PresentationDetailsScreenBase = ({
       triggerOffset: scrollTriggerOffsetValue,
       contentOffsetY: scrollTranslationY
     },
-    supportRequest: true,
     enableDiscreteTransition: true,
     animatedRef: animatedScrollViewRef,
     ...headerProps

@@ -3,6 +3,8 @@
   <!-- Required by react-native-fingerprint-scanner -->
   <uses-permission android:name="android.permission.USE_BIOMETRIC" />
   <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+  <!-- Required by react-native-vision-camera-->
+  <uses-permission android:name="android.permission.CAMERA" />
 
   <application
     android:name=".MainApplication"
@@ -25,5 +27,16 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+    <!-- Trigger Google Play services to install the backported photo picker module. -->
+    <!-- Required by react-native-image-picker -->
+    <service android:name="com.google.android.gms.metadata.ModuleDependencies"
+      android:enabled="false"
+      android:exported="false"
+      tools:ignore="MissingClass">
+      <intent-filter>
+          <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
+      </intent-filter>
+      <meta-data android:name="photopicker_activity:0:required" android:value="" />
+    </service>
   </application>
 </manifest>

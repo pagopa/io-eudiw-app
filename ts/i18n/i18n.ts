@@ -5,6 +5,7 @@ import itGlobal from '../../locales/it/global.json';
 import enOnboarding from '../../locales/en/onboarding.json';
 import itOnboarding from '../../locales/it/onboarding.json';
 import enWallet from '../../locales/en/wallet.json';
+import enBarcode from '../../locales/en/barcodeScan.json';
 
 const initI18n = async () =>
   await i18next.use(initReactI18next).init({
@@ -18,7 +19,8 @@ const initI18n = async () =>
       en: {
         global: enGlobal,
         onboarding: enOnboarding,
-        wallet: enWallet
+        wallet: enWallet,
+        barcodeScan: enBarcode
       },
       it: {
         global: itGlobal,

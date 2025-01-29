@@ -10,3 +10,6 @@ export const getAppVersion = () =>
     ios: DeviceInfo.getReadableVersion(),
     default: DeviceInfo.getVersion()
   });
+
+export const isAndroid = Platform.OS === 'android';
+export const isIOS = Platform.OS === 'ios';
