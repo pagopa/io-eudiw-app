@@ -12,8 +12,6 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        // Required by react-native-image-picker when minSdkVersion is <30
-        implementation("androidx.activity:activity:1.9.+")
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")

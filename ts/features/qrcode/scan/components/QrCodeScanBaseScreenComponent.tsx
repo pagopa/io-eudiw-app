@@ -144,38 +144,46 @@ const QrCodeScanBaseScreenComponent = ({
     openAppSetting
   ]);
 
-  const handleTorchToggle = () => {
+  const handleTorchToggle = useCallback(() => {
     toggleTorch();
-  };
+  }, [toggleTorch]);
 
   const shouldDisplayTorchButton =
     cameraPermissionStatus === 'granted' && hasTorch;
 
-  const customGoBack = (
-    <IconButton
-      icon="closeLarge"
-      onPress={navigation.goBack}
-      accessibilityLabel={t('global:buttons.close')}
-      color="contrast"
-    />
+  const customGoBack = useMemo(
+    () => (
+      <IconButton
+        icon="closeLarge"
+        onPress={navigation.goBack}
+        accessibilityLabel={t('global:buttons.close')}
+        color="contrast"
+      />
+    ),
+    [navigation.goBack, t]
   );
 
-  const torchButton = (
-    <IconButton
-      icon={isTorchOn ? 'lightFilled' : 'light'}
-      accessibilityLabel="CHANGE ME"
-      onPress={handleTorchToggle}
-      color="contrast"
-    />
+  const torchButton = useMemo(
+    () => (
+      <IconButton
+        icon={isTorchOn ? 'lightFilled' : 'light'}
+        accessibilityLabel="CHANGE ME"
+        onPress={handleTorchToggle}
+        color="contrast"
+      />
+    ),
+    [handleTorchToggle, isTorchOn]
   );
 
-  navigation.setOptions({
-    title: '',
-    headerShown: true,
-    headerTransparent: true,
-    headerLeft: () => customGoBack,
-    headerRight: () => (shouldDisplayTorchButton ? torchButton : <></>)
-  });
+  useEffect(() => {
+    navigation.setOptions({
+      title: '',
+      headerShown: true,
+      headerTransparent: true,
+      headerLeft: () => customGoBack,
+      headerRight: () => (shouldDisplayTorchButton ? torchButton : <></>)
+    });
+  }, [customGoBack, navigation, shouldDisplayTorchButton, torchButton]);
 
   return (
     <View style={[styles.screen, {paddingBottom: insets.bottom}]}>
