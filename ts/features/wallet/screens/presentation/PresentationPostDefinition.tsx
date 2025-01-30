@@ -33,6 +33,9 @@ import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNa
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 
+/**
+ * Description which contains the requested of the credential to be presented.
+ */
 export type PresentationPostDefinitionParams = {
   descriptor: Descriptor;
 };
@@ -43,9 +46,8 @@ type Props = NativeStackScreenProps<
 >;
 
 /**
- * Component to be rendered as fallback when a credential is not found and the user tries to open its details.
- * This should be possible as only credentials present in the store are rendered, however it's still used as a fallback.
- * If the credential doesn't exists, the user can request it by opening the issuance flow.
+ * Presentation for the issuance flow after the user has received the descriptor containing the requested claims.
+ * It requires the descrptor containg the requested claims in order to render the screen, passed via navigation params.
  */
 const PresentationPostDefinition = ({route}: Props) => {
   const navigation = useNavigation();
@@ -77,6 +79,10 @@ const PresentationPostDefinition = ({route}: Props) => {
     ]);
   };
 
+  /**
+   * Checks for changes in the post definition status and navigates to the appropriate screen
+   * if the operation was successful or failed.
+   */
   useEffect(() => {
     if (postDefinitionStatus.success.status) {
       navigation.navigate('MAIN_WALLET_NAV', {

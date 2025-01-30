@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Body} from '@pagopa/io-app-design-system';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
@@ -26,9 +27,10 @@ type Props = NativeStackScreenProps<
 >;
 
 /**
- * Component to be rendered as fallback when a credential is not found and the user tries to open its details.
- * This should be possible as only credentials present in the store are rendered, however it's still used as a fallback.
- * If the credential doesn't exists, the user can request it by opening the issuance flow.
+ * Presentation for the issuance flow before the user has received the descriptor containing the requested claims.
+ * It requires a presentation URL to start the presentation flow. The URL is passed via navigation params.
+ * The screen will show a loading message while the presentation is in progress. If the presentation is successful,
+ * the user will be redirected to the PresentationPostDefinition screen which shows the requested claims.
  */
 const PresentationPreDefinition = ({route}: Props) => {
   const navigation = useNavigation();
@@ -46,6 +48,10 @@ const PresentationPreDefinition = ({route}: Props) => {
     dispatch(setPreDefinitionRequest({url: route.params.presentationUrl}));
   }, [dispatch, route.params.presentationUrl]);
 
+  /**
+   * Check the status of the presentation request. If the request is successful, navigate to the PresentationPostDefinition screen.
+   * Otherwise, navigate to the PresentationFailure screen.
+   */
   useEffect(() => {
     if (preDefinitionStatus.success.status && preDefinitionResult) {
       navigation.navigate('MAIN_WALLET_NAV', {
@@ -66,18 +72,12 @@ const PresentationPreDefinition = ({route}: Props) => {
     title: ''
   });
 
-  // // Since this component could be used on a screen where the header is visible, we hide it.
-  // useEffect(() => {
-  //   navigation.setOptions({
-  //     headerShown: false
-  //   });
-  // }, [navigation]);
-
   return (
-    <LoadingScreenContent
-      contentTitle={t('wallet:presentation.loading.title')}
-      subTitle={t('wallet:presentation.loading.subtitle')}
-    />
+    <LoadingScreenContent contentTitle={t('wallet:presentation.loading.title')}>
+      <Body style={{textAlign: 'center'}}>
+        {t('wallet:presentation.loading.subtitle')}
+      </Body>
+    </LoadingScreenContent>
   );
 };
 

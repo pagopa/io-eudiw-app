@@ -21,6 +21,14 @@ type SineWaveAnimation = {
   animatedStyle: AnimatedStyleProp<ViewStyle>;
 };
 
+/**
+ * Hook to use a sine wave animation need for {@link AnimatedCameraMarker} to simulate a wave effect of the camera shutter.
+ * @param span - The span of the wave
+ * @param duration - The duration of the wave
+ * @param axis - The axis of the wave
+ * @param enabled - The flag to enable or disable the wave
+ * @returns
+ */
 const useSineWaveAnimation = ({
   span,
   duration,

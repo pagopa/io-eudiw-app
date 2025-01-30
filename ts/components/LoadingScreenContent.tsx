@@ -2,7 +2,6 @@
  * An ingress screen to choose the real first screen the user must navigate to.
  */
 import {
-  Body,
   ContentWrapper,
   H3,
   IOColors,
@@ -26,7 +25,6 @@ const SPACE_BETWEEN_SPINNER_AND_TEXT = 24;
 
 type LoadingScreenContentProps = WithTestID<{
   contentTitle: string;
-  subTitle?: string;
   children?: React.ReactNode;
   headerVisible?: boolean;
 }>;
@@ -65,9 +63,6 @@ export const LoadingScreenContent = (props: LoadingScreenContentProps) => {
             accessibilityLabel={contentTitle}>
             {contentTitle}
           </H3>
-          {props.subTitle && (
-            <Body style={{textAlign: 'center'}}>{props.subTitle}</Body>
-          )}
         </VStack>
       </ContentWrapper>
       {children}

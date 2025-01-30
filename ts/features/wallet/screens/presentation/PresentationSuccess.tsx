@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import React from 'react';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
@@ -9,9 +8,8 @@ import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
- * Success screen for the PID issuance flow.
- * It currently shows a message and two buttons: one to add the PID to the wallet and one to add it later.
- * They both redirect to the main screen.
+ * Screen to be shown when the presentation of the credential is successful.
+ * It shows a success message and a button to navigate back to the wallet.
  */
 const PresentationSuccess = () => {
   const {t} = useTranslation(['wallet', 'global']);

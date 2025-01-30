@@ -18,28 +18,16 @@ import {
 } from 'react-native-vision-camera';
 
 import {usePrevious} from '../../../../hooks/usePrevious';
-import {AnimatedCameraMarker} from '../components/AnimatedCameraMarket';
+import {AnimatedCameraMarker} from '../components/AnimatedCameraMarker';
 import {OnBarcodeSuccess, OnBardCodeError} from '../screens/QrCodeScanScreen';
 
 /**
  * {@link useQrCodeCameraScanner} configuration
  */
 export type QrCodeCameraScannerConfiguration = {
-  /**
-   * Callback called when a barcode is successfully decoded
-   */
   onBarcodeSuccess: OnBarcodeSuccess;
-  /**
-   * Callback called when a barcode is not successfully decoded
-   */
   onBarcodeError: OnBardCodeError;
-  /**
-   * Disables the barcode scanner
-   */
   isDisabled?: boolean;
-  /**
-   * If true, the component displays a loading indicator and disables all interactions
-   */
   isLoading?: boolean;
 };
 
@@ -79,6 +67,13 @@ export type QrCodeCameraScanner = {
  */
 const QRCODE_SCANNER_REACTIVATION_TIME_MS = 5000;
 
+/**
+ * This hook handles the camera scanner for QR codes.
+ * @param onBarcodeSuccess - Callback called when a barcode is successfully decoded
+ * @param onBarcodeError - Callback called when a barcode is not successfully decoded
+ * @param isDisabled - Disables the barcode scanner
+ * @param isLoading - If true, the component displays a loading indicator and disables all interactions
+ */
 export const useQrCodeCameraScanner = ({
   onBarcodeSuccess,
   onBarcodeError,

@@ -15,6 +15,12 @@ type Props = {
 const defaultMarkerSize = 230;
 const defaultCornerSize = 44;
 
+/**
+ * Camera marker with animated line which moves up and down and is displayed in the center of the screen while scanning a QR code.
+ * @param size? - The size of the marker. Default is 230.
+ * @param cornerSize? - The size of the corner. Default is 44.
+ * @param isAnimated - If true, the line will be animated. Default is true.
+ */
 const AnimatedCameraMarker = ({
   size = defaultMarkerSize,
   cornerSize = defaultCornerSize,

@@ -17,6 +17,13 @@ type Props = {
   pictogram: IOPictograms;
 };
 
+/**
+ * View component which shows an overlay to request camera permission.
+ * @param title - The title of the overlay.
+ * @param body - The body of the overlay.
+ * @param action - The action to be performed when the button is pressed.
+ * @param pictogram - The pictogram to be shown in the overlay.
+ */
 const CameraPermissionView = (props: Props) => (
   <View style={styles.container}>
     <Pictogram name={props.pictogram} pictogramStyle="light-content" />

@@ -10,32 +10,37 @@ import {
 } from '../../../store/utils/asyncStatus';
 import {RootState} from '../../../store/types';
 
+/**
+ * Type for the description which contains the requested claims during the presentation.
+ */
 export type Descriptor = Awaited<
   ReturnType<typeof Credential.Presentation.evaluateInputDescriptorForSdJwt4VC>
 >;
 
+/**
+ * Response type for the authorization request which is the final step of the presentation flow.
+ */
 export type AuthResponse = Awaited<
   ReturnType<typeof Credential.Presentation.sendAuthorizationResponse>
 >;
 
-/* State type definition for the pidIssuance slice
- * issuanceCreation - Async status for the instance creation
- * issuance - Async status for the PID issuance
+/* State type definition for the presentation slice
+ * preDefinition - Async status for the prestation before receiving the descriptor
+ * postDefinition - Async status for the presentation afetr receiving the descriptor
  */
 export type PresentationState = {
   preDefinition: AsyncStatusValues<Descriptor>;
   postDefinition: AsyncStatusValues<AuthResponse>;
 };
 
-// Initial state for the pidIssuance slice
+// Initial state for the presentation slice
 const initialState: PresentationState = {
   preDefinition: setInitial(),
   postDefinition: setInitial()
 };
 
 /**
- * Redux slice for the pidIssuance state. It holds the status of flows related to the PID issuance
- * allowing to handle the UI accordingly with a request, loading and success/error states along with their data, if necessary.
+ * Redux slice for the presetation state. It holds the status of flows related to the presentation process.
  */
 export const presentationSlice = createSlice({
   name: 'presentationSlice',
@@ -74,7 +79,7 @@ export const presentationSlice = createSlice({
 });
 
 /**
- * Exports the actions for the pidIssuance slice.
+ * Exports the actions for the presentation slice.
  */
 export const {
   setPreDefinitionRequest,
@@ -89,21 +94,43 @@ export const {
 } = presentationSlice.actions;
 
 /**
- * Exports the reducer for the pidIssuance slice.
+ * Exports the reducer for the presetation slice.
  */
 export const {reducer: presentationReducer} = presentationSlice;
 
+/**
+ * Selects for the preDefinition status in the presentation slice, containg the
+ * loading, error and success state.
+ * @param state - The root state
+ * @returns the preDefinition status object
+ */
 export const selectPreDefinitionStatus = (state: RootState) =>
   state.wallet.presentation.preDefinition;
 
+/**
+ * Selects the result of the preDefinition process if it was successful.
+ * @param state - The root state
+ * @returns the descriptor containing the requested claims if the preDefinition was successful, undefined otherwise
+ */
 export const selectPreDefitionResult = (state: RootState) =>
   state.wallet.presentation.preDefinition.success.status === true
     ? state.wallet.presentation.preDefinition.success.data
     : undefined;
 
+/**
+ * Selects for the postDefinition status in the presentation slice, containg the
+ * loading, error and success state.
+ * @param state - The root state
+ * @returns the postDefinition status object
+ */
 export const selectPostDefinitionStatus = (state: RootState) =>
   state.wallet.presentation.postDefinition;
 
+/**
+ * Selects the result of the postDefinition process if it was successful.
+ * @param state - The root state
+ * @returns the auth response containing if the postDefinition was successful, undefined otherwise
+ */
 export const selectPostDefinitionResult = (state: RootState) =>
   state.wallet.presentation.postDefinition.success.status === true
     ? state.wallet.presentation.postDefinition.success.data

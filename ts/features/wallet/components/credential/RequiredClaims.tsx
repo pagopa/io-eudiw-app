@@ -18,6 +18,12 @@ export type RequiredClaims = {
   source: string;
 };
 
+/**
+ * Component that renders the list of required claims for a credential during the presentation.
+ * @param descriptor - The descriptor of the credential
+ * @param source - The source of the claim
+ * @returns
+ */
 const RequiredClaimsList = ({descriptor, source}: RequiredClaims) => {
   const {requiredDisclosures} = descriptor;
   return (

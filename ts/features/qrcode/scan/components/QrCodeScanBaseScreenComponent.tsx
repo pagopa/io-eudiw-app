@@ -19,25 +19,10 @@ import {OnBarcodeSuccess, OnBardCodeError} from '../screens/QrCodeScanScreen';
 import {CameraPermissionView} from './CameraPermissionView';
 
 type Props = {
-  /**
-   * Callback called when a barcode is successfully decoded
-   */
   onBarcodeSuccess: OnBarcodeSuccess;
-  /**
-   * Callback called when a barcode is not successfully decoded
-   */
   onBarcodeError: OnBardCodeError;
-  /**
-   * Callback called when the upload file input is pressed, necessary to show the file input modal
-   */
   onFileInputPressed: () => void;
-  /**
-   * If true, the screen goes into a loading state which disables all interaction and displays a loading indicator
-   */
   isLoading?: boolean;
-  /**
-   * Disables barcode scan capabilities, putting the component in an idle state
-   */
   isDisabled?: boolean;
 };
 
@@ -46,6 +31,15 @@ type NavigationProps = NativeStackNavigationProp<
   'MAIN_SCAN_QR'
 >;
 
+/**
+ * Base screen component for the QR code scanner which renders the camera view, the torch and close buttons and the file input button.
+ * @param onBarcodeError - Callback called when a barcode is not successfully decoded
+ * @param onBarcodeSuccess - Callback called when a barcode is successfully decoded
+ * @param onFileInputPressed - Callback called when the upload file input is pressed, necessary to show the file input modal
+ * @param isLoading - If true, the screen goes into a loading state which disables all interaction and displays a loading indicator
+ * @param isDisabled - Disables barcode scan capabilities, putting the component in an idle state
+ * @returns
+ */
 const QrCodeScanBaseScreenComponent = ({
   onBarcodeError,
   onBarcodeSuccess,

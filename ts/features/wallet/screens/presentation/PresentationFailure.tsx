@@ -10,7 +10,7 @@ import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNa
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
- * Filure screen of the pid issuance flow.
+ * Filure screen of the presentation flow.
  * Currently it only shows a message and a button to go back to the main screen.
  */
 const PresentationFailure = () => {

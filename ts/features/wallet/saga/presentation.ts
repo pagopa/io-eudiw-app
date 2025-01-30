@@ -26,7 +26,7 @@ import {
 } from '../../../store/reducers/identification';
 
 /**
- * Saga watcher for PID related actions.
+ * Saga watcher for presentation related actions.
  */
 export function* watchPresentationSaga() {
   yield* takeLatest([setPreDefinitionRequest], function* (...args) {
@@ -38,9 +38,11 @@ export function* watchPresentationSaga() {
 }
 
 /**
- * Saga to store the PID credential after pin validation.
- * It dispatches the action which shows the pin validation modal and awaits for the result.
- * If the pin is correct, the PID is stored and the lifecycle is set to `LIFECYCLE_VALID`.
+ * Saga for the credential presentation.
+ * It listens for an action which stars the presentation flow.
+ * The presentation is divided by two steps:
+ * - Pre-definition: the app asks for the required claims to be presented to the RP;
+ * - Post-definition: the app sends the required claims to the RP after identification.
  */
 function* handlePresetationPreDefinition(
   action: ReturnType<typeof setPreDefinitionRequest>
@@ -105,6 +107,8 @@ function* handlePresetationPreDefinition(
 
     yield* put(setPreDefinitionSuccess(descriptorResult));
 
+    // Wait for the user to confirm the presentation with the claims
+    // No need to check for the cancel action as there's a race condition defined in watchPresentationSaga
     yield* take(setPostDefinitionRequest);
 
     yield* put(
@@ -129,7 +133,11 @@ function* handlePresetationPreDefinition(
         requestObject,
         presentationDefinition,
         jwks.keys,
-        [pid.credential, disclosuresRequestedClaimName, credentialCryptoContext]
+        ...[
+          pid.credential,
+          disclosuresRequestedClaimName,
+          credentialCryptoContext
+        ]
       );
       yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
     } else {
