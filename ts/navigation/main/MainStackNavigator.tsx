@@ -6,7 +6,7 @@ import WalletNavigator, {
   WalletNavigatorParamsList
 } from '../../features/wallet/navigation/WalletNavigator';
 import Settings from '../../screens/Settings';
-import {QrCodeScanScreen} from '../../features/qrcode/scan/screens/QrCodeScanScreen';
+import QrCodeScanScreen from '../../features/qrcode/scan/screens/QrCodeScanScreen';
 import MAIN_ROUTES from './routes';
 /**
  * Screen parameters for the main navigator.

@@ -57,7 +57,7 @@ const QrCodeScanBaseScreenComponent = ({
   const isFocused = useIsFocused();
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<NavigationProps>();
-  const {t} = useTranslation(['global', 'barcodeScan']);
+  const {t} = useTranslation(['global', 'qrcodeScan']);
 
   const [isAppInBackground, setIsAppInBackground] = useState(
     AppState.currentState !== 'active'
@@ -109,11 +109,11 @@ const QrCodeScanBaseScreenComponent = ({
       return (
         <CameraPermissionView
           pictogram="cameraRequest"
-          title={t('barcodeScan:permissions.undefined.title')}
-          body={t('barcodeScan:permissions.undefined.label')}
+          title={t('qrcodeScan:permissions.undefined.title')}
+          body={t('qrcodeScan:permissions.undefined.label')}
           action={{
-            label: t('barcodeScan:permissions.undefined.action'),
-            accessibilityLabel: t('barcodeScan:permissions.undefined.action'),
+            label: t('qrcodeScan:permissions.undefined.action'),
+            accessibilityLabel: t('qrcodeScan:permissions.undefined.action'),
             onPress: async () => {
               await requestCameraPermission();
             }
@@ -125,11 +125,11 @@ const QrCodeScanBaseScreenComponent = ({
     return (
       <CameraPermissionView
         pictogram="cameraDenied"
-        title={t('barcodeScan:permissions.denied.title')}
-        body={t('barcodeScan:permissions.denied.label')}
+        title={t('qrcodeScan:permissions.denied.title')}
+        body={t('qrcodeScan:permissions.denied.label')}
         action={{
-          label: t('barcodeScan:permissions.denied.action'),
-          accessibilityLabel: t('barcodeScan:permissions.denied.action'),
+          label: t('qrcodeScan:permissions.denied.action'),
+          accessibilityLabel: t('qrcodeScan:permissions.denied.action'),
           onPress: async () => {
             await openAppSetting();
           }
@@ -167,14 +167,17 @@ const QrCodeScanBaseScreenComponent = ({
     () => (
       <IconButton
         icon={isTorchOn ? 'lightFilled' : 'light'}
-        accessibilityLabel="CHANGE ME"
+        accessibilityLabel={t('qrcodeScan:flash')}
         onPress={handleTorchToggle}
         color="contrast"
       />
     ),
-    [handleTorchToggle, isTorchOn]
+    [handleTorchToggle, isTorchOn, t]
   );
 
+  /**
+   * Custom header to show the back button and the torch button
+   */
   useEffect(() => {
     navigation.setOptions({
       title: '',
@@ -192,8 +195,8 @@ const QrCodeScanBaseScreenComponent = ({
         <TabNavigation tabAlignment="center" selectedIndex={0} color="dark">
           <TabItem
             testID="barcodeScanBaseScreenTabUpload"
-            label={t('barcodeScan:tabs.upload')}
-            accessibilityLabel={t('barcodeScan:tabs.upload')}
+            label={t('qrcodeScan:tabs.upload')}
+            accessibilityLabel={t('qrcodeScan:tabs.upload')}
             onPress={onFileInputPressed}
           />
         </TabNavigation>

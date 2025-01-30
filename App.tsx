@@ -19,20 +19,20 @@ function App(): React.JSX.Element {
   return (
     <GestureHandlerRootView style={IOStyles.flex}>
       <SafeAreaProvider>
-        <IOThemeContextProvider theme={'light'}>
-          <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <IODSExperimentalContextProvider isExperimentaEnabled={true}>
+        <IODSExperimentalContextProvider isExperimentaEnabled={true}>
+          <IOThemeContextProvider theme={'light'}>
+            <Provider store={store}>
+              <PersistGate loading={null} persistor={persistor}>
                 <ToastProvider>
                   <BottomSheetModalProvider>
                     <RootContainer />
                     <IdentificationModal />
                   </BottomSheetModalProvider>
                 </ToastProvider>
-              </IODSExperimentalContextProvider>
-            </PersistGate>
-          </Provider>
-        </IOThemeContextProvider>
+              </PersistGate>
+            </Provider>
+          </IOThemeContextProvider>
+        </IODSExperimentalContextProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

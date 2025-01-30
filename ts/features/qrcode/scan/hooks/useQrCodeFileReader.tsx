@@ -43,7 +43,7 @@ const useQrCodeFileReader = ({
   onBarcodeSuccess
 }: QrCodeFileReaderConfiguration): QrCodeFileReader => {
   const [isLoading, setIsLoading] = useState(false);
-  const {t} = useTranslation(['barcodeScan', 'global']);
+  const {t} = useTranslation(['qrcodeScan', 'global']);
 
   const handleBarcodeSuccess = (barcodes: Array<string>) => {
     setIsLoading(false);
@@ -66,15 +66,15 @@ const useQrCodeFileReader = ({
 
     if (response.errorCode) {
       Alert.alert(
-        t('barcodeScan:imagePicker.settingsAlert.title'),
-        t('barcodeScan:imagePicker.settingsAlert.message'),
+        t('qrcodeScan:imagePicker.settingsAlert.title'),
+        t('qrcodeScan:imagePicker.settingsAlert.message'),
         [
           {
             text: t('global:buttons.cancel'),
             style: 'cancel'
           },
           {
-            text: t('barcodeScan:imagePicker.settingsAlert.buttonText.enable'),
+            text: t('qrcodeScan:imagePicker.settingsAlert.buttonText.enable'),
             onPress: Linking.openSettings
           }
         ],

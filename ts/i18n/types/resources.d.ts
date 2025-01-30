@@ -1,41 +1,4 @@
 interface Resources {
-  "barcodeScan": {
-    "error": "An error occurred",
-    "tabs": {
-      "scan": "Scan",
-      "upload": "Upload"
-    },
-    "upload": {
-      "image": "Upload an image",
-      "file": "Upload a file"
-    },
-    "permissions": {
-      "undefined": {
-        "title": "We need your permission to access the camera",
-        "label": "Allow access to the camera to scan QR codes",
-        "action": "Allow access"
-      },
-      "denied": {
-        "title": "You denied access to the camera",
-        "label": "To allow access to the camera, go to the settings of your device",
-        "action": "Open settings"
-      }
-    },
-    "imagePicker": {
-      "settingsAlert": {
-        "title": "It seems access to Photos has been denied",
-        "message": "We need access to your gallery in addition to upload QR codes",
-        "buttonText": {
-          "enable": "Enable permissions"
-        }
-      }
-    },
-    "multipleResultsAlert": {
-      "title": "Hai inquadrato più codici",
-      "body": "Inquadra un solo codice alla volta",
-      "action": "Riprova"
-    }
-  },
   "global": {
     "generics": {
       "waiting": "Wait few seconds",
@@ -68,7 +31,8 @@ interface Resources {
       "back": "Back",
       "cancel": "Cancel",
       "confirm": "Confirm",
-      "help": "Help"
+      "help": "Help",
+      "done": "Done"
     },
     "loading": {
       "body": "Please wait a moment"
@@ -113,6 +77,11 @@ interface Resources {
         "title": "There's an issue with our systems",
         "body": "Please try again in a few minutes."
       }
+    },
+    "cancelOperation": {
+      "title": "Do you want to stop the operation?",
+      "confirm": "Yes, stop",
+      "cancel": "No, continue"
     }
   },
   "onboarding": {
@@ -201,6 +170,44 @@ interface Resources {
       }
     }
   },
+  "qrcodeScan": {
+    "error": "Unrecognized QR code",
+    "flash": "Flash",
+    "tabs": {
+      "scan": "Scan",
+      "upload": "Upload"
+    },
+    "upload": {
+      "image": "Upload an image",
+      "file": "Upload a file"
+    },
+    "permissions": {
+      "undefined": {
+        "title": "We need your permission to access the camera",
+        "label": "Allow access to the camera to scan QR codes",
+        "action": "Allow access"
+      },
+      "denied": {
+        "title": "You denied access to the camera",
+        "label": "To allow access to the camera, go to the settings of your device",
+        "action": "Open settings"
+      }
+    },
+    "imagePicker": {
+      "settingsAlert": {
+        "title": "It seems access to Photos has been denied",
+        "message": "We need access to your gallery in addition to upload QR codes",
+        "buttonText": {
+          "enable": "Enable permissions"
+        }
+      }
+    },
+    "multipleResultsAlert": {
+      "title": "Hai inquadrato più codici",
+      "body": "Inquadra un solo codice alla volta",
+      "action": "Riprova"
+    }
+  },
   "wallet": {
     "credentials": {
       "names": {
@@ -254,12 +261,30 @@ interface Resources {
             }
           }
         }
+      },
+      "loading": {
+        "title": "We are doing some security checks",
+        "subtitle": "Wait few seconds"
+      },
+      "trust": {
+        "title": "Allow your data to be read",
+        "subtitle": "They will be shared to access to services.",
+        "yourData": "Your data",
+        "disclaimer": {
+          "0": "Your data is safe and will be processed only for the purposes described in the Privacy Policy.",
+          "1": "The data will be shared only for the time necessary to issue the credential."
+        }
+      },
+      "success": {
+        "title": "Done!",
+        "subtitle": "Continue on the partner site"
       }
     },
     "claims": {
       "generic": {
         "notAvailable": "Claim not available"
-      }
+      },
+      "providedBy": "Provided by {{credential}}"
     }
   }
 }

@@ -1,5 +1,6 @@
 {
   "error": "Unrecognized QR code",
+  "flash": "Flash",
   "tabs": {
     "scan": "Scan",
     "upload": "Upload"

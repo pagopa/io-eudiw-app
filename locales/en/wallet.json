@@ -51,11 +51,29 @@
           }
         }
       }
+    },
+    "loading": {
+      "title": "We are doing some security checks",
+      "subtitle": "Wait few seconds"
+    },
+    "trust": {
+      "title": "Allow your data to be read",
+      "subtitle": "They will be shared to access to services.",
+      "yourData": "Your data",
+      "disclaimer": {
+        "0": "Your data is safe and will be processed only for the purposes described in the Privacy Policy.",
+        "1": "The data will be shared only for the time necessary to issue the credential."
+      }
+    },
+    "success": {
+      "title": "Done!",
+      "subtitle": "Continue on the partner site"
     }
   },
   "claims": {
     "generic": {
       "notAvailable": "Claim not available"
-    }
+    },
+    "providedBy": "Provided by {{credential}}"
   }
 }
