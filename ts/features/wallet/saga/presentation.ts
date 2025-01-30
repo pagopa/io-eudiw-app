@@ -137,11 +137,7 @@ function* handlePresetationPreDefinition(
         requestObject,
         presentationDefinition,
         jwks.keys,
-        ...[
-          pid.credential,
-          disclosuresRequestedClaimName,
-          credentialCryptoContext
-        ]
+        [pid.credential, disclosuresRequestedClaimName, credentialCryptoContext]
       );
       yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
     } else {
