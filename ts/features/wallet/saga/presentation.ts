@@ -124,6 +124,7 @@ function* handlePresetationPreDefinition(
       const credentialCryptoContext = createCryptoContextFor(pid.keyTag);
 
       const authResponse = yield* call(
+        // @ts-ignore
         Credential.Presentation.sendAuthorizationResponse,
         requestObject,
         presentationDefinition,
