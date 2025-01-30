@@ -61,13 +61,18 @@ const RequiredClaimsList = ({descriptor, source}: RequiredClaims) => {
  */
 const ClaimText = ({claim}: {claim: ClaimDisplayFormat}) => {
   const displayValue = getClaimDisplayValue(claim);
-  return Array.isArray(displayValue) ? (
-    displayValue.map((value, index) => {
-      const safeValue = getSafeText(value);
-      return <H6 key={`${index}_${safeValue}`}>{safeValue}</H6>;
-    })
-  ) : isStringNullyOrEmpty(displayValue) ? null : ( // We want to exclude empty strings and null values
-    <H6>{getSafeText(displayValue)}</H6>
+  return (
+    <>
+      {/* The empty fragment is need to avoid TSC error regarding the possible return of Element[] */}
+      {Array.isArray(displayValue) ? (
+        displayValue.map((value, index) => {
+          const safeValue = getSafeText(value);
+          return <H6 key={`${index}_${safeValue}`}>{safeValue}</H6>;
+        })
+      ) : isStringNullyOrEmpty(displayValue) ? null : ( // We want to exclude empty strings and null values
+        <H6>{getSafeText(displayValue)}</H6>
+      )}
+    </>
   );
 };
 

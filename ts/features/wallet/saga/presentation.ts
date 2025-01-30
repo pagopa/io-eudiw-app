@@ -127,6 +127,10 @@ function* handlePresetationPreDefinition(
 
       const credentialCryptoContext = createCryptoContextFor(pid.keyTag);
 
+      /**
+       * Ignoring TS as typed-redux-saga doesn't seem to digest correctly a tuple of arguments.
+       * This works as expected though.
+       */
       const authResponse = yield* call(
         // @ts-ignore
         Credential.Presentation.sendAuthorizationResponse,
