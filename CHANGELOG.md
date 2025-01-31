@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.4.0-rc.0...1.5.0-rc.0) (2025-01-31)
+
+
+### Features
+
+* [WLEO-189] Add cross device presentation ([#59](https://github.com/pagopa/io-eudiw-app/issues/59)) ([740ffc1](https://github.com/pagopa/io-eudiw-app/commit/740ffc1e6fa8e42aa5e70fd05f047788d17d7837))
+* [WLEO-200] Same device presentation ([#60](https://github.com/pagopa/io-eudiw-app/issues/60)) ([64d6b84](https://github.com/pagopa/io-eudiw-app/commit/64d6b845354ed650dd7118bb43fed22c3d9308bc))
+* [WLEO-237] Make status bar white on Android ([#61](https://github.com/pagopa/io-eudiw-app/issues/61)) ([e24e88c](https://github.com/pagopa/io-eudiw-app/commit/e24e88c079d14d9bbbd4250dc8f9bb4779149ed3))
+
+
+### Bug Fixes
+
+* [WLEO-240] Add missing TitilliumSansPro font [#63](https://github.com/pagopa/io-eudiw-app/issues/63) ([cd15dee](https://github.com/pagopa/io-eudiw-app/commit/cd15dee3fca6e86d360379ff7e4d16bb6313d615))
+* Deep linking configuration on iOS ([b585c94](https://github.com/pagopa/io-eudiw-app/commit/b585c94723c3aa0779df2f16bcbe9461b95b406b))
+* navigator stack not resetted on pid issuance failure or success ([#62](https://github.com/pagopa/io-eudiw-app/issues/62)) ([b961a7a](https://github.com/pagopa/io-eudiw-app/commit/b961a7a77c96a5a8e098637129cb95e67284fcff))
+* Status bar color and padding on Android ([3f52620](https://github.com/pagopa/io-eudiw-app/commit/3f526209a60990882768964fc1394fcf2359a11b))
+
 ## [1.4.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.3.0-rc.0...1.4.0-rc.0) (2025-01-25)
 
 
