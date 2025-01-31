@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.1-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.5.0-rc.0...1.5.1-rc.0) (2025-01-31)
+
+
+### Bug Fixes
+
+* iOS permissions definition ([caca114](https://github.com/pagopa/io-eudiw-app/commit/caca1140fe728aa9e4291c5a1e51d60d3195cb1c))
+
 ## [1.5.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.4.0-rc.0...1.5.0-rc.0) (2025-01-31)
 
 
