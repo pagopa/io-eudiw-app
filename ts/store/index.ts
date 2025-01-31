@@ -20,6 +20,7 @@ import {pinReducer} from './reducers/pin';
 import {preferencesReducer} from './reducers/preferences';
 import {debugReducer} from './reducers/debug';
 import {identificationReducer} from './reducers/identification';
+import {deepLinkingReducer} from './reducers/deeplinking';
 
 // Create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -35,7 +36,8 @@ export const store = configureStore({
     pin: pinReducer,
     wallet: walletReducer,
     identification: identificationReducer,
-    debug: debugReducer
+    debug: debugReducer,
+    deepLinking: deepLinkingReducer
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

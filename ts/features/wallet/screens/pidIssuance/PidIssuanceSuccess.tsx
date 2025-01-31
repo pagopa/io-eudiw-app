@@ -1,9 +1,9 @@
-import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import React from 'react';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
 import {resetPidIssuance} from '../../store/pidIssuance';
 import {useAppDispatch} from '../../../../store';
+import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Success screen for the PID issuance flow.
@@ -12,8 +12,8 @@ import {useAppDispatch} from '../../../../store';
  */
 const PidIssuanceSuccess = () => {
   const {t} = useTranslation(['wallet']);
-  const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const {navigateToWallet} = useNavigateToWalletWithReset();
 
   return (
     <OperationResultScreenContent
@@ -25,7 +25,7 @@ const PidIssuanceSuccess = () => {
         label: t('wallet:pidIssuance.success.buttons.add'),
         onPress: () => {
           dispatch(resetPidIssuance());
-          navigation.navigate('MAIN_TAB_NAV');
+          navigateToWallet();
         }
       }}
       secondaryAction={{
@@ -33,7 +33,7 @@ const PidIssuanceSuccess = () => {
         accessibilityLabel: t('wallet:pidIssuance.success.buttons.later'),
         onPress: () => {
           dispatch(resetPidIssuance());
-          navigation.navigate('MAIN_TAB_NAV');
+          navigateToWallet();
         }
       }}
     />

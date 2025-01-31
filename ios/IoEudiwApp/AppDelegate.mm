@@ -2,6 +2,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import "RNBootSplash.h" // Required by react-native-bootsplash
+#import <React/RCTLinkingManager.h> // Required by react-native-navigation for deep linking
 
 @implementation AppDelegate
 
@@ -33,6 +34,14 @@
 - (void)customizeRootView:(RCTRootView *)rootView {
   [super customizeRootView:rootView];
   [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView]; // initialize the splash screen
+}
+
+// Required by react-native-navigation for deep linking
+- (BOOL)application:(UIApplication *)application
+   openURL:(NSURL *)url
+   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
 }
 
 @end
