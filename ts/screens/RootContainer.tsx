@@ -1,4 +1,6 @@
 import React from 'react';
+import {StatusBar} from 'react-native';
+import {IOColors} from '@pagopa/io-app-design-system';
 import {RootStackNavigator} from '../navigation/RootStacknavigator';
 import {useAppSelector} from '../store';
 import DebugInfoOverlay from '../components/debug/DebugInfoOverlay';
@@ -14,6 +16,7 @@ const RootContainer = () => {
 
   return (
     <>
+      <StatusBar barStyle={'dark-content'} backgroundColor={IOColors.white} />
       {isDebugModeEnabled && <DebugInfoOverlay />}
       <RootStackNavigator />
     </>
