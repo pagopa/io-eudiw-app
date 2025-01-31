@@ -30,7 +30,8 @@
     "back": "Back",
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "help": "Help"
+    "help": "Help",
+    "done": "Done"
   },
   "loading": {
     "body": "Please wait a moment"
@@ -75,5 +76,10 @@
       "title": "There's an issue with our systems",
       "body": "Please try again in a few minutes."
     }
+  },
+  "cancelOperation": {
+    "title": "Do you want to stop the operation?",
+    "confirm": "Yes, stop",
+    "cancel": "No, continue"
   }
 }

@@ -1,0 +1,38 @@
+{
+  "error": "Unrecognized QR code",
+  "flash": "Flash",
+  "tabs": {
+    "scan": "Scan",
+    "upload": "Upload"
+  },
+  "upload": {
+    "image": "Upload an image",
+    "file": "Upload a file"
+  },
+  "permissions": {
+    "undefined": {
+      "title": "We need your permission to access the camera",
+      "label": "Allow access to the camera to scan QR codes",
+      "action": "Allow access"
+    },
+    "denied": {
+      "title": "You denied access to the camera",
+      "label": "To allow access to the camera, go to the settings of your device",
+      "action": "Open settings"
+    }
+  },
+  "imagePicker": {
+    "settingsAlert": {
+      "title": "It seems access to Photos has been denied",
+      "message": "We need access to your gallery in addition to upload QR codes",
+      "buttonText": {
+        "enable": "Enable permissions"
+      }
+    }
+  },
+  "multipleResultsAlert": {
+    "title": "Hai inquadrato più codici",
+    "body": "Inquadra un solo codice alla volta",
+    "action": "Riprova"
+  }
+}

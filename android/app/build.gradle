@@ -114,6 +114,9 @@ android {
 }
 
 dependencies {
+    // Required by react-native-image-picker because we target a minSdkVersion < 30. In can be removed when we target minSdkVersion >= 30.
+    // https://github.com/react-native-image-picker/react-native-image-picker?tab=readme-ov-file#android-1
+    implementation("androidx.activity:activity:1.9.+")
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 

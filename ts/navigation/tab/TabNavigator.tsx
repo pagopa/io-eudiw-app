@@ -2,11 +2,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 import {IOColors} from '@pagopa/io-app-design-system';
 import {useTranslation} from 'react-i18next';
-import {Pressable, Text} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
 import {TabIconComponent} from '../../components/TabIconComponent';
-import {useAppDispatch} from '../../store';
-import {preferencesReset} from '../../store/reducers/preferences';
 import WalletHome from '../../screens/WalletHome';
 import TAB_ROUTES from './routes';
 
@@ -28,16 +25,15 @@ const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
  */
 export const TabNavigator = () => {
   const {t} = useTranslation('global');
-  const dispatch = useAppDispatch();
+  const navigation = useNavigation();
 
-  // Prevents warning when passing it as inline function
-  const EmptyScreen = () => (
-    <SafeAreaView>
-      <Pressable onPress={() => dispatch(preferencesReset())}>
-        <Text>Reset Onboarding</Text>
-      </Pressable>
-    </SafeAreaView>
-  );
+  /**
+   * Used to mock tab content. This will never be rendered.
+   */
+  const EmptyComponent = () => <></>;
+
+  const navigateToQrCodeScanScreen = () =>
+    navigation.navigate('ROOT_MAIN_NAV', {screen: 'MAIN_SCAN_QR'});
 
   return (
     <Tab.Navigator
@@ -65,7 +61,13 @@ export const TabNavigator = () => {
       />
       <Tab.Screen
         name={TAB_ROUTES.SCAN_QR}
-        component={EmptyScreen}
+        component={EmptyComponent}
+        listeners={{
+          tabPress: ({preventDefault}) => {
+            preventDefault();
+            navigateToQrCodeScanScreen();
+          }
+        }}
         options={{
           title: t('tabNavigator.scanQr'),
           tabBarIcon: ({color, focused}) => (
@@ -80,7 +82,7 @@ export const TabNavigator = () => {
       />
       <Tab.Screen
         name={TAB_ROUTES.SHOW_QR}
-        component={EmptyScreen}
+        component={EmptyComponent}
         options={{
           title: t('tabNavigator.showQr'),
           tabBarIcon: ({color, focused}) => (

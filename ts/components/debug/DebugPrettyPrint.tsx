@@ -11,7 +11,7 @@ import {StyleSheet, View} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {useTranslation} from 'react-i18next';
 import {truncateObjectStrings} from '../../utils/debug';
-import {Prettify} from '../../utils/types';
+import {Prettify} from '../../types/utils';
 import {withDebugEnabled} from './withDebugEnabled';
 
 type ExpandableProps =
