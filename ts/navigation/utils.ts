@@ -32,3 +32,9 @@ export function goBack() {
     navigationRef.goBack();
   }
 }
+
+/**
+ * Method to retrieve the navigation status.
+ * @returns true if the navigation is ready, false otherwise.
+ */
+export const isNavigationReady = () => navigationRef.isReady();

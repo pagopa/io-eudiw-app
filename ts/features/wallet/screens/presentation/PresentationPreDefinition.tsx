@@ -18,7 +18,8 @@ import {selectCredential} from '../../store/credentials';
 import {wellKnownCredential} from '../../utils/credentials';
 
 export type PresentationPreDefinitionParams = {
-  presentationUrl: string;
+  client_id: string;
+  request_uri: string;
 };
 
 type Props = NativeStackScreenProps<
@@ -45,8 +46,8 @@ const PresentationPreDefinition = ({route}: Props) => {
   useHardwareBackButton(() => true);
 
   useEffect(() => {
-    dispatch(setPreDefinitionRequest({url: route.params.presentationUrl}));
-  }, [dispatch, route.params.presentationUrl]);
+    dispatch(setPreDefinitionRequest(route.params));
+  }, [dispatch, route.params]);
 
   /**
    * Check the status of the presentation request. If the request is successful, navigate to the PresentationPostDefinition screen.
