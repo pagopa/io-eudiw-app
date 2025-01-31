@@ -21,6 +21,7 @@ import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import {StoredCredential} from '../../utils/types';
 import {addCredentialWithIdentification} from '../../store/credentials';
+import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -34,6 +35,7 @@ const PidIssuanceRequest = () => {
   const dispatch = useAppDispatch();
   const {error, success, loading} = useAppSelector(selectPidIssuanceStatus);
   const pid = useAppSelector(selectPidIssuanceData);
+  const {navigateToWallet} = useNavigateToWalletWithReset();
 
   useEffect(() => {
     dispatch(setPidIssuanceRequest());
@@ -51,10 +53,6 @@ const PidIssuanceRequest = () => {
     title: '',
     canGoBack: success.status
   });
-
-  const onCancel = () => {
-    navigation.navigate('MAIN_TAB_NAV');
-  };
 
   const PidPreview = ({credential}: {credential: StoredCredential}) => (
     <>
@@ -79,7 +77,7 @@ const PidIssuanceRequest = () => {
           },
           secondary: {
             label: t('global:buttons.cancel'),
-            onPress: onCancel
+            onPress: navigateToWallet
           },
           type: 'TwoButtons'
         }}
