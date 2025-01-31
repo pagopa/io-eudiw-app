@@ -58,6 +58,9 @@ function* startIdentification() {
   }
 }
 
+/**
+ * Utility generator function to wait for the navigation to be ready before dispatching a navigation event.
+ */
 function* waitForNavigationToBeReady() {
   const warningWaitNavigatorTime = 2000;
   const navigatorPollingTime = 125;
@@ -78,19 +81,25 @@ function* waitForNavigationToBeReady() {
   }
 }
 
+/**
+ * Handles the pending deep link by opening the URL if it exists in the deep linking store.
+ */
+function* handlePendingDeepLink() {
+  const url = yield* select(selectUrl);
+  if (url) {
+    yield* call(() => Linking.openURL(url));
+  }
+}
+
+/**
+ * Stars the onboarding process by setting the status which will be taked by the navigator to render the onboarding navigation stack.
+ */
 function* startOnboarding() {
   yield* put(startupSetStatus('WAIT_ONBOARDING'));
   yield* call(BootSplash.hide, {fade: true});
   yield* take(preferencesSetIsOnboardingDone);
   yield* fork(walletSaga);
   yield* put(startupSetStatus('DONE'));
-}
-
-function* handlePendingDeepLink() {
-  const url = yield* select(selectUrl);
-  if (url) {
-    yield* call(() => Linking.openURL(url));
-  }
 }
 
 /**

@@ -17,7 +17,6 @@ import {OperationResultScreenContent} from '../components/screens/OperationResul
 import LoadingScreenContent from '../components/LoadingScreenContent';
 import {WalletNavigatorParamsList} from '../features/wallet/navigation/WalletNavigator';
 import {setUrl} from '../store/reducers/deeplinking';
-import {PRESENTATION_INTERNAL_LINK} from '../features/qrcode/scan/utils/recognizedLinks';
 import {IONavigationDarkTheme, IONavigationLightTheme} from './theme';
 import ROOT_ROUTES from './routes';
 import MainStackNavigator, {
@@ -25,6 +24,7 @@ import MainStackNavigator, {
 } from './main/MainStackNavigator';
 import {navigationRef} from './utils';
 import MAIN_ROUTES from './main/routes';
+import {PRESENTATION_INTERNAL_LINK} from './deepLinkSchemas';
 
 export type RootStackParamList = {
   // Main
@@ -124,7 +124,10 @@ export const RootStackNavigator = () => {
       }
     },
     async getInitialURL() {
-      // Check if app was opened from a deep link
+      /**
+       * If the app was opened by a deep link, get the initial URL and set it in the store.
+       * We know for sure that this can't be handled because the navigation which can handle it isn't mounted yet.
+       */
       const url = await Linking.getInitialURL();
       if (url) {
         dispatch(setUrl({url}));
@@ -132,6 +135,14 @@ export const RootStackNavigator = () => {
       return url;
     },
     subscribe(listener) {
+      /**
+       * If the appr receives a deep link while it's running and the main navigation is not ready yet, set the URL in the store.
+       * We know for sure that this can't be handled because the main navigation which can handle it isn't mounted yet if the startup is one of the following:
+       * - WAIT_IDENTIFICATION as the user must identify before the main navigation is mounted
+       * - LOADING as the main navigation is not mounted yet
+       * - NOT_STARTED as the main navigation is not mounted yet
+       * A saga will take care of handling this deep link later.
+       */
       const onReceiveURL = ({url}: {url: string}) => {
         listener(url);
         if (

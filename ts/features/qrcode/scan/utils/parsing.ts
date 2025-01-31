@@ -1,7 +1,12 @@
+import {PRESENTATION_INTERNAL_LINK} from '../../../../navigation/deepLinkSchemas';
 import {PresentationParams} from '../../../wallet/store/presentation';
 
-export const PRESENTATION_INTERNAL_LINK = 'haip://';
-
+/**
+ * Parses a URL result from a QR code scan to a presentation link.
+ * It extracts the request_uri and client_id from the URL, otherwise throws an error.
+ * @param link - The URL to parse.
+ * @returns request_uri and client_id from the URL.
+ */
 export const presentationLinkToUrl = (link: string): PresentationParams => {
   const url = new URL(link);
   if (url.protocol !== PRESENTATION_INTERNAL_LINK) {

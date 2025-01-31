@@ -3,24 +3,22 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../types';
 import {preferencesReset} from './preferences';
 
-/* State type definition for the credentials slice.
- * This is stored as an array to avoid overhead due to map not being serializable,
- * thus needing to be converted to an array with a transformation.
- * pid - The PID credential
- * credentials - A map of all the stored credentials
+/**
+ * State definition for the deep linking slice.
+ * It contains the pending URL coming from a deep link.
  */
 export type DeepLinkingState = {
   url: string | undefined;
 };
 
-// Initial state for the credential slice
+// Initial state for the deeplinking slice
 const initialState: DeepLinkingState = {
   url: undefined
 };
 
 /**
- * Redux slice for the credential state. It allows to store the PID and other credentials.
- * This must be a separate slice because the credentials are stored using a custom persistor.
+ * Redux slice for the deeplinking state. It allows to store pending deep links which couldn't be handled.
+ * A saga will take care of handling the deep link when the app is ready.
  */
 const deeplinkingSlice = createSlice({
   name: 'deeplinking',
@@ -47,4 +45,9 @@ export const credentialsSelector = (state: RootState) =>
  */
 export const {setUrl, resetUrl} = deeplinkingSlice.actions;
 
+/**
+ * Select the pending url from the deep linking state.
+ * @param state - The root state.
+ * @returns The pending url from the deep linking state.
+ */
 export const selectUrl = (state: RootState) => state.deepLinking.url;

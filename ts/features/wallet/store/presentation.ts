@@ -11,7 +11,7 @@ import {
 import {RootState} from '../../../store/types';
 
 /**
- *
+ * Parameters to start a presentation flow.
  */
 export type PresentationParams = {
   request_uri: string;
