@@ -81,6 +81,7 @@ export const presentationSlice = createSlice({
     // Empty action which will be intercepted by the saga and trigger the identification before finishing the presentation process
     setPostDefinitionRequestWithAuth: _ => {},
     resetPresentation: state => {
+      state.preDefinition = setInitial();
       state.postDefinition = setInitial();
     }
   }
