@@ -53,13 +53,19 @@ function* handlePresetationPreDefinition(
     if (!walletInstanceAttestation) {
       throw new Error('Wallet Instance Attestation not found');
     }
-    const {request_uri} = action.payload;
+    const {request_uri, client_id} = action.payload;
 
     const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
 
+    const {requestUri} = yield* call(
+      Credential.Presentation.startFlowFromQR,
+      request_uri,
+      client_id
+    );
+
     const {requestObjectEncodedJwt} = yield* call(
       Credential.Presentation.getRequestObject,
-      request_uri,
+      requestUri,
       {
         wiaCryptoContext,
         walletInstanceAttestation

@@ -2408,14 +2408,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-wallet@npm:1.2.3":
-  version: 1.2.3
-  resolution: "@pagopa/io-react-native-wallet@npm:1.2.3"
+"@pagopa/io-react-native-wallet@npm:1.2.4":
+  version: 1.2.4
+  resolution: "@pagopa/io-react-native-wallet@npm:1.2.4"
   dependencies:
+    "@types/jsrsasign": ^10.5.15
     ajv: ^8.17.1
     js-base64: ^3.7.7
     js-sha256: ^0.9.0
     jsonpath-plus: ^10.2.0
+    jsrsasign: ^11.1.0
     parse-url: ^9.2.0
     react-native-url-polyfill: ^2.0.0
     react-native-uuid: ^2.0.1
@@ -2426,7 +2428,7 @@ __metadata:
     "@pagopa/io-react-native-jwt": "*"
     react: "*"
     react-native: "*"
-  checksum: 95b687af3939c9144c6e51cdc824c3fc9aceb7b8a402bf1fcf9947883a13b9ac9e73d44e811e0d0ee7720544ed3d116a5c408ec5a0f53682551fcfea2c2af3d6
+  checksum: 80b5dc8beb88f250fb0725ec0541aae8a513953ab7f40039be8651bfb9ae04b8896478ca2bf5933ec2e61e26a662230b12ce9e0034908cfe4a63fb7df24b4c6a
   languageName: node
   linkType: hard
 
@@ -3626,6 +3628,13 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: e60b153664572116dfea673c5bda7778dbff150498f44f998e34b5886d8afc47f16799280e4b6e241c0472aef1bc36add771c569c68fc5125fc2ae519a3eb9ac
+  languageName: node
+  linkType: hard
+
+"@types/jsrsasign@npm:^10.5.15":
+  version: 10.5.15
+  resolution: "@types/jsrsasign@npm:10.5.15"
+  checksum: e88fd213e5ae8a4c694ddad2accb282df7b0665bfa53c9e1be2ebfddbee342c328e185e1ffdffd684cc3ed0b83a9c1933c9c15b776a2250a3dfbdf0b45f17c7d
   languageName: node
   linkType: hard
 
@@ -8276,7 +8285,7 @@ __metadata:
     "@pagopa/io-react-native-crypto": ^1.0.1
     "@pagopa/io-react-native-jwt": ^1.4.0
     "@pagopa/io-react-native-login-utils": ^1.0.7
-    "@pagopa/io-react-native-wallet": 1.2.3
+    "@pagopa/io-react-native-wallet": 1.2.4
     "@pagopa/react-native-nodelibs": ^0.1.0
     "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native-clipboard/clipboard": ^1.15.0
@@ -9611,6 +9620,13 @@ __metadata:
     jsonpath: bin/jsonpath-cli.js
     jsonpath-plus: bin/jsonpath-cli.js
   checksum: 862a96a0179f342fa6c012065fa78458d4ae4835f18a6ef580d18807101d8c2c3509dc20c9857474503205bff8f06c309e17d7420b68196262d15ad1e4f22146
+  languageName: node
+  linkType: hard
+
+"jsrsasign@npm:^11.1.0":
+  version: 11.1.0
+  resolution: "jsrsasign@npm:11.1.0"
+  checksum: 1ce5eb44490be260c8b667d14fa8c62bfd75ee2b28f8193043ebd62dc9ac9d371a424d3e648cc2f0c220edada1ea4910d5c8cdebc69fc8c49087539c2e9009c6
   languageName: node
   linkType: hard
 

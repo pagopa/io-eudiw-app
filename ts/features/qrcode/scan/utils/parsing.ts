@@ -9,7 +9,13 @@ import {PresentationParams} from '../../../wallet/store/presentation';
  */
 export const presentationLinkToUrl = (link: string): PresentationParams => {
   const url = new URL(link);
-  if (url.protocol !== PRESENTATION_INTERNAL_LINK) {
+  if (
+    url.protocol !==
+    PRESENTATION_INTERNAL_LINK.substring(
+      0,
+      PRESENTATION_INTERNAL_LINK.length - 2
+    ) // Removes the last two characters from the internal link as the protocol stops with the final :
+  ) {
     throw new Error('Invalid presentation link');
   }
   const request_uri = url.searchParams.get('request_uri');
