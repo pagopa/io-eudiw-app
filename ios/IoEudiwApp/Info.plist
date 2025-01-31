@@ -36,7 +36,9 @@
     <key>NSFaceIDUsageDescription</key>
     <string>$(PRODUCT_NAME) requires FaceID access to allows you quick and secure access.</string>
     <key>NSCameraUsageDescription</key>
-    <string>$(PRODUCT_NAME) needs access to your Camera.</string>
+    <string>$(PRODUCT_NAME) needs access to your Camera to scan QR codes.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>$(PRODUCT_NAME) needs access to your Photo Library to upload QR codes.</string>
     <key>UILaunchStoryboardName</key>
     <string>BootSplash</string>
     <key>UIRequiredDeviceCapabilities</key>
