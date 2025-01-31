@@ -11,6 +11,14 @@ import {
 import {RootState} from '../../../store/types';
 
 /**
+ *
+ */
+export type PresentationParams = {
+  request_uri: string;
+  client_id: string;
+};
+
+/**
  * Type for the description which contains the requested claims during the presentation.
  */
 export type Descriptor = Awaited<
@@ -46,7 +54,7 @@ export const presentationSlice = createSlice({
   name: 'presentationSlice',
   initialState,
   reducers: {
-    setPreDefinitionRequest: (state, _: PayloadAction<{url: string}>) => {
+    setPreDefinitionRequest: (state, _: PayloadAction<PresentationParams>) => {
       state.preDefinition = setLoading();
     },
     setPreDefinitionError: (state, action: PayloadAction<{error: unknown}>) => {

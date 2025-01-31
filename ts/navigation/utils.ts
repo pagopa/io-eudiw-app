@@ -32,3 +32,5 @@ export function goBack() {
     navigationRef.goBack();
   }
 }
+
+export const isNavigationReady = () => navigationRef.isReady();

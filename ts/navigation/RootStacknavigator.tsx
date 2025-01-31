@@ -1,4 +1,5 @@
 import {
+  LinkingOptions,
   NavigationContainer,
   NavigatorScreenParams
 } from '@react-navigation/native';
@@ -6,21 +7,24 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect} from 'react';
 import {useIOThemeContext} from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
+import {Linking} from 'react-native';
 import OnboardingNavigator, {
   OnboardingNavigatorParamsList
 } from '../features/onboarding/navigation/OnboardingNavigator';
 import {useAppDispatch, useAppSelector} from '../store';
 import {selectStartupState, startupSetLoading} from '../store/reducers/startup';
-import {WalletNavigatorParamsList} from '../features/wallet/navigation/WalletNavigator';
 import {OperationResultScreenContent} from '../components/screens/OperationResultScreenContent';
 import LoadingScreenContent from '../components/LoadingScreenContent';
+import {WalletNavigatorParamsList} from '../features/wallet/navigation/WalletNavigator';
+import {setUrl} from '../store/reducers/deeplinking';
+import {PRESENTATION_INTERNAL_LINK} from '../features/qrcode/scan/utils/recognizedLinks';
 import {IONavigationDarkTheme, IONavigationLightTheme} from './theme';
 import ROOT_ROUTES from './routes';
 import MainStackNavigator, {
   MainNavigatorParamsList
 } from './main/MainStackNavigator';
-import MAIN_ROUTES from './main/routes';
 import {navigationRef} from './utils';
+import MAIN_ROUTES from './main/routes';
 
 export type RootStackParamList = {
   // Main
@@ -100,6 +104,53 @@ export const RootStackNavigator = () => {
     }
   }, [isStartupDone]);
 
+  const linking: LinkingOptions<RootStackParamList> = {
+    prefixes: [PRESENTATION_INTERNAL_LINK],
+    config: {
+      screens: {
+        ROOT_MAIN_NAV: {
+          screens: {
+            MAIN_WALLET_NAV: {
+              screens: {
+                PRESENTATION_PRE_DEFINITION: {
+                  // why can't typescript infer the type of deeply nested navigators?
+                  path: '*', // match any path after PRESENTATION_PRE_DEFINITION
+                  alias: [''] // match empty path after PRESENTATION_PRE_DEFINITION
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    async getInitialURL() {
+      // Check if app was opened from a deep link
+      const url = await Linking.getInitialURL();
+      if (url) {
+        dispatch(setUrl({url}));
+      }
+      return url;
+    },
+    subscribe(listener) {
+      const onReceiveURL = ({url}: {url: string}) => {
+        listener(url);
+        if (
+          isStartupDone === 'WAIT_IDENTIFICATION' ||
+          isStartupDone === 'LOADING' ||
+          isStartupDone === 'NOT_STARTED'
+        ) {
+          dispatch(setUrl({url}));
+        }
+      };
+
+      Linking.addEventListener('url', onReceiveURL);
+
+      return () => {
+        Linking.removeAllListeners('url');
+      };
+    }
+  };
+
   const initialScreen = getInitialScreen();
 
   return (
@@ -107,6 +158,7 @@ export const RootStackNavigator = () => {
       theme={
         themeType === 'light' ? IONavigationLightTheme : IONavigationDarkTheme
       }
+      linking={linking}
       ref={navigationRef}>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen

@@ -10,6 +10,7 @@ import {useQrCodeFileReader} from '../hooks/useQrCodeFileReader';
 import {QrCodeScanBaseScreenComponent} from '../components/QrCodeScanBaseScreenComponent';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
+import {presentationLinkToUrl} from '../utils/recognizedLinks';
 
 /**
  * Types for callback in case of success or error
@@ -40,13 +41,22 @@ const QrCodeScanScreen = () => {
     );
 
   const handleSingleResult = (barcode: string) => {
-    ReactNativeHapticFeedback.trigger(HapticFeedbackTypes.notificationSuccess);
-    navigation.navigate('MAIN_WALLET_NAV', {
-      screen: 'PRESENTATION_PRE_DEFINITION',
-      params: {
-        presentationUrl: barcode
-      }
-    });
+    try {
+      const {request_uri, client_id} = presentationLinkToUrl(barcode);
+      ReactNativeHapticFeedback.trigger(
+        HapticFeedbackTypes.notificationSuccess
+      );
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PRESENTATION_PRE_DEFINITION',
+        params: {
+          client_id,
+          request_uri
+        }
+      });
+    } catch (e) {
+      ReactNativeHapticFeedback.trigger(HapticFeedbackTypes.notificationError);
+      IOToast.error(t('error'));
+    }
   };
 
   const handleBarcodeSuccess: OnBarcodeSuccess = (barcodes: Array<string>) => {
