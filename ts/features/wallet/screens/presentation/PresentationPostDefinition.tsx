@@ -4,13 +4,13 @@ import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   Body,
-  ContentWrapper,
   FeatureInfo,
   FooterActions,
   ForceScrollDownView,
   H2,
   HSpacer,
   Icon,
+  IOVisualCostants,
   ListItemHeader,
   VSpacer
 } from '@pagopa/io-app-design-system';
@@ -105,43 +105,42 @@ const PresentationPostDefinition = ({route}: Props) => {
   });
 
   return (
-    <>
-      <ForceScrollDownView>
-        <ContentWrapper>
-          <VSpacer size={24} />
-          <View style={styles.header}>
-            <Icon name={'device'} color={'grey-450'} size={24} />
-            <HSpacer size={8} />
-            <Icon name={'transactions'} color={'grey-450'} size={24} />
-            <HSpacer size={8} />
-            <Icon name={'institution'} color={'grey-450'} size={24} />
-          </View>
-          <VSpacer size={24} />
-          <H2>{t('wallet:presentation.trust.title')}</H2>
-          <Body> {t('wallet:presentation.trust.subtitle')}</Body>
-          <VSpacer size={8} />
-          <ListItemHeader
-            label={t('wallet:presentation.trust.yourData')}
-            iconName="security"
-            iconColor="grey-700"
-          />
-          <RequiredClaimsList
-            descriptor={route.params.descriptor}
-            source={getCredentialNameByType(wellKnownCredential.PID)}
-          />
-          <VSpacer size={24} />
-          <FeatureInfo
-            iconName="fornitori"
-            body={t('wallet:presentation.trust.disclaimer.0')}
-          />
-          <VSpacer size={24} />
-          <FeatureInfo
-            iconName="trashcan"
-            body={t('wallet:presentation.trust.disclaimer.1')}
-          />
-        </ContentWrapper>
-      </ForceScrollDownView>
+    <ForceScrollDownView style={styles.scroll}>
+      <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
+        <VSpacer size={24} />
+        <View style={styles.header}>
+          <Icon name={'device'} color={'grey-450'} size={24} />
+          <HSpacer size={8} />
+          <Icon name={'transactions'} color={'grey-450'} size={24} />
+          <HSpacer size={8} />
+          <Icon name={'institution'} color={'grey-450'} size={24} />
+        </View>
+        <VSpacer size={24} />
+        <H2>{t('wallet:presentation.trust.title')}</H2>
+        <Body> {t('wallet:presentation.trust.subtitle')}</Body>
+        <VSpacer size={8} />
+        <ListItemHeader
+          label={t('wallet:presentation.trust.yourData')}
+          iconName="security"
+          iconColor="grey-700"
+        />
+        <RequiredClaimsList
+          descriptor={route.params.descriptor}
+          source={getCredentialNameByType(wellKnownCredential.PID)}
+        />
+        <VSpacer size={24} />
+        <FeatureInfo
+          iconName="fornitori"
+          body={t('wallet:presentation.trust.disclaimer.0')}
+        />
+        <VSpacer size={24} />
+        <FeatureInfo
+          iconName="trashcan"
+          body={t('wallet:presentation.trust.disclaimer.1')}
+        />
+      </View>
       <FooterActions
+        fixed={false}
         actions={{
           type: 'TwoButtons',
           primary: {
@@ -155,7 +154,7 @@ const PresentationPostDefinition = ({route}: Props) => {
           }
         }}
       />
-    </>
+    </ForceScrollDownView>
   );
 };
 
@@ -163,6 +162,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  scroll: {
+    flexGrow: 1
   }
 });
 

@@ -1,9 +1,11 @@
 import {useTranslation} from 'react-i18next';
 import React from 'react';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
-import {resetPidIssuance} from '../../store/pidIssuance';
 import {useAppDispatch, useAppSelector} from '../../../../store';
-import {selectPostDefinitionResult} from '../../store/presentation';
+import {
+  resetPresentation,
+  selectPostDefinitionResult
+} from '../../store/presentation';
 import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 
@@ -28,7 +30,7 @@ const PresentationSuccess = () => {
         accessibilityLabel: t('global:buttons.done'),
         label: t('global:buttons.done'),
         onPress: () => {
-          dispatch(resetPidIssuance());
+          dispatch(resetPresentation());
           navigateToWallet();
         }
       }}
