@@ -28,6 +28,7 @@
 		460A1C5BCC934D08BD15F4A9 /* Titillio-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 15A5A725CA62404FBCEB9B57 /* Titillio-Black.otf */; };
 		4A148B935CED442D9C119D28 /* Titillio-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6DA1A561244B4428BE0E8131 /* Titillio-Thin.otf */; };
 		522AF7EC8E0F400FA1D2BB50 /* TitilliumSansPro-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5B9FE5965E924AA899806CBF /* TitilliumSansPro-Black.otf */; };
+		696712BA3C4E48378FC69BCC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC4CF7301749440CAE7B3A98 /* Colors.xcassets */; };
 		6CDE7782BAF447ABA15525BB /* Titillio-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5A9395E16369404D96ED52C7 /* Titillio-Semibold.otf */; };
 		72405161325446FC9D3D44AE /* TitilliumSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = AF0B1A517E2A471D83607F87 /* TitilliumSansPro-Light.otf */; };
 		757A95AB1C66444BA3BC05FF /* Titillio-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0612F5A308514850BC36EC98 /* Titillio-RegularItalic.otf */; };
@@ -101,6 +102,7 @@
 		B8D98B4A78B94C9A949B29E8 /* Titillio-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Light.otf"; path = "../assets/fonts/Titillio/Titillio-Light.otf"; sourceTree = "<group>"; };
 		BE0DAA9213CD4F34B64C4991 /* Titillio-ExtraboldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-ExtraboldItalic.otf"; path = "../assets/fonts/Titillio/Titillio-ExtraboldItalic.otf"; sourceTree = "<group>"; };
 		D42FA4F07E19412084BD2623 /* Titillio-ThinItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-ThinItalic.otf"; path = "../assets/fonts/Titillio/Titillio-ThinItalic.otf"; sourceTree = "<group>"; };
+		DC4CF7301749440CAE7B3A98 /* Colors.xcassets */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = Colors.xcassets; path = IoEudiwApp/Colors.xcassets; sourceTree = "<group>"; };
 		DE963A9F2B35E843C3698C24 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = IoEudiwApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		EB1BAF542E6B45BF9B46143A /* Titillio-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Regular.otf"; path = "../assets/fonts/Titillio/Titillio-Regular.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -194,6 +196,7 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				DE963A9F2B35E843C3698C24 /* PrivacyInfo.xcprivacy */,
+				DC4CF7301749440CAE7B3A98 /* Colors.xcassets */,
 			);
 			name = IoEudiwApp;
 			sourceTree = "<group>";
@@ -377,6 +380,7 @@
 				1B20A905301D461B8FE65E1A /* TitilliumSansPro-SemiboldItalic.otf in Resources */,
 				C6BBA361F0C94144B33F7BB0 /* TitilliumSansPro-Thin.otf in Resources */,
 				093D4F8145EC4D669BC77D8C /* TitilliumSansPro-ThinItalic.otf in Resources */,
+				696712BA3C4E48378FC69BCC /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
