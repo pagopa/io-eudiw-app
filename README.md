@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img/icons/app-icon.png" width="100" style="display: block" /></br>
+  <img src="assets/repository/app-icon.png" width="100" style="display: block" /></br>
   <h3 align="center">io-eudiw-app</h3>
 </p>
 
