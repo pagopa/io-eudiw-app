@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.2-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.6.1-rc.0...1.6.2-rc.0) (2025-02-03)
+
+
+### Bug Fixes
+
+* Wrong status bar color in onboarding screens ([47b0215](https://github.com/pagopa/io-eudiw-app/commit/47b021504374bae9f7cb052c215ca2a369fd5493))
+
+
+### Chores
+
+* Revert bootsplash to logo only ([e41467f](https://github.com/pagopa/io-eudiw-app/commit/e41467f87f8ae1d79074e66c0c216dca27a975e6))
+
 ### [1.6.1-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.6.0-rc.0...1.6.1-rc.0) (2025-02-03)
 
 ## [1.6.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.5.1-rc.0...1.6.0-rc.0) (2025-02-03)
