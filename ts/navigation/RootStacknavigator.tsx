@@ -24,7 +24,7 @@ import MainStackNavigator, {
 } from './main/MainStackNavigator';
 import {navigationRef} from './utils';
 import MAIN_ROUTES from './main/routes';
-import {PRESENTATION_INTERNAL_LINK} from './deepLinkSchemas';
+import {PRESENTATION_INTERNAL_LINKS} from './deepLinkSchemas';
 
 export type RootStackParamList = {
   // Main
@@ -105,7 +105,7 @@ export const RootStackNavigator = () => {
   }, [isStartupDone]);
 
   const linking: LinkingOptions<RootStackParamList> = {
-    prefixes: [PRESENTATION_INTERNAL_LINK],
+    prefixes: PRESENTATION_INTERNAL_LINKS,
     config: {
       screens: {
         ROOT_MAIN_NAV: {

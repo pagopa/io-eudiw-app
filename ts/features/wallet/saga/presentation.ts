@@ -5,6 +5,7 @@ import {
   SdJwt
 } from '@pagopa/io-react-native-wallet';
 import {InputDescriptor} from '@pagopa/io-react-native-wallet/lib/typescript/credential/presentation/types';
+import {serializeError} from 'serialize-error';
 import {
   AuthResponse,
   resetPresentation,
@@ -154,7 +155,7 @@ function* handlePresetationPreDefinition(
     }
   } catch (e) {
     // We don't know which step is failed thus we set the same error for both
-    yield* put(setPostDefinitionError({error: JSON.stringify(e)}));
-    yield* put(setPreDefinitionError({error: JSON.stringify(e)}));
+    yield* put(setPostDefinitionError({error: serializeError(e)}));
+    yield* put(setPreDefinitionError({error: serializeError(e)}));
   }
 }

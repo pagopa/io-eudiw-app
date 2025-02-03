@@ -11,7 +11,6 @@ import {
   HSpacer,
   Icon,
   IOVisualCostants,
-  ListItemHeader,
   VSpacer
 } from '@pagopa/io-app-design-system';
 import {Alert, StyleSheet, View} from 'react-native';

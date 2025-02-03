@@ -10,6 +10,7 @@ import Config from 'react-native-config';
 import {call, put, select, take, takeLatest} from 'typed-redux-saga';
 import uuid from 'react-native-uuid';
 import {generate} from '@pagopa/io-react-native-crypto';
+import {serializeError} from 'serialize-error';
 import {regenerateCryptoKey} from '../../../utils/crypto';
 import {DPOP_KEYTAG} from '../utils/crypto';
 import {selectAttestation} from '../store/attestation';
@@ -166,7 +167,7 @@ function* obtainPid() {
       })
     );
   } catch (error) {
-    yield* put(setPidIssuanceError({error: JSON.stringify(error)}));
+    yield* put(setPidIssuanceError({error: serializeError(error)}));
   }
 }
 

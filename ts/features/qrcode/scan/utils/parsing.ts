@@ -1,4 +1,4 @@
-import {PRESENTATION_INTERNAL_LINK} from '../../../../navigation/deepLinkSchemas';
+import {PRESENTATION_INTERNAL_LINKS} from '../../../../navigation/deepLinkSchemas';
 import {PresentationParams} from '../../../wallet/store/presentation';
 
 /**
@@ -10,11 +10,9 @@ import {PresentationParams} from '../../../wallet/store/presentation';
 export const presentationLinkToUrl = (link: string): PresentationParams => {
   const url = new URL(link);
   if (
-    url.protocol !==
-    PRESENTATION_INTERNAL_LINK.substring(
-      0,
-      PRESENTATION_INTERNAL_LINK.length - 2
-    ) // Removes the last two characters from the internal link as the protocol stops with the final :
+    !PRESENTATION_INTERNAL_LINKS.some(
+      uri => url.protocol === uri.substring(0, uri.length - 2) // Remove last two characters (':')
+    )
   ) {
     throw new Error('Invalid presentation link');
   }

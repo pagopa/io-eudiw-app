@@ -2,10 +2,13 @@ import {useTranslation} from 'react-i18next';
 import React from 'react';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
-import {selectPidIssuanceError} from '../../store/pidIssuance';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 import {useDebugInfo} from '../../../../hooks/useDebugInfo';
-import {resetPresentation} from '../../store/presentation';
+import {
+  resetPresentation,
+  selectPostDefinitionStatus,
+  selectPreDefinitionStatus
+} from '../../store/presentation';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 
@@ -16,13 +19,15 @@ import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalle
 const PresentationFailure = () => {
   const {t} = useTranslation(['global', 'wallet']);
   const dispatch = useAppDispatch();
-  const error = useAppSelector(selectPidIssuanceError);
+  const errorPre = useAppSelector(selectPreDefinitionStatus);
+  const errorPost = useAppSelector(selectPostDefinitionStatus);
   const {navigateToWallet} = useNavigateToWalletWithReset();
 
   useHardwareBackButton(() => true);
   useDisableGestureNavigation();
 
-  useDebugInfo({error});
+  // At the moment they are the same error
+  useDebugInfo({errorPre, errorPost});
 
   const onPress = () => {
     dispatch(resetPresentation());
