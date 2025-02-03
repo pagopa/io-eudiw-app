@@ -32,6 +32,12 @@ export type AuthResponse = Awaited<
   ReturnType<typeof Credential.Presentation.sendAuthorizationResponse>
 >;
 
+/**
+ * Type of the optional claims names selected by the user.
+ */
+export type OptionalClaimsNames =
+  Descriptor['optionalDisclosures'][0]['decoded'][1]; // Name of the optional claims selected by the user
+
 /* State type definition for the presentation slice
  * preDefinition - Async status for the prestation before receiving the descriptor
  * postDefinition - Async status for the presentation afetr receiving the descriptor
@@ -66,7 +72,13 @@ export const presentationSlice = createSlice({
     resetPreDefinition: state => {
       state.preDefinition = setInitial();
     },
-    setPostDefinitionRequest: state => {
+    setPostDefinitionRequest: (
+      state,
+      _: PayloadAction<Array<OptionalClaimsNames>>
+    ) => {
+      /* Payload is not used but taken from the saga
+       * The payload is an array of strings containing the optional claims selected by the user
+       */
       state.postDefinition = setLoading();
     },
     setPostDefinitionError: (

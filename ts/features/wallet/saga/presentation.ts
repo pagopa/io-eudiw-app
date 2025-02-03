@@ -111,9 +111,13 @@ function* handlePresetationPreDefinition(
 
     yield* put(setPreDefinitionSuccess(descriptorResult));
 
-    // Wait for the user to confirm the presentation with the claims
-    // No need to check for the cancel action as there's a race condition defined in watchPresentationSaga
-    yield* take(setPostDefinitionRequest);
+    /* Wait for the user to confirm the presentation with the claims
+     * No need to check for the cancel action as there's a race condition defined in watchPresentationSaga
+     * The payload contains a list of the name of optionals claims to be presented
+     */
+    const {payload: optionalClaimsNames} = yield* take(
+      setPostDefinitionRequest
+    );
 
     yield* put(
       setIdentificationStarted({canResetPin: false, isValidatingTask: true})
@@ -126,7 +130,8 @@ function* handlePresetationPreDefinition(
 
     if (setIdentificationIdentified.match(resAction)) {
       const disclosuresRequestedClaimName = [
-        ...descriptorResult.requiredDisclosures.map(item => item.decoded[1])
+        ...descriptorResult.requiredDisclosures.map(item => item.decoded[1]),
+        ...optionalClaimsNames
       ];
 
       const credentialCryptoContext = createCryptoContextFor(pid.keyTag);

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -18,6 +18,7 @@ import {Alert, StyleSheet, View} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
   Descriptor,
+  OptionalClaimsNames,
   resetPresentation,
   selectPostDefinitionStatus,
   setPostDefinitionRequest
@@ -28,7 +29,7 @@ import {
   getCredentialNameByType,
   wellKnownCredential
 } from '../../utils/credentials';
-import RequiredClaimsList from '../../components/credential/RequiredClaims';
+import PresentationClaimsList from '../../components/credential/PresentationClaimsList';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
@@ -55,6 +56,7 @@ const PresentationPostDefinition = ({route}: Props) => {
   const dispatch = useAppDispatch();
   const postDefinitionStatus = useAppSelector(selectPostDefinitionStatus);
   const {navigateToWallet} = useNavigateToWalletWithReset();
+  const [optionalChecked, setOptionalChecked] = useState([] as Array<string>);
 
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();
@@ -77,6 +79,19 @@ const PresentationPostDefinition = ({route}: Props) => {
         style: 'cancel'
       }
     ]);
+  };
+
+  /**
+   * Callback for when the user checks or unchecks an optional disclosure
+   * in the PresentationClaimsList component.
+   * @param encoded - The encoded string of the optional disclosure
+   */
+  const onOptionalDisclosuresChange = (encoded: OptionalClaimsNames) => {
+    if (optionalChecked.includes(encoded)) {
+      setOptionalChecked(optionalChecked.filter(item => item !== encoded));
+    } else {
+      setOptionalChecked([...optionalChecked, encoded]);
+    }
   };
 
   /**
@@ -119,12 +134,9 @@ const PresentationPostDefinition = ({route}: Props) => {
         <H2>{t('wallet:presentation.trust.title')}</H2>
         <Body> {t('wallet:presentation.trust.subtitle')}</Body>
         <VSpacer size={8} />
-        <ListItemHeader
-          label={t('wallet:presentation.trust.yourData')}
-          iconName="security"
-          iconColor="grey-700"
-        />
-        <RequiredClaimsList
+        <PresentationClaimsList
+          optionalChecked={optionalChecked}
+          setOptionalChecked={onOptionalDisclosuresChange}
           descriptor={route.params.descriptor}
           source={getCredentialNameByType(wellKnownCredential.PID)}
         />
@@ -145,7 +157,7 @@ const PresentationPostDefinition = ({route}: Props) => {
           type: 'TwoButtons',
           primary: {
             label: t('global:buttons.confirm'),
-            onPress: () => dispatch(setPostDefinitionRequest()),
+            onPress: () => dispatch(setPostDefinitionRequest(optionalChecked)),
             loading: postDefinitionStatus.loading
           },
           secondary: {

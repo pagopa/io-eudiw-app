@@ -269,7 +269,8 @@ interface Resources {
       "trust": {
         "title": "Allow your data to be read",
         "subtitle": "They will be shared to access to services.",
-        "yourData": "Your data",
+        "requiredClaims": "Required data",
+        "optionalClaims": "Optional data",
         "disclaimer": {
           "0": "Your data is safe and will be processed only for the purposes described in the Privacy Policy.",
           "1": "The data will be shared only for the time necessary to issue the credential."
