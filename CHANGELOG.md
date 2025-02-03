@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.5.1-rc.0...1.6.0-rc.0) (2025-02-03)
+
+
+### Features
+
+* Add redirect after presentation ([bd43bb4](https://github.com/pagopa/io-eudiw-app/commit/bd43bb466fd3887b19c0fd399d17c03eb6040eeb))
+* Add support for multiple presentation uri ([070fe43](https://github.com/pagopa/io-eudiw-app/commit/070fe4361b00b0ca6db9c190276a14e23232e859))
+* Add support for optional claim selection ([706ebc6](https://github.com/pagopa/io-eudiw-app/commit/706ebc683d59229757027d3e67a31ad1cc0bb100))
+* Align with iornw 1.3.0 ([2f32586](https://github.com/pagopa/io-eudiw-app/commit/2f3258624f1a48a7ca434334ccc5c7692e69d9c0))
+
 ### [1.5.1-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.5.0-rc.0...1.5.1-rc.0) (2025-01-31)
 
 
