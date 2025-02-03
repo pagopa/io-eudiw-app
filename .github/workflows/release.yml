@@ -219,13 +219,13 @@ jobs:
       - id: upload-dsym-files
         # Sometimes the build-upload-app-store step fails for timeout,
         # in this case we want to upload the dSYM files anyway
-        if: ${{ always() }} 
+        if: ${{ always() }}
         # We don't want to fail whole job if the dSYM upload step fails
-        continue-on-error: true 
+        continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.0.3
         with:
-          name: IO.app.dSYM.zip
-          path: ios/IO.app.dSYM.zip
+          name: IoEudiwApp.app.dSYM.zip
+          path: ios/IoEudiwApp.app.dSYM.zip
       - id: upload-ipa
         # We don't want to fail whole job if the IPA upload step fails
         continue-on-error: true
@@ -237,6 +237,6 @@ jobs:
         continue-on-error: true
         run: |
           APP_VERSION=$(node -p -e "require('./package.json').version")
-          gh release upload $APP_VERSION ios/IO.ipa#IO-iOS.ipa
+          gh release upload $APP_VERSION ios/IoEudiwApp.ipa#IoEudiwApp.ipa
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
