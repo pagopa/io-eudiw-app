@@ -68,6 +68,15 @@ platform :android do
     upload_to_play_store(track: "internal", track_promote_to: "alpha")
   end
 
+  desc "Download universal APK file from Google Play"
+  lane :download_apk do
+    version_code = ENV['VERSION_CODE'].to_i
+    download_universal_apk_from_google_play(
+      package_name: "it.pagopa.io.app.poc.eudiw",
+      destination: "eudiw-universal.apk",
+      version_code: version_code
+    )
+  end
 
 
   # You can define as many lanes as you want
