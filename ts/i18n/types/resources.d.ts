@@ -278,6 +278,10 @@ interface Resources {
       "success": {
         "title": "Done!",
         "subtitle": "Continue on the partner site"
+      },
+      "successWithRedirect": {
+        "title": "Done!",
+        "subtitle": "You will be redirected to the partner site"
       }
     },
     "claims": {
