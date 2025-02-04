@@ -31,14 +31,6 @@ Fetch certificates and provisioning profiles
 
 Runs all the tests
 
-### ios register_new_device
-
-```sh
-[bundle exec] fastlane ios register_new_device
-```
-
-Register new device
-
 ### ios refresh_profiles
 
 ```sh
