@@ -16,8 +16,8 @@ import PresentationPostDefinition, {
   PresentationPostDefinitionParams
 } from '../screens/presentation/PresentationPostDefinition';
 import PresentationSuccess from '../screens/presentation/PresentationSuccess';
-import WALLET_ROUTES from './routes';
 import SelectCredential from '../screens/credentialIssuance/SelectCredential';
+import WALLET_ROUTES from './routes';
 
 /**
  * Screen parameters for the wallet navigator.

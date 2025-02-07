@@ -4,7 +4,7 @@ import {
   IOStyles,
   HeaderFirstLevel,
   IOColors,
-  makeFontStyleObject,
+  makeFontStyleObject
 } from '@pagopa/io-app-design-system';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
@@ -57,7 +57,7 @@ const WalletHome = () => {
               primary : {
                 label : t("wallet:addcredential.homebuttonlabel"),
                 icon : 'add',
-                onPress : () => {navigation.navigate('MAIN_WALLET_NAV', {screen : 'SELECT_CREDENTIAL_TO_ISSUE'})},
+                onPress : () => {navigation.navigate('MAIN_WALLET_NAV', {screen : 'SELECT_CREDENTIAL_TO_ISSUE'});},
                 iconPosition : 'end'
               }
             }}
@@ -144,13 +144,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingTop: 14
-  },
-  bottomButton : {
-    position : 'absolute',
-    bottom : 24,
-    width : '100%',
-    left : IOStyles.horizontalContentPadding.paddingHorizontal,
-    borderWidth: 2
   }
 });
 
