@@ -294,7 +294,10 @@ interface Resources {
     "addcredential" : {
       "homebuttonlabel" : "Add Document",
       "choosecredentialtoadd" : {
-        "title" : "What would you like to add to the Wallet?"
+        "title" : "What would you like to add to the Wallet?",
+        "headers" : {
+          "documents" : "Documents"
+        }
       }
     }
   }

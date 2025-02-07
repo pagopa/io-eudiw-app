@@ -40,7 +40,7 @@ const CredentialIssuanceSelect = () => {
         >
             <View style={styles.wrapper}>
                 <ListItemHeader 
-                    label='Documents'
+                    label={t('wallet:addcredential.choosecredentialtoadd.headers.documents')}
                 />
                 <VStack space={8}>
                     {
