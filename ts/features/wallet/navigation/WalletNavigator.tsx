@@ -17,6 +17,7 @@ import PresentationPostDefinition, {
 } from '../screens/presentation/PresentationPostDefinition';
 import PresentationSuccess from '../screens/presentation/PresentationSuccess';
 import WALLET_ROUTES from './routes';
+import SelectCredential from '../screens/credentialIssuance/SelectCredential';
 
 /**
  * Screen parameters for the wallet navigator.
@@ -34,6 +35,7 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.PRESENTATION
     .POST_DEFINITION]: PresentationPostDefinitionParams;
   [WALLET_ROUTES.PRESENTATION.SUCCESS]: undefined;
+  [WALLET_ROUTES.CREDENTIAL_ISSUANCE.SELECT_CREDENTIAL]: undefined;
 };
 
 const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();
@@ -84,6 +86,12 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PRESENTATION.SUCCESS}
         component={PresentationSuccess}
+      />
+    </Stack.Group>
+    <Stack.Group>
+      <Stack.Screen
+        name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.SELECT_CREDENTIAL}
+        component={SelectCredential}
       />
     </Stack.Group>
   </Stack.Navigator>
