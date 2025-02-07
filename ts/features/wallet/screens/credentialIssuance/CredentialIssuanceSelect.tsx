@@ -20,7 +20,7 @@ function getCredentialIconByType(type :string) : IOIcons | undefined {
     }
 }
 
-const SelectCredential = () => {
+const CredentialIssuanceSelect = () => {
     const navigation = useNavigation();
     const {t} = useTranslation(['wallet']);
 
@@ -74,4 +74,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SelectCredential;
+export default CredentialIssuanceSelect;

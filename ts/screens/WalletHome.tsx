@@ -57,7 +57,7 @@ const WalletHome = () => {
               primary : {
                 label : t("wallet:addcredential.homebuttonlabel"),
                 icon : 'add',
-                onPress : () => {navigation.navigate('MAIN_WALLET_NAV', {screen : 'SELECT_CREDENTIAL_TO_ISSUE'});},
+                onPress : () => {navigation.navigate('MAIN_WALLET_NAV', {screen : 'CREDENTIAL_ISSUANCE_SELECT'});},
                 iconPosition : 'end'
               }
             }}
