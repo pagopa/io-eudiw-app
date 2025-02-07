@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import {
   IOStyles,
   HeaderFirstLevel,

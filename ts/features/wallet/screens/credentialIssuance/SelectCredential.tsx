@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { useNavigation } from '@react-navigation/native';
-import { Badge, IOIcons, IOStyles, IOVisualCostants, ListItemHeader, ModuleCredential, VStack } from '@pagopa/io-app-design-system';
+import { IOIcons, IOVisualCostants, ListItemHeader, ModuleCredential, VStack } from '@pagopa/io-app-design-system';
 import { IOScrollViewWithLargeHeader } from '../../../../components/IOScrollViewWithLargeHeader';
 import { useTranslation } from 'react-i18next';
 import { wellKnownCredential, getCredentialNameByType } from '../../utils/credentials';
@@ -57,6 +57,7 @@ const SelectCredential = () => {
                                     />
                                 )
                             }
+                            return <></>
                         })
                     }
                 </VStack>

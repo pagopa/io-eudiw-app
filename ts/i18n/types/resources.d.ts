@@ -290,6 +290,12 @@ interface Resources {
         "notAvailable": "Claim not available"
       },
       "providedBy": "Provided by {{credential}}"
+    },
+    "addcredential" : {
+      "homebuttonlabel" : "Add Document",
+      "choosecredentialtoadd" : {
+        "title" : "What would you like to add to the Wallet?"
+      }
     }
   }
 }
