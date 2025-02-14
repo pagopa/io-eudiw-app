@@ -27,7 +27,7 @@ type ObtainCredentialPreAuthResult = {
     ReturnType<typeof Credential.Issuance.startUserAuthorization>
   >['clientId'];
   issuerConf: Awaited<
-    ReturnType<typeof Credential.Issuance.evaluateIssuerTrust>
+    ReturnType<typeof Credential.Issuance.getIssuerConfig>
   >['issuerConf'];
   redirectUri: string;
   credentialType: string;

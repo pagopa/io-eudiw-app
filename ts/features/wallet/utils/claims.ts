@@ -1,5 +1,4 @@
 import * as z from 'zod';
-import {truncate} from 'lodash';
 import {ClaimDisplayFormat, ParsedCredential} from './types';
 
 import {getClaimsFullLocale} from './locale';
@@ -46,8 +45,3 @@ export const parseClaims = (
       return {label: attributeName, value: attribute.value, id: key};
     });
 };
-
-/**
- * Truncate long strings to avoid performance issues when rendering claims.
- */
-export const getSafeText = (text: string) => truncate(text, {length: 128});

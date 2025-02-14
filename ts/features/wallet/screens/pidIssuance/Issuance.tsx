@@ -41,8 +41,8 @@ const Issuance = () => {
 
   useEffect(() => {
     if (error.status === true) {
-      navigation.navigate('MAIN_WALLET', {
-        screen: 'FAILURE'
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PID_ISSUANCE_FAILURE'
       });
     }
   }, [error, navigation]);

@@ -18,7 +18,7 @@ import {useCallback} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {BottomSheetHeader} from '../components/BottomSheetHeader';
-import {NonEmptyArray} from '../utils/types';
+import {NonEmptyArray} from '../types/utils';
 import {useHardwareBackButtonToDismiss} from './useHardwareBackButton';
 
 const screenHeight = Dimensions.get('window').height;

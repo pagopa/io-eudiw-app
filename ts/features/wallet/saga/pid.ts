@@ -10,6 +10,7 @@ import Config from 'react-native-config';
 import {call, put, select, take, takeLatest} from 'typed-redux-saga';
 import uuid from 'react-native-uuid';
 import {generate} from '@pagopa/io-react-native-crypto';
+import {serializeError} from 'serialize-error';
 import {regenerateCryptoKey} from '../../../utils/crypto';
 import {DPOP_KEYTAG} from '../utils/crypto';
 import {selectAttestation} from '../store/attestation';
@@ -49,11 +50,7 @@ export function* watchPidSaga() {
  */
 function* obtainPid() {
   try {
-    const {
-      PID_PROVIDER_BASE_URL,
-      PID_REDIRECT_URI: redirectUri,
-      PID_IDP_HINT: idpHint
-    } = Config;
+    const {PID_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
 
     const walletInstanceAttestation = yield* select(selectAttestation);
 
@@ -73,7 +70,7 @@ function* obtainPid() {
 
     // Evaluate issuer trust
     const {issuerConf} = yield* call(
-      Credential.Issuance.evaluateIssuerTrust,
+      Credential.Issuance.getIssuerConfig,
       issuerUrl
     );
 
@@ -95,8 +92,7 @@ function* obtainPid() {
       Credential.Issuance.buildAuthorizationUrl,
       issuerRequestUri,
       clientId,
-      issuerConf,
-      idpHint
+      issuerConf
     );
 
     const supportsCustomTabs = yield* call(supportsInAppBrowser);
@@ -172,7 +168,7 @@ function* obtainPid() {
       })
     );
   } catch (error) {
-    yield* put(setPidIssuanceError({error: JSON.stringify(error)}));
+    yield* put(setPidIssuanceError({error: serializeError(error)}));
   }
 }
 
@@ -194,7 +190,7 @@ function* storePidWithIdentification(
   if (setIdentificationIdentified.match(resAction)) {
     yield* put(addCredential({credential: action.payload.credential}));
     yield* put(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
-    navigate('MAIN_WALLET', {screen: 'SUCCESS'});
+    navigate('MAIN_WALLET_NAV', {screen: 'PID_ISSUANCE_SUCCESS'});
   } else {
     return;
   }

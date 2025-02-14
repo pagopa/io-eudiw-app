@@ -1,15 +1,14 @@
 import React from 'react';
-import {View} from 'react-native';
-import {
-  IOStyles,
-  HeaderFirstLevel,
-  ButtonSolid
-} from '@pagopa/io-app-design-system';
+import {FlatList, Pressable, View} from 'react-native';
+import {IOStyles, HeaderFirstLevel} from '@pagopa/io-app-design-system';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {useAppSelector} from '../store';
 import {lifecycleIsOperationalSelector} from '../features/wallet/store/lifecycle';
 import {ActivationBanner} from '../features/wallet/components/ActivationBanner';
+import {credentialsSelector} from '../features/wallet/store/credentials';
+import {CredentialCard} from '../features/wallet/components/CredentialCard';
+import {IOScrollView} from '../components/IOScrollView';
 
 /**
  * Wallet home to be rendered as the first page in the tab navigator.
@@ -20,6 +19,7 @@ const WalletHome = () => {
   const {t} = useTranslation(['wallet', 'global']);
   const navigation = useNavigation();
   const isWalletOperational = useAppSelector(lifecycleIsOperationalSelector);
+  const credentials = useAppSelector(credentialsSelector);
 
   return (
     <>
@@ -29,12 +29,12 @@ const WalletHome = () => {
         firstAction={{
           icon: 'coggle',
           onPress: () =>
-            navigation.navigate('ROOT_TAB_NAV', {screen: 'MAIN_SETTINGS'}),
+            navigation.navigate('ROOT_MAIN_NAV', {screen: 'MAIN_SETTINGS'}),
           accessibilityLabel: t('global:settings.title')
         }}
       />
-      <View style={{...IOStyles.flex, ...IOStyles.horizontalContentPadding}}>
-        {isWalletOperational ? (
+      {isWalletOperational ? (
+        <View style={{...IOStyles.flex, ...IOStyles.horizontalContentPadding}}>
           <View style={{...IOStyles.flex, justifyContent: 'flex-start'}}>
             <ActivationBanner
               title={t('wallet:activationBanner.title')}
@@ -42,21 +42,41 @@ const WalletHome = () => {
               action={t('wallet:activationBanner.action')}
             />
           </View>
-        ) : (
-          <ButtonSolid
-            label={t('wallet:home.addCredential')}
-            accessibilityLabel={t('wallet:home.addCredential')}
-            onPress={() =>
-              navigation.navigate('MAIN_WALLET', {
-                screen: 'WALLET_CREDENTIAL_ISSUANCE_LIST'
-              })
+        </View>
+      ) : (
+        <IOScrollView
+          actions={{
+            type: 'SingleButton',
+            primary: {
+              label: t(
+                'wallet:credentialIssuance.addcredential.homebuttonlabel'
+              ),
+              icon: 'add',
+              onPress: () => {
+                navigation.navigate('MAIN_WALLET_NAV', {
+                  screen: 'CREDENTIAL_ISSUANCE_LIST'
+                });
+              },
+              iconPosition: 'end'
             }
-            icon="addSmall"
-            iconPosition="end"
-            fullWidth={true}
+          }}>
+          <FlatList
+            scrollEnabled={false}
+            data={credentials.credentials}
+            renderItem={({item}) => (
+              <Pressable
+                onPress={() =>
+                  navigation.navigate('MAIN_WALLET_NAV', {
+                    screen: 'PRESENTATION_CREDENTIAL_DETAILS',
+                    params: {credentialType: item.credentialType}
+                  })
+                }>
+                <CredentialCard credentialType={item.credentialType} />
+              </Pressable>
+            )}
           />
-        )}
-      </View>
+        </IOScrollView>
+      )}
     </>
   );
 };

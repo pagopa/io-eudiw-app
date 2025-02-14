@@ -6,10 +6,9 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import {useNavigation} from '@react-navigation/native';
-import {useTranslation} from 'react-i18next';
 import {StyleSheet, View} from 'react-native';
 import React, {useCallback} from 'react';
-import {useAppDispatch, useAppSelector} from '../../../../store';
+import {useAppSelector} from '../../../../store';
 import {selectCredentialIssuancePostAuthStatus} from '../../store/credentialIssuance';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import CredentialPreviewClaimsList from '../../components/CredentialPreviewClaimsList';
@@ -17,13 +16,11 @@ import CredentialPreviewClaimsList from '../../components/CredentialPreviewClaim
 export const CredentialPreview = () => {
   const credential = useAppSelector(selectCredentialIssuancePostAuthStatus);
   const navigation = useNavigation();
-  const dispatch = useAppDispatch();
-  const {t} = useTranslation(['global', 'wallet']);
 
   const navigateToErrorScreen = useCallback(
     () =>
-      navigation.navigate('MAIN_WALLET', {
-        screen: 'WALLET_CREDENTIAL_ISSUANCE_FAILURE'
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'CREDENTIAL_ISSUANCE_FAILURE'
       }),
     [navigation]
   );

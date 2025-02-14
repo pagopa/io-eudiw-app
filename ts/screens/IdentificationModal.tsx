@@ -41,6 +41,7 @@ import {
   preferencesReset,
   selectIsBiometricEnabled
 } from '../store/reducers/preferences';
+import {isAndroid} from '../utils/device';
 
 const onRequestCloseHandler = () => undefined;
 
@@ -60,8 +61,9 @@ const IdentificationModal = () => {
   const dispatch = useAppDispatch();
   const {status, isValidatingTask} = useAppSelector(selectIdentificationStatus);
   const blueColor = useAppBackgroundAccentColorName();
-  const {top: topInset} = useSafeAreaInsets();
+  const {top} = useSafeAreaInsets();
   const isBiometricEnabled = useAppSelector(selectIsBiometricEnabled);
+  const topInset = isAndroid ? StatusBar.currentHeight : top;
 
   const pictogramKey: IOPictograms = isValidatingTask ? 'passcode' : 'key';
 

@@ -11,6 +11,7 @@ import {
   credentialIssuanceStatusReducer,
   CredentialIssuanceStatusState
 } from './credentialIssuance';
+import {PresentationState, presentationReducer} from './presentation';
 
 export type WalletState = {
   lifecycle: LifecycleState;
@@ -19,6 +20,7 @@ export type WalletState = {
   pidIssuanceStatus: PidIssuanceStatusState;
   credentials: CredentialsState & PersistPartial;
   credentialIssuanceStatus: CredentialIssuanceStatusState;
+  presentation: PresentationState;
 };
 
 const walletReducer = combineReducers({
@@ -27,7 +29,8 @@ const walletReducer = combineReducers({
   attestation: attestationReducer,
   pidIssuanceStatus: pidIssuanceStatusReducer,
   credentials: credentialsReducer,
-  credentialIssuanceStatus: credentialIssuanceStatusReducer
+  credentialIssuanceStatus: credentialIssuanceStatusReducer,
+  presentation: presentationReducer
 });
 
 const itwPersistConfig: PersistConfig<WalletState> = {

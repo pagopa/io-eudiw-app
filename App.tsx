@@ -12,27 +12,27 @@ import {
 } from '@pagopa/io-app-design-system';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {persistor, store} from './ts/store';
-import {RootStackNavigator} from './ts/navigation/RootStacknavigator';
 import IdentificationModal from './ts/screens/IdentificationModal';
+import RootContainer from './ts/screens/RootContainer';
 
 function App(): React.JSX.Element {
   return (
     <GestureHandlerRootView style={IOStyles.flex}>
       <SafeAreaProvider>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <IODSExperimentalContextProvider isExperimentaEnabled={true}>
-              <IOThemeContextProvider theme={'light'}>
+        <IODSExperimentalContextProvider isExperimentaEnabled={true}>
+          <IOThemeContextProvider theme={'light'}>
+            <Provider store={store}>
+              <PersistGate loading={null} persistor={persistor}>
                 <ToastProvider>
                   <BottomSheetModalProvider>
-                    <RootStackNavigator />
+                    <RootContainer />
                     <IdentificationModal />
                   </BottomSheetModalProvider>
                 </ToastProvider>
-              </IOThemeContextProvider>
-            </IODSExperimentalContextProvider>
-          </PersistGate>
-        </Provider>
+              </PersistGate>
+            </Provider>
+          </IOThemeContextProvider>
+        </IODSExperimentalContextProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

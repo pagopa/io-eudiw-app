@@ -11,13 +11,13 @@ interface Resources {
     },
     "settings": {
       "title": "Settings",
-      "listHeaders": {
-        "test": {
-          "title": "Test",
-          "walletReset": "Reset wallet",
-          "onboardingReset": "Reset onboarding"
-        }
-      }
+      "reset": {
+        "title": "Reset App",
+        "walletReset": "Reset wallet",
+        "onboardingReset": "Reset onboarding"
+      },
+      "debug": "Enable debug mode",
+      "version": "Version"
     },
     "buttons": {
       "next": "Next",
@@ -31,19 +31,20 @@ interface Resources {
       "back": "Back",
       "cancel": "Cancel",
       "confirm": "Confirm",
-      "help": "Help"
+      "help": "Help",
+      "done": "Done"
     },
-    "errors": {
-      "generic": {
-        "title": "There's an issue with our systems",
-        "body": "Please try again in a few minutes."
-      }
+    "loading": {
+      "body": "Please wait a moment"
     },
     "accessibility": {
       "activityIndicator": {
         "label": "Loading",
         "hint": "Wait for the content load"
       }
+    },
+    "clipboard": {
+      "copyFeedback": "Copied to clipboard"
     },
     "identification": {
       "title": {
@@ -70,6 +71,17 @@ interface Resources {
         "title": "Biometric identification",
         "sensorDescription": "Login quickly"
       }
+    },
+    "errors": {
+      "generic": {
+        "title": "There's an issue with our systems",
+        "body": "Please try again in a few minutes."
+      }
+    },
+    "cancelOperation": {
+      "title": "Do you want to stop the operation?",
+      "confirm": "Yes, stop",
+      "cancel": "No, continue"
     }
   },
   "onboarding": {
@@ -158,7 +170,52 @@ interface Resources {
       }
     }
   },
+  "qrcodeScan": {
+    "error": "Unrecognized QR code",
+    "flash": "Flash",
+    "tabs": {
+      "scan": "Scan",
+      "upload": "Upload"
+    },
+    "upload": {
+      "image": "Upload an image",
+      "file": "Upload a file"
+    },
+    "permissions": {
+      "undefined": {
+        "title": "We need your permission to access the camera",
+        "label": "Allow access to the camera to scan QR codes",
+        "action": "Allow access"
+      },
+      "denied": {
+        "title": "You denied access to the camera",
+        "label": "To allow access to the camera, go to the settings of your device",
+        "action": "Open settings"
+      }
+    },
+    "imagePicker": {
+      "settingsAlert": {
+        "title": "It seems access to Photos has been denied",
+        "message": "We need access to your gallery in addition to upload QR codes",
+        "buttonText": {
+          "enable": "Enable permissions"
+        }
+      }
+    },
+    "multipleResultsAlert": {
+      "title": "Hai inquadrato più codici",
+      "body": "Inquadra un solo codice alla volta",
+      "action": "Riprova"
+    }
+  },
   "wallet": {
+    "credentials": {
+      "names": {
+        "mdl": "Driving License",
+        "pid": "Digital Identity",
+        "unknown": "Unknown"
+      }
+    },
     "activationBanner": {
       "title": "Your digital documents always with you!",
       "description": "Activate the Wallet to keep your digital identity and personal documents on your device.",
@@ -181,19 +238,58 @@ interface Resources {
           "add": "Add your first document",
           "later": "Later"
         }
+      },
+      "failure": {
+        "title": "An unexpected error occurred",
+        "subtitle": "Your request to the issuing entity was not successful.",
+        "button": "I understand"
+      }
+    },
+    "presentation": {
+      "credentialNotFound": {
+        "title": "Aggiungi il documento al Portafoglio",
+        "subtitle": "Per usare i documenti su IO, prima aggiungili al Portafoglio. È facile e veloce."
+      },
+      "credentialDetails": {
+        "footer": {
+          "removal": {
+            "remove": "Remove from wallet",
+            "dialog": {
+              "title": "Do you want to remove the document from the wallet?",
+              "content": "If you change your mind, you can add it again later.",
+              "confirm": "Yes, remove"
+            }
+          }
+        }
+      },
+      "loading": {
+        "title": "We are doing some security checks",
+        "subtitle": "Wait few seconds"
+      },
+      "trust": {
+        "title": "Allow your data to be read",
+        "subtitle": "They will be shared to access to services.",
+        "requiredClaims": "Required data",
+        "optionalClaims": "Optional data",
+        "disclaimer": {
+          "0": "Your data is safe and will be processed only for the purposes described in the Privacy Policy.",
+          "1": "The data will be shared only for the time necessary to issue the credential."
+        }
+      },
+      "success": {
+        "title": "Done!",
+        "subtitle": "Continue on the partner site"
+      },
+      "successWithRedirect": {
+        "title": "Done!",
+        "subtitle": "You will be redirected to the partner site"
       }
     },
     "claims": {
       "generic": {
         "notAvailable": "Claim not available"
-      }
-    },
-    "credentials": {
-      "names": {
-        "pid": "National ID",
-        "mdl": "Driver's License",
-        "unknown": "Unknwon credential"
-      }
+      },
+      "providedBy": "Provided by {{credential}}"
     },
     "home": {
       "addCredential": "Add document",
@@ -202,6 +298,18 @@ interface Resources {
       }
     },
     "credentialIssuance": {
+      "badges": {
+        "saved": "Saved"
+      },
+      "addcredential": {
+        "homebuttonlabel": "Add Document",
+        "choosecredentialtoadd": {
+          "title": "What would you like to add to the Wallet?",
+          "headers": {
+            "documents": "Documents"
+          }
+        }
+      },
       "list": {
         "title": "What would you like to add to the Wallet?",
         "header": "Documents"

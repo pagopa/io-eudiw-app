@@ -10,7 +10,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {IOScrollViewWithLargeHeader} from '../../../../components/IOScrollViewWithLargeHeader';
 import {wellKnownCredential} from '../../utils/credentials';
-import {OnboardingModuleCredential} from '../../components/OnboardingModuleCredential';
+import {OnboardingModuleCredential} from '../../components/credential/OnboardingModuleCredential';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {selectCredentials} from '../../store/credentials';
 import {
@@ -42,16 +42,16 @@ const CredentialsList = () => {
 
   useEffect(() => {
     if (credentialIssuanceStatus.success.status) {
-      navigation.navigate('MAIN_WALLET', {
-        screen: 'WALLET_CREDENTIAL_ISSUANCE_TRUST'
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'CREDENTIAL_ISSUANCE_TRUST'
       });
     }
   }, [credentialIssuanceStatus.success, navigation]);
 
   useEffect(() => {
     if (credentialIssuanceStatus.error.status) {
-      navigation.navigate('MAIN_WALLET', {
-        screen: 'WALLET_CREDENTIAL_ISSUANCE_FAILURE'
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'CREDENTIAL_ISSUANCE_FAILURE'
       });
     }
   }, [credentialIssuanceStatus.error, navigation]);

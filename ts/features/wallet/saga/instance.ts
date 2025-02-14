@@ -1,6 +1,7 @@
 import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
 import Config from 'react-native-config';
 import {Errors, WalletInstance} from '@pagopa/io-react-native-wallet';
+import {serializeError} from 'serialize-error';
 import {
   generateIntegrityHardwareKeyTag,
   getIntegrityContext
@@ -68,7 +69,7 @@ export function* handleCreateInstance() {
     // Reset the credential state before obtaining a new PID
     yield* put(resetCredentials());
   } catch (err: unknown) {
-    yield* put(setInstanceCreationError({error: JSON.stringify(err)}));
+    yield* put(setInstanceCreationError({error: serializeError(err)}));
   }
 }
 

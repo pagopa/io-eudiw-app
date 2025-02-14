@@ -3,8 +3,9 @@ import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {PersistConfig, persistReducer} from 'redux-persist';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
 import {StoredCredential} from '../utils/types';
-import {preferencesReset} from '../../../store/reducers/preferences';
 import {RootState} from '../../../store/types';
+import {preferencesReset} from '../../../store/reducers/preferences';
+import {wellKnownCredential} from '../utils/credentials';
 
 /* State type definition for the credentials slice.
  * This is stored as an array to avoid overhead due to map not being serializable,
@@ -54,8 +55,17 @@ const credentialsSlice = createSlice({
       state,
       action: PayloadAction<{credentialType: string}>
     ) => {
+      // If the credential is the PID, reset the whole state
       const {credentialType} = action.payload;
-      state.credentials.filter(c => c.credentialType !== credentialType);
+      if (credentialType === wellKnownCredential.PID) {
+        return initialState;
+      } else {
+        return {
+          credentials: state.credentials.filter(
+            c => c.credentialType !== credentialType
+          )
+        };
+      }
     },
     resetCredentials: () => initialState
   },
@@ -81,6 +91,9 @@ export const credentialsReducer = persistReducer(
   credentialsPersistor,
   credentialsSlice.reducer
 );
+
+export const credentialsSelector = (state: RootState) =>
+  state.wallet.credentials;
 
 /**
  * Exports the actions for the credentials slice.

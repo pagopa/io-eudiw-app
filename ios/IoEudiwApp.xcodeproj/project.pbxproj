@@ -8,13 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* IoEudiwAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* IoEudiwAppTests.m */; };
+		093D4F8145EC4D669BC77D8C /* TitilliumSansPro-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 240978AC19094893BDBC8EC8 /* TitilliumSansPro-ThinItalic.otf */; };
 		0A1F5DA3C9F440279EA2FE4A /* Titillio-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 430BA7F821FE420699CAB8E2 /* Titillio-BlackItalic.otf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-IoEudiwApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-IoEudiwApp.a */; };
 		13588AE3202F467B879F2EF5 /* Titillio-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = FA26CAB297834E639081D91E /* Titillio-Bold.otf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1784E40564CA4751942BACC2 /* TitilliumSansPro-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 79319A14432F41BEAB3074FD /* TitilliumSansPro-BlackItalic.otf */; };
+		18FBBD1F9AF24DD49E67464E /* TitilliumSansPro-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = F339A846B15749F98D8E5C6F /* TitilliumSansPro-LightItalic.otf */; };
+		1B20A905301D461B8FE65E1A /* TitilliumSansPro-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1708B67025CA41E386C812EF /* TitilliumSansPro-SemiboldItalic.otf */; };
 		204F2B436D9D498091C11828 /* Titillio-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7165A8CE4EED4B86A518B270 /* Titillio-SemiboldItalic.otf */; };
+		22D818C37E8D46878C9BBDF0 /* TitilliumSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 21A9D63B4D4A4553B1DD8FCD /* TitilliumSansPro-Semibold.otf */; };
 		23CEE3804A144229A2C18EAA /* Titillio-Extrablack.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8FA2FDA4632E422194C7E1A1 /* Titillio-Extrablack.otf */; };
 		2DE38A481C154BE4B63CF410 /* Titillio-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = B8D98B4A78B94C9A949B29E8 /* Titillio-Light.otf */; };
 		3558A75016C5A30539877B84 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = DE963A9F2B35E843C3698C24 /* PrivacyInfo.xcprivacy */; };
@@ -22,14 +27,22 @@
 		3A51DC078DB04BFD9894F0BE /* Titillio-ExtraboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = BE0DAA9213CD4F34B64C4991 /* Titillio-ExtraboldItalic.otf */; };
 		460A1C5BCC934D08BD15F4A9 /* Titillio-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 15A5A725CA62404FBCEB9B57 /* Titillio-Black.otf */; };
 		4A148B935CED442D9C119D28 /* Titillio-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6DA1A561244B4428BE0E8131 /* Titillio-Thin.otf */; };
+		522AF7EC8E0F400FA1D2BB50 /* TitilliumSansPro-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5B9FE5965E924AA899806CBF /* TitilliumSansPro-Black.otf */; };
+		696712BA3C4E48378FC69BCC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC4CF7301749440CAE7B3A98 /* Colors.xcassets */; };
 		6CDE7782BAF447ABA15525BB /* Titillio-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5A9395E16369404D96ED52C7 /* Titillio-Semibold.otf */; };
+		72405161325446FC9D3D44AE /* TitilliumSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = AF0B1A517E2A471D83607F87 /* TitilliumSansPro-Light.otf */; };
 		757A95AB1C66444BA3BC05FF /* Titillio-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0612F5A308514850BC36EC98 /* Titillio-RegularItalic.otf */; };
 		7699B88040F8A987B510C191 /* libPods-IoEudiwApp-IoEudiwAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-IoEudiwApp-IoEudiwAppTests.a */; };
 		77A20BE28C7A49C0B0120CE2 /* Titillio-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 047EDABED48D4D599E0D56E2 /* Titillio-LightItalic.otf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		99CD6813D879408C89F91B84 /* TitilliumSansPro-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2597B0BD049D4FD5A02C25A6 /* TitilliumSansPro-Italic.otf */; };
 		A0545EB5A3A6474BBECA40BC /* Titillio-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = D42FA4F07E19412084BD2623 /* Titillio-ThinItalic.otf */; };
+		A51A1D441BE24D3386947144 /* TitilliumSansPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6DE0D075230E49CEBCD366B0 /* TitilliumSansPro-Regular.otf */; };
 		A54F895845624BCEAF917B6D /* DMMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D5302EAAEE84FA09944B103 /* DMMono-Medium.ttf */; };
 		A769003E9A3F4E348A3861CB /* Titillio-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0FA23E12FCD5425296A1777D /* Titillio-BoldItalic.otf */; };
+		B66E98041841459DACF629ED /* TitilliumSansPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 47707031C2D14E2391795E37 /* TitilliumSansPro-Bold.otf */; };
+		C5804A29C99345E5B5D7321C /* TitilliumSansPro-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4F04C273CB2E4408A0CAB0BC /* TitilliumSansPro-BoldItalic.otf */; };
+		C6BBA361F0C94144B33F7BB0 /* TitilliumSansPro-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6E482761302D4430BAAFB6CB /* TitilliumSansPro-Thin.otf */; };
 		EA6F74176EAD40CD98825A12 /* Titillio-Extrabold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0A43755FBD954A6CB07F91DC /* Titillio-Extrabold.otf */; };
 		F6959AA72D00A15100D2A569 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6959AA62D00A15100D2A569 /* BootSplash.storyboard */; };
 		FBB43AC230BE40C48E7506A4 /* Titillio-ExtrablackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 081C72F902E4450B96CC25FC /* Titillio-ExtrablackItalic.otf */; };
@@ -62,25 +75,38 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = IoEudiwApp/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = IoEudiwApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		15A5A725CA62404FBCEB9B57 /* Titillio-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Black.otf"; path = "../assets/fonts/Titillio/Titillio-Black.otf"; sourceTree = "<group>"; };
+		1708B67025CA41E386C812EF /* TitilliumSansPro-SemiboldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-SemiboldItalic.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-SemiboldItalic.otf"; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-IoEudiwApp-IoEudiwAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-IoEudiwApp-IoEudiwAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		21A9D63B4D4A4553B1DD8FCD /* TitilliumSansPro-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Semibold.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-Semibold.otf"; sourceTree = "<group>"; };
+		240978AC19094893BDBC8EC8 /* TitilliumSansPro-ThinItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-ThinItalic.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-ThinItalic.otf"; sourceTree = "<group>"; };
+		2597B0BD049D4FD5A02C25A6 /* TitilliumSansPro-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Italic.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-Italic.otf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-IoEudiwApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IoEudiwApp.debug.xcconfig"; path = "Target Support Files/Pods-IoEudiwApp/Pods-IoEudiwApp.debug.xcconfig"; sourceTree = "<group>"; };
 		430BA7F821FE420699CAB8E2 /* Titillio-BlackItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-BlackItalic.otf"; path = "../assets/fonts/Titillio/Titillio-BlackItalic.otf"; sourceTree = "<group>"; };
+		47707031C2D14E2391795E37 /* TitilliumSansPro-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Bold.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-Bold.otf"; sourceTree = "<group>"; };
+		4F04C273CB2E4408A0CAB0BC /* TitilliumSansPro-BoldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-BoldItalic.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-BoldItalic.otf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-IoEudiwApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IoEudiwApp.release.xcconfig"; path = "Target Support Files/Pods-IoEudiwApp/Pods-IoEudiwApp.release.xcconfig"; sourceTree = "<group>"; };
 		5A9395E16369404D96ED52C7 /* Titillio-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Semibold.otf"; path = "../assets/fonts/Titillio/Titillio-Semibold.otf"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-IoEudiwApp-IoEudiwAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IoEudiwApp-IoEudiwAppTests.debug.xcconfig"; path = "Target Support Files/Pods-IoEudiwApp-IoEudiwAppTests/Pods-IoEudiwApp-IoEudiwAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5B9FE5965E924AA899806CBF /* TitilliumSansPro-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Black.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-Black.otf"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-IoEudiwApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-IoEudiwApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DA1A561244B4428BE0E8131 /* Titillio-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Thin.otf"; path = "../assets/fonts/Titillio/Titillio-Thin.otf"; sourceTree = "<group>"; };
+		6DE0D075230E49CEBCD366B0 /* TitilliumSansPro-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Regular.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-Regular.otf"; sourceTree = "<group>"; };
+		6E482761302D4430BAAFB6CB /* TitilliumSansPro-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Thin.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-Thin.otf"; sourceTree = "<group>"; };
 		7165A8CE4EED4B86A518B270 /* Titillio-SemiboldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-SemiboldItalic.otf"; path = "../assets/fonts/Titillio/Titillio-SemiboldItalic.otf"; sourceTree = "<group>"; };
+		79319A14432F41BEAB3074FD /* TitilliumSansPro-BlackItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-BlackItalic.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-BlackItalic.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = IoEudiwApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-IoEudiwApp-IoEudiwAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IoEudiwApp-IoEudiwAppTests.release.xcconfig"; path = "Target Support Files/Pods-IoEudiwApp-IoEudiwAppTests/Pods-IoEudiwApp-IoEudiwAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		8D5302EAAEE84FA09944B103 /* DMMono-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DMMono-Medium.ttf"; path = "../assets/fonts/DMMono/DMMono-Medium.ttf"; sourceTree = "<group>"; };
 		8FA2FDA4632E422194C7E1A1 /* Titillio-Extrablack.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Extrablack.otf"; path = "../assets/fonts/Titillio/Titillio-Extrablack.otf"; sourceTree = "<group>"; };
+		AF0B1A517E2A471D83607F87 /* TitilliumSansPro-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Light.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-Light.otf"; sourceTree = "<group>"; };
 		B8D98B4A78B94C9A949B29E8 /* Titillio-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Light.otf"; path = "../assets/fonts/Titillio/Titillio-Light.otf"; sourceTree = "<group>"; };
 		BE0DAA9213CD4F34B64C4991 /* Titillio-ExtraboldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-ExtraboldItalic.otf"; path = "../assets/fonts/Titillio/Titillio-ExtraboldItalic.otf"; sourceTree = "<group>"; };
 		D42FA4F07E19412084BD2623 /* Titillio-ThinItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-ThinItalic.otf"; path = "../assets/fonts/Titillio/Titillio-ThinItalic.otf"; sourceTree = "<group>"; };
+		DC4CF7301749440CAE7B3A98 /* Colors.xcassets */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = Colors.xcassets; path = IoEudiwApp/Colors.xcassets; sourceTree = "<group>"; };
 		DE963A9F2B35E843C3698C24 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = IoEudiwApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		EB1BAF542E6B45BF9B46143A /* Titillio-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Regular.otf"; path = "../assets/fonts/Titillio/Titillio-Regular.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F339A846B15749F98D8E5C6F /* TitilliumSansPro-LightItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-LightItalic.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-LightItalic.otf"; sourceTree = "<group>"; };
 		F6959AA62D00A15100D2A569 /* BootSplash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = IoEudiwApp/BootSplash.storyboard; sourceTree = "<group>"; };
 		FA26CAB297834E639081D91E /* Titillio-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Bold.otf"; path = "../assets/fonts/Titillio/Titillio-Bold.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -142,6 +168,18 @@
 				6DA1A561244B4428BE0E8131 /* Titillio-Thin.otf */,
 				D42FA4F07E19412084BD2623 /* Titillio-ThinItalic.otf */,
 				8D5302EAAEE84FA09944B103 /* DMMono-Medium.ttf */,
+				5B9FE5965E924AA899806CBF /* TitilliumSansPro-Black.otf */,
+				79319A14432F41BEAB3074FD /* TitilliumSansPro-BlackItalic.otf */,
+				47707031C2D14E2391795E37 /* TitilliumSansPro-Bold.otf */,
+				4F04C273CB2E4408A0CAB0BC /* TitilliumSansPro-BoldItalic.otf */,
+				2597B0BD049D4FD5A02C25A6 /* TitilliumSansPro-Italic.otf */,
+				AF0B1A517E2A471D83607F87 /* TitilliumSansPro-Light.otf */,
+				F339A846B15749F98D8E5C6F /* TitilliumSansPro-LightItalic.otf */,
+				6DE0D075230E49CEBCD366B0 /* TitilliumSansPro-Regular.otf */,
+				21A9D63B4D4A4553B1DD8FCD /* TitilliumSansPro-Semibold.otf */,
+				1708B67025CA41E386C812EF /* TitilliumSansPro-SemiboldItalic.otf */,
+				6E482761302D4430BAAFB6CB /* TitilliumSansPro-Thin.otf */,
+				240978AC19094893BDBC8EC8 /* TitilliumSansPro-ThinItalic.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -158,6 +196,7 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				DE963A9F2B35E843C3698C24 /* PrivacyInfo.xcprivacy */,
+				DC4CF7301749440CAE7B3A98 /* Colors.xcassets */,
 			);
 			name = IoEudiwApp;
 			sourceTree = "<group>";
@@ -329,6 +368,19 @@
 				4A148B935CED442D9C119D28 /* Titillio-Thin.otf in Resources */,
 				A0545EB5A3A6474BBECA40BC /* Titillio-ThinItalic.otf in Resources */,
 				A54F895845624BCEAF917B6D /* DMMono-Medium.ttf in Resources */,
+				522AF7EC8E0F400FA1D2BB50 /* TitilliumSansPro-Black.otf in Resources */,
+				1784E40564CA4751942BACC2 /* TitilliumSansPro-BlackItalic.otf in Resources */,
+				B66E98041841459DACF629ED /* TitilliumSansPro-Bold.otf in Resources */,
+				C5804A29C99345E5B5D7321C /* TitilliumSansPro-BoldItalic.otf in Resources */,
+				99CD6813D879408C89F91B84 /* TitilliumSansPro-Italic.otf in Resources */,
+				72405161325446FC9D3D44AE /* TitilliumSansPro-Light.otf in Resources */,
+				18FBBD1F9AF24DD49E67464E /* TitilliumSansPro-LightItalic.otf in Resources */,
+				A51A1D441BE24D3386947144 /* TitilliumSansPro-Regular.otf in Resources */,
+				22D818C37E8D46878C9BBDF0 /* TitilliumSansPro-Semibold.otf in Resources */,
+				1B20A905301D461B8FE65E1A /* TitilliumSansPro-SemiboldItalic.otf in Resources */,
+				C6BBA361F0C94144B33F7BB0 /* TitilliumSansPro-Thin.otf in Resources */,
+				093D4F8145EC4D669BC77D8C /* TitilliumSansPro-ThinItalic.otf in Resources */,
+				696712BA3C4E48378FC69BCC /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,12 +551,15 @@
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-IoEudiwApp-IoEudiwAppTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = M2X5YQ4BJ7;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = IoEudiwAppTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -517,6 +572,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development it.pagopa.app.io.poc.eudiw";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore it.pagopa.app.io.poc.eudiw";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IoEudiwApp.app/IoEudiwApp";
 			};
 			name = Debug;
@@ -526,9 +583,12 @@
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-IoEudiwApp-IoEudiwAppTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = M2X5YQ4BJ7;
 				INFOPLIST_FILE = IoEudiwAppTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -541,6 +601,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore it.pagopa.app.io.poc.eudiw";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore it.pagopa.app.io.poc.eudiw";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IoEudiwApp.app/IoEudiwApp";
 			};
 			name = Release;
@@ -551,9 +613,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0;
+				DEVELOPMENT_TEAM = M2X5YQ4BJ7;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = IoEudiwApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -566,6 +632,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
 				PRODUCT_NAME = IoEudiwApp;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -578,8 +645,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 0;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = M2X5YQ4BJ7;
 				INFOPLIST_FILE = IoEudiwApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -592,6 +664,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
 				PRODUCT_NAME = IoEudiwApp;
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore it.pagopa.app.io.poc.eudiw";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore it.pagopa.app.io.poc.eudiw";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

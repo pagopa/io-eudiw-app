@@ -11,6 +11,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 import {Carousel} from '../../../components/Carousel';
 import {LandingCardComponent} from '../../../components/LandingCardComponent';
+import {useAppBackgroundAccentColorName} from '../../../hooks/theme';
+import FocusAwareStatusBar from '../../../components/FocusAwareStatusBar';
 
 const TEXT_COLOR = 'white';
 
@@ -25,9 +27,10 @@ export const OnboardingCarousel = () => {
   const [step, setStep] = React.useState(0);
   const windowDimensions = useWindowDimensions();
   const {t} = useTranslation(['global', 'onboarding']);
+  const blueColor = useAppBackgroundAccentColorName();
 
   const skipCarousel = useCallback(() => {
-    navigation.navigate('ROOT_ONBOARDING', {screen: 'ONBOARDING_START'});
+    navigation.navigate('ROOT_ONBOARDING_NAV', {screen: 'ONBOARDING_START'});
   }, [navigation]);
 
   const nextStep = useCallback(() => {
@@ -82,39 +85,45 @@ export const OnboardingCarousel = () => {
     [t]
   );
   return (
-    <SafeAreaView style={[IOStyles.flex, styles.wrapper]}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-          padding: IOStyles.horizontalContentPadding.paddingHorizontal
-        }}>
-        <ButtonLink
-          testID="skip-button-onboarding-wallet"
-          accessibilityLabel="features.itWallet.onboarding.skip"
-          color={'contrast'}
-          label={t('global:buttons.skip')}
-          onPress={skipCarousel}
+    <>
+      <FocusAwareStatusBar
+        backgroundColor={blueColor}
+        barStyle={'light-content'}
+      />
+      <SafeAreaView style={[IOStyles.flex, styles.wrapper]}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            padding: IOStyles.horizontalContentPadding.paddingHorizontal
+          }}>
+          <ButtonLink
+            testID="skip-button-onboarding-wallet"
+            accessibilityLabel="features.itWallet.onboarding.skip"
+            color={'contrast'}
+            label={t('global:buttons.skip')}
+            onPress={skipCarousel}
+          />
+        </View>
+        <Carousel
+          carouselCards={carouselCards}
+          dotColor={IOColors.white}
+          scrollViewRef={carouselRef}
+          setStep={setStep}
         />
-      </View>
-      <Carousel
-        carouselCards={carouselCards}
-        dotColor={IOColors.white}
-        scrollViewRef={carouselRef}
-        setStep={setStep}
-      />
-      <FooterActions
-        actions={{
-          primary: {
-            label: t('global:buttons.next'),
-            onPress: nextStep,
-            color: 'contrast'
-          },
-          type: 'SingleButton'
-        }}
-        transparent
-      />
-    </SafeAreaView>
+        <FooterActions
+          actions={{
+            primary: {
+              label: t('global:buttons.next'),
+              onPress: nextStep,
+              color: 'contrast'
+            },
+            type: 'SingleButton'
+          }}
+          transparent
+        />
+      </SafeAreaView>
+    </>
   );
 };
 

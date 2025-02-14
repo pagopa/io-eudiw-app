@@ -1,0 +1,8 @@
+app_identifier("it.pagopa.app.io.poc.eudiw") # The bundle identifier of your app
+# apple_id("mario.perrotta@pagopa.it") # Your Apple Developer Portal username
+
+# itc_team_id("121080668") # App Store Connect Team ID
+team_id("M2X5YQ4BJ7") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile

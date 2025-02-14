@@ -1,15 +1,25 @@
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Failure from '../screens/pidIssuance/Failure';
+import PidIssuanceFailure from '../screens/pidIssuance/PidIssuanceFailure';
 import WalletInstanceCreation from '../screens/pidIssuance/WalletInstanceCreation';
-import Issuance from '../screens/pidIssuance/Issuance';
-import Success from '../screens/pidIssuance/Success';
-import {lifecycleIsValidSelector} from '../store/lifecycle';
-import {useAppSelector} from '../../../store';
-import {CredentialTrust} from '../screens/credentialIssuance/CredentialTrust';
+import PidIssuancRequest from '../screens/pidIssuance/PidIssuanceRequest';
+import PidIssuanceSuccess from '../screens/pidIssuance/PidIssuanceSuccess';
+import {
+  PresentationCredentialDetailNavigationParams,
+  PresentationCredentialDetails
+} from '../screens/presentation/PresentationCredentialDetails';
+import PresentationPreDefinition, {
+  PresentationPreDefinitionParams
+} from '../screens/presentation/PresentationPreDefinition';
+import PresentationFailure from '../screens/presentation/PresentationFailure';
+import PresentationPostDefinition, {
+  PresentationPostDefinitionParams
+} from '../screens/presentation/PresentationPostDefinition';
+import PresentationSuccess from '../screens/presentation/PresentationSuccess';
+import CredentialTrust from '../screens/credentialIssuance/CredentialTrust';
 import {CredentialPreview} from '../screens/credentialIssuance/IssuancePreview';
-import CredentialsList from '../screens/credentialIssuance/CredentialsList';
 import CredentialFailure from '../screens/credentialIssuance/CredentialFailure';
+import CredentialsList from '../screens/credentialIssuance/CredentialsList';
 import WALLET_ROUTES from './routes';
 
 /**
@@ -17,10 +27,22 @@ import WALLET_ROUTES from './routes';
  * New screens should be added here along with their parameters.
  */
 export type WalletNavigatorParamsList = {
+  // Pid issuance
   [WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION]: undefined;
-  [WALLET_ROUTES.PID_ISSUANCE.ISSUANCE]: undefined;
+  [WALLET_ROUTES.PID_ISSUANCE.REQUEST]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.SUCCESS]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.FAILURE]: undefined;
+
+  // Credential presentation
+  [WALLET_ROUTES.PRESENTATION
+    .CREDENTIAL_DETAILS]: PresentationCredentialDetailNavigationParams;
+  [WALLET_ROUTES.PRESENTATION.PRE_DEFINITION]: PresentationPreDefinitionParams;
+  [WALLET_ROUTES.PRESENTATION.FAILURE]: undefined;
+  [WALLET_ROUTES.PRESENTATION
+    .POST_DEFINITION]: PresentationPostDefinitionParams;
+  [WALLET_ROUTES.PRESENTATION.SUCCESS]: undefined;
+
+  // Credential Issuance
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST]: undefined;
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST]: undefined;
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.PREVIEW]: undefined;
@@ -33,59 +55,70 @@ const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();
  * The wallted related stack which is used to navigate between wallet related screens.
  * It includes the pid issuance flow.
  */
-const WalletNavigator = () => {
-  const isWalletValid = useAppSelector(lifecycleIsValidSelector);
+const WalletNavigator = () => (
+  <Stack.Navigator
+    initialRouteName={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
+    screenOptions={{headerShown: false}}>
+    <Stack.Group>
+      <Stack.Screen
+        name={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
+        component={WalletInstanceCreation}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PID_ISSUANCE.FAILURE}
+        component={PidIssuanceFailure}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PID_ISSUANCE.REQUEST}
+        component={PidIssuancRequest}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PID_ISSUANCE.SUCCESS}
+        component={PidIssuanceSuccess}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_DETAILS}
+        component={PresentationCredentialDetails}
+      />
+    </Stack.Group>
+    <Stack.Group>
+      <Stack.Screen
+        name={WALLET_ROUTES.PRESENTATION.PRE_DEFINITION}
+        component={PresentationPreDefinition}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PRESENTATION.FAILURE}
+        component={PresentationFailure}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PRESENTATION.POST_DEFINITION}
+        component={PresentationPostDefinition}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PRESENTATION.SUCCESS}
+        component={PresentationSuccess}
+      />
+    </Stack.Group>
+    <Stack.Group>
+      <Stack.Screen
+        name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST}
+        component={CredentialsList}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST}
+        component={CredentialTrust}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.PREVIEW}
+        component={CredentialPreview}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE}
+        component={CredentialFailure}
+        options={{gestureEnabled: false}}
+      />
+    </Stack.Group>
+  </Stack.Navigator>
+);
 
-  return (
-    <Stack.Navigator
-      initialRouteName={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
-      screenOptions={{headerShown: false}}>
-      <Stack.Group>
-        <Stack.Screen
-          name={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
-          component={WalletInstanceCreation}
-        />
-        <Stack.Screen
-          name={WALLET_ROUTES.PID_ISSUANCE.FAILURE}
-          component={Failure}
-          options={{gestureEnabled: false}}
-        />
-        <Stack.Screen
-          name={WALLET_ROUTES.PID_ISSUANCE.ISSUANCE}
-          component={Issuance}
-        />
-        <Stack.Screen
-          name={WALLET_ROUTES.PID_ISSUANCE.SUCCESS}
-          component={Success}
-        />
-      </Stack.Group>
-      {
-        /**
-         * Screen which should be mounted only if the wallet is valid.
-         */
-        isWalletValid && (
-          <Stack.Group>
-            <Stack.Screen
-              name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST}
-              component={CredentialsList}
-            />
-            <Stack.Screen
-              name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST}
-              component={CredentialTrust}
-            />
-            <Stack.Screen
-              name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.PREVIEW}
-              component={CredentialPreview}
-            />
-            <Stack.Screen
-              name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE}
-              component={CredentialFailure}
-              options={{gestureEnabled: false}}
-            />
-          </Stack.Group>
-        )
-      }
-    </Stack.Navigator>
-  );
-};
 export default WalletNavigator;

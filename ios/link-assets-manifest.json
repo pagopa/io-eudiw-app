@@ -68,6 +68,54 @@
     {
       "path": "assets/fonts/Titillio/Titillio-ThinItalic.otf",
       "sha1": "9257e7b33a4e2b3cbba6c6a46701b886b9520f3c"
+    },
+    {
+      "path": "assets/fonts/TitilliumSansPro/TitilliumSansPro-Black.otf",
+      "sha1": "becf8bd5053f5529785c9d1d975f2d6f54446d47"
+    },
+    {
+      "path": "assets/fonts/TitilliumSansPro/TitilliumSansPro-BlackItalic.otf",
+      "sha1": "629d0a177a09ff5a0407a1933e1dc7da2596e932"
+    },
+    {
+      "path": "assets/fonts/TitilliumSansPro/TitilliumSansPro-Bold.otf",
+      "sha1": "5348d5fdb96da25b0b444b6cf433100e17b2c944"
+    },
+    {
+      "path": "assets/fonts/TitilliumSansPro/TitilliumSansPro-BoldItalic.otf",
+      "sha1": "170e2ddfb7c9238da7149ebc2c158f773dfb806c"
+    },
+    {
+      "path": "assets/fonts/TitilliumSansPro/TitilliumSansPro-Italic.otf",
+      "sha1": "3a483a824e237fac9612a74a5bb2753cc2e27ad3"
+    },
+    {
+      "path": "assets/fonts/TitilliumSansPro/TitilliumSansPro-Light.otf",
+      "sha1": "096f9b521b0fc0e7ebe6c60890fbfe312e7e4b01"
+    },
+    {
+      "path": "assets/fonts/TitilliumSansPro/TitilliumSansPro-LightItalic.otf",
+      "sha1": "cb79fca7e696cc66989aa4e0fda29e36e78cf630"
+    },
+    {
+      "path": "assets/fonts/TitilliumSansPro/TitilliumSansPro-Regular.otf",
+      "sha1": "0a8be559a9a9d8ce47eb6ca3de9db16f42a00580"
+    },
+    {
+      "path": "assets/fonts/TitilliumSansPro/TitilliumSansPro-Semibold.otf",
+      "sha1": "fa6cff8c0046996bc9fb124abf5799408eb3b369"
+    },
+    {
+      "path": "assets/fonts/TitilliumSansPro/TitilliumSansPro-SemiboldItalic.otf",
+      "sha1": "f7af68d514449c94b2d2f6cd249e56c9d74f5cd0"
+    },
+    {
+      "path": "assets/fonts/TitilliumSansPro/TitilliumSansPro-Thin.otf",
+      "sha1": "dd3f889e6ca51de7e2006418b0125c02421fe574"
+    },
+    {
+      "path": "assets/fonts/TitilliumSansPro/TitilliumSansPro-ThinItalic.otf",
+      "sha1": "6bb6bf0c5d7a7f50606cc276cc4ef1787f52a928"
     }
   ]
 }

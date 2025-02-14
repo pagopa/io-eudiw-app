@@ -22,11 +22,7 @@ import {
   wellKnownCredential
 } from '../../utils/credentials';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
-import {parseClaims} from '../../utils/claims';
 import Markdown from '../../../../components/markdown';
-import RequestedClaimsList, {
-  RequiredClaim
-} from '../../components/RequestedClaimsList';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus,
@@ -43,8 +39,8 @@ const CredentialTrust = () => {
   const navigation = useNavigation();
   const navigateToErrorScreen = useCallback(
     () =>
-      navigation.navigate('MAIN_WALLET', {
-        screen: 'WALLET_CREDENTIAL_ISSUANCE_FAILURE'
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'CREDENTIAL_ISSUANCE_FAILURE'
       }),
     [navigation]
   );
@@ -57,8 +53,8 @@ const CredentialTrust = () => {
 
   useEffect(() => {
     if (success.status) {
-      navigation.navigate('MAIN_WALLET', {
-        screen: 'WALLET_CREDENTIAL_ISSUANCE_PREVIEW'
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'CREDENTIAL_ISSUANCE_PREVIEW'
       });
     }
   }, [navigation, success.status]);
@@ -72,17 +68,17 @@ const CredentialTrust = () => {
   if (!pid) {
     // This should never happen, however we need to handle because pid might be undefined
     navigateToErrorScreen();
-    return;
+    return null;
   }
 
-  const claims = parseClaims(pid.parsedCredential);
-  const requiredClaims = claims.map(
-    claim =>
-      ({
-        claim,
-        source: getCredentialNameByType(pid.credentialType)
-      } as RequiredClaim)
-  );
+  // const claims = parseClaims(pid.parsedCredential);
+  // const requiredClaims = claims.map(
+  //   claim =>
+  //     ({
+  //       claim,
+  //       source: getCredentialNameByType(pid.credentialType)
+  //     } as RequiredClaim[])
+  // );
 
   return (
     <ForceScrollDownView>
@@ -118,7 +114,12 @@ const CredentialTrust = () => {
           iconName="security"
           iconColor="grey-700"
         />
-        <RequestedClaimsList items={requiredClaims} />
+        {/* <PresentationClaimsList
+          optionalChecked={optionalChecked}
+          setOptionalChecked={onOptionalDisclosuresChange}
+          descriptor={route.params.descriptor}
+          source={getCredentialNameByType(wellKnownCredential.PID)}
+        /> */}
         <VSpacer size={24} />
         <FeatureInfo
           iconName="fornitori"
@@ -157,4 +158,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export {CredentialTrust};
+export default CredentialTrust;
