@@ -10,11 +10,4 @@ if (__DEV__) {
   require('./ReactotronConfig');
 }
 
-/**
- * Load Reactotron in development mode
- */
-if (__DEV__) {
-  require('./ReactotronConfig');
-}
-
 AppRegistry.registerComponent(appName, () => App);
