@@ -14,6 +14,7 @@ type AsyncStatusValues<T = undefined> = {
   loading: boolean;
   error: {status: false; error: undefined} | {status: true; error: unknown};
   success: {status: false} | {status: true; data?: T};
+  cancel: {status : boolean};
 };
 
 /**
@@ -22,7 +23,8 @@ type AsyncStatusValues<T = undefined> = {
 const setInitial = <T>(): AsyncStatusValues<T> => ({
   loading: false,
   error: {status: false, error: undefined},
-  success: {status: false}
+  success: {status: false},
+  cancel: {status : false}
 });
 
 /**
@@ -31,7 +33,8 @@ const setInitial = <T>(): AsyncStatusValues<T> => ({
 const setSuccess = <T>(data?: T): AsyncStatusValues<T> => ({
   loading: false,
   error: {status: false, error: undefined},
-  success: {status: true, data}
+  success: {status: true, data},
+  cancel: {status: false}
 });
 
 /**
@@ -40,7 +43,8 @@ const setSuccess = <T>(data?: T): AsyncStatusValues<T> => ({
 const setLoading = <T>(): AsyncStatusValues<T> => ({
   loading: true,
   error: {status: false, error: undefined},
-  success: {status: false}
+  success: {status: false},
+  cancel: {status: false}
 });
 
 /**
@@ -51,7 +55,19 @@ const setLoading = <T>(): AsyncStatusValues<T> => ({
 const setError = <T>(error: unknown): AsyncStatusValues<T> => ({
   loading: false,
   error: {status: true, error},
-  success: {status: false}
+  success: {status: false},
+  cancel: {status: false}
 });
 
-export {setInitial, setSuccess, setLoading, setError, type AsyncStatusValues};
+/**
+ * Async status object for a cancelled {@link AsyncStatusValues} state
+ * @returns the {@link AsyncStatusValues} object with the cancel value set.
+ */
+const setCancel = <T>(): AsyncStatusValues<T> => ({
+  loading: false,
+  error: {status: false, error: undefined},
+  success: {status: false},
+  cancel: {status: true}
+})
+
+export {setInitial, setSuccess, setLoading, setError, setCancel, type AsyncStatusValues};

@@ -32,10 +32,7 @@ import {
  */
 export function* watchPresentationSaga() {
   yield* takeLatest([setPreDefinitionRequest], function* (...args) {
-    yield* race({
-      task: call(handlePresetationPreDefinition, ...args),
-      cancel: take(resetPresentation)
-    });
+    yield* call(handlePresetationPreDefinition, ...args);
   });
 }
 
@@ -113,9 +110,9 @@ function* handlePresetationPreDefinition(
 
     yield* put(setPreDefinitionSuccess(descriptorResult));
 
-    /* Wait for the user to confirm the presentation with the claims
-     * No need to check for the cancel action as there's a race condition defined in watchPresentationSaga
-     * The payload contains a list of the name of optionals claims to be presented
+    /* Wait for the user to confirm the presentation with the claims or to cancel it
+     *  - In case the user confirms the presentation, the payload will contain a list of the name of optionals claims to be presented
+     *  - In case the user cancels the presentation, no payload will be needed
      */
     const choice = yield* take([
       setPostDefinitionRequest,
@@ -162,14 +159,13 @@ function* handlePresetationPreDefinition(
          * Ignoring TS as typed-redux-saga doesn't seem to digest correctly a tuple of arguments.
          * This works as expected though.
          */
-        const authResponse = yield* call(
+        yield* call(
           // @ts-ignore
           Credential.Presentation.sendAuthorizationErrorResponse,
           requestObject,
           'access_denied',
           jwks.keys
         );
-        yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
     }
 
   } catch (e) {

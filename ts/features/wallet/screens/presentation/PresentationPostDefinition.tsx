@@ -55,7 +55,6 @@ const PresentationPostDefinition = ({route}: Props) => {
   const {t} = useTranslation(['global', 'wallet']);
   const dispatch = useAppDispatch();
   const postDefinitionStatus = useAppSelector(selectPostDefinitionStatus);
-  const {navigateToWallet} = useNavigateToWalletWithReset();
   const [optionalChecked, setOptionalChecked] = useState([] as Array<string>);
 
   // Disable the back gesture navigation and the hardware back button
@@ -64,7 +63,6 @@ const PresentationPostDefinition = ({route}: Props) => {
 
   const cancel = () => {
     dispatch(setPostDefinitionCancel());
-    navigateToWallet();
   };
 
   const cancelAlert = () => {
@@ -107,11 +105,16 @@ const PresentationPostDefinition = ({route}: Props) => {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PRESENTATION_FAILURE'
       });
+    } else if (postDefinitionStatus.cancel.status) {
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PRESENTATION_CANCEL'
+      });
     }
   }, [
     navigation,
     postDefinitionStatus.error.status,
-    postDefinitionStatus.success.status
+    postDefinitionStatus.success.status,
+    postDefinitionStatus.cancel.status
   ]);
 
   useHeaderSecondLevel({

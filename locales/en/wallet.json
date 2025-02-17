@@ -73,6 +73,10 @@
     "successWithRedirect": {
       "title": "Done!",
       "subtitle": "You will be redirected to the partner site"
+    },
+    "cancel": {
+      "title": "The authorization has been cancelled",
+      "subtitle": "You will now be redirected to your Wallet homepage."
     }
   },
   "claims": {
