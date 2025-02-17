@@ -9,6 +9,7 @@ import {serializeError} from 'serialize-error';
 import {
   AuthResponse,
   resetPresentation,
+  setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionRequest,
   setPostDefinitionSuccess,
@@ -116,43 +117,61 @@ function* handlePresetationPreDefinition(
      * No need to check for the cancel action as there's a race condition defined in watchPresentationSaga
      * The payload contains a list of the name of optionals claims to be presented
      */
-    const {payload: optionalClaimsNames} = yield* take(
-      setPostDefinitionRequest
-    );
-
-    yield* put(
-      setIdentificationStarted({canResetPin: false, isValidatingTask: true})
-    );
-
-    const resAction = yield* take([
-      setIdentificationIdentified,
-      setIdentificationUnidentified
+    const choice = yield* take([
+      setPostDefinitionRequest,
+      setPostDefinitionCancel
     ]);
 
-    if (setIdentificationIdentified.match(resAction)) {
-      const disclosuresRequestedClaimName = [
-        ...descriptorResult.requiredDisclosures.map(item => item.decoded[1]),
-        ...optionalClaimsNames
-      ];
-
-      const credentialCryptoContext = createCryptoContextFor(pid.keyTag);
-
-      /**
-       * Ignoring TS as typed-redux-saga doesn't seem to digest correctly a tuple of arguments.
-       * This works as expected though.
-       */
-      const authResponse = yield* call(
-        // @ts-ignore
-        Credential.Presentation.sendAuthorizationResponse,
-        requestObject,
-        presentationDefinition,
-        jwks.keys,
-        [pid.credential, disclosuresRequestedClaimName, credentialCryptoContext]
+    if (setPostDefinitionRequest.match(choice)) {
+      const {payload : optionalClaimsNames} = choice ;
+      yield* put(
+        setIdentificationStarted({canResetPin: false, isValidatingTask: true})
       );
-      yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
+
+      const resAction = yield* take([
+        setIdentificationIdentified,
+        setIdentificationUnidentified
+      ]);
+
+      if (setIdentificationIdentified.match(resAction)) {
+        const disclosuresRequestedClaimName = [
+          ...descriptorResult.requiredDisclosures.map(item => item.decoded[1]),
+          ...optionalClaimsNames
+        ];
+
+        const credentialCryptoContext = createCryptoContextFor(pid.keyTag);
+
+        /**
+         * Ignoring TS as typed-redux-saga doesn't seem to digest correctly a tuple of arguments.
+         * This works as expected though.
+         */
+        const authResponse = yield* call(
+          // @ts-ignore
+          Credential.Presentation.sendAuthorizationResponse,
+          requestObject,
+          presentationDefinition,
+          jwks.keys,
+          [pid.credential, disclosuresRequestedClaimName, credentialCryptoContext]
+        );
+        yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
+      } else {
+        throw new Error('Identification failed');
+      }
     } else {
-      throw new Error('Identification failed');
+        /**
+         * Ignoring TS as typed-redux-saga doesn't seem to digest correctly a tuple of arguments.
+         * This works as expected though.
+         */
+        const authResponse = yield* call(
+          // @ts-ignore
+          Credential.Presentation.sendAuthorizationErrorResponse,
+          requestObject,
+          'access_denied',
+          jwks.keys
+        );
+        yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
     }
+
   } catch (e) {
     // We don't know which step is failed thus we set the same error for both
     yield* put(setPostDefinitionError({error: serializeError(e)}));

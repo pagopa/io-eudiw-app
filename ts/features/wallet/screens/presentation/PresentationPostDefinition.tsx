@@ -20,6 +20,7 @@ import {
   OptionalClaimsNames,
   resetPresentation,
   selectPostDefinitionStatus,
+  setPostDefinitionCancel,
   setPostDefinitionRequest
 } from '../../store/presentation';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
@@ -62,7 +63,7 @@ const PresentationPostDefinition = ({route}: Props) => {
   useHardwareBackButton(() => true);
 
   const cancel = () => {
-    dispatch(resetPresentation());
+    dispatch(setPostDefinitionCancel());
     navigateToWallet();
   };
 

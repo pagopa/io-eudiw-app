@@ -81,6 +81,7 @@ export const presentationSlice = createSlice({
        */
       state.postDefinition = setLoading();
     },
+    setPostDefinitionCancel : _ => {},
     setPostDefinitionError: (
       state,
       action: PayloadAction<{error: unknown}>
@@ -108,6 +109,7 @@ export const {
   setPreDefinitionSuccess,
   resetPreDefinition,
   setPostDefinitionRequest,
+  setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionSuccess,
   setPostDefinitionRequestWithAuth,
