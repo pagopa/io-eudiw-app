@@ -155,17 +155,21 @@ function* handlePresetationPreDefinition(
         throw new Error('Identification failed');
       }
     } else {
-        /**
-         * Ignoring TS as typed-redux-saga doesn't seem to digest correctly a tuple of arguments.
-         * This works as expected though.
-         */
-        yield* call(
-          // @ts-ignore
-          Credential.Presentation.sendAuthorizationErrorResponse,
-          requestObject,
-          'access_denied',
-          jwks.keys
-        );
+        try {
+          /**
+           * Ignoring TS as typed-redux-saga doesn't seem to digest correctly a tuple of arguments.
+           * This works as expected though.
+           */
+          yield* call(
+            // @ts-ignore
+            Credential.Presentation.sendAuthorizationErrorResponse,
+            requestObject,
+            'access_denied',
+            jwks.keys
+          );
+        } catch {
+          //The result of this call is ignored for the user is not interested in any message
+        } 
     }
 
   } catch (e) {
