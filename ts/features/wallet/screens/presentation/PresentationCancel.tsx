@@ -24,17 +24,17 @@ const PresentationCancel = () => {
 
   useDebugInfo({result});
 
-  const props : OperationResultScreenContentProps = {
-    pictogram : 'trash',
-    title : t('wallet:presentation.cancel.title'),
-    subtitle : t('wallet:presentation.cancel.subtitle'),
-    action : {
-        accessibilityLabel : t('global:buttons.understand'),
-        label : t('global:buttons.understand'),
-        onPress: () => {
-            navigateToWallet();
-            dispatch(resetPresentation());
-        }
+  const props: OperationResultScreenContentProps = {
+    pictogram: 'trash',
+    title: t('wallet:presentation.cancel.title'),
+    subtitle: t('wallet:presentation.cancel.subtitle'),
+    action: {
+      accessibilityLabel: t('global:buttons.understand'),
+      label: t('global:buttons.understand'),
+      onPress: () => {
+        navigateToWallet();
+        dispatch(resetPresentation());
+      }
     }
   };
 

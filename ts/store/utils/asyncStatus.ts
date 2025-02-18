@@ -14,7 +14,7 @@ type AsyncStatusValues<T = undefined> = {
   loading: boolean;
   error: {status: false; error: undefined} | {status: true; error: unknown};
   success: {status: false} | {status: true; data?: T};
-  cancel: {status : boolean};
+  cancel: {status: boolean};
 };
 
 /**
@@ -24,7 +24,7 @@ const setInitial = <T>(): AsyncStatusValues<T> => ({
   loading: false,
   error: {status: false, error: undefined},
   success: {status: false},
-  cancel: {status : false}
+  cancel: {status: false}
 });
 
 /**
@@ -68,6 +68,13 @@ const setCancel = <T>(): AsyncStatusValues<T> => ({
   error: {status: false, error: undefined},
   success: {status: false},
   cancel: {status: true}
-})
+});
 
-export {setInitial, setSuccess, setLoading, setError, setCancel, type AsyncStatusValues};
+export {
+  setInitial,
+  setSuccess,
+  setLoading,
+  setError,
+  setCancel,
+  type AsyncStatusValues
+};

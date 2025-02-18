@@ -1,4 +1,4 @@
-import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
+import {call, put, select, take, takeLatest} from 'typed-redux-saga';
 import {
   createCryptoContextFor,
   Credential,
@@ -8,7 +8,6 @@ import {InputDescriptor} from '@pagopa/io-react-native-wallet/lib/typescript/cre
 import {serializeError} from 'serialize-error';
 import {
   AuthResponse,
-  resetPresentation,
   setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionRequest,
@@ -120,7 +119,7 @@ function* handlePresetationPreDefinition(
     ]);
 
     if (setPostDefinitionRequest.match(choice)) {
-      const {payload : optionalClaimsNames} = choice ;
+      const {payload: optionalClaimsNames} = choice;
       yield* put(
         setIdentificationStarted({canResetPin: false, isValidatingTask: true})
       );
@@ -148,30 +147,33 @@ function* handlePresetationPreDefinition(
           requestObject,
           presentationDefinition,
           jwks.keys,
-          [pid.credential, disclosuresRequestedClaimName, credentialCryptoContext]
+          [
+            pid.credential,
+            disclosuresRequestedClaimName,
+            credentialCryptoContext
+          ]
         );
         yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
       } else {
         throw new Error('Identification failed');
       }
     } else {
-        try {
-          /**
-           * Ignoring TS as typed-redux-saga doesn't seem to digest correctly a tuple of arguments.
-           * This works as expected though.
-           */
-          yield* call(
-            // @ts-ignore
-            Credential.Presentation.sendAuthorizationErrorResponse,
-            requestObject,
-            'access_denied',
-            jwks.keys
-          );
-        } catch {
-          //The result of this call is ignored for the user is not interested in any message
-        } 
+      try {
+        /**
+         * Ignoring TS as typed-redux-saga doesn't seem to digest correctly a tuple of arguments.
+         * This works as expected though.
+         */
+        yield* call(
+          // @ts-ignore
+          Credential.Presentation.sendAuthorizationErrorResponse,
+          requestObject,
+          'access_denied',
+          jwks.keys
+        );
+      } catch {
+        // The result of this call is ignored for the user is not interested in any message
+      }
     }
-
   } catch (e) {
     // We don't know which step is failed thus we set the same error for both
     yield* put(setPostDefinitionError({error: serializeError(e)}));

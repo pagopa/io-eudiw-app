@@ -82,7 +82,7 @@ export const presentationSlice = createSlice({
        */
       state.postDefinition = setLoading();
     },
-    setPostDefinitionCancel : (state) => {
+    setPostDefinitionCancel: state => {
       state.postDefinition = setCancel();
     },
     setPostDefinitionError: (

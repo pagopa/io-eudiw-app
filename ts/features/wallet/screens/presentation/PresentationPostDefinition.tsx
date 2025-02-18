@@ -18,7 +18,6 @@ import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
   Descriptor,
   OptionalClaimsNames,
-  resetPresentation,
   selectPostDefinitionStatus,
   setPostDefinitionCancel,
   setPostDefinitionRequest
@@ -32,7 +31,6 @@ import {
 import PresentationClaimsList from '../../components/credential/PresentationClaimsList';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
-import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Description which contains the requested of the credential to be presented.
