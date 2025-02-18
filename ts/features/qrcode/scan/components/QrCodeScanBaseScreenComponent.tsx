@@ -17,6 +17,7 @@ import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
 import {isAndroid} from '../../../../utils/device';
 import {OnBarcodeSuccess, OnBardCodeError} from '../screens/QrCodeScanScreen';
 import {CameraPermissionView} from './CameraPermissionView';
+import { useCameraPermissionStatus } from '../hooks/useCameraPermissionStatus';
 
 type Props = {
   onBarcodeSuccess: OnBarcodeSuccess;
@@ -75,10 +76,13 @@ const QrCodeScanBaseScreenComponent = ({
   }, []);
 
   const {
-    cameraComponent,
     cameraPermissionStatus,
     requestCameraPermission,
-    openCameraSettings,
+    openCameraSettings
+  } = useCameraPermissionStatus();
+
+  const {
+    cameraComponent,
     hasTorch,
     isTorchOn,
     toggleTorch
@@ -89,27 +93,22 @@ const QrCodeScanBaseScreenComponent = ({
     isLoading
   });
 
-  const openAppSetting = useCallback(async () => {
-    // Open the custom settings if the app has one
-    await openCameraSettings();
-  }, [openCameraSettings]);
-
   const cameraView = useMemo(() => {
     if (cameraPermissionStatus === 'granted') {
       return cameraComponent;
     }
 
-    if (cameraPermissionStatus === 'not-determined') {
+    if (cameraPermissionStatus === 'denied') {
       return (
         <CameraPermissionView
-          pictogram="cameraRequest"
-          title={t('qrcodeScan:permissions.undefined.title')}
-          body={t('qrcodeScan:permissions.undefined.label')}
+          pictogram="cameraDenied"
+          title={t('qrcodeScan:permissions.denied.title')}
+          body={t('qrcodeScan:permissions.denied.label')}
           action={{
-            label: t('qrcodeScan:permissions.undefined.action'),
-            accessibilityLabel: t('qrcodeScan:permissions.undefined.action'),
+            label: t('qrcodeScan:permissions.denied.action'),
+            accessibilityLabel: t('qrcodeScan:permissions.denied.action'),
             onPress: async () => {
-              await requestCameraPermission();
+              openCameraSettings();
             }
           }}
         />
@@ -118,14 +117,14 @@ const QrCodeScanBaseScreenComponent = ({
 
     return (
       <CameraPermissionView
-        pictogram="cameraDenied"
-        title={t('qrcodeScan:permissions.denied.title')}
-        body={t('qrcodeScan:permissions.denied.label')}
+        pictogram="cameraRequest"
+        title={t('qrcodeScan:permissions.undefined.title')}
+        body={t('qrcodeScan:permissions.undefined.label')}
         action={{
-          label: t('qrcodeScan:permissions.denied.action'),
-          accessibilityLabel: t('qrcodeScan:permissions.denied.action'),
+          label: t('qrcodeScan:permissions.undefined.action'),
+          accessibilityLabel: t('qrcodeScan:permissions.undefined.action'),
           onPress: async () => {
-            await openAppSetting();
+            await requestCameraPermission();
           }
         }}
       />
@@ -135,7 +134,7 @@ const QrCodeScanBaseScreenComponent = ({
     t,
     cameraComponent,
     requestCameraPermission,
-    openAppSetting
+    openCameraSettings
   ]);
 
   const handleTorchToggle = useCallback(() => {
