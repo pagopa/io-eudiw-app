@@ -3,6 +3,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Credential} from '@pagopa/io-react-native-wallet';
 import {
   AsyncStatusValues,
+  setCancel,
   setError,
   setInitial,
   setLoading,
@@ -81,6 +82,9 @@ export const presentationSlice = createSlice({
        */
       state.postDefinition = setLoading();
     },
+    setPostDefinitionCancel: state => {
+      state.postDefinition = setCancel();
+    },
     setPostDefinitionError: (
       state,
       action: PayloadAction<{error: unknown}>
@@ -108,6 +112,7 @@ export const {
   setPreDefinitionSuccess,
   resetPreDefinition,
   setPostDefinitionRequest,
+  setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionSuccess,
   setPostDefinitionRequestWithAuth,

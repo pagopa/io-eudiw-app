@@ -1,4 +1,4 @@
-import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
+import {call, put, select, take, takeLatest} from 'typed-redux-saga';
 import {
   createCryptoContextFor,
   Credential,
@@ -8,7 +8,7 @@ import {InputDescriptor} from '@pagopa/io-react-native-wallet/lib/typescript/cre
 import {serializeError} from 'serialize-error';
 import {
   AuthResponse,
-  resetPresentation,
+  setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionRequest,
   setPostDefinitionSuccess,
@@ -31,10 +31,7 @@ import {
  */
 export function* watchPresentationSaga() {
   yield* takeLatest([setPreDefinitionRequest], function* (...args) {
-    yield* race({
-      task: call(handlePresetationPreDefinition, ...args),
-      cancel: take(resetPresentation)
-    });
+    yield* call(handlePresetationPreDefinition, ...args);
   });
 }
 
@@ -112,46 +109,70 @@ function* handlePresetationPreDefinition(
 
     yield* put(setPreDefinitionSuccess(descriptorResult));
 
-    /* Wait for the user to confirm the presentation with the claims
-     * No need to check for the cancel action as there's a race condition defined in watchPresentationSaga
-     * The payload contains a list of the name of optionals claims to be presented
+    /* Wait for the user to confirm the presentation with the claims or to cancel it
+     *  - In case the user confirms the presentation, the payload will contain a list of the name of optionals claims to be presented
+     *  - In case the user cancels the presentation, no payload will be needed
      */
-    const {payload: optionalClaimsNames} = yield* take(
-      setPostDefinitionRequest
-    );
-
-    yield* put(
-      setIdentificationStarted({canResetPin: false, isValidatingTask: true})
-    );
-
-    const resAction = yield* take([
-      setIdentificationIdentified,
-      setIdentificationUnidentified
+    const choice = yield* take([
+      setPostDefinitionRequest,
+      setPostDefinitionCancel
     ]);
 
-    if (setIdentificationIdentified.match(resAction)) {
-      const disclosuresRequestedClaimName = [
-        ...descriptorResult.requiredDisclosures.map(item => item.decoded[1]),
-        ...optionalClaimsNames
-      ];
-
-      const credentialCryptoContext = createCryptoContextFor(pid.keyTag);
-
-      /**
-       * Ignoring TS as typed-redux-saga doesn't seem to digest correctly a tuple of arguments.
-       * This works as expected though.
-       */
-      const authResponse = yield* call(
-        // @ts-ignore
-        Credential.Presentation.sendAuthorizationResponse,
-        requestObject,
-        presentationDefinition,
-        jwks.keys,
-        [pid.credential, disclosuresRequestedClaimName, credentialCryptoContext]
+    if (setPostDefinitionRequest.match(choice)) {
+      const {payload: optionalClaimsNames} = choice;
+      yield* put(
+        setIdentificationStarted({canResetPin: false, isValidatingTask: true})
       );
-      yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
+
+      const resAction = yield* take([
+        setIdentificationIdentified,
+        setIdentificationUnidentified
+      ]);
+
+      if (setIdentificationIdentified.match(resAction)) {
+        const disclosuresRequestedClaimName = [
+          ...descriptorResult.requiredDisclosures.map(item => item.decoded[1]),
+          ...optionalClaimsNames
+        ];
+
+        const credentialCryptoContext = createCryptoContextFor(pid.keyTag);
+
+        /**
+         * Ignoring TS as typed-redux-saga doesn't seem to digest correctly a tuple of arguments.
+         * This works as expected though.
+         */
+        const authResponse = yield* call(
+          // @ts-ignore
+          Credential.Presentation.sendAuthorizationResponse,
+          requestObject,
+          presentationDefinition,
+          jwks.keys,
+          [
+            pid.credential,
+            disclosuresRequestedClaimName,
+            credentialCryptoContext
+          ]
+        );
+        yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
+      } else {
+        throw new Error('Identification failed');
+      }
     } else {
-      throw new Error('Identification failed');
+      try {
+        /**
+         * Ignoring TS as typed-redux-saga doesn't seem to digest correctly a tuple of arguments.
+         * This works as expected though.
+         */
+        yield* call(
+          // @ts-ignore
+          Credential.Presentation.sendAuthorizationErrorResponse,
+          requestObject,
+          'access_denied',
+          jwks.keys
+        );
+      } catch {
+        // The result of this call is ignored for the user is not interested in any message
+      }
     }
   } catch (e) {
     // We don't know which step is failed thus we set the same error for both

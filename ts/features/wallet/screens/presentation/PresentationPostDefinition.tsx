@@ -20,6 +20,7 @@ import {
   OptionalClaimsNames,
   resetPresentation,
   selectPostDefinitionStatus,
+  setPostDefinitionCancel,
   setPostDefinitionRequest
 } from '../../store/presentation';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
@@ -62,8 +63,7 @@ const PresentationPostDefinition = ({route}: Props) => {
   useHardwareBackButton(() => true);
 
   const cancel = () => {
-    dispatch(resetPresentation());
-    navigateToWallet();
+    dispatch(setPostDefinitionCancel());
   };
 
   const cancelAlert = () => {
@@ -106,11 +106,17 @@ const PresentationPostDefinition = ({route}: Props) => {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PRESENTATION_FAILURE'
       });
+    } else if (postDefinitionStatus.cancel.status) {
+      dispatch(resetPresentation());
+      navigateToWallet();
     }
   }, [
     navigation,
     postDefinitionStatus.error.status,
-    postDefinitionStatus.success.status
+    postDefinitionStatus.success.status,
+    postDefinitionStatus.cancel.status,
+    dispatch,
+    navigateToWallet
   ]);
 
   useHeaderSecondLevel({
