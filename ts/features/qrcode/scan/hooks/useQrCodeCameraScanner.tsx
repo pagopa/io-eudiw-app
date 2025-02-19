@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState
 } from 'react';
-import { StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Animated, {FadeIn} from 'react-native-reanimated';
 import {
   Camera,
@@ -82,7 +82,6 @@ export const useQrCodeCameraScanner = ({
     useRef<ReturnType<typeof setTimeout>>();
   const [isResting, setIsResting] = useState(false);
 
-
   /**
    * Handles the scanned barcodes and calls the callbacks for the results
    */
@@ -133,7 +132,6 @@ export const useQrCodeCameraScanner = ({
     onCodeScanned: handleScannedBarcodes
   });
 
-
   /**
    * Hook that clears the timeout handler on unmount
    */
@@ -143,7 +141,6 @@ export const useQrCodeCameraScanner = ({
     },
     [scannerReactivateTimeoutHandler]
   );
-
 
   /**
    * Component that renders camera and marker

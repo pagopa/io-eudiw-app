@@ -16,8 +16,8 @@ import {useQrCodeCameraScanner} from '../hooks/useQrCodeCameraScanner';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
 import {isAndroid} from '../../../../utils/device';
 import {OnBarcodeSuccess, OnBardCodeError} from '../screens/QrCodeScanScreen';
+import {useCameraPermissionStatus} from '../hooks/useCameraPermissionStatus';
 import {CameraPermissionView} from './CameraPermissionView';
-import { useCameraPermissionStatus } from '../hooks/useCameraPermissionStatus';
 
 type Props = {
   onBarcodeSuccess: OnBarcodeSuccess;
@@ -75,23 +75,16 @@ const QrCodeScanBaseScreenComponent = ({
     };
   }, []);
 
-  const {
-    cameraPermissionStatus,
-    requestCameraPermission,
-    openCameraSettings
-  } = useCameraPermissionStatus();
+  const {cameraPermissionStatus, requestCameraPermission, openCameraSettings} =
+    useCameraPermissionStatus();
 
-  const {
-    cameraComponent,
-    hasTorch,
-    isTorchOn,
-    toggleTorch
-  } = useQrCodeCameraScanner({
-    onBarcodeSuccess,
-    onBarcodeError,
-    isDisabled: isAppInBackground || !isFocused || isDisabled,
-    isLoading
-  });
+  const {cameraComponent, hasTorch, isTorchOn, toggleTorch} =
+    useQrCodeCameraScanner({
+      onBarcodeSuccess,
+      onBarcodeError,
+      isDisabled: isAppInBackground || !isFocused || isDisabled,
+      isLoading
+    });
 
   const cameraView = useMemo(() => {
     if (cameraPermissionStatus === 'granted') {

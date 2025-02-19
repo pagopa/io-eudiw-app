@@ -1,16 +1,22 @@
-import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { useCallback, useEffect, useState } from "react";
-import { AppState, Linking } from "react-native";
-import { Camera, CameraPermissionStatus } from "react-native-vision-camera";
-import { isAndroid } from "../../../../utils/device";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { MainNavigatorParamsList } from "../../../../navigation/main/MainStackNavigator";
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useCallback, useEffect, useState} from 'react';
+import {AppState, Linking} from 'react-native';
+import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {isAndroid} from '../../../../utils/device';
+import {MainNavigatorParamsList} from '../../../../navigation/main/MainStackNavigator';
 
 /**
  * Hook to handle camera permission status with platform specific behavior
  */
 export const useCameraPermissionStatus = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<MainNavigatorParamsList, keyof MainNavigatorParamsList>>();
+  const navigation =
+    useNavigation<
+      NativeStackNavigationProp<
+        MainNavigatorParamsList,
+        keyof MainNavigatorParamsList
+      >
+    >();
   const [cameraPermissionStatus, setCameraPermissionStatus] =
     useState<CameraPermissionStatus>();
 
@@ -42,7 +48,7 @@ export const useCameraPermissionStatus = () => {
    */
   useEffect(() => {
     const permission = Camera.getCameraPermissionStatus();
-    if (isAndroid && permission === "denied") {
+    if (isAndroid && permission === 'denied') {
       if (isFocused && isNavigationTransitionEnded) {
         void requestCameraPermission();
       }
@@ -56,9 +62,9 @@ export const useCameraPermissionStatus = () => {
    * through system settings after the user returns to the app.
    */
   useEffect(() => {
-    if (cameraPermissionStatus === "denied") {
-      const unsubscribe = AppState.addEventListener("change", nextAppState => {
-        if (nextAppState === "active") {
+    if (cameraPermissionStatus === 'denied') {
+      const unsubscribe = AppState.addEventListener('change', nextAppState => {
+        if (nextAppState === 'active') {
           const permission = Camera.getCameraPermissionStatus();
           setCameraPermissionStatus(permission);
         }
@@ -75,7 +81,7 @@ export const useCameraPermissionStatus = () => {
    */
   useEffect(
     () =>
-      navigation.addListener("transitionEnd", () => {
+      navigation.addListener('transitionEnd', () => {
         setIsNavigationTransitionEnded(true);
       }),
     [navigation]
