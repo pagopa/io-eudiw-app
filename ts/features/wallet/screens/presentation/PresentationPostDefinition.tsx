@@ -18,6 +18,7 @@ import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
   Descriptor,
   OptionalClaimsNames,
+  resetPresentation,
   selectPostDefinitionStatus,
   setPostDefinitionCancel,
   setPostDefinitionRequest
@@ -31,6 +32,7 @@ import {
 import PresentationClaimsList from '../../components/credential/PresentationClaimsList';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
+import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Description which contains the requested of the credential to be presented.
@@ -53,6 +55,7 @@ const PresentationPostDefinition = ({route}: Props) => {
   const {t} = useTranslation(['global', 'wallet']);
   const dispatch = useAppDispatch();
   const postDefinitionStatus = useAppSelector(selectPostDefinitionStatus);
+  const {navigateToWallet} = useNavigateToWalletWithReset();
   const [optionalChecked, setOptionalChecked] = useState([] as Array<string>);
 
   // Disable the back gesture navigation and the hardware back button
@@ -104,15 +107,16 @@ const PresentationPostDefinition = ({route}: Props) => {
         screen: 'PRESENTATION_FAILURE'
       });
     } else if (postDefinitionStatus.cancel.status) {
-      navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PRESENTATION_CANCEL'
-      });
+      dispatch(resetPresentation());
+      navigateToWallet();
     }
   }, [
     navigation,
     postDefinitionStatus.error.status,
     postDefinitionStatus.success.status,
-    postDefinitionStatus.cancel.status
+    postDefinitionStatus.cancel.status,
+    dispatch,
+    navigateToWallet
   ]);
 
   useHeaderSecondLevel({

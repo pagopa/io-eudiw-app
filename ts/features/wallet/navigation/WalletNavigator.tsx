@@ -17,7 +17,6 @@ import PresentationPostDefinition, {
 } from '../screens/presentation/PresentationPostDefinition';
 import PresentationSuccess from '../screens/presentation/PresentationSuccess';
 import CredentialIssuanceSelect from '../screens/credentialIssuance/CredentialIssuanceSelect';
-import PresentationCancel from '../screens/presentation/PresentationCancel';
 import WALLET_ROUTES from './routes';
 
 /**
@@ -36,7 +35,6 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.PRESENTATION
     .POST_DEFINITION]: PresentationPostDefinitionParams;
   [WALLET_ROUTES.PRESENTATION.SUCCESS]: undefined;
-  [WALLET_ROUTES.PRESENTATION.CANCEL]: undefined;
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.SELECT]: undefined;
 };
 
@@ -88,10 +86,6 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PRESENTATION.SUCCESS}
         component={PresentationSuccess}
-      />
-      <Stack.Screen
-        name={WALLET_ROUTES.PRESENTATION.CANCEL}
-        component={PresentationCancel}
       />
     </Stack.Group>
     <Stack.Group>

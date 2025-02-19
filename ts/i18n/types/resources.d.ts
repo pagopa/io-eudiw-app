@@ -32,8 +32,7 @@ interface Resources {
       "cancel": "Cancel",
       "confirm": "Confirm",
       "help": "Help",
-      "done": "Done",
-      "understand": "I understand",
+      "done": "Done"
     },
     "loading": {
       "body": "Please wait a moment"
@@ -284,10 +283,6 @@ interface Resources {
       "successWithRedirect": {
         "title": "Done!",
         "subtitle": "You will be redirected to the partner site"
-      },
-      "cancel": {
-        "title": "The authorizationhas been cancelled",
-        "subtitle": "You will now be redirected to your Wallet homepage."
       }
     },
     "claims": {
