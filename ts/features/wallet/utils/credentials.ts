@@ -2,6 +2,8 @@ import i18next from 'i18next';
 
 type CredentialsKeys = 'DRIVING_LICENSE' | 'PID';
 
+export const ISSUER_MOCK_NAME = 'Istituto Poligrafico e Zecca dello Stato';
+
 export const wellKnownCredential: Record<CredentialsKeys, string> = {
   DRIVING_LICENSE: 'MDL',
   PID: 'urn:eu.europa.ec.eudi:pid:1'

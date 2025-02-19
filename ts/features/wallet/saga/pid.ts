@@ -30,6 +30,7 @@ import {
   addCredential,
   addCredentialWithIdentification
 } from '../store/credentials';
+import {wellKnownCredential} from '../utils/credentials';
 
 /**
  * Saga watcher for PID related actions.
@@ -62,7 +63,7 @@ function* obtainPid() {
     // Start the issuance flow
     const startFlow: Credential.Issuance.StartFlow = () => ({
       issuerUrl: PID_PROVIDER_BASE_URL,
-      credentialType: 'urn:eu.europa.ec.eudi:pid:1'
+      credentialType: wellKnownCredential.PID
     });
 
     const {issuerUrl, credentialType} = startFlow();

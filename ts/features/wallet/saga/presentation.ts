@@ -66,11 +66,7 @@ function* handlePresetationPreDefinition(
 
     const {requestObjectEncodedJwt} = yield* call(
       Credential.Presentation.getRequestObject,
-      requestUri,
-      {
-        wiaCryptoContext,
-        walletInstanceAttestation
-      }
+      requestUri
     );
 
     const jwks = yield* call(

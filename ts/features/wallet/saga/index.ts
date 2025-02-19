@@ -1,6 +1,7 @@
 import {all} from 'typed-redux-saga';
 import {watchInstanceSaga} from './instance';
 import {watchPidSaga} from './pid';
+import {watchCredentialSaga} from './credential';
 import {watchPresentationSaga} from './presentation';
 
 /**
@@ -11,6 +12,7 @@ export function* walletSaga() {
   yield* all([
     yield* watchInstanceSaga(),
     yield* watchPidSaga(),
+    yield* watchCredentialSaga(),
     yield* watchPresentationSaga()
   ]);
 }

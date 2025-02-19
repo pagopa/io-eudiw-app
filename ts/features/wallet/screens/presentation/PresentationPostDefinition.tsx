@@ -28,7 +28,7 @@ import {
   getCredentialNameByType,
   wellKnownCredential
 } from '../../utils/credentials';
-import PresentationClaimsList from '../../components/credential/PresentationClaimsList';
+import PresentationClaimsList from '../../components/presentation/PresentationClaimsList';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
