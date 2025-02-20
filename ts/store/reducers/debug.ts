@@ -37,7 +37,7 @@ const debugSlice = createSlice({
       state.debugData = {
         ...state.debugData,
         ...action.payload
-      }
+      };
     },
     resetDebugData(state, action: PayloadAction<ReadonlyArray<string>>) {
       state.debugData = Object.fromEntries(
