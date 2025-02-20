@@ -40,6 +40,7 @@
     "@react-navigation/native-stack": "^7.0.4",
     "@reduxjs/toolkit": "^2.3.0",
     "@textlint/markdown-to-ast": "^14.3.0",
+    "@types/jest": "^29.5.14",
     "i18next": "^23.16.5",
     "io-react-native-secure-storage": "^0.1.1",
     "js-base64": "^3.7.7",
