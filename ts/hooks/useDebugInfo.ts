@@ -11,7 +11,7 @@ import {useAppDispatch, useAppSelector} from '../store';
  * Sets debug data for the mounted component. Removes it when the component is unmounted
  * @param data Data to be displayes in debug mode
  */
-export const useDebugInfo = (data: Record<string, any>) => {
+export const useDebugInfo = (data: Record<string, unknown>) => {
   const dispatch = useAppDispatch();
   const isDebug = useAppSelector(selectIsDebugModeEnabled);
 
