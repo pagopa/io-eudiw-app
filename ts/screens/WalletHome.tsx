@@ -1,13 +1,17 @@
 import React from 'react';
 import {FlatList, Pressable, View} from 'react-native';
-import {IOStyles, HeaderFirstLevel} from '@pagopa/io-app-design-system';
+import {
+  IOStyles,
+  HeaderFirstLevel,
+  VSpacer
+} from '@pagopa/io-app-design-system';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {useAppSelector} from '../store';
 import {lifecycleIsOperationalSelector} from '../features/wallet/store/lifecycle';
 import {ActivationBanner} from '../features/wallet/components/ActivationBanner';
 import {credentialsSelector} from '../features/wallet/store/credentials';
-import {CredentialCard} from '../features/wallet/components/CredentialCard';
+import {CredentialCard} from '../features/wallet/components/credential/CredentialCard';
 import {IOScrollView} from '../components/IOScrollView';
 
 /**
@@ -72,6 +76,7 @@ const WalletHome = () => {
                   })
                 }>
                 <CredentialCard credentialType={item.credentialType} />
+                <VSpacer size={8} />
               </Pressable>
             )}
           />

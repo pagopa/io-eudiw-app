@@ -17,7 +17,7 @@ import PresentationPostDefinition, {
 } from '../screens/presentation/PresentationPostDefinition';
 import PresentationSuccess from '../screens/presentation/PresentationSuccess';
 import CredentialTrust from '../screens/credentialIssuance/CredentialTrust';
-import {CredentialPreview} from '../screens/credentialIssuance/IssuancePreview';
+import {CredentialPreview} from '../screens/credentialIssuance/CredentialIssuancePreview';
 import CredentialFailure from '../screens/credentialIssuance/CredentialFailure';
 import CredentialsList from '../screens/credentialIssuance/CredentialsList';
 import WALLET_ROUTES from './routes';
@@ -115,7 +115,6 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE}
         component={CredentialFailure}
-        options={{gestureEnabled: false}}
       />
     </Stack.Group>
   </Stack.Navigator>

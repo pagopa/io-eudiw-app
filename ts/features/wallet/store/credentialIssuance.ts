@@ -1,6 +1,5 @@
 /* eslint-disable functional/immutable-data */
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {Credential} from '@pagopa/io-react-native-wallet';
 import {RootState} from '../../../store/types';
 import {
   AsyncStatusValues,
@@ -13,25 +12,27 @@ import {StoredCredential} from '../utils/types';
 
 type RequestedCredential = string | undefined;
 
-type ObtainCredentialPreAuthResult = {
-  requestObject: Awaited<
-    ReturnType<typeof Credential.Issuance.getRequestedCredentialToBePresented>
-  >;
-  codeVerifier: Awaited<
-    ReturnType<typeof Credential.Issuance.startUserAuthorization>
-  >['codeVerifier'];
-  credentialDefinition: Awaited<
-    ReturnType<typeof Credential.Issuance.startUserAuthorization>
-  >['credentialDefinition'];
-  clientId: Awaited<
-    ReturnType<typeof Credential.Issuance.startUserAuthorization>
-  >['clientId'];
-  issuerConf: Awaited<
-    ReturnType<typeof Credential.Issuance.getIssuerConfig>
-  >['issuerConf'];
-  redirectUri: string;
-  credentialType: string;
-};
+type ObtainCredentialPreAuthResult = boolean;
+// {
+// This is commented because currently the getRequestedCredentialToBePresented function is not available for a generic credential
+// requestObject: Awaited<
+//   ReturnType<typeof Credential.Issuance.getRequestedCredentialToBePresented>
+// >;
+// codeVerifier: Awaited<
+//   ReturnType<typeof Credential.Issuance.startUserAuthorization>
+// >['codeVerifier'];
+// credentialDefinition: Awaited<
+//   ReturnType<typeof Credential.Issuance.startUserAuthorization>
+// >['credentialDefinition'];
+// clientId: Awaited<
+//   ReturnType<typeof Credential.Issuance.startUserAuthorization>
+// >['clientId'];
+// issuerConf: Awaited<
+//   ReturnType<typeof Credential.Issuance.getIssuerConfig>
+// >['issuerConf'];
+// redirectUri: string;
+// credentialType: string;
+// };
 
 /* State type definition for the credentialIssuance slice
  * issuanceCreation - Async status for the instance creation
@@ -69,14 +70,12 @@ export const credentialIssuanceStatusSlice = createSlice({
       state,
       action: PayloadAction<{error: unknown}>
     ) => {
-      state.requestedCredential = undefined;
       state.statusPreAuth = setError(action.payload.error);
     },
     setCredentialIssuancePreAuthSuccess: (
       state,
       action: PayloadAction<{result: ObtainCredentialPreAuthResult}>
     ) => {
-      state.requestedCredential = undefined;
       state.statusPreAuth = setSuccess(action.payload.result);
     },
     setCredentialIssuancePostAuthRequest: state => {
@@ -93,7 +92,6 @@ export const credentialIssuanceStatusSlice = createSlice({
       action: PayloadAction<{credential: StoredCredential}>
     ) => {
       state.statusPostAuth = setSuccess(action.payload.credential);
-      state.requestedCredential = undefined;
     },
     resetCredentialIssuance: _ => initialState
   }

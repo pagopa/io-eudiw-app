@@ -12,6 +12,12 @@ export const getThemeColorByCredentialType = (
   credentialType: string
 ): CredentialTheme => {
   switch (credentialType) {
+    case wellKnownCredential.DRIVING_LICENSE:
+      return {
+        backgroundColor: '#744C63',
+        textColor: '#652035',
+        statusBarStyle: 'light-content'
+      };
     case wellKnownCredential.PID:
     default:
       return {

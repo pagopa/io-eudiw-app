@@ -1,41 +1,45 @@
 import {
-  Avatar,
-  ContentWrapper,
+  Body,
   FeatureInfo,
   FooterActions,
   ForceScrollDownView,
   H2,
   HSpacer,
   Icon,
-  ListItemHeader,
+  IOVisualCostants,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
+import {SdJwt} from '@pagopa/io-react-native-wallet';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {selectCredential} from '../../store/credentials';
 import {
   getCredentialNameByType,
-  ISSUER_MOCK_NAME,
   wellKnownCredential
 } from '../../utils/credentials';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
-import Markdown from '../../../../components/markdown';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus,
+  selectRequestedCredential,
   setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
+import PresentationClaimsList from '../../components/presentation/PresentationClaimsList';
+import {Descriptor, OptionalClaimsNames} from '../../store/presentation';
 
 const CredentialTrust = () => {
   const dispatch = useAppDispatch();
+
+  const [optionalChecked, setOptionalChecked] = useState([] as Array<string>);
   const pid = useAppSelector(selectCredential(wellKnownCredential.PID));
   const {t} = useTranslation(['global', 'wallet']);
   const {loading, error, success} = useAppSelector(
     selectCredentialIssuancePostAuthStatus
   );
+  const requestedCredential = useAppSelector(selectRequestedCredential);
   const navigation = useNavigation();
   const navigateToErrorScreen = useCallback(
     () =>
@@ -44,6 +48,7 @@ const CredentialTrust = () => {
       }),
     [navigation]
   );
+
   const goBack = useCallback(() => {
     navigation.goBack();
     dispatch(resetCredentialIssuance());
@@ -71,55 +76,53 @@ const CredentialTrust = () => {
     return null;
   }
 
-  // const claims = parseClaims(pid.parsedCredential);
-  // const requiredClaims = claims.map(
-  //   claim =>
-  //     ({
-  //       claim,
-  //       source: getCredentialNameByType(pid.credentialType)
-  //     } as RequiredClaim[])
-  // );
+  /**
+   * Callback for when the user checks or unchecks an optional disclosure
+   * in the PresentationClaimsList component.
+   * @param encoded - The encoded string of the optional disclosure
+   */
+  const onOptionalDisclosuresChange = (encoded: OptionalClaimsNames) => {
+    if (optionalChecked.includes(encoded)) {
+      setOptionalChecked(optionalChecked.filter(item => item !== encoded));
+    } else {
+      setOptionalChecked([...optionalChecked, encoded]);
+    }
+  };
+
+  const pidCredentialJwt = SdJwt.decode(pid.credential);
+
+  // This is a mocked descriptor for the PID credential to show its claims in the PresentationClaimsList component
+  const mockedDescriptorForPid: Descriptor = {
+    requiredDisclosures: pidCredentialJwt.disclosures,
+    optionalDisclosures: [],
+    unrequestedDisclosures: []
+  };
 
   return (
     <ForceScrollDownView>
-      <ContentWrapper>
+      <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
         <VSpacer size={24} />
         <View style={styles.header}>
-          <Avatar
-            size="small"
-            logoUri={require('../../../../../assets/img/issuer/IPZS.png')}
-          />
+          <Icon name={'device'} color={'grey-450'} size={24} />
           <HSpacer size={8} />
           <Icon name={'transactions'} color={'grey-450'} size={24} />
           <HSpacer size={8} />
-          <Avatar
-            size="small"
-            logoUri={require('../../../../../assets/img/app/logo.png')}
-          />
+          <Icon name={'institution'} color={'grey-450'} size={24} />
         </View>
         <VSpacer size={24} />
         <H2>
           {t('wallet:credentialIssuance.trust.title', {
-            credential: getCredentialNameByType(pid.credentialType)
+            credential: getCredentialNameByType(requestedCredential)
           })}
         </H2>
-        <Markdown
-          content={t('wallet:credentialIssuance.trust.subtitle', {
-            authority: ISSUER_MOCK_NAME
-          })}
-        />
+        <Body> {t('wallet:credentialIssuance.trust.subtitle')}</Body>
         <VSpacer size={8} />
-        <ListItemHeader
-          label={t('wallet:credentialIssuance.trust.requiredData')}
-          iconName="security"
-          iconColor="grey-700"
-        />
-        {/* <PresentationClaimsList
+        <PresentationClaimsList
           optionalChecked={optionalChecked}
           setOptionalChecked={onOptionalDisclosuresChange}
-          descriptor={route.params.descriptor}
+          descriptor={mockedDescriptorForPid}
           source={getCredentialNameByType(wellKnownCredential.PID)}
-        /> */}
+        />
         <VSpacer size={24} />
         <FeatureInfo
           iconName="fornitori"
@@ -130,8 +133,7 @@ const CredentialTrust = () => {
           iconName="trashcan"
           body={t('wallet:credentialIssuance.trust.disclaimer.retention')}
         />
-        <VSpacer size={32} />
-      </ContentWrapper>
+      </View>
       <FooterActions
         fixed={false}
         actions={{

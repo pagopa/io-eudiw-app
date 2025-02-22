@@ -17,7 +17,6 @@ import {
   setPreDefinitionSuccess
 } from '../store/presentation';
 import {selectAttestation} from '../store/attestation';
-import {WIA_KEYTAG} from '../utils/crypto';
 import {selectCredential} from '../store/credentials';
 import {wellKnownCredential} from '../utils/credentials';
 import {
@@ -55,8 +54,6 @@ function* handlePresetationPreDefinition(
       throw new Error('Wallet Instance Attestation not found');
     }
     const {request_uri, client_id} = action.payload;
-
-    const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
 
     const {requestUri} = yield* call(
       Credential.Presentation.startFlowFromQR,

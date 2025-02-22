@@ -8,6 +8,10 @@ import uuid from 'react-native-uuid';
 import {generate} from '@pagopa/io-react-native-crypto';
 import {IOToast} from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
+import {
+  openAuthenticationSession,
+  supportsInAppBrowser
+} from '@pagopa/io-react-native-login-utils';
 import {regenerateCryptoKey} from '../../../utils/crypto';
 import {DPOP_KEYTAG} from '../utils/crypto';
 import {selectAttestation} from '../store/attestation';
@@ -16,19 +20,14 @@ import {
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
-import {Lifecycle, setLifecycle} from '../store/lifecycle';
 import {navigate} from '../../../navigation/utils';
 import {
   addCredential,
-  addCredentialWithIdentification,
-  selectCredential
+  addCredentialWithIdentification
 } from '../store/credentials';
-import {wellKnownCredential} from '../utils/credentials';
 import {
   resetCredentialIssuance,
-  selectCredentialIssuancePreAuthStatus,
   selectRequestedCredential,
-  setCredentialIssuancePostAuthError,
   setCredentialIssuancePostAuthRequest,
   setCredentialIssuancePostAuthSuccess,
   setCredentialIssuancePreAuthError,
@@ -42,26 +41,17 @@ import {
 export function* watchCredentialSaga() {
   yield* takeLatest([setCredentialIssuancePreAuthRequest], function* (...args) {
     yield* race({
-      task: call(obtainCredentialPreAuth, ...args),
+      task: call(obtainCredential, ...args),
       cancel: take(resetCredentialIssuance)
     });
   });
   yield* takeLatest(
-    [setCredentialIssuancePostAuthRequest],
-    function* (...args) {
-      yield* race({
-        task: call(obtainCredentialPostAuth, ...args),
-        cancel: take(resetCredentialIssuance)
-      });
-    }
-  );
-  yield* takeLatest(
     addCredentialWithIdentification,
-    storePidWithIdentification
+    storeCredentialWithIdentification
   );
 }
 
-function* obtainCredentialPreAuth() {
+function* obtainCredential() {
   try {
     const {EAA_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
 
@@ -82,6 +72,11 @@ function* obtainCredentialPreAuth() {
       throw new Error('Wallet instance attestation not found');
     }
     const wiaCryptoContext = createCryptoContextFor('WIA_KEYTAG');
+
+    // Create credential crypto context
+    const credentialKeyTag = uuid.v4().toString();
+    yield* call(generate, credentialKeyTag);
+    const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
 
     // Start the issuance flow
     const startFlow: Credential.Issuance.StartFlow = () => ({
@@ -110,85 +105,60 @@ function* obtainCredentialPreAuth() {
         }
       );
 
-    const requestObject = yield* call(
-      Credential.Issuance.getRequestedCredentialToBePresented,
+    /**
+     * Temporary comments to permit issuing of mDL without PID presentation
+     * Replace with block code below which redirects to the issuer's authorization URL
+     * FIXME: [WLEO-267]
+     * */
+
+    // const requestObject =
+    //   await Credential.Issuance.getRequestedCredentialToBePresented(
+    //     issuerRequestUri,
+    //     clientId,
+    //     issuerConf,
+    //     appFetch
+    //   );
+
+    // The app here should ask the user to confirm the required data contained in the requestObject
+
+    // Complete the user authorization via form_post.jwt mode
+    // const { code } =
+    //   await Credential.Issuance.completeUserAuthorizationWithFormPostJwtMode(
+    //     requestObject,
+    //     { wiaCryptoContext, pidCryptoContext, pid, walletInstanceAttestation }
+    //   );
+    // Start user authorization
+
+    yield* put(setCredentialIssuancePreAuthSuccess({result: true}));
+    yield* take(setCredentialIssuancePostAuthRequest);
+
+    // Obtain the Authorization URL
+    const {authUrl} = yield* call(
+      Credential.Issuance.buildAuthorizationUrl,
       issuerRequestUri,
       clientId,
       issuerConf
     );
-    yield* put(
-      setCredentialIssuancePreAuthSuccess({
-        result: {
-          requestObject,
-          codeVerifier,
-          credentialDefinition,
-          clientId,
-          redirectUri,
-          credentialType,
-          issuerConf
-        }
-      })
+
+    const supportsCustomTabs = yield* call(supportsInAppBrowser);
+    if (!supportsCustomTabs) {
+      throw new Error('Custom tabs are not supported');
+    }
+
+    const baseRedirectUri = new URL(redirectUri).protocol.replace(':', '');
+
+    // Open the authorization URL in the custom tab
+    const authRedirectUrl = yield* call(
+      openAuthenticationSession,
+      authUrl,
+      baseRedirectUri
     );
-  } catch (error) {
-    yield* put(
-      setCredentialIssuancePreAuthError({error: JSON.stringify(error)})
-    );
-  }
-}
 
-function* obtainCredentialPostAuth() {
-  try {
-    const preAuthResult = yield* select(selectCredentialIssuancePreAuthStatus);
-    if (!preAuthResult.success.status || !preAuthResult.success.data) {
-      throw new Error('Pre-authentication failed');
-    }
-
-    const {
-      codeVerifier,
-      credentialDefinition,
-      requestObject,
-      clientId,
-      credentialType,
-      issuerConf,
-      redirectUri
-    } = preAuthResult.success.data;
-
-    /**
-     * Get the PID from the store and throw an error if it's not found.
-     * Also generate its cryptocontext.
-     */
-    const pid = yield* select(selectCredential(wellKnownCredential.PID));
-    if (!pid) {
-      throw new Error('PID not found');
-    }
-    const pidCryptoContext = createCryptoContextFor(pid.keyTag);
-
-    /**
-     * Get the wallet instance attestation from the store and throw an error if it's not found.
-     * Also generate its cryptocontext.
-     */
-    const walletInstanceAttestation = yield* select(selectAttestation);
-    if (!walletInstanceAttestation) {
-      throw new Error('Wallet instance attestation not found');
-    }
-    const wiaCryptoContext = createCryptoContextFor('WIA_KEYTAG');
-
-    // Create credential crypto context
-    const credentialKeyTag = uuid.v4().toString();
-    yield* call(generate, credentialKeyTag);
-    const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
-
-    // Complete the user authorization via form_post.jwt mode
     const {code} = yield* call(
-      Credential.Issuance.completeUserAuthorizationWithFormPostJwtMode,
-      requestObject,
-      {
-        wiaCryptoContext,
-        pidCryptoContext,
-        pid: pid.credential,
-        walletInstanceAttestation
-      }
+      Credential.Issuance.completeUserAuthorizationWithQueryMode,
+      authRedirectUrl
     );
+    /* End of temporary block code */
 
     // Generate the DPoP context which will be used for the whole issuance flow
     yield* call(regenerateCryptoKey, DPOP_KEYTAG);
@@ -242,7 +212,7 @@ function* obtainCredentialPostAuth() {
     );
   } catch (error) {
     yield* put(
-      setCredentialIssuancePostAuthError({error: JSON.stringify(error)})
+      setCredentialIssuancePreAuthError({error: JSON.stringify(error)})
     );
   }
 }
@@ -252,7 +222,7 @@ function* obtainCredentialPostAuth() {
  * It dispatches the action which shows the pin validation modal and awaits for the result.
  * If the pin is correct, the PID is stored and the lifecycle is set to `LIFECYCLE_VALID`.
  */
-function* storePidWithIdentification(
+function* storeCredentialWithIdentification(
   action: ReturnType<typeof addCredentialWithIdentification>
 ) {
   yield* put(
@@ -264,7 +234,7 @@ function* storePidWithIdentification(
   ]);
   if (setIdentificationIdentified.match(resAction)) {
     yield* put(addCredential({credential: action.payload.credential}));
-    yield* put(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
+    yield* put(resetCredentialIssuance());
     navigate('MAIN_TAB_NAV');
     IOToast.success(i18next.t('buttons.done', {ns: 'global'}));
   } else {

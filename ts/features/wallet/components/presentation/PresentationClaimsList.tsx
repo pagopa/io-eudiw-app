@@ -14,7 +14,13 @@ import {useTranslation} from 'react-i18next';
 import {Descriptor, OptionalClaimsNames} from '../../store/presentation';
 import {ClaimDisplayFormat} from '../../utils/types';
 import {getSafeText, isStringNullyOrEmpty} from '../../../../utils/string';
-import {claimScheme, dateSchema, stringSchema} from '../../utils/claims';
+import {
+  claimScheme,
+  drivingPrivilegesSchema,
+  DrivingPrivilegesType,
+  verificationEvidenceSchema,
+  VerificationEvidenceType
+} from '../../utils/claims';
 
 export type RequiredClaimsProps = {
   optionalChecked: Array<OptionalClaimsNames>;
@@ -140,11 +146,17 @@ export const getClaimDisplayValue = (
   claim: ClaimDisplayFormat
 ): string | Array<string> => {
   const decoded = claimScheme.safeParse(claim.value);
+
   if (decoded.success) {
-    if (dateSchema.safeParse(decoded.data).success) {
-      return new Date(decoded.data).toLocaleDateString();
-    } else if (stringSchema.safeParse(claim.value).success) {
-      return decoded.data;
+    if (decoded.data instanceof Date) {
+      return decoded.data.toLocaleDateString();
+    } else if (drivingPrivilegesSchema.safeParse(decoded.data).success) {
+      const privileges = decoded.data as DrivingPrivilegesType;
+      return privileges.map(elem => elem.vehicle_category_code);
+    } else if (verificationEvidenceSchema.safeParse(decoded.data).success) {
+      return JSON.stringify(decoded.data as VerificationEvidenceType);
+    } else if (typeof decoded.data === 'string') {
+      return getSafeText(decoded.data);
     } else {
       return i18next.t('wallet:claims.generic.notAvailable');
     }

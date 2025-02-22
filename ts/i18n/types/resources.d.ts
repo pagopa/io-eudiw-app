@@ -32,7 +32,8 @@ interface Resources {
       "cancel": "Cancel",
       "confirm": "Confirm",
       "help": "Help",
-      "done": "Done"
+      "done": "Done",
+      "show": "Show"
     },
     "loading": {
       "body": "Please wait a moment"
@@ -286,10 +287,21 @@ interface Resources {
       }
     },
     "claims": {
+      "providedBy": "Provided by {{credential}}",
       "generic": {
-        "notAvailable": "Claim not available"
+        "notAvailable": "Claim not available",
+        "expiryDate": "Valid until",
+        "issueDate": "Valid from",
+        "category": "Category"
       },
-      "providedBy": "Provided by {{credential}}"
+      "mdl": {
+        "license": "License {{category}}",
+        "verificationEvidence": {
+          "organizationId": "Organization ID",
+          "organizationName": "Organization Name",
+          "countryCode": "Country Code"
+        }
+      }
     },
     "home": {
       "addCredential": "Add document",
@@ -316,7 +328,7 @@ interface Resources {
       },
       "trust": {
         "title": "{{credential}}: Required Data",
-        "subtitle": "The data will be shared with the **{{authority}}** for the issuance of the digital version of the document.",
+        "subtitle": "The data will be shared for the issuance of the digital version of the document.",
         "requiredData": "Required data",
         "disclaimer": {
           "store": "Your data is secure and will only be processed for the purposes described in the Privacy Notice.",

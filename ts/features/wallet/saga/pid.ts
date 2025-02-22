@@ -26,10 +26,7 @@ import {
 } from '../../../store/reducers/identification';
 import {Lifecycle, setLifecycle} from '../store/lifecycle';
 import {navigate} from '../../../navigation/utils';
-import {
-  addCredential,
-  addCredentialWithIdentification
-} from '../store/credentials';
+import {addCredential, addPidWithIdentification} from '../store/credentials';
 import {wellKnownCredential} from '../utils/credentials';
 
 /**
@@ -37,10 +34,7 @@ import {wellKnownCredential} from '../utils/credentials';
  */
 export function* watchPidSaga() {
   yield* takeLatest(setPidIssuanceRequest, obtainPid);
-  yield* takeLatest(
-    addCredentialWithIdentification,
-    storePidWithIdentification
-  );
+  yield* takeLatest(addPidWithIdentification, storePidWithIdentification);
 }
 
 /**
@@ -178,7 +172,7 @@ function* obtainPid() {
  * If the pin is correct, the PID is stored and the lifecycle is set to `LIFECYCLE_VALID`.
  */
 function* storePidWithIdentification(
-  action: ReturnType<typeof addCredentialWithIdentification>
+  action: ReturnType<typeof addPidWithIdentification>
 ) {
   yield* put(
     setIdentificationStarted({canResetPin: false, isValidatingTask: true})
