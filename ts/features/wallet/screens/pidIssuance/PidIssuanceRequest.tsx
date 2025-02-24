@@ -20,7 +20,7 @@ import {
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import {StoredCredential} from '../../utils/types';
-import {addCredentialWithIdentification} from '../../store/credentials';
+import {addPidWithIdentification} from '../../store/credentials';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
@@ -71,7 +71,7 @@ const PidIssuanceRequest = () => {
           primary: {
             label: t('wallet:pidIssuance.preview.button'),
             onPress: () =>
-              dispatch(addCredentialWithIdentification({credential})),
+              dispatch(addPidWithIdentification({credential})),
             icon: 'add',
             iconPosition: 'end'
           },
