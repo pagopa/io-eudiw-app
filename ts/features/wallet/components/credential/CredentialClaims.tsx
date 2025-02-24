@@ -4,9 +4,7 @@ import i18next from 'i18next';
 import {useTranslation} from 'react-i18next';
 import {
   claimScheme,
-  drivingPrivilegesSchema,
   DrivingPrivilegesType,
-  verificationEvidenceSchema,
   VerificationEvidenceType
 } from '../../utils/claims';
 import {ClaimDisplayFormat} from '../../utils/types';
@@ -74,7 +72,7 @@ const DrivingPrivilegesClaimItem = ({
   detailsButtonVisible = true
 }: {
   label: string;
-  claim: DrivingPrivilegesType[0];
+  claim: DrivingPrivilegesType['value'][0];
   detailsButtonVisible?: boolean;
 }) => {
   const {issue_date, expiry_date, vehicle_category_code} = claim;
@@ -140,7 +138,7 @@ export const VerificationEvidenceClaimItem = ({
   detailsButtonVisible = true
 }: {
   label: string;
-  claim: VerificationEvidenceType;
+  claim: VerificationEvidenceType['value'];
   detailsButtonVisible: boolean;
 }) => {
   const {organization_id, organization_name, country_code} = claim;
@@ -210,42 +208,39 @@ export const CredentialClaim = ({
    * Thus type casting is required.
    */
   if (decoded.success) {
-    if (decoded.data instanceof Date) {
-      return <DateClaimItem label={claim.label} claim={decoded.data} />;
-    } else if (drivingPrivilegesSchema.safeParse(decoded.data).success) {
-      const privileges = decoded.data as DrivingPrivilegesType;
-      return (
-        <>
-          {privileges.map((elem, index) => (
-            <Fragment
-              key={`${index}_${claim.label}_${elem.vehicle_category_code}`}>
-              {index !== 0 && <Divider />}
-              <DrivingPrivilegesClaimItem
-                label={claim.label}
-                claim={elem}
-                detailsButtonVisible={!isPreview}
-              />
-            </Fragment>
-          ))}
-        </>
-      );
-    } else if (verificationEvidenceSchema.safeParse(decoded.data).success) {
-      return (
-        <VerificationEvidenceClaimItem
-          label={claim.label}
-          claim={decoded.data as VerificationEvidenceType}
-          detailsButtonVisible={!isPreview}
-        />
-      );
-    } else if (typeof decoded.data === 'string') {
-      return (
-        <PlainTextClaimItem
-          label={claim.label}
-          claim={decoded.data as string}
-        />
-      );
-    } else {
-      return <UnknownClaimItem label={claim.label} />;
+    switch (decoded.data.type) {
+      case 'date':
+        return <DateClaimItem label={claim.label} claim={decoded.data.value} />;
+      case 'drivingPrivileges':
+        return (
+          <>
+            {decoded.data.value.map((elem, index) => (
+              <Fragment
+                key={`${index}_${claim.label}_${elem.vehicle_category_code}`}>
+                {index !== 0 && <Divider />}
+                <DrivingPrivilegesClaimItem
+                  label={claim.label}
+                  claim={elem}
+                  detailsButtonVisible={!isPreview}
+                />
+              </Fragment>
+            ))}
+          </>
+        );
+      case 'verificationEvidence':
+        return (
+          <VerificationEvidenceClaimItem
+            label={claim.label}
+            claim={decoded.data.value}
+            detailsButtonVisible={!isPreview}
+          />
+        );
+      case 'string':
+        return (
+          <PlainTextClaimItem label={claim.label} claim={decoded.data.value} />
+        );
+      default:
+        return <UnknownClaimItem label={claim.label} />;
     }
   } else {
     return <UnknownClaimItem label={claim.label} />;
