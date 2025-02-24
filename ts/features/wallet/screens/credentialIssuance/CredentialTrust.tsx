@@ -30,9 +30,12 @@ import {
 import PresentationClaimsList from '../../components/presentation/PresentationClaimsList';
 import {Descriptor, OptionalClaimsNames} from '../../store/presentation';
 
+/**
+ * Screen which shows the user the credentials and claims that will be shared with the credential issuer
+ * in order to obtain the requisted credential.
+ */
 const CredentialTrust = () => {
   const dispatch = useAppDispatch();
-
   const [optionalChecked, setOptionalChecked] = useState([] as Array<string>);
   const pid = useAppSelector(selectCredential(wellKnownCredential.PID));
   const {t} = useTranslation(['global', 'wallet']);
@@ -41,6 +44,7 @@ const CredentialTrust = () => {
   );
   const requestedCredential = useAppSelector(selectRequestedCredential);
   const navigation = useNavigation();
+
   const navigateToErrorScreen = useCallback(
     () =>
       navigation.navigate('MAIN_WALLET_NAV', {
@@ -56,6 +60,10 @@ const CredentialTrust = () => {
 
   useHeaderSecondLevel({title: '', goBack});
 
+  /**
+   * When the post auth request is successful, navigate to the preview screen
+   * which shows the credential preview.
+   */
   useEffect(() => {
     if (success.status) {
       navigation.navigate('MAIN_WALLET_NAV', {
@@ -64,14 +72,17 @@ const CredentialTrust = () => {
     }
   }, [navigation, success.status]);
 
+  /**
+   * If an error occurs during the post auth request, navigate to the error screen.
+   */
   useEffect(() => {
     if (error.status) {
       navigateToErrorScreen();
     }
   });
 
+  // This should never happen, however we need to handle because pid might be undefined
   if (!pid) {
-    // This should never happen, however we need to handle because pid might be undefined
     navigateToErrorScreen();
     return null;
   }
@@ -89,9 +100,8 @@ const CredentialTrust = () => {
     }
   };
 
-  const pidCredentialJwt = SdJwt.decode(pid.credential);
-
   // This is a mocked descriptor for the PID credential to show its claims in the PresentationClaimsList component
+  const pidCredentialJwt = SdJwt.decode(pid.credential);
   const mockedDescriptorForPid: Descriptor = {
     requiredDisclosures: pidCredentialJwt.disclosures,
     optionalDisclosures: [],

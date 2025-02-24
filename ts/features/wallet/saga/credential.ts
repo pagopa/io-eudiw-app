@@ -28,6 +28,7 @@ import {
 import {
   resetCredentialIssuance,
   selectRequestedCredential,
+  setCredentialIssuancePostAuthError,
   setCredentialIssuancePostAuthRequest,
   setCredentialIssuancePostAuthSuccess,
   setCredentialIssuancePreAuthError,
@@ -36,7 +37,7 @@ import {
 } from '../store/credentialIssuance';
 
 /**
- * Saga watcher for PID related actions.
+ * Saga watcher for credential related actions.
  */
 export function* watchCredentialSaga() {
   yield* takeLatest([setCredentialIssuancePreAuthRequest], function* (...args) {
@@ -51,6 +52,13 @@ export function* watchCredentialSaga() {
   );
 }
 
+/**
+ * Function which handles the issuance of a credential.
+ * The related state is divided in two parts, pre and post authorization.
+ * Pre authorization is the phase before the user is asked to authorize the presentation of the required credentials and claims to the issuer.
+ * Post authorization is the phase after the user has authorized the presentation of the required credentials and claims to the issuer.
+ * Currently the flow is not complete and thus the authorization is mocked and asks for the whole PID.
+ */
 function* obtainCredential() {
   try {
     const {EAA_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
@@ -211,16 +219,17 @@ function* obtainCredential() {
       })
     );
   } catch (error) {
-    yield* put(
-      setCredentialIssuancePreAuthError({error: JSON.stringify(error)})
-    );
+    // We put the error in both the pre and post auth status as we are unsure where the error occurred.
+    const serializableError = JSON.stringify(error);
+    yield* put(setCredentialIssuancePostAuthError({error: serializableError}));
+    yield* put(setCredentialIssuancePreAuthError({error: serializableError}));
   }
 }
 
 /**
- * Saga to store the PID credential after pin validation.
+ * Saga to store the credential after pin validation.
  * It dispatches the action which shows the pin validation modal and awaits for the result.
- * If the pin is correct, the PID is stored and the lifecycle is set to `LIFECYCLE_VALID`.
+ * If the pin is correct, the credential is stored, the issuance state is resetted and the user is navigated to the main screen.
  */
 function* storeCredentialWithIdentification(
   action: ReturnType<typeof addCredentialWithIdentification>

@@ -12,8 +12,8 @@ import {
 import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 
 /**
- * Filure screen of the pid issuance flow.
- * Currently it only shows a message and a button to go back to the main screen.
+ * Filure screen of the credential issuance flow.
+ * Currently it only shows a message and a button to go back to the main screen, along with the debug information.
  */
 const CredentialFailure = () => {
   const {t} = useTranslation(['global', 'wallet']);

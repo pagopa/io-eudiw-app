@@ -14,7 +14,7 @@ type CredentialClaimsListProps = {
  * This component renders the list of claims for a credential.
  * It dinamically renders the list of claims passed as claims prop in the order they are passed.
  * @param data - the {@link StoredCredential} of the credential.
- * @param isPreview - if true, the claims are rendered in a compact way.
+ * @param isPreview - if true, the claims won't be rendered with buttons to show the full value
  */
 const CredentialPreviewClaimsList = ({
   data,

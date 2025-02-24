@@ -20,14 +20,17 @@ import {
   setCredentialIssuancePreAuthRequest
 } from '../../store/credentialIssuance';
 
+/**
+ * The list of the obtainable credentias.
+ * Each credential has a button that allows the user to request it.
+ * It also shows a badge if the credential is already saved or a loading indicator if the credential is being requested.
+ */
 const CredentialsList = () => {
   const {t} = useTranslation('wallet');
   const credentials = useAppSelector(selectCredentials);
   const dispatch = useAppDispatch();
   const requestedCredential = useAppSelector(selectRequestedCredential);
-  const credentialIssuanceStatus = useAppSelector(
-    selectCredentialIssuancePreAuthStatus
-  );
+  const preAuthStatus = useAppSelector(selectCredentialIssuancePreAuthStatus);
   const navigation = useNavigation();
 
   const goBack = useCallback(() => {
@@ -35,31 +38,39 @@ const CredentialsList = () => {
     dispatch(resetCredentialIssuance());
   }, [dispatch, navigation]);
 
+  const isCredentialSaved = (type: string) =>
+    credentials.find(c => c.credentialType === type) !== undefined;
+
+  const isCredentialRequested = (type: string) => requestedCredential === type;
+
   useHeaderSecondLevel({
     title: '',
     goBack
   });
 
+  /**
+   * If the pre auth request is successful, navigate to the trust screen
+   * where the user will be requested to confirm the presentation of the required credentials and claims
+   * to obtain the requested credential.
+   */
   useEffect(() => {
-    if (credentialIssuanceStatus.success.status) {
+    if (preAuthStatus.success.status) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'CREDENTIAL_ISSUANCE_TRUST'
       });
     }
-  }, [credentialIssuanceStatus.success, navigation]);
+  }, [preAuthStatus.success, navigation]);
 
+  /**
+   * If an error occurs during the pre auth request, navigate to the failure screen.
+   */
   useEffect(() => {
-    if (credentialIssuanceStatus.error.status) {
+    if (preAuthStatus.error.status) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'CREDENTIAL_ISSUANCE_FAILURE'
       });
     }
-  }, [credentialIssuanceStatus.error, navigation]);
-
-  const isCredentialSaved = (type: string) =>
-    credentials.find(c => c.credentialType === type) !== undefined;
-
-  const isCredentialRequested = (type: string) => requestedCredential === type;
+  }, [preAuthStatus.error, navigation]);
 
   return (
     <IOScrollViewWithLargeHeader

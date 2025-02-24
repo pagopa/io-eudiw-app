@@ -23,6 +23,13 @@ const activeBadge: Badge = {
   text: i18next.t('credentialIssuance.badges.saved', {ns: 'wallet'})
 };
 
+/**
+ * Module credential component which represent a credential in the credential list when requiring a new credential.
+ * @param type - the type of the credential
+ * @param onPress - the callback to be called when the credential is pressed
+ * @param isSaved - if true, the credential has already been obtained
+ * @param isFetching - if true, the credential issuance flow has been started
+ */
 const OnboardingModuleCredential = ({
   type,
   onPress,
