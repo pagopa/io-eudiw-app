@@ -286,6 +286,12 @@ interface Resources {
         "subtitle": "You will be redirected to the partner site"
       }
     },
+    "proximity": {
+      "showQr": {
+        "title": "Show QR",
+        "body": "Display the QR code to verify the validity of the documents in your Wallet"
+      }
+    },
     "claims": {
       "providedBy": "Provided by {{credential}}",
       "generic": {

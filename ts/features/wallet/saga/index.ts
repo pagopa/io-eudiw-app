@@ -3,6 +3,7 @@ import {watchInstanceSaga} from './instance';
 import {watchPidSaga} from './pid';
 import {watchCredentialSaga} from './credential';
 import {watchPresentationSaga} from './presentation';
+import {watchProximitySaga} from './proximity';
 
 /**
  * Main saga for the wallet feature.
@@ -13,6 +14,7 @@ export function* walletSaga() {
     yield* watchInstanceSaga(),
     yield* watchPidSaga(),
     yield* watchCredentialSaga(),
+    yield* watchProximitySaga(),
     yield* watchPresentationSaga()
   ]);
 }

@@ -3,10 +3,21 @@
   xmlns:tools="http://schemas.android.com/tools">
   <uses-permission android:name="android.permission.INTERNET" />
 
+  <!-- Required by react-native-fingerpint -->
   <uses-permission android:name="android.permission.USE_BIOMETRIC" />
   <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
+  <!-- Required by react-native-vision-camera -->
   <uses-permission android:name="android.permission.CAMERA" />
+
+  <!-- Required by io-react-native-proximity -->
+  <uses-permission android:name="android.permission.BLUETOOTH" tools:remove="android:maxSdkVersion" />
+  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" tools:remove="android:maxSdkVersion" />
+  <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+  <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+  <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" android:maxSdkVersion="28"/>
 
   <application
     android:name=".MainApplication"
@@ -48,6 +59,7 @@
       </intent-filter>
     </activity>
 
+    <!-- Required by react-native-image-picker for backporting the AndroidX Photo Picker. Can be removed when bumping the minSdkVersion to 30 or more -->
     <service
       android:name="com.google.android.gms.metadata.ModuleDependencies"
       android:enabled="false"

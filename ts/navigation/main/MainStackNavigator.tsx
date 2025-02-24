@@ -7,6 +7,7 @@ import WalletNavigator, {
 } from '../../features/wallet/navigation/WalletNavigator';
 import Settings from '../../screens/Settings';
 import QrCodeScanScreen from '../../features/qrcode/scan/screens/QrCodeScanScreen';
+import ProximityQrCode from '../../features/wallet/screens/proximity/ProximityQrCode';
 import MAIN_ROUTES from './routes';
 /**
  * Screen parameters for the main navigator.
@@ -17,6 +18,7 @@ export type MainNavigatorParamsList = {
   [MAIN_ROUTES.WALLET_NAV]: NavigatorScreenParams<WalletNavigatorParamsList>;
   [MAIN_ROUTES.SETTINGS]: undefined;
   [MAIN_ROUTES.SCAN_QR]: undefined;
+  [MAIN_ROUTES.SHOW_QR]: undefined;
 };
 
 const Stack = createNativeStackNavigator<MainNavigatorParamsList>();
@@ -34,7 +36,12 @@ const MainStackNavigator = () => (
     <Stack.Screen
       name={MAIN_ROUTES.SCAN_QR}
       component={QrCodeScanScreen}
-      options={{}}
+      options={{animation: 'slide_from_bottom'}}
+    />
+    <Stack.Screen
+      name={MAIN_ROUTES.SHOW_QR}
+      component={ProximityQrCode}
+      options={{animation: 'slide_from_bottom'}}
     />
     <Stack.Screen name={MAIN_ROUTES.SETTINGS} component={Settings} />
   </Stack.Navigator>
