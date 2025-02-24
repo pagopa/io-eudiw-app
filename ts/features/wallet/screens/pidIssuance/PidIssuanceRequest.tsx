@@ -70,8 +70,7 @@ const PidIssuanceRequest = () => {
         actions={{
           primary: {
             label: t('wallet:pidIssuance.preview.button'),
-            onPress: () =>
-              dispatch(addPidWithIdentification({credential})),
+            onPress: () => dispatch(addPidWithIdentification({credential})),
             icon: 'add',
             iconPosition: 'end'
           },
