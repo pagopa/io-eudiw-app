@@ -1,10 +1,15 @@
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import React from 'react';
-import {useAppDispatch} from '../../../../store';
+import {useAppDispatch, useAppSelector} from '../../../../store';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
-import {resetCredentialIssuance} from '../../store/credentialIssuance';
+import {
+  resetCredentialIssuance,
+  selectCredentialIssuancePostAuthError,
+  selectCredentialIssuancePreAuthError
+} from '../../store/credentialIssuance';
+import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 
 /**
  * Filure screen of the pid issuance flow.
@@ -14,8 +19,12 @@ const CredentialFailure = () => {
   const {t} = useTranslation(['global', 'wallet']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const postError = useAppSelector(selectCredentialIssuancePostAuthError);
+  const preError = useAppSelector(selectCredentialIssuancePreAuthError);
 
   useHardwareBackButton(() => true);
+
+  useDebugInfo({postError, preError});
 
   const onPress = () => {
     dispatch(resetCredentialIssuance());

@@ -124,3 +124,9 @@ export const selectCredentialIssuancePostAuthStatus = (state: RootState) =>
 
 export const selectRequestedCredential = (state: RootState) =>
   state.wallet.credentialIssuanceStatus.requestedCredential;
+
+export const selectCredentialIssuancePostAuthError = (state: RootState) =>
+  state.wallet.credentialIssuanceStatus.statusPostAuth.error.error;
+
+export const selectCredentialIssuancePreAuthError = (state: RootState) =>
+  state.wallet.credentialIssuanceStatus.statusPreAuth.error.error;
