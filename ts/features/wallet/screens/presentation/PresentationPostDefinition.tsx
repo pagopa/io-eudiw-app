@@ -121,7 +121,7 @@ const PresentationPostDefinition = ({route}: Props) => {
 
   useHeaderSecondLevel({
     title: '',
-    goBack: cancel
+    goBack: cancelAlert
   });
 
   return (

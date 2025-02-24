@@ -30,9 +30,7 @@ import {
  * Saga watcher for presentation related actions.
  */
 export function* watchPresentationSaga() {
-  yield* takeLatest([setPreDefinitionRequest], function* (...args) {
-    yield* call(handlePresetationPreDefinition, ...args);
-  });
+  yield* takeLatest(setPreDefinitionRequest, handlePresetationPreDefinition);
 }
 
 /**
@@ -158,21 +156,16 @@ function* handlePresetationPreDefinition(
         throw new Error('Identification failed');
       }
     } else {
-      try {
-        /**
-         * Ignoring TS as typed-redux-saga doesn't seem to digest correctly a tuple of arguments.
-         * This works as expected though.
-         */
-        yield* call(
-          // @ts-ignore
-          Credential.Presentation.sendAuthorizationErrorResponse,
+      // The result of this call is ignored for the user is not interested in any message
+      yield* call(() =>
+        Credential.Presentation.sendAuthorizationErrorResponse(
           requestObject,
           'access_denied',
           jwks.keys
-        );
-      } catch {
-        // The result of this call is ignored for the user is not interested in any message
-      }
+        )
+          .then(() => {})
+          .catch(() => {})
+      );
     }
   } catch (e) {
     // We don't know which step is failed thus we set the same error for both
