@@ -20,7 +20,7 @@ import {
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import {StoredCredential} from '../../utils/types';
-import {addCredentialWithIdentification} from '../../store/credentials';
+import {addPidWithIdentification} from '../../store/credentials';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
@@ -62,7 +62,7 @@ const PidIssuanceRequest = () => {
           <H2>{t('wallet:pidIssuance.preview.subtitle')}</H2>
           <VSpacer size={24} />
           <View>
-            <CredentialPreviewClaimsList data={credential} />
+            <CredentialPreviewClaimsList data={credential} isPreview={true} />
           </View>
         </VStack>
       </ForceScrollDownView>
@@ -70,8 +70,7 @@ const PidIssuanceRequest = () => {
         actions={{
           primary: {
             label: t('wallet:pidIssuance.preview.button'),
-            onPress: () =>
-              dispatch(addCredentialWithIdentification({credential})),
+            onPress: () => dispatch(addPidWithIdentification({credential})),
             icon: 'add',
             iconPosition: 'end'
           },

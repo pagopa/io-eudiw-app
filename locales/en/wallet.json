@@ -76,18 +76,59 @@
     }
   },
   "claims": {
+    "providedBy": "Provided by {{credential}}",
     "generic": {
-      "notAvailable": "Claim not available"
+      "notAvailable": "Claim not available",
+      "expiryDate": "Valid until",
+      "issueDate": "Valid from",
+      "category": "Category"
     },
-    "providedBy": "Provided by {{credential}}"
-  },
-  "addcredential" : {
-    "homebuttonlabel" : "Add Document",
-    "choosecredentialtoadd" : {
-      "title" : "What would you like to add to the Wallet?",
-      "headers" : {
-        "documents" : "Documents"
+    "mdl": {
+      "license": "License {{category}}",
+      "verificationEvidence": {
+        "organizationId": "Organization ID",
+        "organizationName": "Organization Name",
+        "countryCode": "Country Code"
       }
+    }
+  },
+  "home": {
+    "addCredential": "Add document",
+    "badges": {
+      "saved": "Saved"
+    }
+  },
+  "credentialIssuance": {
+    "badges": {
+      "saved": "Saved"
+    },
+    "addcredential": {
+      "homebuttonlabel": "Add Document",
+      "choosecredentialtoadd": {
+        "title": "What would you like to add to the Wallet?",
+        "headers": {
+          "documents": "Documents"
+        }
+      }
+    },
+    "list": {
+      "title": "What would you like to add to the Wallet?",
+      "header": "Documents"
+    },
+    "trust": {
+      "title": "{{credential}}: Required Data",
+      "subtitle": "The data will be shared for the issuance of the digital version of the document.",
+      "requiredData": "Required data",
+      "disclaimer": {
+        "store": "Your data is secure and will only be processed for the purposes described in the Privacy Notice.",
+        "retention": "The data will only be shared for the time necessary to issue the digital version of the document."
+      },
+      "dataSource": "Provided by {{source}}"
+    },
+    "failure": {
+      "title": "An unexpected error occurred",
+      "subtitle": "Your request to the issuing entity was not successful.",
+      "button": "I understand"
     }
   }
 }
