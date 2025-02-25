@@ -6,22 +6,21 @@ import {
   Body,
   ContentWrapper,
   H2,
+  HSpacer,
+  HStack,
+  IconButton,
   LoadingSpinner,
   VSpacer
 } from '@pagopa/io-app-design-system';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../../../store';
-import {
-  resetProximity,
-  selectProximityError,
-  selectProximityQrCode,
-  selectProximityState
-} from '../../store/proximity';
+import {resetProximity, selectProximityError} from '../../store/proximity';
 import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
-import {useProximity} from '../../components/proximity/useProximity';
+import {useProximity} from '../../hooks/proximity/useProximity';
+import useProximityLogBoxBs from '../../hooks/proximity/useProximityLogBottomSheet';
 
 /**
  * Shows the QR code for the proximity presentation.
@@ -31,9 +30,10 @@ const ProximityQrCode = () => {
   const {t} = useTranslation(['global', 'wallet']);
   const error = useAppSelector(selectProximityError);
   const navigation = useNavigation();
-  const state = useAppSelector(selectProximityState);
   const {initProximity, closeConnection} = useProximity();
   const [qrCode, setQrCode] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const logBoxBs = useProximityLogBoxBs();
 
   useHardwareBackButton(() => true);
   useDisableGestureNavigation();
@@ -42,43 +42,61 @@ const ProximityQrCode = () => {
     title: '',
     goBack: async () => {
       navigation.goBack();
+      dispatch(resetProximity());
       await closeConnection();
     }
   });
 
+  const startProximity = useCallback(async () => {
+    try {
+      setQrCode(null);
+      dispatch(resetProximity());
+      const res = await initProximity();
+      setQrCode(res);
+    } catch (e) {
+      // We can ignore this because the error is already set in the store and the connection is closed inside initProximity.
+    }
+  }, [dispatch, initProximity]);
+
   useEffect(() => {
-    initProximity()
-      .then(res => {
-        setQrCode(res);
-      })
-      .catch(() => {
-        /* we can just ignore this 
-        as the hook takes care of closing the connection */
-      });
-  }, [initProximity]);
+    startProximity()
+      .then(() => {})
+      .catch(() => {});
+  }, [startProximity]);
 
   useDebugInfo({qrCode, error});
 
   return (
-    <View>
-      <ContentWrapper>
-        <H2>{t('wallet:proximity.showQr.title')}</H2>
-        <VSpacer size={16} />
-        <Body>{t('wallet:proximity.showQr.body')}</Body>
-        <VSpacer size={40} />
-        <View style={{alignItems: 'center'}}>
-          {qrCode ? (
-            <>
-              <QRCode size={280} value={qrCode} />
-              <VSpacer size={24} />
-              <Body>{state}</Body>
-            </>
-          ) : (
-            <LoadingSpinner />
-          )}
-        </View>
-      </ContentWrapper>
-    </View>
+    <ContentWrapper>
+      <H2>{t('wallet:proximity.showQr.title')}</H2>
+      <VSpacer size={16} />
+      <Body>{t('wallet:proximity.showQr.body')}</Body>
+      <VSpacer size={40} />
+      <View style={{alignItems: 'center'}}>
+        {qrCode ? (
+          <>
+            <QRCode size={280} value={qrCode} />
+            <VSpacer size={24} />
+            <HStack>
+              <IconButton
+                icon="reload"
+                onPress={startProximity}
+                accessibilityLabel={'reload'}
+              />
+              <HSpacer />
+              <IconButton
+                icon={'notes'}
+                onPress={logBoxBs.present}
+                accessibilityLabel={'Show log'}
+              />
+            </HStack>
+          </>
+        ) : (
+          <LoadingSpinner />
+        )}
+      </View>
+      {logBoxBs.bottomSheet}
+    </ContentWrapper>
   );
 };
 

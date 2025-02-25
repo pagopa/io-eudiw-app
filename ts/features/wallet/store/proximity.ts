@@ -10,13 +10,13 @@ import {RootState} from '../../../store/types';
  */
 export type ProximityState = {
   error: unknown;
-  state: string;
+  logBox: string;
 };
 
 // Initial state for the proximity slice
 const initialState: ProximityState = {
-  state: '',
-  error: undefined
+  error: undefined,
+  logBox: 'START OF THE LOG'
 };
 
 /**
@@ -29,8 +29,8 @@ export const proximitySlice = createSlice({
     setProximityError: (state, action: PayloadAction<{error: unknown}>) => {
       state.error = setError(action.payload.error);
     },
-    setProximityState: (state, action: PayloadAction<string>) => {
-      state.state = action.payload;
+    addProximityLog: (state, action: PayloadAction<string>) => {
+      state.logBox = `${state.logBox} \n ============== \n ${action.payload}`;
     },
     resetProximity: () => initialState
   }
@@ -39,7 +39,7 @@ export const proximitySlice = createSlice({
 /**
  * Exports the actions for the proximity slice.
  */
-export const {setProximityError, setProximityState, resetProximity} =
+export const {setProximityError, addProximityLog, resetProximity} =
   proximitySlice.actions;
 
 /**
@@ -60,5 +60,5 @@ export const selectProximityError = (state: RootState) =>
  * @param state - The root state
  * @returns The state of the proximity process.
  */
-export const selectProximityState = (state: RootState) =>
-  state.wallet.proximity.state;
+export const selectProximityLogBoxState = (state: RootState) =>
+  state.wallet.proximity.logBox;

@@ -290,7 +290,8 @@ interface Resources {
       "showQr": {
         "title": "Show QR",
         "body": "Display the QR code to verify the validity of the documents in your Wallet"
-      }
+      },
+      "log": "Debug log"
     },
     "claims": {
       "providedBy": "Provided by {{credential}}",
