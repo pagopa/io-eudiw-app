@@ -129,6 +129,7 @@ The React Native documentation provides a [useful guide](https://reactnative.dev
 ## Wallet libraries ecosystem
 
 - [`io-react-native-wallet`](https://github.com/pagopa/io-react-native-wallet)
+- [`io-react-native-cbor`](https://github.com/pagopa/io-react-native-cbor)
 
 ## Design System
 
