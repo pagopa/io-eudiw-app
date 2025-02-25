@@ -18,7 +18,6 @@ import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
   Descriptor,
   OptionalClaimsNames,
-  resetPresentation,
   selectPostDefinitionStatus,
   setPostDefinitionCancel,
   setPostDefinitionRequest
@@ -64,6 +63,7 @@ const PresentationPostDefinition = ({route}: Props) => {
 
   const cancel = () => {
     dispatch(setPostDefinitionCancel());
+    navigateToWallet();
   };
 
   const cancelAlert = () => {
@@ -106,17 +106,11 @@ const PresentationPostDefinition = ({route}: Props) => {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PRESENTATION_FAILURE'
       });
-    } else if (postDefinitionStatus.cancel.status) {
-      dispatch(resetPresentation());
-      navigateToWallet();
     }
   }, [
     navigation,
     postDefinitionStatus.error.status,
-    postDefinitionStatus.success.status,
-    postDefinitionStatus.cancel.status,
-    dispatch,
-    navigateToWallet
+    postDefinitionStatus.success.status
   ]);
 
   useHeaderSecondLevel({

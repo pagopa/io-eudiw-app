@@ -3,7 +3,6 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Credential} from '@pagopa/io-react-native-wallet';
 import {
   AsyncStatusValues,
-  setCancel,
   setError,
   setInitial,
   setLoading,
@@ -82,9 +81,8 @@ export const presentationSlice = createSlice({
        */
       state.postDefinition = setLoading();
     },
-    setPostDefinitionCancel: state => {
-      state.postDefinition = setCancel();
-    },
+    // Empty action which will be intercepted by the saga and trigger the identification before finishing the presentation process
+    setPostDefinitionCancel: _ => {},
     setPostDefinitionError: (
       state,
       action: PayloadAction<{error: unknown}>

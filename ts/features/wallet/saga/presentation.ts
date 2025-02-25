@@ -8,6 +8,7 @@ import {InputDescriptor} from '@pagopa/io-react-native-wallet/lib/typescript/cre
 import {serializeError} from 'serialize-error';
 import {
   AuthResponse,
+  resetPresentation,
   setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionRequest,
@@ -165,6 +166,9 @@ function* handlePresetationPreDefinition(
         )
           .then(() => {})
           .catch(() => {})
+          .finally(() => {
+            put(resetPresentation());
+          })
       );
     }
   } catch (e) {
