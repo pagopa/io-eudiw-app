@@ -9,14 +9,12 @@ import {RootState} from '../../../store/types';
  * state - The state of the proximity process
  */
 export type ProximityState = {
-  qrCode: string | undefined;
   error: unknown;
   state: string;
 };
 
 // Initial state for the proximity slice
 const initialState: ProximityState = {
-  qrCode: undefined,
   state: '',
   error: undefined
 };
@@ -28,10 +26,6 @@ export const proximitySlice = createSlice({
   name: 'proximitySlice',
   initialState,
   reducers: {
-    setProximityQrCode: (state, action: PayloadAction<string>) => {
-      state.qrCode = action.payload;
-    },
-    startProximity: _ => {},
     setProximityError: (state, action: PayloadAction<{error: unknown}>) => {
       state.error = setError(action.payload.error);
     },
@@ -45,26 +39,13 @@ export const proximitySlice = createSlice({
 /**
  * Exports the actions for the proximity slice.
  */
-export const {
-  setProximityQrCode,
-  startProximity,
-  setProximityError,
-  setProximityState,
-  resetProximity
-} = proximitySlice.actions;
+export const {setProximityError, setProximityState, resetProximity} =
+  proximitySlice.actions;
 
 /**
  * Exports the reducer for the proximity slice.
  */
 export const {reducer: proximityReducer} = proximitySlice;
-
-/**
- * Selects the proximity qr code from the state.
- * @param state - The root state
- * @returns The qr code for the proximity process if it exists, undefined otherwise .
- */
-export const selectProximityQrCode = (state: RootState) =>
-  state.wallet.proximity.qrCode;
 
 /**
  * Selects the proximity error from the state.

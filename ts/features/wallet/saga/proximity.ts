@@ -16,75 +16,6 @@ import {
 } from '../store/proximity';
 import {requestBlePermissions} from '../utils/permissions';
 
-/**
- * Saga watcher for proximity related actions.
- */
-export function* watchProximitySaga() {
-  yield* race({
-    proximity: takeLatest(startProximity, startProximityPresentation),
-    reset: takeLatest(resetProximity, closeConnection)
-  });
-}
-
-/**
- * Saga for starting the proximity presentation.
- * It initializes the QR engagement, generates the QR code and listens for incoming events
- * by registering the appropriate callbacks.
- */
-function* startProximityPresentation() {
-  try {
-    const permissions = yield* call(requestBlePermissions);
-    if (!permissions) {
-      throw new Error('Permissions not granted');
-    }
-    yield* call(ProximityModule.initializeQrEngagement, true, false, true); // Peripheral mode
-    const qrCode = yield* call(ProximityModule.getQrCodeString);
-    yield* put(setProximityQrCode(qrCode));
-
-    // Register listeners
-    ProximityModule.addListener('onDeviceRetrievalHelperReady', () =>
-      onDeviceRetrievalHelperReadyCallback(qrCode)
-    );
-    ProximityModule.addListener('onCommunicationError', onErrorData =>
-      onCommunicationErrorCallback(onErrorData)
-    );
-    ProximityModule.addListener('onNewDeviceRequest', onNewData =>
-      onNewDeviceRequestCallback(onNewData)
-    );
-    yield* put(setProximityState('Ready to receive requests'));
-  } catch (e) {
-    yield* put(setProximityState(`An error occurred check the debug menu`));
-    yield* put(setProximityError({error: serializeError(e)}));
-  } finally {
-    yield* call(closeConnection);
-  }
-}
-
-/**
- * Callback for when the device retrieval helper is ready.
- * Currently we just set the qrcode in the store so that it can be displayed.
- * @param qrCode - The QR code string to be displayed.
- */
-function* onDeviceRetrievalHelperReadyCallback(qrCode: string) {
-  yield put(setProximityQrCode(qrCode));
-}
-
-/**
- * Callback for when an error occurs during communication.
- * It sets the error in the store and closes the connection.
- * @param onErrorData - The error data.
- */
-function* onCommunicationErrorCallback(
-  onErrorData: QrEngagementEventPayloads['onCommunicationError']
-) {
-  yield* put(setProximityState(`An error occurred check the debug menu`));
-  yield* put(
-    setProximityError({
-      error: `[ON_COMMUNICATION_ERROR_CALLBACK] ${onErrorData}`
-    })
-  );
-  yield* call(closeConnection);
-}
 
 /**
  * Callback for when a new device request is received.
@@ -97,6 +28,7 @@ function* onCommunicationErrorCallback(
 function* onNewDeviceRequestCallback(
   onNewData: QrEngagementEventPayloads['onNewDeviceRequest']
 ) {
+  console.log('oook');
   try {
     if (!onNewData || !onNewData.message) {
       throw new Error('Invalid onNewDeviceRequest payload');

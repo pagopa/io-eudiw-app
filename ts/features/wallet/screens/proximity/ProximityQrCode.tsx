@@ -1,5 +1,5 @@
 import {useTranslation} from 'react-i18next';
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {View} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {
@@ -15,13 +15,13 @@ import {
   resetProximity,
   selectProximityError,
   selectProximityQrCode,
-  selectProximityState,
-  startProximity
+  selectProximityState
 } from '../../store/proximity';
 import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
+import {useProximity} from '../../components/proximity/useProximity';
 
 /**
  * Shows the QR code for the proximity presentation.
@@ -29,26 +29,33 @@ import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
  */
 const ProximityQrCode = () => {
   const {t} = useTranslation(['global', 'wallet']);
-  const qrCode = useAppSelector(selectProximityQrCode);
   const error = useAppSelector(selectProximityError);
   const navigation = useNavigation();
-  const dispatch = useAppDispatch();
   const state = useAppSelector(selectProximityState);
+  const {initProximity, closeConnection} = useProximity();
+  const [qrCode, setQrCode] = useState<string | null>(null);
 
   useHardwareBackButton(() => true);
   useDisableGestureNavigation();
 
   useHeaderSecondLevel({
     title: '',
-    goBack: () => {
+    goBack: async () => {
       navigation.goBack();
-      dispatch(resetProximity());
+      await closeConnection();
     }
   });
 
   useEffect(() => {
-    dispatch(startProximity());
-  }, [dispatch]);
+    initProximity()
+      .then(res => {
+        setQrCode(res);
+      })
+      .catch(() => {
+        /* we can just ignore this 
+        as the hook takes care of closing the connection */
+      });
+  }, [initProximity]);
 
   useDebugInfo({qrCode, error});
 
