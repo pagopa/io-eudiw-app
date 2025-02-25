@@ -3,11 +3,11 @@ import i18next from 'i18next';
 type CredentialsKeys = 'DRIVING_LICENSE' | 'PID';
 
 export const wellKnownCredential: Record<CredentialsKeys, string> = {
-  DRIVING_LICENSE: 'MDL',
+  DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
   PID: 'urn:eu.europa.ec.eudi:pid:1'
 };
 
-export const getCredentialNameByType = (type: string): string => {
+export const getCredentialNameByType = (type?: string): string => {
   switch (type) {
     case wellKnownCredential.DRIVING_LICENSE:
       return i18next.t(['wallet:credentials.names.mdl']);

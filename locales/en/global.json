@@ -31,7 +31,8 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "help": "Help",
-    "done": "Done"
+    "done": "Done",
+    "show": "Show"
   },
   "loading": {
     "body": "Please wait a moment"

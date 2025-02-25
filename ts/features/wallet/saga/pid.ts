@@ -26,20 +26,15 @@ import {
 } from '../../../store/reducers/identification';
 import {Lifecycle, setLifecycle} from '../store/lifecycle';
 import {navigate} from '../../../navigation/utils';
-import {
-  addCredential,
-  addCredentialWithIdentification
-} from '../store/credentials';
+import {addCredential, addPidWithIdentification} from '../store/credentials';
+import {wellKnownCredential} from '../utils/credentials';
 
 /**
  * Saga watcher for PID related actions.
  */
 export function* watchPidSaga() {
   yield* takeLatest(setPidIssuanceRequest, obtainPid);
-  yield* takeLatest(
-    addCredentialWithIdentification,
-    storePidWithIdentification
-  );
+  yield* takeLatest(addPidWithIdentification, storePidWithIdentification);
 }
 
 /**
@@ -62,7 +57,7 @@ function* obtainPid() {
     // Start the issuance flow
     const startFlow: Credential.Issuance.StartFlow = () => ({
       issuerUrl: PID_PROVIDER_BASE_URL,
-      credentialType: 'urn:eu.europa.ec.eudi:pid:1'
+      credentialType: wellKnownCredential.PID
     });
 
     const {issuerUrl, credentialType} = startFlow();
@@ -162,7 +157,8 @@ function* obtainPid() {
           parsedCredential,
           credential,
           credentialType,
-          keyTag: credentialKeyTag
+          keyTag: credentialKeyTag,
+          format
         }
       })
     );
@@ -177,7 +173,7 @@ function* obtainPid() {
  * If the pin is correct, the PID is stored and the lifecycle is set to `LIFECYCLE_VALID`.
  */
 function* storePidWithIdentification(
-  action: ReturnType<typeof addCredentialWithIdentification>
+  action: ReturnType<typeof addPidWithIdentification>
 ) {
   yield* put(
     setIdentificationStarted({canResetPin: false, isValidatingTask: true})

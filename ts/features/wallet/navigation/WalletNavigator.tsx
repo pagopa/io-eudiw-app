@@ -16,7 +16,10 @@ import PresentationPostDefinition, {
   PresentationPostDefinitionParams
 } from '../screens/presentation/PresentationPostDefinition';
 import PresentationSuccess from '../screens/presentation/PresentationSuccess';
-import CredentialIssuanceSelect from '../screens/credentialIssuance/CredentialIssuanceSelect';
+import CredentialTrust from '../screens/credentialIssuance/CredentialTrust';
+import {CredentialPreview} from '../screens/credentialIssuance/CredentialIssuancePreview';
+import CredentialFailure from '../screens/credentialIssuance/CredentialFailure';
+import CredentialsList from '../screens/credentialIssuance/CredentialsList';
 import WALLET_ROUTES from './routes';
 
 /**
@@ -24,10 +27,13 @@ import WALLET_ROUTES from './routes';
  * New screens should be added here along with their parameters.
  */
 export type WalletNavigatorParamsList = {
+  // Pid issuance
   [WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.REQUEST]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.SUCCESS]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.FAILURE]: undefined;
+
+  // Credential presentation
   [WALLET_ROUTES.PRESENTATION
     .CREDENTIAL_DETAILS]: PresentationCredentialDetailNavigationParams;
   [WALLET_ROUTES.PRESENTATION.PRE_DEFINITION]: PresentationPreDefinitionParams;
@@ -35,7 +41,12 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.PRESENTATION
     .POST_DEFINITION]: PresentationPostDefinitionParams;
   [WALLET_ROUTES.PRESENTATION.SUCCESS]: undefined;
-  [WALLET_ROUTES.CREDENTIAL_ISSUANCE.SELECT]: undefined;
+
+  // Credential Issuance
+  [WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST]: undefined;
+  [WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST]: undefined;
+  [WALLET_ROUTES.CREDENTIAL_ISSUANCE.PREVIEW]: undefined;
+  [WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE]: undefined;
 };
 
 const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();
@@ -90,8 +101,20 @@ const WalletNavigator = () => (
     </Stack.Group>
     <Stack.Group>
       <Stack.Screen
-        name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.SELECT}
-        component={CredentialIssuanceSelect}
+        name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST}
+        component={CredentialsList}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST}
+        component={CredentialTrust}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.PREVIEW}
+        component={CredentialPreview}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE}
+        component={CredentialFailure}
       />
     </Stack.Group>
   </Stack.Navigator>

@@ -4,7 +4,7 @@ import React, {PropsWithChildren} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {StoredCredential} from '../../utils/types';
 import {getThemeColorByCredentialType} from '../../utils/style';
-import {CredentialCard} from '../CredentialCard';
+import {CredentialCard} from '../credential/CredentialCard';
 
 type Props = {
   credential: StoredCredential;
