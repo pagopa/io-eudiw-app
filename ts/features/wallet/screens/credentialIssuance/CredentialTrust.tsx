@@ -102,11 +102,21 @@ const CredentialTrust = () => {
 
   // This is a mocked descriptor for the PID credential to show its claims in the PresentationClaimsList component
   const pidCredentialJwt = SdJwt.decode(pid.credential);
-  const mockedDescriptorForPid: Descriptor = {
-    requiredDisclosures: pidCredentialJwt.disclosures,
-    optionalDisclosures: [],
-    unrequestedDisclosures: []
-  };
+  const mockedDescriptorForPid: Descriptor = [
+    {
+      credential: pid.credential,
+      evaluatedDisclosure: {
+        requiredDisclosures: pidCredentialJwt.disclosures,
+        optionalDisclosures: [],
+        unrequestedDisclosures: []
+      },
+      inputDescriptor: {
+        constraints: {},
+        id: 'test'
+      },
+      keyTag: pid.keyTag
+    }
+  ];
 
   return (
     <ForceScrollDownView>

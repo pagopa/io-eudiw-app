@@ -157,7 +157,8 @@ function* obtainPid() {
           parsedCredential,
           credential,
           credentialType,
-          keyTag: credentialKeyTag
+          keyTag: credentialKeyTag,
+          format
         }
       })
     );

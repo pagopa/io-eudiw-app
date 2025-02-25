@@ -214,7 +214,8 @@ function* obtainCredential() {
           credential,
           parsedCredential,
           credentialType,
-          keyTag: credentialKeyTag
+          keyTag: credentialKeyTag,
+          format
         }
       })
     );
