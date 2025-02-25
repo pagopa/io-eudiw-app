@@ -13,17 +13,17 @@ import OnboardingNavigator, {
 } from '../features/onboarding/navigation/OnboardingNavigator';
 import {useAppDispatch, useAppSelector} from '../store';
 import {selectStartupState, startupSetLoading} from '../store/reducers/startup';
-import {OperationResultScreenContent} from '../components/screens/OperationResultScreenContent';
-import LoadingScreenContent from '../components/LoadingScreenContent';
 import {WalletNavigatorParamsList} from '../features/wallet/navigation/WalletNavigator';
+import LoadingScreenContent from '../components/LoadingScreenContent';
+import {OperationResultScreenContent} from '../components/screens/OperationResultScreenContent';
 import {setUrl} from '../store/reducers/deeplinking';
 import {IONavigationDarkTheme, IONavigationLightTheme} from './theme';
 import ROOT_ROUTES from './routes';
 import MainStackNavigator, {
   MainNavigatorParamsList
 } from './main/MainStackNavigator';
-import {navigationRef} from './utils';
 import MAIN_ROUTES from './main/routes';
+import {navigationRef} from './utils';
 import {PRESENTATION_INTERNAL_LINKS} from './deepLinkSchemas';
 
 export type RootStackParamList = {

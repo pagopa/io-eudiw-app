@@ -2375,6 +2375,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pagopa/io-react-native-cbor@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@pagopa/io-react-native-cbor@npm:1.0.0"
+  dependencies:
+    zod: ^3.24.1
+  peerDependencies:
+    "@pagopa/io-react-native-crypto": "*"
+    react: "*"
+    react-native: "*"
+  checksum: 8f71852a46d1438fbb44714555c6244700830a2c3768b056054b1227ce118f7b0095e299571de461a1a239731d24e56c60974e5a0e3be3fba72499d839849ee0
+  languageName: node
+  linkType: hard
+
 "@pagopa/io-react-native-crypto@npm:^1.0.1":
   version: 1.0.1
   resolution: "@pagopa/io-react-native-crypto@npm:1.0.1"
@@ -2408,15 +2421,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-wallet@npm:1.3.0":
-  version: 1.3.0
-  resolution: "@pagopa/io-react-native-wallet@npm:1.3.0"
+"@pagopa/io-react-native-wallet@npm:1.5.0":
+  version: 1.5.0
+  resolution: "@pagopa/io-react-native-wallet@npm:1.5.0"
   dependencies:
     "@types/jsrsasign": ^10.5.15
     ajv: ^8.17.1
     js-base64: ^3.7.7
     js-sha256: ^0.9.0
-    jsonpath-plus: ^10.2.0
+    jsonpath-plus: ^10.3.0
     jsrsasign: ^11.1.0
     parse-url: ^9.2.0
     react-native-url-polyfill: ^2.0.0
@@ -2424,11 +2437,12 @@ __metadata:
     yarn.lock: ^0.0.1-security
     zod: ^3.21.4
   peerDependencies:
+    "@pagopa/io-react-native-cbor": "*"
     "@pagopa/io-react-native-crypto": "*"
     "@pagopa/io-react-native-jwt": "*"
     react: "*"
     react-native: "*"
-  checksum: 7e3adf21c2692eff9f6a07905299314e7191440f9a3b83e0c967397769186f4ac061a9d90c2d045227f8ec22b1e6d9e482cee27693a35517dd44239651dda66e
+  checksum: 0ab91dd706f28fd2164e7d2bce503fea9ebe3b60bc6a2a0fcf606e632585928ae2896bc3e0354bcd83d98429f3c01b96751181442c69dcff4e50d3395ac7b187
   languageName: node
   linkType: hard
 
@@ -3614,6 +3628,16 @@ __metadata:
   dependencies:
     "@types/istanbul-lib-report": "*"
   checksum: 93eb18835770b3431f68ae9ac1ca91741ab85f7606f310a34b3586b5a34450ec038c3eed7ab19266635499594de52ff73723a54a72a75b9f7d6a956f01edee95
+  languageName: node
+  linkType: hard
+
+"@types/jest@npm:^29.5.14":
+  version: 29.5.14
+  resolution: "@types/jest@npm:29.5.14"
+  dependencies:
+    expect: ^29.0.0
+    pretty-format: ^29.0.0
+  checksum: 18dba4623f26661641d757c63da2db45e9524c9be96a29ef713c703a9a53792df9ecee9f7365a0858ddbd6440d98fe6b65ca67895ca5884b73cbc7ffc11f3838
   languageName: node
   linkType: hard
 
@@ -7139,7 +7163,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expect@npm:^29.7.0":
+"expect@npm:^29.0.0, expect@npm:^29.7.0":
   version: 29.7.0
   resolution: "expect@npm:29.7.0"
   dependencies:
@@ -8282,10 +8306,11 @@ __metadata:
     "@babel/runtime": ^7.20.0
     "@gorhom/bottom-sheet": ^5.0.6
     "@pagopa/io-app-design-system": ^4.0.1
+    "@pagopa/io-react-native-cbor": ^1.0.0
     "@pagopa/io-react-native-crypto": ^1.0.1
     "@pagopa/io-react-native-jwt": 2.0.0
     "@pagopa/io-react-native-login-utils": ^1.0.7
-    "@pagopa/io-react-native-wallet": 1.3.0
+    "@pagopa/io-react-native-wallet": 1.5.0
     "@pagopa/react-native-nodelibs": ^0.1.0
     "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native-clipboard/clipboard": ^1.15.0
@@ -8301,6 +8326,7 @@ __metadata:
     "@react-navigation/native-stack": ^7.0.4
     "@reduxjs/toolkit": ^2.3.0
     "@textlint/markdown-to-ast": ^14.3.0
+    "@types/jest": ^29.5.14
     "@types/lodash": ^4.17.13
     "@types/react": ^18.2.6
     "@types/react-test-renderer": ^18.0.0
@@ -9610,9 +9636,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonpath-plus@npm:^10.2.0":
-  version: 10.2.0
-  resolution: "jsonpath-plus@npm:10.2.0"
+"jsonpath-plus@npm:^10.3.0":
+  version: 10.3.0
+  resolution: "jsonpath-plus@npm:10.3.0"
   dependencies:
     "@jsep-plugin/assignment": ^1.3.0
     "@jsep-plugin/regex": ^1.0.4
@@ -9620,7 +9646,7 @@ __metadata:
   bin:
     jsonpath: bin/jsonpath-cli.js
     jsonpath-plus: bin/jsonpath-cli.js
-  checksum: 862a96a0179f342fa6c012065fa78458d4ae4835f18a6ef580d18807101d8c2c3509dc20c9857474503205bff8f06c309e17d7420b68196262d15ad1e4f22146
+  checksum: b0f7e9af4d3c586911690c0afc20cbdc3c8af963a739c7f7a62905ed34a25bf5279f2c254e7222aa65f834d2ae3c8cc217986d528c8206896afa008d6619cde7
   languageName: node
   linkType: hard
 
@@ -11811,7 +11837,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:^29.0.3, pretty-format@npm:^29.7.0":
+"pretty-format@npm:^29.0.0, pretty-format@npm:^29.0.3, pretty-format@npm:^29.7.0":
   version: 29.7.0
   resolution: "pretty-format@npm:29.7.0"
   dependencies:
@@ -15325,6 +15351,13 @@ __metadata:
   version: 3.23.8
   resolution: "zod@npm:3.23.8"
   checksum: 15949ff82118f59c893dacd9d3c766d02b6fa2e71cf474d5aa888570c469dbf5446ac5ad562bb035bf7ac9650da94f290655c194f4a6de3e766f43febd432c5c
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.24.1":
+  version: 3.24.2
+  resolution: "zod@npm:3.24.2"
+  checksum: c02455c09678c5055c636d64f9fcda2424fea0aa46ac7d9681e7f41990bc55f488bcd84b9d7cfef0f6e906f51f55b245239d92a9f726248aa74c5b84edf00c2d
   languageName: node
   linkType: hard
 
