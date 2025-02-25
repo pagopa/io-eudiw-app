@@ -13,8 +13,8 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import {useNavigation} from '@react-navigation/native';
-import {useAppDispatch, useAppSelector} from '../../../../store';
-import {resetProximity, selectProximityError} from '../../store/proximity';
+import {useAppDispatch} from '../../../../store';
+import {resetProximity} from '../../store/proximity';
 import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
@@ -28,7 +28,6 @@ import useProximityLogBoxBs from '../../hooks/proximity/useProximityLogBottomShe
  */
 const ProximityQrCode = () => {
   const {t} = useTranslation(['global', 'wallet']);
-  const error = useAppSelector(selectProximityError);
   const navigation = useNavigation();
   const {initProximity, closeConnection} = useProximity();
   const [qrCode, setQrCode] = useState<string | null>(null);
@@ -64,7 +63,7 @@ const ProximityQrCode = () => {
       .catch(() => {});
   }, [startProximity]);
 
-  useDebugInfo({qrCode, error});
+  useDebugInfo({qrCode});
 
   return (
     <ContentWrapper>

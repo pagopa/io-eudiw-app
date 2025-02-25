@@ -4,7 +4,7 @@ import ProximityModule, {
 import {serializeError} from 'serialize-error';
 import {useCallback} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../../store';
-import {setProximityError, addProximityLog} from '../../store/proximity';
+import {addProximityLog} from '../../store/proximity';
 import {requestBlePermissions} from '../../utils/permissions';
 import {VerifierRequest} from '../../utils/proximity';
 import {wellKnownCredential} from '../../utils/credentials';
@@ -38,11 +38,10 @@ export const useProximity = () => {
    */
   const onCommunicationError = useCallback(
     (data: QrEngagementEventPayloads['onCommunicationError']) => {
-      dispatch(addProximityLog(`An error occurred check the debug menu`));
       dispatch(
-        setProximityError({
-          error: `[ON_COMMUNICATION_ERROR_CALLBACK] ${JSON.stringify(data)}`
-        })
+        addProximityLog(
+          `[ON_COMMUNICATION_ERROR_CALLBACK] ${JSON.stringify(data)}`
+        )
       );
     },
     [dispatch]
@@ -141,8 +140,7 @@ export const useProximity = () => {
       );
       return qrCode;
     } catch (e) {
-      dispatch(addProximityLog(`An error occurred check the debug menu`));
-      dispatch(setProximityError({error: serializeError(e)}));
+      dispatch(addProximityLog(`initProximity error: ${serializeError(e)}`));
       await closeConnection();
       throw new Error('Error initializing proximity, connection closed');
     }
