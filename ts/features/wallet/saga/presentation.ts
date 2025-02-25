@@ -1,10 +1,5 @@
 import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
-import {
-  createCryptoContextFor,
-  Credential,
-  SdJwt
-} from '@pagopa/io-react-native-wallet';
-import {InputDescriptor} from '@pagopa/io-react-native-wallet/lib/typescript/credential/presentation/types';
+import {Credential} from '@pagopa/io-react-native-wallet';
 import {serializeError} from 'serialize-error';
 import {
   AuthResponse,
@@ -17,8 +12,7 @@ import {
   setPreDefinitionSuccess
 } from '../store/presentation';
 import {selectAttestation} from '../store/attestation';
-import {selectCredential} from '../store/credentials';
-import {wellKnownCredential} from '../utils/credentials';
+import {selectCredentials} from '../store/credentials';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
@@ -82,28 +76,26 @@ function* handlePresetationPreDefinition(
       requestObject
     );
 
-    // We suppose that request is about PID
-    // In this case no check about other credentials
-    const pid = yield* select(selectCredential(wellKnownCredential.PID));
-    if (!pid) {
-      throw new Error('PID not found');
-    }
+    const credentials = yield* select(selectCredentials);
 
-    const pidCredentialJwt = SdJwt.decode(pid.credential);
+    /**
+     * Array of tuples containg the credential keytag and its raw value
+     */
+    const credentialsSdJwt: Array<[string, string]> = credentials
+      .filter(c => c.format === 'vc+sd-jwt')
+      .map(c => [c.keyTag, c.credential]);
+    const credentialsMdoc: Array<[string, string]> = credentials
+      .filter(c => c.format === 'mso_mdoc')
+      .map(c => [c.keyTag, c.credential]);
 
-    // We support only one credential for now, we get first input_descriptor
-    const inputDescriptor =
-      presentationDefinition.input_descriptors[0] ||
-      ({} as unknown as InputDescriptor);
+    const evaluateInputDescriptors = yield* call(
+      Credential.Presentation.evaluateInputDescriptors,
+      presentationDefinition.input_descriptors,
+      credentialsSdJwt,
+      credentialsMdoc
+    );
 
-    const descriptorResult =
-      Credential.Presentation.evaluateInputDescriptorForSdJwt4VC(
-        inputDescriptor,
-        pidCredentialJwt.sdJwt.payload,
-        pidCredentialJwt.disclosures
-      );
-
-    yield* put(setPreDefinitionSuccess(descriptorResult));
+    yield* put(setPreDefinitionSuccess(evaluateInputDescriptors));
 
     /* Wait for the user to confirm the presentation with the claims
      * No need to check for the cancel action as there's a race condition defined in watchPresentationSaga
@@ -123,24 +115,36 @@ function* handlePresetationPreDefinition(
     ]);
 
     if (setIdentificationIdentified.match(resAction)) {
-      const disclosuresRequestedClaimName = [
-        ...descriptorResult.requiredDisclosures.map(item => item.decoded[1]),
-        ...optionalClaimsNames
-      ];
+      const credentialAndInputDescriptor = evaluateInputDescriptors.map(
+        evaluateInputDescriptor => {
+          const requestedClaims = [
+            ...evaluateInputDescriptor.evaluatedDisclosure.requiredDisclosures.map(
+              item => item.decoded[1]
+            ),
+            ...optionalClaimsNames
+          ];
+          return {
+            requestedClaims,
+            inputDescriptor: evaluateInputDescriptor.inputDescriptor,
+            credential: evaluateInputDescriptor.credential,
+            keyTag: evaluateInputDescriptor.keyTag
+          };
+        }
+      );
 
-      const credentialCryptoContext = createCryptoContextFor(pid.keyTag);
+      const remotePresentations = yield* call(
+        Credential.Presentation.prepareRemotePresentations,
+        credentialAndInputDescriptor,
+        requestObject.nonce,
+        requestObject.client_id
+      );
 
-      /**
-       * Ignoring TS as typed-redux-saga doesn't seem to digest correctly a tuple of arguments.
-       * This works as expected though.
-       */
       const authResponse = yield* call(
-        // @ts-ignore
         Credential.Presentation.sendAuthorizationResponse,
         requestObject,
-        presentationDefinition,
+        presentationDefinition.id,
         jwks.keys,
-        [pid.credential, disclosuresRequestedClaimName, credentialCryptoContext]
+        remotePresentations
       );
       yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
     } else {

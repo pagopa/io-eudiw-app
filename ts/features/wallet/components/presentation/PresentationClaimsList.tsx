@@ -36,7 +36,13 @@ const PresentationClaimsList = ({
   optionalChecked,
   setOptionalChecked
 }: RequiredClaimsProps) => {
-  const {requiredDisclosures, optionalDisclosures} = descriptor;
+  const requiredDisclosures = descriptor.flatMap(
+    item => item.evaluatedDisclosure.requiredDisclosures
+  );
+  const optionalDisclosures = descriptor.flatMap(
+    item => item.evaluatedDisclosure.optionalDisclosures
+  );
+
   const {t} = useTranslation(['wallet']);
 
   return (
