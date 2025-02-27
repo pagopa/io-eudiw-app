@@ -18,8 +18,8 @@ import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
   Descriptor,
   OptionalClaimsNames,
-  resetPresentation,
   selectPostDefinitionStatus,
+  setPostDefinitionCancel,
   setPostDefinitionRequest
 } from '../../store/presentation';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
@@ -62,7 +62,7 @@ const PresentationPostDefinition = ({route}: Props) => {
   useHardwareBackButton(() => true);
 
   const cancel = () => {
-    dispatch(resetPresentation());
+    dispatch(setPostDefinitionCancel());
     navigateToWallet();
   };
 
@@ -115,7 +115,7 @@ const PresentationPostDefinition = ({route}: Props) => {
 
   useHeaderSecondLevel({
     title: '',
-    goBack: cancel
+    goBack: cancelAlert
   });
 
   return (
