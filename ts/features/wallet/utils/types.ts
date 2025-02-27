@@ -4,6 +4,10 @@ export type ParsedCredential = Awaited<
   ReturnType<typeof Credential.Issuance.verifyAndParseCredential>
 >['parsedCredential'];
 
+export type CredentialFormat = Awaited<
+  ReturnType<typeof Credential.Issuance.obtainCredential>
+>['format'];
+
 /**
  * Type for each claim to be displayed.
  */
@@ -21,4 +25,5 @@ export type StoredCredential = {
   credential: string;
   keyTag: string;
   credentialType: string;
+  format: 'vc+sd-jwt' | 'mso_mdoc';
 };

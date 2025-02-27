@@ -54,7 +54,7 @@ const PresentationCredentialDetail = ({
       <PresentationDetailsHeader credential={credential} />
       <VSpacer size={24} />
       <ContentWrapper>
-        <CredentialPreviewClaimsList data={credential} />
+        <CredentialPreviewClaimsList data={credential} isPreview={false} />
         <PresentationDetailsFooter credential={credential} />
       </ContentWrapper>
     </PresentationDetailsScreenBase>

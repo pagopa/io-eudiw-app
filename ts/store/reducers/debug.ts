@@ -13,7 +13,7 @@ import {RootState} from '../types';
  */
 type DebugState = Readonly<{
   isDebugModeEnabled: boolean;
-  debugData: Record<string, any>;
+  debugData: Record<string, unknown>;
 }>;
 
 // Initial state for the debug slice
@@ -33,8 +33,11 @@ const debugSlice = createSlice({
       state.isDebugModeEnabled = action.payload.state;
       state.debugData = {};
     },
-    setDebugData: (state, action: PayloadAction<Record<string, any>>) => {
-      state.debugData = _.merge(state.debugData, action.payload);
+    setDebugData: (state, action: PayloadAction<Record<string, unknown>>) => {
+      state.debugData = {
+        ...state.debugData,
+        ...action.payload
+      };
     },
     resetDebugData(state, action: PayloadAction<ReadonlyArray<string>>) {
       state.debugData = Object.fromEntries(

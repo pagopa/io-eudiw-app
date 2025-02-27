@@ -1,12 +1,12 @@
 import {HStack, IOColors, IOText} from '@pagopa/io-app-design-system';
 import {ImageSourcePropType, StyleSheet, View} from 'react-native';
 import React from 'react';
-import {getThemeColorByCredentialType} from '../utils/style';
+import {getThemeColorByCredentialType} from '../../utils/style';
 import {
   getCredentialNameByType,
   wellKnownCredential
-} from '../utils/credentials';
-import {AnimatedImage} from '../../../components/AnimatedImage';
+} from '../../utils/credentials';
+import {AnimatedImage} from '../../../../components/AnimatedImage';
 
 export type CredentialCard = {
   credentialType: string;
@@ -70,7 +70,8 @@ export const CredentialCard = ({credentialType}: CredentialCard) => {
 const credentialCardBackgrounds: {
   [type: string]: ImageSourcePropType;
 } = {
-  [wellKnownCredential.PID]: require('../../../../assets/credentials/pid.png')
+  [wellKnownCredential.PID]: require('../../assets/img/credentials/pid.png'),
+  [wellKnownCredential.DRIVING_LICENSE]: require('../../assets/img/credentials/mdl.png')
 };
 
 const styles = StyleSheet.create({

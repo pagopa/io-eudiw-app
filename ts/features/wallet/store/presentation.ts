@@ -22,7 +22,7 @@ export type PresentationParams = {
  * Type for the description which contains the requested claims during the presentation.
  */
 export type Descriptor = Awaited<
-  ReturnType<typeof Credential.Presentation.evaluateInputDescriptorForSdJwt4VC>
+  ReturnType<typeof Credential.Presentation.evaluateInputDescriptors>
 >;
 
 /**
@@ -36,7 +36,7 @@ export type AuthResponse = Awaited<
  * Type of the optional claims names selected by the user.
  */
 export type OptionalClaimsNames =
-  Descriptor['optionalDisclosures'][0]['decoded'][1]; // Name of the optional claims selected by the user
+  Descriptor[0]['evaluatedDisclosure']['optionalDisclosures'][0]['decoded']['1']; // Name of the optional claims selected by the user
 
 /* State type definition for the presentation slice
  * preDefinition - Async status for the prestation before receiving the descriptor
