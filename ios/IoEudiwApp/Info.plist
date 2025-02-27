@@ -105,6 +105,12 @@
           <string>eudi-openid4vp</string>
         </array>
       </dict>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>mdoc-openid4vp</string>
+        </array>
+      </dict>
     </array>
   </dict>
 </plist>

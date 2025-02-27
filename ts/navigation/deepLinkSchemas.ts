@@ -4,5 +4,6 @@
 export const PRESENTATION_INTERNAL_LINKS = [
   'haip://',
   'openid4vp://',
-  'eudi-openid4vp://'
+  'eudi-openid4vp://',
+  'mdoc-openid4vp://'
 ];
