@@ -81,6 +81,8 @@ export const presentationSlice = createSlice({
        */
       state.postDefinition = setLoading();
     },
+    // Empty action which will be intercepted by the saga and trigger the identification before finishing the presentation process
+    setPostDefinitionCancel: _ => {},
     setPostDefinitionError: (
       state,
       action: PayloadAction<{error: unknown}>
@@ -108,6 +110,7 @@ export const {
   setPreDefinitionSuccess,
   resetPreDefinition,
   setPostDefinitionRequest,
+  setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionSuccess,
   setPostDefinitionRequestWithAuth,
