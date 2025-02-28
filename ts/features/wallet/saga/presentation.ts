@@ -1,9 +1,10 @@
-import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
+import {call, put, select, take, takeLatest} from 'typed-redux-saga';
 import {Credential} from '@pagopa/io-react-native-wallet';
 import {serializeError} from 'serialize-error';
 import {
   AuthResponse,
   resetPresentation,
+  setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionRequest,
   setPostDefinitionSuccess,
@@ -23,12 +24,7 @@ import {
  * Saga watcher for presentation related actions.
  */
 export function* watchPresentationSaga() {
-  yield* takeLatest([setPreDefinitionRequest], function* (...args) {
-    yield* race({
-      task: call(handlePresetationPreDefinition, ...args),
-      cancel: take(resetPresentation)
-    });
-  });
+  yield* takeLatest(setPreDefinitionRequest, handlePresetationPreDefinition);
 }
 
 /**
@@ -97,58 +93,77 @@ function* handlePresetationPreDefinition(
 
     yield* put(setPreDefinitionSuccess(evaluateInputDescriptors));
 
-    /* Wait for the user to confirm the presentation with the claims
-     * No need to check for the cancel action as there's a race condition defined in watchPresentationSaga
-     * The payload contains a list of the name of optionals claims to be presented
+    /* Wait for the user to confirm the presentation with the claims or to cancel it
+     *  - In case the user confirms the presentation, the payload will contain a list of the name of optionals claims to be presented
+     *  - In case the user cancels the presentation, no payload will be needed
      */
-    const {payload: optionalClaimsNames} = yield* take(
-      setPostDefinitionRequest
-    );
-
-    yield* put(
-      setIdentificationStarted({canResetPin: false, isValidatingTask: true})
-    );
-
-    const resAction = yield* take([
-      setIdentificationIdentified,
-      setIdentificationUnidentified
+    const choice = yield* take([
+      setPostDefinitionRequest,
+      setPostDefinitionCancel
     ]);
 
-    if (setIdentificationIdentified.match(resAction)) {
-      const credentialAndInputDescriptor = evaluateInputDescriptors.map(
-        evaluateInputDescriptor => {
-          const requestedClaims = [
-            ...evaluateInputDescriptor.evaluatedDisclosure.requiredDisclosures.map(
-              item => item.decoded[1]
-            ),
-            ...optionalClaimsNames
-          ];
-          return {
-            requestedClaims,
-            inputDescriptor: evaluateInputDescriptor.inputDescriptor,
-            credential: evaluateInputDescriptor.credential,
-            keyTag: evaluateInputDescriptor.keyTag
-          };
-        }
+    if (setPostDefinitionRequest.match(choice)) {
+      const {payload: optionalClaimsNames} = choice;
+      yield* put(
+        setIdentificationStarted({canResetPin: false, isValidatingTask: true})
       );
 
-      const remotePresentations = yield* call(
-        Credential.Presentation.prepareRemotePresentations,
-        credentialAndInputDescriptor,
-        requestObject.nonce,
-        requestObject.client_id
-      );
+      const resAction = yield* take([
+        setIdentificationIdentified,
+        setIdentificationUnidentified
+      ]);
 
-      const authResponse = yield* call(
-        Credential.Presentation.sendAuthorizationResponse,
-        requestObject,
-        presentationDefinition.id,
-        jwks.keys,
-        remotePresentations
-      );
-      yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
+      if (setIdentificationIdentified.match(resAction)) {
+        const credentialAndInputDescriptor = evaluateInputDescriptors.map(
+          evaluateInputDescriptor => {
+            const requestedClaims = [
+              ...evaluateInputDescriptor.evaluatedDisclosure.requiredDisclosures.map(
+                item => item.decoded[1]
+              ),
+              ...optionalClaimsNames
+            ];
+            return {
+              requestedClaims,
+              inputDescriptor: evaluateInputDescriptor.inputDescriptor,
+              credential: evaluateInputDescriptor.credential,
+              keyTag: evaluateInputDescriptor.keyTag
+            };
+          }
+        );
+
+        const remotePresentations = yield* call(
+          Credential.Presentation.prepareRemotePresentations,
+          credentialAndInputDescriptor,
+          requestObject.nonce,
+          requestObject.client_id
+        );
+
+        const authResponse = yield* call(
+          Credential.Presentation.sendAuthorizationResponse,
+          requestObject,
+          presentationDefinition.id,
+          jwks.keys,
+          remotePresentations
+        );
+
+        yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
+      } else {
+        throw new Error('Identification failed');
+      }
     } else {
-      throw new Error('Identification failed');
+      // The result of this call is ignored for the user is not interested in any message
+      yield* call(() =>
+        Credential.Presentation.sendAuthorizationErrorResponse(
+          requestObject,
+          'access_denied',
+          jwks.keys
+        )
+          .then(() => {})
+          .catch(() => {})
+          .finally(() => {
+            put(resetPresentation());
+          })
+      );
     }
   } catch (e) {
     // We don't know which step is failed thus we set the same error for both
