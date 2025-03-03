@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.1-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.7.0-rc.0...1.7.1-rc.0) (2025-03-03)
+
+
+### Chores
+
+* Remove duplicate bluetooth permissions from manifest ([ad0a567](https://github.com/pagopa/io-eudiw-app/commit/ad0a5671258ae98056e27e0464eda325c281e812))
+
 ## [1.7.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.6.2-rc.0...1.7.0-rc.0) (2025-03-03)
 
 
