@@ -35,66 +35,77 @@ export const TabNavigator = () => {
   const navigateToQrCodeScanScreen = () =>
     navigation.navigate('ROOT_MAIN_NAV', {screen: 'MAIN_SCAN_QR'});
 
+  const navigateToQrCodeShowScreen = () =>
+    navigation.navigate('ROOT_MAIN_NAV', {screen: 'MAIN_SHOW_QR'});
+
   return (
-    <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarHideOnKeyboard: true,
-        tabBarAllowFontScaling: false,
-        tabBarActiveTintColor: IOColors['blueIO-500'],
-        tabBarInactiveTintColor: IOColors['grey-850']
-      }}>
-      <Tab.Screen
-        name={TAB_ROUTES.WALLET}
-        component={WalletHome}
-        options={{
-          title: t('tabNavigator.wallet'),
-          tabBarIcon: ({color, focused}) => (
-            <TabIconComponent
-              iconName={'navWallet'}
-              iconNameFocused={'navWalletFocused'}
-              color={color}
-              focused={focused}
-            />
-          )
-        }}
-      />
-      <Tab.Screen
-        name={TAB_ROUTES.SCAN_QR}
-        component={EmptyComponent}
-        listeners={{
-          tabPress: ({preventDefault}) => {
-            preventDefault();
-            navigateToQrCodeScanScreen();
-          }
-        }}
-        options={{
-          title: t('tabNavigator.scanQr'),
-          tabBarIcon: ({color, focused}) => (
-            <TabIconComponent
-              iconName={'navScan'}
-              iconNameFocused={'navScan'}
-              color={color}
-              focused={focused}
-            />
-          )
-        }}
-      />
-      <Tab.Screen
-        name={TAB_ROUTES.SHOW_QR}
-        component={EmptyComponent}
-        options={{
-          title: t('tabNavigator.showQr'),
-          tabBarIcon: ({color, focused}) => (
-            <TabIconComponent
-              iconName={'navQrWallet'}
-              iconNameFocused={'navQrWallet'}
-              color={color}
-              focused={focused}
-            />
-          )
-        }}
-      />
-    </Tab.Navigator>
+    <>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarHideOnKeyboard: true,
+          tabBarAllowFontScaling: false,
+          tabBarActiveTintColor: IOColors['blueIO-500'],
+          tabBarInactiveTintColor: IOColors['grey-850']
+        }}>
+        <Tab.Screen
+          name={TAB_ROUTES.WALLET}
+          component={WalletHome}
+          options={{
+            title: t('tabNavigator.wallet'),
+            tabBarIcon: ({color, focused}) => (
+              <TabIconComponent
+                iconName={'navWallet'}
+                iconNameFocused={'navWalletFocused'}
+                color={color}
+                focused={focused}
+              />
+            )
+          }}
+        />
+        <Tab.Screen
+          name={TAB_ROUTES.SCAN_QR}
+          component={EmptyComponent}
+          listeners={{
+            tabPress: ({preventDefault}) => {
+              preventDefault();
+              navigateToQrCodeScanScreen();
+            }
+          }}
+          options={{
+            title: t('tabNavigator.scanQr'),
+            tabBarIcon: ({color, focused}) => (
+              <TabIconComponent
+                iconName={'navScan'}
+                iconNameFocused={'navScan'}
+                color={color}
+                focused={focused}
+              />
+            )
+          }}
+        />
+        <Tab.Screen
+          name={TAB_ROUTES.SHOW_QR}
+          component={EmptyComponent}
+          listeners={{
+            tabPress: ({preventDefault}) => {
+              preventDefault();
+              navigateToQrCodeShowScreen();
+            }
+          }}
+          options={{
+            title: t('tabNavigator.showQr'),
+            tabBarIcon: ({color, focused}) => (
+              <TabIconComponent
+                iconName={'navQrWallet'}
+                iconNameFocused={'navQrWallet'}
+                color={color}
+                focused={focused}
+              />
+            )
+          }}
+        />
+      </Tab.Navigator>
+    </>
   );
 };

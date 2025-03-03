@@ -12,6 +12,7 @@ import {
   CredentialIssuanceStatusState
 } from './credentialIssuance';
 import {PresentationState, presentationReducer} from './presentation';
+import {proximityReducer, ProximityState} from './proximity';
 
 export type WalletState = {
   lifecycle: LifecycleState;
@@ -21,6 +22,7 @@ export type WalletState = {
   credentials: CredentialsState & PersistPartial;
   credentialIssuanceStatus: CredentialIssuanceStatusState;
   presentation: PresentationState;
+  proximity: ProximityState;
 };
 
 const walletReducer = combineReducers({
@@ -30,7 +32,8 @@ const walletReducer = combineReducers({
   pidIssuanceStatus: pidIssuanceStatusReducer,
   credentials: credentialsReducer,
   credentialIssuanceStatus: credentialIssuanceStatusReducer,
-  presentation: presentationReducer
+  presentation: presentationReducer,
+  proximity: proximityReducer
 });
 
 const itwPersistConfig: PersistConfig<WalletState> = {
