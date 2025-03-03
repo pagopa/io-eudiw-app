@@ -17,7 +17,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.6.2</string>
+    <string>1.7.0</string>
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleVersion</key>
@@ -32,17 +32,13 @@
       <true/>
     </dict>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string/>
-    <!-- Required by react-native-fingerprint -->
+    <string>$(PRODUCT_NAME) needs access your location.</string>
     <key>NSFaceIDUsageDescription</key>
     <string>$(PRODUCT_NAME) requires FaceID access to allows you quick and secure access.</string>
-    <!-- Required by react-native-vision-camera -->
     <key>NSCameraUsageDescription</key>
     <string>$(PRODUCT_NAME) needs access to your Camera to scan QR codes.</string>
-    <!-- Required by react-native-image-picker -->
     <key>NSPhotoLibraryUsageDescription</key>
     <string>$(PRODUCT_NAME) needs access to your Photo Library to upload QR codes.</string>
-    <!-- Required by io-react-native-proximity -->
     <key>NSBluetoothAlwaysUsageDescription</key>
     <string>$(PRODUCT_NAME) needs access BLE.</string>
     <key>NSBluetoothPeripheralUsageDescription</key>
@@ -50,8 +46,6 @@
     <key>NSBluetoothScanUsageDescription</key>
     <string>$(PRODUCT_NAME) needs access to scan for nearby Bluetooth devices.</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>$(PRODUCT_NAME) needs access your location.</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
     <string>$(PRODUCT_NAME) needs access your location.</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>$(PRODUCT_NAME) needs access your location.</string>

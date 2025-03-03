@@ -2,6 +2,80 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.6.2-rc.0...1.7.0-rc.0) (2025-03-03)
+
+
+### Features
+
+* [WLEO-247] Added Screen to choose credentials ([#64](https://github.com/pagopa/io-eudiw-app/issues/64)) ([fc07ed0](https://github.com/pagopa/io-eudiw-app/commit/fc07ed0813ec0618897a28ef4b5505d356906327))
+* [WLEO-250] Add Android proximity flow demo ([#69](https://github.com/pagopa/io-eudiw-app/issues/69)) ([8448beb](https://github.com/pagopa/io-eudiw-app/commit/8448bebf07a02bfa0c73024cc3ff17bc5b41b535))
+* [WLEO-255] Send cancellation response on authentication refusal ([#66](https://github.com/pagopa/io-eudiw-app/issues/66)) ([3ea7728](https://github.com/pagopa/io-eudiw-app/commit/3ea7728d70da17cf9c0302790b26d4076a8a6529))
+* [WLEO-262] Add mdoc-openid4vp custom schema ([#71](https://github.com/pagopa/io-eudiw-app/issues/71)) ([7f1ccf6](https://github.com/pagopa/io-eudiw-app/commit/7f1ccf6300a9cc902ec194802b066c7ae9eceb02))
+* add auto biometric prompt ([4026bd2](https://github.com/pagopa/io-eudiw-app/commit/4026bd20f2c38f3eaf25de9354d39635f76126eb))
+* add bootsplash ([f255fa7](https://github.com/pagopa/io-eudiw-app/commit/f255fa7868bb79d74ebe3fbadccc6ef57530a46e))
+* add credentials list ([4e11790](https://github.com/pagopa/io-eudiw-app/commit/4e1179092b4893a3d92a37a6989f61a38c87a21b))
+* add husky ([ae59ca6](https://github.com/pagopa/io-eudiw-app/commit/ae59ca68b0973612aec679abea19fc33d3cf2bd6))
+* add husky ([ca332ad](https://github.com/pagopa/io-eudiw-app/commit/ca332ad3ac167c9f34ba9d139739e83bcea24f2f))
+* add husky ([9f19332](https://github.com/pagopa/io-eudiw-app/commit/9f19332b32de4a011a90827970b2a1ae43e43b06))
+* add onboarding flows ([ef6729c](https://github.com/pagopa/io-eudiw-app/commit/ef6729c2b865b3d65b6e1555bf29b206e368effc))
+* add pid issuance flow ([47b6f25](https://github.com/pagopa/io-eudiw-app/commit/47b6f256c77a4055f6d817a7a88c69a22cf4a94e))
+* add pin verification ([f75dac6](https://github.com/pagopa/io-eudiw-app/commit/f75dac68b9763bfefdfd2660a62162cfadc2b511))
+* add store and basic navigation ([372fa4e](https://github.com/pagopa/io-eudiw-app/commit/372fa4ee4f98ae04405346102353a3f1ec081533))
+* add wallet instance registration and attestation flow ([cf36b09](https://github.com/pagopa/io-eudiw-app/commit/cf36b09b1316772003b97cfa78a3a32ec24105eb))
+* first attemp ([aef54a9](https://github.com/pagopa/io-eudiw-app/commit/aef54a92cb292412ee8dd92f98267329d18e4c26))
+* first attempt ([82661ff](https://github.com/pagopa/io-eudiw-app/commit/82661ff9b55b26e72ba0adb33fa2ce338f21b93d))
+* first attempt at pid issuance flow ([55c1a88](https://github.com/pagopa/io-eudiw-app/commit/55c1a886aa69cd85fa95e7b497cbc9a764be581a))
+* second attempt ([41fa969](https://github.com/pagopa/io-eudiw-app/commit/41fa96991c61e632dba5138389163e23198ddecd))
+* update mdl issuance ([615d47f](https://github.com/pagopa/io-eudiw-app/commit/615d47fa8ff2d9a2248f634007740c0c31da7737))
+
+
+### Bug Fixes
+
+* [WLEO-265] Fixed debug store loadhash.merge issues ([d8e6d94](https://github.com/pagopa/io-eudiw-app/commit/d8e6d9488c280a9bff98cc09cbbcac3989c36c27))
+* Android build and config not working ([cbd03d6](https://github.com/pagopa/io-eudiw-app/commit/cbd03d64225a56eb7be9c3fba6b25b67961eb96b))
+* android config for custom tabs ([1bf0dc7](https://github.com/pagopa/io-eudiw-app/commit/1bf0dc76ab1c3f517b6639dd2f9c39bcdc96de2f))
+* config checks and configuration on Android ([bdf0fe4](https://github.com/pagopa/io-eudiw-app/commit/bdf0fe4a7341fbf5e5a11b7217a46734d95cda56))
+* crash on iOSwhen using face id ([667118b](https://github.com/pagopa/io-eudiw-app/commit/667118b4388d8f4d2b49503b98ebaf41cedb6c4a))
+* locales generation ([270b684](https://github.com/pagopa/io-eudiw-app/commit/270b684ddfbd73c224e40785a24269f6177b73ab))
+* minor fixes ([87a9949](https://github.com/pagopa/io-eudiw-app/commit/87a9949901b6eab4468e77827febd297ea15028b))
+* minor fixes for Android ([5253602](https://github.com/pagopa/io-eudiw-app/commit/5253602f96742049989aa460e6f2810b38d6a8ed))
+* pid store ([6874e01](https://github.com/pagopa/io-eudiw-app/commit/6874e01d55f64bc21e663a438071f6dcae0b92b4))
+* redirect uri ([867f037](https://github.com/pagopa/io-eudiw-app/commit/867f03799cf1679a55bced0d420e7f3f8040630a))
+* startup logic ([0017e6c](https://github.com/pagopa/io-eudiw-app/commit/0017e6cb426e534c799453767735d958ec09a7bc))
+* translation ([d4d3860](https://github.com/pagopa/io-eudiw-app/commit/d4d386006259b647baa23518588d3fbc0245fa6b))
+* wrong typing ([94c65ae](https://github.com/pagopa/io-eudiw-app/commit/94c65ae931156a1f17519f7a7bae8a037c65495f))
+
+
+### Chores
+
+* add debug in credential error screen ([6538b9b](https://github.com/pagopa/io-eudiw-app/commit/6538b9b536d840369b64f4f1041b24ec7162f148))
+* add missing padding for skip button ([0c08d94](https://github.com/pagopa/io-eudiw-app/commit/0c08d9471f564c52f172267850ca5d35e1743fa5))
+* add pr template ([78b4acd](https://github.com/pagopa/io-eudiw-app/commit/78b4acdf57bf965eb964c8c0fbf23f460dfd40e1))
+* add prettier script ([6c09efb](https://github.com/pagopa/io-eudiw-app/commit/6c09efb9035561d114961260f461e8c1597cff14))
+* add props to screen to test typing ([b096d09](https://github.com/pagopa/io-eudiw-app/commit/b096d09f51a6969133ae64051121d91015d9b072))
+* addedd manuraf to CODEOWNERS ([#65](https://github.com/pagopa/io-eudiw-app/issues/65)) ([c25e1d0](https://github.com/pagopa/io-eudiw-app/commit/c25e1d0ad31f3769d28149e72f0c39469529379e))
+* align to main ([db85168](https://github.com/pagopa/io-eudiw-app/commit/db8516832fb6c37d1825edd495f1dd23ba642587))
+* align to main ([6420560](https://github.com/pagopa/io-eudiw-app/commit/64205605aeaa54714f6e65974f748f6242857178))
+* fix husky ([07c2fe6](https://github.com/pagopa/io-eudiw-app/commit/07c2fe6432d5b879369b5e965f70ac96b71fe428))
+* fix husky ([9901a31](https://github.com/pagopa/io-eudiw-app/commit/9901a3174a948d798c5a44c16cae09497f1a5ea4))
+* linter ([ed2d525](https://github.com/pagopa/io-eudiw-app/commit/ed2d525bd4ecc9eaeac44354a4f55c0160686662))
+* linter ([7b0fd35](https://github.com/pagopa/io-eudiw-app/commit/7b0fd35f9465b6cfc37ec2ea93923015a47a9e14))
+* linter ([8e1e9d8](https://github.com/pagopa/io-eudiw-app/commit/8e1e9d811d24ad3e5a10b305ca19fdc14f587ea4))
+* print attestation ([d402ece](https://github.com/pagopa/io-eudiw-app/commit/d402ece8c2e48322f757d1e1cef36d3989e2bec2))
+* remove unused fetch param ([d38d74b](https://github.com/pagopa/io-eudiw-app/commit/d38d74b9e2ba81b88007f17d6edbdba952ecfcaf))
+* remove unused locales ([ad87b71](https://github.com/pagopa/io-eudiw-app/commit/ad87b718e97ca2ff0be9b1fd4fad1ea2326a4a4b))
+* remove unwanted change ([eefe83a](https://github.com/pagopa/io-eudiw-app/commit/eefe83a888a0187c6b7c75818a1def7d801cb782))
+* remove unwanted change ([3ceb578](https://github.com/pagopa/io-eudiw-app/commit/3ceb578b014a8f7f3a376b419d140fc621c243d4))
+* remove unwanted changes ([bc5d075](https://github.com/pagopa/io-eudiw-app/commit/bc5d075015e5871c1d03a0fe2b4ee81e5d570faf))
+* remove unwanted changes ([7f8d3c0](https://github.com/pagopa/io-eudiw-app/commit/7f8d3c06df52c4036f267a8d0eede0a3c68bd9d4))
+* rename param in preferences reducer ([fcfd504](https://github.com/pagopa/io-eudiw-app/commit/fcfd5047858ccb328ab85a92e4881eb9e5046fa2))
+* restore startup saga name ([a363468](https://github.com/pagopa/io-eudiw-app/commit/a363468349154f4e9d54813594385bc0dd027c32))
+* Update CODEOWNERS ([adb5fd1](https://github.com/pagopa/io-eudiw-app/commit/adb5fd1d6fc7c6b0b2444a986e1ff02cff8f4d0b))
+* Update CODEOWNERS ([8aac731](https://github.com/pagopa/io-eudiw-app/commit/8aac731def09a73f930a96ac622193a5566c758e))
+* Update CODEOWNERS ([8dd589e](https://github.com/pagopa/io-eudiw-app/commit/8dd589e6d1875a9ad2c9c68e49b320fd3120bec2))
+* update iornw ([c391234](https://github.com/pagopa/io-eudiw-app/commit/c391234befc7615a4d1c468e19b7fb7c74b82a21))
+* update test script ([952cae8](https://github.com/pagopa/io-eudiw-app/commit/952cae8ccac4d607bc85c239a8349cf14fe420b3))
+
 ### [1.6.2-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.6.1-rc.0...1.6.2-rc.0) (2025-02-03)
 
 
