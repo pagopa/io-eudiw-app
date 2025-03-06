@@ -17,6 +17,10 @@ import {WalletNavigatorParamsList} from '../features/wallet/navigation/WalletNav
 import LoadingScreenContent from '../components/LoadingScreenContent';
 import {OperationResultScreenContent} from '../components/screens/OperationResultScreenContent';
 import {setUrl} from '../store/reducers/deeplinking';
+import {
+  clearStartupDebugInfo,
+  recordStartupDebugInfo
+} from '../store/utils/debug';
 import {IONavigationDarkTheme, IONavigationLightTheme} from './theme';
 import ROOT_ROUTES from './routes';
 import MainStackNavigator, {
@@ -76,6 +80,20 @@ export const RootStackNavigator = () => {
       />
     );
   };
+
+  /*
+   * Watching isStartupDone because it is used to choose the content to display
+   */
+  useEffect(() => {
+    switch (isStartupDone) {
+      case 'DONE':
+      case 'WAIT_ONBOARDING':
+        clearStartupDebugInfo();
+        break;
+      default:
+        recordStartupDebugInfo({rootStackNavigatorStartupDone: isStartupDone});
+    }
+  }, [isStartupDone]);
 
   useEffect(() => {
     dispatch(startupSetLoading());
