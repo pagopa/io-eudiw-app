@@ -12,7 +12,7 @@ import {useTranslation} from 'react-i18next';
 import {useHeaderSecondLevel} from '../hooks/useHeaderSecondLevel';
 import {IOScrollViewWithLargeHeader} from '../components/IOScrollViewWithLargeHeader';
 import {useAppDispatch, useAppSelector} from '../store';
-import {Lifecycle, setLifecycle} from '../features/wallet/store/lifecycle';
+import {resetLifecycle} from '../features/wallet/store/lifecycle';
 import {preferencesReset} from '../store/reducers/preferences';
 import {
   selectIsDebugModeEnabled,
@@ -39,7 +39,7 @@ const Settings = () => {
     {
       label: t('settings.reset.walletReset'),
       onPress: () => {
-        dispatch(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_OPERATIONAL}));
+        dispatch(resetLifecycle());
         toast.success(t('generics.success'));
       }
     },

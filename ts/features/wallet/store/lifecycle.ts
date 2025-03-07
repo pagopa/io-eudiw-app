@@ -55,7 +55,7 @@ const lifecycleSlice = createSlice({
 /**
  * Exports the actions for the lifecycle slice.
  */
-export const {setLifecycle} = lifecycleSlice.actions;
+export const {setLifecycle, resetLifecycle} = lifecycleSlice.actions;
 
 export const {reducer: lifecycleReducer} = lifecycleSlice;
 

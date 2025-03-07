@@ -2,6 +2,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
+import {resetLifecycle} from './lifecycle';
 
 /* State type definition for the instance slice
  * keyTag - The keytag bound to the wallet instance
@@ -30,6 +31,8 @@ const instanceSlice = createSlice({
   extraReducers: builder => {
     // This happens when the whole app state is reset
     builder.addCase(preferencesReset, _ => initialState);
+    // This happens when the wallet state is reset
+    builder.addCase(resetLifecycle, _ => initialState);
   }
 });
 
