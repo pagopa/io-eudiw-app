@@ -5,6 +5,7 @@ import FingerprintScanner, {
   Errors
 } from 'react-native-fingerprint-scanner';
 import {isPinOrFingerprintSet} from 'react-native-device-info';
+import {recordStartupDebugInfo} from '../../../store/utils/debug';
 
 /**
  * Retrieve biometric settings from the base system. This function wraps the basic
@@ -91,25 +92,36 @@ export type BiometricState = 'Available' | 'NotEnrolled' | 'NotSupported';
 
 export const getBiometricState = (): Promise<BiometricState> =>
   new Promise(resolve => {
+    recordStartupDebugInfo({isSensorAvailable: undefined});
     FingerprintScanner.isSensorAvailable()
-      .then(_ => resolve('Available'))
+      .then(_ => {
+        resolve('Available');
+        recordStartupDebugInfo({isSensorAvailable: 'Available'});
+      })
       .catch(e => {
         const error = e as FingerprintScannerError;
         if (error.name === 'FingerprintScannerNotEnrolled') {
           resolve('NotEnrolled');
+          recordStartupDebugInfo({isSensorAvailable: 'NotEnrolled'});
         } else {
           resolve('NotSupported');
+          recordStartupDebugInfo({isSensorAvailable: 'NotSupported'});
         }
       });
   });
 
 export const hasDeviceScreenLock = (): Promise<boolean> =>
   new Promise(resolve => {
+    recordStartupDebugInfo({hasScreenLockFunc: undefined});
     isPinOrFingerprintSet()
       .then(value => {
+        recordStartupDebugInfo({hasScreenLockFunc: value});
         resolve(value);
       })
-      .catch(_ => resolve(false));
+      .catch(_ => {
+        recordStartupDebugInfo({hasScreenLockFunc: false});
+        resolve(false);
+      });
   });
 
 export type BiometriActivationUserType =

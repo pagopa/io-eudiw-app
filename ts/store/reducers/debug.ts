@@ -18,7 +18,7 @@ type DebugState = Readonly<{
 
 // Initial state for the debug slice
 const initialState: DebugState = {
-  isDebugModeEnabled: false,
+  isDebugModeEnabled: true,
   debugData: {}
 };
 

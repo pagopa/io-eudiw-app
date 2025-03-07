@@ -42,6 +42,7 @@ import {
   selectIsBiometricEnabled
 } from '../store/reducers/preferences';
 import {isAndroid} from '../utils/device';
+import {recordStartupDebugInfo} from '../store/utils/debug';
 
 const onRequestCloseHandler = () => undefined;
 
@@ -161,6 +162,15 @@ const IdentificationModal = () => {
       />
     ) : null
   );
+
+  /*
+   * Watching the status variable because it is responsible for the modal popup
+   */
+  React.useEffect(() => {
+    recordStartupDebugInfo({
+      identificationModalDisplayStatus: status
+    });
+  }, [status]);
 
   // If the authentication process is not started, we don't show the modal.
   // We need to put this before the biometric request,

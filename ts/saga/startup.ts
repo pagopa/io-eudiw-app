@@ -34,6 +34,7 @@ import {
 import {walletSaga} from '../features/wallet/saga';
 import {selectUrl} from '../store/reducers/deeplinking';
 import {isNavigationReady} from '../navigation/utils';
+import {sagaRecordStartupDebugInfo} from '../store/utils/debug';
 
 function* startIdentification() {
   yield* put(startupSetStatus('WAIT_IDENTIFICATION'));
@@ -43,7 +44,21 @@ function* startIdentification() {
       isValidatingTask: false
     })
   );
+  /*
+   * These debug variable is used to check if the middleware
+   * doesn't block inside BootSplash.hide
+   */
+  yield* put(
+    sagaRecordStartupDebugInfo({
+      startIdentificationBootSplashHideDone: false
+    })
+  );
   yield* call(BootSplash.hide, {fade: true});
+  yield* put(
+    sagaRecordStartupDebugInfo({
+      startIdentificationBootSplashHideDone: true
+    })
+  );
   const action = yield* take([
     setIdentificationIdentified,
     setIdentificationUnidentified
@@ -127,7 +142,21 @@ function* startup() {
     }
   } catch {
     yield* put(startupSetError());
+    /*
+     * These debug variable is used to check if the middleware
+     * doesn't block inside BootSplash.hide
+     */
+    yield* put(
+      sagaRecordStartupDebugInfo({
+        startupCatchSectionBootSplashHideDone: false
+      })
+    );
     yield* call(BootSplash.hide, {fade: true});
+    yield* put(
+      sagaRecordStartupDebugInfo({
+        startupCatchSectionBootSplashHideDone: true
+      })
+    );
   }
 }
 
