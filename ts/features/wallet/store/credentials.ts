@@ -6,7 +6,7 @@ import {StoredCredential} from '../utils/types';
 import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
 import {wellKnownCredential} from '../utils/credentials';
-import {Lifecycle, setLifecycle} from './lifecycle';
+import {resetLifecycle} from './lifecycle';
 
 /* State type definition for the credentials slice.
  * This is stored as an array to avoid overhead due to map not being serializable,
@@ -79,12 +79,7 @@ const credentialsSlice = createSlice({
     // This happens when the whole app state is reset
     builder.addCase(preferencesReset, _ => initialState);
     // This happens when the wallet state is reset
-    builder.addCase(setLifecycle, (state, action) => {
-      if (action.payload.lifecycle === Lifecycle.LIFECYCLE_OPERATIONAL) {
-        return initialState;
-      }
-      return state;
-    });
+    builder.addCase(resetLifecycle, _ => initialState);
   }
 });
 
