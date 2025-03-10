@@ -6,13 +6,8 @@ import enOnboarding from '../../locales/en/onboarding.json';
 import itOnboarding from '../../locales/it/onboarding.json';
 import enWallet from '../../locales/en/wallet.json';
 import enQrCodeScan from '../../locales/en/qrcodeScan.json';
-import {recordStartupDebugInfo} from '../store/utils/debug';
 
-const initI18n = async () => {
-  /*
-   * Debug info to check i18next setup ends correctly
-   */
-  recordStartupDebugInfo({i18nInitialized: false});
+const initI18n = async () =>
   await i18next.use(initReactI18next).init({
     compatibilityJSON: 'v3', // We don't need pluralization
     fallbackLng: 'en',
@@ -33,7 +28,5 @@ const initI18n = async () => {
       }
     }
   });
-  recordStartupDebugInfo({i18nInitialized: true});
-};
 
 export default initI18n;
