@@ -45,7 +45,7 @@ function* startIdentification() {
     })
   );
   /*
-   * These debug variable is used to check if the middleware
+   * This debug variable is used to check if the middleware
    * doesn't block inside BootSplash.hide
    */
   yield* put(
@@ -65,7 +65,12 @@ function* startIdentification() {
   ]);
   if (setIdentificationIdentified.match(action)) {
     yield* fork(walletSaga);
+    /*
+     * This debug variable is used to check if the waitForNavigationToBeReady call terminates
+     */
+    yield* put(sagaRecordStartupDebugInfo({isNavigatorReady: false}));
     yield* call(waitForNavigationToBeReady);
+    yield* put(sagaRecordStartupDebugInfo({isNavigatorReady: true}));
     yield* put(startupSetStatus('DONE'));
     yield* call(handlePendingDeepLink);
   } else {
