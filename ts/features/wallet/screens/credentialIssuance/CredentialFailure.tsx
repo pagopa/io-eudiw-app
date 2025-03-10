@@ -10,6 +10,7 @@ import {
   selectCredentialIssuancePreAuthError
 } from '../../store/credentialIssuance';
 import {useDebugInfo} from '../../../../hooks/useDebugInfo';
+import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Filure screen of the credential issuance flow.
@@ -17,7 +18,7 @@ import {useDebugInfo} from '../../../../hooks/useDebugInfo';
  */
 const CredentialFailure = () => {
   const {t} = useTranslation(['global', 'wallet']);
-  const navigation = useNavigation();
+  const {navigateToWallet} = useNavigateToWalletWithReset();
   const dispatch = useAppDispatch();
   const postError = useAppSelector(selectCredentialIssuancePostAuthError);
   const preError = useAppSelector(selectCredentialIssuancePreAuthError);
@@ -28,7 +29,7 @@ const CredentialFailure = () => {
 
   const onPress = () => {
     dispatch(resetCredentialIssuance());
-    navigation.navigate('MAIN_TAB_NAV');
+    navigateToWallet();
   };
 
   return (
