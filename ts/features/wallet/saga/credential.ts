@@ -20,7 +20,7 @@ import {
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
-import {navigate} from '../../../navigation/utils';
+import {navigateWithReset} from '../../../navigation/utils';
 import {
   addCredential,
   addCredentialWithIdentification
@@ -245,7 +245,7 @@ function* storeCredentialWithIdentification(
   if (setIdentificationIdentified.match(resAction)) {
     yield* put(addCredential({credential: action.payload.credential}));
     yield* put(resetCredentialIssuance());
-    navigate('MAIN_TAB_NAV');
+    navigateWithReset('MAIN_TAB_NAV');
     IOToast.success(i18next.t('buttons.done', {ns: 'global'}));
   } else {
     return;
