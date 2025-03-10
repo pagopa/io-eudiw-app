@@ -9,10 +9,9 @@ import {resetDebugData, setDebugData} from '../reducers/debug';
  * and, as a consequence, all variables are correctly removed
  */
 
-
 /*
-*************************** TYPES FOR CAPTURING STARTUP SAGA DEBUG INFO *****************************
-*/
+ *************************** TYPES FOR CAPTURING STARTUP SAGA DEBUG INFO *****************************
+ */
 
 /**
  * Type that acts as a registry of all the variables a user wants to monitor

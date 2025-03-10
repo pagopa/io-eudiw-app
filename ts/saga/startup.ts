@@ -125,8 +125,8 @@ function* startOnboarding() {
 function* startup() {
   try {
     /*
-    * Debug info to check i18next setup ends correctly
-    */
+     * Debug info to check i18next setup ends correctly
+     */
     yield* put(sagaRecordStartupDebugInfo({i18nInitialized: false}));
     yield* call(initI18n);
     yield* put(sagaRecordStartupDebugInfo({i18nInitialized: true}));
