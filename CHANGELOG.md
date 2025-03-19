@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.2-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.7.1-rc.0...1.7.2-rc.0) (2025-03-19)
+
+
+### Bug Fixes
+
+* [WLEO-278,WLEO-301] Reset wallet state correctly ([#72](https://github.com/pagopa/io-eudiw-app/issues/72)) ([39e01d6](https://github.com/pagopa/io-eudiw-app/commit/39e01d6ae0d01df11dede638beef5b3322bcc19b))
+* Wrong env variables ([176fe80](https://github.com/pagopa/io-eudiw-app/commit/176fe80196d32e786cbc7e9480b6db1acf9a81ba))
+
+
+### Chores
+
+* [WLEO-283] Add debug info to the startup saga ([#74](https://github.com/pagopa/io-eudiw-app/issues/74)) ([de5d885](https://github.com/pagopa/io-eudiw-app/commit/de5d8850421bc1879a19cb971fb959b88e74cac9))
+
 ### [1.7.1-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.7.0-rc.0...1.7.1-rc.0) (2025-03-03)
 
 
