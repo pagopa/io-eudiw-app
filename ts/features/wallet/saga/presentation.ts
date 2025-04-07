@@ -131,11 +131,16 @@ function* handlePresetationPreDefinition(
           }
         );
 
+        const authRequestObject = {
+          nonce: requestObject.nonce,
+          clientId: requestObject.client_id,
+          responseUri: requestObject.response_uri
+        };
+
         const remotePresentations = yield* call(
           Credential.Presentation.prepareRemotePresentations,
           credentialAndInputDescriptor,
-          requestObject.nonce,
-          requestObject.client_id
+          authRequestObject
         );
 
         const authResponse = yield* call(

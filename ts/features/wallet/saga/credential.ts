@@ -205,6 +205,7 @@ function* obtainCredential() {
       issuerConf,
       credential,
       format,
+      credentialType,
       {credentialCryptoContext, ignoreMissingAttributes: true}
     );
 

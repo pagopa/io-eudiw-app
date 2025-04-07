@@ -148,6 +148,7 @@ function* obtainPid() {
       issuerConf,
       credential,
       format,
+      wellKnownCredential.PID,
       {credentialCryptoContext}
     );
 
