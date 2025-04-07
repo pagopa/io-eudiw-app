@@ -118,7 +118,7 @@ function* handlePresetationPreDefinition(
           evaluateInputDescriptor => {
             const requestedClaims = [
               ...evaluateInputDescriptor.evaluatedDisclosure.requiredDisclosures.map(
-                item => item.decoded[1]
+                item => item.name
               ),
               ...optionalClaimsNames
             ];

@@ -56,16 +56,16 @@ const PresentationClaimsList = ({
           />
           <View style={styles.container}>
             {requiredDisclosures.map((claim, index) => (
-              <View key={`${index}-${claim.decoded[index]}`}>
+              <View key={`${index}`}>
                 {/* Add a separator view between sections */}
                 {index !== 0 && <Divider />}
                 <View style={styles.dataItem}>
                   <View>
                     <ClaimText
                       claim={{
-                        id: claim.decoded[0],
-                        label: claim.decoded[1],
-                        value: claim.decoded[2]
+                        id: claim.name,
+                        label: claim.name,
+                        value: claim.value
                       }}
                     />
                     <BodySmall weight="Regular" color="grey-700">
@@ -89,16 +89,16 @@ const PresentationClaimsList = ({
           />
           <View style={styles.container}>
             {optionalDisclosures.map((claim, index) => (
-              <View key={`${index}-${claim.decoded[index]}`}>
+              <View key={`${index}-${claim.name}`}>
                 {/* Add a separator view between sections */}
                 {index !== 0 && <Divider />}
                 <View style={styles.dataItem}>
                   <View>
                     <ClaimText
                       claim={{
-                        id: claim.decoded[0],
-                        label: claim.decoded[1],
-                        value: claim.decoded[2]
+                        id: claim.name,
+                        label: claim.name,
+                        value: claim.value
                       }}
                     />
                     <BodySmall weight="Regular" color="grey-700">
@@ -106,8 +106,8 @@ const PresentationClaimsList = ({
                     </BodySmall>
                   </View>
                   <AnimatedCheckbox
-                    checked={optionalChecked.includes(claim.decoded[1])}
-                    onPress={_ => setOptionalChecked(claim.decoded[1])} // That's the name of the claim
+                    checked={optionalChecked.includes(claim.name)}
+                    onPress={_ => setOptionalChecked(claim.name)} // That's the name of the claim
                   />
                 </View>
               </View>
