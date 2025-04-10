@@ -107,7 +107,7 @@ const PresentationClaimsList = ({
                   </View>
                   <AnimatedCheckbox
                     checked={optionalChecked.includes(claim.name)}
-                    onPress={_ => setOptionalChecked(claim.name)} // That's the name of the claim
+                    onPress={_ => setOptionalChecked(claim.name)}
                   />
                 </View>
               </View>

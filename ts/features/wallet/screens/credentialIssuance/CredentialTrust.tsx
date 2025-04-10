@@ -14,7 +14,6 @@ import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {SdJwt} from '@pagopa/io-react-native-wallet';
-import {EvaluatedDisclosure} from '@pagopa/io-react-native-wallet/lib/typescript/credential/presentation/07-evaluate-input-descriptor';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {selectCredential} from '../../store/credentials';
 import {
@@ -103,11 +102,10 @@ const CredentialTrust = () => {
 
   // This is a mocked descriptor for the PID credential to show its claims in the PresentationClaimsList component
   const pidCredentialJwt = SdJwt.decode(pid.credential);
-  const requiredDisclosures: Array<EvaluatedDisclosure> =
-    pidCredentialJwt.disclosures.map(disclosure => ({
-      name: disclosure.decoded[1],
-      value: disclosure.decoded[2]
-    }));
+  const requiredDisclosures = pidCredentialJwt.disclosures.map(disclosure => ({
+    name: disclosure.decoded[1],
+    value: disclosure.decoded[2]
+  }));
   const mockedDescriptorForPid: Descriptor = [
     {
       credential: pid.credential,
