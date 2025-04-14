@@ -2375,16 +2375,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-cbor@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@pagopa/io-react-native-cbor@npm:1.0.0"
+"@pagopa/io-react-native-cbor@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@pagopa/io-react-native-cbor@npm:1.2.0"
   dependencies:
     zod: ^3.24.1
   peerDependencies:
     "@pagopa/io-react-native-crypto": "*"
     react: "*"
     react-native: "*"
-  checksum: 8f71852a46d1438fbb44714555c6244700830a2c3768b056054b1227ce118f7b0095e299571de461a1a239731d24e56c60974e5a0e3be3fba72499d839849ee0
+  checksum: b809688bf841333476a68dcde2639036cfa74df9acafe051f3448028aa2dec5e02d81b12adaf2dd250f9dd6b706bad85e98d075802ac32b9ef9f66f7e569eea8
   languageName: node
   linkType: hard
 
@@ -2431,9 +2431,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-wallet@npm:1.5.0":
-  version: 1.5.0
-  resolution: "@pagopa/io-react-native-wallet@npm:1.5.0"
+"@pagopa/io-react-native-wallet@npm:1.6.0":
+  version: 1.6.0
+  resolution: "@pagopa/io-react-native-wallet@npm:1.6.0"
   dependencies:
     "@types/jsrsasign": ^10.5.15
     ajv: ^8.17.1
@@ -2444,7 +2444,6 @@ __metadata:
     parse-url: ^9.2.0
     react-native-url-polyfill: ^2.0.0
     react-native-uuid: ^2.0.1
-    yarn.lock: ^0.0.1-security
     zod: ^3.21.4
   peerDependencies:
     "@pagopa/io-react-native-cbor": "*"
@@ -2452,7 +2451,7 @@ __metadata:
     "@pagopa/io-react-native-jwt": "*"
     react: "*"
     react-native: "*"
-  checksum: 0ab91dd706f28fd2164e7d2bce503fea9ebe3b60bc6a2a0fcf606e632585928ae2896bc3e0354bcd83d98429f3c01b96751181442c69dcff4e50d3395ac7b187
+  checksum: cbb85aca5e00cb309a6d3fed18f373acd222a630c4ea092d08a0d0b53fb6df1860013a8664c0df79c0055bfd115094f696c86eb094a8a66c358f8261b718aaa7
   languageName: node
   linkType: hard
 
@@ -8323,12 +8322,12 @@ __metadata:
     "@babel/runtime": ^7.20.0
     "@gorhom/bottom-sheet": ^5.0.6
     "@pagopa/io-app-design-system": ^4.0.1
-    "@pagopa/io-react-native-cbor": ^1.0.0
+    "@pagopa/io-react-native-cbor": ^1.2.0
     "@pagopa/io-react-native-crypto": ^1.0.1
     "@pagopa/io-react-native-jwt": 2.0.0
     "@pagopa/io-react-native-login-utils": ^1.0.7
     "@pagopa/io-react-native-proximity": ^0.2.0
-    "@pagopa/io-react-native-wallet": 1.5.0
+    "@pagopa/io-react-native-wallet": 1.6.0
     "@pagopa/react-native-nodelibs": ^0.1.0
     "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native-clipboard/clipboard": ^1.15.0
@@ -15406,13 +15405,6 @@ __metadata:
     y18n: ^5.0.5
     yargs-parser: ^21.1.1
   checksum: 73b572e863aa4a8cbef323dd911d79d193b772defd5a51aab0aca2d446655216f5002c42c5306033968193bdbf892a7a4c110b0d77954a7fdf563e653967b56a
-  languageName: node
-  linkType: hard
-
-"yarn.lock@npm:^0.0.1-security":
-  version: 0.0.1-security
-  resolution: "yarn.lock@npm:0.0.1-security"
-  checksum: 247a60a82cb355617a26b49fe9097154ed3ab325116897a6bc7e6794984e96856d4a612d9e5e1854859b5338e95c0d8f53a87436f3455189e927a3679ff43bbe
   languageName: node
   linkType: hard
 
