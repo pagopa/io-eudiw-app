@@ -299,7 +299,9 @@ interface Resources {
         "notAvailable": "Claim not available",
         "expiryDate": "Valid until",
         "issueDate": "Valid from",
-        "category": "Category"
+        "category": "Category",
+        "valid" : "VALID",
+        "expired" : "EXPIRED"
       },
       "mdl": {
         "license": "License {{category}}",

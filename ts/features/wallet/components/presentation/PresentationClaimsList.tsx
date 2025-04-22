@@ -145,7 +145,7 @@ const ClaimText = ({claim}: {claim: ClaimDisplayFormat}) => {
 export const getClaimDisplayValue = (
   claim: ClaimDisplayFormat
 ): string | Array<string> => {
-  const decoded = claimScheme.safeParse(claim.value);
+  const decoded = claimScheme.safeParse(claim);
 
   if (decoded.success) {
     switch (decoded.data.type) {

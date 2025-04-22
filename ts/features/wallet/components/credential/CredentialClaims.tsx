@@ -10,6 +10,7 @@ import {
 import {ClaimDisplayFormat} from '../../utils/types';
 import {useIOBottomSheetModal} from '../../../../hooks/useBottomSheet';
 import {getSafeText} from '../../../../utils/string';
+import { Image } from 'react-native';
 
 /**
  * Component which renders a generic text type claim.
@@ -29,12 +30,40 @@ const PlainTextClaimItem = ({label, claim}: {label: string; claim: string}) => {
 };
 
 /**
+ * Component which renders an image type claim.
+ * @param label - the label of the claim
+ * @param claim - the claim value
+ */
+const ImageClaimItem = ({label, claim, width, height}: {label: string; claim: string, width : number, height : number}) => {
+  return (
+    <ListItemInfo
+      numberOfLines={2}
+      label={label}
+      accessibilityLabel={`${label}`}
+      value={
+        <Image
+          source={{
+            uri : claim
+          }}
+          style={{
+            width : 200,
+            height : Math.ceil(200 * height / width)
+          }}
+          resizeMode='contain'
+        />
+      }
+    />
+  );
+};
+
+/**
  * Component which renders a date type claim with an optional icon and expiration badge.
  * @param label - the label of the claim
  * @param claim - the value of the claim
  */
-const DateClaimItem = ({label, claim}: {label: string; claim: Date}) => {
+const DateClaimItem = ({label, claim, expires}: {label: string; claim: Date, expires : boolean}) => {
   const value = claim.toLocaleDateString();
+  const {t} = useTranslation(["wallet"])
 
   return (
     <ListItemInfo
@@ -42,6 +71,21 @@ const DateClaimItem = ({label, claim}: {label: string; claim: Date}) => {
       label={label}
       value={value}
       accessibilityLabel={`${label} ${value}`}
+      endElement={expires ?
+        {
+          type : 'badge',
+          componentProps : Date.now() > claim.getTime() ?
+          {
+            variant : 'error',
+            text : t('wallet:claims.generic.expired')
+          } :
+          {
+            variant : 'success',
+            text : t('wallet:claims.generic.valid')
+          }
+        }
+        : undefined
+      }
     />
   );
 };
@@ -80,7 +124,7 @@ const DrivingPrivilegesClaimItem = ({
   const localExpiryDate = new Date(expiry_date).toLocaleDateString();
   const {t} = useTranslation(['wallet', 'global']);
   const privilegeBottomSheet = useIOBottomSheetModal({
-    title: t('wallet:claims.generic.category', {
+    title: t('wallet:claims.mdl.license', {
       category: vehicle_category_code
     }),
     component: (
@@ -202,7 +246,7 @@ export const CredentialClaim = ({
   claim: ClaimDisplayFormat;
   isPreview: boolean;
 }) => {
-  const decoded = claimScheme.safeParse(claim.value);
+  const decoded = claimScheme.safeParse(claim);
   /**
    * It seems like there's no way to get the type in typescript after the safeParse method is called inside the if statement.
    * Thus type casting is required.
@@ -210,7 +254,9 @@ export const CredentialClaim = ({
   if (decoded.success) {
     switch (decoded.data.type) {
       case 'date':
-        return <DateClaimItem label={claim.label} claim={decoded.data.value} />;
+        return <DateClaimItem label={claim.label} claim={decoded.data.value} expires={false}/>;
+      case 'expireDate':
+        return <DateClaimItem label={claim.label} claim={decoded.data.value} expires={!isPreview} />;
       case 'drivingPrivileges':
         return (
           <>
@@ -239,6 +285,10 @@ export const CredentialClaim = ({
         return (
           <PlainTextClaimItem label={claim.label} claim={decoded.data.value} />
         );
+      case 'image':
+        return (
+          <ImageClaimItem label={claim.label} claim={decoded.data.value} width={decoded.data.width} height={decoded.data.height} />
+        )
       default:
         return <UnknownClaimItem label={claim.label} />;
     }
