@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {FlatList, Pressable, View} from 'react-native';
 import {
   IOStyles,
@@ -13,7 +13,7 @@ import {ActivationBanner} from '../features/wallet/components/ActivationBanner';
 import {credentialsSelector} from '../features/wallet/store/credentials';
 import {CredentialCard} from '../features/wallet/components/credential/CredentialCard';
 import {IOScrollView} from '../components/IOScrollView';
-import { clearStartupDebugInfo } from '../store/utils/debug';
+import {clearStartupDebugInfo} from '../store/utils/debug';
 
 /**
  * Wallet home to be rendered as the first page in the tab navigator.
@@ -32,8 +32,8 @@ const WalletHome = () => {
    * variable, outside of the startup saga
    */
   useEffect(() => {
-    clearStartupDebugInfo()
-  },[])
+    clearStartupDebugInfo();
+  }, []);
 
   return (
     <>

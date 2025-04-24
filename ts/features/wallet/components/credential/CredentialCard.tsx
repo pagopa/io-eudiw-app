@@ -72,7 +72,7 @@ const credentialCardBackgrounds: {
 } = {
   [wellKnownCredential.PID]: require('../../assets/img/credentials/pid.png'),
   [wellKnownCredential.DRIVING_LICENSE]: require('../../assets/img/credentials/mdl.png'),
-  [wellKnownCredential.HEALTHID] : require('../../assets/img/credentials/healthID.png')
+  [wellKnownCredential.HEALTHID]: require('../../assets/img/credentials/healthID.png')
 };
 
 const styles = StyleSheet.create({
