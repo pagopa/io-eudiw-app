@@ -214,6 +214,7 @@ interface Resources {
       "names": {
         "mdl": "Driving License",
         "pid": "Digital Identity",
+        "hiid": "Health ID",
         "unknown": "Unknown"
       }
     },
