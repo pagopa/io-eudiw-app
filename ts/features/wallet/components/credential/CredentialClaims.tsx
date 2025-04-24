@@ -2,6 +2,7 @@ import {Divider, ListItemInfo} from '@pagopa/io-app-design-system';
 import React, {Fragment} from 'react';
 import i18next from 'i18next';
 import {useTranslation} from 'react-i18next';
+import {Image} from 'react-native';
 import {
   claimScheme,
   DrivingPrivilegesType,
@@ -10,7 +11,6 @@ import {
 import {ClaimDisplayFormat} from '../../utils/types';
 import {useIOBottomSheetModal} from '../../../../hooks/useBottomSheet';
 import {getSafeText} from '../../../../utils/string';
-import { Image } from 'react-native';
 
 /**
  * Component which renders a generic text type claim.
@@ -32,38 +32,56 @@ const PlainTextClaimItem = ({label, claim}: {label: string; claim: string}) => {
 /**
  * Component which renders an image type claim.
  * @param label - the label of the claim
- * @param claim - the claim value
+ * @param uri - the claim image uri
+ * @param width - the claim image width
+ * @param height - the claim image height
  */
-const ImageClaimItem = ({label, claim, width, height}: {label: string; claim: string, width : number, height : number}) => {
-  return (
-    <ListItemInfo
-      numberOfLines={2}
-      label={label}
-      accessibilityLabel={`${label}`}
-      value={
-        <Image
-          source={{
-            uri : claim
-          }}
-          style={{
-            width : 200,
-            height : Math.ceil(200 * height / width)
-          }}
-          resizeMode='contain'
-        />
-      }
-    />
-  );
-};
+const ImageClaimItem = ({
+  label,
+  uri,
+  width,
+  height
+}: {
+  label: string;
+  uri: string;
+  width: number;
+  height: number;
+}) => (
+  <ListItemInfo
+    numberOfLines={2}
+    label={label}
+    accessibilityLabel={`${label}`}
+    value={
+      <Image
+        source={{
+          uri
+        }}
+        style={{
+          width: 200,
+          height: Math.ceil((200 * height) / width)
+        }}
+        resizeMode="contain"
+      />
+    }
+  />
+);
 
 /**
  * Component which renders a date type claim with an optional icon and expiration badge.
  * @param label - the label of the claim
  * @param claim - the value of the claim
  */
-const DateClaimItem = ({label, claim, expires}: {label: string; claim: Date, expires : boolean}) => {
+const DateClaimItem = ({
+  label,
+  claim,
+  expires = false
+}: {
+  label: string;
+  claim: Date;
+  expires?: boolean;
+}) => {
   const value = claim.toLocaleDateString();
-  const {t} = useTranslation(["wallet"])
+  const {t} = useTranslation(['wallet']);
 
   return (
     <ListItemInfo
@@ -71,20 +89,22 @@ const DateClaimItem = ({label, claim, expires}: {label: string; claim: Date, exp
       label={label}
       value={value}
       accessibilityLabel={`${label} ${value}`}
-      endElement={expires ?
-        {
-          type : 'badge',
-          componentProps : Date.now() > claim.getTime() ?
-          {
-            variant : 'error',
-            text : t('wallet:claims.generic.expired')
-          } :
-          {
-            variant : 'success',
-            text : t('wallet:claims.generic.valid')
-          }
-        }
-        : undefined
+      endElement={
+        expires
+          ? {
+              type: 'badge',
+              componentProps:
+                Date.now() > claim.getTime()
+                  ? {
+                      variant: 'error',
+                      text: t('wallet:claims.generic.expired')
+                    }
+                  : {
+                      variant: 'success',
+                      text: t('wallet:claims.generic.valid')
+                    }
+            }
+          : undefined
       }
     />
   );
@@ -254,9 +274,15 @@ export const CredentialClaim = ({
   if (decoded.success) {
     switch (decoded.data.type) {
       case 'date':
-        return <DateClaimItem label={claim.label} claim={decoded.data.value} expires={false}/>;
+        return <DateClaimItem label={claim.label} claim={decoded.data.value} />;
       case 'expireDate':
-        return <DateClaimItem label={claim.label} claim={decoded.data.value} expires={!isPreview} />;
+        return (
+          <DateClaimItem
+            label={claim.label}
+            claim={decoded.data.value}
+            expires={!isPreview}
+          />
+        );
       case 'drivingPrivileges':
         return (
           <>
@@ -287,8 +313,13 @@ export const CredentialClaim = ({
         );
       case 'image':
         return (
-          <ImageClaimItem label={claim.label} claim={decoded.data.value} width={decoded.data.width} height={decoded.data.height} />
-        )
+          <ImageClaimItem
+            label={claim.label}
+            uri={decoded.data.value}
+            width={decoded.data.width}
+            height={decoded.data.height}
+          />
+        );
       default:
         return <UnknownClaimItem label={claim.label} />;
     }
