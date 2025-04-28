@@ -56,6 +56,7 @@ const PresentationPostDefinition = ({route}: Props) => {
   const postDefinitionStatus = useAppSelector(selectPostDefinitionStatus);
   const {navigateToWallet} = useNavigateToWalletWithReset();
   const [optionalChecked, setOptionalChecked] = useState([] as Array<string>);
+  const [requiredExcluded, setRequiredExcluded] = useState([] as Array<string>);
 
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();
@@ -78,6 +79,19 @@ const PresentationPostDefinition = ({route}: Props) => {
         style: 'cancel'
       }
     ]);
+  };
+
+  /**
+   * Callback for when the user checks or unchecks a required disclosure
+   * in the PresentationClaimsList component.
+   * @param encoded - The encoded string of the required disclosure
+   */
+  const onRequiredDisclosuresChange = (encoded: OptionalClaimsNames) => {
+    if (requiredExcluded.includes(encoded)) {
+      setRequiredExcluded(requiredExcluded.filter(item => item !== encoded));
+    } else {
+      setRequiredExcluded([...requiredExcluded, encoded]);
+    }
   };
 
   /**
@@ -136,6 +150,8 @@ const PresentationPostDefinition = ({route}: Props) => {
         <PresentationClaimsList
           optionalChecked={optionalChecked}
           setOptionalChecked={onOptionalDisclosuresChange}
+          requiredExcluded={requiredExcluded}
+          setRequiredExcluded={onRequiredDisclosuresChange}
           descriptor={route.params.descriptor}
           source={getCredentialNameByType(wellKnownCredential.PID)}
         />
@@ -156,7 +172,10 @@ const PresentationPostDefinition = ({route}: Props) => {
           type: 'TwoButtons',
           primary: {
             label: t('global:buttons.confirm'),
-            onPress: () => dispatch(setPostDefinitionRequest(optionalChecked)),
+            onPress: () =>
+              dispatch(
+                setPostDefinitionRequest({optionalChecked, requiredExcluded})
+              ),
             loading: postDefinitionStatus.loading
           },
           secondary: {

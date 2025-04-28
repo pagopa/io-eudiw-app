@@ -11,7 +11,11 @@ import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import i18next from 'i18next';
 import {useTranslation} from 'react-i18next';
-import {Descriptor, OptionalClaimsNames} from '../../store/presentation';
+import {
+  Descriptor,
+  OptionalClaimsNames,
+  RequiredClaimsNames
+} from '../../store/presentation';
 import {ClaimDisplayFormat} from '../../utils/types';
 import {getSafeText, isStringNullyOrEmpty} from '../../../../utils/string';
 import {claimScheme, VerificationEvidenceType} from '../../utils/claims';
@@ -19,6 +23,8 @@ import {claimScheme, VerificationEvidenceType} from '../../utils/claims';
 export type RequiredClaimsProps = {
   optionalChecked: Array<OptionalClaimsNames>;
   setOptionalChecked: (encoded: OptionalClaimsNames) => void;
+  requiredExcluded?: Array<RequiredClaimsNames>;
+  setRequiredExcluded?: (encoded: RequiredClaimsNames) => void;
   descriptor: Descriptor;
   source: string;
 };
@@ -34,7 +40,9 @@ const PresentationClaimsList = ({
   descriptor,
   source,
   optionalChecked,
-  setOptionalChecked
+  setOptionalChecked,
+  requiredExcluded = undefined,
+  setRequiredExcluded = undefined
 }: RequiredClaimsProps) => {
   const requiredDisclosures = descriptor.flatMap(
     item => item.evaluatedDisclosure.requiredDisclosures
@@ -72,7 +80,14 @@ const PresentationClaimsList = ({
                       {source}
                     </BodySmall>
                   </View>
-                  <AnimatedCheckbox checked={true} />
+                  {requiredExcluded && setRequiredExcluded ? (
+                    <AnimatedCheckbox
+                      checked={!requiredExcluded.includes(claim.name)}
+                      onPress={_ => setRequiredExcluded(claim.name)}
+                    />
+                  ) : (
+                    <AnimatedCheckbox checked={true} />
+                  )}
                 </View>
               </View>
             ))}

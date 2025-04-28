@@ -103,7 +103,12 @@ function* handlePresetationPreDefinition(
     ]);
 
     if (setPostDefinitionRequest.match(choice)) {
-      const {payload: optionalClaimsNames} = choice;
+      const {
+        payload: {
+          optionalChecked: optionalClaimsNames,
+          requiredExcluded: excludedRequiredClaimsNames
+        }
+      } = choice;
       yield* put(
         setIdentificationStarted({canResetPin: false, isValidatingTask: true})
       );
@@ -117,9 +122,13 @@ function* handlePresetationPreDefinition(
         const credentialAndInputDescriptor = evaluateInputDescriptors.map(
           evaluateInputDescriptor => {
             const requestedClaims = [
-              ...evaluateInputDescriptor.evaluatedDisclosure.requiredDisclosures.map(
-                item => item.name
-              ),
+              ...(excludedRequiredClaimsNames
+                ? evaluateInputDescriptor.evaluatedDisclosure.requiredDisclosures.filter(
+                    item => !excludedRequiredClaimsNames.includes(item.name)
+                  )
+                : evaluateInputDescriptor.evaluatedDisclosure
+                    .requiredDisclosures
+              ).map(item => item.name),
               ...optionalClaimsNames
             ];
             return {
