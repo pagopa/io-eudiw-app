@@ -159,7 +159,7 @@ const DrivingPrivilegesClaimItem = ({
         <Divider />
         <ListItemInfo
           label={t('wallet:claims.generic.expiryDate')}
-          value={claim.expiry_date}
+          value={localExpiryDate}
           accessibilityLabel={`${t(
             'wallet:claims.generic.expiryDate'
           )} ${localExpiryDate}`}
