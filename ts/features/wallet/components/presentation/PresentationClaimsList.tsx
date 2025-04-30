@@ -158,10 +158,10 @@ export const getClaimDisplayValue = (
         return JSON.stringify(decoded.data as VerificationEvidenceType);
       case 'string':
         return getSafeText(decoded.data.value);
-      //Rendering the image as its encoded version temporarily,
-      //since this component may undergo significant changes
+      // Rendering the image as its encoded version temporarily,
+      // since this component may undergo significant changes
       case 'image':
-        return decoded.data.value
+        return decoded.data.value;
       default:
         return i18next.t('wallet:claims.generic.notAvailable');
     }
