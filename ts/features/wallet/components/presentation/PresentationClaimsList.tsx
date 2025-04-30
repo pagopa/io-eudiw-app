@@ -60,7 +60,7 @@ const PresentationClaimsList = ({
                 {/* Add a separator view between sections */}
                 {index !== 0 && <Divider />}
                 <View style={styles.dataItem}>
-                  <View>
+                  <View style={styles.shrinked}>
                     <ClaimText
                       claim={{
                         id: claim.name,
@@ -93,7 +93,7 @@ const PresentationClaimsList = ({
                 {/* Add a separator view between sections */}
                 {index !== 0 && <Divider />}
                 <View style={styles.dataItem}>
-                  <View>
+                  <View style={styles.shrinked}>
                     <ClaimText
                       claim={{
                         id: claim.name,
@@ -109,7 +109,7 @@ const PresentationClaimsList = ({
                     checked={optionalChecked.includes(claim.name)}
                     onPress={_ => setOptionalChecked(claim.name)}
                   />
-                </View>
+                  </View>
               </View>
             ))}
           </View>
@@ -150,6 +150,7 @@ export const getClaimDisplayValue = (
   if (decoded.success) {
     switch (decoded.data.type) {
       case 'date':
+      case 'expireDate':
         return decoded.data.value.toLocaleDateString();
       case 'drivingPrivileges':
         return decoded.data.value.map(elem => elem.vehicle_category_code);
@@ -157,6 +158,10 @@ export const getClaimDisplayValue = (
         return JSON.stringify(decoded.data as VerificationEvidenceType);
       case 'string':
         return getSafeText(decoded.data.value);
+      //Rendering the image as its encoded version temporarily,
+      //since this component may undergo significant changes
+      case 'image':
+        return decoded.data.value
       default:
         return i18next.t('wallet:claims.generic.notAvailable');
     }
@@ -176,6 +181,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  shrinked : {
+    flexShrink : 1
   }
 });
 

@@ -54,7 +54,7 @@ export const stringSchema = z.string().transform(str => ({
  * Schema to validate a boolean when the base claim label is not specified
  */
 export const booleanSchema = z.boolean().transform(bool => ({
-  value: bool ? 'true' : 'false',
+  value: bool ? 'Yes' : 'No',
   type: claimType.string
 }));
 
