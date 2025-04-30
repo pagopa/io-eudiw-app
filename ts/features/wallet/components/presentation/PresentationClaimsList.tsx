@@ -109,7 +109,7 @@ const PresentationClaimsList = ({
                     checked={optionalChecked.includes(claim.name)}
                     onPress={_ => setOptionalChecked(claim.name)}
                   />
-                  </View>
+                </View>
               </View>
             ))}
           </View>
@@ -182,8 +182,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
-  shrinked : {
-    flexShrink : 1
+  shrinked: {
+    flexShrink: 1
   }
 });
 
