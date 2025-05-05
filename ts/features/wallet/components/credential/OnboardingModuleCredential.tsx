@@ -15,7 +15,8 @@ type Props = {
 
 const credentialIconByType: Record<string, IOIcons> = {
   [wellKnownCredential.DRIVING_LICENSE]: 'car',
-  [wellKnownCredential.PID]: 'fingerprint'
+  [wellKnownCredential.PID]: 'fingerprint',
+  [wellKnownCredential.HEALTHID]: 'healthCard'
 };
 
 const activeBadge: Badge = {
