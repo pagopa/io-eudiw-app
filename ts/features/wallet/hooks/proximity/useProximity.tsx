@@ -1,12 +1,14 @@
-import ProximityModule, {
-  QrEngagementEventPayloads
-} from '@pagopa/io-react-native-proximity';
+import * as ProximityModule from '@pagopa/io-react-native-proximity';
 import {serializeError} from 'serialize-error';
 import {useCallback} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {addProximityLog} from '../../store/proximity';
 import {requestBlePermissions} from '../../utils/permissions';
-import {VerifierRequest} from '../../utils/proximity';
+import {
+  generateAcceptedFields,
+  isRequestMdl,
+  parseVerifierRequest
+} from '../../utils/proximity';
 import {wellKnownCredential} from '../../utils/credentials';
 import {selectCredential} from '../../store/credentials';
 import {sleep} from '../../../../utils/time';
@@ -23,7 +25,9 @@ export const useProximity = () => {
    * @param qrCode - The QR code string to be displayed.
    */
   const onDeviceRetrievalHelperReady = useCallback(
-    (data: QrEngagementEventPayloads['onDeviceRetrievalHelperReady']) => {
+    (
+      data: ProximityModule.QrEngagementEventPayloads['onDeviceRetrievalHelperReady']
+    ) => {
       dispatch(
         addProximityLog(`onDeviceRetrievalHelperReady ${JSON.stringify(data)}`)
       );
@@ -37,7 +41,9 @@ export const useProximity = () => {
    * @param onErrorData - The error data.
    */
   const onCommunicationError = useCallback(
-    (data: QrEngagementEventPayloads['onCommunicationError']) => {
+    (
+      data: ProximityModule.QrEngagementEventPayloads['onCommunicationError']
+    ) => {
       dispatch(
         addProximityLog(
           `[ON_COMMUNICATION_ERROR_CALLBACK] ${JSON.stringify(data)}`
@@ -56,7 +62,9 @@ export const useProximity = () => {
    * @param onNewData - The device request
    */
   const onNewDeviceRequest = useCallback(
-    async (onNewData: QrEngagementEventPayloads['onNewDeviceRequest']) => {
+    async (
+      onNewData: ProximityModule.QrEngagementEventPayloads['onNewDeviceRequest']
+    ) => {
       try {
         if (!onNewData || !onNewData.message) {
           throw new Error('Invalid onNewDeviceRequest payload');
@@ -66,37 +74,35 @@ export const useProximity = () => {
         const parsedJson = JSON.parse(message);
 
         // Validate using Zod with parse
-        const parsedResponse = VerifierRequest.parse(parsedJson);
+        const parsedResponse = parseVerifierRequest(parsedJson);
 
-        // Ensure that the request object has exactly one key and it matches the expected key
-        const requestKeys = Object.keys(parsedResponse.request);
-
-        if (requestKeys.length !== 1) {
-          await ProximityModule.sendErrorResponseNoData();
-          throw new Error(
-            `Unexpected request keys. Expected only one key but got: ${requestKeys}`
-          );
-        }
-        if (requestKeys[0] !== wellKnownCredential.DRIVING_LICENSE) {
-          await ProximityModule.sendErrorResponseNoData();
-          throw new Error(
-            `More than MDL request found. Only MDL request is supported. Found: ${requestKeys}`
-          );
-        }
+        /*
+        Currently only supporting mDL requests thus we check if the requests consists of a single credential       
+        and if the credential is of type mDL.
+        */
+        isRequestMdl(Object.keys(parsedResponse.request));
 
         if (!mdl) {
-          throw new Error('MDL not found');
+          throw new Error('No mDL credential found');
         }
 
-        // Generate the response payload
-        const responsePayload = JSON.stringify(parsedResponse.request);
+        const documents: Array<ProximityModule.Document> = [
+          {
+            alias: mdl.keyTag,
+            docType: mdl.credentialType,
+            issuerSignedContent: mdl.credential
+          }
+        ];
 
-        // Generate the response
-        await ProximityModule.generateResponse(
-          mdl.credential,
-          responsePayload,
-          mdl.keyTag
+        const acceptedFields = generateAcceptedFields(parsedResponse.request);
+
+        // Generate the response payload
+        const result = await ProximityModule.generateResponse(
+          documents,
+          acceptedFields
         );
+
+        await ProximityModule.sendResponse(result);
         // Wait for the response to be sent before closing everything, we don't know when it's done
         await sleep(5000);
         dispatch(
