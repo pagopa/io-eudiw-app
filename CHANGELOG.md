@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.8.0-rc.0...1.9.0-rc.0) (2025-05-06)
+
+
+### Features
+
+* [WLEO-354,WLEO-363] Add option to obtain an HealthID and fix debug mode issue ([#77](https://github.com/pagopa/io-eudiw-app/issues/77)) ([174673c](https://github.com/pagopa/io-eudiw-app/commit/174673cea5e9ddb81a675805bcd94526a6464454))
+
+
+### Chores
+
+* [WLEO-386] Update proximity implementation to version 0.3.0 ([#81](https://github.com/pagopa/io-eudiw-app/issues/81)) ([b5a9186](https://github.com/pagopa/io-eudiw-app/commit/b5a9186dbbb29471ff422897d10ca44347a5bb41))
+
 ## [1.8.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.7.2-rc.0...1.8.0-rc.0) (2025-04-11)
 
 
