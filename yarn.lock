@@ -2421,13 +2421,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-proximity@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "@pagopa/io-react-native-proximity@npm:0.3.0"
+"@pagopa/io-react-native-proximity@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@pagopa/io-react-native-proximity@npm:0.2.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: ef557c246761eb9820b3d3130b09e2e00830104ae271ab005822fd3b6d1601ecd842ab064afa60e300cfc4c659c6df56ab73d8918c9adbec7f69cb2e8772b5e1
+  checksum: 57f40834eee2254e913ae9dfac02ea26a9be7e25e4da9d791df83c62aab24add760fa1d345ba439790bcfa07cd155bd5920ba9c87e792b6c94c36232f58e668c
   languageName: node
   linkType: hard
 
@@ -8326,7 +8326,7 @@ __metadata:
     "@pagopa/io-react-native-crypto": ^1.0.1
     "@pagopa/io-react-native-jwt": 2.0.0
     "@pagopa/io-react-native-login-utils": ^1.0.7
-    "@pagopa/io-react-native-proximity": ^0.3.0
+    "@pagopa/io-react-native-proximity": ^0.2.0
     "@pagopa/io-react-native-wallet": 1.6.1
     "@pagopa/react-native-nodelibs": ^0.1.0
     "@react-native-async-storage/async-storage": ^2.0.0
