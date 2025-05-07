@@ -39,7 +39,7 @@ const PresentationSuccess = () => {
             label: t('global:buttons.continue'),
             onPress: () => {
               openWebUrl(redirectUri, () =>
-                toast.success(t('global:errors.generic.title'))
+                toast.error(t('global:errors.generic'))
               );
               navigateToWallet();
               dispatch(resetPresentation());

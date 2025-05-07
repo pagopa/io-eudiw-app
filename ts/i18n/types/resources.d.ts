@@ -74,10 +74,7 @@ interface Resources {
       }
     },
     "errors": {
-      "generic": {
-        "title": "There's an issue with our systems",
-        "body": "Please try again in a few minutes."
-      }
+      "generic": "An error occurred"
     },
     "cancelOperation": {
       "title": "Do you want to stop the operation?",
