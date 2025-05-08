@@ -1,13 +1,13 @@
-import {Proximity, parseVerifierRequest} from '@pagopa/io-react-native-proximity';
+import {
+  Proximity,
+  parseVerifierRequest
+} from '@pagopa/io-react-native-proximity';
 import {serializeError} from 'serialize-error';
 import {useCallback} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {addProximityLog} from '../../store/proximity';
 import {requestBlePermissions} from '../../utils/permissions';
-import {
-  generateAcceptedFields,
-  isRequestMdl,
-} from '../../utils/proximity';
+import {generateAcceptedFields, isRequestMdl} from '../../utils/proximity';
 import {wellKnownCredential} from '../../utils/credentials';
 import {selectCredential} from '../../store/credentials';
 import {sleep} from '../../../../utils/time';
@@ -40,9 +40,7 @@ export const useProximity = () => {
    * @param onErrorData - The error data.
    */
   const onCommunicationError = useCallback(
-    (
-      data: Proximity.QrEngagementEventPayloads['onCommunicationError']
-    ) => {
+    (data: Proximity.QrEngagementEventPayloads['onCommunicationError']) => {
       dispatch(
         addProximityLog(
           `[ON_COMMUNICATION_ERROR_CALLBACK] ${JSON.stringify(data)}`

@@ -1,5 +1,8 @@
+import {
+  VerifierRequest,
+  AcceptedFields
+} from '@pagopa/io-react-native-proximity';
 import {wellKnownCredential} from './credentials';
-import { VerifierRequest, AcceptedFields } from '@pagopa/io-react-native-proximity';
 
 /**
  * This function generates the accepted fields for the VerifierRequest and sets each requested field to true.
