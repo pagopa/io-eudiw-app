@@ -71,7 +71,8 @@ const credentialCardBackgrounds: {
   [type: string]: ImageSourcePropType;
 } = {
   [wellKnownCredential.PID]: require('../../assets/img/credentials/pid.png'),
-  [wellKnownCredential.DRIVING_LICENSE]: require('../../assets/img/credentials/mdl.png')
+  [wellKnownCredential.DRIVING_LICENSE]: require('../../assets/img/credentials/mdl.png'),
+  [wellKnownCredential.HEALTHID]: require('../../assets/img/credentials/healthID.png')
 };
 
 const styles = StyleSheet.create({
