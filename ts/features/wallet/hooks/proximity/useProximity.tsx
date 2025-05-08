@@ -1,4 +1,4 @@
-import * as ProximityModule from '@pagopa/io-react-native-proximity';
+import {Proximity, parseVerifierRequest} from '@pagopa/io-react-native-proximity';
 import {serializeError} from 'serialize-error';
 import {useCallback} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../../store';
@@ -7,7 +7,6 @@ import {requestBlePermissions} from '../../utils/permissions';
 import {
   generateAcceptedFields,
   isRequestMdl,
-  parseVerifierRequest
 } from '../../utils/proximity';
 import {wellKnownCredential} from '../../utils/credentials';
 import {selectCredential} from '../../store/credentials';
@@ -26,7 +25,7 @@ export const useProximity = () => {
    */
   const onDeviceRetrievalHelperReady = useCallback(
     (
-      data: ProximityModule.QrEngagementEventPayloads['onDeviceRetrievalHelperReady']
+      data: Proximity.QrEngagementEventPayloads['onDeviceRetrievalHelperReady']
     ) => {
       dispatch(
         addProximityLog(`onDeviceRetrievalHelperReady ${JSON.stringify(data)}`)
@@ -42,7 +41,7 @@ export const useProximity = () => {
    */
   const onCommunicationError = useCallback(
     (
-      data: ProximityModule.QrEngagementEventPayloads['onCommunicationError']
+      data: Proximity.QrEngagementEventPayloads['onCommunicationError']
     ) => {
       dispatch(
         addProximityLog(
@@ -63,7 +62,7 @@ export const useProximity = () => {
    */
   const onNewDeviceRequest = useCallback(
     async (
-      onNewData: ProximityModule.QrEngagementEventPayloads['onNewDeviceRequest']
+      onNewData: Proximity.QrEngagementEventPayloads['onNewDeviceRequest']
     ) => {
       try {
         if (!onNewData || !onNewData.message) {
@@ -86,7 +85,7 @@ export const useProximity = () => {
           throw new Error('No mDL credential found');
         }
 
-        const documents: Array<ProximityModule.Document> = [
+        const documents: Array<Proximity.Document> = [
           {
             alias: mdl.keyTag,
             docType: mdl.credentialType,
@@ -97,12 +96,12 @@ export const useProximity = () => {
         const acceptedFields = generateAcceptedFields(parsedResponse.request);
 
         // Generate the response payload
-        const result = await ProximityModule.generateResponse(
+        const result = await Proximity.generateResponse(
           documents,
           acceptedFields
         );
 
-        await ProximityModule.sendResponse(result);
+        await Proximity.sendResponse(result);
         // Wait for the response to be sent before closing everything, we don't know when it's done
         await sleep(5000);
         dispatch(
@@ -132,16 +131,16 @@ export const useProximity = () => {
       if (!permissions) {
         throw new Error('Permissions not granted');
       }
-      await ProximityModule.initializeQrEngagement(true, false, true); // Peripheral mode
-      const qrCode = await ProximityModule.getQrCodeString();
+      await Proximity.initializeQrEngagement(true, false, true); // Peripheral mode
+      const qrCode = await Proximity.getQrCodeString();
       // Register listeners
-      ProximityModule.addListener('onDeviceRetrievalHelperReady', data =>
+      Proximity.addListener('onDeviceRetrievalHelperReady', data =>
         onDeviceRetrievalHelperReady(data)
       );
-      ProximityModule.addListener('onCommunicationError', onErrorData =>
+      Proximity.addListener('onCommunicationError', onErrorData =>
         onCommunicationError(onErrorData)
       );
-      ProximityModule.addListener('onNewDeviceRequest', onNewData =>
+      Proximity.addListener('onNewDeviceRequest', onNewData =>
         onNewDeviceRequest(onNewData)
       );
       return qrCode;
@@ -162,10 +161,10 @@ export const useProximity = () => {
    * This is called when the connection is closed or when an error occurs.
    */
   const closeConnection = async () => {
-    ProximityModule.removeListeners('onDeviceRetrievalHelperReady');
-    ProximityModule.removeListeners('onCommunicationError');
-    ProximityModule.removeListeners('onNewDeviceRequest');
-    ProximityModule.closeQrEngagement().catch(() => {}); // Ignore the error
+    Proximity.removeListeners('onDeviceRetrievalHelperReady');
+    Proximity.removeListeners('onCommunicationError');
+    Proximity.removeListeners('onNewDeviceRequest');
+    Proximity.closeQrEngagement().catch(() => {}); // Ignore the error
   };
 
   return {initProximity, closeConnection};
