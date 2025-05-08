@@ -17,7 +17,7 @@ import {Alert, StyleSheet, View} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
   Descriptor,
-  OptionalClaimsNames,
+  OptionalClaims,
   selectPostDefinitionStatus,
   setPostDefinitionCancel,
   setPostDefinitionRequest
@@ -55,7 +55,9 @@ const PresentationPostDefinition = ({route}: Props) => {
   const dispatch = useAppDispatch();
   const postDefinitionStatus = useAppSelector(selectPostDefinitionStatus);
   const {navigateToWallet} = useNavigateToWalletWithReset();
-  const [optionalChecked, setOptionalChecked] = useState([] as Array<string>);
+  const [optionalChecked, setOptionalChecked] = useState(
+    [] as Array<OptionalClaims>
+  );
 
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();
@@ -85,7 +87,7 @@ const PresentationPostDefinition = ({route}: Props) => {
    * in the PresentationClaimsList component.
    * @param encoded - The encoded string of the optional disclosure
    */
-  const onOptionalDisclosuresChange = (encoded: OptionalClaimsNames) => {
+  const onOptionalDisclosuresChange = (encoded: OptionalClaims) => {
     if (optionalChecked.includes(encoded)) {
       setOptionalChecked(optionalChecked.filter(item => item !== encoded));
     } else {

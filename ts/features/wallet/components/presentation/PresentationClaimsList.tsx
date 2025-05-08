@@ -11,14 +11,14 @@ import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import i18next from 'i18next';
 import {useTranslation} from 'react-i18next';
-import {Descriptor, OptionalClaimsNames} from '../../store/presentation';
+import {Descriptor, OptionalClaims} from '../../store/presentation';
 import {ClaimDisplayFormat} from '../../utils/types';
 import {getSafeText, isStringNullyOrEmpty} from '../../../../utils/string';
 import {claimScheme, VerificationEvidenceType} from '../../utils/claims';
 
 export type RequiredClaimsProps = {
-  optionalChecked: Array<OptionalClaimsNames>;
-  setOptionalChecked: (encoded: OptionalClaimsNames) => void;
+  optionalChecked: Array<OptionalClaims>;
+  setOptionalChecked: (encoded: OptionalClaims) => void;
   descriptor: Descriptor;
   source: string;
 };
@@ -106,8 +106,8 @@ const PresentationClaimsList = ({
                     </BodySmall>
                   </View>
                   <AnimatedCheckbox
-                    checked={optionalChecked.includes(claim.name)}
-                    onPress={_ => setOptionalChecked(claim.name)}
+                    checked={optionalChecked.includes(claim)}
+                    onPress={_ => setOptionalChecked(claim)}
                   />
                 </View>
               </View>

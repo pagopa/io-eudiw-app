@@ -35,8 +35,8 @@ export type AuthResponse = Awaited<
 /**
  * Type of the optional claims names selected by the user.
  */
-export type OptionalClaimsNames =
-  Descriptor[0]['evaluatedDisclosure']['optionalDisclosures'][0]['name']; // Name of the optional claims selected by the user
+export type OptionalClaims =
+  Descriptor[0]['evaluatedDisclosure']['optionalDisclosures'][0]; // The optional claims selected by the user
 
 /* State type definition for the presentation slice
  * preDefinition - Async status for the prestation before receiving the descriptor
@@ -74,7 +74,7 @@ export const presentationSlice = createSlice({
     },
     setPostDefinitionRequest: (
       state,
-      _: PayloadAction<Array<OptionalClaimsNames>>
+      _: PayloadAction<Array<OptionalClaims>>
     ) => {
       /* Payload is not used but taken from the saga
        * The payload is an array of strings containing the optional claims selected by the user
