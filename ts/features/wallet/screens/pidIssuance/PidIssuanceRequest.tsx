@@ -65,22 +65,23 @@ const PidIssuanceRequest = () => {
             <CredentialPreviewClaimsList data={credential} isPreview={true} />
           </View>
         </VStack>
+        <FooterActions
+          fixed={false}
+          actions={{
+            primary: {
+              label: t('wallet:pidIssuance.preview.button'),
+              onPress: () => dispatch(addPidWithIdentification({credential})),
+              icon: 'add',
+              iconPosition: 'end'
+            },
+            secondary: {
+              label: t('global:buttons.cancel'),
+              onPress: navigateToWallet
+            },
+            type: 'TwoButtons'
+          }}
+        />
       </ForceScrollDownView>
-      <FooterActions
-        actions={{
-          primary: {
-            label: t('wallet:pidIssuance.preview.button'),
-            onPress: () => dispatch(addPidWithIdentification({credential})),
-            icon: 'add',
-            iconPosition: 'end'
-          },
-          secondary: {
-            label: t('global:buttons.cancel'),
-            onPress: navigateToWallet
-          },
-          type: 'TwoButtons'
-        }}
-      />
     </>
   );
 

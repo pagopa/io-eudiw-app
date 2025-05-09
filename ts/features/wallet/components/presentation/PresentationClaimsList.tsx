@@ -11,14 +11,14 @@ import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import i18next from 'i18next';
 import {useTranslation} from 'react-i18next';
-import {Descriptor, OptionalClaimsNames} from '../../store/presentation';
+import {Descriptor, OptionalClaims} from '../../store/presentation';
 import {ClaimDisplayFormat} from '../../utils/types';
 import {getSafeText, isStringNullyOrEmpty} from '../../../../utils/string';
 import {claimScheme, VerificationEvidenceType} from '../../utils/claims';
 
 export type RequiredClaimsProps = {
-  optionalChecked: Array<OptionalClaimsNames>;
-  setOptionalChecked: (encoded: OptionalClaimsNames) => void;
+  optionalChecked: Array<OptionalClaims>;
+  setOptionalChecked: (encoded: OptionalClaims) => void;
   descriptor: Descriptor;
   source: string;
 };
@@ -60,7 +60,7 @@ const PresentationClaimsList = ({
                 {/* Add a separator view between sections */}
                 {index !== 0 && <Divider />}
                 <View style={styles.dataItem}>
-                  <View>
+                  <View style={styles.shrinked}>
                     <ClaimText
                       claim={{
                         id: claim.name,
@@ -93,7 +93,7 @@ const PresentationClaimsList = ({
                 {/* Add a separator view between sections */}
                 {index !== 0 && <Divider />}
                 <View style={styles.dataItem}>
-                  <View>
+                  <View style={styles.shrinked}>
                     <ClaimText
                       claim={{
                         id: claim.name,
@@ -106,8 +106,8 @@ const PresentationClaimsList = ({
                     </BodySmall>
                   </View>
                   <AnimatedCheckbox
-                    checked={optionalChecked.includes(claim.name)}
-                    onPress={_ => setOptionalChecked(claim.name)}
+                    checked={optionalChecked.includes(claim)}
+                    onPress={_ => setOptionalChecked(claim)}
                   />
                 </View>
               </View>
@@ -145,11 +145,12 @@ const ClaimText = ({claim}: {claim: ClaimDisplayFormat}) => {
 export const getClaimDisplayValue = (
   claim: ClaimDisplayFormat
 ): string | Array<string> => {
-  const decoded = claimScheme.safeParse(claim.value);
+  const decoded = claimScheme.safeParse(claim);
 
   if (decoded.success) {
     switch (decoded.data.type) {
       case 'date':
+      case 'expireDate':
         return decoded.data.value.toLocaleDateString();
       case 'drivingPrivileges':
         return decoded.data.value.map(elem => elem.vehicle_category_code);
@@ -157,6 +158,10 @@ export const getClaimDisplayValue = (
         return JSON.stringify(decoded.data as VerificationEvidenceType);
       case 'string':
         return getSafeText(decoded.data.value);
+      // Rendering the image as its encoded version temporarily,
+      // since this component may undergo significant changes
+      case 'image':
+        return decoded.data.value;
       default:
         return i18next.t('wallet:claims.generic.notAvailable');
     }
@@ -176,6 +181,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  shrinked: {
+    flexShrink: 1
   }
 });
 

@@ -28,7 +28,7 @@ import {
   setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
 import PresentationClaimsList from '../../components/presentation/PresentationClaimsList';
-import {Descriptor, OptionalClaimsNames} from '../../store/presentation';
+import {Descriptor, OptionalClaims} from '../../store/presentation';
 
 /**
  * Screen which shows the user the credentials and claims that will be shared with the credential issuer
@@ -36,7 +36,9 @@ import {Descriptor, OptionalClaimsNames} from '../../store/presentation';
  */
 const CredentialTrust = () => {
   const dispatch = useAppDispatch();
-  const [optionalChecked, setOptionalChecked] = useState([] as Array<string>);
+  const [optionalChecked, setOptionalChecked] = useState(
+    [] as Array<OptionalClaims>
+  );
   const pid = useAppSelector(selectCredential(wellKnownCredential.PID));
   const {t} = useTranslation(['global', 'wallet']);
   const {loading, error, success} = useAppSelector(
@@ -92,7 +94,7 @@ const CredentialTrust = () => {
    * in the PresentationClaimsList component.
    * @param encoded - The encoded string of the optional disclosure
    */
-  const onOptionalDisclosuresChange = (encoded: OptionalClaimsNames) => {
+  const onOptionalDisclosuresChange = (encoded: OptionalClaims) => {
     if (optionalChecked.includes(encoded)) {
       setOptionalChecked(optionalChecked.filter(item => item !== encoded));
     } else {
@@ -102,10 +104,12 @@ const CredentialTrust = () => {
 
   // This is a mocked descriptor for the PID credential to show its claims in the PresentationClaimsList component
   const pidCredentialJwt = SdJwt.decode(pid.credential);
-  const requiredDisclosures = pidCredentialJwt.disclosures.map(disclosure => ({
-    name: disclosure.decoded[1],
-    value: disclosure.decoded[2]
-  }));
+  const requiredDisclosures = pidCredentialJwt.disclosures
+    .filter(disclosure => disclosure.decoded[1] !== 'iat')
+    .map(disclosure => ({
+      name: disclosure.decoded[1],
+      value: disclosure.decoded[2]
+    }));
   const mockedDescriptorForPid: Descriptor = [
     {
       credential: pid.credential,

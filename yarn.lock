@@ -2375,16 +2375,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-cbor@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@pagopa/io-react-native-cbor@npm:1.2.0"
+"@pagopa/io-react-native-cbor@npm:^1.2.4":
+  version: 1.2.4
+  resolution: "@pagopa/io-react-native-cbor@npm:1.2.4"
   dependencies:
     zod: ^3.24.1
   peerDependencies:
     "@pagopa/io-react-native-crypto": "*"
     react: "*"
     react-native: "*"
-  checksum: b809688bf841333476a68dcde2639036cfa74df9acafe051f3448028aa2dec5e02d81b12adaf2dd250f9dd6b706bad85e98d075802ac32b9ef9f66f7e569eea8
+  checksum: 3cdbd4ddd19049079af76d814a18756a5710f10e06f6d35fce68d60d4f89d8015d74eac70554b31b8c3717507d6fa5a1a12a6c86151b842537c12b4c298eedeb
   languageName: node
   linkType: hard
 
@@ -2398,16 +2398,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-jwt@npm:2.0.0":
-  version: 2.0.0
-  resolution: "@pagopa/io-react-native-jwt@npm:2.0.0"
+"@pagopa/io-react-native-jwt@npm:2.1.0":
+  version: 2.1.0
+  resolution: "@pagopa/io-react-native-jwt@npm:2.1.0"
   dependencies:
     js-base64: ^3.7.7
     zod: ^3.22.4
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 347bef6fc7593f28e1980b4aca48be395a18aa6c286fbc19fc783f646b7dc12a1421266ddaf439e61443adc412206ecfa114c51cbb0f0d9d3ac9b740d4afb177
+  checksum: 33792ef51952e83470017f3d9b8f6f0a5bf439b1919eef08529786c9c0994ef8384e52a856392fa51c01a13dc5eb6c4cca60386b7d37286cad2e05b508bd9de4
   languageName: node
   linkType: hard
 
@@ -2421,19 +2421,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-proximity@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "@pagopa/io-react-native-proximity@npm:0.2.0"
+"@pagopa/io-react-native-proximity@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "@pagopa/io-react-native-proximity@npm:0.4.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 57f40834eee2254e913ae9dfac02ea26a9be7e25e4da9d791df83c62aab24add760fa1d345ba439790bcfa07cd155bd5920ba9c87e792b6c94c36232f58e668c
+  checksum: 7d0d99fcf7a6448bc13427851a060b7f280df953b3ad95cb0a234bf4d146e71f058dc0ea0918012df0927127e3bb683607bd74860c1d48e645c464beb8740089
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-wallet@npm:1.6.1":
-  version: 1.6.1
-  resolution: "@pagopa/io-react-native-wallet@npm:1.6.1"
+"@pagopa/io-react-native-wallet@npm:1.6.2":
+  version: 1.6.2
+  resolution: "@pagopa/io-react-native-wallet@npm:1.6.2"
   dependencies:
     "@types/jsrsasign": ^10.5.15
     ajv: ^8.17.1
@@ -2451,7 +2451,7 @@ __metadata:
     "@pagopa/io-react-native-jwt": "*"
     react: "*"
     react-native: "*"
-  checksum: 489008d2f31951f799167028682426dc0f7d6aba781b7baf3aecf11e3ed73fdd5b474972f5aec182f422a3c42db1f467426ed479bef3b0c6b8ebfd30d7c3ca3c
+  checksum: 810daeeab7ae51a4984d3ccc16b62e9814908c369c51a87462e102ddff41b130aa69e9f32c857feebb99ad96293b790d990b1c3d226325ab50fc540a3aa4962c
   languageName: node
   linkType: hard
 
@@ -8322,12 +8322,12 @@ __metadata:
     "@babel/runtime": ^7.20.0
     "@gorhom/bottom-sheet": ^5.0.6
     "@pagopa/io-app-design-system": ^4.0.1
-    "@pagopa/io-react-native-cbor": ^1.2.0
+    "@pagopa/io-react-native-cbor": ^1.2.4
     "@pagopa/io-react-native-crypto": ^1.0.1
-    "@pagopa/io-react-native-jwt": 2.0.0
+    "@pagopa/io-react-native-jwt": 2.1.0
     "@pagopa/io-react-native-login-utils": ^1.0.7
-    "@pagopa/io-react-native-proximity": ^0.2.0
-    "@pagopa/io-react-native-wallet": 1.6.1
+    "@pagopa/io-react-native-proximity": ^0.4.0
+    "@pagopa/io-react-native-wallet": 1.6.2
     "@pagopa/react-native-nodelibs": ^0.1.0
     "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native-clipboard/clipboard": ^1.15.0
