@@ -99,7 +99,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - pagopa-io-react-native-jwt (2.0.0):
+  - pagopa-io-react-native-jwt (2.1.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2105,7 +2105,7 @@ SPEC CHECKSUMS:
   IOWalletProximity: fed5a3163c70a81b032db0871542ff0bb03fca13
   JOSESwift: 7784b1b844194d0f534eb6ac4fba5af683bccc79
   pagopa-io-react-native-crypto: c034b48871e47aefa569eda55cdb8432dab91aa5
-  pagopa-io-react-native-jwt: b8b97b9c30d664d5e299ab0c8a781b137d6c1be7
+  pagopa-io-react-native-jwt: 4f1c348d8260f0dc882412243531b3a516608e97
   pagopa-io-react-native-login-utils: b862d993227bf1685eac6f92ae83ac8a8e9c324d
   RCT-Folly: 34124ae2e667a0e5f0ea378db071d27548124321
   RCTDeprecation: 726d24248aeab6d7180dac71a936bbca6a994ed1
