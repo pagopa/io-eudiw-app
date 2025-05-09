@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.9.4-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.9.3-rc.0...1.9.4-rc.0) (2025-05-09)
+
+
+### Features
+
+* [WLO-334] Added claims decoders and Proximity and Remote presentation iOS fixes ([#79](https://github.com/pagopa/io-eudiw-app/issues/79)) ([35f6b06](https://github.com/pagopa/io-eudiw-app/commit/35f6b064a0bf302716257dca9f1527ed2dfc7a63))
+
 ### [1.9.3-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.9.2-rc.0...1.9.3-rc.0) (2025-05-07)
 
 ### [1.9.2-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.9.1-rc.0...1.9.2-rc.0) (2025-05-07)
