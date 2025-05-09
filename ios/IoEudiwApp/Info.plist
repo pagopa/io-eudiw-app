@@ -45,10 +45,6 @@
     <string>$(PRODUCT_NAME) needs access BLE.</string>
     <key>NSBluetoothScanUsageDescription</key>
     <string>$(PRODUCT_NAME) needs access to scan for nearby Bluetooth devices.</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>$(PRODUCT_NAME) needs access your location.</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>$(PRODUCT_NAME) needs access your location.</string>
     <key>UILaunchStoryboardName</key>
     <string>BootSplash</string>
     <key>UIRequiredDeviceCapabilities</key>
