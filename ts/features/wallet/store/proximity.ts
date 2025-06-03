@@ -26,14 +26,14 @@ export const proximitySlice = createSlice({
     addProximityLog: (state, action: PayloadAction<string>) => {
       state.logBox = `${state.logBox} \n ============== \n ${action.payload}`;
     },
-    resetProximity: () => initialState
+    resetProximityLog: () => initialState
   }
 });
 
 /**
  * Exports the actions for the proximity slice.
  */
-export const {addProximityLog, resetProximity} = proximitySlice.actions;
+export const {addProximityLog, resetProximityLog} = proximitySlice.actions;
 
 /**
  * Exports the reducer for the proximity slice.
