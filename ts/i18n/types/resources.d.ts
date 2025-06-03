@@ -289,6 +289,10 @@ interface Resources {
         "title": "Show QR",
         "body": "Display the QR code to verify the validity of the documents in your Wallet"
       },
+      "disconnected": {
+        "title": "Disconnection",
+        "body": "The device has been disconnected. Please check the verifier app for more details."
+      },
       "log": "Debug log"
     },
     "claims": {
@@ -298,8 +302,8 @@ interface Resources {
         "expiryDate": "Valid until",
         "issueDate": "Valid from",
         "category": "Category",
-        "valid" : "VALID",
-        "expired" : "EXPIRED"
+        "valid": "VALID",
+        "expired": "EXPIRED"
       },
       "mdl": {
         "license": "License {{category}}",

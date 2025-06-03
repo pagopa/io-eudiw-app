@@ -3,167 +3,189 @@ import {
   parseVerifierRequest
 } from '@pagopa/io-react-native-proximity';
 import {serializeError} from 'serialize-error';
-import {useCallback} from 'react';
-import {useAppDispatch, useAppSelector} from '../../../../store';
-import {addProximityLog} from '../../store/proximity';
+import {useCallback, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {Alert} from 'react-native';
+import {useAppSelector} from '../../../../store';
 import {requestBlePermissions} from '../../utils/permissions';
 import {generateAcceptedFields, isRequestMdl} from '../../utils/proximity';
 import {wellKnownCredential} from '../../utils/credentials';
 import {selectCredential} from '../../store/credentials';
-import {sleep} from '../../../../utils/time';
+import {useLogBox} from './useLogBox';
 
 export const useProximity = () => {
-  const dispatch = useAppDispatch();
   const mdl = useAppSelector(
     selectCredential(wellKnownCredential.DRIVING_LICENSE)
   );
+  const [qrCode, setQrCode] = useState<string | null>(null);
+  const {logBox, setLogBox, resetLogBox} = useLogBox();
+  const {t} = useTranslation(['wallet']);
 
   /**
-   * Callback for when the device retrieval helper is ready.
-   * Currently we just set the qrcode in the store so that it can be displayed.
-   * @param qrCode - The QR code string to be displayed.
+   * Close utility function to close the proximity flow.
    */
-  const onDeviceRetrievalHelperReady = useCallback(
-    (
-      data: Proximity.QrEngagementEventPayloads['onDeviceRetrievalHelperReady']
-    ) => {
-      dispatch(
-        addProximityLog(`onDeviceRetrievalHelperReady ${JSON.stringify(data)}`)
+  const closeFlow = useCallback(async (sendError: boolean = false) => {
+    if (sendError) {
+      await Proximity.sendErrorResponse(Proximity.ErrorCode.SESSION_TERMINATED);
+    }
+    setQrCode(null);
+    Proximity.removeListener('onDeviceConnected');
+    Proximity.removeListener('onDeviceConnecting');
+    Proximity.removeListener('onDeviceDisconnected');
+    Proximity.removeListener('onDocumentRequestReceived');
+    Proximity.removeListener('onError');
+    await Proximity.close();
+  }, []);
+
+  /**
+   * Callback function to handle device connection.
+   * Currently does nothing but can be used to update the UI
+   */
+  const handleOnDeviceConnected = useCallback(() => {
+    setLogBox('[ON_DEVICE_CONNECTED_CALLBACK]');
+  }, [setLogBox]);
+
+  /**
+   * Callback function to handle device connection.
+   * Currently does nothing but can be used to update the UI
+   */
+  const handleOnDeviceConnecting = useCallback(() => {
+    setLogBox('[ON_DEVICE_CONNECTING_CALLBACK]');
+  }, [setLogBox]);
+
+  /**
+   * Callback function to handle device disconnection.
+   */
+  const onDeviceDisconnected = useCallback(async () => {
+    try {
+      setLogBox('[ON_DEVICE_DISCONNECTED_CALLBACK] Check the verifier app');
+      await closeFlow();
+      Alert.alert(
+        t('wallet:proximity.disconnected.title'),
+        t('wallet:proximity.disconnected.body')
       );
-    },
-    [dispatch]
-  );
-
-  /**
-   * Callback for when an error occurs during communication.
-   * It sets the error in the store and closes the connection.
-   * @param onErrorData - The error data.
-   */
-  const onCommunicationError = useCallback(
-    (data: Proximity.QrEngagementEventPayloads['onCommunicationError']) => {
-      dispatch(
-        addProximityLog(
-          `[ON_COMMUNICATION_ERROR_CALLBACK] ${JSON.stringify(data)}`
-        )
+    } catch (e) {
+      setLogBox(
+        `[ON_DEVICE_DISCONNECTED_CALLBACK] error: ${serializeError(e)}`
       );
-    },
-    [dispatch]
-  );
+    }
+  }, [closeFlow, setLogBox, t]);
 
-  /**
-   * Callback for when a new device request is received.
-   * It parses the request, validates it and sends a response.
-   * If an error occurs it sets the error in the store and closes the connection.
-   * This should happen in two steps as the user must approve the request before sending the response.
-   * However, we are sending the response immediately for simplicity.
-   * @param onNewData - The device request
-   */
-  const onNewDeviceRequest = useCallback(
-    async (
-      onNewData: Proximity.QrEngagementEventPayloads['onNewDeviceRequest']
-    ) => {
+  const onError = useCallback(
+    async (data: Proximity.EventsPayload['onError']) => {
       try {
-        if (!onNewData || !onNewData.message) {
-          throw new Error('Invalid onNewDeviceRequest payload');
-        }
-        const message = onNewData.message;
-
-        const parsedJson = JSON.parse(message);
-
-        // Validate using Zod with parse
-        const parsedResponse = parseVerifierRequest(parsedJson);
-
-        /*
-        Currently only supporting mDL requests thus we check if the requests consists of a single credential       
-        and if the credential is of type mDL.
-        */
-        isRequestMdl(Object.keys(parsedResponse.request));
-
-        if (!mdl) {
-          throw new Error('No mDL credential found');
-        }
-
-        const documents: Array<Proximity.Document> = [
-          {
-            alias: mdl.keyTag,
-            docType: mdl.credentialType,
-            issuerSignedContent: mdl.credential
-          }
-        ];
-
-        const acceptedFields = generateAcceptedFields(parsedResponse.request);
-
-        // Generate the response payload
-        const result = await Proximity.generateResponse(
-          documents,
-          acceptedFields
-        );
-
-        await Proximity.sendResponse(result);
-        // Wait for the response to be sent before closing everything, we don't know when it's done
-        await sleep(5000);
-        dispatch(
-          addProximityLog('Response sent, 5s delay passed, closing connection')
-        );
+        setLogBox(`[ON_ERROR_CALLBACK] {${serializeError(data)}}\n`);
+        await closeFlow();
       } catch (e) {
-        const serErr = serializeError(e);
-        dispatch(
-          addProximityLog(
-            `An error occurred while processing the request: ${serErr}`
-          )
-        );
-      } finally {
-        await closeConnection();
+        setLogBox(`[ON_ERROR_CALLBACK] error: ${serializeError(e)}\n`);
       }
     },
-    [dispatch, mdl]
+    [closeFlow, setLogBox]
+  );
+
+  /**
+   * Callback function to handle a new request received from the verifier app.
+   * @param request The request object
+   * @returns The response object
+   * @throws Error if the request is invalid
+   * @throws Error if the response generation fails
+   */
+  const onDocumentRequestReceived = useCallback(
+    async (payload: Proximity.EventsPayload['onDocumentRequestReceived']) => {
+      try {
+        // A new request has been received
+        if (!payload || !payload.data) {
+          throw new Error('Invalid onNewDeviceRequest payload');
+        }
+
+        // Parse and verify the received request with the exposed function
+        const parsedJson = JSON.parse(payload.data);
+
+        const parsedRequest = parseVerifierRequest(parsedJson);
+        isRequestMdl(Object.keys(parsedRequest.request));
+
+        if (!mdl) {
+          // We can't find the mDL thus we send an error response to the verifier app
+          await Proximity.sendErrorResponse(Proximity.ErrorCode.CBOR_DECODING);
+        } else {
+          const documents: Array<Proximity.Document> = [
+            {
+              alias: mdl.keyTag,
+              docType: mdl.credentialType,
+              issuerSignedContent: mdl.credential
+            }
+          ];
+
+          /*
+           * Generate the response to be sent to the verifier app. Currently we blindly accept all the fields requested by the verifier app.
+           * In an actual implementation, the user would be prompted to accept or reject the requested fields and the `acceptedFields` object
+           * must be generated according to the user's choice, setting the value to true for the accepted fields and false for the rejected ones.
+           * See the `generateResponse` method for more details.
+           */
+
+          const acceptedFields = generateAcceptedFields(parsedRequest.request);
+          const result = await Proximity.generateResponse(
+            documents,
+            acceptedFields
+          );
+
+          /**
+           * Send the response to the verifier app.
+           * Currently we don't know what the verifier app responds with, thus we don't handle the response.
+           * We just wait for 2 seconds before closing the connection and resetting the QR code.
+           * In order to start a new flow a new QR code must be generated.
+           */
+          await Proximity.sendResponse(result);
+          setLogBox('[ON_DOCUMENT_REQUEST_RECEIVED] Response sent]\n');
+        }
+      } catch (error) {
+        const serErr = serializeError(error);
+        setLogBox(`[ON_DOCUMENT_REQUEST_RECEIVED] error: ${serErr}\n`);
+        await closeFlow(true); // Send error response to the verifier app
+      }
+    },
+    [closeFlow, mdl, setLogBox]
   );
 
   /**
    * Function which initializes the QR engagement, generates the QR code and listens for incoming events
    * by registering the appropriate callbacks.
    */
-  const initProximity = useCallback(async () => {
+  const startFlow = useCallback(async () => {
     try {
+      resetLogBox();
       const permissions = await requestBlePermissions();
       if (!permissions) {
         throw new Error('Permissions not granted');
       }
-      await Proximity.initializeQrEngagement(true, false, true); // Peripheral mode
-      const qrCode = await Proximity.getQrCodeString();
+      setLogBox('[INIT_PROXIMITY] Closing previous flow if any');
+      await Proximity.close().catch(() => {}); // We can ignore errors here as we don't know if the flow started successfully previously
+      await Proximity.start();
+      setLogBox('[INIT_PROXIMITY] Flow started successfully');
       // Register listeners
-      Proximity.addListener('onDeviceRetrievalHelperReady', data =>
-        onDeviceRetrievalHelperReady(data)
+      Proximity.addListener('onDeviceConnecting', handleOnDeviceConnecting);
+      Proximity.addListener('onDeviceConnected', handleOnDeviceConnected);
+      Proximity.addListener(
+        'onDocumentRequestReceived',
+        onDocumentRequestReceived
       );
-      Proximity.addListener('onCommunicationError', onErrorData =>
-        onCommunicationError(onErrorData)
-      );
-      Proximity.addListener('onNewDeviceRequest', onNewData =>
-        onNewDeviceRequest(onNewData)
-      );
-      return qrCode;
+      Proximity.addListener('onDeviceDisconnected', onDeviceDisconnected);
+      Proximity.addListener('onError', onError);
+      setQrCode(await Proximity.getQrCodeString());
     } catch (e) {
-      dispatch(addProximityLog(`initProximity error: ${serializeError(e)}`));
-      await closeConnection();
-      throw new Error('Error initializing proximity, connection closed');
+      setLogBox(`[INIT_PROXIMITY] error: ${serializeError(e)}`);
+      await closeFlow().catch(); // We can ignore this error in this particular case as we don't even know if the flow started successfully.
     }
   }, [
-    dispatch,
-    onCommunicationError,
-    onDeviceRetrievalHelperReady,
-    onNewDeviceRequest
+    closeFlow,
+    handleOnDeviceConnected,
+    handleOnDeviceConnecting,
+    onDeviceDisconnected,
+    onDocumentRequestReceived,
+    onError,
+    resetLogBox,
+    setLogBox
   ]);
 
-  /**
-   * Closes the connection and removes the listeners.
-   * This is called when the connection is closed or when an error occurs.
-   */
-  const closeConnection = async () => {
-    Proximity.removeListeners('onDeviceRetrievalHelperReady');
-    Proximity.removeListeners('onCommunicationError');
-    Proximity.removeListeners('onNewDeviceRequest');
-    Proximity.closeQrEngagement().catch(() => {}); // Ignore the error
-  };
-
-  return {initProximity, closeConnection};
+  return {startFlow, closeFlow, qrCode, logBox};
 };
