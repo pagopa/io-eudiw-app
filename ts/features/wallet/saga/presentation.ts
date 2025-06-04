@@ -9,8 +9,7 @@ import {
   setPostDefinitionRequest,
   setPostDefinitionSuccess,
   setPreDefinitionError,
-  setPreDefinitionRequest,
-  setPreDefinitionSuccess
+  setPreDefinitionRequest
 } from '../store/presentation';
 import {selectAttestation} from '../store/attestation';
 import {selectCredentials} from '../store/credentials';
@@ -19,6 +18,16 @@ import {
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
+import {
+  handleDcqlRequest,
+  handleDcqlResponse,
+  handlePresentationDefinitionRequest,
+  handlePresentationDefinitionResponse,
+  JWK,
+  PresentationRequestProcessor,
+  PresentationResponseProcessor,
+  RequestObject
+} from '../utils/presentation';
 
 /**
  * Saga watcher for presentation related actions.
@@ -67,111 +76,113 @@ function* handlePresetationPreDefinition(
       jwks.keys
     );
 
-    const {presentationDefinition} = yield* call(
-      Credential.Presentation.fetchPresentDefinition,
-      requestObject
-    );
-
     const credentials = yield* select(selectCredentials);
 
     /**
      * Array of tuples containg the credential keytag and its raw value
      */
-    const credentialsSdJwt: Array<[string, string]> = credentials
+    const credentialsSdJwt: Array<[string, string, string]> = credentials
       .filter(c => c.format === 'vc+sd-jwt')
-      .map(c => [c.keyTag, c.credential]);
-    const credentialsMdoc: Array<[string, string]> = credentials
+      .map(c => [c.credentialType, c.keyTag, c.credential]);
+    const credentialsMdoc: Array<[string, string, string]> = credentials
       .filter(c => c.format === 'mso_mdoc')
-      .map(c => [c.keyTag, c.credential]);
+      .map(c => [c.credentialType, c.keyTag, c.credential]);
 
-    const evaluateInputDescriptors = yield* call(
-      Credential.Presentation.evaluateInputDescriptors,
-      presentationDefinition.input_descriptors,
-      credentialsSdJwt,
-      credentialsMdoc
-    );
-
-    yield* put(setPreDefinitionSuccess(evaluateInputDescriptors));
-
-    /* Wait for the user to confirm the presentation with the claims or to cancel it
-     *  - In case the user confirms the presentation, the payload will contain a list of the name of optionals claims to be presented
-     *  - In case the user cancels the presentation, no payload will be needed
+    /*
+     * Based on the type of request, the {@link handleResponse} function is called with
+     * different processing methods, keeping the common flow structure
      */
-    const choice = yield* take([
-      setPostDefinitionRequest,
-      setPostDefinitionCancel
-    ]);
-
-    if (setPostDefinitionRequest.match(choice)) {
-      const {payload: optionalClaims} = choice;
-      yield* put(
-        setIdentificationStarted({canResetPin: false, isValidatingTask: true})
-      );
-
-      const resAction = yield* take([
-        setIdentificationIdentified,
-        setIdentificationUnidentified
-      ]);
-
-      if (setIdentificationIdentified.match(resAction)) {
-        const credentialAndInputDescriptor = evaluateInputDescriptors.map(
-          evaluateInputDescriptor => {
-            const requestedClaims = [
-              ...evaluateInputDescriptor.evaluatedDisclosure
-                .requiredDisclosures,
-              ...optionalClaims
-            ];
-            return {
-              requestedClaims,
-              inputDescriptor: evaluateInputDescriptor.inputDescriptor,
-              credential: evaluateInputDescriptor.credential,
-              keyTag: evaluateInputDescriptor.keyTag
-            };
-          }
-        );
-
-        const authRequestObject = {
-          nonce: requestObject.nonce,
-          clientId: requestObject.client_id,
-          responseUri: requestObject.response_uri
-        };
-
-        const remotePresentations = yield* call(
-          Credential.Presentation.prepareRemotePresentations,
-          credentialAndInputDescriptor,
-          authRequestObject
-        );
-
-        const authResponse = yield* call(
-          Credential.Presentation.sendAuthorizationResponse,
+    yield* requestObject.dcql_query
+      ? call(
+          handleResponse,
           requestObject,
-          presentationDefinition.id,
+          credentialsSdJwt,
+          credentialsMdoc,
           jwks.keys,
-          remotePresentations
-        );
-
-        yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
-      } else {
-        throw new Error('Identification failed');
-      }
-    } else {
-      // The result of this call is ignored for the user is not interested in any message
-      yield* call(() =>
-        Credential.Presentation.sendAuthorizationErrorResponse(
-          requestObject,
-          'access_denied',
-          jwks.keys
+          handleDcqlRequest,
+          handleDcqlResponse
         )
-          .then(() => {})
-          .catch(() => {})
-          .finally(() => {
-            put(resetPresentation());
-          })
-      );
-    }
+      : call(
+          handleResponse,
+          requestObject,
+          credentialsSdJwt,
+          credentialsMdoc,
+          jwks.keys,
+          handlePresentationDefinitionRequest,
+          handlePresentationDefinitionResponse
+        );
   } catch (e) {
     // We don't know which step is failed thus we set the same error for both
     yield* put(setPostDefinitionError({error: serializeError(e)}));
     yield* put(setPreDefinitionError({error: serializeError(e)}));
+  }
+}
+
+/**
+ * Helper function that generalizes the last part of a Presentation flow, handling only common user interaction with the saga
+ * and delegating the formation of the response to the specific Presentation standard (e.g. DCQL or Presentation Definition)
+ */
+function* handleResponse<T>(
+  requestObject: RequestObject,
+  credentialsSdJwt: Array<[string, string, string]>,
+  credentialsMdoc: Array<[string, string, string]>,
+  jwks: Array<JWK>,
+  requestProcessor: PresentationRequestProcessor<T>,
+  responseProcessor: PresentationResponseProcessor<T>
+) {
+  const processedRequest: T = yield call(
+    requestProcessor,
+    requestObject,
+    credentialsSdJwt,
+    credentialsMdoc
+  );
+
+  /* Wait for the user to confirm the presentation with the claims or to cancel it
+   *  - In case the user confirms the presentation, the payload will contain a list of the name of optionals claims to be presented
+   *  - In case the user cancels the presentation, no payload will be needed
+   */
+  const choice = yield* take([
+    setPostDefinitionRequest,
+    setPostDefinitionCancel
+  ]);
+
+  if (setPostDefinitionRequest.match(choice)) {
+    const {payload: optionalClaims} = choice;
+    yield* put(
+      setIdentificationStarted({canResetPin: false, isValidatingTask: true})
+    );
+
+    const resAction = yield* take([
+      setIdentificationIdentified,
+      setIdentificationUnidentified
+    ]);
+
+    if (setIdentificationIdentified.match(resAction)) {
+      const authResponse: AuthResponse = yield call(
+        responseProcessor,
+        processedRequest,
+        requestObject,
+        optionalClaims,
+        jwks
+      );
+
+      yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
+    } else {
+      throw new Error('Identification failed');
+    }
+  } else {
+    // The result of this call is ignored for the user is not interested in any message
+    yield* call(() =>
+      Credential.Presentation.sendAuthorizationErrorResponse(
+        requestObject,
+        'access_denied',
+        jwks
+      )
+        .then(() => {})
+        .catch(() => {})
+        .finally(() => {
+          put(resetPresentation());
+        })
+    );
   }
 }

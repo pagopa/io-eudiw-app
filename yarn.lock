@@ -2431,12 +2431,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-wallet@npm:1.6.2":
-  version: 1.6.2
-  resolution: "@pagopa/io-react-native-wallet@npm:1.6.2"
+"@pagopa/io-react-native-wallet@npm:1.7.0":
+  version: 1.7.0
+  resolution: "@pagopa/io-react-native-wallet@npm:1.7.0"
   dependencies:
     "@types/jsrsasign": ^10.5.15
     ajv: ^8.17.1
+    dcql: ^0.2.22
     js-base64: ^3.7.7
     js-sha256: ^0.9.0
     jsonpath-plus: ^10.3.0
@@ -2451,7 +2452,7 @@ __metadata:
     "@pagopa/io-react-native-jwt": "*"
     react: "*"
     react-native: "*"
-  checksum: 810daeeab7ae51a4984d3ccc16b62e9814908c369c51a87462e102ddff41b130aa69e9f32c857feebb99ad96293b790d990b1c3d226325ab50fc540a3aa4962c
+  checksum: 5692958f19eb8b12aeb9380578ae82a1df96cd23a86d4c11c08705e6aa6cafec6ae976fd10c7858ecc654a935e83b58b795b2f4d3aa9df771089bfada1e14543
   languageName: node
   linkType: hard
 
@@ -6076,6 +6077,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dcql@npm:^0.2.22":
+  version: 0.2.22
+  resolution: "dcql@npm:0.2.22"
+  dependencies:
+    valibot: 1.0.0-beta.8
+  checksum: 78994a9b83fa7c904a3cbcf8c97964670308018e87f38f532b834c2081c7e582a99ccb6b5ce0509c33c6b7e90c80b44565daca4c8f43da5c64e637e70327cc08
+  languageName: node
+  linkType: hard
+
 "debug@npm:2.6.9, debug@npm:^2.2.0, debug@npm:^2.6.9":
   version: 2.6.9
   resolution: "debug@npm:2.6.9"
@@ -8327,7 +8337,7 @@ __metadata:
     "@pagopa/io-react-native-jwt": 2.1.0
     "@pagopa/io-react-native-login-utils": ^1.0.7
     "@pagopa/io-react-native-proximity": ^0.4.0
-    "@pagopa/io-react-native-wallet": 1.6.2
+    "@pagopa/io-react-native-wallet": 1.7.0
     "@pagopa/react-native-nodelibs": ^0.1.0
     "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native-clipboard/clipboard": ^1.15.0
@@ -14897,6 +14907,18 @@ __metadata:
     "@types/istanbul-lib-coverage": ^2.0.1
     convert-source-map: ^2.0.0
   checksum: ded42cd535d92b7fd09a71c4c67fb067487ef5551cc227bfbf2a1f159a842e4e4acddaef20b955789b8d3b455b9779d036853f4a27ce15007f6364a4d30317ae
+  languageName: node
+  linkType: hard
+
+"valibot@npm:1.0.0-beta.8":
+  version: 1.0.0-beta.8
+  resolution: "valibot@npm:1.0.0-beta.8"
+  peerDependencies:
+    typescript: ">=5"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 75812aa4d3e71ae96f7fb7dae4dc729e4ef92747565aafb90d4220f2809eb3a7caabdec6ef6b982252728ae20086c1d57f8cb8279f0dc702a27b8d45874f6ad8
   languageName: node
   linkType: hard
 
