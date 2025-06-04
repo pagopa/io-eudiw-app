@@ -50,7 +50,6 @@ const getPermissionsToBeChecked = (): Array<Permission> => {
       return [
         PERMISSIONS.ANDROID.BLUETOOTH_SCAN,
         PERMISSIONS.ANDROID.BLUETOOTH_CONNECT,
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
         PERMISSIONS.ANDROID.BLUETOOTH_ADVERTISE
       ];
     } else {
@@ -58,7 +57,7 @@ const getPermissionsToBeChecked = (): Array<Permission> => {
       return [PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
     }
   } else {
-    // iOS requires only Bluetooth permissions.
+    // iOS permissions required are Bluetooth and location.
     return [PERMISSIONS.IOS.BLUETOOTH];
   }
 };

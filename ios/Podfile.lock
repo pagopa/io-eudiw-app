@@ -30,12 +30,12 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - IoReactNativeCbor (1.2.4):
+  - IoReactNativeCbor (1.4.0):
     - DoubleConversion
     - glog
     - hermes-engine
-    - IOWalletCBOR (~> 0.0.9)
-    - IOWalletProximity (~> 1.0.1)
+    - IOWalletCBOR (~> 0.1.0)
+    - IOWalletProximity (~> 1.2.1)
     - RCT-Folly (= 2024.01.01.00)
     - RCTRequired
     - RCTTypeSafety
@@ -53,11 +53,11 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - IoReactNativeProximity (0.4.0):
+  - IoReactNativeProximity (0.5.0):
     - DoubleConversion
     - glog
     - hermes-engine
-    - IOWalletProximity (~> 1.0.1)
+    - IOWalletProximity (~> 1.2.1)
     - RCT-Folly (= 2024.01.01.00)
     - RCTRequired
     - RCTTypeSafety
@@ -75,8 +75,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - IOWalletCBOR (0.0.9)
-  - IOWalletProximity (1.0.1)
+  - IOWalletCBOR (0.1.0)
+  - IOWalletProximity (1.2.1)
   - JOSESwift (3.0.0)
   - pagopa-io-react-native-crypto (1.0.1):
     - DoubleConversion
@@ -2099,10 +2099,10 @@ SPEC CHECKSUMS:
   glog: 69ef571f3de08433d766d614c73a9838a06bf7eb
   hermes-engine: ea92f60f37dba025e293cbe4b4a548fd26b610a0
   io-react-native-secure-storage: 31e2d8f22f8bb17bf7199994e2e4ceae45ab03b6
-  IoReactNativeCbor: 3ec5e182eff97ae5622eaed8a65e70f257de1600
-  IoReactNativeProximity: 5500e559eab99b1b67f3cdf038d424a0f85faaa9
-  IOWalletCBOR: 016de622a863910c0ac6dab3356e1d1d3b272091
-  IOWalletProximity: fed5a3163c70a81b032db0871542ff0bb03fca13
+  IoReactNativeCbor: ba360acb44797d51ec28579e4a8f01ace4e8809f
+  IoReactNativeProximity: 4a251557e1f0c85841d4e14297bd88dce7d2d58c
+  IOWalletCBOR: f6147a29e88bfd3ef36386840df1b5f907c3ae41
+  IOWalletProximity: 66db020e9570b5b14483090336a7cdc3b0418e7c
   JOSESwift: 7784b1b844194d0f534eb6ac4fba5af683bccc79
   pagopa-io-react-native-crypto: c034b48871e47aefa569eda55cdb8432dab91aa5
   pagopa-io-react-native-jwt: 4f1c348d8260f0dc882412243531b3a516608e97

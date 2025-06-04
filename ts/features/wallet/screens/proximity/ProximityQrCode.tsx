@@ -1,5 +1,5 @@
 import {useTranslation} from 'react-i18next';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {
@@ -9,13 +9,9 @@ import {
   HSpacer,
   HStack,
   IconButton,
-  LoadingSpinner,
   VSpacer
 } from '@pagopa/io-app-design-system';
 import {useNavigation} from '@react-navigation/native';
-import {useAppDispatch} from '../../../../store';
-import {resetProximity} from '../../store/proximity';
-import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
@@ -29,10 +25,8 @@ import useProximityLogBoxBs from '../../hooks/proximity/useProximityLogBottomShe
 const ProximityQrCode = () => {
   const {t} = useTranslation(['global', 'wallet']);
   const navigation = useNavigation();
-  const {initProximity, closeConnection} = useProximity();
-  const [qrCode, setQrCode] = useState<string | null>(null);
-  const dispatch = useAppDispatch();
-  const logBoxBs = useProximityLogBoxBs();
+  const {startFlow, closeFlow, qrCode, logBox} = useProximity();
+  const logBoxBs = useProximityLogBoxBs({log: logBox});
 
   useHardwareBackButton(() => true);
   useDisableGestureNavigation();
@@ -41,29 +35,16 @@ const ProximityQrCode = () => {
     title: '',
     goBack: async () => {
       navigation.goBack();
-      dispatch(resetProximity());
-      await closeConnection();
+      await closeFlow().catch(); // We can ignore errors here as the hook will write a log if an error occurrs
     }
   });
 
-  const startProximity = useCallback(async () => {
-    try {
-      setQrCode(null);
-      dispatch(resetProximity());
-      const res = await initProximity();
-      setQrCode(res);
-    } catch (e) {
-      // We can ignore this because the error is already set in the store and the connection is closed inside initProximity.
-    }
-  }, [dispatch, initProximity]);
-
   useEffect(() => {
-    startProximity()
-      .then(() => {})
-      .catch(() => {});
-  }, [startProximity]);
-
-  useDebugInfo({qrCode});
+    startFlow().catch(() => {}); // We can ignore errors here as the hook will write a log if an error occurrs
+    return () => {
+      closeFlow().catch(() => {}); // We can ignore errors here as the hook will write a log if an error occurrs
+    };
+  }, [closeFlow, startFlow]);
 
   return (
     <ContentWrapper>
@@ -72,27 +53,25 @@ const ProximityQrCode = () => {
       <Body>{t('wallet:proximity.showQr.body')}</Body>
       <VSpacer size={40} />
       <View style={{alignItems: 'center'}}>
-        {qrCode ? (
+        {qrCode && (
           <>
             <QRCode size={280} value={qrCode} />
             <VSpacer size={24} />
-            <HStack>
-              <IconButton
-                icon="reload"
-                onPress={startProximity}
-                accessibilityLabel={'reload'}
-              />
-              <HSpacer />
-              <IconButton
-                icon={'notes'}
-                onPress={logBoxBs.present}
-                accessibilityLabel={'Show log'}
-              />
-            </HStack>
           </>
-        ) : (
-          <LoadingSpinner />
         )}
+        <HStack>
+          <IconButton
+            icon="reload"
+            onPress={startFlow}
+            accessibilityLabel={'reload'}
+          />
+          <HSpacer />
+          <IconButton
+            icon={'notes'}
+            onPress={logBoxBs.present}
+            accessibilityLabel={'Show log'}
+          />
+        </HStack>
       </View>
       {logBoxBs.bottomSheet}
     </ContentWrapper>

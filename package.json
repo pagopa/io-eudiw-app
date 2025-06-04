@@ -1,6 +1,6 @@
 {
   "name": "ioeudiwapp",
-  "version": "1.9.4-rc.0",
+  "version": "1.10.0-rc.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -28,12 +28,12 @@
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.0.6",
     "@pagopa/io-app-design-system": "^4.0.1",
-    "@pagopa/io-react-native-cbor": "^1.2.4",
+    "@pagopa/io-react-native-cbor": "^1.4.0",
     "@pagopa/io-react-native-crypto": "^1.0.1",
     "@pagopa/io-react-native-jwt": "2.1.0",
     "@pagopa/io-react-native-login-utils": "^1.0.7",
-    "@pagopa/io-react-native-proximity": "^0.4.0",
-    "@pagopa/io-react-native-wallet": "1.7.0",
+    "@pagopa/io-react-native-proximity": "^0.5.0",
+    "@pagopa/io-react-native-wallet": "1.7.1",
     "@pagopa/react-native-nodelibs": "^0.1.0",
     "@react-native-async-storage/async-storage": "^2.0.0",
     "@react-native-clipboard/clipboard": "^1.15.0",
