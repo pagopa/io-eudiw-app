@@ -112,16 +112,8 @@ const CredentialTrust = () => {
     }));
   const mockedDescriptorForPid: Descriptor = [
     {
-      credential: pid.credential,
-      evaluatedDisclosure: {
-        requiredDisclosures,
-        optionalDisclosures: []
-      },
-      inputDescriptor: {
-        constraints: {},
-        id: 'test'
-      },
-      keyTag: pid.keyTag
+      requiredDisclosures,
+      optionalDisclosures: []
     }
   ];
 
