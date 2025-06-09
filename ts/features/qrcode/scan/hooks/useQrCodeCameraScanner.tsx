@@ -79,7 +79,7 @@ export const useQrCodeCameraScanner = ({
   // This handles the resting state of the scanner after a scan
   // It is necessary to avoid multiple scans of the same barcode
   const scannerReactivateTimeoutHandler =
-    useRef<ReturnType<typeof setTimeout>>();
+    useRef<ReturnType<typeof setTimeout>>(null);
   const [isResting, setIsResting] = useState(false);
 
   /**
@@ -137,7 +137,9 @@ export const useQrCodeCameraScanner = ({
    */
   useEffect(
     () => () => {
-      clearTimeout(scannerReactivateTimeoutHandler.current);
+      if (scannerReactivateTimeoutHandler.current) {
+        clearTimeout(scannerReactivateTimeoutHandler.current);
+      }
     },
     [scannerReactivateTimeoutHandler]
   );

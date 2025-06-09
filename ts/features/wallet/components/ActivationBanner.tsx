@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {GestureResponderEvent, View} from 'react-native';
+import {GestureResponderEvent} from 'react-native';
 import {Banner, VSpacer} from '@pagopa/io-app-design-system';
 import {useNavigation} from '@react-navigation/native';
 /**
@@ -31,7 +31,6 @@ export const ActivationBanner = ({
   onClose,
   labelClose
 }: ItwActionBannerProps): React.ReactElement => {
-  const viewRef = React.createRef<View>();
   const navigation = useNavigation();
 
   return (
@@ -39,7 +38,6 @@ export const ActivationBanner = ({
       <VSpacer size={24} />
       <Banner
         testID={'ItwBannerTestID'}
-        viewRef={viewRef}
         color={'turquoise'}
         size="big"
         title={title}

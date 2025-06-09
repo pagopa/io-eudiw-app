@@ -26,6 +26,8 @@ const WalletHome = () => {
   const isWalletOperational = useAppSelector(lifecycleIsOperationalSelector);
   const credentials = useAppSelector(credentialsSelector);
 
+  console.log(JSON.stringify(credentials, null, 2));
+
   /**
    * The invocation of this clear function is needed here because
    * there are invocations of {@link IdentificationModal}, which sets the {@link identificationModalDisplayStatus}
