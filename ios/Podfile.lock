@@ -76,7 +76,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - IOWalletCBOR (0.1.0)
-  - IOWalletProximity (1.2.1)
+  - IOWalletProximity (1.2.2)
   - JOSESwift (3.0.0)
   - pagopa-io-react-native-crypto (1.0.1):
     - DoubleConversion
@@ -2102,7 +2102,7 @@ SPEC CHECKSUMS:
   IoReactNativeCbor: ba360acb44797d51ec28579e4a8f01ace4e8809f
   IoReactNativeProximity: 4a251557e1f0c85841d4e14297bd88dce7d2d58c
   IOWalletCBOR: f6147a29e88bfd3ef36386840df1b5f907c3ae41
-  IOWalletProximity: 66db020e9570b5b14483090336a7cdc3b0418e7c
+  IOWalletProximity: 55d5527de91a971dbcdbdda1838860c9860683ac
   JOSESwift: 7784b1b844194d0f534eb6ac4fba5af683bccc79
   pagopa-io-react-native-crypto: c034b48871e47aefa569eda55cdb8432dab91aa5
   pagopa-io-react-native-jwt: 4f1c348d8260f0dc882412243531b3a516608e97

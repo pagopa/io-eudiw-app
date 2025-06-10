@@ -287,7 +287,7 @@ interface Resources {
     "proximity": {
       "showQr": {
         "title": "Show QR",
-        "body": "Display the QR code to verify the validity of the documents in your Wallet"
+        "body": "Display the QR code to verify the validity of the documents in your Wallet."
       },
       "disconnected": {
         "title": "Disconnection",
