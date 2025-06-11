@@ -13,7 +13,7 @@ const {width} = Dimensions.get('screen');
 
 export type PinCarouselItemProps = WithTestID<{
   title: string;
-  titleRef?: RefObject<View>;
+  titleRef?: RefObject<View | null>;
   description?: string;
   value: string;
   maxLength: number;
