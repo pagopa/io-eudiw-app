@@ -32,7 +32,7 @@
     "@pagopa/io-react-native-crypto": "^1.0.1",
     "@pagopa/io-react-native-jwt": "2.1.0",
     "@pagopa/io-react-native-login-utils": "^1.0.9",
-    "@pagopa/io-react-native-proximity": "^0.5.0",
+    "@pagopa/io-react-native-proximity": "^0.6.0",
     "@pagopa/io-react-native-wallet": "1.7.1",
     "@pagopa/react-native-nodelibs": "^0.1.0",
     "@react-native-async-storage/async-storage": "^2.2.0",

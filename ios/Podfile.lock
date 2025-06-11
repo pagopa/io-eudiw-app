@@ -54,11 +54,11 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - IoReactNativeProximity (0.5.0):
+  - IoReactNativeProximity (0.6.0):
     - DoubleConversion
     - glog
     - hermes-engine
-    - IOWalletProximity (~> 1.2.1)
+    - IOWalletProximity (~> 1.2.2)
     - RCT-Folly (= 2024.11.18.00)
     - RCTRequired
     - RCTTypeSafety
@@ -1761,7 +1761,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNCAsyncStorage (2.1.0):
+  - RNCAsyncStorage (2.2.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1782,7 +1782,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNCClipboard (1.15.0):
+  - RNCClipboard (1.16.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1805,7 +1805,7 @@ PODS:
     - Yoga
   - RNDeviceInfo (14.0.1):
     - React-Core
-  - RNGestureHandler (2.21.2):
+  - RNGestureHandler (2.25.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2079,11 +2079,11 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.1)
-  - VisionCamera (4.6.3):
-    - VisionCamera/Core (= 4.6.3)
-    - VisionCamera/React (= 4.6.3)
-  - VisionCamera/Core (4.6.3)
-  - VisionCamera/React (4.6.3):
+  - VisionCamera (4.6.4):
+    - VisionCamera/Core (= 4.6.4)
+    - VisionCamera/React (= 4.6.4)
+  - VisionCamera/Core (4.6.4)
+  - VisionCamera/React (4.6.4):
     - React-Core
   - Yoga (0.0.0)
   - ZXingObjC (3.6.9):
@@ -2384,7 +2384,7 @@ SPEC CHECKSUMS:
   hermes-engine: 2771b98fb813fdc6f92edd7c9c0035ecabf9fee7
   io-react-native-secure-storage: 8fd51bbeaab3869208850b2f1700f9f4139a7be6
   IoReactNativeCbor: f57c0c84fd9fb1c57d657c5932d8c06fa5cf31c1
-  IoReactNativeProximity: 4aa2befab152fb8ed8403f79300ecf4d340f73a7
+  IoReactNativeProximity: 5d68f5add61477a0e034154eb089455f4c879156
   IOWalletCBOR: f6147a29e88bfd3ef36386840df1b5f907c3ae41
   IOWalletProximity: 55d5527de91a971dbcdbdda1838860c9860683ac
   JOSESwift: 7784b1b844194d0f534eb6ac4fba5af683bccc79
@@ -2455,10 +2455,10 @@ SPEC CHECKSUMS:
   ReactCodegen: 99ea3536c05be3c18d0c517acb56b5a6d726fc7b
   ReactCommon: 865ebe76504a95e115b6229dd00a31e56d2d4bfe
   RNBootSplash: bab46cb491d856195d60a64dc4d6a618fdeb89b3
-  RNCAsyncStorage: 73773ca1dd29378bf0fe8dd7d67870d422e2fc05
-  RNCClipboard: f11cba1eab509ec1594e18e62aa6179f97a37cba
+  RNCAsyncStorage: 79cfba789fca205b204f3ce7948b874500129eb4
+  RNCClipboard: f13dd3ceae005858e137ae9e70f3c414e174ff81
   RNDeviceInfo: afc27b3f24bd0e97181bf3e9f23cfa4c9040dd32
-  RNGestureHandler: 96ddb97e4c2bb11b0efecc5c00aa817b96c1e3b1
+  RNGestureHandler: dcb1b1db024f3744b03af56d132f4f72c4c27195
   RNPermissions: 4921d71644f3e213b3377c96c00056a8153bbff1
   RNQrGenerator: afacf12b55dfba0e3aaca963eec23691e8426431
   RNReactNativeHapticFeedback: 66c6b0cf19f5d9dae8be36b2336e1fe2a2e42566
@@ -2466,7 +2466,7 @@ SPEC CHECKSUMS:
   RNScreens: 8aec64fb213fd52a64445e2e470f7a9b546c5df3
   RNSVG: 8126581b369adf6a0004b6a6cab1a55e3002d5b0
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  VisionCamera: 030bcbf22791d698926e7c0e3b804126165e62e3
+  VisionCamera: f56eaedde0d3fa095143b78374d29e89e71735f9
   Yoga: e14bad835e12b6c7e2260fc320bd00e0f4b45add
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
