@@ -2345,9 +2345,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-app-design-system@npm:^4.0.1":
-  version: 4.2.0
-  resolution: "@pagopa/io-app-design-system@npm:4.2.0"
+"@pagopa/io-app-design-system@npm:^4.6.0":
+  version: 4.6.1
+  resolution: "@pagopa/io-app-design-system@npm:4.6.1"
   dependencies:
     "@testing-library/jest-native": ^5.4.2
     "@types/react-test-renderer": ^18.0.0
@@ -2371,7 +2371,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-safe-area-context: "*"
     react-native-svg: "*"
-  checksum: 5a34b4cce3412e47c1fdcc62c1a6fca207cd018cf88d9a4e7a29611a433ea1f2e4e35a950a78fe678e35a7200f8f470e559e6cd62a00f8ba0db8e6b028ce796e
+  checksum: 817424de77858b23889c7377f4a95d5401591bdc6cedf28d4832fa540d24fddc1425cbf7c82b2f5662a61eb96e3b1e3708aeeefbd7a30613e168f6327925ad29
   languageName: node
   linkType: hard
 
@@ -8331,7 +8331,7 @@ __metadata:
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
     "@gorhom/bottom-sheet": ^5.0.6
-    "@pagopa/io-app-design-system": ^4.0.1
+    "@pagopa/io-app-design-system": ^4.6.0
     "@pagopa/io-react-native-cbor": ^1.4.0
     "@pagopa/io-react-native-crypto": ^1.0.1
     "@pagopa/io-react-native-jwt": 2.1.0
@@ -12273,7 +12273,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:^2.12.0, react-native-gesture-handler@npm:^2.20.2":
+"react-native-gesture-handler@npm:^2.12.0":
+  version: 2.26.0
+  resolution: "react-native-gesture-handler@npm:2.26.0"
+  dependencies:
+    "@egjs/hammerjs": ^2.0.17
+    hoist-non-react-statics: ^3.3.0
+    invariant: ^2.2.4
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: e01cc57598b1cd2b4bf2886906e0d3a03ef09a57ce7a8ab530ec7779853919bb8265dd9afc0f023a0418cf60f6762eb27d1d71f8e3e9416a78ab0ddd55c22bb9
+  languageName: node
+  linkType: hard
+
+"react-native-gesture-handler@npm:^2.20.2":
   version: 2.21.2
   resolution: "react-native-gesture-handler@npm:2.21.2"
   dependencies:
@@ -12462,8 +12476,8 @@ __metadata:
   linkType: hard
 
 "react-native-svg@npm:^15.1.0":
-  version: 15.10.0
-  resolution: "react-native-svg@npm:15.10.0"
+  version: 15.12.0
+  resolution: "react-native-svg@npm:15.12.0"
   dependencies:
     css-select: ^5.1.0
     css-tree: ^1.1.3
@@ -12471,7 +12485,7 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: b895065cf8297bbdfbbd2e2e7935be6acbe25fc7a63450a7e68a8a21b696aa10d9cae553ed76a4958b24b17724b164d33cc9bf8e0c21e4938e249917c7ace713
+  checksum: 0a78333ab4fb1aae38f190a22a1afcbfa2ae9192ccd2ac7a989f3108bd32afe1b84800b4dce0f92c68ad4eca6809046b5f997fbfcb072b872dd34ea04c8f44aa
   languageName: node
   linkType: hard
 

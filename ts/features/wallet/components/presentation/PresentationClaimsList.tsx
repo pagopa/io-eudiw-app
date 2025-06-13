@@ -72,7 +72,7 @@ const PresentationClaimsList = ({
                       {source}
                     </BodySmall>
                   </View>
-                  <AnimatedCheckbox checked={true} />
+                  <AnimatedCheckbox size={24} checked={true} />
                 </View>
               </View>
             ))}
@@ -106,6 +106,7 @@ const PresentationClaimsList = ({
                     </BodySmall>
                   </View>
                   <AnimatedCheckbox
+                  size={24}
                     checked={optionalChecked.includes(claim)}
                     onPress={_ => setOptionalChecked(claim)}
                   />

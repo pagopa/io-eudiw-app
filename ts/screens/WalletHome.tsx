@@ -39,7 +39,6 @@ const WalletHome = () => {
     <>
       <HeaderFirstLevel
         title={t('global:tabNavigator.wallet')}
-        type="singleAction"
         firstAction={{
           icon: 'coggle',
           onPress: () =>

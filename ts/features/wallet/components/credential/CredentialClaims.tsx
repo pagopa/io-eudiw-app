@@ -17,10 +17,11 @@ import {getSafeText} from '../../../../utils/string';
  * @param label - the label of the claim
  * @param claim - the claim value
  */
-const PlainTextClaimItem = ({label, claim}: {label: string; claim: string}) => {
+const PlainTextClaimItem = ({label, claim, reversed}: {label: string; claim: string ; reversed : boolean}) => {
   const safeText = getSafeText(claim);
   return (
     <ListItemInfo
+      reversed={reversed}
       numberOfLines={2}
       label={label}
       value={safeText}
@@ -40,17 +41,20 @@ const ImageClaimItem = ({
   label,
   uri,
   width,
-  height
+  height,
+  reversed
 }: {
   label: string;
   uri: string;
   width: number;
   height: number;
+  reversed: boolean
 }) => (
   <ListItemInfo
     numberOfLines={2}
     label={label}
     accessibilityLabel={`${label}`}
+    reversed={reversed}
     value={
       <Image
         source={{
@@ -74,11 +78,13 @@ const ImageClaimItem = ({
 const DateClaimItem = ({
   label,
   claim,
-  expires = false
+  expires = false,
+  reversed
 }: {
   label: string;
   claim: Date;
   expires?: boolean;
+  reversed: boolean;
 }) => {
   const value = claim.toLocaleDateString();
   const {t} = useTranslation(['wallet']);
@@ -89,6 +95,7 @@ const DateClaimItem = ({
       label={label}
       value={value}
       accessibilityLabel={`${label} ${value}`}
+      reversed={reversed}
       endElement={
         expires
           ? {
@@ -115,10 +122,11 @@ const DateClaimItem = ({
  * @param label - the label of the claim
  * @param _claim - the claim value of unknown type. We are not interested in its value but it's needed for the exaustive type checking.
  */
-const UnknownClaimItem = ({label}: {label: string}) => (
+const UnknownClaimItem = ({label, reversed}: {label: string, reversed : boolean}) => (
   <PlainTextClaimItem
     label={label}
     claim={i18next.t('wallet:claims.generic.notAvailable')}
+    reversed={reversed}
   />
 );
 
@@ -133,11 +141,13 @@ const UnknownClaimItem = ({label}: {label: string}) => (
 const DrivingPrivilegesClaimItem = ({
   label,
   claim,
-  detailsButtonVisible = true
+  detailsButtonVisible = true,
+  reversed
 }: {
   label: string;
   claim: DrivingPrivilegesType['value'][0];
   detailsButtonVisible?: boolean;
+  reversed: boolean;
 }) => {
   const {issue_date, expiry_date, vehicle_category_code} = claim;
   const localIssueDate = new Date(issue_date).toLocaleDateString();
@@ -186,6 +196,7 @@ const DrivingPrivilegesClaimItem = ({
         value={claim.vehicle_category_code}
         endElement={endElement}
         accessibilityLabel={`${label} ${claim.vehicle_category_code}`}
+        reversed={reversed}
       />
       {privilegeBottomSheet.bottomSheet}
     </>
@@ -199,11 +210,13 @@ const DrivingPrivilegesClaimItem = ({
 export const VerificationEvidenceClaimItem = ({
   label,
   claim,
-  detailsButtonVisible = true
+  detailsButtonVisible = true,
+  reversed
 }: {
   label: string;
   claim: VerificationEvidenceType['value'];
   detailsButtonVisible: boolean;
+  reversed : boolean;
 }) => {
   const {organization_id, organization_name, country_code} = claim;
   const {t} = useTranslation(['wallet', 'global']);
@@ -248,6 +261,7 @@ export const VerificationEvidenceClaimItem = ({
         value={organization_name}
         endElement={endElement}
         accessibilityLabel={`${label} ${organization_name}`}
+        reversed={reversed}
       />
       {verificationBottomSheet.bottomSheet}
     </>
@@ -261,10 +275,12 @@ export const VerificationEvidenceClaimItem = ({
  */
 export const CredentialClaim = ({
   claim,
-  isPreview
+  isPreview,
+  reversed = false
 }: {
   claim: ClaimDisplayFormat;
   isPreview: boolean;
+  reversed?: boolean;
 }) => {
   const decoded = claimScheme.safeParse(claim);
   /**
@@ -274,13 +290,14 @@ export const CredentialClaim = ({
   if (decoded.success) {
     switch (decoded.data.type) {
       case 'date':
-        return <DateClaimItem label={claim.label} claim={decoded.data.value} />;
+        return <DateClaimItem reversed={reversed} label={claim.label} claim={decoded.data.value} />;
       case 'expireDate':
         return (
           <DateClaimItem
             label={claim.label}
             claim={decoded.data.value}
             expires={!isPreview}
+            reversed
           />
         );
       case 'drivingPrivileges':
@@ -294,6 +311,7 @@ export const CredentialClaim = ({
                   label={claim.label}
                   claim={elem}
                   detailsButtonVisible={!isPreview}
+                  reversed
                 />
               </Fragment>
             ))}
@@ -305,11 +323,12 @@ export const CredentialClaim = ({
             label={claim.label}
             claim={decoded.data.value}
             detailsButtonVisible={!isPreview}
+            reversed={reversed}
           />
         );
       case 'string':
         return (
-          <PlainTextClaimItem label={claim.label} claim={decoded.data.value} />
+          <PlainTextClaimItem label={claim.label} claim={decoded.data.value} reversed={reversed}/>
         );
       case 'image':
         return (
@@ -318,12 +337,13 @@ export const CredentialClaim = ({
             uri={decoded.data.value}
             width={decoded.data.width}
             height={decoded.data.height}
+            reversed={reversed}
           />
         );
       default:
-        return <UnknownClaimItem label={claim.label} />;
+        return <UnknownClaimItem label={claim.label} reversed={reversed}/>;
     }
   } else {
-    return <UnknownClaimItem label={claim.label} />;
+    return <UnknownClaimItem label={claim.label} reversed={reversed}/>;
   }
 };

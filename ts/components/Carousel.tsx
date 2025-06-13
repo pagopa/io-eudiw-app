@@ -10,13 +10,14 @@ import {
 } from 'react-native';
 import {useInteractiveElementDefaultColorName} from '../hooks/theme';
 import {LandingCardComponent} from './LandingCardComponent';
+import { IoEudiwColors } from '../stylesheets/colors';
 
 const styles = StyleSheet.create({
   normalDot: {
     height: 8,
     width: 8,
     borderRadius: 4,
-    backgroundColor: IOColors.greyLight,
+    backgroundColor: IoEudiwColors.greyLight,
     marginHorizontal: 4
   },
   indicatorContainer: {
