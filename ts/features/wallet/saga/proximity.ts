@@ -9,11 +9,14 @@ import {
   addProximityLog,
   resetProximityLog,
   resetProximityQrCode,
+  selectProximityAcceptedFields,
   selectProximityDocumentRequest,
   setProximityQrCode,
   setProximityStatusAuthorizationComplete,
   setProximityStatusAuthorizationRejected,
+  setProximityStatusAuthorizationSend,
   setProximityStatusAuthorizationStarted,
+  setProximityStatusConnected,
   setProximityStatusError,
   setProximityStatusReceivedDocument,
   setProximityStatusStarted,
@@ -21,9 +24,9 @@ import {
 } from '../store/proximity';
 import {requestBlePermissions} from '../utils/permissions';
 import {store} from '../../../store';
-import {generateAcceptedFields} from '../utils/proximity';
-import {selectCredential} from '../store/credentials';
-import {wellKnownCredential} from '../utils/credentials';
+import {selectCredentials} from '../store/credentials';
+import { ParsedCredential, StoredCredential } from '../utils/types';
+import { CBOR } from '@pagopa/io-react-native-cbor';
 
 // These are to aid typescript
 const PROXIMITY_ON_DEVICE_CONNECTED: Proximity.Events = 'onDeviceConnected';
@@ -60,7 +63,9 @@ function* proximityPresentation() {
       Proximity.addListener('onDeviceConnecting', () => {});
     });
     yield* call(() => {
-      Proximity.addListener('onDeviceConnected', () => {});
+      Proximity.addListener('onDeviceConnected', () => {
+        store.dispatch(setProximityStatusConnected())
+      });
     });
     yield* call(() => {
       Proximity.addListener('onDocumentRequestReceived', payload => {
@@ -113,42 +118,38 @@ function* proximityPresentation() {
 }
 
 function* handleProximityResponse(documentRequest: VerifierRequest) {
-  yield* put(setProximityStatusAuthorizationStarted());
+  const allCredentials = yield* select(selectCredentials)
+  const mdocCredentials = allCredentials.filter(credential => credential.format === 'mso_mdoc')
+  const credentialDescriptor = yield* call(matchRequestToClaims, documentRequest, mdocCredentials)
+  yield* put(setProximityStatusAuthorizationStarted(credentialDescriptor));
 
   const choice = yield* take([
-    setProximityStatusAuthorizationComplete,
+    setProximityStatusAuthorizationSend,
     setProximityStatusAuthorizationRejected
   ]);
 
-  if (setProximityStatusAuthorizationComplete.match(choice)) {
-    const mdl = yield* select(
-      selectCredential(wellKnownCredential.DRIVING_LICENSE)
-    );
-    if (mdl) {
-      const documents: Array<Proximity.Document> = [
-        {
-          alias: mdl.keyTag,
-          docType: mdl.credentialType,
-          issuerSignedContent: mdl.credential
-        }
-      ];
+  if (setProximityStatusAuthorizationSend.match(choice)) {
+    const documents: Array<Proximity.Document> = mdocCredentials.map(credential => (
+      {
+        alias: credential.keyTag,
+        docType: credential.credentialType,
+        issuerSignedContent: credential.credential
+      }
+    ));
 
-      const acceptedFields = yield* call(
-        generateAcceptedFields,
-        documentRequest.request
-      );
-
+    const acceptedFields = yield* select(selectProximityAcceptedFields)
+    if (acceptedFields) {
       const response = yield* call(
         Proximity.generateResponse,
         documents,
         acceptedFields
       );
       yield* call(Proximity.sendResponse, response);
-
-      // yield* call(closeFlow);
+      yield* put(setProximityStatusAuthorizationComplete())
     } else {
-      throw new Error('Proximity: Credential not found');
+      yield* call(closeFlow,true)
     }
+
   } else {
     yield* call(closeFlow, true);
   }
@@ -174,4 +175,59 @@ function* closeFlow(sendError: boolean = false) {
   } else {
     yield* put(setProximityStatusStopped());
   }
+}
+
+function* matchRequestToClaims(verifierRequest : VerifierRequest, credentialsMdoc : StoredCredential[]) {
+
+    const decodedCredentials = yield* call(async () => await Promise.all(credentialsMdoc.map(async (credential) => {
+        const decodedIssuerSigned = await CBOR.decodeIssuerSigned(credential.credential)
+        return {
+            ...credential,
+            issuerSigned : decodedIssuerSigned
+        }
+    })))
+
+    //Key: Credential type
+    //Value : isAuthenticated + nameSpaces
+    return Object.entries(verifierRequest.request).reduce((prev, [key, value]) => {
+        const credential = decodedCredentials.find(credential => credential.credentialType === key)
+        if (credential) {
+            //Key : namespace
+            //Value : attributes
+            const foundNamespaces = Object.entries(value).filter(([key2, _]) => key2 !== 'isAuthenticated').reduce((prev3, [namespace, attributes]) => {
+                const foundNamespace = Object.entries(credential.issuerSigned.nameSpaces).find(([ns]) => ns === namespace)
+                if (foundNamespace) {
+                    const foundAttributes = Object.keys(attributes).reduce((prev4, attribute) => {
+                        if (credential.parsedCredential[attribute]) {
+                            return {
+                                ...prev4,
+                                [attribute] : credential.parsedCredential[attribute]
+                            }
+                        }
+                        return {...prev4}
+                    }, {} as Record<string,ParsedCredential[string]>)
+                    if (Object.keys(foundAttributes).length !== 0)
+                        return {
+                            ...prev3,
+                            [namespace] : foundAttributes
+                        }
+                    else return {
+                        ...prev3
+                    }
+                }
+                return {...prev3}
+            },{} as Record<string, Record<string, ParsedCredential[string]>>)
+            if (Object.keys(foundNamespaces).length === 0) {
+                return {...prev}
+            } else {
+                return {
+                    ...prev,
+                    [key] : foundNamespaces
+                }
+            }
+        }
+        return {
+            ...prev
+        }
+    }, {} as Record<string, Record<string, Record<string, ParsedCredential[string]>>>)
 }

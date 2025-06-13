@@ -27,7 +27,7 @@ export const generateAcceptedFields = (
         age_over_21: true,
         birth_place: true,
         expiry_date: true,
-        family_name: true,
+        family_name: false,
         hair_colour: true,
         nationality: true,
         age_in_years: true,

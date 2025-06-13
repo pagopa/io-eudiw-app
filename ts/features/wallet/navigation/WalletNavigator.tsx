@@ -20,7 +20,7 @@ import CredentialTrust from '../screens/credentialIssuance/CredentialTrust';
 import {CredentialPreview} from '../screens/credentialIssuance/CredentialIssuancePreview';
 import CredentialFailure from '../screens/credentialIssuance/CredentialFailure';
 import CredentialsList from '../screens/credentialIssuance/CredentialsList';
-import PresentationProximityPreview from '../components/presentation/PresentationProximityPreview';
+import PresentationProximityPreview, { PresentationProximityPreviewProps } from '../screens/proximity/PresentationProximityPreview';
 import WALLET_ROUTES from './routes';
 
 /**
@@ -50,7 +50,7 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE]: undefined;
 
   // Proximity
-  [WALLET_ROUTES.PROXIMITY.PREVIEW]: undefined;
+  [WALLET_ROUTES.PROXIMITY.PREVIEW]: PresentationProximityPreviewProps;
 };
 
 const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();

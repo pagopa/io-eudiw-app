@@ -14,7 +14,7 @@ import {removeCredential} from '../../store/credentials';
 import {StoredCredential} from '../../utils/types';
 import {useIOBottomSheetModal} from '../../../../hooks/useBottomSheet';
 import {selectProximityStatus} from '../../store/proximity';
-import {PresentationProximityQrCode} from './PresentationProximityQRCode';
+import {PresentationProximityQrCode} from '../proximity/PresentationProximityQRCode';
 
 type PresentationDetailFooterProps = {
   credential: StoredCredential;

@@ -289,6 +289,9 @@ interface Resources {
         "title": "Show QR",
         "body": "Display the QR code to verify the validity of the documents in your Wallet."
       },
+      "connected": {
+        "body" : "Verification in progress. Please wait a few seconds..."
+      },
       "disconnected": {
         "title": "Disconnection",
         "body": "The device has been disconnected. Please check the verifier app for more details."
