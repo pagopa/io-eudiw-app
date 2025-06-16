@@ -7,6 +7,7 @@ import {StoredCredential} from './types';
 
 /**
  * This function generates the accepted fields for the VerifierRequest and sets each requested field to true.
+ * WARNING: This function is a quick and dirty implementation copied from the proximity example app. It will be replaced in the future.
  * @param request - The request object containing the requested fields
  * @returns A new object with the same structure as the request, but with all values set to true
  */
