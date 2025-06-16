@@ -52,6 +52,8 @@ const PresentationProximityQRCode = ({
         screen: 'PROXIMITY_PREVIEW',
         params: {descriptor: proximityDisclosureDescriptor}
       });
+    } else if (proximityStatus === 'error' || proximityStatus === 'aborted') {
+      navigation.navigate('MAIN_WALLET_NAV', {screen: 'PROXIMITY_FAILURE'});
     }
   }, [proximityStatus, proximityDisclosureDescriptor, navigation]);
 
