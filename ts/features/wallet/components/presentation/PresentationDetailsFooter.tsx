@@ -13,7 +13,7 @@ import {useAppDispatch, useAppSelector} from '../../../../store';
 import {removeCredential} from '../../store/credentials';
 import {StoredCredential} from '../../utils/types';
 import {useIOBottomSheetModal} from '../../../../hooks/useBottomSheet';
-import {selectProximityStatus} from '../../store/proximity';
+import {resetProximity, selectProximityStatus, setProximityStatusStopped} from '../../store/proximity';
 import {PresentationProximityQrCode} from '../proximity/PresentationProximityQRCode';
 
 type PresentationDetailFooterProps = {
@@ -36,7 +36,13 @@ const PresentationDetailsFooter = ({
 
   const QrCodeModal = useIOBottomSheetModal({
     title: t('wallet:proximity.showQr.title'),
-    component: <PresentationProximityQrCode navigation={navigation} />
+    component: <PresentationProximityQrCode navigation={navigation} />,
+    onDismiss: () => {
+      if (proximityStatus === 'started') {
+        dispatch(setProximityStatusStopped())
+        dispatch(resetProximity())
+      }
+    }
   });
 
   useEffect(() => {

@@ -6,17 +6,18 @@ import {
   Body,
   ContentWrapper,
   H2,
-  HSpacer,
-  HStack,
-  IconButton,
-  VSpacer
+  H6,
+  IOStyles,
+  VSpacer,
+  VStack
 } from '@pagopa/io-app-design-system';
 import {useNavigation} from '@react-navigation/native';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
-import {useProximity} from '../../hooks/proximity/useProximity';
-import useProximityLogBoxBs from '../../hooks/proximity/useProximityLogBottomSheet';
+import { useAppDispatch, useAppSelector } from '../../../../store';
+import { resetProximity, selectProximityDisclosureDescriptor, selectProximityQrCode, selectProximityStatus, setProximityStatusStarted, setProximityStatusStopped } from '../../store/proximity';
+import { LoadingIndicator } from '../../../../components/LoadingIndicator';
 
 /**
  * Shows the QR code for the proximity presentation.
@@ -25,8 +26,12 @@ import useProximityLogBoxBs from '../../hooks/proximity/useProximityLogBottomShe
 const ProximityQrCode = () => {
   const {t} = useTranslation(['global', 'wallet']);
   const navigation = useNavigation();
-  const {startFlow, closeFlow, qrCode, logBox} = useProximity();
-  const logBoxBs = useProximityLogBoxBs({log: logBox});
+  const qrCode = useAppSelector(selectProximityQrCode);
+  const proximityStatus = useAppSelector(selectProximityStatus);
+  const proximityDisclosureDescriptor = useAppSelector(
+    selectProximityDisclosureDescriptor
+  );
+  const dispatch = useAppDispatch();
 
   useHardwareBackButton(() => true);
   useDisableGestureNavigation();
@@ -35,16 +40,29 @@ const ProximityQrCode = () => {
     title: '',
     goBack: async () => {
       navigation.goBack();
-      await closeFlow().catch(); // We can ignore errors here as the hook will write a log if an error occurrs
+      dispatch(setProximityStatusStopped())
+      dispatch(resetProximity())
     }
   });
 
+
   useEffect(() => {
-    startFlow().catch(() => {}); // We can ignore errors here as the hook will write a log if an error occurrs
-    return () => {
-      closeFlow().catch(() => {}); // We can ignore errors here as the hook will write a log if an error occurrs
-    };
-  }, [closeFlow, startFlow]);
+    dispatch(setProximityStatusStarted());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (
+      proximityStatus === 'authorization-started' &&
+      proximityDisclosureDescriptor
+    ) {
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PROXIMITY_PREVIEW',
+        params: {descriptor: proximityDisclosureDescriptor}
+      });
+    } else if (proximityStatus === 'error' || proximityStatus === 'aborted') {
+      navigation.navigate('MAIN_WALLET_NAV', {screen: 'PROXIMITY_FAILURE'});
+    }
+  }, [proximityStatus, proximityDisclosureDescriptor, navigation]);
 
   return (
     <ContentWrapper>
@@ -53,27 +71,25 @@ const ProximityQrCode = () => {
       <Body>{t('wallet:proximity.showQr.body')}</Body>
       <VSpacer size={40} />
       <View style={{alignItems: 'center'}}>
-        {qrCode && (
+        {qrCode ? (
           <>
             <QRCode size={280} value={qrCode} />
             <VSpacer size={24} />
           </>
-        )}
-        <HStack>
-          <IconButton
-            icon="reload"
-            onPress={startFlow}
-            accessibilityLabel={'reload'}
-          />
-          <HSpacer />
-          <IconButton
-            icon={'notes'}
-            onPress={logBoxBs.present}
-            accessibilityLabel={'Show log'}
-          />
-        </HStack>
+        ) : <>
+          <VSpacer size={24} />
+          <LoadingIndicator size={24} />
+        </>}
+      {proximityStatus === 'connected' || proximityStatus === 'received-document' && (
+        <VStack space={16} style={IOStyles.alignCenter}>
+          <LoadingIndicator size={24} />
+          <H6 textStyle={{textAlign: 'center'}}>
+            {t('wallet:proximity.connected.body')}
+          </H6>
+          <VSpacer size={32} />
+        </VStack>
+      )}
       </View>
-      {logBoxBs.bottomSheet}
     </ContentWrapper>
   );
 };

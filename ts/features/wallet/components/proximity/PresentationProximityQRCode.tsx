@@ -67,7 +67,7 @@ const PresentationProximityQRCode = ({
       <VSpacer size={40} />
       <Body>{t('wallet:proximity.showQr.body')}</Body>
       <VSpacer size={40} />
-      {proximityStatus === 'connected' && (
+      {proximityStatus === 'connected' || proximityStatus === 'received-document' && (
         <VStack space={16} style={IOStyles.alignCenter}>
           <LoadingIndicator size={24} />
           <H6 textStyle={{textAlign: 'center'}}>
