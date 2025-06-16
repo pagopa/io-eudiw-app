@@ -17,7 +17,15 @@ import {getSafeText} from '../../../../utils/string';
  * @param label - the label of the claim
  * @param claim - the claim value
  */
-const PlainTextClaimItem = ({label, claim, reversed}: {label: string; claim: string ; reversed : boolean}) => {
+const PlainTextClaimItem = ({
+  label,
+  claim,
+  reversed
+}: {
+  label: string;
+  claim: string;
+  reversed: boolean;
+}) => {
   const safeText = getSafeText(claim);
   return (
     <ListItemInfo
@@ -48,7 +56,7 @@ const ImageClaimItem = ({
   uri: string;
   width: number;
   height: number;
-  reversed: boolean
+  reversed: boolean;
 }) => (
   <ListItemInfo
     numberOfLines={2}
@@ -122,7 +130,13 @@ const DateClaimItem = ({
  * @param label - the label of the claim
  * @param _claim - the claim value of unknown type. We are not interested in its value but it's needed for the exaustive type checking.
  */
-const UnknownClaimItem = ({label, reversed}: {label: string, reversed : boolean}) => (
+const UnknownClaimItem = ({
+  label,
+  reversed
+}: {
+  label: string;
+  reversed: boolean;
+}) => (
   <PlainTextClaimItem
     label={label}
     claim={i18next.t('wallet:claims.generic.notAvailable')}
@@ -216,7 +230,7 @@ export const VerificationEvidenceClaimItem = ({
   label: string;
   claim: VerificationEvidenceType['value'];
   detailsButtonVisible: boolean;
-  reversed : boolean;
+  reversed: boolean;
 }) => {
   const {organization_id, organization_name, country_code} = claim;
   const {t} = useTranslation(['wallet', 'global']);
@@ -290,7 +304,13 @@ export const CredentialClaim = ({
   if (decoded.success) {
     switch (decoded.data.type) {
       case 'date':
-        return <DateClaimItem reversed={reversed} label={claim.label} claim={decoded.data.value} />;
+        return (
+          <DateClaimItem
+            reversed={reversed}
+            label={claim.label}
+            claim={decoded.data.value}
+          />
+        );
       case 'expireDate':
         return (
           <DateClaimItem
@@ -328,7 +348,11 @@ export const CredentialClaim = ({
         );
       case 'string':
         return (
-          <PlainTextClaimItem label={claim.label} claim={decoded.data.value} reversed={reversed}/>
+          <PlainTextClaimItem
+            label={claim.label}
+            claim={decoded.data.value}
+            reversed={reversed}
+          />
         );
       case 'image':
         return (
@@ -341,9 +365,9 @@ export const CredentialClaim = ({
           />
         );
       default:
-        return <UnknownClaimItem label={claim.label} reversed={reversed}/>;
+        return <UnknownClaimItem label={claim.label} reversed={reversed} />;
     }
   } else {
-    return <UnknownClaimItem label={claim.label} reversed={reversed}/>;
+    return <UnknownClaimItem label={claim.label} reversed={reversed} />;
   }
 };

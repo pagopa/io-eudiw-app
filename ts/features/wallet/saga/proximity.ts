@@ -1,12 +1,14 @@
-import {call, put, select, take, takeLatest} from 'typed-redux-saga';
+import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
 import {
   parseVerifierRequest,
   Proximity,
   VerifierRequest
 } from '@pagopa/io-react-native-proximity';
 import {serializeError} from 'serialize-error';
+import {CBOR} from '@pagopa/io-react-native-cbor';
 import {
   addProximityLog,
+  resetProximity,
   resetProximityLog,
   resetProximityQrCode,
   selectProximityAcceptedFields,
@@ -25,8 +27,12 @@ import {
 import {requestBlePermissions} from '../utils/permissions';
 import {store} from '../../../store';
 import {selectCredentials} from '../store/credentials';
-import { ParsedCredential, StoredCredential } from '../utils/types';
-import { CBOR } from '@pagopa/io-react-native-cbor';
+import {ParsedCredential, StoredCredential} from '../utils/types';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '../../../store/reducers/identification';
 
 // These are to aid typescript
 const PROXIMITY_ON_DEVICE_CONNECTED: Proximity.Events = 'onDeviceConnected';
@@ -64,7 +70,7 @@ function* proximityPresentation() {
     });
     yield* call(() => {
       Proximity.addListener('onDeviceConnected', () => {
-        store.dispatch(setProximityStatusConnected())
+        store.dispatch(setProximityStatusConnected());
       });
     });
     yield* call(() => {
@@ -96,31 +102,34 @@ function* proximityPresentation() {
     const qrCode = yield* call(Proximity.getQrCodeString);
     yield* put(setProximityQrCode(qrCode));
 
-    // Take a state update
-    const action = yield* take([
-      setProximityStatusError,
-      setProximityStatusStopped,
-      setProximityStatusReceivedDocument
-    ]);
-
-    if (setProximityStatusReceivedDocument.match(action)) {
-      const documentRequest = yield* select(selectProximityDocumentRequest);
-      if (!documentRequest || !documentRequest.request) {
-        throw new Error('Proximity error: no credential found');
-      }
-
-      yield* call(handleProximityResponse, documentRequest);
-    }
+    yield* race({
+      task: call(handleProximityResponse),
+      cancel: call(function* () {
+        yield* take([setProximityStatusStopped, setProximityStatusError]);
+        yield* call(closeFlow);
+      })
+    });
   } catch (e) {
     yield* put(addProximityLog(`[INIT_PROXIMITY] error: ${serializeError(e)}`));
     yield* call(closeFlow); // We can ignore this error in this particular case as we don't even know if the flow started successfully.
   }
 }
 
-function* handleProximityResponse(documentRequest: VerifierRequest) {
-  const allCredentials = yield* select(selectCredentials)
-  const mdocCredentials = allCredentials.filter(credential => credential.format === 'mso_mdoc')
-  const credentialDescriptor = yield* call(matchRequestToClaims, documentRequest, mdocCredentials)
+function* handleProximityResponse() {
+  yield* take(setProximityStatusReceivedDocument);
+  const documentRequest = yield* select(selectProximityDocumentRequest);
+  if (!documentRequest || !documentRequest.request) {
+    throw new Error('Proximity error: no credential found');
+  }
+  const allCredentials = yield* select(selectCredentials);
+  const mdocCredentials = allCredentials.filter(
+    credential => credential.format === 'mso_mdoc'
+  );
+  const credentialDescriptor = yield* call(
+    matchRequestToClaims,
+    documentRequest,
+    mdocCredentials
+  );
   yield* put(setProximityStatusAuthorizationStarted(credentialDescriptor));
 
   const choice = yield* take([
@@ -129,29 +138,41 @@ function* handleProximityResponse(documentRequest: VerifierRequest) {
   ]);
 
   if (setProximityStatusAuthorizationSend.match(choice)) {
-    const documents: Array<Proximity.Document> = mdocCredentials.map(credential => (
-      {
+    const documents: Array<Proximity.Document> = mdocCredentials.map(
+      credential => ({
         alias: credential.keyTag,
         docType: credential.credentialType,
         issuerSignedContent: credential.credential
-      }
-    ));
+      })
+    );
 
-    const acceptedFields = yield* select(selectProximityAcceptedFields)
+    const acceptedFields = yield* select(selectProximityAcceptedFields);
     if (acceptedFields) {
-      const response = yield* call(
-        Proximity.generateResponse,
-        documents,
-        acceptedFields
+      yield* put(
+        setIdentificationStarted({canResetPin: false, isValidatingTask: true})
       );
-      yield* call(Proximity.sendResponse, response);
-      yield* put(setProximityStatusAuthorizationComplete())
+      const resAction = yield* take([
+        setIdentificationIdentified,
+        setIdentificationUnidentified
+      ]);
+      if (setIdentificationIdentified.match(resAction)) {
+        const response = yield* call(
+          Proximity.generateResponse,
+          documents,
+          acceptedFields
+        );
+        yield* call(Proximity.sendResponse, response);
+        yield* put(setProximityStatusAuthorizationComplete());
+        yield* call(closeFlow);
+      } else {
+        yield* call(closeFlow, true);
+      }
     } else {
-      yield* call(closeFlow,true)
+      yield* call(closeFlow, true);
     }
-
   } else {
     yield* call(closeFlow, true);
+    yield* put(resetProximity());
   }
 }
 
@@ -177,57 +198,95 @@ function* closeFlow(sendError: boolean = false) {
   }
 }
 
-function* matchRequestToClaims(verifierRequest : VerifierRequest, credentialsMdoc : StoredCredential[]) {
+type StoredCredentialWithIssuerSigned = StoredCredential & {
+  issuerSigned: CBOR.IssuerSigned;
+};
 
-    const decodedCredentials = yield* call(async () => await Promise.all(credentialsMdoc.map(async (credential) => {
-        const decodedIssuerSigned = await CBOR.decodeIssuerSigned(credential.credential)
-        return {
-            ...credential,
-            issuerSigned : decodedIssuerSigned
-        }
-    })))
+function* matchRequestToClaims(
+  verifierRequest: VerifierRequest,
+  credentialsMdoc: Array<StoredCredential>
+) {
+  const decodedCredentials: Array<StoredCredentialWithIssuerSigned> =
+    yield* call(
+      async () =>
+        await Promise.all(
+          credentialsMdoc.map(async credential => {
+            const decodedIssuerSigned = await CBOR.decodeIssuerSigned(
+              credential.credential
+            );
+            return {
+              ...credential,
+              issuerSigned: decodedIssuerSigned
+            };
+          })
+        )
+    );
 
-    //Key: Credential type
-    //Value : isAuthenticated + nameSpaces
-    return Object.entries(verifierRequest.request).reduce((prev, [key, value]) => {
-        const credential = decodedCredentials.find(credential => credential.credentialType === key)
-        if (credential) {
-            //Key : namespace
-            //Value : attributes
-            const foundNamespaces = Object.entries(value).filter(([key2, _]) => key2 !== 'isAuthenticated').reduce((prev3, [namespace, attributes]) => {
-                const foundNamespace = Object.entries(credential.issuerSigned.nameSpaces).find(([ns]) => ns === namespace)
-                if (foundNamespace) {
-                    const foundAttributes = Object.keys(attributes).reduce((prev4, attribute) => {
-                        if (credential.parsedCredential[attribute]) {
-                            return {
-                                ...prev4,
-                                [attribute] : credential.parsedCredential[attribute]
-                            }
-                        }
-                        return {...prev4}
-                    }, {} as Record<string,ParsedCredential[string]>)
-                    if (Object.keys(foundAttributes).length !== 0)
-                        return {
-                            ...prev3,
-                            [namespace] : foundAttributes
-                        }
-                    else return {
-                        ...prev3
-                    }
-                }
-                return {...prev3}
-            },{} as Record<string, Record<string, ParsedCredential[string]>>)
-            if (Object.keys(foundNamespaces).length === 0) {
-                return {...prev}
-            } else {
+  // Key: Credential type
+  // Value : isAuthenticated + nameSpaces
+  return Object.entries(verifierRequest.request).reduce(
+    (prev, [key, value]) => {
+      const credential = decodedCredentials.find(
+        cred => cred.credentialType === key
+      );
+      if (credential) {
+        // Key : namespace
+        // Value : attributes
+        const foundNamespaces = Object.entries(value)
+          .filter(([key2, _]) => key2 !== 'isAuthenticated')
+          .reduce((prev3, [namespace, attributes]) => {
+            const foundNamespace = Object.entries(
+              credential.issuerSigned.nameSpaces
+            ).find(([ns]) => ns === namespace);
+            if (foundNamespace) {
+              const foundAttributes = Object.keys(attributes).reduce(
+                attributesReducerGenerator(credential),
+                {} as Record<string, ParsedCredential[string]>
+              );
+              if (Object.keys(foundAttributes).length !== 0) {
                 return {
-                    ...prev,
-                    [key] : foundNamespaces
-                }
+                  ...prev3,
+                  [namespace]: foundAttributes
+                };
+              } else {
+                return {
+                  ...prev3
+                };
+              }
             }
+            return {...prev3};
+          }, {} as Record<string, Record<string, ParsedCredential[string]>>);
+        if (Object.keys(foundNamespaces).length === 0) {
+          return {...prev};
+        } else {
+          return {
+            ...prev,
+            [key]: foundNamespaces
+          };
         }
-        return {
-            ...prev
-        }
-    }, {} as Record<string, Record<string, Record<string, ParsedCredential[string]>>>)
+      }
+      return {
+        ...prev
+      };
+    },
+    {} as Record<
+      string,
+      Record<string, Record<string, ParsedCredential[string]>>
+    >
+  );
 }
+
+/**
+ * Helper function to generate the attributes for the matchRequestToClaims method
+ */
+const attributesReducerGenerator =
+  (credential: StoredCredentialWithIssuerSigned) =>
+  (prev: Record<string, ParsedCredential[string]>, attribute: string) => {
+    if (credential.parsedCredential[attribute]) {
+      return {
+        ...prev,
+        [attribute]: credential.parsedCredential[attribute]
+      };
+    }
+    return {...prev};
+  };

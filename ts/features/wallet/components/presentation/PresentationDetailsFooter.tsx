@@ -42,6 +42,9 @@ const PresentationDetailsFooter = ({
   useEffect(() => {
     if (proximityStatus === 'received-document') {
       QrCodeModal.dismiss();
+    } else if (proximityStatus === 'error' || proximityStatus === 'aborted') {
+      QrCodeModal.dismiss();
+      navigation.navigate('MAIN_WALLET_NAV', {screen: 'PROXIMITY_FAILURE'});
     }
   }, [proximityStatus, QrCodeModal]);
 

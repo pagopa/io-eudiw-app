@@ -20,7 +20,11 @@ import CredentialTrust from '../screens/credentialIssuance/CredentialTrust';
 import {CredentialPreview} from '../screens/credentialIssuance/CredentialIssuancePreview';
 import CredentialFailure from '../screens/credentialIssuance/CredentialFailure';
 import CredentialsList from '../screens/credentialIssuance/CredentialsList';
-import PresentationProximityPreview, { PresentationProximityPreviewProps } from '../screens/proximity/PresentationProximityPreview';
+import PresentationProximityPreview, {
+  PresentationProximityPreviewProps
+} from '../screens/proximity/PresentationProximityPreview';
+import PresentationProximityFailure from '../screens/proximity/PresentationProximityFailure';
+import PresentationProximitySuccess from '../screens/proximity/PresentationProximitySuccess';
 import WALLET_ROUTES from './routes';
 
 /**
@@ -51,6 +55,8 @@ export type WalletNavigatorParamsList = {
 
   // Proximity
   [WALLET_ROUTES.PROXIMITY.PREVIEW]: PresentationProximityPreviewProps;
+  [WALLET_ROUTES.PROXIMITY.SUCCESS]: undefined;
+  [WALLET_ROUTES.PROXIMITY.FAILURE]: undefined;
 };
 
 const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();
@@ -125,6 +131,14 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PROXIMITY.PREVIEW}
         component={PresentationProximityPreview}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PROXIMITY.SUCCESS}
+        component={PresentationProximitySuccess}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PROXIMITY.FAILURE}
+        component={PresentationProximityFailure}
       />
     </Stack.Group>
   </Stack.Navigator>

@@ -297,6 +297,19 @@ interface Resources {
         "body": "The device has been disconnected. Please check the verifier app for more details."
       },
       "log": "Debug log"
+      "success" : {
+        "title" : "Done!",
+        "subtitle" : "The verification has been successfully completed."
+        "button" : "Ok"
+      },
+      "failure" : {
+        "title" : "An error has occurred",
+        "subtitle" : "We were unable to complete the verification of your document. Try again in a few minutes."
+        "subtitleFatal" : "We were unable to complete the verification of your document."
+        "retry" : "Try again"
+        "understand" : "I understand"
+        "close" : "Close"
+      }
     },
     "claims": {
       "providedBy": "Provided by {{credential}}",

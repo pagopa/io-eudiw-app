@@ -9,8 +9,8 @@ import {
   useWindowDimensions
 } from 'react-native';
 import {useInteractiveElementDefaultColorName} from '../hooks/theme';
+import {IoEudiwColors} from '../stylesheets/colors';
 import {LandingCardComponent} from './LandingCardComponent';
-import { IoEudiwColors } from '../stylesheets/colors';
 
 const styles = StyleSheet.create({
   normalDot: {

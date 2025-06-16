@@ -1,26 +1,36 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Alert, View, StyleSheet} from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useTranslation} from 'react-i18next';
+import {
+  Body,
+  FeatureInfo,
+  FooterActions,
+  ForceScrollDownView,
+  H2,
+  HSpacer,
+  Icon,
+  IOVisualCostants,
+  VSpacer
+} from '@pagopa/io-app-design-system';
+import {AcceptedFields} from '@pagopa/io-react-native-proximity';
+import {useNavigation} from '@react-navigation/native';
 import {
   ProximityDisclosureDescriptor,
   selectProximityStatus,
   setProximityStatusAuthorizationRejected,
-  setProximityStatusAuthorizationSend,
+  setProximityStatusAuthorizationSend
 } from '../../store/proximity';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
+import {WalletNavigatorParamsList} from '../../navigation/WalletNavigator';
 import ProximityClaimsList from '../../components/proximity/ProximityClaimsList';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { useAppDispatch, useAppSelector } from '../../../../store';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
-import { useTranslation } from 'react-i18next';
-import { Body, FeatureInfo, FooterActions, ForceScrollDownView, H2, HSpacer, Icon, IOVisualCostants, VSpacer } from '@pagopa/io-app-design-system';
-import { AcceptedFields } from '@pagopa/io-react-native-proximity';
-import { useNavigation } from '@react-navigation/native';
+import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
+import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
+import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
+import {useAppDispatch, useAppSelector} from '../../../../store';
+import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 
 export type PresentationProximityPreviewProps = {
-  descriptor : ProximityDisclosureDescriptor;
+  descriptor: ProximityDisclosureDescriptor;
 };
 
 type Props = NativeStackScreenProps<
@@ -28,35 +38,46 @@ type Props = NativeStackScreenProps<
   'PROXIMITY_PREVIEW'
 >;
 
-
-const PresentationProximityPreview = ({route} : Props) => {
-
-  const dispatch = useAppDispatch()
-  const navigation = useNavigation()
-  const {navigateToWallet} = useNavigateToWalletWithReset()
-  const proximityStatus = useAppSelector(selectProximityStatus)
+const PresentationProximityPreview = ({route}: Props) => {
+  const dispatch = useAppDispatch();
+  const navigation = useNavigation();
+  const {navigateToWallet} = useNavigateToWalletWithReset();
+  const proximityStatus = useAppSelector(selectProximityStatus);
   const {t} = useTranslation(['global', 'wallet']);
 
   const baseCheckState = useMemo(() => {
-    const credentialsBool = Object.entries(route.params.descriptor).map(([credType, namespaces]) => {
-      const namespacesBool = Object.entries(namespaces).map(([namespace, attributes]) => {
-        const attributesBool = Object.fromEntries(Object.keys(attributes).map(key => [key, true]))
-        return [namespace, attributesBool]
-      })
-      return [credType, Object.fromEntries(namespacesBool)]
-    })
-    return Object.fromEntries(credentialsBool)
-  },[route.params.descriptor])
+    const credentialsBool = Object.entries(route.params.descriptor).map(
+      ([credType, namespaces]) => {
+        const namespacesBool = Object.entries(namespaces).map(
+          ([namespace, attributes]) => {
+            const attributesBool = Object.fromEntries(
+              Object.keys(attributes).map(key => [key, true])
+            );
+            return [namespace, attributesBool];
+          }
+        );
+        return [credType, Object.fromEntries(namespacesBool)];
+      }
+    );
+    return Object.fromEntries(credentialsBool);
+  }, [route.params.descriptor]);
 
-  const [checkState, setCheckState] = useState<AcceptedFields>(baseCheckState)
+  const [checkState, setCheckState] = useState<AcceptedFields>(baseCheckState);
 
   useEffect(() => {
-    if (proximityStatus === 'authorization-complete') {
+    if (
+      proximityStatus === 'authorization-complete' ||
+      proximityStatus === 'stopped'
+    ) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PRESENTATION_SUCCESS'
+        screen: 'PROXIMITY_SUCCESS'
+      });
+    } else if (proximityStatus === 'aborted' || proximityStatus === 'error') {
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PROXIMITY_FAILURE'
       });
     }
-  })
+  }, [proximityStatus, navigation]);
 
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();
@@ -85,8 +106,6 @@ const PresentationProximityPreview = ({route} : Props) => {
     title: '',
     goBack: cancelAlert
   });
-
-
 
   return (
     <ForceScrollDownView style={styles.scroll}>
@@ -126,9 +145,11 @@ const PresentationProximityPreview = ({route} : Props) => {
           primary: {
             label: t('global:buttons.confirm'),
             onPress: () => {
-          dispatch(setProximityStatusAuthorizationSend(checkState));
-        },
-            loading: proximityStatus === 'authorization-send' || proximityStatus === 'authorization-complete'
+              dispatch(setProximityStatusAuthorizationSend(checkState));
+            },
+            loading:
+              proximityStatus === 'authorization-send' ||
+              proximityStatus === 'authorization-complete'
           },
           secondary: {
             label: t('global:buttons.cancel'),
