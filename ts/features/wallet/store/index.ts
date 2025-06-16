@@ -1,6 +1,4 @@
 import {combineReducers} from '@reduxjs/toolkit';
-import {PersistConfig, persistReducer} from 'redux-persist';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {PersistPartial} from 'redux-persist/es/persistReducer';
 import {lifecycleReducer, LifecycleState} from './lifecycle';
 import {attestationReducer, AttestationState} from './attestation';
@@ -15,8 +13,8 @@ import {PresentationState, presentationReducer} from './presentation';
 import {proximityReducer, ProximityState} from './proximity';
 
 export type WalletState = {
-  lifecycle: LifecycleState;
-  instance: InstanceState;
+  lifecycle: LifecycleState & PersistPartial;
+  instance: InstanceState & PersistPartial;
   attestation: AttestationState & PersistPartial;
   pidIssuanceStatus: PidIssuanceStatusState;
   credentials: CredentialsState & PersistPartial;
@@ -36,12 +34,4 @@ const walletReducer = combineReducers({
   proximity: proximityReducer
 });
 
-const itwPersistConfig: PersistConfig<WalletState> = {
-  key: 'itWallet',
-  storage: AsyncStorage,
-  whitelist: ['lifecycle'] satisfies Array<keyof WalletState>
-};
-
-export const persistedReducer = persistReducer(itwPersistConfig, walletReducer);
-
-export default persistedReducer;
+export default walletReducer;

@@ -14,7 +14,6 @@ import {
 } from '@pagopa/io-react-native-login-utils';
 import {regenerateCryptoKey} from '../../../utils/crypto';
 import {DPOP_KEYTAG} from '../utils/crypto';
-import {selectAttestation} from '../store/attestation';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
@@ -35,6 +34,7 @@ import {
   setCredentialIssuancePreAuthRequest,
   setCredentialIssuancePreAuthSuccess
 } from '../store/credentialIssuance';
+import {getAttestation} from './attestation';
 
 /**
  * Saga watcher for credential related actions.
@@ -71,14 +71,8 @@ function* obtainCredential() {
       throw new Error('Credential type not found');
     }
 
-    /**
-     * Get the wallet instance attestation from the store and throw an error if it's not found.
-     * Also generate its cryptocontext.
-     */
-    const walletInstanceAttestation = yield* select(selectAttestation);
-    if (!walletInstanceAttestation) {
-      throw new Error('Wallet instance attestation not found');
-    }
+    // Get the wallet instance attestation and generate its crypto context
+    const walletInstanceAttestation = yield* call(getAttestation);
     const wiaCryptoContext = createCryptoContextFor('WIA_KEYTAG');
 
     // Create credential crypto context
