@@ -8,15 +8,16 @@ import {useTranslation} from 'react-i18next';
 import {Alert} from 'react-native';
 import {useAppSelector} from '../../../../store';
 import {requestBlePermissions} from '../../utils/permissions';
-import {generateAcceptedFields, isRequestMdl} from '../../utils/proximity';
-import {wellKnownCredential} from '../../utils/credentials';
-import {selectCredential} from '../../store/credentials';
+import {
+  getTypeRequest,
+  generateAcceptedFields,
+  getDocumentsByRequestType
+} from '../../utils/proximity';
+import {selectCredentials} from '../../store/credentials';
 import {useLogBox} from './useLogBox';
 
 export const useProximity = () => {
-  const mdl = useAppSelector(
-    selectCredential(wellKnownCredential.DRIVING_LICENSE)
-  );
+  const credentials = useAppSelector(selectCredentials);
   const [qrCode, setQrCode] = useState<string | null>(null);
   const {logBox, setLogBox, resetLogBox} = useLogBox();
   const {t} = useTranslation(['wallet']);
@@ -102,19 +103,20 @@ export const useProximity = () => {
         const parsedJson = JSON.parse(payload.data);
 
         const parsedRequest = parseVerifierRequest(parsedJson);
-        isRequestMdl(Object.keys(parsedRequest.request));
+        const type = getTypeRequest(Object.keys(parsedRequest.request));
+        const documents = getDocumentsByRequestType(type, credentials);
 
-        if (!mdl) {
+        if (!documents) {
           // We can't find the mDL thus we send an error response to the verifier app
           await Proximity.sendErrorResponse(Proximity.ErrorCode.CBOR_DECODING);
         } else {
-          const documents: Array<Proximity.Document> = [
-            {
-              alias: mdl.keyTag,
-              docType: mdl.credentialType,
-              issuerSignedContent: mdl.credential
-            }
-          ];
+          const proximityDocuments: Array<Proximity.Document> = documents.map(
+            doc => ({
+              issuerSignedContent: doc.credential,
+              alias: doc.keyTag,
+              docType: doc.credentialType
+            })
+          );
 
           /*
            * Generate the response to be sent to the verifier app. Currently we blindly accept all the fields requested by the verifier app.
@@ -125,7 +127,7 @@ export const useProximity = () => {
 
           const acceptedFields = generateAcceptedFields(parsedRequest.request);
           const result = await Proximity.generateResponse(
-            documents,
+            proximityDocuments,
             acceptedFields
           );
 
@@ -141,10 +143,11 @@ export const useProximity = () => {
       } catch (error) {
         const serErr = serializeError(error);
         setLogBox(`[ON_DOCUMENT_REQUEST_RECEIVED] error: ${serErr}\n`);
+
         await closeFlow(true); // Send error response to the verifier app
       }
     },
-    [closeFlow, mdl, setLogBox]
+    [closeFlow, credentials, setLogBox]
   );
 
   /**
