@@ -191,7 +191,7 @@ function* closeFlow(sendError: boolean = false) {
   yield* call(Proximity.removeListener, PROXIMITY_ON_ERROR);
   yield* call(Proximity.close);
 
-  yield* put(resetProximity())
+  yield* put(resetProximity());
 }
 
 type StoredCredentialWithIssuerSigned = StoredCredential & {

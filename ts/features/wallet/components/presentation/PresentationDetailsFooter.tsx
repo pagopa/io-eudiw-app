@@ -13,7 +13,11 @@ import {useAppDispatch, useAppSelector} from '../../../../store';
 import {removeCredential} from '../../store/credentials';
 import {StoredCredential} from '../../utils/types';
 import {useIOBottomSheetModal} from '../../../../hooks/useBottomSheet';
-import {resetProximity, selectProximityStatus, setProximityStatusStopped} from '../../store/proximity';
+import {
+  resetProximity,
+  selectProximityStatus,
+  setProximityStatusStopped
+} from '../../store/proximity';
 import {PresentationProximityQrCode} from '../proximity/PresentationProximityQRCode';
 
 type PresentationDetailFooterProps = {
@@ -39,8 +43,8 @@ const PresentationDetailsFooter = ({
     component: <PresentationProximityQrCode navigation={navigation} />,
     onDismiss: () => {
       if (proximityStatus === 'started') {
-        dispatch(setProximityStatusStopped())
-        dispatch(resetProximity())
+        dispatch(setProximityStatusStopped());
+        dispatch(resetProximity());
       }
     }
   });
@@ -52,7 +56,7 @@ const PresentationDetailsFooter = ({
       QrCodeModal.dismiss();
       navigation.navigate('MAIN_WALLET_NAV', {screen: 'PROXIMITY_FAILURE'});
     }
-  }, [proximityStatus, QrCodeModal]);
+  }, [proximityStatus, QrCodeModal, navigation]);
 
   const RemoveCredential = useCallback(() => {
     const handleRemoveCredential = () => {

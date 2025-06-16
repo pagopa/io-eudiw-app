@@ -15,9 +15,16 @@ import {useNavigation} from '@react-navigation/native';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
-import { useAppDispatch, useAppSelector } from '../../../../store';
-import { resetProximity, selectProximityDisclosureDescriptor, selectProximityQrCode, selectProximityStatus, setProximityStatusStarted, setProximityStatusStopped } from '../../store/proximity';
-import { LoadingIndicator } from '../../../../components/LoadingIndicator';
+import {useAppDispatch, useAppSelector} from '../../../../store';
+import {
+  resetProximity,
+  selectProximityDisclosureDescriptor,
+  selectProximityQrCode,
+  selectProximityStatus,
+  setProximityStatusStarted,
+  setProximityStatusStopped
+} from '../../store/proximity';
+import {LoadingIndicator} from '../../../../components/LoadingIndicator';
 
 /**
  * Shows the QR code for the proximity presentation.
@@ -40,11 +47,10 @@ const ProximityQrCode = () => {
     title: '',
     goBack: async () => {
       navigation.goBack();
-      dispatch(setProximityStatusStopped())
-      dispatch(resetProximity())
+      dispatch(setProximityStatusStopped());
+      dispatch(resetProximity());
     }
   });
-
 
   useEffect(() => {
     dispatch(setProximityStatusStarted());
@@ -76,19 +82,22 @@ const ProximityQrCode = () => {
             <QRCode size={280} value={qrCode} />
             <VSpacer size={24} />
           </>
-        ) : <>
-          <VSpacer size={24} />
-          <LoadingIndicator size={24} />
-        </>}
-      {proximityStatus === 'connected' || proximityStatus === 'received-document' && (
-        <VStack space={16} style={IOStyles.alignCenter}>
-          <LoadingIndicator size={24} />
-          <H6 textStyle={{textAlign: 'center'}}>
-            {t('wallet:proximity.connected.body')}
-          </H6>
-          <VSpacer size={32} />
-        </VStack>
-      )}
+        ) : (
+          <>
+            <VSpacer size={24} />
+            <LoadingIndicator size={24} />
+          </>
+        )}
+        {proximityStatus === 'connected' ||
+          (proximityStatus === 'received-document' && (
+            <VStack space={16} style={IOStyles.alignCenter}>
+              <LoadingIndicator size={24} />
+              <H6 textStyle={{textAlign: 'center'}}>
+                {t('wallet:proximity.connected.body')}
+              </H6>
+              <VSpacer size={32} />
+            </VStack>
+          ))}
       </View>
     </ContentWrapper>
   );
