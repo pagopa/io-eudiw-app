@@ -14,6 +14,7 @@ import {removeCredential} from '../../store/credentials';
 import {StoredCredential} from '../../utils/types';
 import {useIOBottomSheetModal} from '../../../../hooks/useBottomSheet';
 import {
+  ProximityStatus,
   resetProximity,
   selectProximityStatus,
   setProximityStatusStopped
@@ -43,7 +44,7 @@ const PresentationDetailsFooter = ({
     component: <PresentationProximityQrCode navigation={navigation} />,
     onDismiss: () => {
       // In case the flow is stopped before receiving a document
-      if (proximityStatus === 'started') {
+      if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_STARTED) {
         dispatch(setProximityStatusStopped());
         dispatch(resetProximity());
       }
@@ -53,9 +54,9 @@ const PresentationDetailsFooter = ({
   useEffect(() => {
     // These states indicate that the modal can be dismissed
     if (
-      proximityStatus === 'received-document' ||
-      proximityStatus === 'error' ||
-      proximityStatus === 'aborted'
+      proximityStatus === ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT ||
+      proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR ||
+      proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED
     ) {
       QrCodeModal.dismiss();
     }

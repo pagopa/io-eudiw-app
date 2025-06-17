@@ -35,15 +35,6 @@ import {
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
 
-// These are to aid typescript
-const PROXIMITY_ON_DEVICE_CONNECTED: Proximity.Events = 'onDeviceConnected';
-const PROXIMITY_ON_DEVICE_CONNECTING: Proximity.Events = 'onDeviceConnecting';
-const PROXIMITY_ON_DEVICE_DISCONNECTED: Proximity.Events =
-  'onDeviceDisconnected';
-const PROXIMITY_ON_DOCUMENT_REQUEST_RECEIVED: Proximity.Events =
-  'onDocumentRequestReceived';
-const PROXIMITY_ON_ERROR: Proximity.Events = 'onError';
-
 // Beginning of the saga
 export function* watchProximitySaga() {
   yield* takeLatest([setProximityStatusStarted], proximityPresentation);
@@ -207,11 +198,21 @@ function* closeFlow(sendError: boolean = false) {
     );
   }
   yield* put(resetProximityQrCode());
-  yield* call(Proximity.removeListener, PROXIMITY_ON_DEVICE_CONNECTED);
-  yield* call(Proximity.removeListener, PROXIMITY_ON_DEVICE_CONNECTING);
-  yield* call(Proximity.removeListener, PROXIMITY_ON_DEVICE_DISCONNECTED);
-  yield* call(Proximity.removeListener, PROXIMITY_ON_DOCUMENT_REQUEST_RECEIVED);
-  yield* call(Proximity.removeListener, PROXIMITY_ON_ERROR);
+  yield* call(() => {
+    Proximity.removeListener('onDeviceConnected')
+  });
+  yield* call(() => {
+    Proximity.removeListener('onDeviceConnecting')
+  });
+  yield* call(() => {
+    Proximity.removeListener('onDeviceDisconnected')
+  });
+  yield* call(() => {
+    Proximity.removeListener('onDocumentRequestReceived')
+  });
+  yield* call(() => {
+    Proximity.removeListener('onError')
+  });
   yield* call(Proximity.close);
 }
 

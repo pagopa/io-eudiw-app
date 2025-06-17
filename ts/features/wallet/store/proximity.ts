@@ -12,17 +12,18 @@ import {ParsedCredential} from '../utils/types';
  * The application-internal statuses used to control the proximity saga
  * These are not direct mappings of the {@link Proximity.Events}
  */
-type ProximityStatus =
-  | 'started'
-  | 'stopped'
-  | 'aborted'
-  | 'connected'
-  | 'received-document'
-  | 'authorization-started'
-  | 'authorization-send'
-  | 'authorization-rejected'
-  | 'authorization-complete'
-  | 'error';
+export enum ProximityStatus {
+  PROXIMITY_STATUS_STARTED,
+  PROXIMITY_STATUS_STOPPED,
+  PROXIMITY_STATUS_ABORTED,
+  PROXIMITY_STATUS_CONNECTED,
+  PROXIMITY_STATUS_RECEIVED_DOCUMENT,
+  PROXIMITY_STATUS_AUTHORIZATION_STARTED,
+  PROXIMITY_STATUS_AUTHORIZATION_SEND,
+  PROXIMITY_STATUS_AUTHORIZATION_REJECTED,
+  PROXIMITY_STATUS_AUTHORIZATION_COMPLETE,
+  PROXIMITY_STATUS_ERROR
+}
 
 /**
  * Type representing a descriptor containing info useful to render
@@ -51,7 +52,7 @@ export type ProximityState = {
 const initialState: ProximityState = {
   qrCode: undefined,
   logBox: 'START OF THE LOG',
-  status: 'stopped',
+  status: ProximityStatus.PROXIMITY_STATUS_STOPPED,
   documentRequest: undefined,
   proximityDisclosureDescriptor: undefined
 };
@@ -68,50 +69,50 @@ export const proximitySlice = createSlice({
     },
     resetProximityLog: () => initialState,
     setProximityStatusStarted: state => {
-      state.status = 'started';
+      state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED;
     },
     setProximityStatusStopped: state => {
       if (
-        state.status === 'authorization-complete' ||
-        state.status === 'authorization-rejected'
+        state.status === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE ||
+        state.status === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_REJECTED
       ) {
-        state.status = 'stopped';
+        state.status = ProximityStatus.PROXIMITY_STATUS_STOPPED;
       } else {
-        state.status = 'aborted';
+        state.status = ProximityStatus.PROXIMITY_STATUS_ABORTED;
       }
     },
     setProximityStatusConnected: state => {
-      state.status = 'connected';
+      state.status = ProximityStatus.PROXIMITY_STATUS_CONNECTED;
     },
     setProximityStatusError: state => {
-      state.status = 'error';
+      state.status = ProximityStatus.PROXIMITY_STATUS_ERROR;
     },
     setProximityStatusReceivedDocument: (
       state,
       action: PayloadAction<VerifierRequest>
     ) => {
-      state.status = 'received-document';
+      state.status = ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT;
       state.documentRequest = action.payload;
     },
     setProximityStatusAuthorizationStarted: (
       state,
       action: PayloadAction<ProximityDisclosureDescriptor>
     ) => {
-      state.status = 'authorization-started';
+      state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED;
       state.proximityDisclosureDescriptor = action.payload;
     },
     setProximityStatusAuthorizationSend: (
       state,
       action: PayloadAction<AcceptedFields>
     ) => {
-      state.status = 'authorization-send';
+      state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_SEND;
       state.proximityAcceptedFields = action.payload;
     },
     setProximityStatusAuthorizationRejected: state => {
-      state.status = 'authorization-rejected';
+      state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_REJECTED;
     },
     setProximityStatusAuthorizationComplete: state => {
-      state.status = 'authorization-complete';
+      state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE;
     },
     setProximityQrCode: (state, action: PayloadAction<string>) => {
       state.qrCode = action.payload;

@@ -17,6 +17,7 @@ import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNa
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
+  ProximityStatus,
   resetProximity,
   selectProximityDisclosureDescriptor,
   selectProximityQrCode,
@@ -58,14 +59,14 @@ const ProximityQrCode = () => {
 
   useEffect(() => {
     if (
-      proximityStatus === 'authorization-started' &&
+      proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED &&
       proximityDisclosureDescriptor
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_PREVIEW',
         params: {descriptor: proximityDisclosureDescriptor}
       });
-    } else if (proximityStatus === 'error' || proximityStatus === 'aborted') {
+    } else if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR || proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED) {
       navigation.navigate('MAIN_WALLET_NAV', {screen: 'PROXIMITY_FAILURE'});
     }
   }, [proximityStatus, proximityDisclosureDescriptor, navigation]);
@@ -88,8 +89,8 @@ const ProximityQrCode = () => {
             <LoadingIndicator size={24} />
           </>
         )}
-        {proximityStatus === 'connected' ||
-          (proximityStatus === 'received-document' && (
+        {proximityStatus === ProximityStatus.PROXIMITY_STATUS_CONNECTED ||
+          (proximityStatus === ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT && (
             <VStack space={16} style={IOStyles.alignCenter}>
               <LoadingIndicator size={24} />
               <H6 textStyle={{textAlign: 'center'}}>

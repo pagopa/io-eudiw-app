@@ -12,6 +12,7 @@ import {ProximityDisclosureDescriptor} from '../../store/proximity';
 import {getCredentialNameByType} from '../../utils/credentials';
 import {getClaimsFullLocale} from '../../utils/locale';
 import {CredentialClaim} from '../credential/CredentialClaims';
+import _ from 'lodash'
 
 type ProximityClaimsListProps = {
   descriptor: ProximityDisclosureDescriptor;
@@ -73,20 +74,12 @@ const ProximityClaimsList = ({
                 value: attribute.value,
                 id: attributeName,
                 toggle: () => {
-                  const invertedValue =
-                    !checkState[credentialtype][namespace][attributeName];
-                  const newNamespace = {
-                    ...checkState[credentialtype][namespace],
-                    [attributeName]: invertedValue
-                  };
-                  const newCredentialType = {
-                    ...checkState[credentialtype],
-                    [namespace]: newNamespace
-                  };
-                  setCheckState({
-                    ...checkState,
-                    [credentialtype]: newCredentialType
-                  });
+                  //Create a clone of checkState that has the value corresponding to the toggled
+                  //attribute path toggled
+                  const path = [credentialtype, namespace, attributeName];
+                  const newState = _.cloneDeep(checkState);
+                  _.set(newState, path, !_.get(checkState, path));
+                  setCheckState(newState);
                 },
                 active: checkState[credentialtype][namespace][attributeName]
               }

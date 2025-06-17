@@ -17,6 +17,7 @@ import {AcceptedFields} from '@pagopa/io-react-native-proximity';
 import {useNavigation} from '@react-navigation/native';
 import {
   ProximityDisclosureDescriptor,
+  ProximityStatus,
   resetProximity,
   selectProximityStatus,
   setProximityStatusAuthorizationRejected,
@@ -71,11 +72,11 @@ const PresentationProximityPreview = ({route}: Props) => {
 
   useEffect(() => {
     // Handle navigation based on the proximity presentation result
-    if (proximityStatus === 'authorization-complete') {
+    if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_SUCCESS'
       });
-    } else if (proximityStatus === 'aborted' || proximityStatus === 'error') {
+    } else if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED || proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_FAILURE'
       });
@@ -153,8 +154,8 @@ const PresentationProximityPreview = ({route}: Props) => {
               dispatch(setProximityStatusAuthorizationSend(checkState));
             },
             loading:
-              proximityStatus === 'authorization-send' ||
-              proximityStatus === 'authorization-complete'
+              proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_SEND ||
+              proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE
           },
           secondary: {
             label: t('global:buttons.cancel'),
