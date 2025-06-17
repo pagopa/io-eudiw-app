@@ -42,6 +42,7 @@ const PresentationDetailsFooter = ({
     title: t('wallet:proximity.showQr.title'),
     component: <PresentationProximityQrCode navigation={navigation} />,
     onDismiss: () => {
+      // In case the flow is stopped before receiving a document
       if (proximityStatus === 'started') {
         dispatch(setProximityStatusStopped());
         dispatch(resetProximity());
@@ -50,11 +51,13 @@ const PresentationDetailsFooter = ({
   });
 
   useEffect(() => {
-    if (proximityStatus === 'received-document') {
+    // These states indicate that the modal can be dismissed
+    if (
+      proximityStatus === 'received-document' ||
+      proximityStatus === 'error' ||
+      proximityStatus === 'aborted'
+    ) {
       QrCodeModal.dismiss();
-    } else if (proximityStatus === 'error' || proximityStatus === 'aborted') {
-      QrCodeModal.dismiss();
-      navigation.navigate('MAIN_WALLET_NAV', {screen: 'PROXIMITY_FAILURE'});
     }
   }, [proximityStatus, QrCodeModal, navigation]);
 

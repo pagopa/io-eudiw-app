@@ -2,11 +2,16 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {
   AcceptedFields,
-  VerifierRequest
+  VerifierRequest,
+  Proximity
 } from '@pagopa/io-react-native-proximity';
 import {RootState} from '../../../store/types';
 import {ParsedCredential} from '../utils/types';
 
+/**
+ * The application-internal statuses used to control the proximity saga
+ * These are not direct mappings of the {@link Proximity.Events}
+ */
 type ProximityStatus =
   | 'started'
   | 'stopped'
@@ -19,6 +24,10 @@ type ProximityStatus =
   | 'authorization-complete'
   | 'error';
 
+/**
+ * Type representing a descriptor containing info useful to render
+ * a proximity presentation on screen and create the {@link AcceptedFields}
+ */
 export type ProximityDisclosureDescriptor = Record<
   string,
   Record<string, Record<string, ParsedCredential[string]>>
@@ -145,17 +154,42 @@ export const {reducer: proximityReducer} = proximitySlice;
 export const selectProximityLogBoxState = (state: RootState) =>
   state.wallet.proximity.logBox;
 
+/**
+ * Selects the Engagement QR Code
+ * @param state - The root state
+ * @returns The QR Code if present, undefined otherwise
+ */
 export const selectProximityQrCode = (state: RootState) =>
   state.wallet.proximity.qrCode;
 
+/**
+ * Selects the saga status
+ * @param state - The root state
+ * @returns The saga status
+ */
 export const selectProximityStatus = (state: RootState) =>
   state.wallet.proximity.status;
 
+/**
+ * Selects the request sent by a Verifier App
+ * @param state - The root state
+ * @returns The request sent by the Verifier App
+ */
 export const selectProximityDocumentRequest = (state: RootState) =>
   state.wallet.proximity.documentRequest;
 
+/**
+ * Selects the descriptor proccessed from the {@link VerifierRequest}
+ * @param state - The root state
+ * @returns A {@link ProximityDisclosureDescriptor}
+ */
 export const selectProximityDisclosureDescriptor = (state: RootState) =>
   state.wallet.proximity.proximityDisclosureDescriptor;
 
+/**
+ * Selects the {@link AcceptedFields} the user chose to share
+ * @param state - The root state
+ * @returns The {@link AcceptedFields} the user chose to share
+ */
 export const selectProximityAcceptedFields = (state: RootState) =>
   state.wallet.proximity.proximityAcceptedFields;

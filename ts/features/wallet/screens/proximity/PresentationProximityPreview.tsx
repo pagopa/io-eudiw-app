@@ -17,6 +17,7 @@ import {AcceptedFields} from '@pagopa/io-react-native-proximity';
 import {useNavigation} from '@react-navigation/native';
 import {
   ProximityDisclosureDescriptor,
+  resetProximity,
   selectProximityStatus,
   setProximityStatusAuthorizationRejected,
   setProximityStatusAuthorizationSend
@@ -38,6 +39,10 @@ type Props = NativeStackScreenProps<
   'PROXIMITY_PREVIEW'
 >;
 
+/**
+ * Screen that shows the claims required for a Proximity presentation
+ * and handles presentation completion or cancellation
+ */
 const PresentationProximityPreview = ({route}: Props) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
@@ -65,10 +70,8 @@ const PresentationProximityPreview = ({route}: Props) => {
   const [checkState, setCheckState] = useState<AcceptedFields>(baseCheckState);
 
   useEffect(() => {
-    if (
-      proximityStatus === 'authorization-complete' ||
-      proximityStatus === 'stopped'
-    ) {
+    // Handle navigation based on the proximity presentation result
+    if (proximityStatus === 'authorization-complete') {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_SUCCESS'
       });
@@ -83,8 +86,10 @@ const PresentationProximityPreview = ({route}: Props) => {
   useDisableGestureNavigation();
   useHardwareBackButton(() => true);
 
+  // In case of cancellation, stop the proximity flow and go to the Wallet Home
   const cancel = () => {
     dispatch(setProximityStatusAuthorizationRejected());
+    dispatch(resetProximity());
     navigateToWallet();
   };
 

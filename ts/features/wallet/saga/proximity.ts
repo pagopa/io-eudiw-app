@@ -1,5 +1,6 @@
 import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
 import {
+  AcceptedFields,
   parseVerifierRequest,
   Proximity,
   VerifierRequest
@@ -48,8 +49,12 @@ export function* watchProximitySaga() {
   yield* takeLatest([setProximityStatusStarted], proximityPresentation);
 }
 
+/**
+ * Saga that handles the state of a proximity presentation
+ */
 function* proximityPresentation() {
   try {
+    // First thing, we request BLE permissions and we setup the proximity handler
     yield* put(resetProximityLog());
     const permissions = yield* call(requestBlePermissions);
     if (!permissions) {
@@ -64,7 +69,7 @@ function* proximityPresentation() {
     yield* call(Proximity.start);
     yield* put(resetProximityLog());
     yield* put(addProximityLog('[INIT_PROXIMITY] Flow started successfully'));
-    // Register listeners
+    // Registering proximity events listeners
     yield* call(() => {
       Proximity.addListener('onDeviceConnecting', () => {});
     });
@@ -102,6 +107,12 @@ function* proximityPresentation() {
     const qrCode = yield* call(Proximity.getQrCodeString);
     yield* put(setProximityQrCode(qrCode));
 
+    /**
+     * Being that the device can be disconnected or the connection be lost
+     * during the flow, we create this race condition that closes the flow
+     * in case of error. Resetting the proxity state is up to the pages
+     * that reset the navigation
+     */
     yield* race({
       task: call(handleProximityResponse),
       cancel: call(function* () {
@@ -115,6 +126,12 @@ function* proximityPresentation() {
   }
 }
 
+/**
+ * This method waits for a document request, creates a credential descriptor
+ * from which a visual representation and the {@link AcceptedFields} can be
+ * generated, awaits for the user to select the fields to send and, ultimately,
+ * send them
+ */
 function* handleProximityResponse() {
   yield* take(setProximityStatusReceivedDocument);
   const documentRequest = yield* select(selectProximityDocumentRequest);
@@ -166,6 +183,7 @@ function* handleProximityResponse() {
         yield* call(closeFlow);
       } else {
         yield* call(closeFlow, true);
+        yield* put(setProximityStatusStopped());
       }
     } else {
       yield* call(closeFlow, true);
@@ -176,6 +194,11 @@ function* handleProximityResponse() {
   }
 }
 
+/**
+ * This helper saga removes all listeners from the proximity handler and resets
+ * the QR code
+ * @param sendError whether to send an error response to the verifier or not
+ */
 function* closeFlow(sendError: boolean = false) {
   if (sendError) {
     yield* call(
@@ -190,14 +213,25 @@ function* closeFlow(sendError: boolean = false) {
   yield* call(Proximity.removeListener, PROXIMITY_ON_DOCUMENT_REQUEST_RECEIVED);
   yield* call(Proximity.removeListener, PROXIMITY_ON_ERROR);
   yield* call(Proximity.close);
-
-  yield* put(resetProximity());
 }
 
 type StoredCredentialWithIssuerSigned = StoredCredential & {
   issuerSigned: CBOR.IssuerSigned;
 };
 
+/**
+ * This helper function takes a {@link VerifierRequest}, looks for
+ * the presence of the required claims in the mDoc credentials and, if
+ * found adds the {@link ParsedCredential} entry for the attribute to
+ * an object following the same path structure of the original credential
+ * @param verifierRequest The authentication request sent by the verifier
+ * @param credentialsMdoc The mdoc credentials contained in the wallet
+ * @returns An object that is a record of credential types to an object
+ * which has the same structure of a decoded mDoc credential's namespaces
+ * except for the fact that the namespace attribute keys are mapped to
+ * the value corresponding to the same attribute key inside of the
+ * {@link ParsedCredential} object.
+ */
 function* matchRequestToClaims(
   verifierRequest: VerifierRequest,
   credentialsMdoc: Array<StoredCredential>

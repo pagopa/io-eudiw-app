@@ -52,7 +52,12 @@ const PresentationProximityQRCode = ({
         screen: 'PROXIMITY_PREVIEW',
         params: {descriptor: proximityDisclosureDescriptor}
       });
-    } else if (proximityStatus === 'error' || proximityStatus === 'aborted') {
+    }
+    // If we reach this state, it means that a connection has already been established but failed before
+    // reaching the preview screen: the bottom spinner of the modal has been activated,
+    // which means that the user perceived something started, and thus should be informed that
+    // something went wrong by navigating to the error screen
+    else if (proximityStatus === 'error' || proximityStatus === 'aborted') {
       navigation.navigate('MAIN_WALLET_NAV', {screen: 'PROXIMITY_FAILURE'});
     }
   }, [proximityStatus, proximityDisclosureDescriptor, navigation]);
@@ -67,16 +72,16 @@ const PresentationProximityQRCode = ({
       <VSpacer size={40} />
       <Body>{t('wallet:proximity.showQr.body')}</Body>
       <VSpacer size={40} />
-      {proximityStatus === 'connected' ||
-        (proximityStatus === 'received-document' && (
-          <VStack space={16} style={IOStyles.alignCenter}>
-            <LoadingIndicator size={24} />
-            <H6 textStyle={{textAlign: 'center'}}>
-              {t('wallet:proximity.connected.body')}
-            </H6>
-            <VSpacer size={32} />
-          </VStack>
-        ))}
+      {(proximityStatus === 'connected' ||
+        proximityStatus === 'received-document') && (
+        <VStack space={16} style={IOStyles.alignCenter}>
+          <LoadingIndicator size={24} />
+          <H6 textStyle={{textAlign: 'center'}}>
+            {t('wallet:proximity.connected.body')}
+          </H6>
+          <VSpacer size={32} />
+        </VStack>
+      )}
     </View>
   );
 };

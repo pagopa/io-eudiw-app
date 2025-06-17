@@ -16,6 +16,7 @@ import {getSafeText} from '../../../../utils/string';
  * Component which renders a generic text type claim.
  * @param label - the label of the claim
  * @param claim - the claim value
+ * @param reversed - whether the claim label is displayed before the value or not
  */
 const PlainTextClaimItem = ({
   label,
@@ -44,6 +45,7 @@ const PlainTextClaimItem = ({
  * @param uri - the claim image uri
  * @param width - the claim image width
  * @param height - the claim image height
+ * @param reversed - whether the claim label is displayed before the value or not
  */
 const ImageClaimItem = ({
   label,
@@ -82,6 +84,7 @@ const ImageClaimItem = ({
  * Component which renders a date type claim with an optional icon and expiration badge.
  * @param label - the label of the claim
  * @param claim - the value of the claim
+ * @param reversed - whether the claim label is displayed before the value or not
  */
 const DateClaimItem = ({
   label,
@@ -129,6 +132,7 @@ const DateClaimItem = ({
  * Component which renders a claim of unknown type with a placeholder.
  * @param label - the label of the claim
  * @param _claim - the claim value of unknown type. We are not interested in its value but it's needed for the exaustive type checking.
+ * @param reversed - whether the claim label is displayed before the value or not
  */
 const UnknownClaimItem = ({
   label,
@@ -150,6 +154,7 @@ const UnknownClaimItem = ({
  * @param label the label of the claim
  * @param claim the claim value
  * @param detailsButtonVisible a flag to show or hide the details button
+ * @param reversed - whether the claim label is displayed before the value or not
  * @returns a list item component with the driving privileges claim
  */
 const DrivingPrivilegesClaimItem = ({
@@ -286,6 +291,7 @@ export const VerificationEvidenceClaimItem = ({
  * Component which renders a claim.
  * It renders a different component based on the type of the claim.
  * @param claim - the claim to render
+ * @param reversed - whether the claim label is displayed before the value or not
  */
 export const CredentialClaim = ({
   claim,

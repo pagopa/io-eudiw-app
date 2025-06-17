@@ -19,6 +19,37 @@ type ProximityClaimsListProps = {
   setCheckState: Dispatch<SetStateAction<AcceptedFields>>;
 };
 
+/**
+ * This component renders the requested disclosures in the {@link ProximityDisclosureDescriptor} by flattening the credential namespaces,
+ * and manages a passed {@link AcceptedFields} state which will then be presented to the verifier
+ * An example of namespace flattening :
+ * Descriptor :
+ * {
+ *    credTypeA : {
+ *      namespace1 : {
+ *        attr1 : data
+ *      },
+ *      namespace2 : {
+ *        attr2 : data
+ *      }
+ *    },
+ *    credTypeB ; {
+ *      namespace3 : {
+ *        attr1 : data
+ *      }
+ *    }
+ * }
+ * Flattened :
+ * {
+ *    credTypeA : {
+ *      attr1 : data,
+ *      attr2 : data
+ *    },
+ *    credTypeB ; {
+ *      attr1 : data
+ *    }
+ * }
+ */
 const ProximityClaimsList = ({
   descriptor,
   checkState,
@@ -70,9 +101,7 @@ const ProximityClaimsList = ({
     <View style={styles.container}>
       {Object.entries(disclosuresViewModel).map(([entry, attributes]) => (
         <View key={entry} style={styles.credentialContainer}>
-          <RawAccordion
-            header={<H4>{entry}</H4>}
-            headerStyle={{paddingBottom: 16}}>
+          <RawAccordion header={<H4>{entry}</H4>}>
             <View style={styles.claimContainer}>
               {Object.values(attributes).map((value, index) => (
                 <View key={value.id}>
