@@ -72,11 +72,17 @@ const PresentationProximityPreview = ({route}: Props) => {
 
   useEffect(() => {
     // Handle navigation based on the proximity presentation result
-    if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE) {
+    if (
+      proximityStatus ===
+      ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE
+    ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_SUCCESS'
       });
-    } else if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED || proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR) {
+    } else if (
+      proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED ||
+      proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR
+    ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_FAILURE'
       });
@@ -154,8 +160,10 @@ const PresentationProximityPreview = ({route}: Props) => {
               dispatch(setProximityStatusAuthorizationSend(checkState));
             },
             loading:
-              proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_SEND ||
-              proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE
+              proximityStatus ===
+                ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_SEND ||
+              proximityStatus ===
+                ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE
           },
           secondary: {
             label: t('global:buttons.cancel'),

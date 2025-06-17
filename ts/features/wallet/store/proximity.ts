@@ -73,7 +73,8 @@ export const proximitySlice = createSlice({
     },
     setProximityStatusStopped: state => {
       if (
-        state.status === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE ||
+        state.status ===
+          ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE ||
         state.status === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_REJECTED
       ) {
         state.status = ProximityStatus.PROXIMITY_STATUS_STOPPED;

@@ -8,11 +8,11 @@ import {
   RawAccordion
 } from '@pagopa/io-app-design-system';
 import {AcceptedFields} from '@pagopa/io-react-native-proximity';
+import _ from 'lodash';
 import {ProximityDisclosureDescriptor} from '../../store/proximity';
 import {getCredentialNameByType} from '../../utils/credentials';
 import {getClaimsFullLocale} from '../../utils/locale';
 import {CredentialClaim} from '../credential/CredentialClaims';
-import _ from 'lodash'
 
 type ProximityClaimsListProps = {
   descriptor: ProximityDisclosureDescriptor;
@@ -74,8 +74,8 @@ const ProximityClaimsList = ({
                 value: attribute.value,
                 id: attributeName,
                 toggle: () => {
-                  //Create a clone of checkState that has the value corresponding to the toggled
-                  //attribute path toggled
+                  // Create a clone of checkState that has the value corresponding to the toggled
+                  // attribute path toggled
                   const path = [credentialtype, namespace, attributeName];
                   const newState = _.cloneDeep(checkState);
                   _.set(newState, path, !_.get(checkState, path));

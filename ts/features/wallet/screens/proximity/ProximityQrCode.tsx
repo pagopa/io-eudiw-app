@@ -59,14 +59,18 @@ const ProximityQrCode = () => {
 
   useEffect(() => {
     if (
-      proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED &&
+      proximityStatus ===
+        ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED &&
       proximityDisclosureDescriptor
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_PREVIEW',
         params: {descriptor: proximityDisclosureDescriptor}
       });
-    } else if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR || proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED) {
+    } else if (
+      proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR ||
+      proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED
+    ) {
       navigation.navigate('MAIN_WALLET_NAV', {screen: 'PROXIMITY_FAILURE'});
     }
   }, [proximityStatus, proximityDisclosureDescriptor, navigation]);
@@ -90,7 +94,8 @@ const ProximityQrCode = () => {
           </>
         )}
         {proximityStatus === ProximityStatus.PROXIMITY_STATUS_CONNECTED ||
-          (proximityStatus === ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT && (
+          (proximityStatus ===
+            ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT && (
             <VStack space={16} style={IOStyles.alignCenter}>
               <LoadingIndicator size={24} />
               <H6 textStyle={{textAlign: 'center'}}>

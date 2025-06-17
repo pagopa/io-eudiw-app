@@ -199,19 +199,19 @@ function* closeFlow(sendError: boolean = false) {
   }
   yield* put(resetProximityQrCode());
   yield* call(() => {
-    Proximity.removeListener('onDeviceConnected')
+    Proximity.removeListener('onDeviceConnected');
   });
   yield* call(() => {
-    Proximity.removeListener('onDeviceConnecting')
+    Proximity.removeListener('onDeviceConnecting');
   });
   yield* call(() => {
-    Proximity.removeListener('onDeviceDisconnected')
+    Proximity.removeListener('onDeviceDisconnected');
   });
   yield* call(() => {
-    Proximity.removeListener('onDocumentRequestReceived')
+    Proximity.removeListener('onDocumentRequestReceived');
   });
   yield* call(() => {
-    Proximity.removeListener('onError')
+    Proximity.removeListener('onError');
   });
   yield* call(Proximity.close);
 }
