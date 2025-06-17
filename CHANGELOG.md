@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.10.0-rc.0...1.11.0-rc.0) (2025-06-16)
+
+
+### Features
+
+* [WLEO-409] Added DCQL support and introduced HealthID render fixes ([#84](https://github.com/pagopa/io-eudiw-app/issues/84)) ([8565171](https://github.com/pagopa/io-eudiw-app/commit/85651715ee998a0ca3935fb446c61c9c2d6ad39c))
+* [WLEO-462] Add HealthID proximity presentation support ([#86](https://github.com/pagopa/io-eudiw-app/issues/86)) ([e573c0d](https://github.com/pagopa/io-eudiw-app/commit/e573c0d22e5f2c4e866e9eb9ad5a86d58efd0767))
+
 ## [1.10.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.9.4-rc.0...1.10.0-rc.0) (2025-06-03)
 
 ### [1.9.4-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.9.3-rc.0...1.9.4-rc.0) (2025-05-09)

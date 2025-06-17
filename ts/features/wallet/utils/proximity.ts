@@ -3,69 +3,112 @@ import {
   AcceptedFields
 } from '@pagopa/io-react-native-proximity';
 import {wellKnownCredential} from './credentials';
+import {StoredCredential} from './types';
 
 /**
  * This function generates the accepted fields for the VerifierRequest and sets each requested field to true.
+ * WARNING: This function is a quick and dirty implementation copied from the proximity example app. It will be replaced in the future.
  * @param request - The request object containing the requested fields
  * @returns A new object with the same structure as the request, but with all values set to true
  */
 export const generateAcceptedFields = (
-  _: VerifierRequest['request']
+  request: VerifierRequest['request']
 ): AcceptedFields => {
-  // TODO implement a more generic solution to generate the accepted fields
-  const acceptedFields: AcceptedFields = {
-    'org.iso.18013.5.1.mDL': {
-      'org.iso.18013.5.1': {
-        height: true,
-        weight: true,
-        portrait: true,
-        birth_date: true,
-        eye_colour: true,
-        given_name: true,
-        issue_date: true,
-        age_over_18: true,
-        age_over_21: true,
-        birth_place: true,
-        expiry_date: true,
-        family_name: true,
-        hair_colour: true,
-        nationality: true,
-        age_in_years: true,
-        resident_city: true,
-        age_birth_year: true,
-        resident_state: true,
-        document_number: true,
-        issuing_country: true,
-        resident_address: true,
-        resident_country: true,
-        issuing_authority: true,
-        driving_privileges: true,
-        issuing_jurisdiction: true,
-        resident_postal_code: true,
-        signature_usual_mark: true,
-        administrative_number: true,
-        portrait_capture_date: true,
-        un_distinguishing_sign: true,
-        given_name_national_character: true,
-        family_name_national_character: true
-      }
+  // Cycle through the requested credentials
+  const result: AcceptedFields = {};
+  // eslint-disable-next-line guard-for-in
+  for (const credentialKey in request) {
+    const credential = request[credentialKey];
+    if (!credential) {
+      continue;
     }
-  };
 
-  return acceptedFields;
+    // Cycle through the requested namespaces and the isAuthenticated field
+    const namespaces: AcceptedFields['credential'] = {};
+    for (const namespaceKey in credential) {
+      // Skip the isAuthenticated field
+      if (!credential[namespaceKey] || namespaceKey === 'isAuthenticated') {
+        continue;
+      }
+
+      // Cycle through the requested fields and set them to true
+      const fields: AcceptedFields['credential']['namespace'] = {};
+      // eslint-disable-next-line guard-for-in
+      for (const fieldKey in credential[namespaceKey]!) {
+        // eslint-disable-next-line functional/immutable-data
+        fields[fieldKey] = true;
+      }
+      // eslint-disable-next-line functional/immutable-data
+      namespaces[namespaceKey] = fields;
+    }
+    // eslint-disable-next-line functional/immutable-data
+    result[credentialKey] = namespaces;
+  }
+
+  return result;
+};
+
+export enum RequestType {
+  MDL,
+  HEALTHID,
+  BOTH
+}
+
+/**
+ * Utility funciton to check the request type based on the keys of the request object.
+ * It currently supports only mDL and HealthID credentials or both.
+ * @param requestKeys - The keys of the request object which contains the credential type
+ * @returns A RequestType enum value indicating the type of request
+ * @throws Error if the request contains multiple keys or if the key is not the mDL credential type
+ */
+export const getTypeRequest = (requestKeys: Array<string>) => {
+  if (
+    requestKeys.length === 1 ||
+    (requestKeys.length === 2 &&
+      requestKeys.every(
+        key =>
+          key === wellKnownCredential.DRIVING_LICENSE ||
+          key === wellKnownCredential.HEALTHID
+      ))
+  ) {
+    if (requestKeys.length === 2) {
+      return RequestType.BOTH;
+    } else if (requestKeys[0] === wellKnownCredential.HEALTHID) {
+      return RequestType.HEALTHID;
+    } else if (requestKeys[0] === wellKnownCredential.DRIVING_LICENSE) {
+      return RequestType.MDL;
+    }
+  }
+
+  throw new Error('Unexpected request keys. Expected only mDL or HealthID.');
 };
 
 /**
- * Utility funciton to check if the request only contains the mDL credential type.
- * @param requestKeys - The keys of the request object which contains the credential type
- * @returns void if the request is valid, otherwise throws an error
- * @throws Error if the request contains multiple keys or if the key is not the mDL credential type
+ * Utility functions which filters the documents based on the request type. Currently it supports only mDL and HealthID credentials or both.
+ * @param type - The type of request returned by the `getTypeRequest` function
+ * @param documents - The array of stored credentials to filter
+ * @returns An array of stored credentials that match the request type
  */
-export const isRequestMdl = (requestKeys: Array<string>) => {
-  if (requestKeys.length !== 1) {
-    throw new Error('Unexpected request keys. Expected only one key.');
-  }
-  if (requestKeys[0] !== wellKnownCredential.DRIVING_LICENSE) {
-    throw new Error('Unexpected request key. Expected only mDL.');
+export const getDocumentsByRequestType = (
+  type: RequestType,
+  documents: Array<StoredCredential>
+) => {
+  switch (type) {
+    case RequestType.MDL:
+      return documents.filter(
+        doc => doc.credentialType === wellKnownCredential.DRIVING_LICENSE
+      );
+    case RequestType.HEALTHID:
+      return documents.filter(
+        doc => doc.credentialType === wellKnownCredential.HEALTHID
+      );
+    case RequestType.BOTH:
+      return documents.filter(
+        doc =>
+          doc.credentialType === wellKnownCredential.DRIVING_LICENSE ||
+          doc.credentialType === wellKnownCredential.HEALTHID
+      );
+    default:
+      throw new Error('Unexpected request type');
   }
 };
