@@ -7,13 +7,12 @@ import {
   Credential
 } from '@pagopa/io-react-native-wallet';
 import Config from 'react-native-config';
-import {call, put, select, take, takeLatest} from 'typed-redux-saga';
+import {call, put, take, takeLatest} from 'typed-redux-saga';
 import uuid from 'react-native-uuid';
 import {generate} from '@pagopa/io-react-native-crypto';
 import {serializeError} from 'serialize-error';
 import {regenerateCryptoKey} from '../../../utils/crypto';
 import {DPOP_KEYTAG} from '../utils/crypto';
-import {selectAttestation} from '../store/attestation';
 import {
   setPidIssuanceError,
   setPidIssuanceRequest,
@@ -28,6 +27,7 @@ import {Lifecycle, setLifecycle} from '../store/lifecycle';
 import {navigate} from '../../../navigation/utils';
 import {addCredential, addPidWithIdentification} from '../store/credentials';
 import {wellKnownCredential} from '../utils/credentials';
+import {getAttestation} from './attestation';
 
 /**
  * Saga watcher for PID related actions.
@@ -46,12 +46,8 @@ function* obtainPid() {
   try {
     const {PID_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
 
-    const walletInstanceAttestation = yield* select(selectAttestation);
-
-    if (!walletInstanceAttestation) {
-      throw new Error('Wallet instance attestation not found');
-    }
-
+    // Get the wallet instance attestation and generate its crypto context
+    const walletInstanceAttestation = yield* call(getAttestation);
     const wiaCryptoContext = createCryptoContextFor('WIA_KEYTAG');
 
     // Start the issuance flow

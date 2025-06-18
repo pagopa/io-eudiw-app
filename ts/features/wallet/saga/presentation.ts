@@ -11,7 +11,6 @@ import {
   setPreDefinitionError,
   setPreDefinitionRequest
 } from '../store/presentation';
-import {selectAttestation} from '../store/attestation';
 import {selectCredentials} from '../store/credentials';
 import {
   setIdentificationIdentified,
@@ -33,7 +32,7 @@ import {
  * Saga watcher for presentation related actions.
  */
 export function* watchPresentationSaga() {
-  yield* takeLatest(setPreDefinitionRequest, handlePresetationPreDefinition);
+  yield* takeLatest(setPreDefinitionRequest, handlePresentationPreDefinition);
 }
 
 /**
@@ -43,15 +42,10 @@ export function* watchPresentationSaga() {
  * - Pre-definition: the app asks for the required claims to be presented to the RP;
  * - Post-definition: the app sends the required claims to the RP after identification.
  */
-function* handlePresetationPreDefinition(
+function* handlePresentationPreDefinition(
   action: ReturnType<typeof setPreDefinitionRequest>
 ) {
   try {
-    // Gets the Wallet Instance Attestation from the persisted store
-    const walletInstanceAttestation = yield* select(selectAttestation);
-    if (!walletInstanceAttestation) {
-      throw new Error('Wallet Instance Attestation not found');
-    }
     const {request_uri, client_id} = action.payload;
 
     const {requestUri} = yield* call(
