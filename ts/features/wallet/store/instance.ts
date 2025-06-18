@@ -1,5 +1,7 @@
 /* eslint-disable functional/immutable-data */
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {PersistConfig, persistReducer} from 'redux-persist';
 import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
 import {resetLifecycle} from './lifecycle';
@@ -37,11 +39,26 @@ const instanceSlice = createSlice({
 });
 
 /**
+ * Redux persist configuration for the instance slice.
+ * Currently it uses AsyncStorage as the storage engine.
+ */
+const instancePersist: PersistConfig<InstanceState> = {
+  key: 'attestation',
+  storage: AsyncStorage
+};
+
+/**
+ * Persisted reducer for the instance slice.
+ */
+export const instanceReducer = persistReducer(
+  instancePersist,
+  instanceSlice.reducer
+);
+
+/**
  * Exports the actions for the instance slice.
  */
 export const {setInstanceKeyTag, resetInstanceKeyTag} = instanceSlice.actions;
-
-export const {reducer: instanceReducer} = instanceSlice;
 
 /**
  * Select the wallet instance keytag.
