@@ -59,11 +59,13 @@ function* startIdentification() {
       startIdentificationBootSplashHideDone: true
     })
   );
+  yield* put(sagaRecordStartupDebugInfo({startupIdentificationCaught : 'no'}))
   const action = yield* take([
     setIdentificationIdentified,
     setIdentificationUnidentified
   ]);
   if (setIdentificationIdentified.match(action)) {
+    yield* put(sagaRecordStartupDebugInfo({startupIdentificationCaught : 'identified'}))
     yield* fork(walletSaga);
     /*
      * This debug variable is used to check if the waitForNavigationToBeReady call terminates
@@ -74,6 +76,7 @@ function* startIdentification() {
     yield* put(startupSetStatus('DONE'));
     yield* call(handlePendingDeepLink);
   } else {
+    yield* put(sagaRecordStartupDebugInfo({startupIdentificationCaught : 'unidentified'}))
     throw new Error('Identification failed'); // Temporary error which should be mapped
   }
 }

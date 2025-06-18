@@ -44,6 +44,11 @@ type StartupDebugInfo = {
    */
   startupCatchSectionBootSplashHideDone?: boolean;
   /**
+   * This variable monitors if an action between {@link setIdentificationIdentified} or {@link setIdentificationUnidentified}
+   * has been caught by the startIdentification subsaga
+   */
+  startupIdentificationCaught?: 'no' | 'identified' | 'unidentified'
+  /**
    * This variable tracks the termination status of the {@link waitForNavigationToBeReady} function call in the startup saga.
    */
   isNavigatorReady?: boolean;
@@ -73,7 +78,8 @@ const dummyInfo: StartupDebugInfo = {
   startupCatchSectionBootSplashHideDone: true,
   rootStackNavigatorStartupDone: '',
   i18nInitialized: true,
-  isNavigatorReady: false
+  isNavigatorReady: false,
+  startupIdentificationCaught : 'no'
 };
 
 const keys = Object.keys(dummyInfo);
