@@ -1,5 +1,7 @@
 /* eslint-disable functional/immutable-data */
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {PersistConfig, persistReducer} from 'redux-persist';
 import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
 import {wellKnownCredential} from '../utils/credentials';
@@ -12,8 +14,8 @@ import {removeCredential} from './credentials';
  * LIFECYCLE_DEACTIVATED - The wallet is deactivated (not used).
  */
 export enum Lifecycle {
-  'LIFECYCLE_VALID',
   'LIFECYCLE_OPERATIONAL',
+  'LIFECYCLE_VALID',
   'LIFECYCLE_DEACTIVATED'
 }
 
@@ -53,11 +55,26 @@ const lifecycleSlice = createSlice({
 });
 
 /**
+ * Redux persist configuration for the instance slice.
+ * Currently it uses AsyncStorage as the storage engine.
+ */
+const lifecyclePersist: PersistConfig<LifecycleState> = {
+  key: 'lifecycle',
+  storage: AsyncStorage
+};
+
+/**
+ * Persisted reducer for the instance slice.
+ */
+export const lifecycleReducer = persistReducer(
+  lifecyclePersist,
+  lifecycleSlice.reducer
+);
+
+/**
  * Exports the actions for the lifecycle slice.
  */
 export const {setLifecycle, resetLifecycle} = lifecycleSlice.actions;
-
-export const {reducer: lifecycleReducer} = lifecycleSlice;
 
 /**
  * Select the current wallet lifecycle.
