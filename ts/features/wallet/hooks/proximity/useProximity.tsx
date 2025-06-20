@@ -11,7 +11,8 @@ import {requestBlePermissions} from '../../utils/permissions';
 import {
   getTypeRequest,
   generateAcceptedFields,
-  getDocumentsByRequestType
+  getDocumentsByRequestType,
+  verifierCertificates
 } from '../../utils/proximity';
 import {selectCredentials} from '../../store/credentials';
 import {useLogBox} from './useLogBox';
@@ -162,8 +163,11 @@ export const useProximity = () => {
         throw new Error('Permissions not granted');
       }
       setLogBox('[INIT_PROXIMITY] Closing previous flow if any');
+      const certificates = verifierCertificates.map(cert => cert.certificate);
       await Proximity.close().catch(() => {}); // We can ignore errors here as we don't know if the flow started successfully previously
-      await Proximity.start();
+      await Proximity.start({
+        certificates
+      });
       setLogBox('[INIT_PROXIMITY] Flow started successfully');
       // Register listeners
       Proximity.addListener('onDeviceConnecting', handleOnDeviceConnecting);
