@@ -53,7 +53,7 @@ export const DebugPrettyPrint = withDebugEnabled(
             font="DMMono"
             size={12}
             lineHeight={18}
-            color="bluegrey"
+            color="grey-650"
             weight="Medium">
             {JSON.stringify(truncateObjectStrings(data), null, 2)}
           </IOText>
