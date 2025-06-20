@@ -34,7 +34,7 @@ type CarouselProps = {
   >;
   dotEasterEggCallback?: () => void;
   dotColor?: string;
-  scrollViewRef: React.RefObject<ScrollView>;
+  scrollViewRef: React.RefObject<ScrollView | null>;
   setStep: React.Dispatch<React.SetStateAction<number>>;
 };
 
