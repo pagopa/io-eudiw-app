@@ -8,9 +8,7 @@ import {
 import {serializeError} from 'serialize-error';
 import {CBOR} from '@pagopa/io-react-native-cbor';
 import {
-  addProximityLog,
   resetProximity,
-  resetProximityLog,
   resetProximityQrCode,
   selectProximityAcceptedFields,
   selectProximityDocumentRequest,
@@ -46,20 +44,14 @@ export function* watchProximitySaga() {
 function* proximityPresentation() {
   try {
     // First thing, we request BLE permissions and we setup the proximity handler
-    yield* put(resetProximityLog());
     const permissions = yield* call(requestBlePermissions);
     if (!permissions) {
       throw new Error('Permissions not granted');
     }
-    yield* put(
-      addProximityLog('[INIT_PROXIMITY] Closing previous flow if any')
-    );
     yield* call(async () => {
       await Proximity.close().catch(() => {});
     }); // We can ignore errors here as we don't know if the flow started successfully previously
     yield* call(Proximity.start);
-    yield* put(resetProximityLog());
-    yield* put(addProximityLog('[INIT_PROXIMITY] Flow started successfully'));
     // Registering proximity events listeners
     yield* call(() => {
       Proximity.addListener('onDeviceConnecting', () => {});
@@ -73,7 +65,9 @@ function* proximityPresentation() {
       Proximity.addListener('onDocumentRequestReceived', payload => {
         // A new request has been received
         if (!payload || !payload.data) {
-          store.dispatch(setProximityStatusError());
+          store.dispatch(
+            setProximityStatusError('Bad document request received')
+          );
           return;
         }
 
@@ -89,8 +83,10 @@ function* proximityPresentation() {
       });
     });
     yield* call(() => {
-      Proximity.addListener('onError', () => {
-        store.dispatch(setProximityStatusError());
+      Proximity.addListener('onError', payload => {
+        store.dispatch(
+          setProximityStatusError(payload?.error ?? 'Unknown internal error')
+        );
       });
     });
 
@@ -112,7 +108,7 @@ function* proximityPresentation() {
       })
     });
   } catch (e) {
-    yield* put(addProximityLog(`[INIT_PROXIMITY] error: ${serializeError(e)}`));
+    yield* put(setProximityStatusError(`${serializeError(e)}`));
     yield* call(closeFlow); // We can ignore this error in this particular case as we don't even know if the flow started successfully.
   }
 }

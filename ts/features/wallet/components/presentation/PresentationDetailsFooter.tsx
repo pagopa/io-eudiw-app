@@ -16,10 +16,13 @@ import {useIOBottomSheetModal} from '../../../../hooks/useBottomSheet';
 import {
   ProximityStatus,
   resetProximity,
+  selectProximityDisclosureDescriptor,
+  selectProximityErrorDetails,
   selectProximityStatus,
   setProximityStatusStopped
 } from '../../store/proximity';
 import {PresentationProximityQrCode} from '../proximity/PresentationProximityQRCode';
+import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 
 type PresentationDetailFooterProps = {
   credential: StoredCredential;
@@ -38,6 +41,20 @@ const PresentationDetailsFooter = ({
   const toast = useIOToast();
   const {t} = useTranslation(['wallet', 'global']);
   const proximityStatus = useAppSelector(selectProximityStatus);
+  const proximityDisclosureDescriptor = useAppSelector(
+    selectProximityDisclosureDescriptor
+  );
+  const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
+
+  useDebugInfo(
+    credential.format === 'mso_mdoc'
+      ? {
+          proximityDisclosureDescriptorQR: proximityDisclosureDescriptor,
+          proximityStatusQR: proximityStatus,
+          proximityErrorDetailsQR: proximityErrorDetails ?? 'No errors'
+        }
+      : {}
+  );
 
   const QrCodeModal = useIOBottomSheetModal({
     title: t('wallet:proximity.showQr.title'),

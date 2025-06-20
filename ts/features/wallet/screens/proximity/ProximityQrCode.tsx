@@ -20,12 +20,14 @@ import {
   ProximityStatus,
   resetProximity,
   selectProximityDisclosureDescriptor,
+  selectProximityErrorDetails,
   selectProximityQrCode,
   selectProximityStatus,
   setProximityStatusStarted,
   setProximityStatusStopped
 } from '../../store/proximity';
 import {LoadingIndicator} from '../../../../components/LoadingIndicator';
+import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 
 /**
  * Shows the QR code for the proximity presentation.
@@ -39,6 +41,14 @@ const ProximityQrCode = () => {
   const proximityDisclosureDescriptor = useAppSelector(
     selectProximityDisclosureDescriptor
   );
+  const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
+
+  useDebugInfo({
+    proximityDisclosureDescriptorQR: proximityDisclosureDescriptor,
+    proximityStatusQR: proximityStatus,
+    proximityErrorDetailsQR: proximityErrorDetails ?? 'No errors'
+  });
+
   const dispatch = useAppDispatch();
 
   useHardwareBackButton(() => true);

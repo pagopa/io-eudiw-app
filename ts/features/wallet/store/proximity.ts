@@ -13,16 +13,16 @@ import {ParsedCredential} from '../utils/types';
  * These are not direct mappings of the {@link Proximity.Events}
  */
 export enum ProximityStatus {
-  PROXIMITY_STATUS_STARTED,
-  PROXIMITY_STATUS_STOPPED,
-  PROXIMITY_STATUS_ABORTED,
-  PROXIMITY_STATUS_CONNECTED,
-  PROXIMITY_STATUS_RECEIVED_DOCUMENT,
-  PROXIMITY_STATUS_AUTHORIZATION_STARTED,
-  PROXIMITY_STATUS_AUTHORIZATION_SEND,
-  PROXIMITY_STATUS_AUTHORIZATION_REJECTED,
-  PROXIMITY_STATUS_AUTHORIZATION_COMPLETE,
-  PROXIMITY_STATUS_ERROR
+  PROXIMITY_STATUS_STARTED = 'started',
+  PROXIMITY_STATUS_STOPPED = 'stopped',
+  PROXIMITY_STATUS_ABORTED = 'aborted',
+  PROXIMITY_STATUS_CONNECTED = 'connected',
+  PROXIMITY_STATUS_RECEIVED_DOCUMENT = 'received-document',
+  PROXIMITY_STATUS_AUTHORIZATION_STARTED = 'authorization-started',
+  PROXIMITY_STATUS_AUTHORIZATION_SEND = 'authorization-send',
+  PROXIMITY_STATUS_AUTHORIZATION_REJECTED = 'authorization-rejected',
+  PROXIMITY_STATUS_AUTHORIZATION_COMPLETE = 'authorization-complete',
+  PROXIMITY_STATUS_ERROR = 'error'
 }
 
 /**
@@ -41,18 +41,18 @@ export type ProximityDisclosureDescriptor = Record<
  */
 export type ProximityState = {
   qrCode?: string;
-  logBox: string;
   status: ProximityStatus;
   documentRequest?: VerifierRequest;
   proximityDisclosureDescriptor?: ProximityDisclosureDescriptor;
   proximityAcceptedFields?: AcceptedFields;
+  errorDetails?: string;
 };
 
 // Initial state for the proximity slice
 const initialState: ProximityState = {
   qrCode: undefined,
-  logBox: 'START OF THE LOG',
   status: ProximityStatus.PROXIMITY_STATUS_STOPPED,
+  errorDetails: undefined,
   documentRequest: undefined,
   proximityDisclosureDescriptor: undefined
 };
@@ -64,10 +64,6 @@ export const proximitySlice = createSlice({
   name: 'proximitySlice',
   initialState,
   reducers: {
-    addProximityLog: (state, action: PayloadAction<string>) => {
-      state.logBox = `${state.logBox} \n ============== \n ${action.payload}`;
-    },
-    resetProximityLog: () => initialState,
     setProximityStatusStarted: state => {
       state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED;
     },
@@ -85,8 +81,11 @@ export const proximitySlice = createSlice({
     setProximityStatusConnected: state => {
       state.status = ProximityStatus.PROXIMITY_STATUS_CONNECTED;
     },
-    setProximityStatusError: state => {
+    setProximityStatusError: (state, action: PayloadAction<string>) => {
       state.status = ProximityStatus.PROXIMITY_STATUS_ERROR;
+      if (action) {
+        state.errorDetails = action.payload;
+      }
     },
     setProximityStatusReceivedDocument: (
       state,
@@ -127,8 +126,6 @@ export const proximitySlice = createSlice({
  * Exports the actions for the proximity slice.
  */
 export const {
-  addProximityLog,
-  resetProximityLog,
   setProximityStatusStarted,
   setProximityStatusStopped,
   setProximityStatusConnected,
@@ -147,14 +144,6 @@ export const {
  * Exports the reducer for the proximity slice.
  */
 export const {reducer: proximityReducer} = proximitySlice;
-
-/**
- * Selects the proximity state from the state.
- * @param state - The root state
- * @returns The state of the proximity process.
- */
-export const selectProximityLogBoxState = (state: RootState) =>
-  state.wallet.proximity.logBox;
 
 /**
  * Selects the Engagement QR Code
@@ -195,3 +184,11 @@ export const selectProximityDisclosureDescriptor = (state: RootState) =>
  */
 export const selectProximityAcceptedFields = (state: RootState) =>
   state.wallet.proximity.proximityAcceptedFields;
+
+/**
+ * Selects the error details
+ * @param state - The root state
+ * @returns The error details
+ */
+export const selectProximityErrorDetails = (state: RootState) =>
+  state.wallet.proximity.errorDetails;

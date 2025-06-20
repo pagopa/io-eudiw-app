@@ -19,6 +19,8 @@ import {
   ProximityDisclosureDescriptor,
   ProximityStatus,
   resetProximity,
+  selectProximityDocumentRequest,
+  selectProximityErrorDetails,
   selectProximityStatus,
   setProximityStatusAuthorizationRejected,
   setProximityStatusAuthorizationSend
@@ -30,6 +32,7 @@ import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
+import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 
 export type PresentationProximityPreviewProps = {
   descriptor: ProximityDisclosureDescriptor;
@@ -51,6 +54,9 @@ const PresentationProximityPreview = ({route}: Props) => {
   const proximityStatus = useAppSelector(selectProximityStatus);
   const {t} = useTranslation(['global', 'wallet']);
 
+  const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
+  const verifierRequest = useAppSelector(selectProximityDocumentRequest);
+
   const baseCheckState = useMemo(() => {
     const credentialsBool = Object.entries(route.params.descriptor).map(
       ([credType, namespaces]) => {
@@ -69,6 +75,14 @@ const PresentationProximityPreview = ({route}: Props) => {
   }, [route.params.descriptor]);
 
   const [checkState, setCheckState] = useState<AcceptedFields>(baseCheckState);
+
+  useDebugInfo({
+    proximityDisclosureDescriptorPreview: route.params.descriptor,
+    acceptedFields: checkState,
+    verifierRequest,
+    proximityStatusPreview: proximityStatus,
+    proximityErrorDetailsPreview: proximityErrorDetails ?? 'No errors'
+  });
 
   useEffect(() => {
     // Handle navigation based on the proximity presentation result
