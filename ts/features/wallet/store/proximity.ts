@@ -65,7 +65,7 @@ export const proximitySlice = createSlice({
   initialState,
   reducers: {
     setProximityStatusStarted: state => {
-      state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED;
+      state.status = ProximityStatus.PROXIMITY_STATUS_STARTED;
     },
     setProximityStatusStopped: state => {
       if (

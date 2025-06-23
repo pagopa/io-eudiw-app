@@ -11,13 +11,12 @@ import {
 } from '@pagopa/io-app-design-system';
 import {NavigationProp, NavigationState} from '@react-navigation/native';
 import {LoadingIndicator} from '../../../../components/LoadingIndicator';
-import {useAppDispatch, useAppSelector} from '../../../../store';
+import {useAppSelector} from '../../../../store';
 import {
   ProximityStatus,
   selectProximityDisclosureDescriptor,
   selectProximityQrCode,
-  selectProximityStatus,
-  setProximityStatusStarted
+  selectProximityStatus
 } from '../../store/proximity';
 
 type PresentationProximityQRCodeProps = {
@@ -38,11 +37,6 @@ const PresentationProximityQRCode = ({
   const proximityDisclosureDescriptor = useAppSelector(
     selectProximityDisclosureDescriptor
   );
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(setProximityStatusStarted());
-  }, [dispatch]);
 
   useEffect(() => {
     if (

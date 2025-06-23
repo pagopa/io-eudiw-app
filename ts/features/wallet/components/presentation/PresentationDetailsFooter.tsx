@@ -19,6 +19,7 @@ import {
   selectProximityDisclosureDescriptor,
   selectProximityErrorDetails,
   selectProximityStatus,
+  setProximityStatusStarted,
   setProximityStatusStopped
 } from '../../store/proximity';
 import {PresentationProximityQrCode} from '../proximity/PresentationProximityQRCode';
@@ -126,7 +127,10 @@ const PresentationDetailsFooter = ({
         <ButtonSolid
           fullWidth
           label={t('wallet:proximity.showQr.title')}
-          onPress={() => QrCodeModal.present()}
+          onPress={() => {
+            dispatch(setProximityStatusStarted());
+            QrCodeModal.present();
+          }}
           icon="qrCode"
           iconPosition="end"
         />

@@ -8,7 +8,6 @@ import {
 import {serializeError} from 'serialize-error';
 import {CBOR} from '@pagopa/io-react-native-cbor';
 import {
-  resetProximity,
   resetProximityQrCode,
   selectProximityAcceptedFields,
   selectProximityDocumentRequest,
@@ -97,8 +96,11 @@ function* proximityPresentation() {
     /**
      * Being that the device can be disconnected or the connection be lost
      * during the flow, we create this race condition that closes the flow
-     * in case of error. Resetting the proxity state is up to the pages
-     * that reset the navigation
+     * in case of error. Resetting the proximity state is up to the pages
+     * that reset the navigation.
+     * On top of that, the {@link handleProximityResponse} task will end either
+     * receiving or sending a {@link setProximityStatusStopped}, so the race condition
+     * handles both the synchronous end of the flow, too.
      */
     yield* race({
       task: call(handleProximityResponse),
@@ -176,27 +178,18 @@ function* handleProximityResponse() {
         );
         yield* call(Proximity.sendResponse, response);
         yield* put(setProximityStatusAuthorizationComplete());
+        // This is needed so that the saga racing with this can trigger
         yield* take(setProximityStatusStopped);
+        // Early return that doesn't trigger the error at the end
         return;
-      } else {
-        yield* call(
-          Proximity.sendErrorResponse,
-          Proximity.ErrorCode.SESSION_TERMINATED
-        );
       }
-    } else {
-      yield* call(
-        Proximity.sendErrorResponse,
-        Proximity.ErrorCode.SESSION_TERMINATED
-      );
     }
-  } else {
-    yield* call(
-      Proximity.sendErrorResponse,
-      Proximity.ErrorCode.SESSION_TERMINATED
-    );
-    yield* put(resetProximity());
   }
+  yield* call(
+    Proximity.sendErrorResponse,
+    Proximity.ErrorCode.SESSION_TERMINATED
+  );
+  // After sending the error message, this action is triggered to throw a new error
   yield* put(setProximityStatusStopped());
 }
 

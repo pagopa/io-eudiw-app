@@ -23,7 +23,6 @@ import {
   selectProximityErrorDetails,
   selectProximityQrCode,
   selectProximityStatus,
-  setProximityStatusStarted,
   setProximityStatusStopped
 } from '../../store/proximity';
 import {LoadingIndicator} from '../../../../components/LoadingIndicator';
@@ -64,10 +63,6 @@ const ProximityQrCode = () => {
   });
 
   useEffect(() => {
-    dispatch(setProximityStatusStarted());
-  }, [dispatch]);
-
-  useEffect(() => {
     if (
       proximityStatus ===
         ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED &&
@@ -77,6 +72,10 @@ const ProximityQrCode = () => {
         screen: 'PROXIMITY_PREVIEW',
         params: {descriptor: proximityDisclosureDescriptor}
       });
+      // If we reach this state, it means that a connection has already been established but failed before
+      // reaching the preview screen: the bottom spinner of the modal has been activated,
+      // which means that the user perceived something started, and thus should be informed that
+      // something went wrong by navigating to the error screen
     } else if (
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR ||
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED
