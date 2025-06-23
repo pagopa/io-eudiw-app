@@ -103,7 +103,16 @@ function* proximityPresentation() {
     yield* race({
       task: call(handleProximityResponse),
       cancel: call(function* () {
-        yield* take([setProximityStatusStopped, setProximityStatusError]);
+        const action = yield* take([
+          setProximityStatusStopped,
+          setProximityStatusError
+        ]);
+        if (setProximityStatusError.match(action)) {
+          yield* call(
+            Proximity.sendErrorResponse,
+            Proximity.ErrorCode.SESSION_TERMINATED
+          );
+        }
         yield* call(closeFlow);
       })
     });
@@ -167,32 +176,35 @@ function* handleProximityResponse() {
         );
         yield* call(Proximity.sendResponse, response);
         yield* put(setProximityStatusAuthorizationComplete());
-        yield* call(closeFlow);
+        yield* take(setProximityStatusStopped);
+        return;
       } else {
-        yield* call(closeFlow, true);
-        yield* put(setProximityStatusStopped());
+        yield* call(
+          Proximity.sendErrorResponse,
+          Proximity.ErrorCode.SESSION_TERMINATED
+        );
       }
     } else {
-      yield* call(closeFlow, true);
+      yield* call(
+        Proximity.sendErrorResponse,
+        Proximity.ErrorCode.SESSION_TERMINATED
+      );
     }
   } else {
-    yield* call(closeFlow, true);
+    yield* call(
+      Proximity.sendErrorResponse,
+      Proximity.ErrorCode.SESSION_TERMINATED
+    );
     yield* put(resetProximity());
   }
+  yield* put(setProximityStatusStopped());
 }
 
 /**
  * This helper saga removes all listeners from the proximity handler and resets
  * the QR code
- * @param sendError whether to send an error response to the verifier or not
  */
-function* closeFlow(sendError: boolean = false) {
-  if (sendError) {
-    yield* call(
-      Proximity.sendErrorResponse,
-      Proximity.ErrorCode.SESSION_TERMINATED
-    );
-  }
+function* closeFlow() {
   yield* put(resetProximityQrCode());
   yield* call(() => {
     Proximity.removeListener('onDeviceConnected');
