@@ -378,5 +378,5 @@ const CredentialClaim = ({
   }
 };
 
-const MemoizedCredentialClaim = memo(CredentialClaim)
-export {MemoizedCredentialClaim as CredentialClaim}
+const MemoizedCredentialClaim = memo(CredentialClaim);
+export {MemoizedCredentialClaim as CredentialClaim};

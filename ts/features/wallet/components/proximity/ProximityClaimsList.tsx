@@ -24,7 +24,7 @@ type AttributeDescriptor = {
   label: string;
   value: unknown;
   id: string;
-  path : Array<string>;
+  path: Array<string>;
 };
 
 /**
@@ -64,58 +64,58 @@ const ProximityClaimsList = ({
   setCheckState
 }: ProximityClaimsListProps) => {
   const disclosuresViewModel: Record<
-        string,
-        Record<string, AttributeDescriptor>
+    string,
+    Record<string, AttributeDescriptor>
   > = useMemo(() => {
     const rawDisclosuresViewModel = _.mapValues(
-        /**
-        * For each credential type...
-        */
-        descriptor,
-        (namespaces, credentialtype) =>
-          _.mapValues(namespaces, (attributes, namespace) =>
-            _.mapValues(attributes, (attribute, attributeName) => {
-              const attributeLabel =
-                typeof attribute.name === 'string'
-                  ? attribute.name
-                  : _.get(
-                      attribute,
-                      ['name', getClaimsFullLocale()],
-                      attributeName
-                    );
-
-              const path = [credentialtype, namespace, attributeName];
-
-              /**
-              * We transform each attribute's parsed value into an {@link AttributeDescriptor} ...
-              */
-              return {
-                label: attributeLabel,
-                value: attribute.value,
-                id: attributeName,
-                path
-              };
-            })
-          )
-      );
-
       /**
-      * Then we flatten the attributes of the namespaces (see function's javadoc)
-      */
-      const flattenedDisclosuresViewModel: Record<
-        string,
-        Record<string, AttributeDescriptor>
-      > = _.mapValues(rawDisclosuresViewModel, namespaces =>
-        _.reduce(namespaces, (acc, attributes) => ({...acc, ...attributes}), {})
-      );
+       * For each credential type...
+       */
+      descriptor,
+      (namespaces, credentialtype) =>
+        _.mapValues(namespaces, (attributes, namespace) =>
+          _.mapValues(attributes, (attribute, attributeName) => {
+            const attributeLabel =
+              typeof attribute.name === 'string'
+                ? attribute.name
+                : _.get(
+                    attribute,
+                    ['name', getClaimsFullLocale()],
+                    attributeName
+                  );
 
-      /**
-      * Finally, we remap the credentialTypes to their names
-      */
-      return _.mapKeys(flattenedDisclosuresViewModel, (_value, credentialtype) =>
-        getCredentialNameByType(credentialtype)
-      );
-  }, [descriptor]); 
+            const path = [credentialtype, namespace, attributeName];
+
+            /**
+             * We transform each attribute's parsed value into an {@link AttributeDescriptor} ...
+             */
+            return {
+              label: attributeLabel,
+              value: attribute.value,
+              id: attributeName,
+              path
+            };
+          })
+        )
+    );
+
+    /**
+     * Then we flatten the attributes of the namespaces (see function's javadoc)
+     */
+    const flattenedDisclosuresViewModel: Record<
+      string,
+      Record<string, AttributeDescriptor>
+    > = _.mapValues(rawDisclosuresViewModel, namespaces =>
+      _.reduce(namespaces, (acc, attributes) => ({...acc, ...attributes}), {})
+    );
+
+    /**
+     * Finally, we remap the credentialTypes to their names
+     */
+    return _.mapKeys(flattenedDisclosuresViewModel, (_value, credentialtype) =>
+      getCredentialNameByType(credentialtype)
+    );
+  }, [descriptor]);
 
   return (
     <View style={styles.container}>
@@ -144,7 +144,11 @@ const ProximityClaimsList = ({
                            * the {@link AcceptedFields} checkState
                            */
                           const newState = _.cloneDeep(checkState);
-                          _.set(newState, value.path, !_.get(checkState, value.path));
+                          _.set(
+                            newState,
+                            value.path,
+                            !_.get(checkState, value.path)
+                          );
                           setCheckState(newState);
                         }}
                       />
