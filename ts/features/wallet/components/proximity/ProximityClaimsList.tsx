@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React, {Dispatch, SetStateAction, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   AnimatedCheckbox,
@@ -24,8 +24,7 @@ type AttributeDescriptor = {
   label: string;
   value: unknown;
   id: string;
-  toggle: () => void;
-  active: boolean;
+  path : Array<string>;
 };
 
 /**
@@ -65,72 +64,62 @@ const ProximityClaimsList = ({
   setCheckState
 }: ProximityClaimsListProps) => {
   const disclosuresViewModel: Record<
-    string,
-    Record<string, Record<string, AttributeDescriptor>>
-  > = _.mapValues(
-    /**
-     * For each credential type...
-     */
-    descriptor,
-    (namespaces, credentialtype) =>
-      _.mapValues(namespaces, (attributes, namespace) =>
-        _.mapValues(attributes, (attribute, attributeName) => {
-          const attributeLabel =
-            typeof attribute.name === 'string'
-              ? attribute.name
-              : _.get(
-                  attribute,
-                  ['name', getClaimsFullLocale()],
-                  attributeName
-                );
+        string,
+        Record<string, AttributeDescriptor>
+  > = useMemo(() => {
+    const rawDisclosuresViewModel = _.mapValues(
+        /**
+        * For each credential type...
+        */
+        descriptor,
+        (namespaces, credentialtype) =>
+          _.mapValues(namespaces, (attributes, namespace) =>
+            _.mapValues(attributes, (attribute, attributeName) => {
+              const attributeLabel =
+                typeof attribute.name === 'string'
+                  ? attribute.name
+                  : _.get(
+                      attribute,
+                      ['name', getClaimsFullLocale()],
+                      attributeName
+                    );
 
-          const path = [credentialtype, namespace, attributeName];
+              const path = [credentialtype, namespace, attributeName];
 
-          /**
-           * We transform each attribute's parsed value into an {@link AttributeDescriptor} ...
-           */
-          return {
-            label: attributeLabel,
-            value: attribute.value,
-            id: attributeName,
-            /**
-             * The toggle function inverts the value corresponding to the attribute in
-             * the {@link AcceptedFields} checkState
-             */
-            toggle: () => {
-              const newState = _.cloneDeep(checkState);
-              _.set(newState, path, !_.get(checkState, path));
-              setCheckState(newState);
-            },
-            active: _.get(checkState, path, false)
-          };
-        })
-      )
-  );
+              /**
+              * We transform each attribute's parsed value into an {@link AttributeDescriptor} ...
+              */
+              return {
+                label: attributeLabel,
+                value: attribute.value,
+                id: attributeName,
+                path
+              };
+            })
+          )
+      );
 
-  /**
-   * Then we flatten the attributes of the namespaces (see function's javadoc)
-   */
-  const flattenedDisclosuresViewModel: Record<
-    string,
-    Record<string, AttributeDescriptor>
-  > = _.mapValues(disclosuresViewModel, namespaces =>
-    _.reduce(namespaces, (acc, attributes) => ({...acc, ...attributes}), {})
-  );
+      /**
+      * Then we flatten the attributes of the namespaces (see function's javadoc)
+      */
+      const flattenedDisclosuresViewModel: Record<
+        string,
+        Record<string, AttributeDescriptor>
+      > = _.mapValues(rawDisclosuresViewModel, namespaces =>
+        _.reduce(namespaces, (acc, attributes) => ({...acc, ...attributes}), {})
+      );
 
-  /**
-   * Finally, we remap the credentialTypes to their names
-   */
-  const finalViewModel: Record<
-    string,
-    Record<string, AttributeDescriptor>
-  > = _.mapKeys(flattenedDisclosuresViewModel, (_value, credentialtype) =>
-    getCredentialNameByType(credentialtype)
-  );
+      /**
+      * Finally, we remap the credentialTypes to their names
+      */
+      return _.mapKeys(flattenedDisclosuresViewModel, (_value, credentialtype) =>
+        getCredentialNameByType(credentialtype)
+      );
+  }, [descriptor]); 
 
   return (
     <View style={styles.container}>
-      {Object.entries(finalViewModel).map(([entry, attributes]) => (
+      {Object.entries(disclosuresViewModel).map(([entry, attributes]) => (
         <View key={entry} style={styles.credentialContainer}>
           <RawAccordion header={<H4>{entry}</H4>}>
             <View style={styles.claimContainer}>
@@ -147,9 +136,17 @@ const ProximityClaimsList = ({
                     </View>
                     <View style={styles.dataItemRight}>
                       <AnimatedCheckbox
-                        size={24}
-                        checked={value.active}
-                        onPress={value.toggle}
+                        size={28}
+                        checked={_.get(checkState, value.path, false)}
+                        onPress={() => {
+                          /**
+                           * This toggle function inverts the value corresponding to the attribute in
+                           * the {@link AcceptedFields} checkState
+                           */
+                          const newState = _.cloneDeep(checkState);
+                          _.set(newState, value.path, !_.get(checkState, value.path));
+                          setCheckState(newState);
+                        }}
                       />
                     </View>
                   </View>
