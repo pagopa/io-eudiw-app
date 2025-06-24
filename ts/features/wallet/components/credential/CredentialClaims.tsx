@@ -1,5 +1,5 @@
 import {Divider, ListItemInfo} from '@pagopa/io-app-design-system';
-import React, {Fragment} from 'react';
+import React, {Fragment, memo} from 'react';
 import i18next from 'i18next';
 import {useTranslation} from 'react-i18next';
 import {Image} from 'react-native';
@@ -293,7 +293,7 @@ export const VerificationEvidenceClaimItem = ({
  * @param claim - the claim to render
  * @param reversed - whether the claim label is displayed before the value or not
  */
-export const CredentialClaim = ({
+const CredentialClaim = ({
   claim,
   isPreview,
   reversed = false
@@ -377,3 +377,6 @@ export const CredentialClaim = ({
     return <UnknownClaimItem label={claim.label} reversed={reversed} />;
   }
 };
+
+const MemoizedCredentialClaim = memo(CredentialClaim)
+export {MemoizedCredentialClaim as CredentialClaim}
