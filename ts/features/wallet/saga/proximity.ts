@@ -2,11 +2,9 @@ import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
 import {
   AcceptedFields,
   parseVerifierRequest,
-  Proximity,
-  VerifierRequest
+  Proximity
 } from '@pagopa/io-react-native-proximity';
 import {serializeError} from 'serialize-error';
-import {CBOR} from '@pagopa/io-react-native-cbor';
 import {
   resetProximityQrCode,
   selectProximityAcceptedFields,
@@ -25,12 +23,12 @@ import {
 import {requestBlePermissions} from '../utils/permissions';
 import {store} from '../../../store';
 import {selectCredentials} from '../store/credentials';
-import {ParsedCredential, StoredCredential} from '../utils/types';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
+import {matchRequestToClaims} from '../utils/proximity';
 
 // Beginning of the saga
 export function* watchProximitySaga() {
@@ -216,109 +214,3 @@ function* closeFlow() {
   });
   yield* call(Proximity.close);
 }
-
-type StoredCredentialWithIssuerSigned = StoredCredential & {
-  issuerSigned: CBOR.IssuerSigned;
-};
-
-/**
- * This helper function takes a {@link VerifierRequest}, looks for
- * the presence of the required claims in the mDoc credentials and, if
- * found adds the {@link ParsedCredential} entry for the attribute to
- * an object following the same path structure of the original credential
- * @param verifierRequest The authentication request sent by the verifier
- * @param credentialsMdoc The mdoc credentials contained in the wallet
- * @returns An object that is a record of credential types to an object
- * which has the same structure of a decoded mDoc credential's namespaces
- * except for the fact that the namespace attribute keys are mapped to
- * the value corresponding to the same attribute key inside of the
- * {@link ParsedCredential} object.
- */
-function* matchRequestToClaims(
-  verifierRequest: VerifierRequest,
-  credentialsMdoc: Array<StoredCredential>
-) {
-  const decodedCredentials: Array<StoredCredentialWithIssuerSigned> =
-    yield* call(
-      async () =>
-        await Promise.all(
-          credentialsMdoc.map(async credential => {
-            const decodedIssuerSigned = await CBOR.decodeIssuerSigned(
-              credential.credential
-            );
-            return {
-              ...credential,
-              issuerSigned: decodedIssuerSigned
-            };
-          })
-        )
-    );
-
-  // Key: Credential type
-  // Value : isAuthenticated + nameSpaces
-  return Object.entries(verifierRequest.request).reduce(
-    (prev, [key, value]) => {
-      const credential = decodedCredentials.find(
-        cred => cred.credentialType === key
-      );
-      if (credential) {
-        // Key : namespace
-        // Value : attributes
-        const foundNamespaces = Object.entries(value)
-          .filter(([key2, _]) => key2 !== 'isAuthenticated')
-          .reduce((prev3, [namespace, attributes]) => {
-            const foundNamespace = Object.entries(
-              credential.issuerSigned.nameSpaces
-            ).find(([ns]) => ns === namespace);
-            if (foundNamespace) {
-              const foundAttributes = Object.keys(attributes).reduce(
-                attributesReducerGenerator(credential),
-                {} as Record<string, ParsedCredential[string]>
-              );
-              if (Object.keys(foundAttributes).length !== 0) {
-                return {
-                  ...prev3,
-                  [namespace]: foundAttributes
-                };
-              } else {
-                return {
-                  ...prev3
-                };
-              }
-            }
-            return {...prev3};
-          }, {} as Record<string, Record<string, ParsedCredential[string]>>);
-        if (Object.keys(foundNamespaces).length === 0) {
-          return {...prev};
-        } else {
-          return {
-            ...prev,
-            [key]: foundNamespaces
-          };
-        }
-      }
-      return {
-        ...prev
-      };
-    },
-    {} as Record<
-      string,
-      Record<string, Record<string, ParsedCredential[string]>>
-    >
-  );
-}
-
-/**
- * Helper function to generate the attributes for the matchRequestToClaims method
- */
-const attributesReducerGenerator =
-  (credential: StoredCredentialWithIssuerSigned) =>
-  (prev: Record<string, ParsedCredential[string]>, attribute: string) => {
-    if (credential.parsedCredential[attribute]) {
-      return {
-        ...prev,
-        [attribute]: credential.parsedCredential[attribute]
-      };
-    }
-    return {...prev};
-  };
