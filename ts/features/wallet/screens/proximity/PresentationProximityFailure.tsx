@@ -1,5 +1,6 @@
 import {useTranslation} from 'react-i18next';
 import React from 'react';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 import {useAppDispatch, useAppSelector} from '../../../../store';
@@ -11,8 +12,17 @@ import {
   selectProximityStatus
 } from '../../store/proximity';
 import {useDebugInfo} from '../../../../hooks/useDebugInfo';
+import {WalletNavigatorParamsList} from '../../navigation/WalletNavigator';
 
-const PresentationProximityFailure = () => {
+export type PresentationProximityFailureProps = {
+  fatal: boolean;
+};
+
+type Props = NativeStackScreenProps<
+  WalletNavigatorParamsList,
+  'PROXIMITY_FAILURE'
+>;
+const PresentationProximityFailure = ({route}: Props) => {
   const {t} = useTranslation('wallet');
   const {navigateToWallet} = useNavigateToWalletWithReset();
   const dispatch = useAppDispatch();
@@ -34,7 +44,11 @@ const PresentationProximityFailure = () => {
     <OperationResultScreenContent
       pictogram="umbrellaNew"
       title={t('proximity.failure.title')}
-      subtitle={t('proximity.failure.subtitleFatal')}
+      subtitle={
+        route.params.fatal
+          ? t('proximity.failure.subtitleFatal')
+          : t('proximity.failure.subtitle')
+      }
       action={{
         accessibilityLabel: t('proximity.failure.understand'),
         label: t('proximity.failure.understand'),

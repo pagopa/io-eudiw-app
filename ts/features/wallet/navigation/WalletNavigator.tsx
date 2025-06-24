@@ -23,7 +23,9 @@ import CredentialsList from '../screens/credentialIssuance/CredentialsList';
 import PresentationProximityPreview, {
   PresentationProximityPreviewProps
 } from '../screens/proximity/PresentationProximityPreview';
-import PresentationProximityFailure from '../screens/proximity/PresentationProximityFailure';
+import PresentationProximityFailure, {
+  PresentationProximityFailureProps
+} from '../screens/proximity/PresentationProximityFailure';
 import PresentationProximitySuccess from '../screens/proximity/PresentationProximitySuccess';
 import WALLET_ROUTES from './routes';
 
@@ -56,7 +58,7 @@ export type WalletNavigatorParamsList = {
   // Proximity
   [WALLET_ROUTES.PROXIMITY.PREVIEW]: PresentationProximityPreviewProps;
   [WALLET_ROUTES.PROXIMITY.SUCCESS]: undefined;
-  [WALLET_ROUTES.PROXIMITY.FAILURE]: undefined;
+  [WALLET_ROUTES.PROXIMITY.FAILURE]: PresentationProximityFailureProps;
 };
 
 const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();

@@ -80,7 +80,10 @@ const ProximityQrCode = () => {
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR ||
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED
     ) {
-      navigation.navigate('MAIN_WALLET_NAV', {screen: 'PROXIMITY_FAILURE'});
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PROXIMITY_FAILURE',
+        params: {fatal: true}
+      });
     }
   }, [proximityStatus, proximityDisclosureDescriptor, navigation]);
 

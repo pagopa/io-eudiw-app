@@ -189,7 +189,7 @@ function* handleProximityResponse() {
     Proximity.sendErrorResponse,
     Proximity.ErrorCode.SESSION_TERMINATED
   );
-  // After sending the error message, this action is triggered to throw a new error
+  // After sending the error message, this action is triggered to close the flow in the race condition
   yield* put(setProximityStatusStopped());
 }
 

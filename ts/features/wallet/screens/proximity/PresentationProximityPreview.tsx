@@ -86,10 +86,7 @@ const PresentationProximityPreview = ({route}: Props) => {
 
   useEffect(() => {
     // Handle navigation based on the proximity presentation result
-    if (
-      proximityStatus ===
-      ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE
-    ) {
+    if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_STOPPED) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_SUCCESS'
       });
@@ -98,7 +95,17 @@ const PresentationProximityPreview = ({route}: Props) => {
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PROXIMITY_FAILURE'
+        screen: 'PROXIMITY_FAILURE',
+        params: {
+          fatal: true
+        }
+      });
+    } else if (
+      proximityStatus === ProximityStatus.PRXOMIMITY_STATUS_ERROR_AUTHORIZED
+    ) {
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PROXIMITY_FAILURE',
+        params: {fatal: false}
       });
     }
   }, [proximityStatus, navigation]);
