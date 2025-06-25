@@ -12,18 +12,15 @@ type StoredCredentialWithIssuerSigned = StoredCredential & {
  * and creates an object where to each namespace corresponds an object containing the
  * attribute's value and display info as found in the {@link StoredCredentialWithIssuerSigned}
  */
-const attributesReducerGenerator =
+const getAttributesExtractor =
   (credential: StoredCredentialWithIssuerSigned) =>
-  (prev: Record<string, ParsedCredential[string]>, attribute: string) => {
-    // If the credential contains the attribute, add it to the accumulator
-    if (credential.parsedCredential[attribute]) {
-      return {
-        ...prev,
-        [attribute]: credential.parsedCredential[attribute]
-      };
-    }
-    // Go to the next attribute otherwise
-    return {...prev};
+  (
+    accumulated: Record<string, ParsedCredential[string]>,
+    attribute: string
+  ) => {
+    const value = credential.parsedCredential[attribute];
+    // If the credential contains the attribute, add it to the accumulator, otherwise go to the next attribute
+    return value ? {...accumulated, [attribute]: value} : accumulated;
   };
 
 /**
@@ -38,7 +35,7 @@ const attributesReducerGenerator =
  * @returns an object where to each namespace corresponds an object mapping the attributes to 
  *          their value and display info as found in the {@link StoredCredentialWithIssuerSigned}
  */
-const nameSpaceReducerGenerator =
+const getNameSpaceExtractor =
   (credential: StoredCredentialWithIssuerSigned) =>
   /**
    * @param namespace : A Verifier Request namespace
@@ -57,7 +54,7 @@ const nameSpaceReducerGenerator =
       // by the Verifier Request with claim values and display info from the credentials,
       // if matches are found
       const foundAttributes = Object.keys(attributes).reduce(
-        attributesReducerGenerator(credential),
+        getAttributesExtractor(credential),
         {} as Record<string, ParsedCredential[string]>
       );
       if (Object.keys(foundAttributes).length !== 0) {
@@ -77,6 +74,31 @@ const nameSpaceReducerGenerator =
     // If the credential doesn't contain the namespace go to the next one
     return {...accumulator};
   };
+
+/**
+ * Helper function for the {@link matchRequestToClaims} method.
+ * This function filters the isAuthenticated field of the Verifier required namespace object
+ * and then generates an object where to each namespace corresponds an object mapping the attributes to
+ * their value and display info as found in the {@link StoredCredentialWithIssuerSigned}
+ *
+ * @param value An object contining required namespaces and isAuthenticated info for a credential type of a {@link VerifierRequest}
+ * @param credential a {@link StoredCredentialWithIssuerSigned} containing the claims values and display info
+ * @returns an object where to each namespace corresponds an object mapping the attributes to
+ *          their value and display info as found in the {@link StoredCredentialWithIssuerSigned}
+ */
+const extractNamespaces = (
+  namespacesAndIsAuthenticated: VerifierRequest['request'][string],
+  credential: StoredCredentialWithIssuerSigned
+) =>
+  Object.entries(namespacesAndIsAuthenticated)
+    // Filter the isAuthenticated key, which is not a namespace
+    .filter(([key, _]) => key !== 'isAuthenticated')
+    // Combine the namespaces and attributes required by the Verifier Request with
+    // claim values and display info from the credentials, if matches are found
+    .reduce(
+      getNameSpaceExtractor(credential),
+      {} as Record<string, Record<string, ParsedCredential[string]>>
+    );
 
 /**
  * This method matches every required attribute contained in a {@link VerifierRequest} to its
@@ -105,17 +127,7 @@ const mapVerifierRequestToClaimInfo = (
       cred => cred.credentialType === credentialType
     );
     if (credential) {
-      // Key : namespace
-      // Value : attributes
-      const foundNamespaces = Object.entries(value)
-        // Filter the isAuthenticated key, which is not a namespace
-        .filter(([key, _]) => key !== 'isAuthenticated')
-        // Combine the namespaces and attributes required by the Verifier Request with
-        // claim values and display info from the credentials, if matches are found
-        .reduce(
-          nameSpaceReducerGenerator(credential),
-          {} as Record<string, Record<string, ParsedCredential[string]>>
-        );
+      const foundNamespaces = extractNamespaces(value, credential);
       if (Object.keys(foundNamespaces).length === 0) {
         // If no namespace has been found or no attributes in any namespace have been found go to the next Verifier required credential
         return {...accumulator};
