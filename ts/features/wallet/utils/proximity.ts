@@ -42,37 +42,34 @@ const getNameSpaceExtractor =
    * @param attributes : The Verifier requested namespace attributes
    */
   (
-    accumulator: Record<string, Record<string, ParsedCredential[string]>>,
+    accumulated: Record<string, Record<string, ParsedCredential[string]>>,
     [namespace, attributes]: [string, boolean | Record<string, boolean>]
   ) => {
     // Check first if the credential contains the required namespace
-    const foundNamespace = Object.entries(
-      credential.issuerSigned.nameSpaces
-    ).find(([ns]) => ns === namespace);
-    if (foundNamespace) {
-      // If found, combine the attributes required for the specific namespace
-      // by the Verifier Request with claim values and display info from the credentials,
-      // if matches are found
-      const foundAttributes = Object.keys(attributes).reduce(
-        getAttributesExtractor(credential),
-        {} as Record<string, ParsedCredential[string]>
-      );
-      if (Object.keys(foundAttributes).length !== 0) {
-        // If attribute have been found add the namespace new entry containing attribute
-        // values and display data to the accumulator
-        return {
-          ...accumulator,
-          [namespace]: foundAttributes
-        };
-      } else {
-        // If no attribute has been found go to the next namespace
-        return {
-          ...accumulator
-        };
-      }
+    const namespaces = credential.issuerSigned.nameSpaces;
+    if (!(namespace in namespaces)) {
+      return accumulated;
     }
-    // If the credential doesn't contain the namespace go to the next one
-    return {...accumulator};
+    // Then check if attributes is an object and not a simple boolean
+    if (typeof attributes !== 'object') {
+      return accumulated;
+    }
+    // If found and not a boolean, combine the attributes required for the specific namespace
+    // by the Verifier Request with claim values and display info from the credentials,
+    // if matches are found
+    const foundAttributes = Object.keys(attributes).reduce(
+      getAttributesExtractor(credential),
+      {} as Record<string, ParsedCredential[string]>
+    );
+    return Object.keys(foundAttributes).length !== 0
+      ? // If attributes have been found add the namespace new entry containing attribute
+        // values and display data to the accumulator
+        {
+          ...accumulated,
+          [namespace]: foundAttributes
+        }
+      : // If no attribute has been found go to the next namespace
+        accumulated;
   };
 
 /**
@@ -121,28 +118,22 @@ const mapVerifierRequestToClaimInfo = (
   request: VerifierRequest['request'],
   decodedCredentials: Array<StoredCredentialWithIssuerSigned>
 ) =>
-  Object.entries(request).reduce((accumulator, [credentialType, value]) => {
+  Object.entries(request).reduce((accumulated, [credentialType, value]) => {
     // Search for a credential of the same credential type specified in the Verifier Request
     const credential = decodedCredentials.find(
       cred => cred.credentialType === credentialType
     );
-    if (credential) {
-      const foundNamespaces = extractNamespaces(value, credential);
-      if (Object.keys(foundNamespaces).length === 0) {
-        // If no namespace has been found or no attributes in any namespace have been found go to the next Verifier required credential
-        return {...accumulator};
-      } else {
-        // Otherwise add a new entry to the accumulator
-        return {
-          ...accumulator,
-          [credentialType]: foundNamespaces
-        };
-      }
-    }
     // If no matching credential has been found go to the next Verifier required credential
-    return {
-      ...accumulator
-    };
+    if (!credential) {return accumulated;}
+    const foundNamespaces = extractNamespaces(value, credential);
+    return Object.keys(foundNamespaces).length !== 0
+      ? // If namespaces have been found add a new entry to the accumulator 
+        {
+          ...accumulated,
+          [credentialType]: foundNamespaces
+        }
+      : // Otherwise, if no namespace has been found or no attributes in any namespace have been found go to the next Verifier required credential
+        accumulated;
   }, {} as Record<string, Record<string, Record<string, ParsedCredential[string]>>>);
 
 /**
