@@ -124,10 +124,12 @@ const mapVerifierRequestToClaimInfo = (
       cred => cred.credentialType === credentialType
     );
     // If no matching credential has been found go to the next Verifier required credential
-    if (!credential) {return accumulated;}
+    if (!credential) {
+      return accumulated;
+    }
     const foundNamespaces = extractNamespaces(value, credential);
     return Object.keys(foundNamespaces).length !== 0
-      ? // If namespaces have been found add a new entry to the accumulator 
+      ? // If namespaces have been found add a new entry to the accumulator
         {
           ...accumulated,
           [credentialType]: foundNamespaces
