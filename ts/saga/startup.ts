@@ -26,24 +26,19 @@ import {
   preferencesSetIsOnboardingDone,
   selectisOnboardingComplete
 } from '../store/reducers/preferences';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../store/reducers/identification';
+import {setIdentificationIdentified} from '../store/reducers/identification';
 import {walletSaga} from '../features/wallet/saga';
 import {selectUrl} from '../store/reducers/deeplinking';
 import {isNavigationReady} from '../navigation/utils';
 import {sagaRecordStartupDebugInfo} from '../store/utils/debug';
+import {startSequentializedIdentificationProcess} from '../utils/identification';
 
 function* startIdentification() {
   yield* put(startupSetStatus('WAIT_IDENTIFICATION'));
-  yield* put(
-    setIdentificationStarted({
-      canResetPin: true,
-      isValidatingTask: false
-    })
-  );
+  const resChannel = yield* call(startSequentializedIdentificationProcess, {
+    canResetPin: true,
+    isValidatingTask: false
+  });
   /*
    * This debug variable is used to check if the middleware
    * doesn't block inside BootSplash.hide
@@ -60,10 +55,7 @@ function* startIdentification() {
     })
   );
   yield* put(sagaRecordStartupDebugInfo({startupIdentificationCaught: 'no'}));
-  const action = yield* take([
-    setIdentificationIdentified,
-    setIdentificationUnidentified
-  ]);
+  const action = yield* take(resChannel);
   if (setIdentificationIdentified.match(action)) {
     yield* put(
       sagaRecordStartupDebugInfo({startupIdentificationCaught: 'identified'})
