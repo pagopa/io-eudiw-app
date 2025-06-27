@@ -57,10 +57,9 @@ const getNameSpaceExtractor =
     // If found and not a boolean, combine the attributes required for the specific namespace
     // by the Verifier Request with claim values and display info from the credentials,
     // if matches are found
-    const foundAttributes = Object.keys(attributes).reduce(
-      getAttributesExtractor(credential),
-      {} as Record<string, ParsedCredential[string]>
-    );
+    const foundAttributes = Object.keys(attributes).reduce<
+      Record<string, ParsedCredential[string]>
+    >(getAttributesExtractor(credential), {});
     return Object.keys(foundAttributes).length !== 0
       ? // If attributes have been found add the namespace new entry containing attribute
         // values and display data to the accumulator
@@ -92,9 +91,9 @@ const extractNamespaces = (
     .filter(([key, _]) => key !== 'isAuthenticated')
     // Combine the namespaces and attributes required by the Verifier Request with
     // claim values and display info from the credentials, if matches are found
-    .reduce(
+    .reduce<Record<string, Record<string, ParsedCredential[string]>>>(
       getNameSpaceExtractor(credential),
-      {} as Record<string, Record<string, ParsedCredential[string]>>
+      {}
     );
 
 /**
@@ -118,7 +117,9 @@ const mapVerifierRequestToClaimInfo = (
   request: VerifierRequest['request'],
   decodedCredentials: Array<StoredCredentialWithIssuerSigned>
 ) =>
-  Object.entries(request).reduce((accumulated, [credentialType, value]) => {
+  Object.entries(request).reduce<
+    Record<string, Record<string, Record<string, ParsedCredential[string]>>>
+  >((accumulated, [credentialType, value]) => {
     // Search for a credential of the same credential type specified in the Verifier Request
     const credential = decodedCredentials.find(
       cred => cred.credentialType === credentialType
@@ -136,7 +137,7 @@ const mapVerifierRequestToClaimInfo = (
         }
       : // Otherwise, if no namespace has been found or no attributes in any namespace have been found go to the next Verifier required credential
         accumulated;
-  }, {} as Record<string, Record<string, Record<string, ParsedCredential[string]>>>);
+  }, {});
 
 /**
  * This helper function takes a {@link VerifierRequest}, looks for
