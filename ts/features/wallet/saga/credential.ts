@@ -14,11 +14,7 @@ import {
 } from '@pagopa/io-react-native-login-utils';
 import {regenerateCryptoKey} from '../../../utils/crypto';
 import {DPOP_KEYTAG} from '../utils/crypto';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../../store/reducers/identification';
+import {setIdentificationIdentified} from '../../../store/reducers/identification';
 import {navigateWithReset} from '../../../navigation/utils';
 import {
   addCredential,
@@ -34,6 +30,7 @@ import {
   setCredentialIssuancePreAuthRequest,
   setCredentialIssuancePreAuthSuccess
 } from '../store/credentialIssuance';
+import {startSequentializedIdentificationProcess} from '../../../utils/identification';
 import {getAttestation} from './attestation';
 
 /**
@@ -230,13 +227,11 @@ function* obtainCredential() {
 function* storeCredentialWithIdentification(
   action: ReturnType<typeof addCredentialWithIdentification>
 ) {
-  yield* put(
-    setIdentificationStarted({canResetPin: false, isValidatingTask: true})
-  );
-  const resAction = yield* take([
-    setIdentificationIdentified,
-    setIdentificationUnidentified
-  ]);
+  const resChannel = yield* call(startSequentializedIdentificationProcess, {
+    canResetPin: false,
+    isValidatingTask: true
+  });
+  const resAction = yield* take(resChannel);
   if (setIdentificationIdentified.match(resAction)) {
     yield* put(addCredential({credential: action.payload.credential}));
     yield* put(resetCredentialIssuance());

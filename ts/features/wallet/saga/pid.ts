@@ -18,15 +18,12 @@ import {
   setPidIssuanceRequest,
   setPidIssuanceSuccess
 } from '../store/pidIssuance';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../../store/reducers/identification';
+import {setIdentificationIdentified} from '../../../store/reducers/identification';
 import {Lifecycle, setLifecycle} from '../store/lifecycle';
 import {navigate} from '../../../navigation/utils';
 import {addCredential, addPidWithIdentification} from '../store/credentials';
 import {wellKnownCredential} from '../utils/credentials';
+import {startSequentializedIdentificationProcess} from '../../../utils/identification';
 import {getAttestation} from './attestation';
 
 /**
@@ -172,13 +169,11 @@ function* obtainPid() {
 function* storePidWithIdentification(
   action: ReturnType<typeof addPidWithIdentification>
 ) {
-  yield* put(
-    setIdentificationStarted({canResetPin: false, isValidatingTask: true})
-  );
-  const resAction = yield* take([
-    setIdentificationIdentified,
-    setIdentificationUnidentified
-  ]);
+  const resChannel = yield* call(startSequentializedIdentificationProcess, {
+    canResetPin: false,
+    isValidatingTask: true
+  });
+  const resAction = yield* take(resChannel);
   if (setIdentificationIdentified.match(resAction)) {
     yield* put(addCredential({credential: action.payload.credential}));
     yield* put(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
