@@ -287,13 +287,29 @@ interface Resources {
     "proximity": {
       "showQr": {
         "title": "Show QR",
-        "body": "Display the QR code to verify the validity of the documents in your Wallet"
+        "body": "Display the QR code to verify the validity of the documents in your Wallet."
+      },
+      "connected": {
+        "body" : "Verification in progress. Please wait a few seconds..."
       },
       "disconnected": {
         "title": "Disconnection",
         "body": "The device has been disconnected. Please check the verifier app for more details."
       },
       "log": "Debug log"
+      "success" : {
+        "title" : "Done!",
+        "subtitle" : "The verification has been successfully completed."
+        "button" : "Ok"
+      },
+      "failure" : {
+        "title" : "An error has occurred",
+        "subtitle" : "Your data has been sent, but there has been an error. Check the verifier app for more information."
+        "subtitleFatal" : "We were unable to complete the verification of your document."
+        "retry" : "Try again"
+        "understand" : "I understand"
+        "close" : "Close"
+      }
     },
     "claims": {
       "providedBy": "Provided by {{credential}}",

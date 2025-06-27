@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     height: 8,
     width: 8,
     borderRadius: 4,
-    backgroundColor: IOColors.greyLight,
+    backgroundColor: IOColors['blueIO-150'],
     marginHorizontal: 4
   },
   indicatorContainer: {
