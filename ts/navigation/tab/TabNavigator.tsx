@@ -5,6 +5,8 @@ import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {TabIconComponent} from '../../components/TabIconComponent';
 import WalletHome from '../../screens/WalletHome';
+import {useAppDispatch} from '../../store';
+import {setProximityStatusStarted} from '../../features/wallet/store/proximity';
 import TAB_ROUTES from './routes';
 
 /**
@@ -26,6 +28,7 @@ const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
 export const TabNavigator = () => {
   const {t} = useTranslation('global');
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
 
   /**
    * Used to mock tab content. This will never be rendered.
@@ -90,6 +93,7 @@ export const TabNavigator = () => {
           listeners={{
             tabPress: ({preventDefault}) => {
               preventDefault();
+              dispatch(setProximityStatusStarted());
               navigateToQrCodeShowScreen();
             }
           }}

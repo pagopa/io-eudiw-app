@@ -72,7 +72,7 @@ const PresentationClaimsList = ({
                       {source}
                     </BodySmall>
                   </View>
-                  <AnimatedCheckbox checked={true} />
+                  <AnimatedCheckbox size={24} checked={true} />
                 </View>
               </View>
             ))}
@@ -106,6 +106,7 @@ const PresentationClaimsList = ({
                     </BodySmall>
                   </View>
                   <AnimatedCheckbox
+                    size={24}
                     checked={optionalChecked.includes(claim)}
                     onPress={_ => setOptionalChecked(claim)}
                   />
@@ -125,7 +126,7 @@ const PresentationClaimsList = ({
  * @param claim The claim to render
  * @returns An {@link H6} element with the claim value or multiple {@link H6} elements in case of an array
  */
-const ClaimText = ({claim}: {claim: ClaimDisplayFormat}) => {
+export const ClaimText = ({claim}: {claim: ClaimDisplayFormat}) => {
   const displayValue = getClaimDisplayValue(claim);
   return (
     <>

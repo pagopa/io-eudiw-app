@@ -1,114 +1,176 @@
-import {
-  VerifierRequest,
-  AcceptedFields
-} from '@pagopa/io-react-native-proximity';
-import {wellKnownCredential} from './credentials';
-import {StoredCredential} from './types';
+import {CBOR} from '@pagopa/io-react-native-cbor';
+import {VerifierRequest} from '@pagopa/io-react-native-proximity';
+import {ParsedCredential, StoredCredential} from './types';
+
+type StoredCredentialWithIssuerSigned = StoredCredential & {
+  issuerSigned: CBOR.IssuerSigned;
+};
 
 /**
- * This function generates the accepted fields for the VerifierRequest and sets each requested field to true.
- * WARNING: This function is a quick and dirty implementation copied from the proximity example app. It will be replaced in the future.
- * @param request - The request object containing the requested fields
- * @returns A new object with the same structure as the request, but with all values set to true
+ * Helper function to generate the attributes for the {@link matchRequestToClaims} method.
+ * For a given Verifier Request namespace-required attributes, this method looks for matches
+ * and creates an object where to each namespace corresponds an object containing the
+ * attribute's value and display info as found in the {@link StoredCredentialWithIssuerSigned}
  */
-export const generateAcceptedFields = (
-  request: VerifierRequest['request']
-): AcceptedFields => {
-  // Cycle through the requested credentials
-  const result: AcceptedFields = {};
-  // eslint-disable-next-line guard-for-in
-  for (const credentialKey in request) {
-    const credential = request[credentialKey];
+const getAttributesExtractor =
+  (credential: StoredCredentialWithIssuerSigned) =>
+  (
+    accumulated: Record<string, ParsedCredential[string]>,
+    attribute: string
+  ) => {
+    const value = credential.parsedCredential[attribute];
+    // If the credential contains the attribute, add it to the accumulator, otherwise go to the next attribute
+    return value ? {...accumulated, [attribute]: value} : accumulated;
+  };
+
+/**
+ * Helper function to generate the namespaces for the {@link matchRequestToClaims} method.
+ * For a given credential and Verifier required namespaces, this method looks for matches
+ * and creates an object where to each namespace corresponds an object mapping the attributes to 
+ * their value and display info as found in the {@link StoredCredentialWithIssuerSigned}
+
+ * containing the attribute value and display info as found in the {@link StoredCredentialWithIssuerSigned}
+ 
+ * @param credential a {@link StoredCredentialWithIssuerSigned} containing the claims values and display info
+ * @returns an object where to each namespace corresponds an object mapping the attributes to 
+ *          their value and display info as found in the {@link StoredCredentialWithIssuerSigned}
+ */
+const getNameSpaceExtractor =
+  (credential: StoredCredentialWithIssuerSigned) =>
+  /**
+   * @param namespace : A Verifier Request namespace
+   * @param attributes : The Verifier requested namespace attributes
+   */
+  (
+    accumulated: Record<string, Record<string, ParsedCredential[string]>>,
+    [namespace, attributes]: [string, boolean | Record<string, boolean>]
+  ) => {
+    // Check first if the credential contains the required namespace
+    const namespaces = credential.issuerSigned.nameSpaces;
+    if (!(namespace in namespaces)) {
+      return accumulated;
+    }
+    // Then check if attributes is an object and not a simple boolean
+    if (typeof attributes !== 'object') {
+      return accumulated;
+    }
+    // If found and not a boolean, combine the attributes required for the specific namespace
+    // by the Verifier Request with claim values and display info from the credentials,
+    // if matches are found
+    const foundAttributes = Object.keys(attributes).reduce<
+      Record<string, ParsedCredential[string]>
+    >(getAttributesExtractor(credential), {});
+    return Object.keys(foundAttributes).length !== 0
+      ? // If attributes have been found add the namespace new entry containing attribute
+        // values and display data to the accumulator
+        {
+          ...accumulated,
+          [namespace]: foundAttributes
+        }
+      : // If no attribute has been found go to the next namespace
+        accumulated;
+  };
+
+/**
+ * Helper function for the {@link matchRequestToClaims} method.
+ * This function filters the isAuthenticated field of the Verifier required namespace object
+ * and then generates an object where to each namespace corresponds an object mapping the attributes to
+ * their value and display info as found in the {@link StoredCredentialWithIssuerSigned}
+ *
+ * @param value An object contining required namespaces and isAuthenticated info for a credential type of a {@link VerifierRequest}
+ * @param credential a {@link StoredCredentialWithIssuerSigned} containing the claims values and display info
+ * @returns an object where to each namespace corresponds an object mapping the attributes to
+ *          their value and display info as found in the {@link StoredCredentialWithIssuerSigned}
+ */
+const extractNamespaces = (
+  namespacesAndIsAuthenticated: VerifierRequest['request'][string],
+  credential: StoredCredentialWithIssuerSigned
+) =>
+  Object.entries(namespacesAndIsAuthenticated)
+    // Filter the isAuthenticated key, which is not a namespace
+    .filter(([key, _]) => key !== 'isAuthenticated')
+    // Combine the namespaces and attributes required by the Verifier Request with
+    // claim values and display info from the credentials, if matches are found
+    .reduce<Record<string, Record<string, ParsedCredential[string]>>>(
+      getNameSpaceExtractor(credential),
+      {}
+    );
+
+/**
+ * This method matches every required attribute contained in a {@link VerifierRequest} to its
+ * corresponding entry in one of the decoded credentials and generates an object which, for
+ * every matched attribute, corresponds the claim value and display info found inside the credential,
+ * keeping the original
+ * {
+ *  credentialType : {
+ *    namespace : {
+ *      attributes...
+ *    }
+ *  }
+ * }
+ * structure.
+ * @param request A {@link VerifierRequest} request field
+ * @param decodedCredentials An array of {@link StoredCredentialWithIssuerSigned} mDoc credentials
+ * @returns see description
+ */
+const mapVerifierRequestToClaimInfo = (
+  request: VerifierRequest['request'],
+  decodedCredentials: Array<StoredCredentialWithIssuerSigned>
+) =>
+  Object.entries(request).reduce<
+    Record<string, Record<string, Record<string, ParsedCredential[string]>>>
+  >((accumulated, [credentialType, value]) => {
+    // Search for a credential of the same credential type specified in the Verifier Request
+    const credential = decodedCredentials.find(
+      cred => cred.credentialType === credentialType
+    );
+    // If no matching credential has been found go to the next Verifier required credential
     if (!credential) {
-      continue;
+      return accumulated;
     }
-
-    // Cycle through the requested namespaces and the isAuthenticated field
-    const namespaces: AcceptedFields['credential'] = {};
-    for (const namespaceKey in credential) {
-      // Skip the isAuthenticated field
-      if (!credential[namespaceKey] || namespaceKey === 'isAuthenticated') {
-        continue;
-      }
-
-      // Cycle through the requested fields and set them to true
-      const fields: AcceptedFields['credential']['namespace'] = {};
-      // eslint-disable-next-line guard-for-in
-      for (const fieldKey in credential[namespaceKey]!) {
-        // eslint-disable-next-line functional/immutable-data
-        fields[fieldKey] = true;
-      }
-      // eslint-disable-next-line functional/immutable-data
-      namespaces[namespaceKey] = fields;
-    }
-    // eslint-disable-next-line functional/immutable-data
-    result[credentialKey] = namespaces;
-  }
-
-  return result;
-};
-
-export enum RequestType {
-  MDL,
-  HEALTHID,
-  BOTH
-}
+    const foundNamespaces = extractNamespaces(value, credential);
+    return Object.keys(foundNamespaces).length !== 0
+      ? // If namespaces have been found add a new entry to the accumulator
+        {
+          ...accumulated,
+          [credentialType]: foundNamespaces
+        }
+      : // Otherwise, if no namespace has been found or no attributes in any namespace have been found go to the next Verifier required credential
+        accumulated;
+  }, {});
 
 /**
- * Utility funciton to check the request type based on the keys of the request object.
- * It currently supports only mDL and HealthID credentials or both.
- * @param requestKeys - The keys of the request object which contains the credential type
- * @returns A RequestType enum value indicating the type of request
- * @throws Error if the request contains multiple keys or if the key is not the mDL credential type
+ * This helper function takes a {@link VerifierRequest}, looks for
+ * the presence of the required claims in the mDoc credentials and, if
+ * found adds the {@link ParsedCredential} entry for the attribute to
+ * an object following the same path structure of the original credential
+ * @param verifierRequest The authentication request sent by the verifier
+ * @param credentialsMdoc The mdoc credentials contained in the wallet
+ * @returns An object that is a record of credential types to an object
+ * which has the same structure of a decoded mDoc credential's namespaces
+ * except for the fact that the namespace attribute keys are mapped to
+ * the value corresponding to the same attribute key inside of the
+ * {@link ParsedCredential} object.
  */
-export const getTypeRequest = (requestKeys: Array<string>) => {
-  if (
-    requestKeys.length === 1 ||
-    (requestKeys.length === 2 &&
-      requestKeys.every(
-        key =>
-          key === wellKnownCredential.DRIVING_LICENSE ||
-          key === wellKnownCredential.HEALTHID
-      ))
-  ) {
-    if (requestKeys.length === 2) {
-      return RequestType.BOTH;
-    } else if (requestKeys[0] === wellKnownCredential.HEALTHID) {
-      return RequestType.HEALTHID;
-    } else if (requestKeys[0] === wellKnownCredential.DRIVING_LICENSE) {
-      return RequestType.MDL;
-    }
-  }
-
-  throw new Error('Unexpected request keys. Expected only mDL or HealthID.');
-};
-
-/**
- * Utility functions which filters the documents based on the request type. Currently it supports only mDL and HealthID credentials or both.
- * @param type - The type of request returned by the `getTypeRequest` function
- * @param documents - The array of stored credentials to filter
- * @returns An array of stored credentials that match the request type
- */
-export const getDocumentsByRequestType = (
-  type: RequestType,
-  documents: Array<StoredCredential>
+export const matchRequestToClaims = async (
+  verifierRequest: VerifierRequest,
+  credentialsMdoc: Array<StoredCredential>
 ) => {
-  switch (type) {
-    case RequestType.MDL:
-      return documents.filter(
-        doc => doc.credentialType === wellKnownCredential.DRIVING_LICENSE
-      );
-    case RequestType.HEALTHID:
-      return documents.filter(
-        doc => doc.credentialType === wellKnownCredential.HEALTHID
-      );
-    case RequestType.BOTH:
-      return documents.filter(
-        doc =>
-          doc.credentialType === wellKnownCredential.DRIVING_LICENSE ||
-          doc.credentialType === wellKnownCredential.HEALTHID
-      );
-    default:
-      throw new Error('Unexpected request type');
-  }
+  const decodedCredentials: Array<StoredCredentialWithIssuerSigned> =
+    await Promise.all(
+      credentialsMdoc.map(async credential => {
+        const decodedIssuerSigned = await CBOR.decodeIssuerSigned(
+          credential.credential
+        );
+        return {
+          ...credential,
+          issuerSigned: decodedIssuerSigned
+        };
+      })
+    );
+
+  return mapVerifierRequestToClaimInfo(
+    verifierRequest.request,
+    decodedCredentials
+  );
 };
