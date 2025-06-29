@@ -182,11 +182,7 @@ const PresentationProximityPreview = ({route}: Props) => {
         <H2>{t('wallet:presentation.trust.title')}</H2>
         <Body> {t('wallet:presentation.trust.subtitle')}</Body>
         <VSpacer size={24} />
-        {isDebug && (
-          <>
-            <IsAuthenticatedAlert />
-          </>
-        )}
+        {isDebug && <IsAuthenticatedAlert />}
         <ProximityClaimsList
           descriptor={route.params.descriptor}
           checkState={checkState}
