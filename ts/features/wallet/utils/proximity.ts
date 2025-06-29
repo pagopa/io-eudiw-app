@@ -180,7 +180,7 @@ export const matchRequestToClaims = async (
  * @param verifierRequest - The Verifier Request object containing the requested fields
  * @returns true if the verifier request is authenticated, false otherwise
  */
-export const getAuthenticatedFlag = (verifierRequest: VerifierRequest) =>
+export const getIsVerifierAuthenticated = (verifierRequest: VerifierRequest) =>
   Object.values(verifierRequest.request).every(
     credential => credential.isAuthenticated === true
   );

@@ -29,7 +29,7 @@ import {
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
 import {
-  getAuthenticatedFlag,
+  getIsVerifierAuthenticated,
   matchRequestToClaims,
   verifierCertificates
 } from '../utils/proximity';
@@ -152,7 +152,7 @@ function* handleProximityResponse() {
     mdocCredentials
   );
 
-  const isAuthenticated = getAuthenticatedFlag(documentRequest);
+  const isAuthenticated = getIsVerifierAuthenticated(documentRequest);
   yield* put(
     setProximityStatusAuthorizationStarted({
       descriptor,
