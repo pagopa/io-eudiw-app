@@ -28,7 +28,11 @@ import {
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
-import {matchRequestToClaims} from '../utils/proximity';
+import {
+  getAuthenticatedFlags,
+  matchRequestToClaims,
+  verifierCertificates
+} from '../utils/proximity';
 
 // Beginning of the saga
 export function* watchProximitySaga() {
@@ -48,7 +52,11 @@ function* proximityPresentation() {
     yield* call(async () => {
       await Proximity.close().catch(() => {});
     }); // We can ignore errors here as we don't know if the flow started successfully previously
-    yield* call(Proximity.start);
+
+    // Provide the verifiers certificates
+    const certificates = verifierCertificates.map(cert => cert.certificate);
+    console.log(certificates);
+    yield* call(Proximity.start, {certificates});
     // Registering proximity events listeners
     yield* call(() => {
       Proximity.addListener('onDeviceConnecting', () => {});
@@ -117,6 +125,7 @@ function* proximityPresentation() {
       })
     });
   } catch (e) {
+    console.log(e);
     yield* put(setProximityStatusError(`${serializeError(e)}`));
     yield* call(closeFlow); // We can ignore this error in this particular case as we don't even know if the flow started successfully.
   }
@@ -138,12 +147,19 @@ function* handleProximityResponse() {
   const mdocCredentials = allCredentials.filter(
     credential => credential.format === 'mso_mdoc'
   );
-  const credentialDescriptor = yield* call(
+  const descriptor = yield* call(
     matchRequestToClaims,
     documentRequest,
     mdocCredentials
   );
-  yield* put(setProximityStatusAuthorizationStarted(credentialDescriptor));
+
+  const isAuthenticatedFlags = getAuthenticatedFlags(documentRequest);
+  yield* put(
+    setProximityStatusAuthorizationStarted({
+      descriptor,
+      isAuthenticatedFlags
+    })
+  );
 
   const choice = yield* take([
     setProximityStatusAuthorizationSend,
