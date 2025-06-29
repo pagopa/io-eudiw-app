@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     height: 8,
     width: 8,
     borderRadius: 4,
-    backgroundColor: IOColors.greyLight,
+    backgroundColor: IOColors['blueIO-150'],
     marginHorizontal: 4
   },
   indicatorContainer: {
@@ -34,7 +34,7 @@ type CarouselProps = {
   >;
   dotEasterEggCallback?: () => void;
   dotColor?: string;
-  scrollViewRef: React.RefObject<ScrollView>;
+  scrollViewRef: React.RefObject<ScrollView | null>;
   setStep: React.Dispatch<React.SetStateAction<number>>;
 };
 

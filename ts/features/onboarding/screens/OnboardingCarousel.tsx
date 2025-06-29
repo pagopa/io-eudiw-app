@@ -112,6 +112,7 @@ export const OnboardingCarousel = () => {
           setStep={setStep}
         />
         <FooterActions
+          fixed={false}
           actions={{
             primary: {
               label: t('global:buttons.next'),

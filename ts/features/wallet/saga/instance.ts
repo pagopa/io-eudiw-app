@@ -51,10 +51,10 @@ export function* handleCreateInstance() {
         appFetch
       });
       yield* put(setInstanceKeyTag(keyTag));
-      yield* put(setInstanceCreationSuccess());
       // Reset the credential state before obtaining a new PID
       yield* put(resetCredentials());
     }
+    yield* put(setInstanceCreationSuccess());
   } catch (err: unknown) {
     yield* put(setInstanceCreationError({error: serializeError(err)}));
   }
