@@ -55,7 +55,6 @@ function* proximityPresentation() {
 
     // Provide the verifiers certificates
     const certificates = verifierCertificates.map(cert => cert.certificate);
-    console.log(certificates);
     yield* call(Proximity.start, {certificates});
     // Registering proximity events listeners
     yield* call(() => {
