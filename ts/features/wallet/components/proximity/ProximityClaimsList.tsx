@@ -9,13 +9,13 @@ import {
 } from '@pagopa/io-app-design-system';
 import {AcceptedFields} from '@pagopa/io-react-native-proximity';
 import _ from 'lodash';
-import {ProximityDisclosureDescriptor} from '../../store/proximity';
 import {getCredentialNameByType} from '../../utils/credentials';
 import {getClaimsFullLocale} from '../../utils/locale';
 import {CredentialClaim} from '../credential/CredentialClaims';
+import {ProximityDisclosure} from '../../store/proximity';
 
 type ProximityClaimsListProps = {
-  descriptor: ProximityDisclosureDescriptor;
+  descriptor: ProximityDisclosure['descriptor'];
   checkState: AcceptedFields;
   setCheckState: Dispatch<SetStateAction<AcceptedFields>>;
 };

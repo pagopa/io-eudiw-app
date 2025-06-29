@@ -11,12 +11,13 @@ import {
   HSpacer,
   Icon,
   IOVisualCostants,
-  VSpacer
+  VSpacer,
+  Alert as AlertDs
 } from '@pagopa/io-app-design-system';
 import {AcceptedFields} from '@pagopa/io-react-native-proximity';
 import {useNavigation} from '@react-navigation/native';
 import {
-  ProximityDisclosureDescriptor,
+  ProximityDisclosure,
   ProximityStatus,
   resetProximity,
   selectProximityDocumentRequest,
@@ -33,10 +34,9 @@ import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 import {useDebugInfo} from '../../../../hooks/useDebugInfo';
+import {selectIsDebugModeEnabled} from '../../../../store/reducers/debug';
 
-export type PresentationProximityPreviewProps = {
-  descriptor: ProximityDisclosureDescriptor;
-};
+export type PresentationProximityPreviewProps = ProximityDisclosure;
 
 type Props = NativeStackScreenProps<
   WalletNavigatorParamsList,
@@ -53,6 +53,8 @@ const PresentationProximityPreview = ({route}: Props) => {
   const {navigateToWallet} = useNavigateToWalletWithReset();
   const proximityStatus = useAppSelector(selectProximityStatus);
   const {t} = useTranslation(['global', 'wallet']);
+  const isDebug = useAppSelector(selectIsDebugModeEnabled);
+  const isAuthenticated = route.params.isAuthenticated;
 
   const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
   const verifierRequest = useAppSelector(selectProximityDocumentRequest);
@@ -77,6 +79,7 @@ const PresentationProximityPreview = ({route}: Props) => {
   const [checkState, setCheckState] = useState<AcceptedFields>(baseCheckState);
 
   useDebugInfo({
+    isAuthenticated,
     proximityDisclosureDescriptorPreview: route.params.descriptor,
     acceptedFields: checkState,
     verifierRequest,
@@ -135,6 +138,23 @@ const PresentationProximityPreview = ({route}: Props) => {
     ]);
   };
 
+  const IsAuthenticatedAlert = () => (
+    <>
+      {isAuthenticated ? (
+        <AlertDs
+          variant="success"
+          content={t('wallet:proximity.isAuthenticated.true')}
+        />
+      ) : (
+        <AlertDs
+          variant="warning"
+          content={t('wallet:proximity.isAuthenticated.false')}
+        />
+      )}
+      <VSpacer size={24} />
+    </>
+  );
+
   useHeaderSecondLevel({
     title: '',
     goBack: cancelAlert
@@ -155,6 +175,7 @@ const PresentationProximityPreview = ({route}: Props) => {
         <H2>{t('wallet:presentation.trust.title')}</H2>
         <Body> {t('wallet:presentation.trust.subtitle')}</Body>
         <VSpacer size={24} />
+        {isDebug && <IsAuthenticatedAlert />}
         <ProximityClaimsList
           descriptor={route.params.descriptor}
           checkState={checkState}
