@@ -175,11 +175,15 @@ export const matchRequestToClaims = async (
   );
 };
 
-export const getAuthenticatedFlags = (verifierRequest: VerifierRequest) =>
-  Object.entries(verifierRequest.request).map(([credentialType, value]) => ({
-    credentialType,
-    isAuthenticated: value.isAuthenticated
-  }));
+/**
+ * Returns true if all the `isAuthenticated` flags in the Verifier Request are set to true, false otherwise.
+ * @param verifierRequest - The Verifier Request object containing the requested fields
+ * @returns true if the verifier request is authenticated, false otherwise
+ */
+export const getAuthenticatedFlag = (verifierRequest: VerifierRequest) =>
+  Object.values(verifierRequest.request).every(
+    credential => credential.isAuthenticated === true
+  );
 
 /**
  * Array containing the verifier certificates.

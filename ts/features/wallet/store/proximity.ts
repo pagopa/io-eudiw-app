@@ -1,5 +1,5 @@
 /* eslint-disable functional/immutable-data */
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction, createSelector} from '@reduxjs/toolkit';
 import {
   AcceptedFields,
   VerifierRequest,
@@ -35,10 +35,7 @@ export type ProximityDisclosure = {
     string,
     Record<string, Record<string, ParsedCredential[string]>>
   >;
-  isAuthenticatedFlags: Array<{
-    credentialType: string;
-    isAuthenticated: boolean;
-  }>;
+  isAuthenticated: boolean;
 };
 
 /* State type definition for the proximity slice
@@ -196,8 +193,10 @@ export const selectProximityDisclosureDescriptor = (state: RootState) =>
  * @param state - The root state
  * @returns The verifier authentication flags
  */
-export const selectProximityDisclosureIsAuthenticated = (state: RootState) =>
-  state.wallet.proximity.proximityDisclosureDescriptor?.isAuthenticatedFlags;
+export const selectProximityDisclosureIsAuthenticated = createSelector(
+  (state: RootState) => state.wallet.proximity.proximityDisclosureDescriptor,
+  descriptor => descriptor?.isAuthenticated || false
+);
 
 /**
  * Selects the {@link AcceptedFields} the user chose to share

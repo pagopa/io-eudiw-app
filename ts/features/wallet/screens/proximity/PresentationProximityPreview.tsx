@@ -53,15 +53,8 @@ const PresentationProximityPreview = ({route}: Props) => {
   const {navigateToWallet} = useNavigateToWalletWithReset();
   const proximityStatus = useAppSelector(selectProximityStatus);
   const {t} = useTranslation(['global', 'wallet']);
-  const isAuthenticatedFlags = route.params.isAuthenticatedFlags;
-  const isAuthenticated = useMemo(
-    () =>
-      isAuthenticatedFlags
-        .map(flag => flag.isAuthenticated)
-        .every(isAuth => isAuth === true),
-    [isAuthenticatedFlags]
-  );
   const isDebug = useAppSelector(selectIsDebugModeEnabled);
+  const isAuthenticated = route.params.isAuthenticated;
 
   const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
   const verifierRequest = useAppSelector(selectProximityDocumentRequest);
@@ -86,7 +79,7 @@ const PresentationProximityPreview = ({route}: Props) => {
   const [checkState, setCheckState] = useState<AcceptedFields>(baseCheckState);
 
   useDebugInfo({
-    isAuthenticatedFlags,
+    isAuthenticated,
     proximityDisclosureDescriptorPreview: route.params.descriptor,
     acceptedFields: checkState,
     verifierRequest,
