@@ -149,7 +149,7 @@ const PresentationProximityPreview = ({route}: Props) => {
     <>
       {isAuthenticated ? (
         <AlertDs
-          variant="warning"
+          variant="success"
           content={t('wallet:proximity.isAuthenticated.true')}
         />
       ) : (
