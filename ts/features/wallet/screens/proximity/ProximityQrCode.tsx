@@ -68,8 +68,7 @@ const ProximityQrCode = () => {
     if (
       proximityStatus ===
         ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED &&
-      descriptor &&
-      isAuthenticated
+      descriptor
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_PREVIEW',
