@@ -125,7 +125,6 @@ function* proximityPresentation() {
       })
     });
   } catch (e) {
-    console.log(e);
     yield* put(setProximityStatusError(`${serializeError(e)}`));
     yield* call(closeFlow); // We can ignore this error in this particular case as we don't even know if the flow started successfully.
   }
