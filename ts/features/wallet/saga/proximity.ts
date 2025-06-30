@@ -28,7 +28,11 @@ import {
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
-import {matchRequestToClaims} from '../utils/proximity';
+import {
+  getIsVerifierAuthenticated,
+  matchRequestToClaims,
+  verifierCertificates
+} from '../utils/proximity';
 
 // Beginning of the saga
 export function* watchProximitySaga() {
@@ -48,7 +52,10 @@ function* proximityPresentation() {
     yield* call(async () => {
       await Proximity.close().catch(() => {});
     }); // We can ignore errors here as we don't know if the flow started successfully previously
-    yield* call(Proximity.start);
+
+    // Provide the verifiers certificates
+    const certificates = verifierCertificates.map(cert => cert.certificate);
+    yield* call(Proximity.start, {certificates});
     // Registering proximity events listeners
     yield* call(() => {
       Proximity.addListener('onDeviceConnecting', () => {});
@@ -138,12 +145,19 @@ function* handleProximityResponse() {
   const mdocCredentials = allCredentials.filter(
     credential => credential.format === 'mso_mdoc'
   );
-  const credentialDescriptor = yield* call(
+  const descriptor = yield* call(
     matchRequestToClaims,
     documentRequest,
     mdocCredentials
   );
-  yield* put(setProximityStatusAuthorizationStarted(credentialDescriptor));
+
+  const isAuthenticated = getIsVerifierAuthenticated(documentRequest);
+  yield* put(
+    setProximityStatusAuthorizationStarted({
+      descriptor,
+      isAuthenticated
+    })
+  );
 
   const choice = yield* take([
     setProximityStatusAuthorizationSend,
