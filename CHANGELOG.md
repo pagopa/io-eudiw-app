@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.11.0-rc.0...1.12.0-rc.0) (2025-07-01)
+
+
+### Features
+
+* [WLEO-425,WLEO-448] Implemented Proximity flow ([#87](https://github.com/pagopa/io-eudiw-app/issues/87)) ([e8fa1d1](https://github.com/pagopa/io-eudiw-app/commit/e8fa1d1509436dbfee2bff12796a3108afd3138b))
+* [WLEO-450] Add certificates for proximity verifiers ([#91](https://github.com/pagopa/io-eudiw-app/issues/91)) ([4f4f6cf](https://github.com/pagopa/io-eudiw-app/commit/4f4f6cf52a939c98b9ed151b19f54e9d0ccdeeaf))
+
+
+### Bug Fixes
+
+* [WLEO-460] Add WIA expiration check ([#88](https://github.com/pagopa/io-eudiw-app/issues/88)) ([64698e2](https://github.com/pagopa/io-eudiw-app/commit/64698e2ab0d335abb36e68beb17c35a2855c76f2))
+* [WLEO-470] Moved dispatching of the `setInstanceCreationSuccess` out of the `if` ([#90](https://github.com/pagopa/io-eudiw-app/issues/90)) ([2df9fbd](https://github.com/pagopa/io-eudiw-app/commit/2df9fbd48e2f0bae4ec4ccd8466df569ab1ed449))
+
+
+### Chores
+
+* [WLEO-328] Added more debug info during startup saga ([#89](https://github.com/pagopa/io-eudiw-app/issues/89)) ([b4b42a0](https://github.com/pagopa/io-eudiw-app/commit/b4b42a063cf911b47557b5a5430593b255ff3848))
+* update codeowners ([6091a2c](https://github.com/pagopa/io-eudiw-app/commit/6091a2c407071a44e0f989ea67a60601c00b8a26))
+
 ## [1.11.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.10.0-rc.0...1.11.0-rc.0) (2025-06-16)
 
 
