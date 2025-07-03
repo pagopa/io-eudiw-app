@@ -12,11 +12,7 @@ import {
   setPreDefinitionRequest
 } from '../store/presentation';
 import {selectCredentials} from '../store/credentials';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../../store/reducers/identification';
+import {setIdentificationIdentified} from '../../../store/reducers/identification';
 import {
   handleDcqlRequest,
   handleDcqlResponse,
@@ -27,6 +23,7 @@ import {
   PresentationResponseProcessor,
   RequestObject
 } from '../utils/presentation';
+import {startSequentializedIdentificationProcess} from '../../../utils/identification';
 
 /**
  * Saga watcher for presentation related actions.
@@ -142,14 +139,12 @@ function* handleResponse<T>(
 
   if (setPostDefinitionRequest.match(choice)) {
     const {payload: optionalClaims} = choice;
-    yield* put(
-      setIdentificationStarted({canResetPin: false, isValidatingTask: true})
-    );
 
-    const resAction = yield* take([
-      setIdentificationIdentified,
-      setIdentificationUnidentified
-    ]);
+    const resChannel = yield* call(startSequentializedIdentificationProcess, {
+      canResetPin: false,
+      isValidatingTask: true
+    });
+    const resAction = yield* take(resChannel);
 
     if (setIdentificationIdentified.match(resAction)) {
       const authResponse: AuthResponse = yield call(
