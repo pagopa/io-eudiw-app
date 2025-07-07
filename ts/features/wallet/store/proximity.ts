@@ -1,5 +1,5 @@
 /* eslint-disable functional/immutable-data */
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction, createSelector} from '@reduxjs/toolkit';
 import {
   AcceptedFields,
   VerifierRequest,
@@ -30,10 +30,13 @@ export enum ProximityStatus {
  * Type representing a descriptor containing info useful to render
  * a proximity presentation on screen and create the {@link AcceptedFields}
  */
-export type ProximityDisclosureDescriptor = Record<
-  string,
-  Record<string, Record<string, ParsedCredential[string]>>
->;
+export type ProximityDisclosure = {
+  descriptor: Record<
+    string,
+    Record<string, Record<string, ParsedCredential[string]>>
+  >;
+  isAuthenticated: boolean;
+};
 
 /* State type definition for the proximity slice
  * qrCode - The qr code to be displayed for starting the proximity process
@@ -44,7 +47,7 @@ export type ProximityState = {
   qrCode?: string;
   status: ProximityStatus;
   documentRequest?: VerifierRequest;
-  proximityDisclosureDescriptor?: ProximityDisclosureDescriptor;
+  proximityDisclosureDescriptor?: ProximityDisclosure;
   proximityAcceptedFields?: AcceptedFields;
   errorDetails?: string;
 };
@@ -104,7 +107,7 @@ export const proximitySlice = createSlice({
     },
     setProximityStatusAuthorizationStarted: (
       state,
-      action: PayloadAction<ProximityDisclosureDescriptor>
+      action: PayloadAction<ProximityDisclosure>
     ) => {
       state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED;
       state.proximityDisclosureDescriptor = action.payload;
@@ -183,7 +186,17 @@ export const selectProximityDocumentRequest = (state: RootState) =>
  * @returns A {@link ProximityDisclosureDescriptor}
  */
 export const selectProximityDisclosureDescriptor = (state: RootState) =>
-  state.wallet.proximity.proximityDisclosureDescriptor;
+  state.wallet.proximity.proximityDisclosureDescriptor?.descriptor;
+
+/**
+ * Selects the verifier authentication flags
+ * @param state - The root state
+ * @returns The verifier authentication flags
+ */
+export const selectProximityDisclosureIsAuthenticated = createSelector(
+  (state: RootState) => state.wallet.proximity.proximityDisclosureDescriptor,
+  descriptor => descriptor?.isAuthenticated || false
+);
 
 /**
  * Selects the {@link AcceptedFields} the user chose to share
