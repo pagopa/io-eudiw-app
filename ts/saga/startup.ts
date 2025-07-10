@@ -30,7 +30,6 @@ import {setIdentificationIdentified} from '../store/reducers/identification';
 import {walletSaga} from '../features/wallet/saga';
 import {selectUrl} from '../store/reducers/deeplinking';
 import {isNavigationReady} from '../navigation/utils';
-import {sagaRecordStartupDebugInfo} from '../store/utils/debug';
 import {startSequentializedIdentificationProcess} from '../utils/identification';
 
 function* startIdentification() {
@@ -39,40 +38,14 @@ function* startIdentification() {
     canResetPin: true,
     isValidatingTask: false
   });
-  /*
-   * This debug variable is used to check if the middleware
-   * doesn't block inside BootSplash.hide
-   */
-  yield* put(
-    sagaRecordStartupDebugInfo({
-      startIdentificationBootSplashHideDone: false
-    })
-  );
   yield* call(BootSplash.hide, {fade: true});
-  yield* put(
-    sagaRecordStartupDebugInfo({
-      startIdentificationBootSplashHideDone: true
-    })
-  );
-  yield* put(sagaRecordStartupDebugInfo({startupIdentificationCaught: 'no'}));
   const action = yield* take(resChannel);
   if (setIdentificationIdentified.match(action)) {
-    yield* put(
-      sagaRecordStartupDebugInfo({startupIdentificationCaught: 'identified'})
-    );
     yield* fork(walletSaga);
-    /*
-     * This debug variable is used to check if the waitForNavigationToBeReady call terminates
-     */
-    yield* put(sagaRecordStartupDebugInfo({isNavigatorReady: false}));
     yield* call(waitForNavigationToBeReady);
-    yield* put(sagaRecordStartupDebugInfo({isNavigatorReady: true}));
     yield* put(startupSetStatus('DONE'));
     yield* call(handlePendingDeepLink);
   } else {
-    yield* put(
-      sagaRecordStartupDebugInfo({startupIdentificationCaught: 'unidentified'})
-    );
     throw new Error('Identification failed'); // Temporary error which should be mapped
   }
 }
@@ -128,12 +101,7 @@ function* startOnboarding() {
  */
 function* startup() {
   try {
-    /*
-     * Debug info to check i18next setup ends correctly
-     */
-    yield* put(sagaRecordStartupDebugInfo({i18nInitialized: false}));
     yield* call(initI18n);
-    yield* put(sagaRecordStartupDebugInfo({i18nInitialized: true}));
     yield* call(checkConfig);
     const biometricState = yield* call(getBiometricState);
     const hasScreenLock = yield* call(hasDeviceScreenLock);
@@ -151,21 +119,7 @@ function* startup() {
     }
   } catch {
     yield* put(startupSetError());
-    /*
-     * These debug variable is used to check if the middleware
-     * doesn't block inside BootSplash.hide
-     */
-    yield* put(
-      sagaRecordStartupDebugInfo({
-        startupCatchSectionBootSplashHideDone: false
-      })
-    );
     yield* call(BootSplash.hide, {fade: true});
-    yield* put(
-      sagaRecordStartupDebugInfo({
-        startupCatchSectionBootSplashHideDone: true
-      })
-    );
   }
 }
 
