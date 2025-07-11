@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.13.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.12.0-rc.0...1.13.0-rc.0) (2025-07-11)
+
+
+### Chores
+
+* [WLEO-492] Add patch for x5c parameter in SD-JWT parser ([#94](https://github.com/pagopa/io-eudiw-app/issues/94)) ([6299397](https://github.com/pagopa/io-eudiw-app/commit/62993978cb7d9dd70dc718f9845fe4619335fd9d))
+
 ## [1.12.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.11.0-rc.0...1.12.0-rc.0) (2025-07-01)
 
 

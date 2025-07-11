@@ -2769,6 +2769,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@npm%3A1.7.1#./.yarn/patches/@pagopa-io-react-native-wallet-npm-1.7.1-9b4f95122b.patch::locator=ioeudiwapp%40workspace%3A.":
+  version: 1.7.1
+  resolution: "@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@npm%3A1.7.1#./.yarn/patches/@pagopa-io-react-native-wallet-npm-1.7.1-9b4f95122b.patch::version=1.7.1&hash=749041&locator=ioeudiwapp%40workspace%3A."
+  dependencies:
+    "@types/jsrsasign": ^10.5.15
+    ajv: ^8.17.1
+    dcql: ^0.2.22
+    js-base64: ^3.7.7
+    js-sha256: ^0.9.0
+    jsonpath-plus: ^10.3.0
+    jsrsasign: ^11.1.0
+    parse-url: ^9.2.0
+    react-native-url-polyfill: ^2.0.0
+    react-native-uuid: ^2.0.1
+    zod: ^3.21.4
+  peerDependencies:
+    "@pagopa/io-react-native-cbor": "*"
+    "@pagopa/io-react-native-crypto": "*"
+    "@pagopa/io-react-native-jwt": "*"
+    react: "*"
+    react-native: "*"
+  checksum: 1727aed2592e7e97aacbab638cb6b616dc1534d62a6fccc3d4532a586deaa06e45d0f0949f65d33383040b841d5b5a99feae6b9121ac20f053bc991f5ce369ed
+  languageName: node
+  linkType: hard
+
 "@pagopa/react-native-nodelibs@npm:^0.1.0":
   version: 0.1.0
   resolution: "@pagopa/react-native-nodelibs@npm:0.1.0"
