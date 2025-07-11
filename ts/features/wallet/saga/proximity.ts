@@ -192,9 +192,12 @@ function* handleProximityResponse() {
           yield* call(abortProximityFlow);
         }
       );
+    } else {
+      yield* call(abortProximityFlow);
     }
+  } else {
+    yield* call(abortProximityFlow);
   }
-  yield* call(abortProximityFlow);
 }
 
 /**
