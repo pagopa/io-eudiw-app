@@ -14,7 +14,6 @@ import {
 } from '@pagopa/io-react-native-login-utils';
 import {regenerateCryptoKey} from '../../../utils/crypto';
 import {DPOP_KEYTAG} from '../utils/crypto';
-import {setIdentificationIdentified} from '../../../store/reducers/identification';
 import {navigateWithReset} from '../../../navigation/utils';
 import {
   addCredential,
@@ -30,8 +29,8 @@ import {
   setCredentialIssuancePreAuthRequest,
   setCredentialIssuancePreAuthSuccess
 } from '../store/credentialIssuance';
-import {startSequentializedIdentificationProcess} from '../../../utils/identification';
 import {getAttestation} from './attestation';
+import { startSequentializedIdentificationProcess } from '../../../utils/identification';
 
 /**
  * Saga watcher for credential related actions.
@@ -227,17 +226,24 @@ function* obtainCredential() {
 function* storeCredentialWithIdentification(
   action: ReturnType<typeof addCredentialWithIdentification>
 ) {
-  const resChannel = yield* call(startSequentializedIdentificationProcess, {
-    canResetPin: false,
-    isValidatingTask: true
-  });
-  const resAction = yield* take(resChannel);
-  if (setIdentificationIdentified.match(resAction)) {
-    yield* put(addCredential({credential: action.payload.credential}));
-    yield* put(resetCredentialIssuance());
-    navigateWithReset('MAIN_TAB_NAV');
-    IOToast.success(i18next.t('buttons.done', {ns: 'global'}));
-  } else {
-    return;
-  }
+  yield* call(startSequentializedIdentificationProcess,
+    {
+      canResetPin: false,
+      isValidatingTask: true
+    },
+    /**
+     * Inline because the function closure needs the {@link action} parameter,
+     * and typescript's inference does not work properly on a function builder
+     * that builds and returns the callback
+     */
+    function* () {
+        yield* put(addCredential({credential: action.payload.credential}));
+        yield* put(resetCredentialIssuance());
+        navigateWithReset('MAIN_TAB_NAV');
+        IOToast.success(i18next.t('buttons.done', {ns: 'global'}));
+    },
+    function* () {
+      return
+    }
+  )
 }

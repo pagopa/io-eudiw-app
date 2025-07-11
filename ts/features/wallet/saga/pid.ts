@@ -7,7 +7,7 @@ import {
   Credential
 } from '@pagopa/io-react-native-wallet';
 import Config from 'react-native-config';
-import {call, put, take, takeLatest} from 'typed-redux-saga';
+import {call, put, takeLatest} from 'typed-redux-saga';
 import uuid from 'react-native-uuid';
 import {generate} from '@pagopa/io-react-native-crypto';
 import {serializeError} from 'serialize-error';
@@ -18,13 +18,12 @@ import {
   setPidIssuanceRequest,
   setPidIssuanceSuccess
 } from '../store/pidIssuance';
-import {setIdentificationIdentified} from '../../../store/reducers/identification';
 import {Lifecycle, setLifecycle} from '../store/lifecycle';
 import {navigate} from '../../../navigation/utils';
 import {addCredential, addPidWithIdentification} from '../store/credentials';
 import {wellKnownCredential} from '../utils/credentials';
-import {startSequentializedIdentificationProcess} from '../../../utils/identification';
 import {getAttestation} from './attestation';
+import { startSequentializedIdentificationProcess } from '../../../utils/identification';
 
 /**
  * Saga watcher for PID related actions.
@@ -169,16 +168,23 @@ function* obtainPid() {
 function* storePidWithIdentification(
   action: ReturnType<typeof addPidWithIdentification>
 ) {
-  const resChannel = yield* call(startSequentializedIdentificationProcess, {
-    canResetPin: false,
-    isValidatingTask: true
-  });
-  const resAction = yield* take(resChannel);
-  if (setIdentificationIdentified.match(resAction)) {
-    yield* put(addCredential({credential: action.payload.credential}));
-    yield* put(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
-    navigate('MAIN_WALLET_NAV', {screen: 'PID_ISSUANCE_SUCCESS'});
-  } else {
-    return;
-  }
+  yield* call(startSequentializedIdentificationProcess,
+    {
+      canResetPin: false,
+      isValidatingTask: true
+    },
+    /**
+     * Inline because the function closure needs the {@link action} parameter,
+     * and typescript's inference does not work properly on a function builder
+     * that builds and returns the callback
+     */
+    function* () {
+      yield* put(addCredential({credential: action.payload.credential}));
+      yield* put(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
+      navigate('MAIN_WALLET_NAV', {screen: 'PID_ISSUANCE_SUCCESS'});
+    },
+    function* () {
+      return
+    }
+  )
 }

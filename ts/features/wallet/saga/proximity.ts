@@ -24,15 +24,11 @@ import {requestBlePermissions} from '../utils/permissions';
 import {store} from '../../../store';
 import {selectCredentials} from '../store/credentials';
 import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../../store/reducers/identification';
-import {
   getIsVerifierAuthenticated,
   matchRequestToClaims,
   verifierCertificates
 } from '../utils/proximity';
+import { startSequentializedIdentificationProcess } from '../../../utils/identification';
 
 // Beginning of the saga
 export function* watchProximitySaga() {
@@ -175,26 +171,27 @@ function* handleProximityResponse() {
 
     const acceptedFields = yield* select(selectProximityAcceptedFields);
     if (acceptedFields) {
-      yield* put(
-        setIdentificationStarted({canResetPin: false, isValidatingTask: true})
-      );
-      const resAction = yield* take([
-        setIdentificationIdentified,
-        setIdentificationUnidentified
-      ]);
-      if (setIdentificationIdentified.match(resAction)) {
-        const response = yield* call(
-          Proximity.generateResponse,
-          documents,
-          acceptedFields
-        );
-        yield* call(Proximity.sendResponse, response);
-        yield* put(setProximityStatusAuthorizationComplete());
-        // This is needed so that the saga racing with this can trigger
-        yield* take(setProximityStatusStopped);
-        // Early return that doesn't trigger the error at the end
-        return;
-      }
+      yield* call(startSequentializedIdentificationProcess,
+        {
+          canResetPin: false, isValidatingTask: true
+        },
+        function* () {
+          const response = yield* call(
+            Proximity.generateResponse,
+            documents,
+            acceptedFields
+          );
+          yield* call(Proximity.sendResponse, response);
+          yield* put(setProximityStatusAuthorizationComplete());
+          // This is needed so that the saga racing with this can trigger
+          yield* take(setProximityStatusStopped);
+          // Early return that doesn't trigger the error at the end
+          return;
+        },
+        function* () {
+
+        }
+      )
     }
   }
   yield* call(
