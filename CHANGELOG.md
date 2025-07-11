@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.13.2-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.13.1-rc.0...1.13.2-rc.0) (2025-07-11)
+
+
+### Chores
+
+* Remove automatic signing xcode ([69bd86e](https://github.com/pagopa/io-eudiw-app/commit/69bd86eedbfbc788bc3baedb155ac94c7be088dd))
+
 ### [1.13.1-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.13.0-rc.0...1.13.1-rc.0) (2025-07-11)
 
 ## [1.13.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.12.0-rc.0...1.13.0-rc.0) (2025-07-11)
