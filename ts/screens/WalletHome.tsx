@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {FlatList, Pressable, View} from 'react-native';
 import {
   IOStyles,
@@ -13,7 +13,6 @@ import {ActivationBanner} from '../features/wallet/components/ActivationBanner';
 import {credentialsSelector} from '../features/wallet/store/credentials';
 import {CredentialCard} from '../features/wallet/components/credential/CredentialCard';
 import {IOScrollView} from '../components/IOScrollView';
-import {clearStartupDebugInfo} from '../store/utils/debug';
 
 /**
  * Wallet home to be rendered as the first page in the tab navigator.
@@ -25,15 +24,6 @@ const WalletHome = () => {
   const navigation = useNavigation();
   const isWalletOperational = useAppSelector(lifecycleIsOperationalSelector);
   const credentials = useAppSelector(credentialsSelector);
-
-  /**
-   * The invocation of this clear function is needed here because
-   * there are invocations of {@link IdentificationModal}, which sets the {@link identificationModalDisplayStatus}
-   * variable, outside of the startup saga
-   */
-  useEffect(() => {
-    clearStartupDebugInfo();
-  }, []);
 
   return (
     <>

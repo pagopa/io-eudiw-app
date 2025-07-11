@@ -13,11 +13,6 @@ import {
 } from '../store/presentation';
 import {selectCredentials} from '../store/credentials';
 import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../../store/reducers/identification';
-import {
   handleDcqlRequest,
   handleDcqlResponse,
   handlePresentationDefinitionRequest,
@@ -27,6 +22,7 @@ import {
   PresentationResponseProcessor,
   RequestObject
 } from '../utils/presentation';
+import {startSequentializedIdentificationProcess} from '../../../utils/identification';
 
 /**
  * Saga watcher for presentation related actions.
@@ -142,28 +138,33 @@ function* handleResponse<T>(
 
   if (setPostDefinitionRequest.match(choice)) {
     const {payload: optionalClaims} = choice;
-    yield* put(
-      setIdentificationStarted({canResetPin: false, isValidatingTask: true})
+
+    yield* call(
+      startSequentializedIdentificationProcess,
+      {
+        canResetPin: false,
+        isValidatingTask: true
+      },
+      /**
+       * Inline because the function closure needs the {@link action} parameter,
+       * and typescript's inference does not work properly on a function builder
+       * that builds and returns the callback
+       */
+      function* () {
+        const authResponse: AuthResponse = yield call(
+          responseProcessor,
+          processedRequest,
+          requestObject,
+          optionalClaims,
+          jwks
+        );
+
+        yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
+      },
+      function* () {
+        throw new Error('Identification failed');
+      }
     );
-
-    const resAction = yield* take([
-      setIdentificationIdentified,
-      setIdentificationUnidentified
-    ]);
-
-    if (setIdentificationIdentified.match(resAction)) {
-      const authResponse: AuthResponse = yield call(
-        responseProcessor,
-        processedRequest,
-        requestObject,
-        optionalClaims,
-        jwks
-      );
-
-      yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
-    } else {
-      throw new Error('Identification failed');
-    }
   } else {
     // The result of this call is ignored for the user is not interested in any message
     yield* call(() =>
