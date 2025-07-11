@@ -2,7 +2,7 @@
 
 This file describes the reason for the patches applied.
 
-### @pagopa/io-react-native-wallet+1.7.1
+### @pagopa-io-react-native-wallet-npm-1.7.1-9b4f95122b.patch
 
 Created on **11/07/2025**
 
