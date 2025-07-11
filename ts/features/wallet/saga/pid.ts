@@ -22,8 +22,8 @@ import {Lifecycle, setLifecycle} from '../store/lifecycle';
 import {navigate} from '../../../navigation/utils';
 import {addCredential, addPidWithIdentification} from '../store/credentials';
 import {wellKnownCredential} from '../utils/credentials';
+import {startSequentializedIdentificationProcess} from '../../../utils/identification';
 import {getAttestation} from './attestation';
-import { startSequentializedIdentificationProcess } from '../../../utils/identification';
 
 /**
  * Saga watcher for PID related actions.
@@ -168,7 +168,8 @@ function* obtainPid() {
 function* storePidWithIdentification(
   action: ReturnType<typeof addPidWithIdentification>
 ) {
-  yield* call(startSequentializedIdentificationProcess,
+  yield* call(
+    startSequentializedIdentificationProcess,
     {
       canResetPin: false,
       isValidatingTask: true
@@ -184,7 +185,7 @@ function* storePidWithIdentification(
       navigate('MAIN_WALLET_NAV', {screen: 'PID_ISSUANCE_SUCCESS'});
     },
     function* () {
-      return
+      return;
     }
-  )
+  );
 }

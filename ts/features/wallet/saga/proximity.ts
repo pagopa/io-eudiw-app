@@ -28,7 +28,7 @@ import {
   matchRequestToClaims,
   verifierCertificates
 } from '../utils/proximity';
-import { startSequentializedIdentificationProcess } from '../../../utils/identification';
+import {startSequentializedIdentificationProcess} from '../../../utils/identification';
 
 // Beginning of the saga
 export function* watchProximitySaga() {
@@ -171,9 +171,11 @@ function* handleProximityResponse() {
 
     const acceptedFields = yield* select(selectProximityAcceptedFields);
     if (acceptedFields) {
-      yield* call(startSequentializedIdentificationProcess,
+      yield* call(
+        startSequentializedIdentificationProcess,
         {
-          canResetPin: false, isValidatingTask: true
+          canResetPin: false,
+          isValidatingTask: true
         },
         function* () {
           const response = yield* call(
@@ -185,15 +187,20 @@ function* handleProximityResponse() {
           yield* put(setProximityStatusAuthorizationComplete());
           // This is needed so that the saga racing with this can trigger
           yield* take(setProximityStatusStopped);
-          // Early return that doesn't trigger the error at the end
-          return;
         },
         function* () {
-
+          yield* call(abortProximityFlow);
         }
-      )
+      );
     }
   }
+  yield* call(abortProximityFlow);
+}
+
+/**
+ * Utility function for proximity flows bad termination
+ */
+function* abortProximityFlow() {
   yield* call(
     Proximity.sendErrorResponse,
     Proximity.ErrorCode.SESSION_TERMINATED

@@ -29,19 +29,20 @@ import {
 import {walletSaga} from '../features/wallet/saga';
 import {selectUrl} from '../store/reducers/deeplinking';
 import {isNavigationReady} from '../navigation/utils';
-import { startSequentializedIdentificationProcess } from '../utils/identification';
+import {startSequentializedIdentificationProcess} from '../utils/identification';
 
 function* startupOnSetIdentificationIdentified() {
-    yield* call(BootSplash.hide, {fade: true});
-    yield* fork(walletSaga);
-    yield* call(waitForNavigationToBeReady);
-    yield* put(startupSetStatus('DONE'));
-    yield* call(handlePendingDeepLink);
+  yield* call(BootSplash.hide, {fade: true});
+  yield* fork(walletSaga);
+  yield* call(waitForNavigationToBeReady);
+  yield* put(startupSetStatus('DONE'));
+  yield* call(handlePendingDeepLink);
 }
 
 function* startIdentification() {
   yield* put(startupSetStatus('WAIT_IDENTIFICATION'));
-  yield* call(startSequentializedIdentificationProcess,
+  yield* call(
+    startSequentializedIdentificationProcess,
     {
       canResetPin: true,
       isValidatingTask: false
@@ -50,7 +51,7 @@ function* startIdentification() {
     function* () {
       throw new Error('Identification failed'); // Temporary error which should be mapped
     }
-  )
+  );
 }
 
 /**

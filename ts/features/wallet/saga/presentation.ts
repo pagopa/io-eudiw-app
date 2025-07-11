@@ -22,7 +22,7 @@ import {
   PresentationResponseProcessor,
   RequestObject
 } from '../utils/presentation';
-import { startSequentializedIdentificationProcess } from '../../../utils/identification';
+import {startSequentializedIdentificationProcess} from '../../../utils/identification';
 
 /**
  * Saga watcher for presentation related actions.
@@ -139,7 +139,8 @@ function* handleResponse<T>(
   if (setPostDefinitionRequest.match(choice)) {
     const {payload: optionalClaims} = choice;
 
-    yield* call(startSequentializedIdentificationProcess,
+    yield* call(
+      startSequentializedIdentificationProcess,
       {
         canResetPin: false,
         isValidatingTask: true
@@ -163,7 +164,7 @@ function* handleResponse<T>(
       function* () {
         throw new Error('Identification failed');
       }
-    )
+    );
   } else {
     // The result of this call is ignored for the user is not interested in any message
     yield* call(() =>

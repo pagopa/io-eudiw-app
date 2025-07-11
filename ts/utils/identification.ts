@@ -10,7 +10,7 @@ type SetIdentificationStartedArgs = Parameters<
 >[0];
 
 /**
- * This utility function handles proper sequentialization of the identification process 
+ * This utility function handles proper sequentialization of the identification process
  *
  * @param payload The arguments of the {@link setIdentificationStarted} action
  * @param onIdentificationIdentified A generator function that runs when the user authenticates
@@ -34,9 +34,9 @@ export function* startSequentializedIdentificationProcess(
     if (setIdentificationIdentified.match(action)) {
       yield* call(onIdentificationIdentified);
     } else {
-      yield* call(onIdentificationUnidentified)
+      yield* call(onIdentificationUnidentified);
     }
-  })
+  });
   /**
    * Put the {@link setIdentificationStarted} action
    */

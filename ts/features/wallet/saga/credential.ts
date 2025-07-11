@@ -29,8 +29,8 @@ import {
   setCredentialIssuancePreAuthRequest,
   setCredentialIssuancePreAuthSuccess
 } from '../store/credentialIssuance';
+import {startSequentializedIdentificationProcess} from '../../../utils/identification';
 import {getAttestation} from './attestation';
-import { startSequentializedIdentificationProcess } from '../../../utils/identification';
 
 /**
  * Saga watcher for credential related actions.
@@ -226,7 +226,8 @@ function* obtainCredential() {
 function* storeCredentialWithIdentification(
   action: ReturnType<typeof addCredentialWithIdentification>
 ) {
-  yield* call(startSequentializedIdentificationProcess,
+  yield* call(
+    startSequentializedIdentificationProcess,
     {
       canResetPin: false,
       isValidatingTask: true
@@ -237,13 +238,13 @@ function* storeCredentialWithIdentification(
      * that builds and returns the callback
      */
     function* () {
-        yield* put(addCredential({credential: action.payload.credential}));
-        yield* put(resetCredentialIssuance());
-        navigateWithReset('MAIN_TAB_NAV');
-        IOToast.success(i18next.t('buttons.done', {ns: 'global'}));
+      yield* put(addCredential({credential: action.payload.credential}));
+      yield* put(resetCredentialIssuance());
+      navigateWithReset('MAIN_TAB_NAV');
+      IOToast.success(i18next.t('buttons.done', {ns: 'global'}));
     },
     function* () {
-      return
+      return;
     }
-  )
+  );
 }
