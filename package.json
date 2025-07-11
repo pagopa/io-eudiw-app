@@ -113,5 +113,8 @@
   "engines": {
     "node": ">=22"
   },
-  "packageManager": "yarn@3.6.4"
+  "packageManager": "yarn@3.6.4",
+  "resolutions": {
+    "@pagopa/io-react-native-wallet@1.7.1": "patch:@pagopa/io-react-native-wallet@npm%3A1.7.1#./.yarn/patches/@pagopa-io-react-native-wallet-npm-1.7.1-9b4f95122b.patch"
+  }
 }
