@@ -24,6 +24,8 @@ import {
 } from '../../store/proximity';
 import {PresentationProximityQrCode} from '../proximity/PresentationProximityQRCode';
 import {useDebugInfo} from '../../../../hooks/useDebugInfo';
+import {wellKnownCredential} from '../../utils/credentials';
+import {resetLifecycle} from '../../store/lifecycle';
 
 type PresentationDetailFooterProps = {
   credential: StoredCredential;
@@ -82,7 +84,12 @@ const PresentationDetailsFooter = ({
 
   const RemoveCredential = useCallback(() => {
     const handleRemoveCredential = () => {
-      dispatch(removeCredential(credential));
+      if (credential.credentialType === wellKnownCredential.PID) {
+        // If the credential is a PID, we reset the lifecycle to a complete wallet state reset
+        dispatch(resetLifecycle());
+      } else {
+        dispatch(removeCredential(credential));
+      }
       toast.success(t('global:generics.success'));
       navigation.goBack();
     };
