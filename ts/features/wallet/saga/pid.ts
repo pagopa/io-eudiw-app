@@ -22,7 +22,10 @@ import {Lifecycle, setLifecycle} from '../store/lifecycle';
 import {navigate} from '../../../navigation/utils';
 import {addCredential, addPidWithIdentification} from '../store/credentials';
 import {wellKnownCredential} from '../utils/credentials';
-import {startSequentializedIdentificationProcess} from '../../../utils/identification';
+import {
+  IdentificationResultTask,
+  startSequentializedIdentificationProcess
+} from '../../../utils/identification';
 import {getAttestation} from './attestation';
 
 /**
@@ -161,6 +164,25 @@ function* obtainPid() {
 }
 
 /**
+ * Helper function to process the identified case of the {@link storePidWithIdentification} method
+ * @param action the action with which {@link storePidWithIdentification} is invoked
+ */
+function* onStorePidIdentified(
+  action: ReturnType<typeof addPidWithIdentification>
+) {
+  yield* put(addCredential({credential: action.payload.credential}));
+  yield* put(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
+  navigate('MAIN_WALLET_NAV', {screen: 'PID_ISSUANCE_SUCCESS'});
+}
+
+/**
+ * Helper function to process the unidentified case of the {@link storePidWithIdentification} method
+ */
+function* onStorePidUnidentified() {
+  return;
+}
+
+/**
  * Saga to store the PID credential after pin validation.
  * It dispatches the action which shows the pin validation modal and awaits for the result.
  * If the pin is correct, the PID is stored and the lifecycle is set to `LIFECYCLE_VALID`.
@@ -168,6 +190,20 @@ function* obtainPid() {
 function* storePidWithIdentification(
   action: ReturnType<typeof addPidWithIdentification>
 ) {
+  const onIdentifiedTask: IdentificationResultTask<
+    (arg0: typeof action) => Generator
+  > = {
+    fn: onStorePidIdentified,
+    args: [action]
+  };
+
+  const onUnidentifiedTask: IdentificationResultTask<
+    () => Generator
+  > = {
+    fn: onStorePidUnidentified,
+    args: []
+  };
+
   yield* call(
     startSequentializedIdentificationProcess,
     {
@@ -179,13 +215,7 @@ function* storePidWithIdentification(
      * and typescript's inference does not work properly on a function builder
      * that builds and returns the callback
      */
-    function* () {
-      yield* put(addCredential({credential: action.payload.credential}));
-      yield* put(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
-      navigate('MAIN_WALLET_NAV', {screen: 'PID_ISSUANCE_SUCCESS'});
-    },
-    function* () {
-      return;
-    }
+    onIdentifiedTask,
+    onUnidentifiedTask
   );
 }

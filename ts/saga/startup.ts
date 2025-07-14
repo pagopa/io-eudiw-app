@@ -29,9 +29,15 @@ import {
 import {walletSaga} from '../features/wallet/saga';
 import {selectUrl} from '../store/reducers/deeplinking';
 import {isNavigationReady} from '../navigation/utils';
-import {startSequentializedIdentificationProcess} from '../utils/identification';
+import {
+  IdentificationResultTask,
+  startSequentializedIdentificationProcess
+} from '../utils/identification';
 
-function* startupOnSetIdentificationIdentified() {
+/**
+ * Helper function that is called when the wallet owner successfully identifies at application startup
+ */
+function* onStartupIdentified() {
   yield* call(BootSplash.hide, {fade: true});
   yield* fork(walletSaga);
   yield* call(waitForNavigationToBeReady);
@@ -39,18 +45,38 @@ function* startupOnSetIdentificationIdentified() {
   yield* call(handlePendingDeepLink);
 }
 
+/**
+ * Helper function that is called when the wallet owner doesn't authenticate successfully at application startup
+ */
+function* onStartupUnidentified() {
+  throw new Error('Identification failed'); // Temporary error which should be mapped
+}
+
 function* startIdentification() {
   yield* put(startupSetStatus('WAIT_IDENTIFICATION'));
+
+  const onIdentifiedTask: IdentificationResultTask<
+    typeof onStartupIdentified
+  > = {
+    fn: onStartupIdentified,
+    args: []
+  };
+
+  const OnUnidentifiedTask: IdentificationResultTask<
+    typeof onStartupUnidentified
+  > = {
+    fn: onStartupUnidentified,
+    args: []
+  };
+
   yield* call(
     startSequentializedIdentificationProcess,
     {
       canResetPin: true,
       isValidatingTask: false
     },
-    startupOnSetIdentificationIdentified,
-    function* () {
-      throw new Error('Identification failed'); // Temporary error which should be mapped
-    }
+    onIdentifiedTask,
+    OnUnidentifiedTask
   );
 }
 

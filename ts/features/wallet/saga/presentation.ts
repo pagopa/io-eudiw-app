@@ -1,6 +1,7 @@
 import {call, put, select, take, takeLatest} from 'typed-redux-saga';
 import {Credential} from '@pagopa/io-react-native-wallet';
 import {serializeError} from 'serialize-error';
+import {EvaluatedDisclosure} from '@pagopa/io-react-native-wallet/lib/typescript/credential/presentation/types';
 import {
   AuthResponse,
   resetPresentation,
@@ -22,7 +23,10 @@ import {
   PresentationResponseProcessor,
   RequestObject
 } from '../utils/presentation';
-import {startSequentializedIdentificationProcess} from '../../../utils/identification';
+import {
+  IdentificationResultTask,
+  startSequentializedIdentificationProcess
+} from '../../../utils/identification';
 
 /**
  * Saga watcher for presentation related actions.
@@ -107,6 +111,38 @@ function* handlePresentationPreDefinition(
     yield* put(setPreDefinitionError({error: serializeError(e)}));
   }
 }
+/**
+ * This helper function performs the credentials' presentation in case of correct identification of the wallet owner
+ * @param responseProcessor The same parameter with which {@link handleResponse} was called
+ * @param processedRequest The {@link RequestObject} processed by {@link handleResponse}'s requestProcessor param
+ * @param requestObject The presentation's {@link RequestObject}
+ * @param optionalClaims An {@link EvaluatedDisclosure[]} of the optional disclosures the user chose to share
+ * @param jwks The same parameter with which {@link handleResponse} was called
+ */
+function* onPresentCredentialIdentified<T>(
+  responseProcessor: Parameters<typeof handleResponse<T>>[5],
+  processedRequest: T,
+  requestObject: Parameters<typeof handleResponse<T>>[0],
+  optionalClaims: Array<EvaluatedDisclosure>,
+  jwks: Parameters<typeof handleResponse<T>>[3]
+) {
+  const authResponse: AuthResponse = yield call(
+    responseProcessor,
+    processedRequest,
+    requestObject,
+    optionalClaims,
+    jwks
+  );
+
+  yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
+}
+
+/**
+ * This helper function handles the case in which the wallet owner could not be authenticated during a presentation
+ */
+function* onPresentCredentialUnidentified() {
+  throw new Error('Identification failed');
+}
 
 /**
  * Helper function that generalizes the last part of a Presentation flow, handling only common user interaction with the saga
@@ -139,6 +175,26 @@ function* handleResponse<T>(
   if (setPostDefinitionRequest.match(choice)) {
     const {payload: optionalClaims} = choice;
 
+    const onIdentifiedTask: IdentificationResultTask<
+      typeof onPresentCredentialIdentified<T>
+    > = {
+      fn: onPresentCredentialIdentified<T>,
+      args: [
+        responseProcessor,
+        processedRequest,
+        requestObject,
+        optionalClaims,
+        jwks
+      ]
+    };
+
+    const onUnidentifiedTask: IdentificationResultTask<
+      typeof onPresentCredentialUnidentified
+    > = {
+      fn: onPresentCredentialUnidentified,
+      args: []
+    };
+
     yield* call(
       startSequentializedIdentificationProcess,
       {
@@ -150,20 +206,8 @@ function* handleResponse<T>(
        * and typescript's inference does not work properly on a function builder
        * that builds and returns the callback
        */
-      function* () {
-        const authResponse: AuthResponse = yield call(
-          responseProcessor,
-          processedRequest,
-          requestObject,
-          optionalClaims,
-          jwks
-        );
-
-        yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
-      },
-      function* () {
-        throw new Error('Identification failed');
-      }
+      onIdentifiedTask,
+      onUnidentifiedTask
     );
   } else {
     // The result of this call is ignored for the user is not interested in any message

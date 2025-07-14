@@ -10,16 +10,29 @@ type SetIdentificationStartedArgs = Parameters<
 >[0];
 
 /**
+ * Type that represents a task to be executed in case of wallet owner identification success or falure
+ */
+export type IdentificationResultTask<
+  F extends (...args: Array<any>) => Generator
+> = {
+  fn: F;
+  args: Parameters<F>;
+};
+
+/**
  * This utility function handles proper sequentialization of the identification process
  *
  * @param payload The arguments of the {@link setIdentificationStarted} action
- * @param onIdentificationIdentified A generator function that runs when the user authenticates
- * @param onIdentificationUnidentified A generator function that runs when the user does not authenticate
+ * @param onIdentifiedTask A {@link IdentificationResultTask} that runs when the user authenticates
+ * @param onUnidentifiedtask A {@link IdentificationResultTask} that runs when the user does not authenticate
  */
-export function* startSequentializedIdentificationProcess(
+export function* startSequentializedIdentificationProcess<
+  OnIdentifiedTask extends (...args: Array<any>) => Generator,
+  OnUnidentifiedTask extends (...args: Array<any>) => Generator
+>(
   payload: SetIdentificationStartedArgs,
-  onIdentificationIdentified: () => Generator,
-  onIdentificationUnidentified: () => Generator
+  onIdentifiedTask: IdentificationResultTask<OnIdentifiedTask>,
+  onUnidentifiedTask: IdentificationResultTask<OnUnidentifiedTask>
 ) {
   /**
    * Fork a saga to start waiting for the identification action before starting the identification
@@ -32,9 +45,9 @@ export function* startSequentializedIdentificationProcess(
       setIdentificationUnidentified
     ]);
     if (setIdentificationIdentified.match(action)) {
-      yield* call(onIdentificationIdentified);
+      yield* call(onIdentifiedTask.fn, ...onIdentifiedTask.args);
     } else {
-      yield* call(onIdentificationUnidentified);
+      yield* call(onUnidentifiedTask.fn, ...onUnidentifiedTask.args);
     }
   });
   /**

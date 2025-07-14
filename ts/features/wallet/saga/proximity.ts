@@ -28,7 +28,10 @@ import {
   matchRequestToClaims,
   verifierCertificates
 } from '../utils/proximity';
-import {startSequentializedIdentificationProcess} from '../../../utils/identification';
+import {
+  IdentificationResultTask,
+  startSequentializedIdentificationProcess
+} from '../../../utils/identification';
 
 // Beginning of the saga
 export function* watchProximitySaga() {
@@ -126,6 +129,33 @@ function* proximityPresentation() {
 }
 
 /**
+ * Helper function to send the Proximity Response in case of successful wallet owner identification
+ * @param documents An array of Proximity Documents
+ * @param acceptedFields The Proximity Presentation's {@link AcceptedFields}
+ */
+function* onProximitySendResponseIdentified(
+  documents: Array<Proximity.Document>,
+  acceptedFields: AcceptedFields
+) {
+  const response = yield* call(
+    Proximity.generateResponse,
+    documents,
+    acceptedFields
+  );
+  yield* call(Proximity.sendResponse, response);
+  yield* put(setProximityStatusAuthorizationComplete());
+  // This is needed so that the saga racing with this can trigger
+  yield* take(setProximityStatusStopped);
+}
+
+/**
+ * Helper function to handle the case in which the wallet owner is not identified during a Proximity Presentation
+ */
+function* onProximitySendResponseUnidentified() {
+  yield* call(abortProximityFlow);
+}
+
+/**
  * This method waits for a document request, creates a credential descriptor
  * from which a visual representation and the {@link AcceptedFields} can be
  * generated, awaits for the user to select the fields to send and, ultimately,
@@ -171,26 +201,28 @@ function* handleProximityResponse() {
 
     const acceptedFields = yield* select(selectProximityAcceptedFields);
     if (acceptedFields) {
+      const onIdentificationIdentified: IdentificationResultTask<
+        typeof onProximitySendResponseIdentified
+      > = {
+        fn: onProximitySendResponseIdentified,
+        args: [documents, acceptedFields]
+      };
+
+      const onIdentificationUnidentified: IdentificationResultTask<
+        typeof onProximitySendResponseUnidentified
+      > = {
+        fn: onProximitySendResponseUnidentified,
+        args: []
+      };
+
       yield* call(
         startSequentializedIdentificationProcess,
         {
           canResetPin: false,
           isValidatingTask: true
         },
-        function* () {
-          const response = yield* call(
-            Proximity.generateResponse,
-            documents,
-            acceptedFields
-          );
-          yield* call(Proximity.sendResponse, response);
-          yield* put(setProximityStatusAuthorizationComplete());
-          // This is needed so that the saga racing with this can trigger
-          yield* take(setProximityStatusStopped);
-        },
-        function* () {
-          yield* call(abortProximityFlow);
-        }
+        onIdentificationIdentified,
+        onIdentificationUnidentified
       );
     } else {
       yield* call(abortProximityFlow);
