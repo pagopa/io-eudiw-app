@@ -55,12 +55,11 @@ function* onStartupUnidentified() {
 function* startIdentification() {
   yield* put(startupSetStatus('WAIT_IDENTIFICATION'));
 
-  const onIdentifiedTask: IdentificationResultTask<
-    typeof onStartupIdentified
-  > = {
-    fn: onStartupIdentified,
-    args: []
-  };
+  const onIdentifiedTask: IdentificationResultTask<typeof onStartupIdentified> =
+    {
+      fn: onStartupIdentified,
+      args: []
+    };
 
   const OnUnidentifiedTask: IdentificationResultTask<
     typeof onStartupUnidentified

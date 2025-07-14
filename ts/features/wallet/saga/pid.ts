@@ -197,9 +197,7 @@ function* storePidWithIdentification(
     args: [action]
   };
 
-  const onUnidentifiedTask: IdentificationResultTask<
-    () => Generator
-  > = {
+  const onUnidentifiedTask: IdentificationResultTask<() => Generator> = {
     fn: onStorePidUnidentified,
     args: []
   };
