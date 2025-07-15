@@ -212,6 +212,7 @@ interface Resources {
         "mdl": "Driving License",
         "pid": "Digital Identity",
         "hiid": "Health ID",
+        "fbk": "FBK Digital Badge",
         "unknown": "Unknown"
       }
     },

@@ -323,7 +323,7 @@ const CredentialClaim = ({
             label={claim.label}
             claim={decoded.data.value}
             expires={!isPreview}
-            reversed
+            reversed={reversed}
           />
         );
       case 'drivingPrivileges':
@@ -337,7 +337,7 @@ const CredentialClaim = ({
                   label={claim.label}
                   claim={elem}
                   detailsButtonVisible={!isPreview}
-                  reversed
+                  reversed={reversed}
                 />
               </Fragment>
             ))}
@@ -360,6 +360,14 @@ const CredentialClaim = ({
             reversed={reversed}
           />
         );
+      case 'stringArray':
+        return (
+          <PlainTextClaimItem
+            label={claim.label}
+            claim={decoded.data.value.reduce((prev, str, idx) => prev + `${idx ? ', ': ''}${str}`, '')}
+            reversed={reversed}
+          />
+        )
       case 'image':
         return (
           <ImageClaimItem

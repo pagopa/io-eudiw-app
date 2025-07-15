@@ -60,7 +60,7 @@ function* obtainPid() {
 
     // Evaluate issuer trust
     const {issuerConf} = yield* call(
-      Credential.Issuance.getIssuerConfig,
+      Credential.Issuance.getIssuerConfigOIDFED,
       issuerUrl
     );
 
@@ -155,7 +155,7 @@ function* obtainPid() {
           credential,
           credentialType,
           keyTag: credentialKeyTag,
-          format
+          format: format as  "vc+sd-jwt" | "mso_mdoc"
         }
       })
     );

@@ -2744,9 +2744,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-wallet@npm:1.7.1":
-  version: 1.7.1
-  resolution: "@pagopa/io-react-native-wallet@npm:1.7.1"
+"@pagopa/io-react-native-wallet@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@pagopa/io-react-native-wallet@npm:1.8.0"
   dependencies:
     "@types/jsrsasign": ^10.5.15
     ajv: ^8.17.1
@@ -2765,7 +2765,7 @@ __metadata:
     "@pagopa/io-react-native-jwt": "*"
     react: "*"
     react-native: "*"
-  checksum: 7e139b26048c07d7b8070e2581b7aabff385fd20b5586cf23cdd0e26a497b0d999de765bfc97a2378e1ff286a311ca226d05fbbe1af998673db9acaa1d3eec84
+  checksum: 153a1ec2dde0f0cabea43e5f37a58717925cbbff804f921c2852b4d7b95519fc99435b8d816f4e53d0189b06bf72369152320d8338a24bbace5495632e5ecf9c
   languageName: node
   linkType: hard
 
@@ -8528,7 +8528,7 @@ __metadata:
     "@pagopa/io-react-native-jwt": 2.1.0
     "@pagopa/io-react-native-login-utils": ^1.0.9
     "@pagopa/io-react-native-proximity": ^0.6.0
-    "@pagopa/io-react-native-wallet": 1.7.1
+    "@pagopa/io-react-native-wallet": 1.8.0
     "@pagopa/react-native-nodelibs": ^0.1.0
     "@react-native-async-storage/async-storage": ^2.2.0
     "@react-native-clipboard/clipboard": ^1.16.2

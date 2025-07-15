@@ -14,6 +14,7 @@ export type CredentialCard = {
 
 type StyleProps = {
   cardBackgroundSource: ImageSourcePropType;
+  cardLogoSource?: ImageSourcePropType;
   titleColor: string;
   titleOpacity: number;
 };
@@ -21,9 +22,11 @@ type StyleProps = {
 const getStyleProps = (credentialType: string): StyleProps => {
   const theme = getThemeColorByCredentialType(credentialType);
   const cardBackgroundSource = credentialCardBackgrounds[credentialType];
+  const cardLogoSource = credentialCardLogos[credentialType];
 
   return {
     cardBackgroundSource,
+    cardLogoSource,
     titleColor: theme.textColor,
     titleOpacity: 1
   };
@@ -61,6 +64,9 @@ export const CredentialCard = ({credentialType}: CredentialCard) => {
             }}>
             {getCredentialNameByType(credentialType).toUpperCase()}
           </IOText>
+          {styleProps.cardLogoSource && (
+            <AnimatedImage source={styleProps.cardLogoSource} />
+          )}
         </HStack>
       </View>
     </View>
@@ -72,7 +78,14 @@ const credentialCardBackgrounds: {
 } = {
   [wellKnownCredential.PID]: require('../../assets/img/credentials/pid.png'),
   [wellKnownCredential.DRIVING_LICENSE]: require('../../assets/img/credentials/mdl.png'),
-  [wellKnownCredential.HEALTHID]: require('../../assets/img/credentials/healthID.png')
+  [wellKnownCredential.HEALTHID]: require('../../assets/img/credentials/healthID.png'),
+  [wellKnownCredential.FBK_BADGE]: require('../../assets/img/credentials/fbkBadge.png')
+};
+
+const credentialCardLogos: {
+  [type: string]: ImageSourcePropType;
+} = {
+  [wellKnownCredential.FBK_BADGE]: require('../../assets/img/credentials/FBKLogo.png')
 };
 
 const styles = StyleSheet.create({

@@ -31,7 +31,8 @@ import {
 import {
   getIsVerifierAuthenticated,
   matchRequestToClaims,
-  verifierCertificates
+  verifierCertificates,
+  b64utob64
 } from '../utils/proximity';
 
 // Beginning of the saga
@@ -169,7 +170,7 @@ function* handleProximityResponse() {
       credential => ({
         alias: credential.keyTag,
         docType: credential.credentialType,
-        issuerSignedContent: credential.credential
+        issuerSignedContent: b64utob64(credential.credential)
       })
     );
 

@@ -12,7 +12,8 @@ export const claimType = {
   drivingPrivileges: 'drivingPrivileges',
   verificationEvidence: 'verificationEvidence',
   string: 'string',
-  image: 'image'
+  image: 'image',
+  stringArray : 'stringArray'
 } as const;
 
 /**
@@ -49,6 +50,14 @@ export const stringSchema = z.string().transform(str => ({
   value: str,
   type: claimType.string
 }));
+
+/**
+ * Schema to validate an array of strings when the base claim label is not specified.
+ */
+export const stringArraySchema = z.string().array().transform(array => ({
+  value : array,
+  type : claimType.stringArray
+}))
 
 /**
  * Schema to validate a boolean when the base claim label is not specified
@@ -221,6 +230,7 @@ export const claimScheme = z.union([
       dateSchema,
       drivingPrivilegesSchema,
       verificationEvidenceSchema,
+      stringArraySchema,
       booleanSchema,
       numberSchema,
       stringSchema

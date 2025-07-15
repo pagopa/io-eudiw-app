@@ -2,6 +2,11 @@ import {CBOR} from '@pagopa/io-react-native-cbor';
 import {VerifierRequest} from '@pagopa/io-react-native-proximity';
 import {ParsedCredential, StoredCredential} from './types';
 
+export function b64utob64(b64u : string) {
+  const replaced =  b64u.replaceAll('-', '+').replaceAll('_', '/')
+  return replaced + "=".repeat((replaced.length%4) !== 0 ? 4- (replaced.length %4) : 0)
+}
+
 type StoredCredentialWithIssuerSigned = StoredCredential & {
   issuerSigned: CBOR.IssuerSigned;
 };
@@ -159,13 +164,19 @@ export const matchRequestToClaims = async (
   const decodedCredentials: Array<StoredCredentialWithIssuerSigned> =
     await Promise.all(
       credentialsMdoc.map(async credential => {
-        const decodedIssuerSigned = await CBOR.decodeIssuerSigned(
-          credential.credential
-        );
-        return {
-          ...credential,
-          issuerSigned: decodedIssuerSigned
-        };
+        try {
+          const decoded = b64utob64(credential.credential)
+          const decodedIssuerSigned = await CBOR.decodeIssuerSigned(
+            decoded
+          );
+          return {
+            ...credential,
+            issuerSigned: decodedIssuerSigned
+          };
+        } catch (e) {
+          console.log(e)
+          throw e
+        }
       })
     );
 

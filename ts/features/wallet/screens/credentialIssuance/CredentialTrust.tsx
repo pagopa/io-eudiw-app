@@ -9,7 +9,7 @@ import {
   IOVisualCostants,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
@@ -27,8 +27,9 @@ import {
   selectRequestedCredential,
   setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
-import PresentationClaimsList from '../../components/presentation/PresentationClaimsList';
-import {Descriptor, OptionalClaims} from '../../store/presentation';
+import PresentationClaimsList, {
+  PresentationClaimsListDescriptor
+} from '../../components/presentation/NewPresentationClaimsList';
 
 /**
  * Screen which shows the user the credentials and claims that will be shared with the credential issuer
@@ -36,9 +37,6 @@ import {Descriptor, OptionalClaims} from '../../store/presentation';
  */
 const CredentialTrust = () => {
   const dispatch = useAppDispatch();
-  const [optionalChecked, setOptionalChecked] = useState(
-    [] as Array<OptionalClaims>
-  );
   const pid = useAppSelector(selectCredential(wellKnownCredential.PID));
   const {t} = useTranslation(['global', 'wallet']);
   const {loading, error, success} = useAppSelector(
@@ -89,33 +87,25 @@ const CredentialTrust = () => {
     return null;
   }
 
-  /**
-   * Callback for when the user checks or unchecks an optional disclosure
-   * in the PresentationClaimsList component.
-   * @param encoded - The encoded string of the optional disclosure
-   */
-  const onOptionalDisclosuresChange = (encoded: OptionalClaims) => {
-    if (optionalChecked.includes(encoded)) {
-      setOptionalChecked(optionalChecked.filter(item => item !== encoded));
-    } else {
-      setOptionalChecked([...optionalChecked, encoded]);
-    }
-  };
-
   // This is a mocked descriptor for the PID credential to show its claims in the PresentationClaimsList component
   const pidCredentialJwt = SdJwt.decode(pid.credential);
-  const requiredDisclosures = pidCredentialJwt.disclosures
-    .filter(disclosure => disclosure.decoded[1] !== 'iat')
-    .map(disclosure => ({
-      name: disclosure.decoded[1],
-      value: disclosure.decoded[2]
-    }));
-  const mockedDescriptorForPid: Descriptor = [
-    {
-      requiredDisclosures,
-      optionalDisclosures: []
-    }
-  ];
+  const requiredDisclosures: PresentationClaimsListDescriptor = {
+    [wellKnownCredential.PID]: pidCredentialJwt.disclosures
+      .filter(disclosure => disclosure.decoded[1] !== 'iat')
+      .reduce<PresentationClaimsListDescriptor[string]>(
+        (cumulated, disclosure) => ({
+          ...cumulated,
+          [disclosure.decoded[0]]: {
+            ...cumulated[disclosure.decoded[0]],
+            [disclosure.decoded[1]]: {
+              name: disclosure.decoded[1],
+              value: disclosure.decoded[2]
+            }
+          }
+        }),
+        {}
+      )
+  };
 
   return (
     <ForceScrollDownView>
@@ -136,12 +126,7 @@ const CredentialTrust = () => {
         </H2>
         <Body> {t('wallet:credentialIssuance.trust.subtitle')}</Body>
         <VSpacer size={8} />
-        <PresentationClaimsList
-          optionalChecked={optionalChecked}
-          setOptionalChecked={onOptionalDisclosuresChange}
-          descriptor={mockedDescriptorForPid}
-          source={getCredentialNameByType(wellKnownCredential.PID)}
-        />
+        <PresentationClaimsList mandatoryDescriptor={requiredDisclosures} />
         <VSpacer size={24} />
         <FeatureInfo
           iconName="fornitori"
