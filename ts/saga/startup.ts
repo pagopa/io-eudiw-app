@@ -32,7 +32,7 @@ import {isNavigationReady} from '../navigation/utils';
 import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
-} from '../utils/identification';
+} from './identification';
 
 /**
  * Helper function that is called when the wallet owner successfully identifies at application startup

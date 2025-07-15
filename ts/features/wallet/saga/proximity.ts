@@ -31,7 +31,7 @@ import {
 import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
-} from '../../../utils/identification';
+} from '../../../saga/identification';
 
 // Beginning of the saga
 export function* watchProximitySaga() {

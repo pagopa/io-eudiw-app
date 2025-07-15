@@ -25,7 +25,7 @@ import {wellKnownCredential} from '../utils/credentials';
 import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
-} from '../../../utils/identification';
+} from '../../../saga/identification';
 import {getAttestation} from './attestation';
 
 /**

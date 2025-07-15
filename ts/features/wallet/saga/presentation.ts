@@ -26,7 +26,7 @@ import {
 import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
-} from '../../../utils/identification';
+} from '../../../saga/identification';
 
 /**
  * Saga watcher for presentation related actions.

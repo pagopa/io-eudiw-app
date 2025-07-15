@@ -32,7 +32,7 @@ import {
 import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
-} from '../../../utils/identification';
+} from '../../../saga/identification';
 import {getAttestation} from './attestation';
 
 /**
