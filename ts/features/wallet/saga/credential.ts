@@ -14,11 +14,6 @@ import {
 } from '@pagopa/io-react-native-login-utils';
 import {regenerateCryptoKey} from '../../../utils/crypto';
 import {DPOP_KEYTAG} from '../utils/crypto';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../../store/reducers/identification';
 import {navigateWithReset} from '../../../navigation/utils';
 import {
   addCredential,
@@ -34,6 +29,10 @@ import {
   setCredentialIssuancePreAuthRequest,
   setCredentialIssuancePreAuthSuccess
 } from '../store/credentialIssuance';
+import {
+  IdentificationResultTask,
+  startSequentializedIdentificationProcess
+} from '../../../saga/identification';
 import {getAttestation} from './attestation';
 
 /**
@@ -223,6 +222,26 @@ function* obtainCredential() {
 }
 
 /**
+ * Helper function to process the identified case of the {@link storeCredentialWithIdentification} method
+ * @param action the action with which {@link storeCredentialWithIdentification} is invoked
+ */
+function* onStoreCredentialIdentified(
+  action: ReturnType<typeof addCredentialWithIdentification>
+) {
+  yield* put(addCredential({credential: action.payload.credential}));
+  yield* put(resetCredentialIssuance());
+  navigateWithReset('MAIN_TAB_NAV');
+  IOToast.success(i18next.t('buttons.done', {ns: 'global'}));
+}
+
+/**
+ * Helper function to process the unidentified case of the {@link storeCredentialWithIdentification} method
+ */
+function* onStoreCredentialUnidentified() {
+  return;
+}
+
+/**
  * Saga to store the credential after pin validation.
  * It dispatches the action which shows the pin validation modal and awaits for the result.
  * If the pin is correct, the credential is stored, the issuance state is resetted and the user is navigated to the main screen.
@@ -230,19 +249,32 @@ function* obtainCredential() {
 function* storeCredentialWithIdentification(
   action: ReturnType<typeof addCredentialWithIdentification>
 ) {
-  yield* put(
-    setIdentificationStarted({canResetPin: false, isValidatingTask: true})
+  const onIdentifiedTask: IdentificationResultTask<
+    typeof onStoreCredentialIdentified
+  > = {
+    fn: onStoreCredentialIdentified,
+    args: [action]
+  };
+
+  const onUnidentifiedTask: IdentificationResultTask<
+    typeof onStoreCredentialUnidentified
+  > = {
+    fn: onStoreCredentialUnidentified,
+    args: []
+  };
+
+  yield* call(
+    startSequentializedIdentificationProcess,
+    {
+      canResetPin: false,
+      isValidatingTask: true
+    },
+    /**
+     * Inline because the function closure needs the {@link action} parameter,
+     * and typescript's inference does not work properly on a function builder
+     * that builds and returns the callback
+     */
+    onIdentifiedTask,
+    onUnidentifiedTask
   );
-  const resAction = yield* take([
-    setIdentificationIdentified,
-    setIdentificationUnidentified
-  ]);
-  if (setIdentificationIdentified.match(resAction)) {
-    yield* put(addCredential({credential: action.payload.credential}));
-    yield* put(resetCredentialIssuance());
-    navigateWithReset('MAIN_TAB_NAV');
-    IOToast.success(i18next.t('buttons.done', {ns: 'global'}));
-  } else {
-    return;
-  }
 }

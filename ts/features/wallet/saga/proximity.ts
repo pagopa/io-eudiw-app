@@ -24,16 +24,15 @@ import {requestBlePermissions} from '../utils/permissions';
 import {store} from '../../../store';
 import {selectCredentials} from '../store/credentials';
 import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../../store/reducers/identification';
-import {
   getIsVerifierAuthenticated,
   matchRequestToClaims,
   verifierCertificates,
   b64utob64
 } from '../utils/proximity';
+import {
+  IdentificationResultTask,
+  startSequentializedIdentificationProcess
+} from '../../../saga/identification';
 
 // Beginning of the saga
 export function* watchProximitySaga() {
@@ -131,6 +130,33 @@ function* proximityPresentation() {
 }
 
 /**
+ * Helper function to send the Proximity Response in case of successful wallet owner identification
+ * @param documents An array of Proximity Documents
+ * @param acceptedFields The Proximity Presentation's {@link AcceptedFields}
+ */
+function* onProximitySendResponseIdentified(
+  documents: Array<Proximity.Document>,
+  acceptedFields: AcceptedFields
+) {
+  const response = yield* call(
+    Proximity.generateResponse,
+    documents,
+    acceptedFields
+  );
+  yield* call(Proximity.sendResponse, response);
+  yield* put(setProximityStatusAuthorizationComplete());
+  // This is needed so that the saga racing with this can trigger
+  yield* take(setProximityStatusStopped);
+}
+
+/**
+ * Helper function to handle the case in which the wallet owner is not identified during a Proximity Presentation
+ */
+function* onProximitySendResponseUnidentified() {
+  yield* call(abortProximityFlow);
+}
+
+/**
  * This method waits for a document request, creates a credential descriptor
  * from which a visual representation and the {@link AcceptedFields} can be
  * generated, awaits for the user to select the fields to send and, ultimately,
@@ -176,28 +202,41 @@ function* handleProximityResponse() {
 
     const acceptedFields = yield* select(selectProximityAcceptedFields);
     if (acceptedFields) {
-      yield* put(
-        setIdentificationStarted({canResetPin: false, isValidatingTask: true})
+      const onIdentificationIdentified: IdentificationResultTask<
+        typeof onProximitySendResponseIdentified
+      > = {
+        fn: onProximitySendResponseIdentified,
+        args: [documents, acceptedFields]
+      };
+
+      const onIdentificationUnidentified: IdentificationResultTask<
+        typeof onProximitySendResponseUnidentified
+      > = {
+        fn: onProximitySendResponseUnidentified,
+        args: []
+      };
+
+      yield* call(
+        startSequentializedIdentificationProcess,
+        {
+          canResetPin: false,
+          isValidatingTask: true
+        },
+        onIdentificationIdentified,
+        onIdentificationUnidentified
       );
-      const resAction = yield* take([
-        setIdentificationIdentified,
-        setIdentificationUnidentified
-      ]);
-      if (setIdentificationIdentified.match(resAction)) {
-        const response = yield* call(
-          Proximity.generateResponse,
-          documents,
-          acceptedFields
-        );
-        yield* call(Proximity.sendResponse, response);
-        yield* put(setProximityStatusAuthorizationComplete());
-        // This is needed so that the saga racing with this can trigger
-        yield* take(setProximityStatusStopped);
-        // Early return that doesn't trigger the error at the end
-        return;
-      }
+    } else {
+      yield* call(abortProximityFlow);
     }
+  } else {
+    yield* call(abortProximityFlow);
   }
+}
+
+/**
+ * Utility function for proximity flows bad termination
+ */
+function* abortProximityFlow() {
   yield* call(
     Proximity.sendErrorResponse,
     Proximity.ErrorCode.SESSION_TERMINATED
