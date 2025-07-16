@@ -26,9 +26,9 @@ import {
   selectRequestedCredential,
   setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
-import PresentationClaimsList, {
-  PresentationClaimsListDescriptor
-} from '../../components/presentation/NewPresentationClaimsList';
+import CredentialTypePresentationClaimsList, {
+  CredentialTypePresentationClaimsListDescriptor
+} from '../../components/presentation/CredentialTypePresentationClaimsList';
 
 /**
  * Screen which shows the user the credentials and claims that will be shared with the credential issuer
@@ -87,18 +87,19 @@ const CredentialTrust = () => {
   }
 
   // This is a mocked descriptor for the PID credential to show its claims in the PresentationClaimsList component
-  const pidCredential = useAppSelector(selectCredential(wellKnownCredential.PID));
-  const requiredDisclosures: PresentationClaimsListDescriptor = {
+  const requiredDisclosures: CredentialTypePresentationClaimsListDescriptor = {
     [wellKnownCredential.PID]: {
-      [wellKnownCredential.PID]: Object.fromEntries(Object.entries(pidCredential!.parsedCredential)
-      .filter(([key]) => key !== 'iat')
-      .map(([key, value]) => [
-        key,
-        {
-          name: value.name,
-          value: value.value
-        }
-      ]))
+      [wellKnownCredential.PID]: Object.fromEntries(
+        Object.entries(pid!.parsedCredential)
+          .filter(([key]) => key !== 'iat')
+          .map(([key, value]) => [
+            key,
+            {
+              name: value.name,
+              value: value.value
+            }
+          ])
+      )
     }
   };
 
@@ -121,7 +122,9 @@ const CredentialTrust = () => {
         </H2>
         <Body> {t('wallet:credentialIssuance.trust.subtitle')}</Body>
         <VSpacer size={8} />
-        <PresentationClaimsList mandatoryDescriptor={requiredDisclosures} />
+        <CredentialTypePresentationClaimsList
+          mandatoryDescriptor={requiredDisclosures}
+        />
         <VSpacer size={24} />
         <FeatureInfo
           iconName="fornitori"

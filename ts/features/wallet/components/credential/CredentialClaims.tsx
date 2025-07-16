@@ -364,10 +364,13 @@ const CredentialClaim = ({
         return (
           <PlainTextClaimItem
             label={claim.label}
-            claim={decoded.data.value.reduce((prev, str, idx) => prev + `${idx ? ', ': ''}${str}`, '')}
+            claim={decoded.data.value.reduce(
+              (prev, str, idx) => prev + `${idx ? ', ' : ''}${str}`,
+              ''
+            )}
             reversed={reversed}
           />
-        )
+        );
       case 'image':
         return (
           <ImageClaimItem

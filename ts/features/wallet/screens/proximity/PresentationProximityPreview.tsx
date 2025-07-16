@@ -34,7 +34,7 @@ import {useAppDispatch, useAppSelector} from '../../../../store';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 import {selectIsDebugModeEnabled} from '../../../../store/reducers/debug';
-import PresentationClaimsList from '../../components/presentation/NewPresentationClaimsList';
+import CredentialTypePresentationClaimsList from '../../components/presentation/CredentialTypePresentationClaimsList';
 
 export type PresentationProximityPreviewProps = ProximityDisclosure;
 
@@ -176,11 +176,11 @@ const PresentationProximityPreview = ({route}: Props) => {
         <Body> {t('wallet:presentation.trust.subtitle')}</Body>
         <VSpacer size={24} />
         {isDebug && <IsAuthenticatedAlert />}
-        <PresentationClaimsList
+        <CredentialTypePresentationClaimsList
           optionalSection={{
             optionalDescriptor: route.params.descriptor,
             optionalCheckState: checkState,
-            setOptionalCheckState : setCheckState
+            setOptionalCheckState: setCheckState
           }}
           showMandatoryHeader={false}
           showOptionalHeader={false}

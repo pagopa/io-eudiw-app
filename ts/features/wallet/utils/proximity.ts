@@ -2,9 +2,17 @@ import {CBOR} from '@pagopa/io-react-native-cbor';
 import {VerifierRequest} from '@pagopa/io-react-native-proximity';
 import {ParsedCredential, StoredCredential} from './types';
 
-export function b64utob64(b64u : string) {
-  const replaced =  b64u.replaceAll('-', '+').replaceAll('_', '/')
-  return replaced + "=".repeat((replaced.length%4) !== 0 ? 4- (replaced.length %4) : 0)
+/**
+ * Temporary helper function to convert from Base64URL to Base64
+ * @param b64u Base64URL encoded string
+ * @returns The string in Base64 format
+ */
+export function b64utob64(b64u: string) {
+  const replaced = b64u.replaceAll('-', '+').replaceAll('_', '/');
+  return (
+    replaced +
+    '='.repeat(replaced.length % 4 !== 0 ? 4 - (replaced.length % 4) : 0)
+  );
 }
 
 type StoredCredentialWithIssuerSigned = StoredCredential & {
@@ -164,19 +172,12 @@ export const matchRequestToClaims = async (
   const decodedCredentials: Array<StoredCredentialWithIssuerSigned> =
     await Promise.all(
       credentialsMdoc.map(async credential => {
-        try {
-          const decoded = b64utob64(credential.credential)
-          const decodedIssuerSigned = await CBOR.decodeIssuerSigned(
-            decoded
-          );
-          return {
-            ...credential,
-            issuerSigned: decodedIssuerSigned
-          };
-        } catch (e) {
-          console.log(e)
-          throw e
-        }
+        const decoded = b64utob64(credential.credential);
+        const decodedIssuerSigned = await CBOR.decodeIssuerSigned(decoded);
+        return {
+          ...credential,
+          issuerSigned: decodedIssuerSigned
+        };
       })
     );
 

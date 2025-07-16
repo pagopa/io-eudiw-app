@@ -155,7 +155,7 @@ function* obtainPid() {
           credential,
           credentialType,
           keyTag: credentialKeyTag,
-          format: format as  "vc+sd-jwt" | "mso_mdoc"
+          format: format as 'vc+sd-jwt' | 'mso_mdoc'
         }
       })
     );

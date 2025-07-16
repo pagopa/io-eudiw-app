@@ -13,7 +13,7 @@ export const claimType = {
   verificationEvidence: 'verificationEvidence',
   string: 'string',
   image: 'image',
-  stringArray : 'stringArray'
+  stringArray: 'stringArray'
 } as const;
 
 /**
@@ -54,10 +54,13 @@ export const stringSchema = z.string().transform(str => ({
 /**
  * Schema to validate an array of strings when the base claim label is not specified.
  */
-export const stringArraySchema = z.string().array().transform(array => ({
-  value : array,
-  type : claimType.stringArray
-}))
+export const stringArraySchema = z
+  .string()
+  .array()
+  .transform(array => ({
+    value: array,
+    type: claimType.stringArray
+  }));
 
 /**
  * Schema to validate a boolean when the base claim label is not specified

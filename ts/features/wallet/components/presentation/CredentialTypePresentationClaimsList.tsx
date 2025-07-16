@@ -31,34 +31,34 @@ import {ParsedCredential} from '../../utils/types';
  *    }
  *  }`
  * */
-export type PresentationClaimsListOptionalAcceptedFields = {
+export type CredentialTypePresentationClaimsListOptionalAcceptedFields = {
   [credential: string]: {
     [namespace: string]: {[field: string]: boolean};
   };
 };
 
-export type PresentationClaimsListDescriptor = Record<
+export type CredentialTypePresentationClaimsListDescriptor = Record<
   string,
   Record<string, Record<string, ParsedCredential[string]>>
 >;
 
 /**
- * Conversion of the {@link PresentationClaimsListDescriptor} for internal usage inside of the
- * {@link PresentationClaimsList} component
+ * Conversion of the {@link CredentialTypePresentationClaimsListDescriptor} for internal usage inside of the
+ * {@link CredentialTypePresentationClaimsList} component
  */
 type DisclosuresViewModel = Record<string, Record<string, AttributeDescriptor>>;
 
-type NewPresentationClaimsListProps = {
-  mandatoryDescriptor?: PresentationClaimsListDescriptor;
+type CredentialTypePresentationClaimsListProps = {
+  mandatoryDescriptor?: CredentialTypePresentationClaimsListDescriptor;
   optionalSection?: {
-    optionalDescriptor: PresentationClaimsListDescriptor;
-    optionalCheckState: PresentationClaimsListOptionalAcceptedFields;
+    optionalDescriptor: CredentialTypePresentationClaimsListDescriptor;
+    optionalCheckState: CredentialTypePresentationClaimsListOptionalAcceptedFields;
     setOptionalCheckState: Dispatch<
-      SetStateAction<PresentationClaimsListOptionalAcceptedFields>
+      SetStateAction<CredentialTypePresentationClaimsListOptionalAcceptedFields>
     >;
   };
-  showMandatoryHeader?: boolean
-  showOptionalHeader?: boolean
+  showMandatoryHeader?: boolean;
+  showOptionalHeader?: boolean;
 };
 
 type AttributeDescriptor = {
@@ -69,10 +69,10 @@ type AttributeDescriptor = {
 };
 
 type DescriptorTransform = (
-  descriptor: PresentationClaimsListDescriptor
+  descriptor: CredentialTypePresentationClaimsListDescriptor
 ) => DisclosuresViewModel;
 /**
- * Hook to transform a {@link PresentationClaimsListDescriptor} into the correctly rendered format
+ * Hook to transform a {@link CredentialTypePresentationClaimsListDescriptor} into the correctly rendered format
  */
 const useTransformDescriptor: DescriptorTransform = descriptor =>
   useMemo(() => {
@@ -128,7 +128,7 @@ const useTransformDescriptor: DescriptorTransform = descriptor =>
 
 /**
  * This component renders the requested disclosures in the format { credentialType : { namespace : { attr: data } } } by flattening the credential namespaces,
- * and manages a passed {@link PresentationClaimsListOptionalAcceptedFields} state which will then be used to finish the presentation
+ * and manages a passed {@link CredentialTypePresentationClaimsListOptionalAcceptedFields} state which will then be used to finish the presentation
  * An example of namespace flattening :
  * Descriptor :
  * {
@@ -157,15 +157,16 @@ const useTransformDescriptor: DescriptorTransform = descriptor =>
  *    }
  * }
  */
-const PresentationClaimsList = ({
+const CredentialTypePresentationClaimsList = ({
   mandatoryDescriptor,
   optionalSection,
   showMandatoryHeader = true,
-  showOptionalHeader = true,
-}: NewPresentationClaimsListProps) => {
+  showOptionalHeader = true
+}: CredentialTypePresentationClaimsListProps) => {
   const {t} = useTranslation();
-  const mandatoryDisclosuresViewModel =
-    useTransformDescriptor(mandatoryDescriptor ?? {});
+  const mandatoryDisclosuresViewModel = useTransformDescriptor(
+    mandatoryDescriptor ?? {}
+  );
   const optionalDisclosuresViewModel = useTransformDescriptor(
     optionalSection ? optionalSection.optionalDescriptor : {}
   );
@@ -174,11 +175,13 @@ const PresentationClaimsList = ({
     <View>
       {Object.entries(mandatoryDisclosuresViewModel).length > 0 && (
         <>
-          { showMandatoryHeader && <ListItemHeader
-            label={t('wallet:presentation.trust.requiredClaims')}
-            iconName="security"
-            iconColor="grey-700"
-          />}
+          {showMandatoryHeader && (
+            <ListItemHeader
+              label={t('wallet:presentation.trust.requiredClaims')}
+              iconName="security"
+              iconColor="grey-700"
+            />
+          )}
           <View style={styles.container}>
             {Object.entries(mandatoryDisclosuresViewModel).map(
               ([entry, attributes]) => (
@@ -210,11 +213,13 @@ const PresentationClaimsList = ({
       {optionalSection &&
         Object.entries(optionalDisclosuresViewModel).length > 0 && (
           <>
-            {showOptionalHeader && <ListItemHeader
-              label={t('wallet:presentation.trust.optionalClaims')}
-              iconName="security"
-              iconColor="grey-700"
-            />}
+            {showOptionalHeader && (
+              <ListItemHeader
+                label={t('wallet:presentation.trust.optionalClaims')}
+                iconName="security"
+                iconColor="grey-700"
+              />
+            )}
             <View style={styles.container}>
               {Object.entries(optionalDisclosuresViewModel).map(
                 ([entry, attributes]) => (
@@ -299,4 +304,4 @@ const styles = StyleSheet.create({
   dataItemRight: {flexGrow: 1, alignItems: 'flex-end'}
 });
 
-export default PresentationClaimsList;
+export default CredentialTypePresentationClaimsList;
