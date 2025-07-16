@@ -13,7 +13,6 @@ import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
-import {SdJwt} from '@pagopa/io-react-native-wallet';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {selectCredential} from '../../store/credentials';
 import {
@@ -88,23 +87,19 @@ const CredentialTrust = () => {
   }
 
   // This is a mocked descriptor for the PID credential to show its claims in the PresentationClaimsList component
-  const pidCredentialJwt = SdJwt.decode(pid.credential);
+  const pidCredential = useAppSelector(selectCredential(wellKnownCredential.PID));
   const requiredDisclosures: PresentationClaimsListDescriptor = {
-    [wellKnownCredential.PID]: pidCredentialJwt.disclosures
-      .filter(disclosure => disclosure.decoded[1] !== 'iat')
-      .reduce<PresentationClaimsListDescriptor[string]>(
-        (cumulated, disclosure) => ({
-          ...cumulated,
-          [disclosure.decoded[0]]: {
-            ...cumulated[disclosure.decoded[0]],
-            [disclosure.decoded[1]]: {
-              name: disclosure.decoded[1],
-              value: disclosure.decoded[2]
-            }
-          }
-        }),
-        {}
-      )
+    [wellKnownCredential.PID]: {
+      [wellKnownCredential.PID]: Object.fromEntries(Object.entries(pidCredential!.parsedCredential)
+      .filter(([key]) => key !== 'iat')
+      .map(([key, value]) => [
+        key,
+        {
+          name: value.name,
+          value: value.value
+        }
+      ]))
+    }
   };
 
   return (

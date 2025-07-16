@@ -48,8 +48,8 @@ export type PresentationClaimsListDescriptor = Record<
  */
 type DisclosuresViewModel = Record<string, Record<string, AttributeDescriptor>>;
 
-type ProximityClaimsListProps = {
-  mandatoryDescriptor: PresentationClaimsListDescriptor;
+type NewPresentationClaimsListProps = {
+  mandatoryDescriptor?: PresentationClaimsListDescriptor;
   optionalSection?: {
     optionalDescriptor: PresentationClaimsListDescriptor;
     optionalCheckState: PresentationClaimsListOptionalAcceptedFields;
@@ -57,6 +57,8 @@ type ProximityClaimsListProps = {
       SetStateAction<PresentationClaimsListOptionalAcceptedFields>
     >;
   };
+  showMandatoryHeader?: boolean
+  showOptionalHeader?: boolean
 };
 
 type AttributeDescriptor = {
@@ -125,8 +127,8 @@ const useTransformDescriptor: DescriptorTransform = descriptor =>
   }, [descriptor]);
 
 /**
- * This component renders the requested disclosures in the {@link ProximityDisclosureDescriptor} by flattening the credential namespaces,
- * and manages a passed {@link PresentationClaimsListOptionalAcceptedFields} state which will then be presented to the verifier
+ * This component renders the requested disclosures in the format { credentialType : { namespace : { attr: data } } } by flattening the credential namespaces,
+ * and manages a passed {@link PresentationClaimsListOptionalAcceptedFields} state which will then be used to finish the presentation
  * An example of namespace flattening :
  * Descriptor :
  * {
@@ -157,11 +159,13 @@ const useTransformDescriptor: DescriptorTransform = descriptor =>
  */
 const PresentationClaimsList = ({
   mandatoryDescriptor,
-  optionalSection
-}: ProximityClaimsListProps) => {
+  optionalSection,
+  showMandatoryHeader = true,
+  showOptionalHeader = true,
+}: NewPresentationClaimsListProps) => {
   const {t} = useTranslation();
   const mandatoryDisclosuresViewModel =
-    useTransformDescriptor(mandatoryDescriptor);
+    useTransformDescriptor(mandatoryDescriptor ?? {});
   const optionalDisclosuresViewModel = useTransformDescriptor(
     optionalSection ? optionalSection.optionalDescriptor : {}
   );
@@ -170,11 +174,11 @@ const PresentationClaimsList = ({
     <View>
       {Object.entries(mandatoryDisclosuresViewModel).length > 0 && (
         <>
-          <ListItemHeader
+          { showMandatoryHeader && <ListItemHeader
             label={t('wallet:presentation.trust.requiredClaims')}
             iconName="security"
             iconColor="grey-700"
-          />
+          />}
           <View style={styles.container}>
             {Object.entries(mandatoryDisclosuresViewModel).map(
               ([entry, attributes]) => (
@@ -206,11 +210,11 @@ const PresentationClaimsList = ({
       {optionalSection &&
         Object.entries(optionalDisclosuresViewModel).length > 0 && (
           <>
-            <ListItemHeader
+            {showOptionalHeader && <ListItemHeader
               label={t('wallet:presentation.trust.optionalClaims')}
               iconName="security"
               iconColor="grey-700"
-            />
+            />}
             <View style={styles.container}>
               {Object.entries(optionalDisclosuresViewModel).map(
                 ([entry, attributes]) => (
@@ -247,7 +251,7 @@ const PresentationClaimsList = ({
                                     _.set(
                                       newState,
                                       value.path,
-                                      _.get(
+                                      !_.get(
                                         optionalSection.optionalCheckState,
                                         value.path
                                       )
