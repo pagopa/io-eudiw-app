@@ -214,6 +214,9 @@ interface Resources {
         "hiid": "Health ID",
         "fbk": "FBK Digital Badge",
         "unknown": "Unknown"
+      },
+      "details": {
+        "fbk" : "You can use your FBK digital badge to enter different office locations, and access enterprise mobile and web-based services."
       }
     },
     "activationBanner": {
