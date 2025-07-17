@@ -63,15 +63,14 @@ const credentialsSlice = createSlice({
     ) => {
       // If the credential is the PID, ignore it as it is not removable without resetting the lifecycle
       const {credentialType} = action.payload;
-      if (credentialType === wellKnownCredential.PID) {
-        return state;
-      } else {
+      if (credentialType !== wellKnownCredential.PID) {
         return {
           credentials: state.credentials.filter(
             c => c.credentialType !== credentialType
           )
         };
       }
+      return state;
     },
     resetCredentials: () => initialState
   },
