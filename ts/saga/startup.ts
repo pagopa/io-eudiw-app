@@ -29,6 +29,7 @@ import {
 import {walletSaga} from '../features/wallet/saga';
 import {selectUrl} from '../store/reducers/deeplinking';
 import {isNavigationReady} from '../navigation/utils';
+import {resetLifecycle} from '../features/wallet/store/lifecycle';
 import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
@@ -119,6 +120,10 @@ function* startOnboarding() {
   yield* put(startupSetStatus('WAIT_ONBOARDING'));
   yield* call(BootSplash.hide, {fade: true});
   yield* take(preferencesSetIsOnboardingDone);
+  /* This clears the wallet state in order to ensure a clean state, specifically on iOS
+   * where data stored in the keychain is not cleared on app uninstall.
+   */
+  yield* put(resetLifecycle());
   yield* fork(walletSaga);
   yield* put(startupSetStatus('DONE'));
 }

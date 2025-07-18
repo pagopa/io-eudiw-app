@@ -9,6 +9,8 @@ import {
   setSuccess
 } from '../../../store/utils/asyncStatus';
 import {RootState} from '../../../store/types';
+import {preferencesReset} from '../../../store/reducers/preferences';
+import {resetLifecycle} from './lifecycle';
 
 /**
  * Parameters to start a presentation flow.
@@ -99,6 +101,12 @@ export const presentationSlice = createSlice({
       state.preDefinition = setInitial();
       state.postDefinition = setInitial();
     }
+  },
+  extraReducers: builder => {
+    // This happens when the whole app state is reset
+    builder.addCase(preferencesReset, _ => initialState);
+    // This happens when the wallet state is reset
+    builder.addCase(resetLifecycle, _ => initialState);
   }
 });
 

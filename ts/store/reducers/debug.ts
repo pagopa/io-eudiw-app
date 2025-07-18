@@ -5,6 +5,7 @@ import {PersistConfig, persistReducer} from 'redux-persist';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 import {RootState} from '../types';
+import {preferencesReset} from './preferences';
 
 /*
  * State type definition for the debug  slice
@@ -46,6 +47,10 @@ const debugSlice = createSlice({
         )
       );
     }
+  },
+  extraReducers: builder => {
+    // This happens when the whole app state is reset
+    builder.addCase(preferencesReset, __ => initialState);
   }
 });
 

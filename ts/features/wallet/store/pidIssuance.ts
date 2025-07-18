@@ -9,6 +9,8 @@ import {
   setSuccess
 } from '../../../store/utils/asyncStatus';
 import {StoredCredential} from '../utils/types';
+import {preferencesReset} from '../../../store/reducers/preferences';
+import {resetLifecycle} from './lifecycle';
 
 /* State type definition for the pidIssuance slice
  * issuanceCreation - Async status for the instance creation
@@ -63,6 +65,12 @@ const pidIssuanceStatusSlice = createSlice({
     resetPidIssuance: state => {
       state.issuance = setInitial();
     }
+  },
+  extraReducers: builder => {
+    // This happens when the whole app state is reset
+    builder.addCase(preferencesReset, _ => initialState);
+    // This happens when the wallet state is reset
+    builder.addCase(resetLifecycle, _ => initialState);
   }
 });
 

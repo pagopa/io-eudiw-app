@@ -15,7 +15,6 @@ import {
   setInstanceCreationRequest,
   setInstanceCreationSuccess
 } from '../store/pidIssuance';
-import {resetCredentials} from '../store/credentials';
 
 export function* watchInstanceSaga() {
   yield* takeLatest([setInstanceCreationRequest], function* (...args) {
@@ -51,8 +50,6 @@ export function* handleCreateInstance() {
         appFetch
       });
       yield* put(setInstanceKeyTag(keyTag));
-      // Reset the credential state before obtaining a new PID
-      yield* put(resetCredentials());
     }
     yield* put(setInstanceCreationSuccess());
   } catch (err: unknown) {

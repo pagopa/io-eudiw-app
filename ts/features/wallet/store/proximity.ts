@@ -7,6 +7,8 @@ import {
 } from '@pagopa/io-react-native-proximity';
 import {RootState} from '../../../store/types';
 import {ParsedCredential} from '../utils/types';
+import {preferencesReset} from '../../../store/reducers/preferences';
+import {resetLifecycle} from './lifecycle';
 
 /**
  * The application-internal statuses used to control the proximity saga
@@ -130,6 +132,12 @@ export const proximitySlice = createSlice({
     },
     resetProximityQrCode: state => (state.qrCode = undefined),
     resetProximity: _ => initialState
+  },
+  extraReducers: builder => {
+    // This happens when the whole app state is reset
+    builder.addCase(preferencesReset, _ => initialState);
+    // This happens when the wallet state is reset
+    builder.addCase(resetLifecycle, _ => initialState);
   }
 });
 
