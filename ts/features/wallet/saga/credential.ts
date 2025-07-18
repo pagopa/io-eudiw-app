@@ -89,7 +89,7 @@ function* obtainCredential() {
 
     // Evaluate issuer trust
     const {issuerConf} = yield* call(
-      Credential.Issuance.getIssuerConfig,
+      Credential.Issuance.getIssuerConfigOIDFED,
       issuerUrl
     );
 
@@ -209,7 +209,7 @@ function* obtainCredential() {
           parsedCredential,
           credentialType,
           keyTag: credentialKeyTag,
-          format
+          format: format as 'vc+sd-jwt' | 'mso_mdoc'
         }
       })
     );

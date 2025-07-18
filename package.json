@@ -33,7 +33,7 @@
     "@pagopa/io-react-native-jwt": "2.1.0",
     "@pagopa/io-react-native-login-utils": "^1.0.9",
     "@pagopa/io-react-native-proximity": "^0.6.0",
-    "@pagopa/io-react-native-wallet": "1.7.1",
+    "@pagopa/io-react-native-wallet": "1.8.1",
     "@pagopa/react-native-nodelibs": "^0.1.0",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-clipboard/clipboard": "^1.16.2",
@@ -113,8 +113,5 @@
   "engines": {
     "node": ">=22"
   },
-  "packageManager": "yarn@3.6.4",
-  "resolutions": {
-    "@pagopa/io-react-native-wallet@1.7.1": "patch:@pagopa/io-react-native-wallet@npm%3A1.7.1#./.yarn/patches/@pagopa-io-react-native-wallet-npm-1.7.1-9b4f95122b.patch"
-  }
+  "packageManager": "yarn@3.6.4"
 }

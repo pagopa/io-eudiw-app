@@ -27,7 +27,6 @@ import {
   setProximityStatusAuthorizationSend
 } from '../../store/proximity';
 import {WalletNavigatorParamsList} from '../../navigation/WalletNavigator';
-import ProximityClaimsList from '../../components/proximity/ProximityClaimsList';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
@@ -35,6 +34,7 @@ import {useAppDispatch, useAppSelector} from '../../../../store';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 import {selectIsDebugModeEnabled} from '../../../../store/reducers/debug';
+import CredentialTypePresentationClaimsList from '../../components/presentation/CredentialTypePresentationClaimsList';
 
 export type PresentationProximityPreviewProps = ProximityDisclosure;
 
@@ -176,10 +176,14 @@ const PresentationProximityPreview = ({route}: Props) => {
         <Body> {t('wallet:presentation.trust.subtitle')}</Body>
         <VSpacer size={24} />
         {isDebug && <IsAuthenticatedAlert />}
-        <ProximityClaimsList
-          descriptor={route.params.descriptor}
-          checkState={checkState}
-          setCheckState={setCheckState}
+        <CredentialTypePresentationClaimsList
+          optionalSection={{
+            optionalDescriptor: route.params.descriptor,
+            optionalCheckState: checkState,
+            setOptionalCheckState: setCheckState
+          }}
+          showMandatoryHeader={false}
+          showOptionalHeader={false}
         />
         <VSpacer size={24} />
         <FeatureInfo
