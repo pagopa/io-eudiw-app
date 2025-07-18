@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.14.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.13.3-rc.0...1.14.0-rc.0) (2025-07-18)
+
+
+### Features
+
+* [WLEO-426,WLEO-484] Added support for FBK Badge ([#96](https://github.com/pagopa/io-eudiw-app/issues/96)) ([0b2ca17](https://github.com/pagopa/io-eudiw-app/commit/0b2ca178ffdaa8cd6f984fcf3861a28a72fdb900))
+
 ### [1.13.3-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.13.2-rc.0...1.13.3-rc.0) (2025-07-18)
 
 
