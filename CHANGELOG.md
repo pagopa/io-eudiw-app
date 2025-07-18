@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.13.3-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.13.2-rc.0...1.13.3-rc.0) (2025-07-18)
+
+
+### Bug Fixes
+
+* [WLEO-328] Possible fix to the authentication issue  ([#93](https://github.com/pagopa/io-eudiw-app/issues/93)) ([ed90756](https://github.com/pagopa/io-eudiw-app/commit/ed90756911c3c2e4efbdd90a2c0b516c1c30bcdb))
+* [WLEO-495] Inconsistency state on iOS after app removal ([#95](https://github.com/pagopa/io-eudiw-app/issues/95)) ([1a2fed1](https://github.com/pagopa/io-eudiw-app/commit/1a2fed14826acde45f3cf04a279829850dfaf1f8))
+
 ### [1.13.2-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.13.1-rc.0...1.13.2-rc.0) (2025-07-11)
 
 
