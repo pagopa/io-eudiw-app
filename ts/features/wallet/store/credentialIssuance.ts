@@ -9,6 +9,8 @@ import {
   setSuccess
 } from '../../../store/utils/asyncStatus';
 import {StoredCredential} from '../utils/types';
+import {preferencesReset} from '../../../store/reducers/preferences';
+import {resetLifecycle} from './lifecycle';
 
 type RequestedCredential = string | undefined;
 
@@ -94,6 +96,12 @@ export const credentialIssuanceStatusSlice = createSlice({
       state.statusPostAuth = setSuccess(action.payload.credential);
     },
     resetCredentialIssuance: _ => initialState
+  },
+  extraReducers: builder => {
+    // This happens when the whole app state is reset
+    builder.addCase(preferencesReset, _ => initialState);
+    // This happens when the wallet state is reset
+    builder.addCase(resetLifecycle, _ => initialState);
   }
 });
 

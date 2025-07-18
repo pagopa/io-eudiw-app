@@ -4,8 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {PersistConfig, persistReducer} from 'redux-persist';
 import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
-import {wellKnownCredential} from '../utils/credentials';
-import {removeCredential} from './credentials';
 
 /**
  * Enum for the lifecycle state of the wallet.
@@ -44,11 +42,6 @@ const lifecycleSlice = createSlice({
     resetLifecycle: () => initialState
   },
   extraReducers: builder => {
-    builder.addCase(removeCredential, (state, action) => {
-      if (action.payload.credentialType === wellKnownCredential.PID) {
-        state.lifecycle = initialState.lifecycle;
-      }
-    });
     // This happens when the whole app state is reset
     builder.addCase(preferencesReset, _ => initialState);
   }
