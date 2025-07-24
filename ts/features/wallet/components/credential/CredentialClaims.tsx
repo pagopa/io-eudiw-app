@@ -335,14 +335,13 @@ export const StringArrayClaimItem = ({
         }
       : undefined;
 
-    const formattedClaims = [
-      claim[0],
-      claim.length >= 2 ? claim[1] : null,
-      claim.length >= 3 ? '...' : null
-    ]
-      .filter(Boolean)
-      .join(', ');
-
+  const formattedClaims = [
+    claim[0],
+    claim.length >= 2 ? claim[1] : null,
+    claim.length >= 3 ? '...' : null
+  ]
+    .filter(Boolean)
+    .join(', ');
 
   return (
     <>
