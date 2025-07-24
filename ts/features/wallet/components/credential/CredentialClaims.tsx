@@ -1,8 +1,8 @@
-import {Divider, ListItemInfo} from '@pagopa/io-app-design-system';
+import {Divider, H6, ListItemInfo} from '@pagopa/io-app-design-system';
 import React, {Fragment, memo} from 'react';
 import i18next from 'i18next';
 import {useTranslation} from 'react-i18next';
-import {Image} from 'react-native';
+import {Image, View} from 'react-native';
 import {
   claimScheme,
   DrivingPrivilegesType,
@@ -288,6 +288,75 @@ export const VerificationEvidenceClaimItem = ({
 };
 
 /**
+ * Component which renders a string array type claim.
+ * If there are more than two values, it features a bottom sheet with the values contained in the claim
+ */
+export const StringArrayClaimItem = ({
+  label,
+  claim,
+  detailsButtonVisible = true,
+  reversed
+}: {
+  label: string;
+  claim: Array<string>;
+  detailsButtonVisible: boolean;
+  reversed: boolean;
+}) => {
+  const {t} = useTranslation(['wallet', 'global']);
+  const verificationBottomSheet = useIOBottomSheetModal({
+    title: label,
+    maxDynamicContentSizePercent: 0.75,
+    component: (
+      <>
+        {claim.slice(0, claim.length - 1).map((value, index) => (
+          <View key={`${label}_${value}_${index}`}>
+            <H6 style={{paddingVertical: 12}}>{value}</H6>
+            <Divider />
+          </View>
+        ))}
+        <H6
+          key={`${label}_${claim[claim.length - 1]}_${claim.length - 1}`}
+          style={{paddingVertical: 12}}>
+          {claim[claim.length - 1]}
+        </H6>
+      </>
+    )
+  });
+
+  const endElement: ListItemInfo['endElement'] =
+    detailsButtonVisible && claim.length > 2
+      ? {
+          type: 'buttonLink',
+          componentProps: {
+            label: t('global:buttons.show'),
+            onPress: () => verificationBottomSheet.present(),
+            accessibilityLabel: t('global:buttons.show')
+          }
+        }
+      : undefined;
+
+  const formattedClaims = [
+    claim[0],
+    claim.length >= 2 ? claim[1] : null,
+    claim.length >= 3 ? '...' : null
+  ]
+    .filter(Boolean)
+    .join(', ');
+
+  return (
+    <>
+      <ListItemInfo
+        label={label}
+        value={formattedClaims}
+        endElement={endElement}
+        accessibilityLabel={`${label} ${formattedClaims}`}
+        reversed={reversed}
+      />
+      {claim.length > 2 && verificationBottomSheet.bottomSheet}
+    </>
+  );
+};
+/**
  * Component which renders a claim.
  * It renders a different component based on the type of the claim.
  * @param claim - the claim to render
@@ -362,13 +431,11 @@ const CredentialClaim = ({
         );
       case 'stringArray':
         return (
-          <PlainTextClaimItem
+          <StringArrayClaimItem
             label={claim.label}
-            claim={decoded.data.value.reduce(
-              (prev, str, idx) => prev + `${idx ? ', ' : ''}${str}`,
-              ''
-            )}
+            claim={decoded.data.value}
             reversed={reversed}
+            detailsButtonVisible={!isPreview}
           />
         );
       case 'image':
