@@ -335,21 +335,25 @@ export const StringArrayClaimItem = ({
         }
       : undefined;
 
-  const checkFirstClaim = claim.length >= 1 ? claim[0] : '';
-  const checkSecondClaim =
-    checkFirstClaim + (claim.length >= 2 ? `, ${claim[1]}` : '');
-  const checkThirdClaim = checkSecondClaim + (claim.length >= 3 ? ', ...' : '');
+    const formattedClaims = [
+      claim[0],
+      claim.length >= 2 ? claim[1] : null,
+      claim.length >= 3 ? '...' : null
+    ]
+      .filter(Boolean)
+      .join(', ');
+
 
   return (
     <>
       <ListItemInfo
         label={label}
-        value={checkThirdClaim}
+        value={formattedClaims}
         endElement={endElement}
-        accessibilityLabel={`${label} ${checkThirdClaim}`}
+        accessibilityLabel={`${label} ${formattedClaims}`}
         reversed={reversed}
       />
-      {verificationBottomSheet.bottomSheet}
+      {claim.length > 2 && verificationBottomSheet.bottomSheet}
     </>
   );
 };
