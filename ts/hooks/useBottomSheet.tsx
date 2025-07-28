@@ -44,6 +44,7 @@ type BottomSheetOptions = {
   component: React.ReactNode;
   title: string | React.ReactNode;
   snapPoint?: NonEmptyArray<number | string>;
+  maxDynamicContentSizePercent?: number;
   footer?: React.ReactElement;
   fullScreen?: boolean;
   onDismiss?: () => void;
@@ -62,6 +63,7 @@ export const useIOBottomSheetModal = ({
   component,
   title,
   snapPoint,
+  maxDynamicContentSizePercent = 1,
   footer,
   onDismiss
 }: Omit<BottomSheetOptions, 'fullScreen'>): IOBottomSheetModal => {
@@ -129,7 +131,10 @@ export const useIOBottomSheetModal = ({
         ) : null
       }
       enableDynamicSizing={snapPoint ? false : true}
-      maxDynamicContentSize={screenHeight - insets.top}
+      maxDynamicContentSize={
+        (screenHeight - insets.top) *
+        Math.min(Math.max(maxDynamicContentSizePercent, 0.25), 1)
+      }
       snapPoints={snapPoint}
       ref={bottomSheetModalRef}
       handleComponent={_ => header}
