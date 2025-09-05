@@ -55,7 +55,7 @@ function* obtainPid() {
       credentialType: wellKnownCredential.PID
     });
 
-    const {issuerUrl, credentialType} = startFlow();
+    const {issuerUrl, credentialType: credentialConfigId} = startFlow();
 
     // Evaluate issuer trust
     const {issuerConf} = yield* call(
@@ -68,13 +68,25 @@ function* obtainPid() {
       yield* call(
         Credential.Issuance.startUserAuthorization,
         issuerConf,
-        credentialType,
+        credentialConfigId,
         {
           walletInstanceAttestation,
           redirectUri,
           wiaCryptoContext
         }
       );
+
+    const credentialConfig =
+      issuerConf.credential_configurations_supported[credentialConfigId];
+    const credentialType =
+      credentialConfig.format === 'mso_mdoc'
+        ? credentialConfig.scope
+        : credentialConfig.vct;
+    if (!credentialType) {
+      throw new Error(
+        `Error: The selected credential config doesn't have a credentialType`
+      );
+    }
 
     // Obtain the Authorization URL
     const {authUrl} = yield* call(
@@ -152,6 +164,7 @@ function* obtainPid() {
         credential: {
           parsedCredential,
           credential,
+          credentialConfigId,
           credentialType,
           keyTag: credentialKeyTag,
           format: format as 'vc+sd-jwt' | 'mso_mdoc'

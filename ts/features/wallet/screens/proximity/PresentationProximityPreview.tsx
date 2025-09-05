@@ -184,6 +184,7 @@ const PresentationProximityPreview = ({route}: Props) => {
           }}
           showMandatoryHeader={false}
           showOptionalHeader={false}
+          typeToConfigId={route.params.typeToConfigId}
         />
         <VSpacer size={24} />
         <FeatureInfo

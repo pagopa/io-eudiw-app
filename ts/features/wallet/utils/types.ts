@@ -24,6 +24,7 @@ export type StoredCredential = {
   parsedCredential: ParsedCredential;
   credential: string;
   keyTag: string;
+  credentialConfigId: string;
   credentialType: string;
   format: 'vc+sd-jwt' | 'mso_mdoc';
 };

@@ -19,11 +19,11 @@ const PresentationDetailsHeader = ({
   credential
 }: ItwPresentationDetailsHeaderProps) => {
   const {backgroundColor, statusBarStyle} = getThemeColorByCredentialType(
-    credential.credentialType
+    credential.credentialConfigId
   );
 
   const alertProps = getCredentialAlertPropsByCredentialType(
-    credential.credentialType
+    credential.credentialConfigId
   );
 
   return (

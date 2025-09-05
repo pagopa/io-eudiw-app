@@ -172,7 +172,7 @@ function* handleProximityResponse() {
   const mdocCredentials = allCredentials.filter(
     credential => credential.format === 'mso_mdoc'
   );
-  const descriptor = yield* call(
+  const {descriptor, typeToConfigId} = yield* call(
     matchRequestToClaims,
     documentRequest,
     mdocCredentials
@@ -182,7 +182,8 @@ function* handleProximityResponse() {
   yield* put(
     setProximityStatusAuthorizationStarted({
       descriptor,
-      isAuthenticated
+      isAuthenticated,
+      typeToConfigId
     })
   );
 

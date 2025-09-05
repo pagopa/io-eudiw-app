@@ -59,6 +59,7 @@ type CredentialTypePresentationClaimsListProps = {
   };
   showMandatoryHeader?: boolean;
   showOptionalHeader?: boolean;
+  typeToConfigId: Record<string, string>;
 };
 
 type AttributeDescriptor = {
@@ -69,12 +70,16 @@ type AttributeDescriptor = {
 };
 
 type DescriptorTransform = (
-  descriptor: CredentialTypePresentationClaimsListDescriptor
+  descriptor: CredentialTypePresentationClaimsListDescriptor,
+  typeToConfigId: Record<string, string>
 ) => DisclosuresViewModel;
 /**
  * Hook to transform a {@link CredentialTypePresentationClaimsListDescriptor} into the correctly rendered format
  */
-const useTransformDescriptor: DescriptorTransform = descriptor =>
+const useTransformDescriptor: DescriptorTransform = (
+  descriptor,
+  typeToConfigId
+) =>
   useMemo(() => {
     const rawDisclosuresViewModel = _.mapValues(
       /**
@@ -122,9 +127,9 @@ const useTransformDescriptor: DescriptorTransform = descriptor =>
      * Finally, we remap the credentialTypes to their names
      */
     return _.mapKeys(flattenedDisclosuresViewModel, (_value, credentialtype) =>
-      getCredentialNameByType(credentialtype)
+      getCredentialNameByType(typeToConfigId[credentialtype])
     );
-  }, [descriptor]);
+  }, [descriptor, typeToConfigId]);
 
 /**
  * This component renders the requested disclosures in the format { credentialType : { namespace : { attr: data } } } by flattening the credential namespaces,
@@ -161,14 +166,17 @@ const CredentialTypePresentationClaimsList = ({
   mandatoryDescriptor,
   optionalSection,
   showMandatoryHeader = true,
-  showOptionalHeader = true
+  showOptionalHeader = true,
+  typeToConfigId
 }: CredentialTypePresentationClaimsListProps) => {
   const {t} = useTranslation();
   const mandatoryDisclosuresViewModel = useTransformDescriptor(
-    mandatoryDescriptor ?? {}
+    mandatoryDescriptor ?? {},
+    typeToConfigId
   );
   const optionalDisclosuresViewModel = useTransformDescriptor(
-    optionalSection ? optionalSection.optionalDescriptor : {}
+    optionalSection ? optionalSection.optionalDescriptor : {},
+    typeToConfigId
   );
 
   return (

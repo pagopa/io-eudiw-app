@@ -84,7 +84,7 @@ const PresentationDetailsFooter = ({
 
   const RemoveCredential = useCallback(() => {
     const handleRemoveCredential = () => {
-      if (credential.credentialType === wellKnownCredential.PID) {
+      if (credential.credentialConfigId === wellKnownCredential.PID) {
         // If the credential is a PID, we reset the lifecycle to a complete wallet state reset
         dispatch(resetLifecycle());
       } else {

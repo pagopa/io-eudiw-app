@@ -37,7 +37,7 @@ const credentialsSlice = createSlice({
     ) => {
       const {credential} = action.payload;
       const existingIndex = state.credentials.findIndex(
-        c => c.credentialType === credential.credentialType
+        c => c.credentialConfigId === credential.credentialConfigId
       );
       if (existingIndex !== -1) {
         // If the credential already exists, replace it
@@ -59,14 +59,14 @@ const credentialsSlice = createSlice({
     ) => {},
     removeCredential: (
       state,
-      action: PayloadAction<{credentialType: string}>
+      action: PayloadAction<{credentialConfigId: string}>
     ) => {
       // If the credential is the PID, ignore it as it is not removable without resetting the lifecycle
-      const {credentialType} = action.payload;
-      if (credentialType !== wellKnownCredential.PID) {
+      const {credentialConfigId} = action.payload;
+      if (credentialConfigId !== wellKnownCredential.PID) {
         return {
           credentials: state.credentials.filter(
-            c => c.credentialType !== credentialType
+            c => c.credentialConfigId !== credentialConfigId
           )
         };
       }
@@ -118,5 +118,5 @@ export const selectCredentials = (state: RootState) =>
 
 export const selectCredential = (credentialType: string) =>
   createSelector(selectCredentials, credentials =>
-    credentials.find(c => c.credentialType === credentialType)
+    credentials.find(c => c.credentialConfigId === credentialType)
   );

@@ -103,6 +103,11 @@ const CredentialTrust = () => {
     }
   };
 
+  // This is a mocked dictionary for the PID credential to show its claims in the PresentationClaimsList component
+  const typeToConfigId = {
+    [wellKnownCredential.PID]: wellKnownCredential.PID
+  };
+
   return (
     <ForceScrollDownView>
       <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
@@ -124,6 +129,7 @@ const CredentialTrust = () => {
         <VSpacer size={8} />
         <CredentialTypePresentationClaimsList
           mandatoryDescriptor={requiredDisclosures}
+          typeToConfigId={typeToConfigId}
         />
         <VSpacer size={24} />
         <FeatureInfo
