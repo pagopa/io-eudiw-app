@@ -71,10 +71,10 @@ const WalletHome = () => {
                 onPress={() =>
                   navigation.navigate('MAIN_WALLET_NAV', {
                     screen: 'PRESENTATION_CREDENTIAL_DETAILS',
-                    params: {credentialType: item.credentialConfigId}
+                    params: {credentialType: item.credentialType}
                   })
                 }>
-                <CredentialCard credentialType={item.credentialConfigId} />
+                <CredentialCard credentialType={item.credentialType} />
                 <VSpacer size={8} />
               </Pressable>
             )}

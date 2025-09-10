@@ -17,8 +17,7 @@ import {
   selectProximityDisclosureDescriptor,
   selectProximityDisclosureIsAuthenticated,
   selectProximityQrCode,
-  selectProximityStatus,
-  selectProximityTypeToConfigIdDict
+  selectProximityStatus
 } from '../../store/proximity';
 
 type PresentationProximityQRCodeProps = {
@@ -40,18 +39,16 @@ const PresentationProximityQRCode = ({
   const isAuthenticated = useAppSelector(
     selectProximityDisclosureIsAuthenticated
   );
-  const typeToConfigId = useAppSelector(selectProximityTypeToConfigIdDict);
 
   useEffect(() => {
     if (
       proximityStatus ===
         ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED &&
-      descriptor &&
-      typeToConfigId
+      descriptor
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_PREVIEW',
-        params: {descriptor, isAuthenticated, typeToConfigId}
+        params: {descriptor, isAuthenticated}
       });
     }
     // If we reach this state, it means that a connection has already been established but failed before
@@ -67,13 +64,7 @@ const PresentationProximityQRCode = ({
         params: {fatal: true}
       });
     }
-  }, [
-    proximityStatus,
-    navigation,
-    descriptor,
-    typeToConfigId,
-    isAuthenticated
-  ]);
+  }, [proximityStatus, navigation, descriptor, isAuthenticated]);
 
   return (
     <View>

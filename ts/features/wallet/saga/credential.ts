@@ -34,6 +34,7 @@ import {
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
 import {getAttestation} from './attestation';
+import { credentialTypeToConfig } from '../utils/credentials';
 
 /**
  * Saga watcher for credential related actions.
@@ -65,9 +66,13 @@ function* obtainCredential() {
     /**
      * Check the passed credential type and throw an error if it's not found.
      */
-    const credentialConfigId = yield* select(selectRequestedCredential);
-    if (!credentialConfigId) {
+    const credentialType = yield* select(selectRequestedCredential);
+    if (!credentialType) {
       throw new Error('Credential type not found');
+    }
+    const credentialConfigId = credentialTypeToConfig[credentialType];
+    if (!credentialConfigId) {
+      throw new Error(`Config id corresponding to credential type ${credentialType} not found`);
     }
 
     // Get the wallet instance attestation and generate its crypto context
@@ -105,18 +110,6 @@ function* obtainCredential() {
           wiaCryptoContext
         }
       );
-
-    const credentialConfig =
-      issuerConf.credential_configurations_supported[credentialConfigId];
-    const credentialType =
-      credentialConfig.format === 'mso_mdoc'
-        ? credentialConfig.scope
-        : credentialConfig.vct;
-    if (!credentialType) {
-      throw new Error(
-        `Error: The selected credential config doesn't have a credentialType`
-      );
-    }
 
     /**
      * Temporary comments to permit issuing of mDL without PID presentation
@@ -219,7 +212,6 @@ function* obtainCredential() {
         credential: {
           credential,
           parsedCredential,
-          credentialConfigId,
           credentialType,
           keyTag: credentialKeyTag,
           format: format as 'vc+sd-jwt' | 'mso_mdoc'

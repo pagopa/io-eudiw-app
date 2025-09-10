@@ -1,6 +1,5 @@
 import {CBOR} from '@pagopa/io-react-native-cbor';
 import {VerifierRequest} from '@pagopa/io-react-native-proximity';
-import __ from 'lodash';
 import {ParsedCredential, StoredCredential} from './types';
 
 /**
@@ -156,20 +155,15 @@ const mapVerifierRequestToClaimInfo = (
 /**
  * This helper function takes a {@link VerifierRequest}, looks for
  * the presence of the required claims in the mDoc credentials and, if
- * found, adds the {@link ParsedCredential} entry for the attribute to
+ * found adds the {@link ParsedCredential} entry for the attribute to
  * an object following the same path structure of the original credential
  * @param verifierRequest The authentication request sent by the verifier
  * @param credentialsMdoc The mdoc credentials contained in the wallet
- * @returns An object that contains two properties:
- *   - descriptor : a record of credential types to an object
- *                  which has the same structure of a decoded
- *                  mDoc credential's namespaces except for the
- *                  fact that the namespace attribute keys are mapped to
- *                  the value corresponding to the same attribute
- *                  key inside of the {@link ParsedCredential} object.
- *   - typeToConfigId : A translation record that maps the credential types
- *                      to their respective IDs in the EC for localization
- *                      purposes
+ * @returns An object that is a record of credential types to an object
+ * which has the same structure of a decoded mDoc credential's namespaces
+ * except for the fact that the namespace attribute keys are mapped to
+ * the value corresponding to the same attribute key inside of the
+ * {@link ParsedCredential} object.
  */
 export const matchRequestToClaims = async (
   verifierRequest: VerifierRequest,
@@ -187,17 +181,10 @@ export const matchRequestToClaims = async (
       })
     );
 
-  const typeToConfigId = __.fromPairs(
-    credentialsMdoc.map(cred => [cred.credentialType, cred.credentialConfigId])
+  return mapVerifierRequestToClaimInfo(
+    verifierRequest.request,
+    decodedCredentials
   );
-
-  return {
-    descriptor: mapVerifierRequestToClaimInfo(
-      verifierRequest.request,
-      decodedCredentials
-    ),
-    typeToConfigId
-  };
 };
 
 /**

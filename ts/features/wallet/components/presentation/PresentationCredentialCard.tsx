@@ -16,12 +16,12 @@ type Props = {
  */
 const PresentationCredentialCard = ({credential}: Props) => {
   const {backgroundColor} = getThemeColorByCredentialType(
-    credential.credentialConfigId
+    credential.credentialType
   );
 
   return (
     <CardContainer backgroundColor={backgroundColor}>
-      <CredentialCard credentialType={credential.credentialConfigId} />
+      <CredentialCard credentialType={credential.credentialType} />
     </CardContainer>
   );
 };

@@ -38,7 +38,6 @@ export type ProximityDisclosure = {
     Record<string, Record<string, ParsedCredential[string]>>
   >;
   isAuthenticated: boolean;
-  typeToConfigId: Record<string, string>;
 };
 
 /* State type definition for the proximity slice
@@ -206,14 +205,6 @@ export const selectProximityDisclosureIsAuthenticated = createSelector(
   (state: RootState) => state.wallet.proximity.proximityDisclosureDescriptor,
   descriptor => descriptor?.isAuthenticated || false
 );
-
-/**
- * Selects the dictionary that maps credential types to their configuration ID proccessed from the {@link VerifierRequest}
- * @param state - The root state
- * @returns A {@link Record<string,string>}
- */
-export const selectProximityTypeToConfigIdDict = (state: RootState) =>
-  state.wallet.proximity.proximityDisclosureDescriptor?.typeToConfigId;
 
 /**
  * Selects the {@link AcceptedFields} the user chose to share

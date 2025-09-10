@@ -59,7 +59,6 @@ type CredentialTypePresentationClaimsListProps = {
   };
   showMandatoryHeader?: boolean;
   showOptionalHeader?: boolean;
-  typeToConfigId: Record<string, string>;
 };
 
 type AttributeDescriptor = {
@@ -70,16 +69,12 @@ type AttributeDescriptor = {
 };
 
 type DescriptorTransform = (
-  descriptor: CredentialTypePresentationClaimsListDescriptor,
-  typeToConfigId: Record<string, string>
+  descriptor: CredentialTypePresentationClaimsListDescriptor
 ) => DisclosuresViewModel;
 /**
  * Hook to transform a {@link CredentialTypePresentationClaimsListDescriptor} into the correctly rendered format
  */
-const useTransformDescriptor: DescriptorTransform = (
-  descriptor,
-  typeToConfigId
-) =>
+const useTransformDescriptor: DescriptorTransform = descriptor =>
   useMemo(() => {
     const rawDisclosuresViewModel = _.mapValues(
       /**
@@ -127,9 +122,9 @@ const useTransformDescriptor: DescriptorTransform = (
      * Finally, we remap the credentialTypes to their names
      */
     return _.mapKeys(flattenedDisclosuresViewModel, (_value, credentialtype) =>
-      getCredentialNameByType(typeToConfigId[credentialtype])
+      getCredentialNameByType(credentialtype)
     );
-  }, [descriptor, typeToConfigId]);
+  }, [descriptor]);
 
 /**
  * This component renders the requested disclosures in the format { credentialType : { namespace : { attr: data } } } by flattening the credential namespaces,
@@ -166,17 +161,14 @@ const CredentialTypePresentationClaimsList = ({
   mandatoryDescriptor,
   optionalSection,
   showMandatoryHeader = true,
-  showOptionalHeader = true,
-  typeToConfigId
+  showOptionalHeader = true
 }: CredentialTypePresentationClaimsListProps) => {
   const {t} = useTranslation();
   const mandatoryDisclosuresViewModel = useTransformDescriptor(
-    mandatoryDescriptor ?? {},
-    typeToConfigId
+    mandatoryDescriptor ?? {}
   );
   const optionalDisclosuresViewModel = useTransformDescriptor(
-    optionalSection ? optionalSection.optionalDescriptor : {},
-    typeToConfigId
+    optionalSection ? optionalSection.optionalDescriptor : {}
   );
 
   return (

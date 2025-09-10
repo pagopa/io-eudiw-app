@@ -69,9 +69,7 @@ const PresentationDetailsScreenBase = ({
     [bottomMargin]
   );
 
-  const headerProps = getHeaderPropsByCredentialType(
-    credential.credentialConfigId
-  );
+  const headerProps = getHeaderPropsByCredentialType(credential.credentialType);
 
   useHeaderSecondLevel({
     scrollValues: {

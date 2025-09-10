@@ -4,10 +4,17 @@ type CredentialsKeys = 'DRIVING_LICENSE' | 'PID' | 'HEALTHID' | 'FBK_BADGE';
 
 export const wellKnownCredential: Record<CredentialsKeys, string> = {
   DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
-  PID: 'dc_sd_jwt_PersonIdentificationData',
+  PID: 'urn:eu.europa.ec.eudi:pid:1',
   HEALTHID: 'eu.europa.ec.eudi.hiid.1',
-  FBK_BADGE: 'mso_mdoc_CompanyBadge'
+  FBK_BADGE: 'eu.europa.it.badge'
 };
+
+export const credentialTypeToConfig: Record<string, string> = {
+  [wellKnownCredential.DRIVING_LICENSE]: 'org.iso.18013.5.1.mDL',
+  [wellKnownCredential.PID]: 'dc_sd_jwt_PersonIdentificationData',
+  [wellKnownCredential.HEALTHID]: 'eu.europa.ec.eudi.hiid.1',
+  [wellKnownCredential.FBK_BADGE]: 'mso_mdoc_CompanyBadge'
+}
 
 export const getCredentialNameByType = (type?: string): string => {
   switch (type) {

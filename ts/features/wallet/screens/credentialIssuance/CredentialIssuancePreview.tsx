@@ -49,7 +49,7 @@ export const CredentialPreview = () => {
   return (
     <ForceScrollDownView contentContainerStyle={styles.scrollView}>
       <View style={styles.container}>
-        <H2>{getCredentialNameByType(credential.credentialConfigId)}</H2>
+        <H2>{getCredentialNameByType(credential.credentialType)}</H2>
         <VSpacer size={24} />
         <CredentialPreviewClaimsList data={credential} isPreview={true} />
       </View>

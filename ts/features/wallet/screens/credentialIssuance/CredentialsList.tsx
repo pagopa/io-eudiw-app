@@ -39,7 +39,7 @@ const CredentialsList = () => {
   }, [dispatch, navigation]);
 
   const isCredentialSaved = (type: string) =>
-    credentials.find(c => c.credentialConfigId === type) !== undefined;
+    credentials.find(c => c.credentialType === type) !== undefined;
 
   const isCredentialRequested = (type: string) => requestedCredential === type;
 
