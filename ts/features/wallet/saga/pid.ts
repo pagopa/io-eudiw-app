@@ -21,7 +21,10 @@ import {
 import {Lifecycle, setLifecycle} from '../store/lifecycle';
 import {navigate} from '../../../navigation/utils';
 import {addCredential, addPidWithIdentification} from '../store/credentials';
-import {credentialTypeToConfig, wellKnownCredential} from '../utils/credentials';
+import {
+  credentialTypeToConfig,
+  wellKnownCredential
+} from '../utils/credentials';
 import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
@@ -152,7 +155,7 @@ function* obtainPid() {
         credential: {
           parsedCredential,
           credential,
-          credentialType : wellKnownCredential.PID,
+          credentialType: wellKnownCredential.PID,
           keyTag: credentialKeyTag,
           format: format as 'vc+sd-jwt' | 'mso_mdoc'
         }

@@ -33,8 +33,8 @@ import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
+import {credentialTypeToConfig} from '../utils/credentials';
 import {getAttestation} from './attestation';
-import { credentialTypeToConfig } from '../utils/credentials';
 
 /**
  * Saga watcher for credential related actions.
@@ -72,7 +72,9 @@ function* obtainCredential() {
     }
     const credentialConfigId = credentialTypeToConfig[credentialType];
     if (!credentialConfigId) {
-      throw new Error(`Config id corresponding to credential type ${credentialType} not found`);
+      throw new Error(
+        `Config id corresponding to credential type ${credentialType} not found`
+      );
     }
 
     // Get the wallet instance attestation and generate its crypto context

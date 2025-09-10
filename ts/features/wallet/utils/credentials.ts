@@ -14,7 +14,7 @@ export const credentialTypeToConfig: Record<string, string> = {
   [wellKnownCredential.PID]: 'dc_sd_jwt_PersonIdentificationData',
   [wellKnownCredential.HEALTHID]: 'eu.europa.ec.eudi.hiid.1',
   [wellKnownCredential.FBK_BADGE]: 'mso_mdoc_CompanyBadge'
-}
+};
 
 export const getCredentialNameByType = (type?: string): string => {
   switch (type) {
