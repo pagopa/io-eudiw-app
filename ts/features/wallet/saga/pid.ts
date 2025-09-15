@@ -22,8 +22,8 @@ import {Lifecycle, setLifecycle} from '../store/lifecycle';
 import {navigate} from '../../../navigation/utils';
 import {addCredential, addPidWithIdentification} from '../store/credentials';
 import {
-  credentialTypeToConfig,
-  wellKnownCredential
+  wellKnownCredential,
+  wellKnownCredentialConfigurationIDs
 } from '../utils/credentials';
 import {
   IdentificationResultTask,
@@ -55,7 +55,7 @@ function* obtainPid() {
     // Start the issuance flow
     const startFlow: Credential.Issuance.StartFlow = () => ({
       issuerUrl: PID_PROVIDER_BASE_URL,
-      credentialType: credentialTypeToConfig[wellKnownCredential.PID]
+      credentialType: wellKnownCredentialConfigurationIDs.PID
     });
 
     const {issuerUrl, credentialType: credentialConfigId} = startFlow();
@@ -78,6 +78,19 @@ function* obtainPid() {
           wiaCryptoContext
         }
       );
+
+    // Extract the credential type from the config
+    const credentialConfig =
+      issuerConf.credential_configurations_supported[credentialConfigId];
+    const credentialType =
+      credentialConfig.format === 'mso_mdoc'
+        ? credentialConfig.scope
+        : credentialConfig.vct;
+    if (!credentialType) {
+      throw new Error(
+        `Error: The selected credential config doesn't have a credentialType`
+      );
+    }
 
     // Obtain the Authorization URL
     const {authUrl} = yield* call(
@@ -155,7 +168,7 @@ function* obtainPid() {
         credential: {
           parsedCredential,
           credential,
-          credentialType: wellKnownCredential.PID,
+          credentialType,
           keyTag: credentialKeyTag,
           format: format as 'vc+sd-jwt' | 'mso_mdoc'
         }

@@ -13,6 +13,7 @@ import {preferencesReset} from '../../../store/reducers/preferences';
 import {resetLifecycle} from './lifecycle';
 
 type RequestedCredential = string | undefined;
+type RequestedCredentialType = string | undefined;
 
 type ObtainCredentialPreAuthResult = boolean;
 // {
@@ -42,6 +43,7 @@ type ObtainCredentialPreAuthResult = boolean;
  */
 export type CredentialIssuanceStatusState = {
   requestedCredential: RequestedCredential;
+  requestedCredentialType: RequestedCredentialType;
   statusPreAuth: AsyncStatusValues<ObtainCredentialPreAuthResult>;
   statusPostAuth: AsyncStatusValues<StoredCredential>;
 };
@@ -49,6 +51,7 @@ export type CredentialIssuanceStatusState = {
 // Initial state for the credentialIssuance slice
 const initialState: CredentialIssuanceStatusState = {
   requestedCredential: undefined,
+  requestedCredentialType: undefined,
   statusPreAuth: setInitial(),
   statusPostAuth: setInitial()
 };
@@ -76,9 +79,13 @@ export const credentialIssuanceStatusSlice = createSlice({
     },
     setCredentialIssuancePreAuthSuccess: (
       state,
-      action: PayloadAction<{result: ObtainCredentialPreAuthResult}>
+      action: PayloadAction<{
+        result: ObtainCredentialPreAuthResult;
+        credentialType: RequestedCredentialType;
+      }>
     ) => {
       state.statusPreAuth = setSuccess(action.payload.result);
+      state.requestedCredentialType = action.payload.credentialType;
     },
     setCredentialIssuancePostAuthRequest: state => {
       state.statusPostAuth = setLoading();
@@ -132,6 +139,9 @@ export const selectCredentialIssuancePostAuthStatus = (state: RootState) =>
 
 export const selectRequestedCredential = (state: RootState) =>
   state.wallet.credentialIssuanceStatus.requestedCredential;
+
+export const selectRequestedCredentialType = (state: RootState) =>
+  state.wallet.credentialIssuanceStatus.requestedCredentialType;
 
 export const selectCredentialIssuancePostAuthError = (state: RootState) =>
   state.wallet.credentialIssuanceStatus.statusPostAuth.error.error;

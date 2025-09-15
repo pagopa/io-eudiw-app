@@ -1,7 +1,16 @@
 import i18next from 'i18next';
 
-type CredentialsKeys = 'DRIVING_LICENSE' | 'PID' | 'HEALTHID' | 'FBK_BADGE';
+export type CredentialsKeys =
+  | 'DRIVING_LICENSE'
+  | 'PID'
+  | 'HEALTHID'
+  | 'FBK_BADGE';
 
+/**
+ * Map which, for each wallet available credential, stores its corresponding
+ * credential type. It is used to distinguish a credential from the other for
+ * rendering and localization purposes.
+ */
 export const wellKnownCredential: Record<CredentialsKeys, string> = {
   DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
   PID: 'urn:eu.europa.ec.eudi:pid:1',
@@ -9,11 +18,18 @@ export const wellKnownCredential: Record<CredentialsKeys, string> = {
   FBK_BADGE: 'eu.europa.it.badge'
 };
 
-export const credentialTypeToConfig: Record<string, string> = {
-  [wellKnownCredential.DRIVING_LICENSE]: 'org.iso.18013.5.1.mDL',
-  [wellKnownCredential.PID]: 'dc_sd_jwt_PersonIdentificationData',
-  [wellKnownCredential.HEALTHID]: 'eu.europa.ec.eudi.hiid.1',
-  [wellKnownCredential.FBK_BADGE]: 'mso_mdoc_CompanyBadge'
+/**
+ * Map which, for each wallet available credential, stores its corresponding ID
+ * int the Entity Configuration. Used to start issuance flows.
+ */
+export const wellKnownCredentialConfigurationIDs: Record<
+  CredentialsKeys,
+  string
+> = {
+  DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
+  PID: 'dc_sd_jwt_PersonIdentificationData',
+  HEALTHID: 'eu.europa.ec.eudi.hiid.1',
+  FBK_BADGE: 'mso_mdoc_CompanyBadge'
 };
 
 export const getCredentialNameByType = (type?: string): string => {

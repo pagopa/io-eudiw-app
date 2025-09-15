@@ -8,6 +8,7 @@ import {
 
 type Props = {
   type: string;
+  configId: string;
   onPress: (type: string) => void;
   isSaved: boolean;
   isFetching: boolean;
@@ -28,12 +29,14 @@ const activeBadge: Badge = {
 /**
  * Module credential component which represent a credential in the credential list when requiring a new credential.
  * @param type - the type of the credential
+ * @param configId - the EC configuration ID of the credential
  * @param onPress - the callback to be called when the credential is pressed
  * @param isSaved - if true, the credential has already been obtained
  * @param isFetching - if true, the credential issuance flow has been started
  */
 const OnboardingModuleCredential = ({
   type,
+  configId,
   onPress,
   isSaved,
   isFetching
@@ -46,7 +49,7 @@ const OnboardingModuleCredential = ({
   }, [isSaved]);
 
   const handleOnPress = () => {
-    onPress(type);
+    onPress(configId);
   };
 
   const isPressable = !isSaved;
