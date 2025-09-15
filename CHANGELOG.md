@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.15.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.14.0-rc.0...1.15.0-rc.0) (2025-09-15)
+
+
+### Features
+
+* [WLEO-499] Added a new component to render string array claims ([#97](https://github.com/pagopa/io-eudiw-app/issues/97)) ([128c173](https://github.com/pagopa/io-eudiw-app/commit/128c17371782ed9ee0ad18dc7846c8dd028083cb))
+
+
+### Bug Fixes
+
+* [WLEO-560] Separated credential type from corresponding EC configuration ID ([#98](https://github.com/pagopa/io-eudiw-app/issues/98)) ([baef7cd](https://github.com/pagopa/io-eudiw-app/commit/baef7cd0a1111a9f0448fd3c9e61c4cdb80fd9d8))
+
 ## [1.14.0-rc.0](https://github.com/pagopa/io-eudiw-app/compare/1.13.3-rc.0...1.14.0-rc.0) (2025-07-18)
 
 
