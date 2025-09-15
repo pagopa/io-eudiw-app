@@ -23,7 +23,7 @@ import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus,
-  selectRequestedCredential,
+  selectRequestedCredentialType,
   setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
 import CredentialTypePresentationClaimsList, {
@@ -41,7 +41,7 @@ const CredentialTrust = () => {
   const {loading, error, success} = useAppSelector(
     selectCredentialIssuancePostAuthStatus
   );
-  const requestedCredential = useAppSelector(selectRequestedCredential);
+  const requestedCredential = useAppSelector(selectRequestedCredentialType);
   const navigation = useNavigation();
 
   const navigateToErrorScreen = useCallback(

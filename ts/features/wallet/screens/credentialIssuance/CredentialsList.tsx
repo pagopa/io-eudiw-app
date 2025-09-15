@@ -9,7 +9,11 @@ import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {IOScrollViewWithLargeHeader} from '../../../../components/IOScrollViewWithLargeHeader';
-import {wellKnownCredential} from '../../utils/credentials';
+import {
+  CredentialsKeys,
+  wellKnownCredential,
+  wellKnownCredentialConfigurationIDs
+} from '../../utils/credentials';
 import {OnboardingModuleCredential} from '../../components/credential/OnboardingModuleCredential';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {selectCredentials} from '../../store/credentials';
@@ -80,10 +84,15 @@ const CredentialsList = () => {
       <View style={styles.wrapper}>
         <ListItemHeader label={t('credentialIssuance.list.header')} />
         <VStack space={8}>
-          {Object.entries(wellKnownCredential).map(([_, type]) => (
+          {Object.entries(wellKnownCredential).map(([credentialKey, type]) => (
             <OnboardingModuleCredential
               key={`itw_credential_${type}`}
               type={type}
+              configId={
+                wellKnownCredentialConfigurationIDs[
+                  credentialKey as CredentialsKeys
+                ]
+              }
               isSaved={isCredentialSaved(type)}
               isFetching={isCredentialRequested(type)}
               onPress={c =>

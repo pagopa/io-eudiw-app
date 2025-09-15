@@ -65,8 +65,8 @@ function* obtainCredential() {
     /**
      * Check the passed credential type and throw an error if it's not found.
      */
-    const credentialType = yield* select(selectRequestedCredential);
-    if (!credentialType) {
+    const credentialConfigId = yield* select(selectRequestedCredential);
+    if (!credentialConfigId) {
       throw new Error('Credential type not found');
     }
 
@@ -82,7 +82,7 @@ function* obtainCredential() {
     // Start the issuance flow
     const startFlow: Credential.Issuance.StartFlow = () => ({
       issuerUrl: EAA_PROVIDER_BASE_URL,
-      credentialType
+      credentialType: credentialConfigId
     });
 
     const {issuerUrl} = startFlow();
@@ -98,13 +98,26 @@ function* obtainCredential() {
       yield* call(
         Credential.Issuance.startUserAuthorization,
         issuerConf,
-        credentialType,
+        credentialConfigId,
         {
           walletInstanceAttestation,
           redirectUri,
           wiaCryptoContext
         }
       );
+
+    // Extract the credential type from the config
+    const credentialConfig =
+      issuerConf.credential_configurations_supported[credentialConfigId];
+    const credentialType =
+      credentialConfig.format === 'mso_mdoc'
+        ? credentialConfig.scope
+        : credentialConfig.vct;
+    if (!credentialType) {
+      throw new Error(
+        `Error: The selected credential config doesn't have a credentialType`
+      );
+    }
 
     /**
      * Temporary comments to permit issuing of mDL without PID presentation
@@ -130,7 +143,9 @@ function* obtainCredential() {
     //   );
     // Start user authorization
 
-    yield* put(setCredentialIssuancePreAuthSuccess({result: true}));
+    yield* put(
+      setCredentialIssuancePreAuthSuccess({result: true, credentialType})
+    );
     yield* take(setCredentialIssuancePostAuthRequest);
 
     // Obtain the Authorization URL
@@ -198,7 +213,7 @@ function* obtainCredential() {
       issuerConf,
       credential,
       format,
-      credentialType,
+      credentialConfigId,
       {credentialCryptoContext, ignoreMissingAttributes: true}
     );
 
