@@ -94,7 +94,11 @@ const CredentialsList = () => {
                 ]
               }
               isSaved={isCredentialSaved(type)}
-              isFetching={isCredentialRequested(type)}
+              isFetching={isCredentialRequested(
+                wellKnownCredentialConfigurationIDs[
+                  credentialKey as CredentialsKeys
+                ]
+              )}
               onPress={c =>
                 dispatch(setCredentialIssuancePreAuthRequest({credential: c}))
               }
