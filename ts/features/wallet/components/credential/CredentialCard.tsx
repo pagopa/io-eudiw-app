@@ -79,7 +79,8 @@ const credentialCardBackgrounds: {
   [wellKnownCredential.PID]: require('../../assets/img/credentials/pid.png'),
   [wellKnownCredential.DRIVING_LICENSE]: require('../../assets/img/credentials/mdl.png'),
   [wellKnownCredential.HEALTHID]: require('../../assets/img/credentials/healthID.png'),
-  [wellKnownCredential.FBK_BADGE]: require('../../assets/img/credentials/fbkBadge.png')
+  [wellKnownCredential.FBK_BADGE]: require('../../assets/img/credentials/fbkBadge.png'),
+  [wellKnownCredential.DISABILITY_CARD]: require('../../assets/img/credentials/mdl.png'),
 };
 
 const credentialCardLogos: {
