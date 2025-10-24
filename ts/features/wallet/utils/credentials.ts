@@ -46,6 +46,8 @@ export const getCredentialNameByType = (type?: string): string => {
       return i18next.t(['wallet:credentials.names.hiid']);
     case wellKnownCredential.FBK_BADGE:
       return i18next.t(['wallet:credentials.names.fbk']);
+      case wellKnownCredential.DISABILITY_CARD:
+      return i18next.t(['wallet:credentials.names.disabilityCard']);
     default:
       return i18next.t(['wallet:credentials.names.unknown']);
   }
