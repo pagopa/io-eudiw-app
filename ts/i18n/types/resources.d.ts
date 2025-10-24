@@ -213,7 +213,7 @@ interface Resources {
         "pid": "Digital Identity",
         "hiid": "Health ID",
         "fbk": "FBK Digital Badge",
-        "disabilityCard":"Disability Card",
+        "disabilityCard": "European Disability Card",
         "unknown": "Unknown"
       },
       "details": {
