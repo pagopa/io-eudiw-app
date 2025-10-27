@@ -18,7 +18,7 @@ export const wellKnownCredential: Record<CredentialsKeys, string> = {
   PID: 'urn:eu.europa.ec.eudi:pid:1',
   HEALTHID: 'eu.europa.ec.eudi.hiid.1',
   FBK_BADGE: 'eu.europa.it.badge',
-  DISABILITY_CARD: 'dc_sd_jwt_EuropeanDisabilityCard'
+  DISABILITY_CARD: 'urn:eu.europa.ec.eudi:edc:1'
 };
 
 /**
@@ -46,7 +46,7 @@ export const getCredentialNameByType = (type?: string): string => {
       return i18next.t(['wallet:credentials.names.hiid']);
     case wellKnownCredential.FBK_BADGE:
       return i18next.t(['wallet:credentials.names.fbk']);
-      case wellKnownCredential.DISABILITY_CARD:
+    case wellKnownCredential.DISABILITY_CARD:
       return i18next.t(['wallet:credentials.names.disabilityCard']);
     default:
       return i18next.t(['wallet:credentials.names.unknown']);
