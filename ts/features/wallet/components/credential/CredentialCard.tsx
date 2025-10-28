@@ -80,7 +80,7 @@ const credentialCardBackgrounds: {
   [wellKnownCredential.DRIVING_LICENSE]: require('../../assets/img/credentials/mdl.png'),
   [wellKnownCredential.HEALTHID]: require('../../assets/img/credentials/healthID.png'),
   [wellKnownCredential.FBK_BADGE]: require('../../assets/img/credentials/fbkBadge.png'),
-  [wellKnownCredential.DISABILITY_CARD]: require('../../assets/img/credentials/mdl.png'),
+  [wellKnownCredential.DISABILITY_CARD]: require('../../assets/img/credentials/disabilityCard.png'),
 };
 
 const credentialCardLogos: {

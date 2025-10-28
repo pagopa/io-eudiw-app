@@ -35,8 +35,8 @@ export const getThemeColorByCredentialType = (
       };
     case wellKnownCredential.DISABILITY_CARD:
       return {
-        backgroundColor: '#744C63',
-        textColor: '#652035',
+        backgroundColor: '#295699',
+        textColor: '#032D5C',
         statusBarStyle: 'light-content'
       };
     case wellKnownCredential.PID:
