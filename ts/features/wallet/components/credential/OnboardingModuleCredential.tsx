@@ -19,7 +19,7 @@ const credentialIconByType: Record<string, IOIcons> = {
   [wellKnownCredential.PID]: 'fingerprint',
   [wellKnownCredential.HEALTHID]: 'healthCard',
   [wellKnownCredential.FBK_BADGE]: 'categJobOffers',
-  [wellKnownCredential.DISABILITY_CARD]: 'accessibility',
+  [wellKnownCredential.DISABILITY_CARD]: 'accessibility'
 };
 
 const activeBadge: Badge = {
