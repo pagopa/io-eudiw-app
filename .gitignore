@@ -53,6 +53,11 @@ yarn-error.log
 **/fastlane/screenshots
 **/fastlane/test_output
 
+
+# Environment files
+#
+.env
+
 # Bundle artifact
 *.jsbundle
 
