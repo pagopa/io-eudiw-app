@@ -5,8 +5,7 @@ export type CredentialsKeys =
   | 'PID'
   | 'HEALTHID'
   | 'FBK_BADGE'
-  | 'DISABILITY_CARD'
-  ;
+  | 'DISABILITY_CARD';
 
 /**
  * Map which, for each wallet available credential, stores its corresponding
