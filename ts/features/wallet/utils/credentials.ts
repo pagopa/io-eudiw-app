@@ -4,7 +4,8 @@ export type CredentialsKeys =
   | 'DRIVING_LICENSE'
   | 'PID'
   | 'HEALTHID'
-  | 'FBK_BADGE';
+  | 'FBK_BADGE'
+  | 'DISABILITY_CARD';
 
 /**
  * Map which, for each wallet available credential, stores its corresponding
@@ -15,7 +16,8 @@ export const wellKnownCredential: Record<CredentialsKeys, string> = {
   DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
   PID: 'urn:eu.europa.ec.eudi:pid:1',
   HEALTHID: 'eu.europa.ec.eudi.hiid.1',
-  FBK_BADGE: 'eu.europa.it.badge'
+  FBK_BADGE: 'eu.europa.it.badge',
+  DISABILITY_CARD: 'urn:eu.europa.ec.eudi:edc:1'
 };
 
 /**
@@ -29,7 +31,8 @@ export const wellKnownCredentialConfigurationIDs: Record<
   DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
   PID: 'dc_sd_jwt_PersonIdentificationData',
   HEALTHID: 'eu.europa.ec.eudi.hiid.1',
-  FBK_BADGE: 'mso_mdoc_CompanyBadge'
+  FBK_BADGE: 'mso_mdoc_CompanyBadge',
+  DISABILITY_CARD: 'dc_sd_jwt_EuropeanDisabilityCard'
 };
 
 export const getCredentialNameByType = (type?: string): string => {
@@ -42,6 +45,8 @@ export const getCredentialNameByType = (type?: string): string => {
       return i18next.t(['wallet:credentials.names.hiid']);
     case wellKnownCredential.FBK_BADGE:
       return i18next.t(['wallet:credentials.names.fbk']);
+    case wellKnownCredential.DISABILITY_CARD:
+      return i18next.t(['wallet:credentials.names.disabilityCard']);
     default:
       return i18next.t(['wallet:credentials.names.unknown']);
   }
