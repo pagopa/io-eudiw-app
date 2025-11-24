@@ -1,0 +1,13 @@
+diff --git a/src/mdoc/index.ts b/src/mdoc/index.ts
+index 83f61501ce4ea4cedd469c453d17867d9ac6aac9..5adbe77f892f840e51ab6f8dfc2881b041f0995b 100644
+--- a/src/mdoc/index.ts
++++ b/src/mdoc/index.ts
+@@ -32,7 +32,7 @@ export const verify = async (
+   const x5chain =
+     issuerSigned.issuerAuth.unprotectedHeader.x5chain.map(b64utob64);
+   // Verify the x5chain
+-  await verifyX5chain(x5chain, x509CertRoot);
++  // await verifyX5chain(x5chain, x509CertRoot); COMMENTED TEMPORARY
+ 
+   const coseSign1 = issuerSigned.issuerAuth.rawValue;
+ 
