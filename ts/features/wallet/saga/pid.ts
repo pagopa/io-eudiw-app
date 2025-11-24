@@ -74,18 +74,17 @@ function* obtainPid() {
     );
 
     // Start user authorization
-    const {issuerRequestUri, clientId, codeVerifier, credentialDefinition} =
-      yield* call(
-        Credential.Issuance.startUserAuthorization,
-        issuerConf,
-        [credentialConfigId],
-        {
-          walletInstanceAttestation,
-          redirectUri,
-          wiaCryptoContext,
-          appFetch
-        }
-      );
+    const {issuerRequestUri, clientId, codeVerifier} = yield* call(
+      Credential.Issuance.startUserAuthorization,
+      issuerConf,
+      [credentialConfigId],
+      {
+        walletInstanceAttestation,
+        redirectUri,
+        wiaCryptoContext,
+        appFetch
+      }
+    );
 
     // Extract the credential type from the config
     const credentialConfig =
