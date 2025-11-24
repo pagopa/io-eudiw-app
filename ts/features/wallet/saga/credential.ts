@@ -1,6 +1,7 @@
 import {
   createCryptoContextFor,
-  Credential
+  Credential,
+  Trust
 } from '@pagopa/io-react-native-wallet';
 import Config from 'react-native-config';
 import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
@@ -13,7 +14,7 @@ import {
   supportsInAppBrowser
 } from '@pagopa/io-react-native-login-utils';
 import {regenerateCryptoKey} from '../../../utils/crypto';
-import {DPOP_KEYTAG} from '../utils/crypto';
+import {DPOP_KEYTAG, WIA_KEYTAG} from '../utils/crypto';
 import {navigateWithReset} from '../../../navigation/utils';
 import {
   addCredential,
@@ -33,6 +34,8 @@ import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
+import {createWalletProviderFetch} from '../utils/fetch';
+import {selectSessionId} from '../../../store/reducers/preferences';
 import {getAttestation} from './attestation';
 
 /**
@@ -72,24 +75,32 @@ function* obtainCredential() {
 
     // Get the wallet instance attestation and generate its crypto context
     const walletInstanceAttestation = yield* call(getAttestation);
-    const wiaCryptoContext = createCryptoContextFor('WIA_KEYTAG');
+
+    const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
 
     // Create credential crypto context
     const credentialKeyTag = uuid.v4().toString();
     yield* call(generate, credentialKeyTag);
     const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
 
+    const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;
+    const sessionId = yield* select(selectSessionId);
+    const appFetch = createWalletProviderFetch(
+      walletProviderBaseUrl,
+      sessionId
+    );
+
     // Start the issuance flow
     const startFlow: Credential.Issuance.StartFlow = () => ({
       issuerUrl: EAA_PROVIDER_BASE_URL,
-      credentialType: credentialConfigId
+      credentialId: credentialConfigId
     });
 
     const {issuerUrl} = startFlow();
 
     // Evaluate issuer trust
     const {issuerConf} = yield* call(
-      Credential.Issuance.getIssuerConfigOIDFED,
+      Credential.Issuance.evaluateIssuerTrust,
       issuerUrl
     );
 
@@ -98,27 +109,30 @@ function* obtainCredential() {
       yield* call(
         Credential.Issuance.startUserAuthorization,
         issuerConf,
-        credentialConfigId,
+        [credentialConfigId],
         {
           walletInstanceAttestation,
           redirectUri,
-          wiaCryptoContext
+          wiaCryptoContext,
+          appFetch
         }
       );
 
     // Extract the credential type from the config
     const credentialConfig =
-      issuerConf.credential_configurations_supported[credentialConfigId];
+      issuerConf.openid_credential_issuer.credential_configurations_supported[
+        credentialConfigId
+      ];
     const credentialType =
       credentialConfig.format === 'mso_mdoc'
         ? credentialConfig.scope
         : credentialConfig.vct;
+
     if (!credentialType) {
       throw new Error(
         `Error: The selected credential config doesn't have a credentialType`
       );
     }
-
     /**
      * Temporary comments to permit issuing of mDL without PID presentation
      * Replace with block code below which redirects to the issuer's authorization URL
@@ -144,7 +158,10 @@ function* obtainCredential() {
     // Start user authorization
 
     yield* put(
-      setCredentialIssuancePreAuthSuccess({result: true, credentialType})
+      setCredentialIssuancePreAuthSuccess({
+        result: true,
+        credentialType
+      })
     );
     yield* take(setCredentialIssuancePostAuthRequest);
 
@@ -194,27 +211,82 @@ function* obtainCredential() {
       }
     );
 
-    // Obtain the credential
+    // For simplicity, in this example flow we work on a single credential.
+    const {credential_configuration_id, credential_identifiers} =
+      accessToken.authorization_details[0]!;
+
     const {credential, format} = yield* call(
       Credential.Issuance.obtainCredential,
       issuerConf,
       accessToken,
       clientId,
-      credentialDefinition,
+      {
+        credential_configuration_id,
+        credential_identifier: credential_identifiers[0]
+      },
       {
         credentialCryptoContext,
-        dPopCryptoContext
+        dPopCryptoContext,
+        appFetch
       }
     );
+
+    /**
+     * This function is for development use only and should not be used in production
+     *
+     * @param trustAnchorUrl The TA url
+     * @returns The base64 encoded Trust Anchor's CA
+     */
+    const getTrustAnchorX509Certificate = async (trustAnchorUrl: string) => {
+      const trustAnchorEntityConfig =
+        await Trust.Build.getTrustAnchorEntityConfiguration(trustAnchorUrl, {
+          appFetch
+        });
+      const taHeaderKid = trustAnchorEntityConfig.header.kid;
+      const taSigningJwk = trustAnchorEntityConfig.payload.jwks.keys.find(
+        key => key.kid === taHeaderKid
+      );
+
+      if (!taSigningJwk) {
+        throw new Trust.Errors.FederationError(
+          `Cannot derive X.509 Trust Anchor certificate: JWK with kid '${taHeaderKid}' not found in Trust Anchor's JWKS.`,
+          {trustAnchorKid: taHeaderKid, reason: 'JWK not found for header kid'}
+        );
+      }
+
+      if (
+        taSigningJwk.x5c &&
+        taSigningJwk.x5c.length > 0 &&
+        taSigningJwk.x5c[0]
+      ) {
+        return taSigningJwk.x5c[0];
+      }
+
+      throw new Trust.Errors.FederationError(
+        `Cannot derive X.509 Trust Anchor certificate: JWK with kid '${taHeaderKid}' does not contain a valid 'x5c' certificate array.`,
+        {trustAnchorKid: taHeaderKid, reason: 'Missing or empty x5c in JWK'}
+      );
+    };
+
+    const x509CertRoot =
+      format === 'mso_mdoc'
+        ? yield* call(
+            getTrustAnchorX509Certificate,
+            'https://pre.ta.wallet.ipzs.it'
+          )
+        : undefined;
 
     // Parse and verify the credential. The ignoreMissingAttributes flag must be set to false or omitted in production.
     const {parsedCredential} = yield* call(
       Credential.Issuance.verifyAndParseCredential,
       issuerConf,
       credential,
-      format,
-      credentialConfigId,
-      {credentialCryptoContext, ignoreMissingAttributes: true}
+      credential_configuration_id,
+      {
+        credentialCryptoContext,
+        ignoreMissingAttributes: true
+      },
+      x509CertRoot
     );
 
     yield* put(

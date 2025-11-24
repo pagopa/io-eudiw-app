@@ -52,8 +52,8 @@ export function* getAttestation() {
       appFetch
     });
 
-    yield* put(setAttestation(attestation));
-    return attestation;
+    yield* put(setAttestation(attestation[0].wallet_attestation));
+    return attestation[0].wallet_attestation;
   } else {
     return existingAttestation;
   }

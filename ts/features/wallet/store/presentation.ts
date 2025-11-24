@@ -18,6 +18,8 @@ import {resetLifecycle} from './lifecycle';
 export type PresentationParams = {
   request_uri: string;
   client_id: string;
+  state: string | null;
+  request_uri_method: 'get' | 'post' | null;
 };
 
 /**

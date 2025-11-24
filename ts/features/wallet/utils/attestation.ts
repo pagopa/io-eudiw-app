@@ -9,7 +9,7 @@ import {WalletInstanceAttestation} from '@pagopa/io-react-native-wallet';
 export const isWalletInstanceAttestationValid = (
   attestation: string
 ): boolean => {
-  const {payload} = WalletInstanceAttestation.decode(attestation);
+  const {payload} = WalletInstanceAttestation.decode(attestation as string);
   const expiryDate = new Date(payload.exp * 1000);
   const now = new Date();
   return now < expiryDate;

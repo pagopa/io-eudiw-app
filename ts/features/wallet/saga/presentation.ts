@@ -1,7 +1,11 @@
 import {call, put, select, take, takeLatest} from 'typed-redux-saga';
-import {Credential} from '@pagopa/io-react-native-wallet';
+import {
+  createCryptoContextFor,
+  Credential
+} from '@pagopa/io-react-native-wallet';
 import {serializeError} from 'serialize-error';
-import {EvaluatedDisclosure} from '@pagopa/io-react-native-wallet/lib/typescript/credential/presentation/types';
+import {DisclosureWithEncoded} from '@pagopa/io-react-native-wallet/lib/typescript/sd-jwt/types';
+import {CryptoContext} from '@pagopa/io-react-native-jwt';
 import {
   AuthResponse,
   resetPresentation,
@@ -18,7 +22,6 @@ import {
   handleDcqlResponse,
   handlePresentationDefinitionRequest,
   handlePresentationDefinitionResponse,
-  JWK,
   PresentationRequestProcessor,
   PresentationResponseProcessor,
   RequestObject
@@ -46,28 +49,34 @@ function* handlePresentationPreDefinition(
   action: ReturnType<typeof setPreDefinitionRequest>
 ) {
   try {
-    const {request_uri, client_id} = action.payload;
+    const {request_uri, client_id, state, request_uri_method} = action.payload;
 
-    const {requestUri} = yield* call(
-      Credential.Presentation.startFlowFromQR,
+    const qrParameters = yield* call(Credential.Presentation.startFlowFromQR, {
       request_uri,
-      client_id
-    );
+      client_id,
+      state,
+      request_uri_method
+    });
 
     const {requestObjectEncodedJwt} = yield* call(
       Credential.Presentation.getRequestObject,
-      requestUri
+      qrParameters.request_uri
     );
 
-    const jwks = yield* call(
-      Credential.Presentation.fetchJwksFromRequestObject,
-      requestObjectEncodedJwt
+    const {rpConf, subject} = yield* call(
+      Credential.Presentation.evaluateRelyingPartyTrust,
+      qrParameters.client_id
     );
 
     const {requestObject} = yield* call(
-      Credential.Presentation.verifyRequestObjectSignature,
+      Credential.Presentation.verifyRequestObject,
       requestObjectEncodedJwt,
-      jwks.keys
+      {
+        rpConf,
+        clientId: qrParameters.client_id,
+        rpSubject: subject,
+        state: qrParameters.state
+      }
     );
 
     const credentials = yield* select(selectCredentials);
@@ -75,12 +84,11 @@ function* handlePresentationPreDefinition(
     /**
      * Array of tuples containg the credential keytag and its raw value
      */
-    const credentialsSdJwt: Array<[string, string, string]> = credentials
-      .filter(c => c.format === 'vc+sd-jwt')
-      .map(c => [c.credentialType, c.keyTag, c.credential]);
-    const credentialsMdoc: Array<[string, string, string]> = credentials
-      .filter(c => c.format === 'mso_mdoc')
-      .map(c => [c.credentialType, c.keyTag, c.credential]);
+    const credentialsSdJwt = [
+      ...Object.values(credentials)
+        .filter(c => c.format === ('dc+sd-jwt' as any))
+        .map(c => [createCryptoContextFor(c.keyTag), c.credential])
+    ] as Array<[CryptoContext, string]>;
 
     /*
      * Based on the type of request, the {@link handleResponse} function is called with
@@ -91,8 +99,6 @@ function* handlePresentationPreDefinition(
           handleResponse,
           requestObject,
           credentialsSdJwt,
-          credentialsMdoc,
-          jwks.keys,
           handleDcqlRequest,
           handleDcqlResponse
         )
@@ -100,8 +106,6 @@ function* handlePresentationPreDefinition(
           handleResponse,
           requestObject,
           credentialsSdJwt,
-          credentialsMdoc,
-          jwks.keys,
           handlePresentationDefinitionRequest,
           handlePresentationDefinitionResponse
         );
@@ -120,18 +124,16 @@ function* handlePresentationPreDefinition(
  * @param jwks The same parameter with which {@link handleResponse} was called
  */
 function* onPresentCredentialIdentified<T>(
-  responseProcessor: Parameters<typeof handleResponse<T>>[5],
+  responseProcessor: Parameters<typeof handleResponse<T>>[3],
   processedRequest: T,
   requestObject: Parameters<typeof handleResponse<T>>[0],
-  optionalClaims: Array<EvaluatedDisclosure>,
-  jwks: Parameters<typeof handleResponse<T>>[3]
+  optionalClaims: Array<DisclosureWithEncoded>
 ) {
   const authResponse: AuthResponse = yield call(
     responseProcessor,
     processedRequest,
     requestObject,
-    optionalClaims,
-    jwks
+    optionalClaims
   );
 
   yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
@@ -150,17 +152,14 @@ function* onPresentCredentialUnidentified() {
  */
 function* handleResponse<T>(
   requestObject: RequestObject,
-  credentialsSdJwt: Array<[string, string, string]>,
-  credentialsMdoc: Array<[string, string, string]>,
-  jwks: Array<JWK>,
+  credentialsSdJwt: Array<[CryptoContext, string]>,
   requestProcessor: PresentationRequestProcessor<T>,
   responseProcessor: PresentationResponseProcessor<T>
 ) {
   const processedRequest: T = yield call(
     requestProcessor,
     requestObject,
-    credentialsSdJwt,
-    credentialsMdoc
+    credentialsSdJwt
   );
 
   /* Wait for the user to confirm the presentation with the claims or to cancel it
@@ -179,13 +178,7 @@ function* handleResponse<T>(
       typeof onPresentCredentialIdentified<T>
     > = {
       fn: onPresentCredentialIdentified<T>,
-      args: [
-        responseProcessor,
-        processedRequest,
-        requestObject,
-        optionalClaims,
-        jwks
-      ]
+      args: [responseProcessor, processedRequest, requestObject, optionalClaims]
     };
 
     const onUnidentifiedTask: IdentificationResultTask<
@@ -212,11 +205,10 @@ function* handleResponse<T>(
   } else {
     // The result of this call is ignored for the user is not interested in any message
     yield* call(() =>
-      Credential.Presentation.sendAuthorizationErrorResponse(
-        requestObject,
-        'access_denied',
-        jwks
-      )
+      Credential.Presentation.sendAuthorizationErrorResponse(requestObject, {
+        error: 'invalid_request_object',
+        errorDescription: 'Mock error during request object validation'
+      })
         .then(() => {})
         .catch(() => {})
         .finally(() => {
