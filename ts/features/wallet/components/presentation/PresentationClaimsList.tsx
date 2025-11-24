@@ -96,7 +96,7 @@ const PresentationClaimsList = ({
                   <View style={styles.shrinked}>
                     <ClaimText
                       claim={{
-                       id: claim.encoded,
+                        id: claim.encoded,
                         label: claim.encoded,
                         value: claim.encoded
                       }}

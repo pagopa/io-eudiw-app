@@ -76,7 +76,8 @@ const PresentationProximityPreview = ({route}: Props) => {
     return Object.fromEntries(credentialsBool);
   }, [route.params.descriptor]);
 
-  const [checkState, setCheckState] = useState<ISO18013_5.AcceptedFields>(baseCheckState);
+  const [checkState, setCheckState] =
+    useState<ISO18013_5.AcceptedFields>(baseCheckState);
 
   useDebugInfo({
     isAuthenticated,
