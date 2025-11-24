@@ -10,6 +10,7 @@ import {
 } from '../../../store/utils/asyncStatus';
 import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
+import {PresentationPreDefinitionParams} from '../screens/presentation/PresentationPreDefinition';
 import {resetLifecycle} from './lifecycle';
 
 /**
@@ -65,7 +66,10 @@ export const presentationSlice = createSlice({
   name: 'presentationSlice',
   initialState,
   reducers: {
-    setPreDefinitionRequest: (state, _: PayloadAction<PresentationParams>) => {
+    setPreDefinitionRequest: (
+      state,
+      _: PayloadAction<PresentationPreDefinitionParams>
+    ) => {
       state.preDefinition = setLoading();
     },
     setPreDefinitionError: (state, action: PayloadAction<{error: unknown}>) => {

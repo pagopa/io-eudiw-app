@@ -63,9 +63,9 @@ const PresentationClaimsList = ({
                   <View style={styles.shrinked}>
                     <ClaimText
                       claim={{
-                        id: claim.name,
-                        label: claim.name,
-                        value: claim.value
+                        id: claim.encoded,
+                        label: claim.encoded,
+                        value: claim.encoded
                       }}
                     />
                     <BodySmall weight="Regular" color="grey-700">
@@ -89,16 +89,16 @@ const PresentationClaimsList = ({
           />
           <View style={styles.container}>
             {optionalDisclosures.map((claim, index) => (
-              <View key={`${index}-${claim.name}`}>
+              <View key={`${index}-${claim.encoded}`}>
                 {/* Add a separator view between sections */}
                 {index !== 0 && <Divider />}
                 <View style={styles.dataItem}>
                   <View style={styles.shrinked}>
                     <ClaimText
                       claim={{
-                        id: claim.name,
-                        label: claim.name,
-                        value: claim.value
+                       id: claim.encoded,
+                        label: claim.encoded,
+                        value: claim.encoded
                       }}
                     />
                     <BodySmall weight="Regular" color="grey-700">
