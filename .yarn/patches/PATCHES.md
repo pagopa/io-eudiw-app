@@ -8,6 +8,7 @@ Created on **24/11/2025**
 
 #### Reason:
 
+- Since we are using a test issuer for the EUDI Wallet app, and the test issuer does not provide certificates or a trust anchor, we decided not to add a trust anchor. Instead, we are temporarily commenting out the verification step.
 - Temporarily disables the verifyX5chain call inside src/mdoc/index.ts to allow the integration and testing of driver license (mDL) documents.
 - At this stage we do not yet possess the valid certificate chain required for proper verification, causing the process to fail and blocking development.
 - The patch ensures that the rest of the mDL flow can be tested end-to-end while waiting for the official certificates.
