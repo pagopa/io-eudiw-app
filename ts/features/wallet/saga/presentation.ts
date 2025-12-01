@@ -75,12 +75,11 @@ function* handlePresentationPreDefinition(
     /**
      * Array of tuples containg the credential keytag and its raw value
      */
-    const credentialsSdJwt: Array<[string, string, string]> = credentials
-      .filter(c => c.format === 'vc+sd-jwt')
-      .map(c => [c.credentialType, c.keyTag, c.credential]);
-    const credentialsMdoc: Array<[string, string, string]> = credentials
-      .filter(c => c.format === 'mso_mdoc')
-      .map(c => [c.credentialType, c.keyTag, c.credential]);
+    const credentialsSdJwt = [
+      ...Object.values(credentials)
+        .filter(c => c.format === 'dc+sd-jwt' || c.format === 'vc+sd-jwt')
+        .map(c => [createCryptoContextFor(c.keyTag), c.credential])
+    ] as Array<[CryptoContext, string]>;
 
     /*
      * Based on the type of request, the {@link handleResponse} function is called with

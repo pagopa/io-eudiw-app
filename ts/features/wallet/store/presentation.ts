@@ -10,6 +10,7 @@ import {
 } from '../../../store/utils/asyncStatus';
 import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
+import {PIDObject} from '../utils/presentation';
 import {resetLifecycle} from './lifecycle';
 
 /**
@@ -23,11 +24,18 @@ export type PresentationParams = {
 /**
  * Type for the description which contains the requested claims during the presentation.
  */
-export type Descriptor = Array<
-  Awaited<
-    ReturnType<typeof Credential.Presentation.evaluateInputDescriptors>
-  >[0]['evaluatedDisclosure']
->;
+
+export type EvaluatedDisclosureDescriptor = Awaited<
+  ReturnType<typeof Credential.Presentation.evaluateInputDescriptors>
+>[0]['evaluatedDisclosure'];
+
+export type DcqlDescriptor = {
+  requiredDisclosures: PIDObject;
+  optionalDisclosures: [];
+  unrequestedDisclosures: [];
+};
+
+export type Descriptor = Array<EvaluatedDisclosureDescriptor | DcqlDescriptor>;
 
 /**
  * Response type for the authorization request which is the final step of the presentation flow.
