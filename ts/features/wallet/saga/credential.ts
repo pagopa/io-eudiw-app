@@ -1,7 +1,6 @@
 import {
   createCryptoContextFor,
-  Credential,
-  Trust
+  Credential
 } from '@pagopa/io-react-native-wallet';
 import Config from 'react-native-config';
 import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
