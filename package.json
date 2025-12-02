@@ -84,10 +84,10 @@
     "@react-native-community/cli": "15.0.1",
     "@react-native-community/cli-platform-android": "15.0.1",
     "@react-native-community/cli-platform-ios": "15.0.1",
-    "@react-native/babel-preset": "0.78.3",
-    "@react-native/eslint-config": "0.78.3",
-    "@react-native/metro-config": "0.78.3",
-    "@react-native/typescript-config": "0.78.3",
+    "@react-native/babel-preset": "0.78.2",
+    "@react-native/eslint-config": "0.78.2",
+    "@react-native/metro-config": "0.78.2",
+    "@react-native/typescript-config": "0.78.2",
     "@types/lodash": "^4.17.13",
     "@types/react": "^19.0.0",
     "@types/react-test-renderer": "^19.0.0",
@@ -116,6 +116,6 @@
   },
   "packageManager": "yarn@3.6.4",
   "resolutions": {
-    "@pagopa/io-react-native-wallet@^2.2.0": "patch:@pagopa/io-react-native-wallet@npm%3A2.2.0#./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch"
+    "@pagopa/io-react-native-wallet@^2.2.0": "patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=e22dd9&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-5d1aab5568.patch"
   }
 }
