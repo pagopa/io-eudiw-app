@@ -210,9 +210,9 @@ function* obtainCredential() {
       }
     );
 
-    // For simplicity, in this example flow we work on a single credential.
+    // Obtain the credential
     const {credential_configuration_id, credential_identifiers} =
-      accessToken.authorization_details[0]!;
+      accessToken.authorization_details[0];
 
     const {credential, format} = yield* call(
       Credential.Issuance.obtainCredential,
@@ -230,51 +230,6 @@ function* obtainCredential() {
       }
     );
 
-    /**
-     * This function is for development use only and should not be used in production
-     *
-     * @param trustAnchorUrl The TA url
-     * @returns The base64 encoded Trust Anchor's CA
-     */
-    const getTrustAnchorX509Certificate = async (trustAnchorUrl: string) => {
-      const trustAnchorEntityConfig =
-        await Trust.Build.getTrustAnchorEntityConfiguration(trustAnchorUrl, {
-          appFetch
-        });
-      const taHeaderKid = trustAnchorEntityConfig.header.kid;
-      const taSigningJwk = trustAnchorEntityConfig.payload.jwks.keys.find(
-        key => key.kid === taHeaderKid
-      );
-
-      if (!taSigningJwk) {
-        throw new Trust.Errors.FederationError(
-          `Cannot derive X.509 Trust Anchor certificate: JWK with kid '${taHeaderKid}' not found in Trust Anchor's JWKS.`,
-          {trustAnchorKid: taHeaderKid, reason: 'JWK not found for header kid'}
-        );
-      }
-
-      if (
-        taSigningJwk.x5c &&
-        taSigningJwk.x5c.length > 0 &&
-        taSigningJwk.x5c[0]
-      ) {
-        return taSigningJwk.x5c[0];
-      }
-
-      throw new Trust.Errors.FederationError(
-        `Cannot derive X.509 Trust Anchor certificate: JWK with kid '${taHeaderKid}' does not contain a valid 'x5c' certificate array.`,
-        {trustAnchorKid: taHeaderKid, reason: 'Missing or empty x5c in JWK'}
-      );
-    };
-
-    const x509CertRoot =
-      format === 'mso_mdoc'
-        ? yield* call(
-            getTrustAnchorX509Certificate,
-            'https://pre.ta.wallet.ipzs.it'
-          )
-        : undefined;
-
     // Parse and verify the credential. The ignoreMissingAttributes flag must be set to false or omitted in production.
     const {parsedCredential} = yield* call(
       Credential.Issuance.verifyAndParseCredential,
@@ -284,8 +239,8 @@ function* obtainCredential() {
       {
         credentialCryptoContext,
         ignoreMissingAttributes: true
-      },
-      x509CertRoot
+      }
+      // 'x509CertRoot'
     );
 
     yield* put(

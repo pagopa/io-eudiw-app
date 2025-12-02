@@ -151,7 +151,6 @@ function* obtainPid() {
       }
     );
 
-    // For simplicity, in this example flow we work on a single credential.
     const {credential_configuration_id, credential_identifiers} =
       accessToken.authorization_details[0]!;
 
