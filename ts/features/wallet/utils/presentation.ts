@@ -8,7 +8,6 @@ import {
 } from '../store/presentation';
 import {selectCredentials} from '../store/credentials';
 import {ParsedCredential} from './types';
-import {wellKnownCredential} from './credentials';
 
 type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 export type RequestObject = Awaited<
