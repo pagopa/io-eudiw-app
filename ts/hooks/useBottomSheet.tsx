@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 export type IOBottomSheetModal = {
   present: () => void;
   dismiss: () => void;
-  bottomSheet: JSX.Element;
+  bottomSheet: React.JSX.Element;
 };
 
 type BottomSheetOptions = {

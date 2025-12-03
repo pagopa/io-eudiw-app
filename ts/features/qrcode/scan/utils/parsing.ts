@@ -18,8 +18,12 @@ export const presentationLinkToUrl = (link: string): PresentationParams => {
   }
   const request_uri = url.searchParams.get('request_uri');
   const client_id = url.searchParams.get('client_id');
+  const state = url.searchParams.get('state');
+  const request_uri_method = url.searchParams.get('request_uri_method') as
+    | 'get'
+    | 'post';
   if (!request_uri || !client_id) {
     throw new Error('Invalid presentation link');
   }
-  return {request_uri, client_id};
+  return {request_uri, client_id, state, request_uri_method};
 };

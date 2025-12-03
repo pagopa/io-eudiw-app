@@ -10,6 +10,8 @@ import {
 } from '../../../store/utils/asyncStatus';
 import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
+import {PIDObject} from '../utils/presentation';
+import {PresentationPreDefinitionParams} from '../screens/presentation/PresentationPreDefinition';
 import {resetLifecycle} from './lifecycle';
 
 /**
@@ -18,16 +20,25 @@ import {resetLifecycle} from './lifecycle';
 export type PresentationParams = {
   request_uri: string;
   client_id: string;
+  state: string | null;
+  request_uri_method: 'get' | 'post' | null;
 };
 
 /**
  * Type for the description which contains the requested claims during the presentation.
  */
-export type Descriptor = Array<
-  Awaited<
-    ReturnType<typeof Credential.Presentation.evaluateInputDescriptors>
-  >[0]['evaluatedDisclosure']
->;
+
+export type EvaluatedDisclosureDescriptor = Awaited<
+  ReturnType<typeof Credential.Presentation.evaluateInputDescriptors>
+>[0]['evaluatedDisclosure'];
+
+export type DcqlDescriptor = {
+  requiredDisclosures: PIDObject;
+  optionalDisclosures: [];
+  unrequestedDisclosures: [];
+};
+
+export type Descriptor = Array<EvaluatedDisclosureDescriptor | DcqlDescriptor>;
 
 /**
  * Response type for the authorization request which is the final step of the presentation flow.
@@ -63,7 +74,10 @@ export const presentationSlice = createSlice({
   name: 'presentationSlice',
   initialState,
   reducers: {
-    setPreDefinitionRequest: (state, _: PayloadAction<PresentationParams>) => {
+    setPreDefinitionRequest: (
+      state,
+      _: PayloadAction<PresentationPreDefinitionParams>
+    ) => {
       state.preDefinition = setLoading();
     },
     setPreDefinitionError: (state, action: PayloadAction<{error: unknown}>) => {

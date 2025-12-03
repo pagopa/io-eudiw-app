@@ -1,18 +1,18 @@
 import {Credential} from '@pagopa/io-react-native-wallet';
-import {call, put} from 'typed-redux-saga';
+import {call, put, select} from 'typed-redux-saga';
+import {CryptoContext} from '@pagopa/io-react-native-jwt';
 import {
   AuthResponse,
   OptionalClaims,
   setPreDefinitionSuccess
 } from '../store/presentation';
+import {selectCredentials} from '../store/credentials';
+import {ParsedCredential} from './types';
 
-type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[0];
+type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 export type RequestObject = Awaited<
-  ReturnType<Credential.Presentation.VerifyRequestObjectSignature>
+  ReturnType<Credential.Presentation.VerifyRequestObject>
 >['requestObject'];
-export type JWK = Awaited<
-  ReturnType<typeof Credential.Presentation.fetchJwksFromRequestObject>
->['keys'][0];
 
 /**
  * This generator function must parse the {@link RequestObject}, extract the disclosures
@@ -27,8 +27,7 @@ export type JWK = Awaited<
  */
 export type PresentationRequestProcessor<T> = (
   requestObject: RequestObject,
-  credentialsSdJwt: Array<[string, string, string]>,
-  credentialsMdoc: Array<[string, string, string]>
+  credentialsSdJwt: Array<[CryptoContext, string]>
 ) => Generator<unknown, T, any>;
 
 /**
@@ -44,8 +43,7 @@ export type PresentationRequestProcessor<T> = (
 export type PresentationResponseProcessor<T> = (
   toProcess: T,
   requestObject: RequestObject,
-  optionalClaims: Array<OptionalClaims>,
-  jwks: Array<JWK>
+  optionalClaims: Array<OptionalClaims>
 ) => Generator<unknown, AuthResponse, any>;
 
 type EvaluateDcqlReturn = Awaited<
@@ -57,6 +55,63 @@ type EvaluatePresentationDefinitionReturn = {
   >;
   presentationDefinitionId: string;
 };
+type RequiredDisclosure = [string, string, unknown];
+
+export interface PIDField {
+  id: string;
+  value: unknown;
+  name: Record<string, string>;
+}
+
+export interface PIDObject {
+  [pidType: string]: {
+    claims: Record<string, PIDField>;
+  };
+}
+
+/**
+ * Transforms a list of required disclosures and a parsed credential into a formatted object.
+ * This function maps each required disclosure to its corresponding parsed claim, normalizes
+ * multilingual claim names, and groups them under the provided credential type.
+ *
+ * @param requiredDisclosures - An array of tuples containing the claim ID and claim name that must be disclosed.
+ * @param parsedCredential - The parsed credential object containing claim data extracted from the credential.
+ * @param credentialType - The type of credential under which the transformed claims should be nested.
+ * @returns A {@link PIDObject} containing the structured claims mapped to the given credential type.
+ */
+export function transformDescriptorObject(
+  requiredDisclosures: Array<RequiredDisclosure>,
+  parsedCredential: ParsedCredential,
+  credentialType: string
+): PIDObject {
+  const claims: Record<string, PIDField> = {};
+
+  for (const [id, claimName] of requiredDisclosures) {
+    const parsed = parsedCredential[claimName];
+
+    // eslint-disable-next-line functional/no-let
+    let name: Record<string, string> = {};
+
+    if (typeof parsed.name === 'string') {
+      name = {en: parsed.name};
+    } else if (parsed.name && typeof parsed.name === 'object') {
+      name = parsed.name;
+    }
+
+    // eslint-disable-next-line functional/immutable-data
+    claims[claimName] = {
+      id,
+      value: parsed.value,
+      name
+    };
+  }
+
+  return {
+    [credentialType]: {
+      claims
+    }
+  };
+}
 
 /**
  * Helper method to parse a DCQL request
@@ -64,21 +119,33 @@ type EvaluatePresentationDefinitionReturn = {
 export const handleDcqlRequest: PresentationRequestProcessor<EvaluateDcqlReturn> =
   function* (
     requestObject: RequestObject,
-    credentialsSdJwt: Array<[string, string, string]>,
-    credentialsMdoc: Array<[string, string, string]>
+    credentialsSdJwt: Array<[CryptoContext, string]>
   ) {
+    const credentialsTransformedSdJwt: Array<[CryptoContext, string]> =
+      credentialsSdJwt.map(item => [item[0], item[1]]);
+
     const evaluateDcqlQuery = yield* call(
       Credential.Presentation.evaluateDcqlQuery,
-      requestObject.dcql_query as DcqlQuery,
-      credentialsSdJwt,
-      credentialsMdoc
+      credentialsTransformedSdJwt,
+      requestObject.dcql_query as DcqlQuery
+    );
+
+    const allCredentials = yield* select(selectCredentials);
+    const sdJwtCredential = allCredentials.filter(
+      credential =>
+        credential.format === 'dc+sd-jwt' || credential.format === 'vc+sd-jwt'
     );
 
     yield* put(
       setPreDefinitionSuccess(
         evaluateDcqlQuery.map(query => ({
-          requiredDisclosures: query.requiredDisclosures,
-          optionalDisclosures: []
+          requiredDisclosures: transformDescriptorObject(
+            query.requiredDisclosures,
+            sdJwtCredential[0]?.parsedCredential,
+            sdJwtCredential[0]?.credentialType
+          ),
+          optionalDisclosures: [],
+          unrequestedDisclosures: []
         }))
       )
     );
@@ -93,34 +160,32 @@ export const handleDcqlResponse: PresentationResponseProcessor<EvaluateDcqlRetur
   function* (
     toProcess: EvaluateDcqlReturn,
     requestObject: RequestObject,
-    _: Array<OptionalClaims>,
-    jwks: Array<JWK>
+    _: Array<OptionalClaims>
   ) {
     const credentialsToPresent = toProcess.map(
       ({requiredDisclosures, ...rest}) => ({
         ...rest,
-        credentialInputId: rest.id,
-        requestedClaims: requiredDisclosures
+        requestedClaims: requiredDisclosures.map(([, claimName]) => claimName)
       })
     );
 
-    const authRequestObject = {
-      nonce: requestObject.nonce,
-      clientId: requestObject.client_id,
-      responseUri: requestObject.response_uri
-    };
+    const {rpConf} = yield* call(
+      Credential.Presentation.evaluateRelyingPartyTrust,
+      requestObject.client_id
+    );
 
     const remotePresentations = yield* call(
       Credential.Presentation.prepareRemotePresentations,
       credentialsToPresent,
-      authRequestObject
+      requestObject.nonce,
+      requestObject.client_id
     );
 
     return yield* call(
-      Credential.Presentation.sendAuthorizationResponseDcql,
+      Credential.Presentation.sendAuthorizationResponse,
       requestObject,
-      jwks,
-      remotePresentations
+      remotePresentations,
+      rpConf
     );
   };
 
@@ -130,19 +195,21 @@ export const handleDcqlResponse: PresentationResponseProcessor<EvaluateDcqlRetur
 export const handlePresentationDefinitionRequest: PresentationRequestProcessor<EvaluatePresentationDefinitionReturn> =
   function* (
     requestObject: RequestObject,
-    credentialsSdJwt: Array<[string, string, string]>,
-    credentialsMdoc: Array<[string, string, string]>
+    credentialsSdJwt: Array<[CryptoContext, string]>
   ) {
     const {presentationDefinition} = yield* call(
       Credential.Presentation.fetchPresentDefinition,
       requestObject
     );
 
+    const testJwt: Array<[CryptoContext, string]> = credentialsSdJwt.map(
+      item => [item[0], item[1]]
+    );
+
     const evaluateInputDescriptors = yield* call(
       Credential.Presentation.evaluateInputDescriptors,
       presentationDefinition.input_descriptors,
-      credentialsSdJwt,
-      credentialsMdoc
+      testJwt
     );
 
     yield* put(
@@ -166,8 +233,7 @@ export const handlePresentationDefinitionResponse: PresentationResponseProcessor
   function* (
     toProcess: EvaluatePresentationDefinitionReturn,
     requestObject: RequestObject,
-    optionalClaims: Array<OptionalClaims>,
-    jwks: Array<JWK>
+    optionalClaims: Array<OptionalClaims>
   ) {
     const credentialAndInputDescriptor = toProcess.inputDescriptors.map(
       evaluateInputDescriptor => {
@@ -186,37 +252,43 @@ export const handlePresentationDefinitionResponse: PresentationResponseProcessor
               requestedClaims,
               credentialInputId: evaluateInputDescriptor.inputDescriptor.id,
               credential: evaluateInputDescriptor.credential,
-              keyTag: evaluateInputDescriptor.keyTag,
               format,
-              doctype: evaluateInputDescriptor.inputDescriptor.id
+              doctype: evaluateInputDescriptor.inputDescriptor.id,
+              cryptoContext: evaluateInputDescriptor.cryptoContext
             }
           : {
               requestedClaims,
               credentialInputId: evaluateInputDescriptor.inputDescriptor.id,
               credential: evaluateInputDescriptor.credential,
-              keyTag: evaluateInputDescriptor.keyTag,
-              format
+              format,
+              cryptoContext: evaluateInputDescriptor.cryptoContext
             };
       }
     );
 
-    const authRequestObject = {
-      nonce: requestObject.nonce,
-      clientId: requestObject.client_id,
-      responseUri: requestObject.response_uri
-    };
+    const {rpConf} = yield* call(
+      Credential.Presentation.evaluateRelyingPartyTrust,
+      requestObject.client_id
+    );
+
+    const credentialsToPresent = credentialAndInputDescriptor.map(item => ({
+      id: item.credentialInputId,
+      credential: item.credential,
+      cryptoContext: item.cryptoContext,
+      requestedClaims: item.requestedClaims.map(rc => rc.encoded)
+    }));
 
     const remotePresentations = yield* call(
       Credential.Presentation.prepareRemotePresentations,
-      credentialAndInputDescriptor,
-      authRequestObject
+      credentialsToPresent,
+      requestObject.nonce,
+      requestObject.client_id
     );
 
     return yield* call(
       Credential.Presentation.sendAuthorizationResponse,
       requestObject,
-      toProcess.presentationDefinitionId,
-      jwks,
-      remotePresentations
+      remotePresentations,
+      rpConf
     );
   };
