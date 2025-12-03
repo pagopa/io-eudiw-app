@@ -52,6 +52,7 @@ export function* getAttestation() {
       appFetch
     });
 
+    // # TODO: WLEO-727 - rework to support multiple attestations issuance
     yield* put(setAttestation(attestation[0].wallet_attestation));
     return attestation[0].wallet_attestation;
   } else {

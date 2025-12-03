@@ -210,6 +210,7 @@ function* obtainCredential() {
     );
 
     // Obtain the credential
+    // # TODO: WLEO-727 - rework to support multiple credentials issuance
     const {credential_configuration_id, credential_identifiers} =
       accessToken.authorization_details[0];
 
