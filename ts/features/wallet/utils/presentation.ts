@@ -71,21 +71,25 @@ export interface PIDObject {
 }
 
 /**
- * Helper method to parse a DCQL request
+ * Transforms a list of required disclosures and a parsed credential into a formatted object.
+ * This function maps each required disclosure to its corresponding parsed claim, normalizes
+ * multilingual claim names, and groups them under the provided credential type.
+ *
+ * @param requiredDisclosures - An array of tuples containing the claim ID and claim name that must be disclosed.
+ * @param parsedCredential - The parsed credential object containing claim data extracted from the credential.
+ * @param credentialType - The type of credential under which the transformed claims should be nested.
+ * @returns A {@link PIDObject} containing the structured claims mapped to the given credential type.
  */
 export function transformDescriptorObject(
   requiredDisclosures: Array<RequiredDisclosure>,
-  parsedCredential: ParsedCredential
+  parsedCredential: ParsedCredential,
+  credentialType: string
 ): PIDObject {
   const claims: Record<string, PIDField> = {};
 
   for (const [id, claimName] of requiredDisclosures) {
     const parsed = parsedCredential[claimName];
 
-    if (!parsed) {
-      console.warn(`Missing parsed data for claim: ${claimName}`);
-      continue;
-    }
     // eslint-disable-next-line functional/no-let
     let name: Record<string, string> = {};
 
@@ -104,12 +108,15 @@ export function transformDescriptorObject(
   }
 
   return {
-    [wellKnownCredential.PID]: {
+    [credentialType]: {
       claims
     }
   };
 }
 
+/**
+ * Helper method to parse a DCQL request
+ */
 export const handleDcqlRequest: PresentationRequestProcessor<EvaluateDcqlReturn> =
   function* (
     requestObject: RequestObject,
@@ -135,7 +142,8 @@ export const handleDcqlRequest: PresentationRequestProcessor<EvaluateDcqlReturn>
         evaluateDcqlQuery.map(query => ({
           requiredDisclosures: transformDescriptorObject(
             query.requiredDisclosures,
-            sdJwtCredential[0]?.parsedCredential
+            sdJwtCredential[0]?.parsedCredential,
+            sdJwtCredential[0]?.credentialType
           ),
           optionalDisclosures: [],
           unrequestedDisclosures: []

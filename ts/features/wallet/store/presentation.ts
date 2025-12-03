@@ -11,6 +11,7 @@ import {
 import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
 import {PIDObject} from '../utils/presentation';
+import {PresentationPreDefinitionParams} from '../screens/presentation/PresentationPreDefinition';
 import {resetLifecycle} from './lifecycle';
 
 /**
