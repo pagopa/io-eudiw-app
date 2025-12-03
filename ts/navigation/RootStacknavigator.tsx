@@ -3,7 +3,7 @@ import {
   NavigationContainer,
   NavigatorScreenParams
 } from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import React, {useCallback, useEffect} from 'react';
 import {useIOThemeContext} from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
@@ -41,7 +41,7 @@ export type RootStackParamList = {
   [MAIN_ROUTES.WALLET_NAV]: NavigatorScreenParams<WalletNavigatorParamsList>;
 };
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 
 /**
  * Type definition for the screens to be rendered based on the startup and onboarding states.

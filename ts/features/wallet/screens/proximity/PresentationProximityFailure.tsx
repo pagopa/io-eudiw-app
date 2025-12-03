@@ -1,6 +1,6 @@
 import {useTranslation} from 'react-i18next';
 import React from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {StackScreenProps} from '@react-navigation/stack';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 import {useAppDispatch, useAppSelector} from '../../../../store';
@@ -18,10 +18,7 @@ export type PresentationProximityFailureProps = {
   fatal: boolean;
 };
 
-type Props = NativeStackScreenProps<
-  WalletNavigatorParamsList,
-  'PROXIMITY_FAILURE'
->;
+type Props = StackScreenProps<WalletNavigatorParamsList, 'PROXIMITY_FAILURE'>;
 const PresentationProximityFailure = ({route}: Props) => {
   const {t} = useTranslation('wallet');
   const {navigateToWallet} = useNavigateToWalletWithReset();

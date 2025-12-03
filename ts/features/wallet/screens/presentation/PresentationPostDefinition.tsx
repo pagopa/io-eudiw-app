@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   Body,
   FeatureInfo,
@@ -32,6 +31,7 @@ import PresentationClaimsList from '../../components/presentation/PresentationCl
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
+import {StackScreenProps} from '@react-navigation/stack';
 
 /**
  * Description which contains the requested of the credential to be presented.
@@ -40,7 +40,7 @@ export type PresentationPostDefinitionParams = {
   descriptor: Descriptor;
 };
 
-type Props = NativeStackScreenProps<
+type Props = StackScreenProps<
   WalletNavigatorParamsList,
   'PRESENTATION_POST_DEFINITION'
 >;

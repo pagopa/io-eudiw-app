@@ -1803,9 +1803,30 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNCMaskedView (0.3.2):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNDeviceInfo (14.0.1):
     - React-Core
-  - RNGestureHandler (2.25.0):
+  - RNGestureHandler (2.29.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2172,6 +2193,7 @@ DEPENDENCIES:
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
+  - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
@@ -2352,6 +2374,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
     :path: "../node_modules/@react-native-clipboard/clipboard"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-masked-view/masked-view"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
@@ -2457,8 +2481,9 @@ SPEC CHECKSUMS:
   RNBootSplash: bab46cb491d856195d60a64dc4d6a618fdeb89b3
   RNCAsyncStorage: 79cfba789fca205b204f3ce7948b874500129eb4
   RNCClipboard: f13dd3ceae005858e137ae9e70f3c414e174ff81
+  RNCMaskedView: 308c763227e237d4d260bd8841870e099572bb3e
   RNDeviceInfo: afc27b3f24bd0e97181bf3e9f23cfa4c9040dd32
-  RNGestureHandler: dcb1b1db024f3744b03af56d132f4f72c4c27195
+  RNGestureHandler: 6268a11b236d8229890690d043f386dae9a3cacc
   RNPermissions: 4921d71644f3e213b3377c96c00056a8153bbff1
   RNQrGenerator: afacf12b55dfba0e3aaca963eec23691e8426431
   RNReactNativeHapticFeedback: 66c6b0cf19f5d9dae8be36b2336e1fe2a2e42566

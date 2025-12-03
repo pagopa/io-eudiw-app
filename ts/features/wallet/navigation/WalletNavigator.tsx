@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import PidIssuanceFailure from '../screens/pidIssuance/PidIssuanceFailure';
 import WalletInstanceCreation from '../screens/pidIssuance/WalletInstanceCreation';
 import PidIssuancRequest from '../screens/pidIssuance/PidIssuanceRequest';
@@ -61,7 +61,7 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.PROXIMITY.FAILURE]: PresentationProximityFailureProps;
 };
 
-const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();
+const Stack = createStackNavigator<WalletNavigatorParamsList>();
 
 /**
  * The wallted related stack which is used to navigate between wallet related screens.
