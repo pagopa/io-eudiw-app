@@ -13,6 +13,7 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import {Alert, StyleSheet, View} from 'react-native';
+import {StackScreenProps} from '@react-navigation/stack';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
   Descriptor,
@@ -31,7 +32,6 @@ import PresentationClaimsList from '../../components/presentation/PresentationCl
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
-import {StackScreenProps} from '@react-navigation/stack';
 
 /**
  * Description which contains the requested of the credential to be presented.
