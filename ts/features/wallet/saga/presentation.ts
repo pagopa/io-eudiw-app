@@ -86,7 +86,7 @@ function* handlePresentationPreDefinition(
      */
     const credentialsSdJwt = [
       ...Object.values(credentials)
-        .filter(c => c.format === ('dc+sd-jwt' as any))
+        .filter(c => c.format === 'dc+sd-jwt' || c.format === 'vc+sd-jwt')
         .map(c => [createCryptoContextFor(c.keyTag), c.credential])
     ] as Array<[CryptoContext, string]>;
 

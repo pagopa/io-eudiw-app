@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -17,22 +17,18 @@ import {Alert, StyleSheet, View} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
   Descriptor,
-  OptionalClaims,
   selectPostDefinitionStatus,
   setPostDefinitionCancel,
   setPostDefinitionRequest
 } from '../../store/presentation';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {WalletNavigatorParamsList} from '../../navigation/WalletNavigator';
-import {
-  getCredentialNameByType,
-  wellKnownCredential
-} from '../../utils/credentials';
-import PresentationClaimsList from '../../components/presentation/PresentationClaimsList';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
-
+import CredentialTypePresentationClaimsList, {
+  CredentialTypePresentationClaimsListDescriptor
+} from '../../components/presentation/CredentialTypePresentationClaimsList';
 /**
  * Description which contains the requested of the credential to be presented.
  */
@@ -55,9 +51,26 @@ const PresentationPostDefinition = ({route}: Props) => {
   const dispatch = useAppDispatch();
   const postDefinitionStatus = useAppSelector(selectPostDefinitionStatus);
   const {navigateToWallet} = useNavigateToWalletWithReset();
-  const [optionalChecked, setOptionalChecked] = useState(
-    [] as Array<OptionalClaims>
-  );
+
+  // TESTING PURPOSES
+  const baseCheckState = useMemo(() => {
+    const credentialsBool = Object.entries(route.params.descriptor).map(
+      ([credType, namespaces]) => {
+        const namespacesBool = Object.entries(namespaces).map(
+          ([namespace, attributes]) => {
+            const attributesBool = Object.fromEntries(
+              Object.keys(attributes).map(key => [key, true])
+            );
+            return [namespace, attributesBool];
+          }
+        );
+        return [credType, Object.fromEntries(namespacesBool)];
+      }
+    );
+    return Object.fromEntries(credentialsBool);
+  }, [route.params.descriptor]);
+
+  const [optionalChecked, setOptionalChecked] = useState(baseCheckState);
 
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();
@@ -87,13 +100,13 @@ const PresentationPostDefinition = ({route}: Props) => {
    * in the PresentationClaimsList component.
    * @param encoded - The encoded string of the optional disclosure
    */
-  const onOptionalDisclosuresChange = (encoded: OptionalClaims) => {
-    if (optionalChecked.includes(encoded)) {
-      setOptionalChecked(optionalChecked.filter(item => item !== encoded));
-    } else {
-      setOptionalChecked([...optionalChecked, encoded]);
-    }
-  };
+  // const onOptionalDisclosuresChange = (encoded: OptionalClaims) => {
+  //   if (optionalChecked.includes(encoded)) {
+  //     setOptionalChecked(optionalChecked.filter(item => item !== encoded));
+  //   } else {
+  //     setOptionalChecked([...optionalChecked, encoded]);
+  //   }
+  // };
 
   /**
    * Checks for changes in the post definition status and navigates to the appropriate screen
@@ -120,6 +133,13 @@ const PresentationPostDefinition = ({route}: Props) => {
     goBack: cancelAlert
   });
 
+  const requiredDisclosures = route.params.descriptor[0].requiredDisclosures;
+
+  const optionalDisclosures = route.params.descriptor[0].optionalDisclosures;
+
+  /**
+   * Helper method to parse a DCQL request
+   */
   return (
     <ForceScrollDownView style={styles.scroll}>
       <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
@@ -135,11 +155,16 @@ const PresentationPostDefinition = ({route}: Props) => {
         <H2>{t('wallet:presentation.trust.title')}</H2>
         <Body> {t('wallet:presentation.trust.subtitle')}</Body>
         <VSpacer size={8} />
-        <PresentationClaimsList
-          optionalChecked={optionalChecked}
-          setOptionalChecked={onOptionalDisclosuresChange}
-          descriptor={route.params.descriptor}
-          source={getCredentialNameByType(wellKnownCredential.PID)}
+        <CredentialTypePresentationClaimsList
+          mandatoryDescriptor={
+            requiredDisclosures as unknown as CredentialTypePresentationClaimsListDescriptor
+          }
+          optionalSection={{
+            optionalDescriptor:
+              optionalDisclosures as unknown as CredentialTypePresentationClaimsListDescriptor,
+            optionalCheckState: optionalChecked,
+            setOptionalCheckState: setOptionalChecked
+          }}
         />
         <VSpacer size={24} />
         <FeatureInfo

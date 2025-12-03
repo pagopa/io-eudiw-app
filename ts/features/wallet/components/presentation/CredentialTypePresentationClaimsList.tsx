@@ -14,6 +14,7 @@ import {getCredentialNameByType} from '../../utils/credentials';
 import {getClaimsFullLocale} from '../../utils/locale';
 import {CredentialClaim} from '../credential/CredentialClaims';
 import {ParsedCredential} from '../../utils/types';
+import {PIDObject} from '../../utils/presentation';
 
 /**
  * This is the type definition for the accepted fields that will be presented to the verifier app.
@@ -49,7 +50,9 @@ export type CredentialTypePresentationClaimsListDescriptor = Record<
 type DisclosuresViewModel = Record<string, Record<string, AttributeDescriptor>>;
 
 type CredentialTypePresentationClaimsListProps = {
-  mandatoryDescriptor?: CredentialTypePresentationClaimsListDescriptor;
+  mandatoryDescriptor?:
+    | CredentialTypePresentationClaimsListDescriptor
+    | PIDObject;
   optionalSection?: {
     optionalDescriptor: CredentialTypePresentationClaimsListDescriptor;
     optionalCheckState: CredentialTypePresentationClaimsListOptionalAcceptedFields;

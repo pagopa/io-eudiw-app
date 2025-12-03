@@ -1,12 +1,14 @@
 import {Credential} from '@pagopa/io-react-native-wallet';
-import {call, put} from 'typed-redux-saga';
+import {call, put, select} from 'typed-redux-saga';
 import {CryptoContext} from '@pagopa/io-react-native-jwt';
 import {
   AuthResponse,
   OptionalClaims,
-  setPreDefinitionSuccess,
-  Descriptor
+  setPreDefinitionSuccess
 } from '../store/presentation';
+import {selectCredentials} from '../store/credentials';
+import {ParsedCredential} from './types';
+import {wellKnownCredential} from './credentials';
 
 type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 export type RequestObject = Awaited<
@@ -54,26 +56,87 @@ type EvaluatePresentationDefinitionReturn = {
   >;
   presentationDefinitionId: string;
 };
+type RequiredDisclosure = [string, string, unknown];
+
+export interface PIDField {
+  id: string;
+  value: unknown;
+  name: Record<string, string>;
+}
+
+export interface PIDObject {
+  [pidType: string]: {
+    claims: Record<string, PIDField>;
+  };
+}
 
 /**
  * Helper method to parse a DCQL request
  */
+export function transformDescriptorObject(
+  requiredDisclosures: Array<RequiredDisclosure>,
+  parsedCredential: ParsedCredential
+): PIDObject {
+  const claims: Record<string, PIDField> = {};
+
+  for (const [id, claimName] of requiredDisclosures) {
+    const parsed = parsedCredential[claimName];
+
+    if (!parsed) {
+      console.warn(`Missing parsed data for claim: ${claimName}`);
+      continue;
+    }
+    // eslint-disable-next-line functional/no-let
+    let name: Record<string, string> = {};
+
+    if (typeof parsed.name === 'string') {
+      name = {en: parsed.name};
+    } else if (parsed.name && typeof parsed.name === 'object') {
+      name = parsed.name;
+    }
+
+    // eslint-disable-next-line functional/immutable-data
+    claims[claimName] = {
+      id,
+      value: parsed.value,
+      name
+    };
+  }
+
+  return {
+    [wellKnownCredential.PID]: {
+      claims
+    }
+  };
+}
+
 export const handleDcqlRequest: PresentationRequestProcessor<EvaluateDcqlReturn> =
   function* (
     requestObject: RequestObject,
     credentialsSdJwt: Array<[CryptoContext, string]>
   ) {
+    const credentialsTransformedSdJwt: Array<[CryptoContext, string]> =
+      credentialsSdJwt.map(item => [item[0], item[1]]);
+
     const evaluateDcqlQuery = yield* call(
       Credential.Presentation.evaluateDcqlQuery,
-      credentialsSdJwt,
+      credentialsTransformedSdJwt,
       requestObject.dcql_query as DcqlQuery
+    );
+
+    const allCredentials = yield* select(selectCredentials);
+    const sdJwtCredential = allCredentials.filter(
+      credential =>
+        credential.format === 'dc+sd-jwt' || credential.format === 'vc+sd-jwt'
     );
 
     yield* put(
       setPreDefinitionSuccess(
         evaluateDcqlQuery.map(query => ({
-          requiredDisclosures:
-            query.requiredDisclosures as unknown as Descriptor[0]['requiredDisclosures'],
+          requiredDisclosures: transformDescriptorObject(
+            query.requiredDisclosures,
+            sdJwtCredential[0]?.parsedCredential
+          ),
           optionalDisclosures: [],
           unrequestedDisclosures: []
         }))
@@ -132,10 +195,14 @@ export const handlePresentationDefinitionRequest: PresentationRequestProcessor<E
       requestObject
     );
 
+    const testJwt: Array<[CryptoContext, string]> = credentialsSdJwt.map(
+      item => [item[0], item[1]]
+    );
+
     const evaluateInputDescriptors = yield* call(
       Credential.Presentation.evaluateInputDescriptors,
       presentationDefinition.input_descriptors,
-      credentialsSdJwt
+      testJwt
     );
 
     yield* put(
