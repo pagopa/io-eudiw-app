@@ -2239,9 +2239,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-wallet@npm:2.4.1":
-  version: 2.4.1
-  resolution: "@pagopa/io-react-native-wallet@npm:2.4.1"
+"@pagopa/io-react-native-wallet@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@pagopa/io-react-native-wallet@npm:2.2.0"
   dependencies:
     dcql: ^0.2.21
     js-base64: ^3.7.7
@@ -2259,31 +2259,7 @@ __metadata:
     "@pagopa/io-react-native-jwt": "*"
     react: "*"
     react-native: "*"
-  checksum: 23dff582a4a8f560b5ef90b0e2c29b807877947ed5efc0e245fce2f21ce02d2795a4329fa5c4800475594f9445ce37454d9392d189503ce2d8e7d2790986819f
-  languageName: node
-  linkType: hard
-
-"@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@npm%3A2.4.1#./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.4.1-8133846cfb.patch::locator=ioeudiwapp%40workspace%3A.":
-  version: 2.4.1
-  resolution: "@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@npm%3A2.4.1#./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.4.1-8133846cfb.patch::version=2.4.1&hash=f1346c&locator=ioeudiwapp%40workspace%3A."
-  dependencies:
-    dcql: ^0.2.21
-    js-base64: ^3.7.7
-    js-sha256: ^0.9.0
-    jsonpath-plus: ^10.2.0
-    jsrsasign: ^11.1.0
-    parse-url: ^9.2.0
-    react-native-url-polyfill: ^2.0.0
-    react-native-uuid: ^2.0.1
-    uuid: ^11.0.3
-    zod: ^3.21.4
-  peerDependencies:
-    "@pagopa/io-react-native-crypto": "*"
-    "@pagopa/io-react-native-iso18013": "*"
-    "@pagopa/io-react-native-jwt": "*"
-    react: "*"
-    react-native: "*"
-  checksum: 5e012e22a78a0a9d965b1b69b91d88a445def5fe19e36616cba83195be3e8b214acbd2ee89b96da24c22cede0367596133d08fc13ac4ed09c3c903058316b21f
+  checksum: 2d345330f988657912b9af3dc80382a753b8bb5df7b51e8fd9c7f0f4e9baf9d1ceb04ad3e6d5327e5a311f12af0dbc49df8b925f947e19c9e8fffd277b844a9c
   languageName: node
   linkType: hard
 
@@ -8153,7 +8129,7 @@ __metadata:
     "@pagopa/io-react-native-jwt": 2.1.0
     "@pagopa/io-react-native-login-utils": ^1.0.9
     "@pagopa/io-react-native-secure-storage": ^0.2.0
-    "@pagopa/io-react-native-wallet": ^2.2.0
+    "@pagopa/io-react-native-wallet": 2.2.0
     "@pagopa/react-native-nodelibs": ^0.1.0
     "@react-native-async-storage/async-storage": ^2.2.0
     "@react-native-clipboard/clipboard": ^1.16.2
@@ -14667,8 +14643,8 @@ __metadata:
   linkType: hard
 
 "update-browserslist-db@npm:^1.2.0":
-  version: 1.2.1
-  resolution: "update-browserslist-db@npm:1.2.1"
+  version: 1.2.2
+  resolution: "update-browserslist-db@npm:1.2.2"
   dependencies:
     escalade: ^3.2.0
     picocolors: ^1.1.1
@@ -14676,7 +14652,7 @@ __metadata:
     browserslist: ">= 4.21.0"
   bin:
     update-browserslist-db: cli.js
-  checksum: f5f76bb242f1fa8fbfb55b4d6f4d573b743c5702f967ff3e908a5f64f64fd312505b32c6703241a9f14b003d7241a2838210a52b128afd68daf0d35f2bc34777
+  checksum: 1b3b916c932d95a7a92c5a801b9e1d7c64722265cbae4675a808f7695fc6ada11d51ce674b4140ee8e323216124ffae9b05935fe82678698188a809dcf44c708
   languageName: node
   linkType: hard
 
