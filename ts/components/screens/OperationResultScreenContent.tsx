@@ -1,14 +1,12 @@
 import {
   Body,
   BodyProps,
-  ButtonLink,
   ButtonLinkProps,
-  ButtonSolid,
   ButtonSolidProps,
   ComposedBodyFromArray,
   H3,
+  IOButton,
   IOPictograms,
-  IOStyles,
   IOVisualCostants,
   Pictogram,
   VSpacer,
@@ -81,7 +79,7 @@ const OperationResultScreenContent = forwardRef<
           Platform.OS === 'android' && styles.wrapper_android
         ]}>
         {pictogram && (
-          <View style={IOStyles.alignCenter}>
+          <View style={styles.alignCenter}>
             <Pictogram name={pictogram} size={120} />
             <VSpacer size={24} />
           </View>
@@ -98,18 +96,18 @@ const OperationResultScreenContent = forwardRef<
           </>
         )}
         {action && (
-          <View style={IOStyles.alignCenter}>
+          <View style={styles.alignCenter}>
             <VSpacer size={24} />
             <View>
-              <ButtonSolid {...action} />
+              <IOButton variant="solid" {...action} />
             </View>
           </View>
         )}
         {secondaryAction && (
-          <View style={IOStyles.alignCenter}>
+          <View style={styles.alignCenter}>
             <VSpacer size={24} />
             <View>
-              <ButtonLink {...secondaryAction} />
+              <IOButton variant="link" {...secondaryAction} />
             </View>
           </View>
         )}
@@ -134,6 +132,9 @@ const styles = StyleSheet.create({
   wrapper_android: {
     flexGrow: 1,
     justifyContent: 'center'
+  },
+  alignCenter: {
+    alignItems: 'center'
   }
 });
 

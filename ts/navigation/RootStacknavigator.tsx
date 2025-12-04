@@ -70,7 +70,7 @@ export const RootStackNavigator = () => {
     const body = 'Please try again in a few minutes.';
     return (
       <OperationResultScreenContent
-        pictogram="umbrellaNew"
+        pictogram="umbrella"
         title={title}
         subtitle={body}
       />

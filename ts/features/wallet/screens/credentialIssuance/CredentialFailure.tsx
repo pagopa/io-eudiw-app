@@ -33,7 +33,7 @@ const CredentialFailure = () => {
 
   return (
     <OperationResultScreenContent
-      pictogram="umbrellaNew"
+      pictogram="umbrella"
       title={t('wallet:credentialIssuance.failure.title')}
       subtitle={t('wallet:credentialIssuance.failure.subtitle')}
       action={{

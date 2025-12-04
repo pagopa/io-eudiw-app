@@ -1,15 +1,14 @@
 /* eslint-disable functional/immutable-data */
 import {
-  ButtonLink,
   ContentWrapper,
   FooterActions,
-  IOStyles,
+  IOButton,
   NumberPad,
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
 import React, {useCallback, useRef, useState} from 'react';
-import {View, Alert} from 'react-native';
+import {View, Alert, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -235,10 +234,10 @@ export const PinCreation = () => {
   });
 
   return (
-    <SafeAreaView testID="pin-creation-screen" style={IOStyles.flex}>
-      <View style={[IOStyles.flex, IOStyles.centerJustified]}>
+    <SafeAreaView testID="pin-creation-screen" style={styles.container}>
+      <View style={styles.content}>
         <VSpacer size={8} />
-        <View style={IOStyles.alignCenter}>
+        <View style={styles.pictogram}>
           <Pictogram name="key" size={64} />
         </View>
         <VSpacer size={8} />
@@ -255,12 +254,13 @@ export const PinCreation = () => {
           <NumberPad
             onNumberPress={handlePinChange}
             onDeletePress={onDeletePress}
-            variant="light"
+            variant="neutral"
             deleteAccessibilityLabel={t('global:buttons.delete')}
           />
           <VSpacer />
           <View style={{alignSelf: 'center'}}>
-            <ButtonLink
+            <IOButton
+              variant="link"
               onPress={present}
               label={t('onboarding:pin.policy.title')}
             />
@@ -285,3 +285,16 @@ export const PinCreation = () => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  pictogram: {
+    alignItems: 'center'
+  }
+});

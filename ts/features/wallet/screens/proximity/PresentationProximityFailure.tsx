@@ -42,7 +42,7 @@ const PresentationProximityFailure = ({route}: Props) => {
 
   return (
     <OperationResultScreenContent
-      pictogram="umbrellaNew"
+      pictogram="umbrella"
       title={t('proximity.failure.title')}
       subtitle={
         route.params.fatal

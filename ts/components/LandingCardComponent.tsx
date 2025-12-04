@@ -9,7 +9,7 @@ import {
   H3,
   IOColors,
   IOPictograms,
-  IOStyles,
+  IOVisualCostants,
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
@@ -60,11 +60,7 @@ export const LandingCardComponent = React.forwardRef<View, Props>(
       <ScrollView accessible={false} contentContainerStyle={styles.container}>
         <View
           ref={ref}
-          style={[
-            wrapperStyle,
-            IOStyles.horizontalContentPadding,
-            IOStyles.alignCenter
-          ]}
+          style={[wrapperStyle, styles.wrapper]}
           accessible={true}
           accessibilityLabel={accessibilityLabel}
           accessibilityHint={accessibilityHint}>
@@ -96,5 +92,9 @@ export const LandingCardComponent = React.forwardRef<View, Props>(
 
 const styles = StyleSheet.create({
   centeredText: {textAlign: 'center'},
-  container: {flexGrow: 1, justifyContent: 'center'}
+  container: {flexGrow: 1, justifyContent: 'center'},
+  wrapper: {
+    paddingHorizontal: IOVisualCostants.appMarginDefault,
+    alignItems: 'center'
+  }
 });
