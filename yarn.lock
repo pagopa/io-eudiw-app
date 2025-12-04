@@ -2239,9 +2239,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-wallet@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@pagopa/io-react-native-wallet@npm:2.2.0"
+"@pagopa/io-react-native-wallet@npm:^2.2.0":
+  version: 2.4.1
+  resolution: "@pagopa/io-react-native-wallet@npm:2.4.1"
   dependencies:
     dcql: ^0.2.21
     js-base64: ^3.7.7
@@ -2259,55 +2259,7 @@ __metadata:
     "@pagopa/io-react-native-jwt": "*"
     react: "*"
     react-native: "*"
-  checksum: 2d345330f988657912b9af3dc80382a753b8bb5df7b51e8fd9c7f0f4e9baf9d1ceb04ad3e6d5327e5a311f12af0dbc49df8b925f947e19c9e8fffd277b844a9c
-  languageName: node
-  linkType: hard
-
-"@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@npm%3A2.2.0#./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch::version=2.2.0&hash=e22dd9&locator=ioeudiwapp%40workspace%3A.":
-  version: 2.2.0
-  resolution: "@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@npm%3A2.2.0#./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch::version=2.2.0&hash=e22dd9&locator=ioeudiwapp%40workspace%3A."
-  dependencies:
-    dcql: ^0.2.21
-    js-base64: ^3.7.7
-    js-sha256: ^0.9.0
-    jsonpath-plus: ^10.2.0
-    jsrsasign: ^11.1.0
-    parse-url: ^9.2.0
-    react-native-url-polyfill: ^2.0.0
-    react-native-uuid: ^2.0.1
-    uuid: ^11.0.3
-    zod: ^3.21.4
-  peerDependencies:
-    "@pagopa/io-react-native-crypto": "*"
-    "@pagopa/io-react-native-iso18013": "*"
-    "@pagopa/io-react-native-jwt": "*"
-    react: "*"
-    react-native: "*"
-  checksum: 5e45152826d1f1021d4aa80f7648938c34e4c8025fa38823bff55774cc7006d39190f2f1aacba4430941630430012d145b217e07b87b40ba3e0ccf5018058a27
-  languageName: node
-  linkType: hard
-
-"@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=e22dd9&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-5d1aab5568.patch::locator=ioeudiwapp%40workspace%3A.":
-  version: 2.2.0
-  resolution: "@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=e22dd9&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-5d1aab5568.patch::version=2.2.0&hash=834db5&locator=ioeudiwapp%40workspace%3A."
-  dependencies:
-    dcql: ^0.2.21
-    js-base64: ^3.7.7
-    js-sha256: ^0.9.0
-    jsonpath-plus: ^10.2.0
-    jsrsasign: ^11.1.0
-    parse-url: ^9.2.0
-    react-native-url-polyfill: ^2.0.0
-    react-native-uuid: ^2.0.1
-    uuid: ^11.0.3
-    zod: ^3.21.4
-  peerDependencies:
-    "@pagopa/io-react-native-crypto": "*"
-    "@pagopa/io-react-native-iso18013": "*"
-    "@pagopa/io-react-native-jwt": "*"
-    react: "*"
-    react-native: "*"
-  checksum: 4d9253b7c9bfa62960133e6b9b82feae05cb48087643dbd988e92328938a19fabd4de001a69792d37052879cf305340dc76d01910976918b8c92f4a6264b9b01
+  checksum: 23dff582a4a8f560b5ef90b0e2c29b807877947ed5efc0e245fce2f21ce02d2795a4329fa5c4800475594f9445ce37454d9392d189503ce2d8e7d2790986819f
   languageName: node
   linkType: hard
 
@@ -2853,25 +2805,25 @@ __metadata:
   linkType: hard
 
 "@react-navigation/bottom-tabs@npm:^7.3.14":
-  version: 7.8.9
-  resolution: "@react-navigation/bottom-tabs@npm:7.8.9"
+  version: 7.8.11
+  resolution: "@react-navigation/bottom-tabs@npm:7.8.11"
   dependencies:
-    "@react-navigation/elements": ^2.8.5
+    "@react-navigation/elements": ^2.9.1
     color: ^4.2.3
     sf-symbols-typescript: ^2.1.0
   peerDependencies:
-    "@react-navigation/native": ^7.1.22
+    "@react-navigation/native": ^7.1.24
     react: ">= 18.2.0"
     react-native: "*"
     react-native-safe-area-context: ">= 4.0.0"
     react-native-screens: ">= 4.0.0"
-  checksum: e36b85aac62a33afe0534f9532ca707e4f1345b1ffe5c2601c19b85b4b24a8f58afb5f2a4c0396951f659eb59bf4a33d41805c851f329feef368b89e6d832037
+  checksum: e540e34cd38107d8339023f31f649f70bce38cc0cb4cbf434784ce41bb6d0ad8e705e5f91ad2e3afaf033799b780f72b572a9e2a0bcf4be15b4911a2dd9e7a39
   languageName: node
   linkType: hard
 
-"@react-navigation/core@npm:^7.13.3":
-  version: 7.13.3
-  resolution: "@react-navigation/core@npm:7.13.3"
+"@react-navigation/core@npm:^7.13.5":
+  version: 7.13.5
+  resolution: "@react-navigation/core@npm:7.13.5"
   dependencies:
     "@react-navigation/routers": ^7.5.2
     escape-string-regexp: ^4.0.0
@@ -2883,53 +2835,53 @@ __metadata:
     use-sync-external-store: ^1.5.0
   peerDependencies:
     react: ">= 18.2.0"
-  checksum: 461ee9cfae877e385e3e138218c7f482e4d3b772441cf362ca642ea351248aef48c1ca822cf0df488d2eb43a7f478de9b037f2581b090aecade67015325bd2f1
+  checksum: 37457ad802281a84c77abd2eaaf93f485e195486a0e2239d50381fbf81bed4b8a7f648f8d9b2f1fb976a882f2c229e6e048a56b126fd73bfc61a09f6b396ae50
   languageName: node
   linkType: hard
 
-"@react-navigation/elements@npm:^2.8.5":
-  version: 2.8.5
-  resolution: "@react-navigation/elements@npm:2.8.5"
+"@react-navigation/elements@npm:^2.9.1":
+  version: 2.9.1
+  resolution: "@react-navigation/elements@npm:2.9.1"
   dependencies:
     color: ^4.2.3
     use-latest-callback: ^0.2.4
     use-sync-external-store: ^1.5.0
   peerDependencies:
     "@react-native-masked-view/masked-view": ">= 0.2.0"
-    "@react-navigation/native": ^7.1.22
+    "@react-navigation/native": ^7.1.24
     react: ">= 18.2.0"
     react-native: "*"
     react-native-safe-area-context: ">= 4.0.0"
   peerDependenciesMeta:
     "@react-native-masked-view/masked-view":
       optional: true
-  checksum: 10e1a14a405f597a5de56d1bd13c13d8485a26588ce98980a38d0f9c32e757ae7e2578bf1df4635ea2a607691bd87387bee55b8ad2fc300cf687ee2b777153e0
+  checksum: d6a787a4c252b1e50d2e6f5a3da177aed13b8906a7ba8eb2037df069c8db2927bed48d10cf3c886726354f7d210048df3da3f6dcf7bfe7f59cffe6d5b8d07f7a
   languageName: node
   linkType: hard
 
 "@react-navigation/native-stack@npm:^7.3.14":
-  version: 7.8.3
-  resolution: "@react-navigation/native-stack@npm:7.8.3"
+  version: 7.8.5
+  resolution: "@react-navigation/native-stack@npm:7.8.5"
   dependencies:
-    "@react-navigation/elements": ^2.8.5
+    "@react-navigation/elements": ^2.9.1
     color: ^4.2.3
     sf-symbols-typescript: ^2.1.0
     warn-once: ^0.1.1
   peerDependencies:
-    "@react-navigation/native": ^7.1.22
+    "@react-navigation/native": ^7.1.24
     react: ">= 18.2.0"
     react-native: "*"
     react-native-safe-area-context: ">= 4.0.0"
     react-native-screens: ">= 4.0.0"
-  checksum: e0e4c57a649a6ed4d008dba687746cd3df92971051501814ccb0e3c829f9a92150f60e312bedc0d9cac5b48cc2494df2f837df97684f9a227b754c0b823d197a
+  checksum: 909d2b8cf65ab93884d956d248aedb3885c161dcfa8a80de45fa25a7c6f42f7960a0549c036d967f4452a5c2557d737a51f060f351b60db33f75308227f9a893
   languageName: node
   linkType: hard
 
 "@react-navigation/native@npm:^7.1.10":
-  version: 7.1.22
-  resolution: "@react-navigation/native@npm:7.1.22"
+  version: 7.1.24
+  resolution: "@react-navigation/native@npm:7.1.24"
   dependencies:
-    "@react-navigation/core": ^7.13.3
+    "@react-navigation/core": ^7.13.5
     escape-string-regexp: ^4.0.0
     fast-deep-equal: ^3.1.3
     nanoid: ^3.3.11
@@ -2937,7 +2889,7 @@ __metadata:
   peerDependencies:
     react: ">= 18.2.0"
     react-native: "*"
-  checksum: f460161db582318c8ccfc887c57929341d18da7ded8741dedb0f5c104161ca1bbba56bece00a45f572c358249ba7f9932c484f02963ed44bc3b36fe8f0139cdd
+  checksum: 79366319cfc239aed7bdac1697696ed4f8523e7161a56a4829c38d396c2ae115ed2a0789b1bf6edfd798ec4c89886b704f1e797eb6d4d532e2697c9f899d3f28
   languageName: node
   linkType: hard
 
@@ -4568,12 +4520,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"baseline-browser-mapping@npm:^2.8.25":
-  version: 2.8.32
-  resolution: "baseline-browser-mapping@npm:2.8.32"
+"baseline-browser-mapping@npm:^2.9.0":
+  version: 2.9.0
+  resolution: "baseline-browser-mapping@npm:2.9.0"
   bin:
     baseline-browser-mapping: dist/cli.js
-  checksum: b26d79ca391037581575989675cc21155e3b4925745d3481bf936a1ce22f054cc9e0e67e938b692c305389b4996aecb3ad9ffaa5cda7f28f7db060c777bf4799
+  checksum: bf357fb42ae0c41245f56494117b24831d674cd7977b9413d19e3e84db295758292e7a58edc7111720cc32611be44e24211e48314700ee101755d7ddbaac00a3
   languageName: node
   linkType: hard
 
@@ -4751,17 +4703,17 @@ __metadata:
   linkType: hard
 
 "browserslist@npm:^4.24.0, browserslist@npm:^4.28.0":
-  version: 4.28.0
-  resolution: "browserslist@npm:4.28.0"
+  version: 4.28.1
+  resolution: "browserslist@npm:4.28.1"
   dependencies:
-    baseline-browser-mapping: ^2.8.25
-    caniuse-lite: ^1.0.30001754
-    electron-to-chromium: ^1.5.249
+    baseline-browser-mapping: ^2.9.0
+    caniuse-lite: ^1.0.30001759
+    electron-to-chromium: ^1.5.263
     node-releases: ^2.0.27
-    update-browserslist-db: ^1.1.4
+    update-browserslist-db: ^1.2.0
   bin:
     browserslist: cli.js
-  checksum: c19fe2c6f123851d899d5b207f76de93064e247931e32ca0adcaceb3b48aec65c7c3310c0dc969de96922d488af7de0a0b77b41505e7dfa0a8d3736500748e11
+  checksum: 895357d912ae5a88a3fa454d2d280e9869e13432df30ca8918e206c0783b3b59375b178fdaf16d0041a1cf21ac45c8eb0a20f96f73dbd9662abf4cf613177a1e
   languageName: node
   linkType: hard
 
@@ -4948,10 +4900,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001754":
-  version: 1.0.30001757
-  resolution: "caniuse-lite@npm:1.0.30001757"
-  checksum: 84ce069d2457f2d2dc68ef9a23870962c89f2bc2a3a67b6b47a431842cfe74a27b8d156b05e5e36f320b501642ecbaf24526963b01468a8b64512ccb8267d135
+"caniuse-lite@npm:^1.0.30001759":
+  version: 1.0.30001759
+  resolution: "caniuse-lite@npm:1.0.30001759"
+  checksum: db200cf52ab976df18aaf75415e4c407a989bd538ac195f8ddd0993f0e158cfe0d048c26c0161b0409ed754745ea82830abbcbecace4afef9f1ecc9a4c0a0a50
   languageName: node
   linkType: hard
 
@@ -6252,10 +6204,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.5.249":
-  version: 1.5.263
-  resolution: "electron-to-chromium@npm:1.5.263"
-  checksum: 0ebdb43b8c94bdbf5ef285dd2ae0bacc9e8c37173f20e053f4172118f4e6e26fb3967899d286e0f2a22e89a45b8a5a6c39598ac5439abdc3666dc46d4b0bc02b
+"electron-to-chromium@npm:^1.5.263":
+  version: 1.5.264
+  resolution: "electron-to-chromium@npm:1.5.264"
+  checksum: b8e12508ce9805f3ba012749670aec56c7995aa3387729589f7c7d477d4c46d00e6eefc8c3eb18ae44ddb70dd09d1b5e058075234d4979cad032d9c77f7b02ec
   languageName: node
   linkType: hard
 
@@ -7286,9 +7238,9 @@ __metadata:
   linkType: hard
 
 "flow-parser@npm:0.*":
-  version: 0.291.0
-  resolution: "flow-parser@npm:0.291.0"
-  checksum: 84c2a1b8d5a15ce46c97d9449cd806d84c96a3424b70ed874acb3b7afb470ac118f49f1343e26fed36c4981ea902713a2b591a640c7b94c97c0239e5fd1e0c64
+  version: 0.292.0
+  resolution: "flow-parser@npm:0.292.0"
+  checksum: a44fe8cb482e962ee99df41a040eab4a8fcdfa50552e2c1eae909f9bfb434ff8c59b639fc8932f51609a45e5f129e3a6bebbbd9384c8dfcf1eb9c3b2d97010d8
   languageName: node
   linkType: hard
 
@@ -11683,11 +11635,11 @@ __metadata:
   linkType: hard
 
 "prettier@npm:^3.5.3":
-  version: 3.7.3
-  resolution: "prettier@npm:3.7.3"
+  version: 3.7.4
+  resolution: "prettier@npm:3.7.4"
   bin:
     prettier: bin/prettier.cjs
-  checksum: fc3da17f1394f7e634eee762b1a42e0324cc6d78f8f966c746aed82c2712d24451db919e9dfa381b6fb4684b9cb04e25cfd08f47c55da92a814f9fa1e2427433
+  checksum: 955e37e87b1151ca3b3282463f5295f4c415821884791df152ff66e6eb1c5257115153cccba61b13962546100dd00ae45670ff27077dcab04c977d84036eaf80
   languageName: node
   linkType: hard
 
@@ -12017,9 +11969,9 @@ __metadata:
   linkType: hard
 
 "react-is@npm:^19.0.0, react-is@npm:^19.1.0":
-  version: 19.2.0
-  resolution: "react-is@npm:19.2.0"
-  checksum: 9a23e1c2d0bbc13b383bc59a05f54e6eb95dd87e01aec8aa92a88618364b7b0ee8a5b057ad813cf61e2f7ae7d24503b624706acb609d07c54754e5ad2c522568
+  version: 19.2.1
+  resolution: "react-is@npm:19.2.1"
+  checksum: 5ac92059d91805eae21db17ebab3d722a4c0b66539ce9edeb89566d5e20f71b7438e6ca9598c9a2fa7669a869c464dd8567c19410d0f0759767a97aa7a17b793
   languageName: node
   linkType: hard
 
@@ -14690,9 +14642,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"update-browserslist-db@npm:^1.1.4":
-  version: 1.1.4
-  resolution: "update-browserslist-db@npm:1.1.4"
+"update-browserslist-db@npm:^1.2.0":
+  version: 1.2.1
+  resolution: "update-browserslist-db@npm:1.2.1"
   dependencies:
     escalade: ^3.2.0
     picocolors: ^1.1.1
@@ -14700,7 +14652,7 @@ __metadata:
     browserslist: ">= 4.21.0"
   bin:
     update-browserslist-db: cli.js
-  checksum: b757805a63d7954985753c97a48e313abd2d35f2bb10d2bffa65d73a4b81ec9e1305a7b06296819bac8a6b4db8e7be88582487fae2ad7e24731e4ee372b919a6
+  checksum: f5f76bb242f1fa8fbfb55b4d6f4d573b743c5702f967ff3e908a5f64f64fd312505b32c6703241a9f14b003d7241a2838210a52b128afd68daf0d35f2bc34777
   languageName: node
   linkType: hard
 
