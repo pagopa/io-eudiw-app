@@ -52,16 +52,8 @@ const ProximityQrCode = () => {
 
   const dispatch = useAppDispatch();
 
-  useHardwareBackButton(() => true);
-  useDisableGestureNavigation();
-
   useHeaderSecondLevel({
-    title: '',
-    goBack: async () => {
-      navigation.goBack();
-      dispatch(setProximityStatusStopped());
-      dispatch(resetProximity());
-    }
+    title: ''
   });
 
   useEffect(() => {
@@ -87,7 +79,13 @@ const ProximityQrCode = () => {
         params: {fatal: true}
       });
     }
-  }, [proximityStatus, navigation, descriptor, isAuthenticated]);
+
+    // Clean on unmount
+    return () => {
+      dispatch(setProximityStatusStopped());
+      dispatch(resetProximity());
+    };
+  }, [proximityStatus, navigation, descriptor, isAuthenticated, dispatch]);
 
   return (
     <ContentWrapper>
