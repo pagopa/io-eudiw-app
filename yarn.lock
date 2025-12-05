@@ -1615,8 +1615,8 @@ __metadata:
   linkType: hard
 
 "@gorhom/bottom-sheet@npm:^5.0.6":
-  version: 5.2.7
-  resolution: "@gorhom/bottom-sheet@npm:5.2.7"
+  version: 5.2.8
+  resolution: "@gorhom/bottom-sheet@npm:5.2.8"
   dependencies:
     "@gorhom/portal": 1.0.14
     invariant: ^2.2.4
@@ -1632,7 +1632,7 @@ __metadata:
       optional: true
     "@types/react-native":
       optional: true
-  checksum: ff6212af131274436c5dd586631971275714206a33a8eb7570add4a6236ac183f311a0a100c3f80b3d3d9928b906362ffdf482dedf0f9e8a387591802093cb43
+  checksum: 987c07e013c423d71afc21f5a38ad02dacfc153c8eb613ac3be0fa1331a559976f0f0d02144bf80654b2fe737582c21249ff8988694cdb6d94981037a1b54001
   languageName: node
   linkType: hard
 
@@ -4545,11 +4545,11 @@ __metadata:
   linkType: hard
 
 "baseline-browser-mapping@npm:^2.9.0":
-  version: 2.9.0
-  resolution: "baseline-browser-mapping@npm:2.9.0"
+  version: 2.9.2
+  resolution: "baseline-browser-mapping@npm:2.9.2"
   bin:
     baseline-browser-mapping: dist/cli.js
-  checksum: bf357fb42ae0c41245f56494117b24831d674cd7977b9413d19e3e84db295758292e7a58edc7111720cc32611be44e24211e48314700ee101755d7ddbaac00a3
+  checksum: 8b4281a246ecc7dcb949c2e2c1c5b40433bc84af7d0e2d61e1666223e1c09e1c6d47ab41ebefe80fe503c0e0a88afea88171d8231fef707f9cde911d874189d7
   languageName: node
   linkType: hard
 
@@ -6229,9 +6229,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.263":
-  version: 1.5.264
-  resolution: "electron-to-chromium@npm:1.5.264"
-  checksum: b8e12508ce9805f3ba012749670aec56c7995aa3387729589f7c7d477d4c46d00e6eefc8c3eb18ae44ddb70dd09d1b5e058075234d4979cad032d9c77f7b02ec
+  version: 1.5.266
+  resolution: "electron-to-chromium@npm:1.5.266"
+  checksum: 80c83e7a39402f610f645b7f4cf8800faeb648ca340b43b44baa7ee19b5877c054f4474af3c21b56e45d94ac96ce298ba7ef75f7966bf05f998397c95c435bd1
   languageName: node
   linkType: hard
 
@@ -12184,8 +12184,8 @@ __metadata:
   linkType: hard
 
 "react-native-qrcode-svg@npm:^6.3.15":
-  version: 6.3.20
-  resolution: "react-native-qrcode-svg@npm:6.3.20"
+  version: 6.3.21
+  resolution: "react-native-qrcode-svg@npm:6.3.21"
   dependencies:
     prop-types: ^15.8.0
     qrcode: ^1.5.4
@@ -12194,7 +12194,7 @@ __metadata:
     react: "*"
     react-native: ">=0.63.4"
     react-native-svg: ">=14.0.0"
-  checksum: 497e41fc5a589a13309201f1fc6ed7717f8aa7e2a119429fc49058a05795db79fc7d8398a6efe04edb4055a02d46bedb3042e839b8908fe55448d726c0124019
+  checksum: 53c4b310ccef3568cd3ed937fadf999edcdca758679a3099d118ed120e09bd87941e60cee7d9254460367bb5e2b3616cd54efba38b30375b1116d96e0dda2440
   languageName: node
   linkType: hard
 
