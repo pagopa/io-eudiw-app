@@ -11,7 +11,7 @@ import {
 import React, {useCallback, useRef, useState} from 'react';
 import {View, Alert} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 import {StackScreenProps} from '@react-navigation/stack';
