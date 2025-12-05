@@ -14,6 +14,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
+import {StackScreenProps} from '@react-navigation/stack';
 import {pinSet} from '../../store/reducers/pin';
 import {preferencesSetIsOnboardingDone} from '../../store/reducers/preferences';
 import {isValidPinNumber, PIN_LENGTH} from '../../utils/pin';
@@ -38,7 +39,7 @@ export type PinCreationProps = {
   isOnboarding?: boolean;
 };
 
-export type PinCreationScreenProps = RouteProp<
+export type PinCreationScreenProps = StackScreenProps<
   OnboardingNavigatorParamsList,
   'ONBOARDING_PIN_CREATION'
 >;
@@ -50,8 +51,8 @@ type PinMode = 'creation' | 'confirmation';
  * process and the profile settings.
  * This component will allow the user to create a new pin or change the existing one.
  */
-export const PinCreation = () => {
-  const {isOnboarding} = useRoute<PinCreationScreenProps>().params;
+export const PinCreation = ({route}: PinCreationScreenProps) => {
+  const isOnboarding = route.params.isOnboarding ?? false;
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const [pin, setPin] = useState('');
