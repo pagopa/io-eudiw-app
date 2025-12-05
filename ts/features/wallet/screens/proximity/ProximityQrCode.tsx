@@ -13,8 +13,6 @@ import {
 } from '@pagopa/io-app-design-system';
 import {useNavigation} from '@react-navigation/native';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
-import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
-import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
   ProximityStatus,
