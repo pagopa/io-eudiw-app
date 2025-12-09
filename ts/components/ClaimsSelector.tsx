@@ -1,5 +1,4 @@
 import {Icon, IOVisualCostants} from '@pagopa/io-app-design-system';
-import * as React from 'react';
 import {useEffect, useRef, useState} from 'react';
 import {
   AccessibilityProps,

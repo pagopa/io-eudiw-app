@@ -1,5 +1,4 @@
 import {useTranslation} from 'react-i18next';
-import React from 'react';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 import {useAppDispatch, useAppSelector} from '../../../../store';

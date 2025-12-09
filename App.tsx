@@ -1,5 +1,4 @@
 require('@pagopa/react-native-nodelibs/globals');
-import React from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {PersistGate} from 'redux-persist/integration/react';
@@ -10,7 +9,7 @@ import {
   ToastProvider
 } from '@pagopa/io-app-design-system';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 import {persistor, store} from './ts/store';
 import IdentificationModal from './ts/screens/IdentificationModal';
 import RootContainer from './ts/screens/RootContainer';
@@ -40,7 +39,7 @@ function App(): React.JSX.Element {
 export default App;
 
 const styles = StyleSheet.create({
-  gestureHandlerContainer : {
-    flex : 1
+  gestureHandlerContainer: {
+    flex: 1
   }
 });

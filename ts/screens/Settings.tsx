@@ -6,7 +6,7 @@ import {
   useIOToast,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import React, {ComponentProps} from 'react';
+import {ComponentProps} from 'react';
 import {FlatList, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useHeaderSecondLevel} from '../hooks/useHeaderSecondLevel';

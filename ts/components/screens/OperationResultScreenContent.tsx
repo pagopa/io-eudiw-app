@@ -12,7 +12,7 @@ import {
   VSpacer,
   WithTestID
 } from '@pagopa/io-app-design-system';
-import React, {
+import {
   cloneElement,
   forwardRef,
   isValidElement,

@@ -1,4 +1,4 @@
-import React, {useMemo, memo} from 'react';
+import {useMemo, memo} from 'react';
 import {Badge, IOIcons, ModuleCredential} from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
 import {

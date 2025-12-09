@@ -35,7 +35,7 @@ import {
   TxtStrNode,
   TxtStrongNode
 } from '@textlint/ast-node-types';
-import React, {Fragment, useLayoutEffect, useState} from 'react';
+import {Fragment, useLayoutEffect, useState} from 'react';
 import {Dimensions, Image, Text, View} from 'react-native';
 import i18next from 'i18next';
 import {openWebUrl} from '../../utils/url';
