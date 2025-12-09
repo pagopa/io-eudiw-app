@@ -1,5 +1,5 @@
 import {useTranslation} from 'react-i18next';
-import React from 'react';
+
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
 import {

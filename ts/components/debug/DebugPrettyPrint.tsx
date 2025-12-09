@@ -6,10 +6,11 @@ import {
   IconButton,
   useIOToast
 } from '@pagopa/io-app-design-system';
-import React from 'react';
+
 import {StyleSheet, View} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {useTranslation} from 'react-i18next';
+import {useMemo, useState} from 'react';
 import {truncateObjectStrings} from '../../utils/debug';
 import {Prettify} from '../../types/utils';
 import {withDebugEnabled} from './withDebugEnabled';
@@ -39,10 +40,10 @@ type Props = Prettify<
 export const DebugPrettyPrint = withDebugEnabled(
   ({title, data, expandable = true, isExpanded = false}: Props) => {
     const toast = useIOToast();
-    const [expanded, setExpanded] = React.useState(isExpanded);
+    const [expanded, setExpanded] = useState(isExpanded);
     const {t} = useTranslation('global');
 
-    const content = React.useMemo(() => {
+    const content = useMemo(() => {
       if ((expandable && !expanded) || !expandable) {
         return null;
       }

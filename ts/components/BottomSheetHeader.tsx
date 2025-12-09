@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
   H4,
@@ -7,6 +6,7 @@ import {
   IOVisualCostants
 } from '@pagopa/io-app-design-system';
 import {useTranslation} from 'react-i18next';
+import {createRef, isValidElement} from 'react';
 
 const styles = StyleSheet.create({
   bottomSheetHeader: {
@@ -37,12 +37,12 @@ export const BottomSheetHeader: React.FunctionComponent<Props> = ({
   title,
   onClose
 }: Props) => {
-  const headerRef = React.createRef<View>();
+  const headerRef = createRef<View>();
   const {t} = useTranslation('global');
 
   return (
     <View style={styles.bottomSheetHeader} ref={headerRef}>
-      {React.isValidElement(title) ? (
+      {isValidElement(title) ? (
         title
       ) : (
         <View

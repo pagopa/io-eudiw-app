@@ -1,5 +1,5 @@
 import {useTranslation} from 'react-i18next';
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {View} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {

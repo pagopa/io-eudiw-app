@@ -1,6 +1,6 @@
 import {StatusBarStyle} from 'react-native';
 import {Alert as AlertDs} from '@pagopa/io-app-design-system';
-import React from 'react';
+
 import i18next from 'i18next';
 import {HeaderSecondLevelHookProps} from '../../../hooks/useHeaderSecondLevel';
 import {getCredentialNameByType, wellKnownCredential} from './credentials';

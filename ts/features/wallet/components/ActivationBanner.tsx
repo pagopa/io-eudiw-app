@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {GestureResponderEvent} from 'react-native';
 import {Banner, VSpacer} from '@pagopa/io-app-design-system';
 import {useNavigation} from '@react-navigation/native';

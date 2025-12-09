@@ -2,7 +2,17 @@ interface Resources {
   "global": {
     "generics": {
       "waiting": "Wait few seconds",
-      "success": "Success"
+      "success": "Success",
+      "error": {
+        "title": "C'è un problema sui nostri sistemi",
+        "body": "Riprova tra qualche minuto. Se si ripete, contatta l'assistenza."
+      },
+      "alert": {
+        "title": "Vuoi interrompere l'operazione?",
+        "body": "Dovrai ripetere di nuovo tutti i passaggi",
+        "confirm": "Sì, interrompi",
+        "cancel": "No, riprendi"
+      }
     },
     "tabNavigator": {
       "wallet": "Wallet",
@@ -217,7 +227,7 @@ interface Resources {
         "unknown": "Unknown"
       },
       "details": {
-        "fbk" : "You can use your FBK digital badge to enter different office locations, and access enterprise mobile and web-based services."
+        "fbk": "You can use your FBK digital badge to enter different office locations, and access enterprise mobile and web-based services."
       }
     },
     "activationBanner": {
@@ -225,9 +235,78 @@ interface Resources {
       "description": "Activate the Wallet to keep your digital identity and personal documents on your device.",
       "action": "Start"
     },
-    "walletInstanceCreation": {
-      "title": "Your digital documents at your fingertips",
-      "description": "###### How it works \n Wallet allows you to save and keep on your device the digital version of your Identity and some of the physical documents you already own.  \n\n ###### It's easy and fast \n You can authenticate yourself in Italy and abroad for many digital services, or verify your credentials in person by showing the QR code linked to the digital versions of your documents."
+    "discovery": {
+      "screen": {
+        "itw": {
+          "title": "IO è il tuo portafoglio digitale di Stato: pubblico, sicuro, gratuito.",
+          "features": {
+            "1": "Usi la tua Patente su IO come documento di riconoscimento",
+            "2": "Ti basta il tuo telefono per dimostrare la tua identità",
+            "3": "Hai tutto ciò che ti serve anche se lasci a casa il portafoglio",
+            "4": "I nuovi documenti digitali ufficiali, solo sull’app IO",
+            "5": "Accedi in pochi tocchi ai servizi digitali della PA"
+          },
+          "details": {
+            "1": {
+              "title": "Facile, sicuro, ufficiale",
+              "content": "Ottienilo con la tua **Carta di Identità Elettronica (CIE)** per associarlo alla tua identità.\n\nIl portafoglio IT-Wallet di IO usa sistemi di sicurezza avanzati per proteggere i tuoi dati e mantenerli al sicuro."
+            },
+            "2": {
+              "title": "Nuovi documenti in arrivo",
+              "content": "Titoli di studio, attestato di residenza e altri: potrai aggiungere all’app IO nuovi documenti ufficiali."
+            },
+            "3": {
+              "title": "Tutto nelle tue mani",
+              "content": "Mostri il codice QR della tua Patente digitale: chi verifica non dovrà tenere in mano il tuo dispositivo."
+            },
+            "4": {
+              "title": "Progettato con l’Europa",
+              "content": "IT-Wallet si integrerà al Portafoglio Digitale Europeo: potrai usare i tuoi documenti con pieno valore legale in tutta Europa."
+            }
+          },
+          "tos": "Premendo **Continua** dichiari di aver letto e compreso l'Informativa Privacy e i Termini e Condizioni d'uso.",
+          "actions": {
+            "primary": "Continua",
+            "anchor": "Scopri tutti i vantaggi"
+          },
+          "dismissalDialog": {
+            "title": "Vuoi rinunciare ai vantaggi di IT-Wallet?",
+            "body": "Potrai ottenere IT-Wallet in qualsiasi altro momento, se cambi idea.",
+            "confirm": "Si, rinuncia",
+            "cancel": "No, continua"
+          }
+        }
+      },
+      "upcomingWalletBanner": {
+        "title": "Novità in arrivo: i tuoi Documenti su IO",
+        "content": "Presto potrai aggiungere anche tu le versioni digitali dei tuoi documenti personali, come Patente e Tessera Sanitaria, al tuo Portafoglio di IO!",
+        "action": "Scopri di più"
+      },
+      "alreadyActive": {
+        "title": "Documenti su IO è già attiva",
+        "content": "Continua ad aggiungere le versioni digitali dei tuoi documenti al Portafoglio.",
+        "action": "Vai al Portafoglio"
+      },
+      "nfcNotSupported": {
+        "title": "IT-Wallet richiede un dispositivo con tecnologia NFC",
+        "subtitle": "Il tuo dispositivo non è dotato di tecnologia NFC, necessaria per il funzionamento dei portafogli digitali.",
+        "actions": {
+          "continue": "Continua senza IT-Wallet",
+          "cancel": "Non ora",
+          "l3": {
+            "continue": "Scopri di più",
+            "cancel": "Chiudi"
+          }
+        }
+      },
+      "ipzsPrivacy": {
+        "title": "I tuoi Documenti su IO sono al sicuro",
+        "titleL3": "I tuoi Documenti sono al sicuro",
+        "warning": "Premendo **Continua** dichiari di aver letto e compreso l’**Informativa Privacy**.",
+        "button": {
+          "label": "Continua"
+        }
+      }
     },
     "pidIssuance": {
       "preview": {

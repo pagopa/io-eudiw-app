@@ -8,7 +8,7 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import {StyleSheet, View} from 'react-native';
-import React from 'react';
+
 import i18next from 'i18next';
 import {useTranslation} from 'react-i18next';
 import {Descriptor, OptionalClaims} from '../../store/presentation';

@@ -5,7 +5,6 @@ import {
   NumberPad,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import * as React from 'react';
 import {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import i18next from 'i18next';

@@ -1,5 +1,5 @@
 import {useTranslation} from 'react-i18next';
-import React from 'react';
+
 import {useIOToast} from '@pagopa/io-app-design-system';
 import {
   OperationResultScreenContent,

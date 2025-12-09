@@ -6,7 +6,6 @@ import {
   hexToRgba
 } from '@pagopa/io-app-design-system';
 import _ from 'lodash';
-import * as React from 'react';
 import {Pressable, StyleSheet} from 'react-native';
 import {selectDebugData} from '../../store/reducers/debug';
 import {useAppSelector} from '../../store';

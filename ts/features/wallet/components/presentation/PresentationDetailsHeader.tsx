@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Alert, VSpacer} from '@pagopa/io-app-design-system';
 import {StoredCredential} from '../../utils/types';

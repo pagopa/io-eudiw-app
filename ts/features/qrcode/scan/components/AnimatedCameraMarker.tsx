@@ -1,6 +1,6 @@
 import {StyleSheet, View} from 'react-native';
 import Animated, {FadeIn} from 'react-native-reanimated';
-import React from 'react';
+
 import CameraMarkerCorner from '../assets/img/camera-marker-corner.svg';
 import CameraMarkerLine from '../assets/img/camera-marker-line.svg';
 import {useSineWaveAnimation} from '../../../../hooks/useSineWaveAnimation';

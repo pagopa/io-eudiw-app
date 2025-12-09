@@ -1,7 +1,5 @@
-import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import PidIssuanceFailure from '../screens/pidIssuance/PidIssuanceFailure';
-import WalletInstanceCreation from '../screens/pidIssuance/WalletInstanceCreation';
 import PidIssuancRequest from '../screens/pidIssuance/PidIssuanceRequest';
 import PidIssuanceSuccess from '../screens/pidIssuance/PidIssuanceSuccess';
 import {
@@ -27,6 +25,7 @@ import PresentationProximityFailure, {
   PresentationProximityFailureProps
 } from '../screens/proximity/PresentationProximityFailure';
 import PresentationProximitySuccess from '../screens/proximity/PresentationProximitySuccess';
+import {WalletInstanceCreation} from '../screens/pidIssuance/WalletInstanceCreation';
 import WALLET_ROUTES from './routes';
 
 /**

@@ -10,7 +10,7 @@ import {
   WithTestID,
   IOVisualCostants
 } from '@pagopa/io-app-design-system';
-import React, {ComponentProps, forwardRef, useState} from 'react';
+import {ComponentProps, forwardRef, useState} from 'react';
 import {LayoutChangeEvent, StyleSheet, View} from 'react-native';
 import {IOScrollView} from './IOScrollView';
 

@@ -1,6 +1,6 @@
 import {HStack, IOColors, IOText} from '@pagopa/io-app-design-system';
 import {ImageSourcePropType, StyleSheet, View} from 'react-native';
-import React from 'react';
+
 import {getThemeColorByCredentialType} from '../../utils/style';
 import {
   getCredentialNameByType,

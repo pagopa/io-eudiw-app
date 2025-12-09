@@ -8,7 +8,7 @@ import {
   ListItemInfo,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import React from 'react';
+
 import {View} from 'react-native';
 import {IOScrollView, IOScrollViewActions} from './IOScrollView';
 
