@@ -39,7 +39,6 @@ export const ActivationBanner = ({
       <Banner
         testID={'ItwBannerTestID'}
         color={'turquoise'}
-        size="big"
         title={title}
         content={content}
         pictogramName={'itWallet'}

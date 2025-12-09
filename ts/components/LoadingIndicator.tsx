@@ -1,5 +1,9 @@
 import * as React from 'react';
-import {LoadingSpinner, WithTestID} from '@pagopa/io-app-design-system';
+import {
+  IOColors,
+  LoadingSpinner,
+  WithTestID
+} from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
 import {useInteractiveElementDefaultColor} from '../hooks/theme';
 
@@ -29,7 +33,7 @@ export const LoadingIndicator = ({
       size={48}
       accessibilityHint={accessibilityHint}
       accessibilityLabel={accessibilityLabel}
-      color={blueColor}
+      color={IOColors[blueColor]}
       testID={testID}
     />
   );

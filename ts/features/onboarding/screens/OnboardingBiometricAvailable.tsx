@@ -75,7 +75,6 @@ const OnboardingBiometricAvailable = () => {
       <Banner
         content={t('onboarding:biometric.available.settings')}
         color="neutral"
-        size="small"
         pictogramName="activate"
       />
     </IOScrollView>

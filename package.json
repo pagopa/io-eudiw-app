@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.0.6",
-    "@pagopa/io-app-design-system": "^4.6.0",
+    "@pagopa/io-app-design-system": "^5.11.13-0",
     "@pagopa/io-react-native-cbor": "^1.4.0",
     "@pagopa/io-react-native-crypto": "^1.0.1",
     "@pagopa/io-react-native-jwt": "2.1.0",

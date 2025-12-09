@@ -33,7 +33,7 @@ const PidIssuanceFailure = () => {
 
   return (
     <OperationResultScreenContent
-      pictogram="umbrellaNew"
+      pictogram="umbrella"
       title={t('wallet:pidIssuance.failure.title')}
       subtitle={t('wallet:pidIssuance.failure.subtitle')}
       action={{

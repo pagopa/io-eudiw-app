@@ -4,7 +4,6 @@ import {
   H4,
   IconButton,
   IOColors,
-  IOStyles,
   IOVisualCostants
 } from '@pagopa/io-app-design-system';
 import {useTranslation} from 'react-i18next';
@@ -18,6 +17,9 @@ const styles = StyleSheet.create({
     paddingTop: IOVisualCostants.appMarginDefault,
     paddingBottom: IOVisualCostants.appMarginDefault,
     backgroundColor: IOColors.white
+  },
+  bottomSheetHeaderContent: {
+    flex: 1
   }
 });
 
@@ -44,7 +46,7 @@ export const BottomSheetHeader: React.FunctionComponent<Props> = ({
         title
       ) : (
         <View
-          style={IOStyles.flex}
+          style={styles.bottomSheetHeaderContent}
           accessible={true}
           accessibilityRole={'header'}
           accessibilityLabel={typeof title === 'string' ? title : undefined}>

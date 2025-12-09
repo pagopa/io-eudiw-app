@@ -1,22 +1,15 @@
 import {
   ButtonSolidProps,
-  GradientBottomActions,
-  IOSpacer,
-  IOSpacingScale,
-  IOVisualCostants,
-  buttonSolidHeight
+  FooterActions,
+  useFooterActionsMeasurements
 } from '@pagopa/io-app-design-system';
 
-import React, {Fragment, ReactNode, useMemo} from 'react';
+import React, {Fragment, ReactNode} from 'react';
 import Animated, {
-  Easing,
   useAnimatedRef,
   useAnimatedScrollHandler,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming
+  useSharedValue
 } from 'react-native-reanimated';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {StoredCredential} from '../../utils/types';
 import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {getHeaderPropsByCredentialType} from '../../utils/style';
@@ -31,10 +24,6 @@ export type PresentationDetailsScreenBaseProps = {
 
 const scrollTriggerOffsetValue: number = 88;
 
-const gradientSafeArea: IOSpacingScale = 80;
-const contentEndMargin: IOSpacingScale = 32;
-const spaceBetweenActions: IOSpacer = 24;
-
 /**
  * This component renders the base layout for the credential details screen.
  * It contains an animated scrollview and a footer with a gradient background.
@@ -46,28 +35,12 @@ const PresentationDetailsScreenBase = ({
   ctaProps
 }: PresentationDetailsScreenBaseProps) => {
   const animatedScrollViewRef = useAnimatedRef<Animated.ScrollView>();
-  const safeAreaInsets = useSafeAreaInsets();
+
+  const {footerActionsMeasurements, handleFooterActionsMeasurements} =
+    useFooterActionsMeasurements();
 
   const gradientOpacity = useSharedValue(1);
   const scrollTranslationY = useSharedValue(0);
-
-  const bottomMargin: number = useMemo(
-    () =>
-      safeAreaInsets.bottom === 0
-        ? IOVisualCostants.appMarginDefault
-        : safeAreaInsets.bottom,
-    [safeAreaInsets]
-  );
-
-  const safeBottomAreaHeight: number = useMemo(
-    () => bottomMargin + buttonSolidHeight + contentEndMargin,
-    [bottomMargin]
-  );
-
-  const gradientAreaHeight: number = useMemo(
-    () => bottomMargin + buttonSolidHeight + gradientSafeArea,
-    [bottomMargin]
-  );
 
   const headerProps = getHeaderPropsByCredentialType(credential.credentialType);
 
@@ -95,23 +68,12 @@ const PresentationDetailsScreenBase = ({
     }
   );
 
-  const footerGradientOpacityTransition = useAnimatedStyle(() => ({
-    opacity: withTiming(gradientOpacity.value, {
-      duration: 200,
-      easing: Easing.ease
-    })
-  }));
-
   const footerComponent = ctaProps && (
-    <GradientBottomActions
-      primaryActionProps={ctaProps}
-      transitionAnimStyle={footerGradientOpacityTransition}
-      dimensions={{
-        bottomMargin,
-        extraBottomMargin: 0,
-        gradientAreaHeight,
-        spaceBetweenActions,
-        safeBackgroundHeight: bottomMargin
+    <FooterActions
+      onMeasure={handleFooterActionsMeasurements}
+      actions={{
+        type: 'SingleButton',
+        primary: ctaProps
       }}
     />
   );
@@ -121,7 +83,7 @@ const PresentationDetailsScreenBase = ({
       <Animated.ScrollView
         ref={animatedScrollViewRef}
         contentContainerStyle={{
-          paddingBottom: safeBottomAreaHeight
+          paddingBottom: footerActionsMeasurements.safeBottomAreaHeight
         }}
         onScroll={scrollHandler}
         scrollEventThrottle={16}

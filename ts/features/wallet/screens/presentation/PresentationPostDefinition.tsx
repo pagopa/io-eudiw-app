@@ -121,7 +121,7 @@ const PresentationPostDefinition = ({route}: Props) => {
   });
 
   return (
-    <ForceScrollDownView style={styles.scroll}>
+    <ForceScrollDownView style={styles.scroll} threshold={50}>
       <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
         <VSpacer size={24} />
         <View style={styles.header}>

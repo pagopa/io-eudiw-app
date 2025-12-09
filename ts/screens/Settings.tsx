@@ -1,6 +1,6 @@
 import {
-  ButtonSolid,
-  IOStyles,
+  IOButton,
+  IOVisualCostants,
   ListItemHeader,
   ListItemSwitch,
   useIOToast,
@@ -21,7 +21,7 @@ import {
 import AppVersion from '../components/AppVersion';
 
 type TestButtonsListItem = Pick<
-  ComponentProps<typeof ButtonSolid>,
+  ComponentProps<typeof IOButton>,
   'onPress' | 'label'
 >;
 
@@ -71,14 +71,15 @@ const Settings = () => {
         label: t('settings.title'),
         accessibilityLabel: t('settings.title')
       }}>
-      <View style={IOStyles.horizontalContentPadding}>
+      <View style={{paddingHorizontal: IOVisualCostants.appMarginDefault}}>
         <DebugSwitch />
         {isDebugModeEnabled && (
           <FlatList
             scrollEnabled={false}
             data={testButtonListItems}
             renderItem={({item}) => (
-              <ButtonSolid
+              <IOButton
+                variant="solid"
                 label={item.label}
                 onPress={item.onPress}
                 fullWidth

@@ -104,7 +104,7 @@ const CredentialTrust = () => {
   };
 
   return (
-    <ForceScrollDownView>
+    <ForceScrollDownView threshold={50}>
       <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
         <VSpacer size={24} />
         <View style={styles.header}>

@@ -47,7 +47,9 @@ export const CredentialPreview = () => {
   const credential = credentialPostStatus.success.data;
 
   return (
-    <ForceScrollDownView contentContainerStyle={styles.scrollView}>
+    <ForceScrollDownView
+      contentContainerStyle={styles.scrollView}
+      threshold={50}>
       <View style={styles.container}>
         <H2>{getCredentialNameByType(credential.credentialType)}</H2>
         <VSpacer size={24} />

@@ -3,7 +3,6 @@ import {
   Body,
   FooterActions,
   H3,
-  IOStyles,
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
@@ -32,10 +31,9 @@ const OnboardingStart = () => {
     });
 
   return (
-    <SafeAreaView style={IOStyles.flex}>
-      <View
-        style={[IOStyles.alignCenter, IOStyles.flex, IOStyles.centerJustified]}>
-        <View style={IOStyles.alignCenter}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
+        <View style={{alignItems: 'center'}}>
           <Pictogram name="cie" size={180} />
           <VSpacer size={24} />
           <H3 style={styles.text}>{t('onboarding:start.title')}</H3>
@@ -59,5 +57,13 @@ const OnboardingStart = () => {
 export default OnboardingStart;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   text: {textAlign: 'center'}
 });
