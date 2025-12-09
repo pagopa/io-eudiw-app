@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useMemo} from 'react';
+import {Dispatch, SetStateAction, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   AnimatedCheckbox,

@@ -1,4 +1,3 @@
-import React from 'react';
 import {StatusBar} from 'react-native';
 import {IOColors} from '@pagopa/io-app-design-system';
 import {RootStackNavigator} from '../navigation/RootStacknavigator';

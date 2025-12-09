@@ -1,4 +1,4 @@
-import React, {useEffect, memo} from 'react';
+import {useEffect, memo} from 'react';
 import {View} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {useTranslation} from 'react-i18next';

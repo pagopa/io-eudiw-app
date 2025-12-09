@@ -1,6 +1,5 @@
 import {IOToast} from '@pagopa/io-app-design-system';
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {Alert} from 'react-native';
 import ReactNativeHapticFeedback, {

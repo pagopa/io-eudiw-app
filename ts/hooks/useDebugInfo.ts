@@ -1,5 +1,5 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React from 'react';
+import {useCallback} from 'react';
 import {
   resetDebugData,
   selectIsDebugModeEnabled,
@@ -16,7 +16,7 @@ export const useDebugInfo = (data: Record<string, unknown>) => {
   const isDebug = useAppSelector(selectIsDebugModeEnabled);
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       // Avoids storing debug data if debug is disabled
       if (!isDebug) {
         return undefined;
