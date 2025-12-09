@@ -276,35 +276,32 @@ interface Resources {
             "cancel": "No, continua"
           }
         }
-      },
-      "upcomingWalletBanner": {
-        "title": "Novità in arrivo: i tuoi Documenti su IO",
-        "content": "Presto potrai aggiungere anche tu le versioni digitali dei tuoi documenti personali, come Patente e Tessera Sanitaria, al tuo Portafoglio di IO!",
-        "action": "Scopri di più"
-      },
-      "alreadyActive": {
-        "title": "Documenti su IO è già attiva",
-        "content": "Continua ad aggiungere le versioni digitali dei tuoi documenti al Portafoglio.",
-        "action": "Vai al Portafoglio"
-      },
-      "nfcNotSupported": {
-        "title": "IT-Wallet richiede un dispositivo con tecnologia NFC",
-        "subtitle": "Il tuo dispositivo non è dotato di tecnologia NFC, necessaria per il funzionamento dei portafogli digitali.",
-        "actions": {
-          "continue": "Continua senza IT-Wallet",
-          "cancel": "Non ora",
-          "l3": {
-            "continue": "Scopri di più",
-            "cancel": "Chiudi"
+      }
+    },
+    "identification": {
+      "modeSelection": {
+        "section": {
+          "issuance": "Ottieni IT-Wallet"
+        },
+        "title": {
+          "issuance": "Conferma la tua identità"
+        },
+        "description": {
+          "issuance": "È un passaggio di sicurezza necessario per associare i documenti digitali alla tua identità. "
+        },
+        "noCieCta": "Non hai la Carta di Identità Elettronica?",
+        "mode": {
+          "ciePin": {
+            "title": "Continua con CIE + PIN",
+            "subtitle": "Ha una durata di 12 mesi",
+            "badge": "scelta consigliata"
+          },
+          "cieId": {
+            "title": "Continua con l’app CieID",
+            "subtitle": {
+              "default": "Dovrai usare credenziali e app CieID"
+            }
           }
-        }
-      },
-      "ipzsPrivacy": {
-        "title": "I tuoi Documenti su IO sono al sicuro",
-        "titleL3": "I tuoi Documenti sono al sicuro",
-        "warning": "Premendo **Continua** dichiari di aver letto e compreso l’**Informativa Privacy**.",
-        "button": {
-          "label": "Continua"
         }
       }
     },

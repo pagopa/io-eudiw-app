@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
+    "lib": ["es6", "dom", "es2019"],
+    "target": "esnext",
     "importHelpers": true,
     "noImplicitAny": true,
     "preserveConstEnums": true,

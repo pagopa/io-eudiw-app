@@ -26,6 +26,7 @@ import PresentationProximityFailure, {
 } from '../screens/proximity/PresentationProximityFailure';
 import PresentationProximitySuccess from '../screens/proximity/PresentationProximitySuccess';
 import {WalletInstanceCreation} from '../screens/pidIssuance/WalletInstanceCreation';
+import {IdentificationMethod} from '../screens/pidIssuance/IdentificationMethod';
 import WALLET_ROUTES from './routes';
 
 /**
@@ -35,6 +36,7 @@ import WALLET_ROUTES from './routes';
 export type WalletNavigatorParamsList = {
   // Pid issuance
   [WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION]: undefined;
+  [WALLET_ROUTES.PID_ISSUANCE.ID_METHOD]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.REQUEST]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.SUCCESS]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.FAILURE]: undefined;
@@ -74,6 +76,10 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
         component={WalletInstanceCreation}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PID_ISSUANCE.ID_METHOD}
+        component={IdentificationMethod}
       />
       <Stack.Screen
         name={WALLET_ROUTES.PID_ISSUANCE.FAILURE}

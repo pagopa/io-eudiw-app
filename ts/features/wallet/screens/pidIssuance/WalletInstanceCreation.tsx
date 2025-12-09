@@ -22,11 +22,11 @@ import Animated, {
   useSharedValue
 } from 'react-native-reanimated';
 import {useNavigation} from '@react-navigation/native';
-import Feature1Image from '../../../../../img/features/itWallet/discovery/feature_1.svg';
-import Feature2Image from '../../../../../img/features/itWallet/discovery/feature_2.svg';
-import Feature3Image from '../../../../../img/features/itWallet/discovery/feature_3.svg';
-import Feature4Image from '../../../../../img/features/itWallet/discovery/feature_4.svg';
-import Feature5Image from '../../../../../img/features/itWallet/discovery/feature_5.svg';
+import Feature1Image from '../../assets/img/discovery/feature_1.svg';
+import Feature2Image from '../../assets/img/discovery/feature_2.svg';
+import Feature3Image from '../../assets/img/discovery/feature_3.svg';
+import Feature4Image from '../../assets/img/discovery/feature_4.svg';
+import Feature5Image from '../../assets/img/discovery/feature_5.svg';
 import {AnimatedImage} from '../../../../components/AnimatedImage.tsx';
 
 import {useAppDispatch, useAppSelector} from '../../../../store/index.ts';
@@ -55,6 +55,22 @@ export const WalletInstanceCreation = () => {
   const {error, success, loading} = useAppSelector(selectInstanceStatus);
   const dispatch = useAppDispatch();
 
+  useHeaderSecondLevel({
+    title: '',
+    goBack: () => {
+      dismissalDialog.show();
+    }
+  });
+
+  useEffect(() => {
+    if (success.status === true) {
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PID_ISSUANCE_ID_METHOD'
+      });
+      dispatch(resetInstanceCreation());
+    }
+  }, [success, navigation, dispatch]);
+
   useEffect(() => {
     if (error.status === true) {
       navigation.navigate('MAIN_WALLET_NAV', {
@@ -65,34 +81,18 @@ export const WalletInstanceCreation = () => {
 
   const dismissalDialog = useItwDismissalDialog({
     customLabels: {
-      title: I18n.t(
-        'features.itWallet.discovery.screen.itw.dismissalDialog.title'
-      ),
-      body: I18n.t(
-        'features.itWallet.discovery.screen.itw.dismissalDialog.body'
-      ),
-      confirmLabel: I18n.t(
-        'features.itWallet.discovery.screen.itw.dismissalDialog.confirm'
-      ),
-      cancelLabel: I18n.t(
-        'features.itWallet.discovery.screen.itw.dismissalDialog.cancel'
-      )
-    }
-  });
-
-  useEffect(() => {
-    if (success.status === true) {
-      navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PID_ISSUANCE_REQUEST'
-      });
-      dispatch(resetInstanceCreation());
-    }
-  }, [success, navigation, dispatch]);
-
-  useHeaderSecondLevel({
-    title: '',
-    goBack: () => {
-      dismissalDialog.show();
+      title: I18n.t('discovery.screen.itw.dismissalDialog.title', {
+        ns: 'wallet'
+      }),
+      body: I18n.t('discovery.screen.itw.dismissalDialog.body', {
+        ns: 'wallet'
+      }),
+      confirmLabel: I18n.t('discovery.screen.itw.dismissalDialog.confirm', {
+        ns: 'wallet'
+      }),
+      cancelLabel: I18n.t('discovery.screen.itw.dismissalDialog.cancel', {
+        ns: 'wallet'
+      })
     }
   });
 
@@ -132,56 +132,46 @@ export const WalletInstanceCreation = () => {
       actions={{
         primary: {
           loading,
-          label: I18n.t(
-            'features.itWallet.discovery.screen.itw.actions.primary'
-          ),
+          label: I18n.t('discovery.screen.itw.actions.primary', {ns: 'wallet'}),
           onPress: () => dispatch(setInstanceCreationRequest())
         },
         anchor: {
-          label: I18n.t(
-            'features.itWallet.discovery.screen.itw.actions.anchor'
-          ),
+          label: I18n.t('discovery.screen.itw.actions.anchor', {ns: 'wallet'}),
           onPress: handleScrollToHighlights
         }
       }}>
       <AnimatedImage
-        source={require('../../assets/img/itw_hero.png')}
+        source={require('../../assets/img/discovery/itw_hero.png')}
         style={styles.hero}
       />
       <VSpacer size={24} />
       <ContentWrapper>
-        <H2>{I18n.t('features.itWallet.discovery.screen.itw.title')}</H2>
+        <H2>
+          {I18n.t('discovery.screen.itw.title', {
+            ns: 'wallet'
+          })}
+        </H2>
         <VSpacer size={24} />
         <VStack space={16}>
           <FeatureBlock
             image={<Feature1Image width={48} height={48} />}
-            content={I18n.t(
-              'features.itWallet.discovery.screen.itw.features.1'
-            )}
+            content={I18n.t('discovery.screen.itw.features.1', {ns: 'wallet'})}
           />
           <FeatureBlock
             image={<Feature2Image width={48} height={48} />}
-            content={I18n.t(
-              'features.itWallet.discovery.screen.itw.features.2'
-            )}
+            content={I18n.t('discovery.screen.itw.features.2', {ns: 'wallet'})}
           />
           <FeatureBlock
             image={<Feature3Image width={48} height={48} />}
-            content={I18n.t(
-              'features.itWallet.discovery.screen.itw.features.3'
-            )}
+            content={I18n.t('discovery.screen.itw.features.3', {ns: 'wallet'})}
           />
           <FeatureBlock
             image={<Feature4Image width={48} height={48} />}
-            content={I18n.t(
-              'features.itWallet.discovery.screen.itw.features.4'
-            )}
+            content={I18n.t('discovery.screen.itw.features.4', {ns: 'wallet'})}
           />
           <FeatureBlock
             image={<Feature5Image width={48} height={48} />}
-            content={I18n.t(
-              'features.itWallet.discovery.screen.itw.features.5'
-            )}
+            content={I18n.t('discovery.screen.itw.features.5', {ns: 'wallet'})}
           />
         </VStack>
       </ContentWrapper>
@@ -197,42 +187,42 @@ export const WalletInstanceCreation = () => {
         <ContentWrapper>
           <Divider />
           <DetailBlock
-            title={I18n.t(
-              'features.itWallet.discovery.screen.itw.details.1.title'
-            )}
-            content={I18n.t(
-              'features.itWallet.discovery.screen.itw.details.1.content'
-            )}
+            title={I18n.t('discovery.screen.itw.details.1.title', {
+              ns: 'wallet'
+            })}
+            content={I18n.t('discovery.screen.itw.details.1.content', {
+              ns: 'wallet'
+            })}
             icon="security"
           />
           <Divider />
           <DetailBlock
-            title={I18n.t(
-              'features.itWallet.discovery.screen.itw.details.2.title'
-            )}
-            content={I18n.t(
-              'features.itWallet.discovery.screen.itw.details.2.content'
-            )}
+            title={I18n.t('discovery.screen.itw.details.2.title', {
+              ns: 'wallet'
+            })}
+            content={I18n.t('discovery.screen.itw.details.2.content', {
+              ns: 'wallet'
+            })}
             icon="fiscalCodeIndividual"
           />
           <Divider />
           <DetailBlock
-            title={I18n.t(
-              'features.itWallet.discovery.screen.itw.details.3.title'
-            )}
-            content={I18n.t(
-              'features.itWallet.discovery.screen.itw.details.3.content'
-            )}
+            title={I18n.t('discovery.screen.itw.details.3.title', {
+              ns: 'wallet'
+            })}
+            content={I18n.t('discovery.screen.itw.details.3.content', {
+              ns: 'wallet'
+            })}
             icon="navQrWallet"
           />
           <Divider />
           <DetailBlock
-            title={I18n.t(
-              'features.itWallet.discovery.screen.itw.details.4.title'
-            )}
-            content={I18n.t(
-              'features.itWallet.discovery.screen.itw.details.4.content'
-            )}
+            title={I18n.t('discovery.screen.itw.details.4.title', {
+              ns: 'wallet'
+            })}
+            content={I18n.t('discovery.screen.itw.details.4.content', {
+              ns: 'wallet'
+            })}
             icon="euStars"
           />
 
