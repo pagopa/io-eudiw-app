@@ -1,5 +1,4 @@
 import {Divider} from '@pagopa/io-app-design-system';
-
 import {View} from 'react-native';
 import {StoredCredential} from '../../utils/types';
 import {parseClaims} from '../../utils/claims';

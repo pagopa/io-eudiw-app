@@ -1,5 +1,4 @@
 import {ColorValue, View} from 'react-native';
-
 import {AnimatedIcon, IONavIcons} from '@pagopa/io-app-design-system';
 import {memo} from 'react';
 

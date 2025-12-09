@@ -45,15 +45,14 @@ import {
   useState
 } from 'react';
 import {Dimensions, Image, Pressable, Text, View} from 'react-native';
-import I18n from 'i18next';
 import {openWebUrl} from '../../utils/url';
+import {isAndroid} from '../../utils/device';
 import {
   extractAllLinksFromRootNode,
   isParagraphNodeInHierarchy,
   LinkData
 } from './markdownRenderer';
 import {IOMarkdownRenderRules, Renderer} from './types';
-import {isAndroid} from '../../utils/device';
 
 export type ParagraphSize = 'small' | 'default';
 

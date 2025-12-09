@@ -12,16 +12,16 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import I18n from 'i18next';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import Animated, {
+import {Animated, StyleSheet, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import I18n from 'i18next';
+import {
   useAnimatedRef,
   useDerivedValue,
   useScrollViewOffset,
   useSharedValue
 } from 'react-native-reanimated';
-import {useNavigation} from '@react-navigation/native';
 import Feature1Image from '../../assets/img/discovery/feature_1.svg';
 import Feature2Image from '../../assets/img/discovery/feature_2.svg';
 import Feature3Image from '../../assets/img/discovery/feature_3.svg';

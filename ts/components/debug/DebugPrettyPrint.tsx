@@ -6,7 +6,6 @@ import {
   IconButton,
   useIOToast
 } from '@pagopa/io-app-design-system';
-
 import {StyleSheet, View} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {useTranslation} from 'react-i18next';
