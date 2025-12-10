@@ -13,10 +13,10 @@ import {
   VStack
 } from '@pagopa/io-app-design-system';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {Animated, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import I18n from 'i18next';
-import {
+import Animated, {
   useAnimatedRef,
   useDerivedValue,
   useScrollViewOffset,

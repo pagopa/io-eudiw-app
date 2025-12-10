@@ -21,7 +21,6 @@ import {
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import {StoredCredential} from '../../utils/types';
-import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 import {addPidWithIdentification} from '../../store/credentials';
 
 /**
@@ -36,7 +35,6 @@ const PidIssuanceRequest = () => {
   const dispatch = useAppDispatch();
   const {error, success, loading} = useAppSelector(selectPidIssuanceStatus);
   const pid = useAppSelector(selectPidIssuanceData);
-  const {navigateToWallet} = useNavigateToWalletWithReset();
 
   useEffect(() => {
     dispatch(setPidIssuanceRequest());
