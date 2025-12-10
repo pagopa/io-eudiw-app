@@ -1,8 +1,8 @@
-import { convertReferenceLinksToInline } from "../markdownRenderer";
+import {convertReferenceLinksToInline} from '../markdownRenderer';
 
-describe("convertReferenceLinksToInline", () => {
+describe('convertReferenceLinksToInline', () => {
   // Test 1: Basic functionality
-  test("converts basic reference-style links to inline links", () => {
+  test('converts basic reference-style links to inline links', () => {
     const input = `
 Check out [Google][1] and [GitHub][gh].
 
@@ -20,7 +20,7 @@ Check out [Google](https://google.com) and [GitHub](https://github.com).
   });
 
   // Test 2: Shortcut reference links
-  test("converts shortcut reference links where label matches text", () => {
+  test('converts shortcut reference links where label matches text', () => {
     const input = `
 Visit [Google][] and [Stack Overflow][].
 
@@ -38,7 +38,7 @@ Visit [Google](https://google.com) and [Stack Overflow](https://stackoverflow.co
   });
 
   // Test 3: Links in headers
-  test("converts reference links inside markdown headers", () => {
+  test('converts reference links inside markdown headers', () => {
     const input = `
 # Welcome to [My Blog][blog]
 
@@ -66,7 +66,7 @@ Visit [Google](https://google.com) and [Stack Overflow](https://stackoverflow.co
   });
 
   // Test 4: Links in lists
-  test("converts reference links inside markdown lists", () => {
+  test('converts reference links inside markdown lists', () => {
     const input = `
 ## Useful Resources
 
@@ -102,7 +102,7 @@ Visit [Google](https://google.com) and [Stack Overflow](https://stackoverflow.co
   });
 
   // Test 5: Links in blockquotes
-  test("converts reference links inside blockquotes", () => {
+  test('converts reference links inside blockquotes', () => {
     const input = `
 > As mentioned in [the documentation][docs], this feature is experimental.
 > 
@@ -124,7 +124,7 @@ Visit [Google](https://google.com) and [Stack Overflow](https://stackoverflow.co
   });
 
   // Test 6: Links in code blocks and inline code (should not be converted)
-  test("does convert reference links inside code blocks or inline code", () => {
+  test('does convert reference links inside code blocks or inline code', () => {
     const input = `
 Here's an example: \`[Google][1]\` should be converted.
 
@@ -154,7 +154,7 @@ And this [Google](https://google.com) should be converted.
   });
 
   // Test 7: Mixed with other markdown elements
-  test("converts reference links mixed with other markdown formatting", () => {
+  test('converts reference links mixed with other markdown formatting', () => {
     const input = `
 **Bold text** with [link][1] and *italic* text.
 
@@ -175,7 +175,7 @@ And this [Google](https://google.com) should be converted.
   });
 
   // Test 8: Case insensitive labels
-  test("handles case insensitive labels correctly", () => {
+  test('handles case insensitive labels correctly', () => {
     const input = `
 Visit [Google][GOOGLE] and [GitHub][github].
 
@@ -193,7 +193,7 @@ Visit [Google](https://google.com) and [GitHub](https://github.com).
   });
 
   // Test 9: URLs with angle brackets
-  test("handles URLs with angle brackets", () => {
+  test('handles URLs with angle brackets', () => {
     const input = `
 Check out [Google][1] and [Example][2].
 
@@ -211,7 +211,7 @@ Check out [Google](https://google.com) and [Example](https://example.com).
   });
 
   // Test 10: Different title quote styles
-  test("handles different title quote styles", () => {
+  test('handles different title quote styles', () => {
     const input = `
 Links: [A][1], [B][2], [C][3], [D][4].
 
@@ -233,7 +233,7 @@ Links: [A](https://a.com), [B](https://b.com), [C](https://c.com), [D](https://d
   });
 
   // Test 11: Links with spaces in labels
-  test("handles labels with spaces", () => {
+  test('handles labels with spaces', () => {
     const input = `
 Check [my site][my favorite site] and [the docs][api docs].
 
@@ -251,7 +251,7 @@ Check [my site](https://example.com) and [the docs](https://docs.example.com).
   });
 
   // Test 12: No reference links
-  test("leaves text unchanged when no reference links exist", () => {
+  test('leaves text unchanged when no reference links exist', () => {
     const input = `
 # Regular Markdown
 
@@ -267,7 +267,7 @@ This is regular text with [inline links](https://example.com).
   });
 
   // Test 13: Orphaned reference links (no matching definition)
-  test("leaves orphaned reference links unchanged", () => {
+  test('leaves orphaned reference links unchanged', () => {
     const input = `
 Check out [Google][1] and [GitHub][missing].
 
@@ -283,7 +283,7 @@ Check out [Google](https://google.com) and [GitHub][missing].
   });
 
   // Test 14: Multiple definitions for same label (should use first one)
-  test("uses last definition when multiple definitions exist for same label", () => {
+  test('uses last definition when multiple definitions exist for same label', () => {
     const input = `
 Visit [Google][1].
 
@@ -301,7 +301,7 @@ Visit [Google](https://example.com).
   });
 
   // Test 15: Complex real-world example
-  test("handles complex real-world markdown document", () => {
+  test('handles complex real-world markdown document', () => {
     const input = `
 # My Project Documentation
 
@@ -365,12 +365,12 @@ This project uses [React](https://reactjs.org) and [TypeScript](https://www.type
   });
 
   // Test 16: Empty input
-  test("handles empty input", () => {
-    expect(convertReferenceLinksToInline("")).toBe("");
+  test('handles empty input', () => {
+    expect(convertReferenceLinksToInline('')).toBe('');
   });
 
   // Test 17: Only link definitions (no references)
-  test("removes link definitions when no references exist", () => {
+  test('removes link definitions when no references exist', () => {
     const input = `
 Some text here.
 
