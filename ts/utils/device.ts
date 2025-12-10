@@ -12,4 +12,4 @@ export const getAppVersion = () =>
   });
 
 export const isAndroid = Platform.OS === 'android';
-export const isIOS = Platform.OS === 'ios';
+export const isIos = Platform.OS === 'ios';
