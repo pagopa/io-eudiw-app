@@ -60,15 +60,27 @@ export const IdentificationMethod = () => {
               text: I18n.t('identification.modeSelection.mode.ciePin.badge', {
                 ns: 'wallet'
               }),
-              variant: 'default'
+              variant: 'highlight'
             }}
+          />
+          <ModuleNavigationAlt
+            title={I18n.t('identification.modeSelection.mode.spid.title', {
+              ns: 'wallet'
+            })}
+            subtitle={I18n.t(
+              'identification.modeSelection.mode.spid.subtitle',
+              {ns: 'wallet'}
+            )}
+            testID="SpidMethodModuleTestID"
+            icon="spid"
+            onPress={handleOnPress}
           />
           <ModuleNavigationAlt
             title={I18n.t('identification.modeSelection.mode.cieId.title', {
               ns: 'wallet'
             })}
             subtitle={I18n.t(
-              'identification.modeSelection.mode.cieId.subtitle.default',
+              'identification.modeSelection.mode.cieId.subtitle',
               {
                 ns: 'wallet'
               }

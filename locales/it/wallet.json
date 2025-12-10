@@ -78,9 +78,13 @@
           "subtitle": "Ha una durata di 12 mesi",
           "badge": "scelta consigliata"
         },
+        "spid": {
+          "title": "Continua con SPID + CIE",
+          "subtitle": "Ha una durata di 90 giorni"
+        },
         "cieId": {
           "title": "Continua con l’app CieID",
-          "subtitle": "Dovrai usare credenziali e app CieID"
+          "subtitle": "Ha una durata di 12 mesi"
         }
       }
     }

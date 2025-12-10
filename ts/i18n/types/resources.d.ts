@@ -296,20 +296,21 @@ interface Resources {
             "subtitle": "Ha una durata di 12 mesi",
             "badge": "scelta consigliata"
           },
+          "spid": {
+            "title": "Continua con SPID + CIE",
+            "subtitle": "Ha una durata di 90 giorni"
+          },
           "cieId": {
             "title": "Continua con l’app CieID",
-            "subtitle": {
-              "default": "Dovrai usare credenziali e app CieID"
-            }
+            "subtitle": "Ha una durata di 12 mesi"
           }
         }
       }
     },
     "pidIssuance": {
       "preview": {
-        "title": "Digital Idenitity:",
-        "subtitle": "Here's a preview of your data",
-        "button": "Add to Wallet"
+        "title": "Ci siamo quasi!",
+        "subtitle": "Hai verificato la tua identità.\nIl tuo portafoglio IT-Wallet sarà associato a questi dati:"
       },
       "success": {
         "title": "It's all ready!",
