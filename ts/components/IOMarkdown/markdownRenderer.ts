@@ -23,7 +23,6 @@ export function getRenderMarkdown(
   screenReaderEnabled: boolean
 ): Renderer {
   return (content: AnyTxtNodeWithSpacer) =>
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     rules[content.type]?.(
       content,
