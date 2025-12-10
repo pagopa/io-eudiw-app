@@ -1,7 +1,7 @@
-import {GestureResponderEvent, StyleSheet, View} from 'react-native';
-import {BodySmall, WithTestID} from '@pagopa/io-app-design-system';
-import {useTranslation} from 'react-i18next';
-import {getAppVersion} from '../utils/device';
+import { GestureResponderEvent, StyleSheet, View } from 'react-native';
+import { BodySmall, WithTestID } from '@pagopa/io-app-design-system';
+import { useTranslation } from 'react-i18next';
+import { getAppVersion } from '../utils/device';
 
 export type AppVersion = WithTestID<{
   onPress: (event: GestureResponderEvent) => void;
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
  */
 const AppVersion = () => {
   const appVersion = getAppVersion();
-  const {t} = useTranslation('global');
+  const { t } = useTranslation('global');
   const appVersionText = `${t('settings.version')} ${appVersion}`;
 
   return (

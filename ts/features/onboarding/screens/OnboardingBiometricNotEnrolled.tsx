@@ -1,10 +1,10 @@
-import {ListItemInfo} from '@pagopa/io-app-design-system';
-import {useMemo} from 'react';
-import {useTranslation} from 'react-i18next';
-import {useHeaderSecondLevel} from '../../../hooks/useHeaderSecondLevel';
-import {IOScrollViewWithListItems} from '../../../components/IOScrollViewWithListItems';
-import {useAppDispatch} from '../../../store';
-import {preferencesSetIsOnboardingDone} from '../../../store/reducers/preferences';
+import { ListItemInfo } from '@pagopa/io-app-design-system';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useHeaderSecondLevel } from '../../../hooks/useHeaderSecondLevel';
+import { IOScrollViewWithListItems } from '../../../components/IOScrollViewWithListItems';
+import { useAppDispatch } from '../../../store';
+import { preferencesSetIsOnboardingDone } from '../../../store/reducers/preferences';
 
 /**
  * Screen to be shown if the user has not enrolled in biometric authentication but the device supports it.
@@ -13,7 +13,7 @@ import {preferencesSetIsOnboardingDone} from '../../../store/reducers/preference
  */
 const OnboardingBiometricNotEnrolled = () => {
   const dispatch = useAppDispatch();
-  const {t} = useTranslation(['onboarding', 'global']);
+  const { t } = useTranslation(['onboarding', 'global']);
 
   const concludeOnboarding = () => dispatch(preferencesSetIsOnboardingDone());
 

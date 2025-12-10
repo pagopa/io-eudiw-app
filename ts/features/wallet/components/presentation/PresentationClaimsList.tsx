@@ -7,13 +7,13 @@ import {
   ListItemHeader,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import i18next from 'i18next';
-import {useTranslation} from 'react-i18next';
-import {Descriptor, OptionalClaims} from '../../store/presentation';
-import {ClaimDisplayFormat} from '../../utils/types';
-import {getSafeText, isStringNullyOrEmpty} from '../../../../utils/string';
-import {claimScheme, VerificationEvidenceType} from '../../utils/claims';
+import { useTranslation } from 'react-i18next';
+import { Descriptor, OptionalClaims } from '../../store/presentation';
+import { ClaimDisplayFormat } from '../../utils/types';
+import { getSafeText, isStringNullyOrEmpty } from '../../../../utils/string';
+import { claimScheme, VerificationEvidenceType } from '../../utils/claims';
 
 export type RequiredClaimsProps = {
   optionalChecked: Array<OptionalClaims>;
@@ -42,7 +42,7 @@ const PresentationClaimsList = ({
     item => item.optionalDisclosures
   );
 
-  const {t} = useTranslation(['wallet']);
+  const { t } = useTranslation(['wallet']);
 
   return (
     <>
@@ -125,7 +125,7 @@ const PresentationClaimsList = ({
  * @param claim The claim to render
  * @returns An {@link H6} element with the claim value or multiple {@link H6} elements in case of an array
  */
-export const ClaimText = ({claim}: {claim: ClaimDisplayFormat}) => {
+export const ClaimText = ({ claim }: { claim: ClaimDisplayFormat }) => {
   const displayValue = getClaimDisplayValue(claim);
   return (
     <>

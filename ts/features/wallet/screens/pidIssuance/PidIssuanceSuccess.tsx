@@ -1,8 +1,8 @@
-import {useTranslation} from 'react-i18next';
-import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
-import {resetPidIssuance} from '../../store/pidIssuance';
-import {useAppDispatch} from '../../../../store';
-import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
+import { useTranslation } from 'react-i18next';
+import { OperationResultScreenContent } from '../../../../components/screens/OperationResultScreenContent';
+import { resetPidIssuance } from '../../store/pidIssuance';
+import { useAppDispatch } from '../../../../store';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Success screen for the PID issuance flow.
@@ -10,9 +10,9 @@ import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalle
  * They both redirect to the main screen.
  */
 const PidIssuanceSuccess = () => {
-  const {t} = useTranslation(['wallet']);
+  const { t } = useTranslation(['wallet']);
   const dispatch = useAppDispatch();
-  const {navigateToWallet} = useNavigateToWalletWithReset();
+  const { navigateToWallet } = useNavigateToWalletWithReset();
 
   return (
     <OperationResultScreenContent

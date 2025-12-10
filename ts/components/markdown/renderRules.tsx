@@ -35,11 +35,11 @@ import {
   TxtStrNode,
   TxtStrongNode
 } from '@textlint/ast-node-types';
-import {Fragment, useLayoutEffect, useState} from 'react';
-import {Dimensions, Image, Text, View} from 'react-native';
+import { Fragment, useLayoutEffect, useState } from 'react';
+import { Dimensions, Image, Text, View } from 'react-native';
 import i18next from 'i18next';
-import {openWebUrl} from '../../utils/url';
-import {IOMarkdownRenderRules, Renderer} from './types';
+import { openWebUrl } from '../../utils/url';
+import { IOMarkdownRenderRules, Renderer } from './types';
 
 const BULLET_ITEM_FULL = '\u2022';
 const BULLET_ITEM_EMPTY = '\u25E6';
@@ -65,7 +65,7 @@ export function getPictogramName(value?: Nullable<string>): IOPictogramsBleed {
   return isValidPictogram ? (value as IOPictogramsBleed) : 'notification';
 }
 
-export function getStrValue({children}: TxtParentNode): string {
+export function getStrValue({ children }: TxtParentNode): string {
   return children.reduce((acc, inc) => {
     if (inc.type === 'Str' || inc.type === 'Code') {
       return acc + inc.value;
@@ -147,7 +147,7 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
    */
   Emphasis(emphasis: TxtEmphasisNode, render: Renderer) {
     return (
-      <Text key={getTxtNodeKey(emphasis)} style={{fontStyle: 'italic'}}>
+      <Text key={getTxtNodeKey(emphasis)} style={{ fontStyle: 'italic' }}>
         {emphasis.children.map(render)}
       </Text>
     );
@@ -159,7 +159,7 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
    */
   Strong(strong: TxtStrongNode, render: Renderer) {
     return (
-      <Text key={getTxtNodeKey(strong)} style={{fontWeight: '600'}}>
+      <Text key={getTxtNodeKey(strong)} style={{ fontWeight: '600' }}>
         {strong.children.map(render)}
       </Text>
     );
@@ -180,7 +180,7 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
   Link(link: TxtLinkNode, render: Renderer) {
     const handleOpenLink = () => {
       openWebUrl(link.url, () => {
-        IOToast.error(i18next.t('errors.generic', {ns: 'global'}));
+        IOToast.error(i18next.t('errors.generic', { ns: 'global' }));
       });
     };
 
@@ -189,7 +189,8 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
         weight="Semibold"
         asLink
         key={getTxtNodeKey(link)}
-        onPress={handleOpenLink}>
+        onPress={handleOpenLink}
+      >
         {link.children.map(render)}
       </Body>
     );
@@ -211,7 +212,7 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
         const aspectRatio = width / height;
         const maxScreenWidth = width > screenWidth ? screenWidth : width;
 
-        setImageSize({width: maxScreenWidth, aspectRatio});
+        setImageSize({ width: maxScreenWidth, aspectRatio });
       });
     }, [screenWidth, image.url]);
 
@@ -251,17 +252,19 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
     return (
       <View key={getTxtNodeKey(list)}>
         {isFirstList && <VSpacer size={8} />}
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           {isFirstList && <HSpacer size={12} />}
           <View
-            style={{flex: 1, flexGrow: 1}}
+            style={{ flex: 1, flexGrow: 1 }}
             accessible={true}
-            accessibilityRole="list">
+            accessibilityRole="list"
+          >
             {list.children.map((child, i) => (
               <View
                 accessible
                 key={`${child.type}_${i}`}
-                style={{flexDirection: 'row'}}>
+                style={{ flexDirection: 'row' }}
+              >
                 {getLeftAdornment(i)}
                 <HSpacer size={8} />
                 {render(child)}
@@ -282,8 +285,9 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
     return (
       <View
         accessible={false}
-        style={{flex: 1, flexShrink: 1}}
-        key={getTxtNodeKey(listItem)}>
+        style={{ flex: 1, flexShrink: 1 }}
+        key={getTxtNodeKey(listItem)}
+      >
         {listItem.children.map(render)}
       </View>
     );
@@ -297,7 +301,7 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
    * @param props The custom `Spacer` component used to add space between the first level content.
    * @returns The rendered `VSpacer` component.
    */
-  Spacer: ({key, size}) => <VSpacer key={key} size={size} />,
+  Spacer: ({ key, size }) => <VSpacer key={key} size={size} />,
   /**
    *
    * @param blockQuote The `BlockQuote` node.

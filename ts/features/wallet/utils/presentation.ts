@@ -1,5 +1,5 @@
-import {Credential} from '@pagopa/io-react-native-wallet';
-import {call, put} from 'typed-redux-saga';
+import { Credential } from '@pagopa/io-react-native-wallet';
+import { call, put } from 'typed-redux-saga';
 import {
   AuthResponse,
   OptionalClaims,
@@ -97,7 +97,7 @@ export const handleDcqlResponse: PresentationResponseProcessor<EvaluateDcqlRetur
     jwks: Array<JWK>
   ) {
     const credentialsToPresent = toProcess.map(
-      ({requiredDisclosures, ...rest}) => ({
+      ({ requiredDisclosures, ...rest }) => ({
         ...rest,
         credentialInputId: rest.id,
         requestedClaims: requiredDisclosures
@@ -133,7 +133,7 @@ export const handlePresentationDefinitionRequest: PresentationRequestProcessor<E
     credentialsSdJwt: Array<[string, string, string]>,
     credentialsMdoc: Array<[string, string, string]>
   ) {
-    const {presentationDefinition} = yield* call(
+    const { presentationDefinition } = yield* call(
       Credential.Presentation.fetchPresentDefinition,
       requestObject
     );

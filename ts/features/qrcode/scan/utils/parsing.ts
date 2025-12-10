@@ -1,5 +1,5 @@
-import {PRESENTATION_INTERNAL_LINKS} from '../../../../navigation/deepLinkSchemas';
-import {PresentationParams} from '../../../wallet/store/presentation';
+import { PRESENTATION_INTERNAL_LINKS } from '../../../../navigation/deepLinkSchemas';
+import { PresentationParams } from '../../../wallet/store/presentation';
 
 /**
  * Parses a URL result from a QR code scan to a presentation link.
@@ -21,5 +21,5 @@ export const presentationLinkToUrl = (link: string): PresentationParams => {
   if (!request_uri || !client_id) {
     throw new Error('Invalid presentation link');
   }
-  return {request_uri, client_id};
+  return { request_uri, client_id };
 };
