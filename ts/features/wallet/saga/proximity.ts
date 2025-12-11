@@ -195,7 +195,7 @@ function* handleProximityResponse() {
 
   if (setProximityStatusAuthorizationSend.match(choice)) {
     const documents = mdocCredentials.map(credential => ({
-      issuerSignedContent: b64utob64(credential.credential),
+      issuerSignedContent: credential.credential,
       alias: credential.keyTag,
       docType: credential.credentialType
     }));
