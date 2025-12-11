@@ -9,46 +9,27 @@
 # If you want to automatically update fastlane if a new version is available:
 # update_fastlane
 
-# This is the minimum version number required.
-# Update this, if you use features of a newer version
-fastlane_version "2.28.5"
-
 default_platform :android
 
 platform :android do
-  before_all do
-    # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
-  end
-
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
-  end
-
-  desc "Build the App in debug mode"
-  lane :build_debug do
-    gradle(
-      task: "assemble",
-      build_type: "Debug",
-      
-      # flags: "-x bundleReleaseJsAndAssets --no-daemon"
-    )
-  end
-
   desc "Build the App in release mode"
   lane :build_release do
-    # Ensure that your git status is not dirty
-    # ensure_git_status_clean
-
     gradle(
       task: "bundle",
       build_type: "Release",
-      # flags: "-x bundleReleaseJsAndAssets --no-daemon"
     )
   end
 
-  desc "Build the App in release mode and deploy a new alpha version to the Google Play Store"
-  lane :alpha do
+  desc "Bump app version"
+  lane :bump_version do |options|
+     android_set_version_name(
+      version_name: "#{ENV['NEW_APP_VERSION']}"
+    )
+    android_set_version_code
+  end
+
+  desc "Build the App in release mode and deploy in alpha track on the Google Play Store"
+  lane :alpha_playstore do |options|
     build_release
 
     # Generate the changelog from the last commit message
@@ -58,14 +39,12 @@ platform :android do
 
     upload_to_play_store(
       track: "internal",
+      # This must be enabled only when the app is only published in the internal test track. 
+      # Once the app is published at least once in other track, this can be removed or set to false.
+      # release_status: "draft",
       skip_upload_screenshots: true,
       skip_upload_images: true
     )
-  end
-
-  desc "Promote the internal version to alpha"
-  lane :promote_internal_to_alpha do
-    upload_to_play_store(track: "internal", track_promote_to: "alpha")
   end
 
   desc "Download universal APK file from Google Play"
@@ -73,30 +52,11 @@ platform :android do
     version_code = ENV['VERSION_CODE'].to_i
     download_universal_apk_from_google_play(
       package_name: "it.pagopa.io.app.poc.eudiw",
-      destination: "eudiw-universal.apk",
+      destination: "io-eudiw-app-universal.apk",
       version_code: version_code
     )
   end
-
-
-  # You can define as many lanes as you want
-
-  after_all do |lane|
-    # This block is called, only if the executed lane was successful
-
-    # slack(
-    #   message: "Successfully deployed new App Update."
-    # )
-  end
-
-  error do |lane, exception|
-    # slack(
-    #   message: exception.message,
-    #   success: false
-    # )
-  end
 end
-
 
 # More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
 # All available actions: https://docs.fastlane.tools/actions
