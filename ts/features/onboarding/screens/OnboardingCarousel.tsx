@@ -1,17 +1,22 @@
-import {ComponentProps, useCallback, useMemo, useRef, useState} from 'react';
-import {ScrollView, StyleSheet, useWindowDimensions, View} from 'react-native';
+import { ComponentProps, useCallback, useMemo, useRef, useState } from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  useWindowDimensions,
+  View
+} from 'react-native';
 import {
   FooterActions,
   IOButton,
   IOColors,
   IOVisualCostants
 } from '@pagopa/io-app-design-system';
-import {useNavigation} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useTranslation} from 'react-i18next';
-import {Carousel} from '../../../components/Carousel';
-import {LandingCardComponent} from '../../../components/LandingCardComponent';
-import {useAppBackgroundAccentColorName} from '../../../hooks/theme';
+import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
+import { Carousel } from '../../../components/Carousel';
+import { LandingCardComponent } from '../../../components/LandingCardComponent';
+import { useAppBackgroundAccentColorName } from '../../../hooks/theme';
 import FocusAwareStatusBar from '../../../components/FocusAwareStatusBar';
 
 const TEXT_COLOR = 'white';
@@ -26,11 +31,11 @@ export const OnboardingCarousel = () => {
   const carouselRef = useRef<ScrollView>(null);
   const [step, setStep] = useState(0);
   const windowDimensions = useWindowDimensions();
-  const {t} = useTranslation(['global', 'onboarding']);
+  const { t } = useTranslation(['global', 'onboarding']);
   const blueColor = useAppBackgroundAccentColorName();
 
   const skipCarousel = useCallback(() => {
-    navigation.navigate('ROOT_ONBOARDING_NAV', {screen: 'ONBOARDING_START'});
+    navigation.navigate('ROOT_ONBOARDING_NAV', { screen: 'ONBOARDING_START' });
   }, [navigation]);
 
   const nextStep = useCallback(() => {
@@ -96,7 +101,8 @@ export const OnboardingCarousel = () => {
             flexDirection: 'row',
             justifyContent: 'flex-end',
             padding: IOVisualCostants.appMarginDefault
-          }}>
+          }}
+        >
           <IOButton
             variant="link"
             testID="skip-button-onboarding-wallet"

@@ -6,14 +6,14 @@ import {
   useIOToast,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {ComponentProps} from 'react';
-import {FlatList, View} from 'react-native';
-import {useTranslation} from 'react-i18next';
-import {useHeaderSecondLevel} from '../hooks/useHeaderSecondLevel';
-import {IOScrollViewWithLargeHeader} from '../components/IOScrollViewWithLargeHeader';
-import {useAppDispatch, useAppSelector} from '../store';
-import {resetLifecycle} from '../features/wallet/store/lifecycle';
-import {preferencesReset} from '../store/reducers/preferences';
+import { ComponentProps } from 'react';
+import { FlatList, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useHeaderSecondLevel } from '../hooks/useHeaderSecondLevel';
+import { IOScrollViewWithLargeHeader } from '../components/IOScrollViewWithLargeHeader';
+import { useAppDispatch, useAppSelector } from '../store';
+import { resetLifecycle } from '../features/wallet/store/lifecycle';
+import { preferencesReset } from '../store/reducers/preferences';
 import {
   selectIsDebugModeEnabled,
   setDebugModeEnabled
@@ -31,7 +31,7 @@ type TestButtonsListItem = Pick<
 
 const Settings = () => {
   const toast = useIOToast();
-  const {t} = useTranslation('global');
+  const { t } = useTranslation('global');
   const dispatch = useAppDispatch();
   const isDebugModeEnabled = useAppSelector(selectIsDebugModeEnabled);
 
@@ -56,7 +56,7 @@ const Settings = () => {
       label={t('settings.debug')}
       value={isDebugModeEnabled}
       onSwitchValueChange={state => {
-        dispatch(setDebugModeEnabled({state}));
+        dispatch(setDebugModeEnabled({ state }));
       }}
     />
   );
@@ -70,14 +70,15 @@ const Settings = () => {
       title={{
         label: t('settings.title'),
         accessibilityLabel: t('settings.title')
-      }}>
-      <View style={{paddingHorizontal: IOVisualCostants.appMarginDefault}}>
+      }}
+    >
+      <View style={{ paddingHorizontal: IOVisualCostants.appMarginDefault }}>
         <DebugSwitch />
         {isDebugModeEnabled && (
           <FlatList
             scrollEnabled={false}
             data={testButtonListItems}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <IOButton
                 variant="solid"
                 label={item.label}

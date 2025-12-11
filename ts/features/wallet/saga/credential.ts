@@ -3,18 +3,18 @@ import {
   Credential
 } from '@pagopa/io-react-native-wallet';
 import Config from 'react-native-config';
-import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
+import { call, put, race, select, take, takeLatest } from 'typed-redux-saga';
 import uuid from 'react-native-uuid';
-import {generate} from '@pagopa/io-react-native-crypto';
-import {IOToast} from '@pagopa/io-app-design-system';
+import { generate } from '@pagopa/io-react-native-crypto';
+import { IOToast } from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
 import {
   openAuthenticationSession,
   supportsInAppBrowser
 } from '@pagopa/io-react-native-login-utils';
-import {regenerateCryptoKey} from '../../../utils/crypto';
-import {DPOP_KEYTAG} from '../utils/crypto';
-import {navigateWithReset} from '../../../navigation/utils';
+import { regenerateCryptoKey } from '../../../utils/crypto';
+import { DPOP_KEYTAG } from '../utils/crypto';
+import { navigateWithReset } from '../../../navigation/utils';
 import {
   addCredential,
   addCredentialWithIdentification
@@ -33,7 +33,7 @@ import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
-import {getAttestation} from './attestation';
+import { getAttestation } from './attestation';
 
 /**
  * Saga watcher for credential related actions.
@@ -60,7 +60,7 @@ export function* watchCredentialSaga() {
  */
 function* obtainCredential() {
   try {
-    const {EAA_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
+    const { EAA_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri } = Config;
 
     /**
      * Check the passed credential type and throw an error if it's not found.
@@ -85,16 +85,16 @@ function* obtainCredential() {
       credentialType: credentialConfigId
     });
 
-    const {issuerUrl} = startFlow();
+    const { issuerUrl } = startFlow();
 
     // Evaluate issuer trust
-    const {issuerConf} = yield* call(
+    const { issuerConf } = yield* call(
       Credential.Issuance.getIssuerConfigOIDFED,
       issuerUrl
     );
 
     // Start user authorization
-    const {issuerRequestUri, clientId, codeVerifier, credentialDefinition} =
+    const { issuerRequestUri, clientId, codeVerifier, credentialDefinition } =
       yield* call(
         Credential.Issuance.startUserAuthorization,
         issuerConf,
@@ -144,12 +144,12 @@ function* obtainCredential() {
     // Start user authorization
 
     yield* put(
-      setCredentialIssuancePreAuthSuccess({result: true, credentialType})
+      setCredentialIssuancePreAuthSuccess({ result: true, credentialType })
     );
     yield* take(setCredentialIssuancePostAuthRequest);
 
     // Obtain the Authorization URL
-    const {authUrl} = yield* call(
+    const { authUrl } = yield* call(
       Credential.Issuance.buildAuthorizationUrl,
       issuerRequestUri,
       clientId,
@@ -170,7 +170,7 @@ function* obtainCredential() {
       baseRedirectUri
     );
 
-    const {code} = yield* call(
+    const { code } = yield* call(
       Credential.Issuance.completeUserAuthorizationWithQueryMode,
       authRedirectUrl
     );
@@ -180,7 +180,7 @@ function* obtainCredential() {
     yield* call(regenerateCryptoKey, DPOP_KEYTAG);
     const dPopCryptoContext = createCryptoContextFor(DPOP_KEYTAG);
 
-    const {accessToken} = yield* call(
+    const { accessToken } = yield* call(
       Credential.Issuance.authorizeAccess,
       issuerConf,
       code,
@@ -195,7 +195,7 @@ function* obtainCredential() {
     );
 
     // Obtain the credential
-    const {credential, format} = yield* call(
+    const { credential, format } = yield* call(
       Credential.Issuance.obtainCredential,
       issuerConf,
       accessToken,
@@ -208,13 +208,13 @@ function* obtainCredential() {
     );
 
     // Parse and verify the credential. The ignoreMissingAttributes flag must be set to false or omitted in production.
-    const {parsedCredential} = yield* call(
+    const { parsedCredential } = yield* call(
       Credential.Issuance.verifyAndParseCredential,
       issuerConf,
       credential,
       format,
       credentialConfigId,
-      {credentialCryptoContext, ignoreMissingAttributes: true}
+      { credentialCryptoContext, ignoreMissingAttributes: true }
     );
 
     yield* put(
@@ -231,8 +231,10 @@ function* obtainCredential() {
   } catch (error) {
     // We put the error in both the pre and post auth status as we are unsure where the error occurred.
     const serializableError = JSON.stringify(error);
-    yield* put(setCredentialIssuancePostAuthError({error: serializableError}));
-    yield* put(setCredentialIssuancePreAuthError({error: serializableError}));
+    yield* put(
+      setCredentialIssuancePostAuthError({ error: serializableError })
+    );
+    yield* put(setCredentialIssuancePreAuthError({ error: serializableError }));
   }
 }
 
@@ -243,10 +245,10 @@ function* obtainCredential() {
 function* onStoreCredentialIdentified(
   action: ReturnType<typeof addCredentialWithIdentification>
 ) {
-  yield* put(addCredential({credential: action.payload.credential}));
+  yield* put(addCredential({ credential: action.payload.credential }));
   yield* put(resetCredentialIssuance());
   navigateWithReset('MAIN_TAB_NAV');
-  IOToast.success(i18next.t('buttons.done', {ns: 'global'}));
+  IOToast.success(i18next.t('buttons.done', { ns: 'global' }));
 }
 
 /**

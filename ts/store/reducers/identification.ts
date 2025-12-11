@@ -1,7 +1,7 @@
 /* eslint-disable functional/immutable-data */
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {RootState} from '../types';
-import {preferencesReset} from './preferences';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../types';
+import { preferencesReset } from './preferences';
 
 /**
  * The identification state.

@@ -1,7 +1,7 @@
-import {useEffect, useMemo, useState} from 'react';
-import {Alert, View, StyleSheet} from 'react-native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {useTranslation} from 'react-i18next';
+import { useEffect, useMemo, useState } from 'react';
+import { Alert, View, StyleSheet } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 import {
   Body,
   FeatureInfo,
@@ -14,8 +14,8 @@ import {
   VSpacer,
   Alert as AlertDs
 } from '@pagopa/io-app-design-system';
-import {AcceptedFields} from '@pagopa/io-react-native-proximity';
-import {useNavigation} from '@react-navigation/native';
+import { AcceptedFields } from '@pagopa/io-react-native-proximity';
+import { useNavigation } from '@react-navigation/native';
 import {
   ProximityDisclosure,
   ProximityStatus,
@@ -26,14 +26,14 @@ import {
   setProximityStatusAuthorizationRejected,
   setProximityStatusAuthorizationSend
 } from '../../store/proximity';
-import {WalletNavigatorParamsList} from '../../navigation/WalletNavigator';
-import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
-import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
-import {useAppDispatch, useAppSelector} from '../../../../store';
-import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
-import {useDebugInfo} from '../../../../hooks/useDebugInfo';
-import {selectIsDebugModeEnabled} from '../../../../store/reducers/debug';
+import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useAppDispatch, useAppSelector } from '../../../../store';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { selectIsDebugModeEnabled } from '../../../../store/reducers/debug';
 import CredentialTypePresentationClaimsList from '../../components/presentation/CredentialTypePresentationClaimsList';
 
 export type PresentationProximityPreviewProps = ProximityDisclosure;
@@ -47,12 +47,12 @@ type Props = NativeStackScreenProps<
  * Screen that shows the claims required for a Proximity presentation
  * and handles presentation completion or cancellation
  */
-const PresentationProximityPreview = ({route}: Props) => {
+const PresentationProximityPreview = ({ route }: Props) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const {navigateToWallet} = useNavigateToWalletWithReset();
+  const { navigateToWallet } = useNavigateToWalletWithReset();
   const proximityStatus = useAppSelector(selectProximityStatus);
-  const {t} = useTranslation(['global', 'wallet']);
+  const { t } = useTranslation(['global', 'wallet']);
   const isDebug = useAppSelector(selectIsDebugModeEnabled);
   const isAuthenticated = route.params.isAuthenticated;
 
@@ -108,7 +108,7 @@ const PresentationProximityPreview = ({route}: Props) => {
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_FAILURE',
-        params: {fatal: false}
+        params: { fatal: false }
       });
     }
   }, [proximityStatus, navigation]);
@@ -162,7 +162,7 @@ const PresentationProximityPreview = ({route}: Props) => {
 
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>
-      <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
+      <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
         <VSpacer size={24} />
         <View style={styles.header}>
           <Icon name={'device'} color={'grey-450'} size={24} />

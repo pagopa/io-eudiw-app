@@ -1,14 +1,14 @@
 /* eslint-disable functional/immutable-data */
-import {createSlice, PayloadAction, createSelector} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import {
   AcceptedFields,
   VerifierRequest,
   Proximity
 } from '@pagopa/io-react-native-proximity';
-import {RootState} from '../../../store/types';
-import {ParsedCredential} from '../utils/types';
-import {preferencesReset} from '../../../store/reducers/preferences';
-import {resetLifecycle} from './lifecycle';
+import { RootState } from '../../../store/types';
+import { ParsedCredential } from '../utils/types';
+import { preferencesReset } from '../../../store/reducers/preferences';
+import { resetLifecycle } from './lifecycle';
 
 /**
  * The application-internal statuses used to control the proximity saga
@@ -162,7 +162,7 @@ export const {
 /**
  * Exports the reducer for the proximity slice.
  */
-export const {reducer: proximityReducer} = proximitySlice;
+export const { reducer: proximityReducer } = proximitySlice;
 
 /**
  * Selects the Engagement QR Code

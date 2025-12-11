@@ -1,11 +1,11 @@
-import {useEffect, memo} from 'react';
-import {View} from 'react-native';
+import { useEffect, memo } from 'react';
+import { View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import {useTranslation} from 'react-i18next';
-import {Body, H6, VSpacer, VStack} from '@pagopa/io-app-design-system';
-import {NavigationProp, NavigationState} from '@react-navigation/native';
-import {LoadingIndicator} from '../../../../components/LoadingIndicator';
-import {useAppSelector} from '../../../../store';
+import { useTranslation } from 'react-i18next';
+import { Body, H6, VSpacer, VStack } from '@pagopa/io-app-design-system';
+import { NavigationProp, NavigationState } from '@react-navigation/native';
+import { LoadingIndicator } from '../../../../components/LoadingIndicator';
+import { useAppSelector } from '../../../../store';
 import {
   ProximityStatus,
   selectProximityDisclosureDescriptor,
@@ -26,7 +26,7 @@ type PresentationProximityQRCodeProps = {
 const PresentationProximityQRCode = ({
   navigation
 }: PresentationProximityQRCodeProps) => {
-  const {t} = useTranslation(['wallet']);
+  const { t } = useTranslation(['wallet']);
   const qrCode = useAppSelector(selectProximityQrCode);
   const proximityStatus = useAppSelector(selectProximityStatus);
   const descriptor = useAppSelector(selectProximityDisclosureDescriptor);
@@ -42,7 +42,7 @@ const PresentationProximityQRCode = ({
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_PREVIEW',
-        params: {descriptor, isAuthenticated}
+        params: { descriptor, isAuthenticated }
       });
     }
     // If we reach this state, it means that a connection has already been established but failed before
@@ -55,7 +55,7 @@ const PresentationProximityQRCode = ({
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_FAILURE',
-        params: {fatal: true}
+        params: { fatal: true }
       });
     }
   }, [proximityStatus, navigation, descriptor, isAuthenticated]);
@@ -73,9 +73,9 @@ const PresentationProximityQRCode = ({
       {(proximityStatus === ProximityStatus.PROXIMITY_STATUS_CONNECTED ||
         proximityStatus ===
           ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT) && (
-        <VStack space={16} style={{alignItems: 'center'}}>
+        <VStack space={16} style={{ alignItems: 'center' }}>
           <LoadingIndicator size={24} />
-          <H6 textStyle={{textAlign: 'center'}}>
+          <H6 textStyle={{ textAlign: 'center' }}>
             {t('wallet:proximity.connected.body')}
           </H6>
           <VSpacer size={32} />
@@ -87,4 +87,4 @@ const PresentationProximityQRCode = ({
 
 const MemoizedPresentationProcimityQRCode = memo(PresentationProximityQRCode);
 
-export {MemoizedPresentationProcimityQRCode as PresentationProximityQrCode};
+export { MemoizedPresentationProcimityQRCode as PresentationProximityQrCode };

@@ -1,7 +1,7 @@
-import {call, put, select, take, takeLatest} from 'typed-redux-saga';
-import {Credential} from '@pagopa/io-react-native-wallet';
-import {serializeError} from 'serialize-error';
-import {EvaluatedDisclosure} from '@pagopa/io-react-native-wallet/lib/typescript/credential/presentation/types';
+import { call, put, select, take, takeLatest } from 'typed-redux-saga';
+import { Credential } from '@pagopa/io-react-native-wallet';
+import { serializeError } from 'serialize-error';
+import { EvaluatedDisclosure } from '@pagopa/io-react-native-wallet/lib/typescript/credential/presentation/types';
 import {
   AuthResponse,
   resetPresentation,
@@ -12,7 +12,7 @@ import {
   setPreDefinitionError,
   setPreDefinitionRequest
 } from '../store/presentation';
-import {selectCredentials} from '../store/credentials';
+import { selectCredentials } from '../store/credentials';
 import {
   handleDcqlRequest,
   handleDcqlResponse,
@@ -46,15 +46,15 @@ function* handlePresentationPreDefinition(
   action: ReturnType<typeof setPreDefinitionRequest>
 ) {
   try {
-    const {request_uri, client_id} = action.payload;
+    const { request_uri, client_id } = action.payload;
 
-    const {requestUri} = yield* call(
+    const { requestUri } = yield* call(
       Credential.Presentation.startFlowFromQR,
       request_uri,
       client_id
     );
 
-    const {requestObjectEncodedJwt} = yield* call(
+    const { requestObjectEncodedJwt } = yield* call(
       Credential.Presentation.getRequestObject,
       requestUri
     );
@@ -64,7 +64,7 @@ function* handlePresentationPreDefinition(
       requestObjectEncodedJwt
     );
 
-    const {requestObject} = yield* call(
+    const { requestObject } = yield* call(
       Credential.Presentation.verifyRequestObjectSignature,
       requestObjectEncodedJwt,
       jwks.keys
@@ -107,8 +107,8 @@ function* handlePresentationPreDefinition(
         );
   } catch (e) {
     // We don't know which step is failed thus we set the same error for both
-    yield* put(setPostDefinitionError({error: serializeError(e)}));
-    yield* put(setPreDefinitionError({error: serializeError(e)}));
+    yield* put(setPostDefinitionError({ error: serializeError(e) }));
+    yield* put(setPreDefinitionError({ error: serializeError(e) }));
   }
 }
 /**
@@ -173,7 +173,7 @@ function* handleResponse<T>(
   ]);
 
   if (setPostDefinitionRequest.match(choice)) {
-    const {payload: optionalClaims} = choice;
+    const { payload: optionalClaims } = choice;
 
     const onIdentifiedTask: IdentificationResultTask<
       typeof onPresentCredentialIdentified<T>

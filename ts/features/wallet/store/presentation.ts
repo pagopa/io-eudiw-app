@@ -1,6 +1,6 @@
 /* eslint-disable functional/immutable-data */
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {Credential} from '@pagopa/io-react-native-wallet';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Credential } from '@pagopa/io-react-native-wallet';
 import {
   AsyncStatusValues,
   setError,
@@ -8,9 +8,9 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import {RootState} from '../../../store/types';
-import {preferencesReset} from '../../../store/reducers/preferences';
-import {resetLifecycle} from './lifecycle';
+import { RootState } from '../../../store/types';
+import { preferencesReset } from '../../../store/reducers/preferences';
+import { resetLifecycle } from './lifecycle';
 
 /**
  * Parameters to start a presentation flow.
@@ -66,7 +66,10 @@ export const presentationSlice = createSlice({
     setPreDefinitionRequest: (state, _: PayloadAction<PresentationParams>) => {
       state.preDefinition = setLoading();
     },
-    setPreDefinitionError: (state, action: PayloadAction<{error: unknown}>) => {
+    setPreDefinitionError: (
+      state,
+      action: PayloadAction<{ error: unknown }>
+    ) => {
       state.preDefinition = setError(action.payload.error);
     },
     setPreDefinitionSuccess: (state, action: PayloadAction<Descriptor>) => {
@@ -88,7 +91,7 @@ export const presentationSlice = createSlice({
     setPostDefinitionCancel: _ => {},
     setPostDefinitionError: (
       state,
-      action: PayloadAction<{error: unknown}>
+      action: PayloadAction<{ error: unknown }>
     ) => {
       state.postDefinition = setError(action.payload.error);
     },
@@ -129,7 +132,7 @@ export const {
 /**
  * Exports the reducer for the presetation slice.
  */
-export const {reducer: presentationReducer} = presentationSlice;
+export const { reducer: presentationReducer } = presentationSlice;
 
 /**
  * Selects for the preDefinition status in the presentation slice, containg the

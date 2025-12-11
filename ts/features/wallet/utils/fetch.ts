@@ -1,5 +1,5 @@
 import Config from 'react-native-config';
-import {URL as PolyfillURL} from 'react-native-url-polyfill';
+import { URL as PolyfillURL } from 'react-native-url-polyfill';
 
 interface AuthHeaders {
   'x-user-id'?: string;

@@ -1,30 +1,30 @@
-import {useTranslation} from 'react-i18next';
-import {useIOToast} from '@pagopa/io-app-design-system';
+import { useTranslation } from 'react-i18next';
+import { useIOToast } from '@pagopa/io-app-design-system';
 import {
   OperationResultScreenContent,
   OperationResultScreenContentProps
 } from '../../../../components/screens/OperationResultScreenContent';
-import {useAppDispatch, useAppSelector} from '../../../../store';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   resetPresentation,
   selectPostDefinitionResult
 } from '../../store/presentation';
-import {useDebugInfo} from '../../../../hooks/useDebugInfo';
-import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
-import {openWebUrl} from '../../../../utils/url';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { openWebUrl } from '../../../../utils/url';
 
 /**
  * Screen to be shown when the presentation of the credential is successful.
  * It shows a success message and a button to navigate back to the wallet.
  */
 const PresentationSuccess = () => {
-  const {t} = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation(['wallet', 'global']);
   const dispatch = useAppDispatch();
-  const {navigateToWallet} = useNavigateToWalletWithReset();
+  const { navigateToWallet } = useNavigateToWalletWithReset();
   const result = useAppSelector(selectPostDefinitionResult);
   const toast = useIOToast();
 
-  useDebugInfo({result});
+  useDebugInfo({ result });
 
   const getPropsByResult = (): OperationResultScreenContentProps => {
     const redirectUri = result?.redirect_uri;

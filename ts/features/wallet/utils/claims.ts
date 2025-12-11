@@ -1,6 +1,6 @@
 import * as z from 'zod';
-import {ClaimDisplayFormat, ParsedCredential} from './types';
-import {getClaimsFullLocale} from './locale';
+import { ClaimDisplayFormat, ParsedCredential } from './types';
+import { getClaimsFullLocale } from './locale';
 
 /**
  * Constants to represent the type of the claim.
@@ -154,10 +154,10 @@ export const base64ImageSchema = z
             prev => prev + '=',
             ''
           );
-    const {width, height} = Buffer.from(b64, 'base64').reduce(
+    const { width, height } = Buffer.from(b64, 'base64').reduce(
       (prev, byte, index, buffer) => {
         if (prev.done) {
-          return {...prev};
+          return { ...prev };
         }
 
         if (byte === 0xff) {
@@ -168,7 +168,7 @@ export const base64ImageSchema = z
         }
 
         if (prev.continue) {
-          return {...prev};
+          return { ...prev };
         }
 
         if (JPEG_SOF_CODES.includes(byte)) {
@@ -190,7 +190,7 @@ export const base64ImageSchema = z
           };
         }
       },
-      {height: 0, width: 0, continue: false, done: false}
+      { height: 0, width: 0, continue: false, done: false }
     );
 
     if (width === 0 || height === 0) {
@@ -262,9 +262,9 @@ export type ClaimScheme = z.infer<typeof claimScheme>;
  */
 export const parseClaims = (
   parsedCredential: ParsedCredential,
-  options: {exclude?: Array<string>} = {}
+  options: { exclude?: Array<string> } = {}
 ): Array<ClaimDisplayFormat> => {
-  const {exclude = []} = options;
+  const { exclude = [] } = options;
   return Object.entries(parsedCredential)
     .filter(([key]) => !exclude.includes(key))
     .map(([key, attribute]) => {
@@ -273,6 +273,6 @@ export const parseClaims = (
           ? attribute.name
           : attribute.name?.[getClaimsFullLocale()] || key;
 
-      return {label: attributeName, value: attribute.value, id: key};
+      return { label: attributeName, value: attribute.value, id: key };
     });
 };

@@ -1,4 +1,4 @@
-import {IOAppMargin, WithTestID} from '@pagopa/io-app-design-system';
+import { IOAppMargin, WithTestID } from '@pagopa/io-app-design-system';
 import {
   JSXElementConstructor,
   ReactElement,
@@ -72,7 +72,7 @@ function CarouselComponent<T extends Record<string, unknown>>(
   );
 
   const renderItem = useCallback(
-    ({item}: {item: T}) => (
+    ({ item }: { item: T }) => (
       <View
         style={{
           width:
@@ -80,7 +80,8 @@ function CarouselComponent<T extends Record<string, unknown>>(
               ? WINDOW_WIDTH
               : WINDOW_WIDTH / itemsPerTime - itemsGap * 2,
           marginRight: itemsGap
-        }}>
+        }}
+      >
         <Component {...item} />
       </View>
     ),
@@ -121,9 +122,9 @@ function CarouselComponent<T extends Record<string, unknown>>(
 }
 
 const styles = StyleSheet.create({
-  box: {overflow: 'visible'}
+  box: { overflow: 'visible' }
 });
 
 export const CarouselFlat = forwardRef(CarouselComponent) as <T>(
-  p: WithTestID<Props<T>> & {ref?: Ref<FlatList<T>>}
+  p: WithTestID<Props<T>> & { ref?: Ref<FlatList<T>> }
 ) => ReactElement;

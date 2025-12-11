@@ -1,8 +1,8 @@
-import {memo} from 'react';
-import {View} from 'react-native';
-import {IOMarkdownRenderRules} from './types';
-import {getRenderMarkdown, parse} from './markdownRenderer';
-import {DEFAULT_RULES} from './renderRules';
+import { memo } from 'react';
+import { View } from 'react-native';
+import { IOMarkdownRenderRules } from './types';
+import { getRenderMarkdown, parse } from './markdownRenderer';
+import { DEFAULT_RULES } from './renderRules';
 
 type Props = {
   /**
@@ -20,7 +20,7 @@ type Props = {
  *
  * It's possible to override every single rule by passing a custom `rules` object.
  */
-const IOMarkdown = ({content, rules}: Props) => {
+const IOMarkdown = ({ content, rules }: Props) => {
   const parsedContent = parse(content);
   const renderMarkdown = getRenderMarkdown({
     ...DEFAULT_RULES,

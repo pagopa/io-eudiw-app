@@ -1,10 +1,10 @@
-import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
+import { call, put, race, select, take, takeLatest } from 'typed-redux-saga';
 import {
   AcceptedFields,
   parseVerifierRequest,
   Proximity
 } from '@pagopa/io-react-native-proximity';
-import {serializeError} from 'serialize-error';
+import { serializeError } from 'serialize-error';
 import {
   resetProximityQrCode,
   selectProximityAcceptedFields,
@@ -20,9 +20,9 @@ import {
   setProximityStatusStarted,
   setProximityStatusStopped
 } from '../store/proximity';
-import {requestBlePermissions} from '../utils/permissions';
-import {store} from '../../../store';
-import {selectCredentials} from '../store/credentials';
+import { requestBlePermissions } from '../utils/permissions';
+import { store } from '../../../store';
+import { selectCredentials } from '../store/credentials';
 import {
   getIsVerifierAuthenticated,
   matchRequestToClaims,
@@ -55,7 +55,7 @@ function* proximityPresentation() {
 
     // Provide the verifiers certificates
     const certificates = verifierCertificates.map(cert => cert.certificate);
-    yield* call(Proximity.start, {certificates});
+    yield* call(Proximity.start, { certificates });
     // Registering proximity events listeners
     yield* call(() => {
       Proximity.addListener('onDeviceConnecting', () => {});

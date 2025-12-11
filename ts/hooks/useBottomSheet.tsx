@@ -13,12 +13,12 @@ import {
   IOVisualCostants,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {useCallback, useRef} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {BottomSheetHeader} from '../components/BottomSheetHeader';
-import {NonEmptyArray} from '../types/utils';
-import {useHardwareBackButtonToDismiss} from './useHardwareBackButton';
+import { useCallback, useRef } from 'react';
+import { Dimensions, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BottomSheetHeader } from '../components/BottomSheetHeader';
+import { NonEmptyArray } from '../types/utils';
+import { useHardwareBackButtonToDismiss } from './useHardwareBackButton';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -67,9 +67,9 @@ export const useIOBottomSheetModal = ({
   onDismiss
 }: Omit<BottomSheetOptions, 'fullScreen'>): IOBottomSheetModal => {
   const insets = useSafeAreaInsets();
-  const {dismissAll} = useBottomSheetModal();
+  const { dismissAll } = useBottomSheetModal();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const {onOpen, onClose} = useHardwareBackButtonToDismiss(dismissAll);
+  const { onOpen, onClose } = useHardwareBackButtonToDismiss(dismissAll);
 
   const header = <BottomSheetHeader title={title} onClose={dismissAll} />;
   const bottomSheetContent = (
@@ -77,7 +77,8 @@ export const useIOBottomSheetModal = ({
       style={{
         paddingHorizontal: IOVisualCostants.appMarginDefault
       }}
-      overScrollMode={'never'}>
+      overScrollMode={'never'}
+    >
       {component}
       {footer ? (
         <>
@@ -85,7 +86,7 @@ export const useIOBottomSheetModal = ({
           <VSpacer size={48} />
         </>
       ) : (
-        <View style={{height: insets.bottom}} />
+        <View style={{ height: insets.bottom }} />
       )}
     </BottomSheetScrollView>
   );
@@ -124,7 +125,8 @@ export const useIOBottomSheetModal = ({
             style={{
               paddingBottom: insets.bottom,
               backgroundColor: IOColors.white
-            }}>
+            }}
+          >
             {footer}
           </BottomSheetFooter>
         ) : null
@@ -141,9 +143,10 @@ export const useIOBottomSheetModal = ({
       enableDismissOnClose={true}
       accessible={false}
       importantForAccessibility={'yes'}
-      onDismiss={handleDismiss}>
+      onDismiss={handleDismiss}
+    >
       {bottomSheetContent}
     </BottomSheetModal>
   );
-  return {present, dismiss: dismissAll, bottomSheet};
+  return { present, dismiss: dismissAll, bottomSheet };
 };

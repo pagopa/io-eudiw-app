@@ -1,14 +1,14 @@
-import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
+import { call, put, race, select, take, takeLatest } from 'typed-redux-saga';
 import Config from 'react-native-config';
-import {WalletInstance} from '@pagopa/io-react-native-wallet';
-import {serializeError} from 'serialize-error';
+import { WalletInstance } from '@pagopa/io-react-native-wallet';
+import { serializeError } from 'serialize-error';
 import {
   generateIntegrityHardwareKeyTag,
   getIntegrityContext
 } from '../utils/integrity';
-import {selectSessionId} from '../../../store/reducers/preferences';
-import {selectInstanceKeyTag, setInstanceKeyTag} from '../store/instance';
-import {createWalletProviderFetch} from '../utils/fetch';
+import { selectSessionId } from '../../../store/reducers/preferences';
+import { selectInstanceKeyTag, setInstanceKeyTag } from '../store/instance';
+import { createWalletProviderFetch } from '../utils/fetch';
 import {
   resetInstanceCreation,
   setInstanceCreationError,
@@ -53,6 +53,6 @@ export function* handleCreateInstance() {
     }
     yield* put(setInstanceCreationSuccess());
   } catch (err: unknown) {
-    yield* put(setInstanceCreationError({error: serializeError(err)}));
+    yield* put(setInstanceCreationError({ error: serializeError(err) }));
   }
 }

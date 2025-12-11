@@ -1,5 +1,5 @@
-import {Dispatch, SetStateAction, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import { Dispatch, SetStateAction, useMemo } from 'react';
+import { StyleSheet, View } from 'react-native';
 import {
   AnimatedCheckbox,
   Divider,
@@ -8,12 +8,12 @@ import {
   ListItemHeader
 } from '@pagopa/io-app-design-system';
 import _ from 'lodash';
-import {useTranslation} from 'react-i18next';
-import {getCredentialNameByType} from '../../utils/credentials';
-import {getClaimsFullLocale} from '../../utils/locale';
-import {CredentialClaim} from '../credential/CredentialClaims';
-import {ParsedCredential} from '../../utils/types';
-import {ClaimsSelector} from '../../../../components/ClaimsSelector';
+import { useTranslation } from 'react-i18next';
+import { getCredentialNameByType } from '../../utils/credentials';
+import { getClaimsFullLocale } from '../../utils/locale';
+import { CredentialClaim } from '../credential/CredentialClaims';
+import { ParsedCredential } from '../../utils/types';
+import { ClaimsSelector } from '../../../../components/ClaimsSelector';
 
 /**
  * This is the type definition for the accepted fields that will be presented to the verifier app.
@@ -33,7 +33,7 @@ import {ClaimsSelector} from '../../../../components/ClaimsSelector';
  * */
 export type CredentialTypePresentationClaimsListOptionalAcceptedFields = {
   [credential: string]: {
-    [namespace: string]: {[field: string]: boolean};
+    [namespace: string]: { [field: string]: boolean };
   };
 };
 
@@ -115,7 +115,7 @@ const useTransformDescriptor: DescriptorTransform = descriptor =>
       string,
       Record<string, AttributeDescriptor>
     > = _.mapValues(rawDisclosuresViewModel, namespaces =>
-      _.reduce(namespaces, (acc, attributes) => ({...acc, ...attributes}), {})
+      _.reduce(namespaces, (acc, attributes) => ({ ...acc, ...attributes }), {})
     );
 
     /**
@@ -163,7 +163,7 @@ const CredentialTypePresentationClaimsList = ({
   showMandatoryHeader = true,
   showOptionalHeader = true
 }: CredentialTypePresentationClaimsListProps) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const mandatoryDisclosuresViewModel = useTransformDescriptor(
     mandatoryDescriptor ?? {}
   );
@@ -293,15 +293,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 24
   },
-  claimContainer: {paddingTop: 10},
+  claimContainer: { paddingTop: 10 },
   dataItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 4
   },
-  dataItemLeft: {flexGrow: 10},
-  dataItemRight: {flexGrow: 1, alignItems: 'flex-end'}
+  dataItemLeft: { flexGrow: 10 },
+  dataItemRight: { flexGrow: 1, alignItems: 'flex-end' }
 });
 
 export default CredentialTypePresentationClaimsList;

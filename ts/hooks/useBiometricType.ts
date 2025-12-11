@@ -1,7 +1,7 @@
-import {BiometricsValidType} from '@pagopa/io-app-design-system';
-import {useEffect, useState} from 'react';
-import {useAppSelector} from '../store';
-import {selectIsBiometricEnabled} from '../store/reducers/preferences';
+import { BiometricsValidType } from '@pagopa/io-app-design-system';
+import { useEffect, useState } from 'react';
+import { useAppSelector } from '../store';
+import { selectIsBiometricEnabled } from '../store/reducers/preferences';
 import {
   getBiometricsType,
   isBiometricsValidType
@@ -29,5 +29,5 @@ export const useBiometricType = () => {
     }
   }, [isFingerprintEnabled]);
 
-  return {biometricType, isFingerprintEnabled};
+  return { biometricType, isFingerprintEnabled };
 };

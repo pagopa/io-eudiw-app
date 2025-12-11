@@ -1,4 +1,8 @@
-import {CryptoError, deleteKey, generate} from '@pagopa/io-react-native-crypto';
+import {
+  CryptoError,
+  deleteKey,
+  generate
+} from '@pagopa/io-react-native-crypto';
 
 /**
  * Regenerates a crypto key by deleting it if it exists and then generating a new one.
@@ -18,7 +22,7 @@ export const regenerateCryptoKey = async (keyTag: string) => {
  */
 export const deleteKeyIfExists = async (keyTag: string) => {
   await deleteKey(keyTag).catch(e => {
-    const {message} = e as CryptoError;
+    const { message } = e as CryptoError;
     if (message !== 'PUBLIC_KEY_NOT_FOUND') {
       throw e;
     }

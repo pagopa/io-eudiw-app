@@ -7,7 +7,7 @@ import {
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 type Props = {
   title: string;
@@ -55,4 +55,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export {CameraPermissionView};
+export { CameraPermissionView };

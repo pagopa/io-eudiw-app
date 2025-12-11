@@ -1,4 +1,4 @@
-import {IOColors, VSpacer} from '@pagopa/io-app-design-system';
+import { IOColors, VSpacer } from '@pagopa/io-app-design-system';
 import {
   Animated,
   ScrollView,
@@ -7,9 +7,9 @@ import {
   GestureResponderEvent,
   useWindowDimensions
 } from 'react-native';
-import {forwardRef, useCallback, useRef} from 'react';
-import {useInteractiveElementDefaultColorName} from '../hooks/theme';
-import {LandingCardComponent} from './LandingCardComponent';
+import { forwardRef, useCallback, useRef } from 'react';
+import { useInteractiveElementDefaultColorName } from '../hooks/theme';
+import { LandingCardComponent } from './LandingCardComponent';
 
 const styles = StyleSheet.create({
   normalDot: {
@@ -56,7 +56,7 @@ type CarouselDotsProps = Omit<
  * @param setStep - The function to call when the user scrolls the ScrollView
  */
 const CarouselDots = (props: CarouselDotsProps) => {
-  const {carouselCards, dotEasterEggCallback, scrollX, dotColor} = props;
+  const { carouselCards, dotEasterEggCallback, scrollX, dotColor } = props;
   const dotTouchCount = useRef(0);
 
   const blueColor = useInteractiveElementDefaultColorName();
@@ -77,7 +77,8 @@ const CarouselDots = (props: CarouselDotsProps) => {
           dotTouchCount.current = 0;
           dotEasterEggCallback?.();
         }
-      }}>
+      }}
+    >
       {carouselCards.map((_, imageIndex) => {
         const width = scrollX.interpolate({
           inputRange: [
@@ -100,7 +101,7 @@ const CarouselDots = (props: CarouselDotsProps) => {
         return (
           <Animated.View
             key={imageIndex}
-            style={[styles.normalDot, {width, backgroundColor}]}
+            style={[styles.normalDot, { width, backgroundColor }]}
           />
         );
       })}
@@ -109,7 +110,7 @@ const CarouselDots = (props: CarouselDotsProps) => {
 };
 
 export const Carousel = forwardRef<View, CarouselProps>((props, ref) => {
-  const {carouselCards, dotEasterEggCallback, dotColor} = props;
+  const { carouselCards, dotEasterEggCallback, dotColor } = props;
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollEvent = Animated.event(
     [
@@ -121,7 +122,7 @@ export const Carousel = forwardRef<View, CarouselProps>((props, ref) => {
         }
       }
     ],
-    {useNativeDriver: false}
+    { useNativeDriver: false }
   );
 
   const renderCardComponents = useCallback(
@@ -152,7 +153,8 @@ export const Carousel = forwardRef<View, CarouselProps>((props, ref) => {
           );
           scrollEvent(event);
         }}
-        scrollEventThrottle={1}>
+        scrollEventThrottle={1}
+      >
         {cardComponents}
       </ScrollView>
       <CarouselDots

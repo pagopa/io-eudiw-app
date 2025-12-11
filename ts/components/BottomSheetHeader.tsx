@@ -1,12 +1,12 @@
-import {View, StyleSheet} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import {
   H4,
   IconButton,
   IOColors,
   IOVisualCostants
 } from '@pagopa/io-app-design-system';
-import {useTranslation} from 'react-i18next';
-import {createRef, isValidElement} from 'react';
+import { useTranslation } from 'react-i18next';
+import { createRef, isValidElement } from 'react';
 
 const styles = StyleSheet.create({
   bottomSheetHeader: {
@@ -38,7 +38,7 @@ export const BottomSheetHeader: React.FunctionComponent<Props> = ({
   onClose
 }: Props) => {
   const headerRef = createRef<View>();
-  const {t} = useTranslation('global');
+  const { t } = useTranslation('global');
 
   return (
     <View style={styles.bottomSheetHeader} ref={headerRef}>
@@ -49,7 +49,8 @@ export const BottomSheetHeader: React.FunctionComponent<Props> = ({
           style={styles.bottomSheetHeaderContent}
           accessible={true}
           accessibilityRole={'header'}
-          accessibilityLabel={typeof title === 'string' ? title : undefined}>
+          accessibilityLabel={typeof title === 'string' ? title : undefined}
+        >
           <H4>{title}</H4>
         </View>
       )}

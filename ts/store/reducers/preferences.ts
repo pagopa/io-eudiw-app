@@ -1,9 +1,9 @@
 /* eslint-disable functional/immutable-data */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {persistReducer, type PersistConfig} from 'redux-persist';
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { persistReducer, type PersistConfig } from 'redux-persist';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import uuid from 'react-native-uuid';
-import {RootState} from '../types';
+import { RootState } from '../types';
 
 /* State type definition for the preferences slice
  * sessionId - Randomly generated session id which identifies a wallet when creating a wallet instance. It gets resetted when the onboarding

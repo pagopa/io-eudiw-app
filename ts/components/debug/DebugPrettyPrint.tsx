@@ -6,13 +6,13 @@ import {
   IconButton,
   useIOToast
 } from '@pagopa/io-app-design-system';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {useTranslation} from 'react-i18next';
-import {useMemo, useState} from 'react';
-import {truncateObjectStrings} from '../../utils/debug';
-import {Prettify} from '../../types/utils';
-import {withDebugEnabled} from './withDebugEnabled';
+import { useTranslation } from 'react-i18next';
+import { useMemo, useState } from 'react';
+import { truncateObjectStrings } from '../../utils/debug';
+import { Prettify } from '../../types/utils';
+import { withDebugEnabled } from './withDebugEnabled';
 
 type ExpandableProps =
   | {
@@ -37,10 +37,10 @@ type Props = Prettify<
  * The component it is rendered only if debug mode is enabled
  */
 export const DebugPrettyPrint = withDebugEnabled(
-  ({title, data, expandable = true, isExpanded = false}: Props) => {
+  ({ title, data, expandable = true, isExpanded = false }: Props) => {
     const toast = useIOToast();
     const [expanded, setExpanded] = useState(isExpanded);
-    const {t} = useTranslation('global');
+    const { t } = useTranslation('global');
 
     const content = useMemo(() => {
       if ((expandable && !expanded) || !expandable) {
@@ -54,7 +54,8 @@ export const DebugPrettyPrint = withDebugEnabled(
             size={12}
             lineHeight={18}
             color="grey-650"
-            weight="Medium">
+            weight="Medium"
+          >
             {JSON.stringify(truncateObjectStrings(data), null, 2)}
           </IOText>
         </View>

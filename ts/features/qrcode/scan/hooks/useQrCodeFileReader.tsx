@@ -3,11 +3,11 @@ import {
   ImagePickerResponse,
   launchImageLibrary
 } from 'react-native-image-picker';
-import {useState} from 'react';
-import {Alert, Linking} from 'react-native';
+import { useState } from 'react';
+import { Alert, Linking } from 'react-native';
 import RNQRGenerator from 'rn-qr-generator';
-import {useTranslation} from 'react-i18next';
-import {OnBarcodeSuccess, OnBardCodeError} from '../screens/QrCodeScanScreen';
+import { useTranslation } from 'react-i18next';
+import { OnBarcodeSuccess, OnBardCodeError } from '../screens/QrCodeScanScreen';
 
 type QrCodeFileReader = {
   /**
@@ -41,7 +41,7 @@ const useQrCodeFileReader = ({
   onBarcodeSuccess
 }: QrCodeFileReaderConfiguration): QrCodeFileReader => {
   const [isLoading, setIsLoading] = useState(false);
-  const {t} = useTranslation(['qrcodeScan', 'global']);
+  const { t } = useTranslation(['qrcodeScan', 'global']);
 
   const handleBarcodeSuccess = (barcodes: Array<string>) => {
     setIsLoading(false);
@@ -76,7 +76,7 @@ const useQrCodeFileReader = ({
             onPress: Linking.openSettings
           }
         ],
-        {cancelable: false}
+        { cancelable: false }
       );
       return;
     }
@@ -92,7 +92,7 @@ const useQrCodeFileReader = ({
     const base64 = response.assets[0].base64;
 
     try {
-      const result = await RNQRGenerator.detect({base64});
+      const result = await RNQRGenerator.detect({ base64 });
       if (result.values.length === 0) {
         handleBarcodeError();
       } else {
@@ -115,4 +115,4 @@ const useQrCodeFileReader = ({
   };
 };
 
-export {useQrCodeFileReader};
+export { useQrCodeFileReader };

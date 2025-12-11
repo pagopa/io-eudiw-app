@@ -1,8 +1,8 @@
-import {IOColors, LoadingSpinner} from '@pagopa/io-app-design-system';
+import { IOColors, LoadingSpinner } from '@pagopa/io-app-design-system';
 
-import {ReactNode, useCallback, useEffect, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import Animated, {FadeIn} from 'react-native-reanimated';
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import {
   Camera,
   Code,
@@ -10,9 +10,9 @@ import {
   useCodeScanner
 } from 'react-native-vision-camera';
 
-import {usePrevious} from '../../../../hooks/usePrevious';
-import {AnimatedCameraMarker} from '../components/AnimatedCameraMarker';
-import {OnBarcodeSuccess, OnBardCodeError} from '../screens/QrCodeScanScreen';
+import { usePrevious } from '../../../../hooks/usePrevious';
+import { AnimatedCameraMarker } from '../components/AnimatedCameraMarker';
+import { OnBarcodeSuccess, OnBardCodeError } from '../screens/QrCodeScanScreen';
 
 /**
  * {@link useQrCodeCameraScanner} configuration
@@ -179,7 +179,8 @@ QrCodeCameraScannerConfiguration): QrCodeCameraScanner => {
 const LoadingMarkerComponent = () => (
   <Animated.View
     entering={FadeIn}
-    style={{flex: 1, justifyContent: 'center', marginTop: '15%'}}>
+    style={{ flex: 1, justifyContent: 'center', marginTop: '15%' }}
+  >
     <LoadingSpinner size={76} color="white" />
   </Animated.View>
 );

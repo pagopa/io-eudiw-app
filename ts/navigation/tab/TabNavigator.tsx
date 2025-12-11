@@ -1,11 +1,11 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {IOColors} from '@pagopa/io-app-design-system';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
-import {TabIconComponent} from '../../components/TabIconComponent';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { IOColors } from '@pagopa/io-app-design-system';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { TabIconComponent } from '../../components/TabIconComponent';
 import WalletHome from '../../screens/WalletHome';
-import {useAppDispatch} from '../../store';
-import {setProximityStatusStarted} from '../../features/wallet/store/proximity';
+import { useAppDispatch } from '../../store';
+import { setProximityStatusStarted } from '../../features/wallet/store/proximity';
 import TAB_ROUTES from './routes';
 
 /**
@@ -25,7 +25,7 @@ const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
  * It is used to navigate between the main screens of the application which are currently the home, scan qr and show qr screens.
  */
 export const TabNavigator = () => {
-  const {t} = useTranslation('global');
+  const { t } = useTranslation('global');
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
@@ -35,10 +35,10 @@ export const TabNavigator = () => {
   const EmptyComponent = () => <></>;
 
   const navigateToQrCodeScanScreen = () =>
-    navigation.navigate('ROOT_MAIN_NAV', {screen: 'MAIN_SCAN_QR'});
+    navigation.navigate('ROOT_MAIN_NAV', { screen: 'MAIN_SCAN_QR' });
 
   const navigateToQrCodeShowScreen = () =>
-    navigation.navigate('ROOT_MAIN_NAV', {screen: 'MAIN_SHOW_QR'});
+    navigation.navigate('ROOT_MAIN_NAV', { screen: 'MAIN_SHOW_QR' });
 
   return (
     <>
@@ -49,13 +49,14 @@ export const TabNavigator = () => {
           tabBarAllowFontScaling: false,
           tabBarActiveTintColor: IOColors['blueIO-500'],
           tabBarInactiveTintColor: IOColors['grey-850']
-        }}>
+        }}
+      >
         <Tab.Screen
           name={TAB_ROUTES.WALLET}
           component={WalletHome}
           options={{
             title: t('tabNavigator.wallet'),
-            tabBarIcon: ({color, focused}) => (
+            tabBarIcon: ({ color, focused }) => (
               <TabIconComponent
                 iconName={'navWallet'}
                 iconNameFocused={'navWalletFocused'}
@@ -69,14 +70,14 @@ export const TabNavigator = () => {
           name={TAB_ROUTES.SCAN_QR}
           component={EmptyComponent}
           listeners={{
-            tabPress: ({preventDefault}) => {
+            tabPress: ({ preventDefault }) => {
               preventDefault();
               navigateToQrCodeScanScreen();
             }
           }}
           options={{
             title: t('tabNavigator.scanQr'),
-            tabBarIcon: ({color, focused}) => (
+            tabBarIcon: ({ color, focused }) => (
               <TabIconComponent
                 iconName={'navScan'}
                 iconNameFocused={'navScan'}
@@ -90,7 +91,7 @@ export const TabNavigator = () => {
           name={TAB_ROUTES.SHOW_QR}
           component={EmptyComponent}
           listeners={{
-            tabPress: ({preventDefault}) => {
+            tabPress: ({ preventDefault }) => {
               preventDefault();
               dispatch(setProximityStatusStarted());
               navigateToQrCodeShowScreen();
@@ -98,7 +99,7 @@ export const TabNavigator = () => {
           }}
           options={{
             title: t('tabNavigator.showQr'),
-            tabBarIcon: ({color, focused}) => (
+            tabBarIcon: ({ color, focused }) => (
               <TabIconComponent
                 iconName={'navQrWallet'}
                 iconNameFocused={'navQrWallet'}

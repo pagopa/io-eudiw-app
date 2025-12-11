@@ -1,4 +1,4 @@
-import {Linking} from 'react-native';
+import { Linking } from 'react-native';
 
 /**
  * Checks if the given URL is an HTTP URL.
@@ -45,4 +45,4 @@ const openWebUrl = (url: string, onError: () => void) => {
     });
 };
 
-export {openWebUrl};
+export { openWebUrl };
