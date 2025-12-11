@@ -2144,22 +2144,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-app-design-system@npm:^4.6.0":
-  version: 4.6.1
-  resolution: "@pagopa/io-app-design-system@npm:4.6.1"
+"@pagopa/io-app-design-system@npm:5.11.13-0":
+  version: 5.11.13-0
+  resolution: "@pagopa/io-app-design-system@npm:5.11.13-0"
   dependencies:
-    "@testing-library/jest-native": ^5.4.2
-    "@types/react-test-renderer": ^18.0.0
     auto-changelog: ^2.4.0
     lodash: ^4.17.21
     react-native-easing-gradient: ^1.1.1
-    react-native-gesture-handler: ^2.12.0
-    react-native-haptic-feedback: ^2.0.2
-    react-native-linear-gradient: ^2.5.6
-    react-native-reanimated: 3.15.0
-    react-native-safe-area-context: ^3.3.2
-    react-native-svg: ^15.1.0
-    rn-placeholder: 1.3.3
+    react-native-gesture-handler: ^2.25.0
+    react-native-haptic-feedback: ^2.3.3
+    react-native-linear-gradient: ^2.8.3
+    react-native-reanimated: 3.17.5
+    react-native-safe-area-context: ^5.4.1
+    react-native-svg: ^15.12.0
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -2170,7 +2167,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-safe-area-context: "*"
     react-native-svg: "*"
-  checksum: 817424de77858b23889c7377f4a95d5401591bdc6cedf28d4832fa540d24fddc1425cbf7c82b2f5662a61eb96e3b1e3708aeeefbd7a30613e168f6327925ad29
+  checksum: 41404ef75dd8b3630bff52de6ed043e708835be0da0803eb024b532d535c375477c449dc86959acf7b45ce762400acdb7e2e664920549c5bd69f65bba2c63cf9
   languageName: node
   linkType: hard
 
@@ -3344,23 +3341,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-native@npm:^5.4.2":
-  version: 5.4.3
-  resolution: "@testing-library/jest-native@npm:5.4.3"
-  dependencies:
-    chalk: ^4.1.2
-    jest-diff: ^29.0.1
-    jest-matcher-utils: ^29.0.1
-    pretty-format: ^29.0.3
-    redent: ^3.0.0
-  peerDependencies:
-    react: ">=16.0.0"
-    react-native: ">=0.59"
-    react-test-renderer: ">=16.0.0"
-  checksum: 2a4ebfeff09523860771cfddac6fcc3faa2f855dc63255b9efc016e727132320f16f935cec9717d6d79cfa6715fce6ded877215c8ec85d236a5c3136a65b1020
-  languageName: node
-  linkType: hard
-
 "@textlint/ast-node-types@npm:14.8.4":
   version: 14.8.4
   resolution: "@textlint/ast-node-types@npm:14.8.4"
@@ -3561,22 +3541,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prop-types@npm:*":
-  version: 15.7.15
-  resolution: "@types/prop-types@npm:15.7.15"
-  checksum: 31aa2f59b28f24da6fb4f1d70807dae2aedfce090ec63eaf9ea01727a9533ef6eaf017de5bff99fbccad7d1c9e644f52c6c2ba30869465dd22b1a7221c29f356
-  languageName: node
-  linkType: hard
-
-"@types/react-test-renderer@npm:^18.0.0":
-  version: 18.3.1
-  resolution: "@types/react-test-renderer@npm:18.3.1"
-  dependencies:
-    "@types/react": ^18
-  checksum: f8cc23cc8decdb6068cdc8f8c306e189eab8e569443ce97b216e757ee42eb20b18d2280ef41e2955668413f14be92765a3ba86cfcfeeae6b20c965acd9674786
-  languageName: node
-  linkType: hard
-
 "@types/react-test-renderer@npm:^19.0.0":
   version: 19.1.0
   resolution: "@types/react-test-renderer@npm:19.1.0"
@@ -3592,16 +3556,6 @@ __metadata:
   dependencies:
     csstype: ^3.2.2
   checksum: b1f4c9a45862ea392b9ead060a5b5730b4c41b21fde097db35e639a8a0978460468d8da87f47226230bd4681d6de48ffee695595540084a8a849dde027c66a46
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^18":
-  version: 18.3.27
-  resolution: "@types/react@npm:18.3.27"
-  dependencies:
-    "@types/prop-types": "*"
-    csstype: ^3.2.2
-  checksum: c74d0ab5155226998a52b568f6280536205f8fe4317f77bd5d5258bc131cc9134a2db68dc818cb8e8402a2f229843c4a5bde339faf7e64d441630e569a9e5421
   languageName: node
   linkType: hard
 
@@ -8279,7 +8233,7 @@ __metadata:
     "@babel/preset-env": ^7.25.3
     "@babel/runtime": ^7.25.0
     "@gorhom/bottom-sheet": ^5.0.6
-    "@pagopa/io-app-design-system": ^4.6.0
+    "@pagopa/io-app-design-system": 5.11.13-0
     "@pagopa/io-react-native-crypto": ^1.2.3
     "@pagopa/io-react-native-integrity": ^0.3.2
     "@pagopa/io-react-native-iso18013": ^0.7.0
@@ -9046,7 +9000,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-diff@npm:^29.0.1, jest-diff@npm:^29.7.0":
+"jest-diff@npm:^29.7.0":
   version: 29.7.0
   resolution: "jest-diff@npm:29.7.0"
   dependencies:
@@ -9134,7 +9088,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-matcher-utils@npm:^29.0.1, jest-matcher-utils@npm:^29.7.0":
+"jest-matcher-utils@npm:^29.7.0":
   version: 29.7.0
   resolution: "jest-matcher-utils@npm:29.7.0"
   dependencies:
@@ -9884,7 +9838,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.0.0, loose-envify@npm:^1.3.1, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.0.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -11812,7 +11766,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:^29.0.0, pretty-format@npm:^29.0.3, pretty-format@npm:^29.7.0":
+"pretty-format@npm:^29.0.0, pretty-format@npm:^29.7.0":
   version: 29.7.0
   resolution: "pretty-format@npm:29.7.0"
   dependencies:
@@ -11870,16 +11824,6 @@ __metadata:
     kleur: ^3.0.3
     sisteransi: ^1.0.5
   checksum: d8fd1fe63820be2412c13bfc5d0a01909acc1f0367e32396962e737cb2fc52d004f3302475d5ce7d18a1e8a79985f93ff04ee03007d091029c3f9104bffc007d
-  languageName: node
-  linkType: hard
-
-"prop-types@npm:15.6.2":
-  version: 15.6.2
-  resolution: "prop-types@npm:15.6.2"
-  dependencies:
-    loose-envify: ^1.3.1
-    object-assign: ^4.1.1
-  checksum: 79e478b2684449295bc8c60af1cfba4f3d414a5d832e9d23f720bce7f07df9dc52105a626134d9a3f84bb5551c9da5ec6d77d10f906b5cef26fe464959b96646
   languageName: node
   linkType: hard
 
@@ -12215,7 +12159,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:^2.12.0, react-native-gesture-handler@npm:^2.25.0":
+"react-native-gesture-handler@npm:^2.25.0":
   version: 2.29.1
   resolution: "react-native-gesture-handler@npm:2.29.1"
   dependencies:
@@ -12251,7 +12195,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-haptic-feedback@npm:^2.0.2, react-native-haptic-feedback@npm:^2.3.3":
+"react-native-haptic-feedback@npm:^2.3.3":
   version: 2.3.3
   resolution: "react-native-haptic-feedback@npm:2.3.3"
   peerDependencies:
@@ -12290,7 +12234,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-linear-gradient@npm:^2.5.6, react-native-linear-gradient@npm:^2.8.3":
+"react-native-linear-gradient@npm:^2.8.3":
   version: 2.8.3
   resolution: "react-native-linear-gradient@npm:2.8.3"
   peerDependencies:
@@ -12329,29 +12273,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:3.15.0":
-  version: 3.15.0
-  resolution: "react-native-reanimated@npm:3.15.0"
-  dependencies:
-    "@babel/plugin-transform-arrow-functions": ^7.0.0-0
-    "@babel/plugin-transform-class-properties": ^7.0.0-0
-    "@babel/plugin-transform-classes": ^7.0.0-0
-    "@babel/plugin-transform-nullish-coalescing-operator": ^7.0.0-0
-    "@babel/plugin-transform-optional-chaining": ^7.0.0-0
-    "@babel/plugin-transform-shorthand-properties": ^7.0.0-0
-    "@babel/plugin-transform-template-literals": ^7.0.0-0
-    "@babel/plugin-transform-unicode-regex": ^7.0.0-0
-    "@babel/preset-typescript": ^7.16.7
-    convert-source-map: ^2.0.0
-    invariant: ^2.2.4
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-    react: "*"
-    react-native: "*"
-  checksum: fad4f54d7f005f4fb3d90d983bedcf1ec7de936259b8e286feb35edaa9d1ac16d8b927fcd59eeea7f91446310432b342fd9785301a304955844785fef52a3e31
-  languageName: node
-  linkType: hard
-
 "react-native-reanimated@npm:3.17.5":
   version: 3.17.5
   resolution: "react-native-reanimated@npm:3.17.5"
@@ -12373,16 +12294,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: fe667e4764f691b2e752eaedb7527fd8ac251637ae9e7dd9ab124abae85627839b5daea064befc5e09ca710ef673d5501ed11286eb39dfcb04f5d57b2d47e49c
-  languageName: node
-  linkType: hard
-
-"react-native-safe-area-context@npm:^3.3.2":
-  version: 3.4.1
-  resolution: "react-native-safe-area-context@npm:3.4.1"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 86a0614c5bef60ff8e056cff3fd4200cc6d181653cb6c26992ab62061792474f4872d1f5d394234ec6da75ce8b2960c930f4d6a1b6af3b6579cf1c30b6d64bb5
   languageName: node
   linkType: hard
 
@@ -12424,7 +12335,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-svg@npm:^15.1.0, react-native-svg@npm:^15.11.2":
+"react-native-svg@npm:^15.11.2, react-native-svg@npm:^15.12.0":
   version: 15.15.1
   resolution: "react-native-svg@npm:15.15.1"
   dependencies:
@@ -13064,15 +12975,6 @@ __metadata:
     hash-base: ^3.1.2
     inherits: ^2.0.4
   checksum: da25591f15d3f03d3a26cabc8255634ee9e0ae89fc053846e6b3975bbdbae6941baeb539dba30e0aaec9a726c7442149de064e13c2510332e119e50beaf3314d
-  languageName: node
-  linkType: hard
-
-"rn-placeholder@npm:1.3.3":
-  version: 1.3.3
-  resolution: "rn-placeholder@npm:1.3.3"
-  dependencies:
-    prop-types: 15.6.2
-  checksum: a666d76fa9c27da61d78eda6540603e97d37b1db62ca589ccd1a19569579207d7a1e3daf61c93695be40b2c655a5dd6961fc0dfaab30ed7df6293ee916d4dec9
   languageName: node
   linkType: hard
 

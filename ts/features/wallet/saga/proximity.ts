@@ -22,8 +22,7 @@ import {selectCredentials} from '../store/credentials';
 import {
   getIsVerifierAuthenticated,
   matchRequestToClaims,
-  verifierCertificates,
-  b64utob64
+  verifierCertificates
 } from '../utils/proximity';
 import {
   IdentificationResultTask,
