@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -121,7 +121,7 @@ const PresentationPostDefinition = ({route}: Props) => {
   });
 
   return (
-    <ForceScrollDownView style={styles.scroll}>
+    <ForceScrollDownView style={styles.scroll} threshold={50}>
       <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
         <VSpacer size={24} />
         <View style={styles.header}>

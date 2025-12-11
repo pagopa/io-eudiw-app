@@ -11,8 +11,8 @@ import {
   H6,
   HSpacer,
   IOPictogramsBleed,
-  IOStyles,
   IOToast,
+  IOVisualCostants,
   Nullable,
   VSpacer
 } from '@pagopa/io-app-design-system';
@@ -35,7 +35,7 @@ import {
   TxtStrNode,
   TxtStrongNode
 } from '@textlint/ast-node-types';
-import React, {Fragment, useLayoutEffect, useState} from 'react';
+import {Fragment, useLayoutEffect, useState} from 'react';
 import {Dimensions, Image, Text, View} from 'react-native';
 import i18next from 'i18next';
 import {openWebUrl} from '../../utils/url';
@@ -204,8 +204,7 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
       aspectRatio: 1
     });
     const screenWidth =
-      Dimensions.get('screen').width -
-      IOStyles.horizontalContentPadding.paddingHorizontal * 2;
+      Dimensions.get('screen').width - IOVisualCostants.appMarginDefault * 2;
 
     useLayoutEffect(() => {
       Image.getSize(image.url, (width, height) => {
@@ -252,14 +251,17 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
     return (
       <View key={getTxtNodeKey(list)}>
         {isFirstList && <VSpacer size={8} />}
-        <View style={IOStyles.row}>
+        <View style={{flexDirection: 'row'}}>
           {isFirstList && <HSpacer size={12} />}
           <View
-            style={[IOStyles.flex, {flexGrow: 1}]}
+            style={{flex: 1, flexGrow: 1}}
             accessible={true}
             accessibilityRole="list">
             {list.children.map((child, i) => (
-              <View accessible key={`${child.type}_${i}`} style={IOStyles.row}>
+              <View
+                accessible
+                key={`${child.type}_${i}`}
+                style={{flexDirection: 'row'}}>
                 {getLeftAdornment(i)}
                 <HSpacer size={8} />
                 {render(child)}
@@ -280,7 +282,7 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
     return (
       <View
         accessible={false}
-        style={[IOStyles.flex, {flexShrink: 1}]}
+        style={{flex: 1, flexShrink: 1}}
         key={getTxtNodeKey(listItem)}>
         {listItem.children.map(render)}
       </View>
@@ -315,7 +317,6 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
         key={getTxtNodeKey(blockQuote)}
         pictogramName={getPictogramName(pictogramName?.[1])}
         color="neutral"
-        size="big"
         title={title?.[1]}
         content={content}
       />

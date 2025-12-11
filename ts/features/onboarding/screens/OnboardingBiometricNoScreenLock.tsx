@@ -1,5 +1,5 @@
 import {ListItemInfo} from '@pagopa/io-app-design-system';
-import React, {useMemo} from 'react';
+import {useMemo} from 'react';
 import {Platform} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useHeaderSecondLevel} from '../../../hooks/useHeaderSecondLevel';

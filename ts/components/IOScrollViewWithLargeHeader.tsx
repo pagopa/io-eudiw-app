@@ -4,14 +4,14 @@ import {
   ComposedBodyFromArray,
   ContentWrapper,
   H2,
-  IOStyles,
   BodySmall,
   VSpacer,
   useIOTheme,
-  WithTestID
+  WithTestID,
+  IOVisualCostants
 } from '@pagopa/io-app-design-system';
-import React, {ComponentProps, forwardRef, useState} from 'react';
-import {LayoutChangeEvent, View} from 'react-native';
+import {ComponentProps, forwardRef, useState} from 'react';
+import {LayoutChangeEvent, StyleSheet, View} from 'react-native';
 import {IOScrollView} from './IOScrollView';
 
 export type LargeHeaderTitleProps = {
@@ -67,7 +67,7 @@ export const IOScrollViewWithLargeHeader = forwardRef<View, Props>(
         <View
           ref={ref}
           accessible
-          style={IOStyles.horizontalContentPadding}
+          style={styles.titleContainer}
           onLayout={getTitleHeight}>
           {title.section && (
             <BodySmall weight="Semibold" color={theme['textBody-tertiary']}>
@@ -107,3 +107,9 @@ export const IOScrollViewWithLargeHeader = forwardRef<View, Props>(
     );
   }
 );
+
+const styles = StyleSheet.create({
+  titleContainer: {
+    paddingHorizontal: IOVisualCostants.appMarginDefault
+  }
+});

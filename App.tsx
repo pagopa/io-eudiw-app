@@ -7,18 +7,18 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {
   IODSExperimentalContextProvider,
-  IOStyles,
   IOThemeContextProvider,
   ToastProvider
 } from '@pagopa/io-app-design-system';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
+import {StyleSheet} from 'react-native';
 import {persistor, store} from './ts/store';
 import IdentificationModal from './ts/screens/IdentificationModal';
 import RootContainer from './ts/screens/RootContainer';
 
 function App(): React.JSX.Element {
   return (
-    <GestureHandlerRootView style={IOStyles.flex}>
+    <GestureHandlerRootView style={styles.gestureHandlerContainer}>
       <SafeAreaProvider>
         <IODSExperimentalContextProvider isExperimentaEnabled={true}>
           <IOThemeContextProvider theme={'light'}>
@@ -39,3 +39,9 @@ function App(): React.JSX.Element {
   );
 }
 export default App;
+
+const styles = StyleSheet.create({
+  gestureHandlerContainer: {
+    flex: 1
+  }
+});

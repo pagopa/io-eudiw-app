@@ -5,7 +5,7 @@ import {
   H1,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';

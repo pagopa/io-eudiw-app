@@ -1,5 +1,4 @@
 import {useTranslation} from 'react-i18next';
-import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
@@ -42,7 +41,7 @@ const PresentationProximityFailure = ({route}: Props) => {
 
   return (
     <OperationResultScreenContent
-      pictogram="umbrellaNew"
+      pictogram="umbrella"
       title={t('proximity.failure.title')}
       subtitle={
         route.params.fatal

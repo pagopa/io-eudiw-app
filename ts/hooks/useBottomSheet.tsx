@@ -13,8 +13,7 @@ import {
   IOVisualCostants,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import * as React from 'react';
-import {useCallback} from 'react';
+import {useCallback, useRef} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {BottomSheetHeader} from '../components/BottomSheetHeader';
@@ -69,7 +68,7 @@ export const useIOBottomSheetModal = ({
 }: Omit<BottomSheetOptions, 'fullScreen'>): IOBottomSheetModal => {
   const insets = useSafeAreaInsets();
   const {dismissAll} = useBottomSheetModal();
-  const bottomSheetModalRef = React.useRef<BottomSheetModal>(null);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const {onOpen, onClose} = useHardwareBackButtonToDismiss(dismissAll);
 
   const header = <BottomSheetHeader title={title} onClose={dismissAll} />;

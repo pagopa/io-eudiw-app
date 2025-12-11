@@ -1,5 +1,4 @@
 import {useIsFocused} from '@react-navigation/native';
-import React from 'react';
 import {StatusBar, StatusBarProps} from 'react-native';
 
 /**

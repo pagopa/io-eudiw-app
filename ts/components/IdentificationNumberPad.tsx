@@ -1,15 +1,14 @@
 import {
   BiometricsValidType,
   CodeInput,
-  IOStyles,
   IconButton,
   NumberPad,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import * as React from 'react';
 import {useCallback, useState} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import i18next from 'i18next';
+import {NumberButton} from '@pagopa/io-app-design-system/lib/typescript/components/numberpad/NumberButton';
 import {isDevEnv} from '../utils/env';
 
 const PIN_LENGTH = 6;
@@ -30,7 +29,7 @@ type BiometricConfigType =
 type IdentificationNumberPadProps = {
   pin: string;
   pinValidation: (success: boolean) => void;
-  numberPadVariant: 'light' | 'dark';
+  numberPadVariant: React.ComponentProps<typeof NumberButton>['variant'];
   biometricsConfig: BiometricConfigType;
 };
 
@@ -81,11 +80,11 @@ export const IdentificationNumberPad = (
 
   return (
     <>
-      <View style={IOStyles.alignCenter}>
+      <View style={styles.codeInputContainer}>
         <CodeInput
           value={value}
           length={PIN_LENGTH}
-          variant={'light'}
+          variant={'primary'}
           onValueChange={onCodeInputValueChange}
           onValidate={onPinValidated}
         />
@@ -127,3 +126,9 @@ export const IdentificationNumberPad = (
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  codeInputContainer: {
+    alignItems: 'center'
+  }
+});

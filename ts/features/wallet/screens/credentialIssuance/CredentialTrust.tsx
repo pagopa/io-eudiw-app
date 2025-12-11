@@ -9,7 +9,7 @@ import {
   IOVisualCostants,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import React, {useCallback, useEffect} from 'react';
+import {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
@@ -104,7 +104,7 @@ const CredentialTrust = () => {
   };
 
   return (
-    <ForceScrollDownView>
+    <ForceScrollDownView threshold={50}>
       <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
         <VSpacer size={24} />
         <View style={styles.header}>

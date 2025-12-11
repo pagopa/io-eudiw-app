@@ -1,5 +1,5 @@
 import {useTranslation} from 'react-i18next';
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {View} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {
@@ -7,7 +7,6 @@ import {
   ContentWrapper,
   H2,
   H6,
-  IOStyles,
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
@@ -110,7 +109,7 @@ const ProximityQrCode = () => {
         {proximityStatus === ProximityStatus.PROXIMITY_STATUS_CONNECTED ||
           (proximityStatus ===
             ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT && (
-            <VStack space={16} style={IOStyles.alignCenter}>
+            <VStack space={16} style={{alignItems: 'center'}}>
               <LoadingIndicator size={24} />
               <H6 textStyle={{textAlign: 'center'}}>
                 {t('wallet:proximity.connected.body')}
