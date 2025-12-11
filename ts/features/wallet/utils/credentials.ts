@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+import { ItwCredentialStatus, ItwJwtCredentialStatus } from '../types';
 
 export type CredentialsKeys =
   | 'DRIVING_LICENSE'
@@ -50,4 +51,47 @@ export const getCredentialNameByType = (type?: string): string => {
     default:
       return i18next.t(['wallet:credentials.names.unknown']);
   }
+};
+
+const EXCLUDED_CREDENTIAL_STATUSES: ReadonlyArray<ItwCredentialStatus> = [
+  "expired",
+  "expiring",
+  "invalid",
+  "unknown"
+];
+
+/**
+ * Determines which credential status should be displayed in the UI
+ * based on the current eID status and offline conditions.
+ *
+ * Logic summary:
+ * - Excluded statuses ("expired", "expiring", "invalid", "unknown") are never overridden.
+ * - Online:
+ *   - Show actual credential status if eID is valid.
+ *   - Otherwise, show "valid".
+ *
+ * @param credentialStatus The actual credential status
+ * @param eidStatus The current eID status
+ * @param isOffline Whether the app is operating offline
+ * @returns {ItwCredentialStatus}The display status for the credential
+ */
+export const getItwDisplayCredentialStatus = (
+  credentialStatus: ItwCredentialStatus,
+  eidStatus: ItwJwtCredentialStatus | undefined,
+): ItwCredentialStatus => {
+  // Excluded statuses are never overridden
+  if (EXCLUDED_CREDENTIAL_STATUSES.includes(credentialStatus)) {
+    return credentialStatus;
+  }
+
+  const isEidValid = eidStatus === "valid";
+
+
+  // Invalid eid → treat as "valid"
+  if (!isEidValid) {
+    return "valid";
+  }
+
+  // Default: eid valid and online → keep real status
+  return credentialStatus;
 };

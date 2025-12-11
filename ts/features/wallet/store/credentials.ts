@@ -120,3 +120,20 @@ export const selectCredential = (credentialType: string) =>
   createSelector(selectCredentials, credentials =>
     credentials.find(c => c.credentialType === credentialType)
   );
+
+/**
+ * Returns the credential status and the error message corresponding to the status assertion error, if present.
+ *
+ * @param state - The global state.
+ * @returns The credential status and the error message corresponding to the status assertion error, if present.
+ */
+export const itwCredentialsEidStatusSelector = createSelector(
+  selectCredential(wellKnownCredential.PID),
+  eidOption =>
+    pipe(
+      eidOption,
+      // eID does not have status assertion nor expiry date, so it safe to assume its status is based on the JWT only
+      O.map(eid => getCredentialStatus(eid) as ItwJwtCredentialStatus),
+      O.toUndefined
+    )
+);
