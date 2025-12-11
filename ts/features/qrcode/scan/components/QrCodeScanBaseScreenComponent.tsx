@@ -10,7 +10,7 @@ import {AppState, StyleSheet, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {MainNavigatorParamsList} from '../../../../navigation/main/MainStackNavigator';
 import {useQrCodeCameraScanner} from '../hooks/useQrCodeCameraScanner';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
@@ -27,7 +27,7 @@ type Props = {
   isDisabled?: boolean;
 };
 
-type NavigationProps = NativeStackNavigationProp<
+type NavigationProps = StackNavigationProp<
   MainNavigatorParamsList,
   'MAIN_SCAN_QR'
 >;
@@ -139,24 +139,28 @@ const QrCodeScanBaseScreenComponent = ({
 
   const customGoBack = useMemo(
     () => (
-      <IconButton
-        icon="closeLarge"
-        onPress={navigation.goBack}
-        accessibilityLabel={t('global:buttons.close')}
-        color="contrast"
-      />
+      <View style={{marginLeft: 24}}>
+        <IconButton
+          icon="closeLarge"
+          onPress={navigation.goBack}
+          accessibilityLabel={t('global:buttons.close')}
+          color="contrast"
+        />
+      </View>
     ),
     [navigation.goBack, t]
   );
 
   const torchButton = useMemo(
     () => (
-      <IconButton
-        icon={isTorchOn ? 'lightFilled' : 'light'}
-        accessibilityLabel={t('qrcodeScan:flash')}
-        onPress={handleTorchToggle}
-        color="contrast"
-      />
+      <View style={{marginRight: 24}}>
+        <IconButton
+          icon={isTorchOn ? 'lightFilled' : 'light'}
+          accessibilityLabel={t('qrcodeScan:flash')}
+          onPress={handleTorchToggle}
+          color="contrast"
+        />
+      </View>
     ),
     [handleTorchToggle, isTorchOn, t]
   );
