@@ -206,8 +206,9 @@ function* handleResponse<T>(
     // The result of this call is ignored for the user is not interested in any message
     yield* call(() =>
       Credential.Presentation.sendAuthorizationErrorResponse(requestObject, {
-        error: 'invalid_request_object',
-        errorDescription: 'Mock error during request object validation'
+        error: 'access_denied',
+        errorDescription:
+          'The Wallet did not have the requested Credentials to satisfy the Authorization Request'
       })
         .then(() => {})
         .catch(() => {})

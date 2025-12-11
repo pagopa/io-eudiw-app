@@ -37,7 +37,6 @@ const {
   generateResponse,
   getQrCodeString,
   parseVerifierRequest,
-  removeListener,
   sendErrorResponse,
   sendResponse,
   start
@@ -250,20 +249,5 @@ function* abortProximityFlow() {
  */
 function* closeFlow() {
   yield* put(resetProximityQrCode());
-  yield* call(() => {
-    removeListener('onDeviceConnected');
-  });
-  yield* call(() => {
-    removeListener('onDeviceConnecting');
-  });
-  yield* call(() => {
-    removeListener('onDeviceDisconnected');
-  });
-  yield* call(() => {
-    removeListener('onDocumentRequestReceived');
-  });
-  yield* call(() => {
-    removeListener('onError');
-  });
   yield* call(close);
 }
