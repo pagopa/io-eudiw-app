@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigatorScreenParams} from '@react-navigation/native';
 import {TabNavigator} from '../tab/TabNavigator';

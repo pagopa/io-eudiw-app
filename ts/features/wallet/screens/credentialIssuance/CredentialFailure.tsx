@@ -1,5 +1,4 @@
 import {useTranslation} from 'react-i18next';
-import React from 'react';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
@@ -33,7 +32,7 @@ const CredentialFailure = () => {
 
   return (
     <OperationResultScreenContent
-      pictogram="umbrellaNew"
+      pictogram="umbrella"
       title={t('wallet:credentialIssuance.failure.title')}
       subtitle={t('wallet:credentialIssuance.failure.subtitle')}
       action={{

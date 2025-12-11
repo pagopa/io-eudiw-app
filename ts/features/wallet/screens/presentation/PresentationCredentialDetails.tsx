@@ -1,6 +1,5 @@
 import {ContentWrapper, VSpacer} from '@pagopa/io-app-design-system';
 import {StackScreenProps} from '@react-navigation/stack';
-import React from 'react';
 import {useDebugInfo} from '../../../../hooks/useDebugInfo';
 import {WalletNavigatorParamsList} from '../../navigation/WalletNavigator';
 import {useAppSelector} from '../../../../store';

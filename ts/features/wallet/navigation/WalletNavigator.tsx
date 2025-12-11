@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import PidIssuanceFailure from '../screens/pidIssuance/PidIssuanceFailure';
 import WalletInstanceCreation from '../screens/pidIssuance/WalletInstanceCreation';

@@ -1,10 +1,10 @@
-import React, {ComponentProps, useCallback} from 'react';
+import {ComponentProps, useCallback, useMemo, useRef, useState} from 'react';
 import {ScrollView, StyleSheet, useWindowDimensions, View} from 'react-native';
 import {
-  ButtonLink,
   FooterActions,
+  IOButton,
   IOColors,
-  IOStyles
+  IOVisualCostants
 } from '@pagopa/io-app-design-system';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -23,8 +23,8 @@ const TEXT_COLOR = 'white';
  */
 export const OnboardingCarousel = () => {
   const navigation = useNavigation();
-  const carouselRef = React.useRef<ScrollView>(null);
-  const [step, setStep] = React.useState(0);
+  const carouselRef = useRef<ScrollView>(null);
+  const [step, setStep] = useState(0);
   const windowDimensions = useWindowDimensions();
   const {t} = useTranslation(['global', 'onboarding']);
   const blueColor = useAppBackgroundAccentColorName();
@@ -46,7 +46,7 @@ export const OnboardingCarousel = () => {
 
   const carouselCards: ReadonlyArray<
     ComponentProps<typeof LandingCardComponent>
-  > = React.useMemo(
+  > = useMemo(
     () => [
       {
         id: 0,
@@ -90,14 +90,15 @@ export const OnboardingCarousel = () => {
         backgroundColor={blueColor}
         barStyle={'light-content'}
       />
-      <SafeAreaView style={[IOStyles.flex, styles.wrapper]}>
+      <SafeAreaView style={styles.wrapper}>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'flex-end',
-            padding: IOStyles.horizontalContentPadding.paddingHorizontal
+            padding: IOVisualCostants.appMarginDefault
           }}>
-          <ButtonLink
+          <IOButton
+            variant="link"
             testID="skip-button-onboarding-wallet"
             accessibilityLabel="features.itWallet.onboarding.skip"
             color={'contrast'}
@@ -129,5 +130,8 @@ export const OnboardingCarousel = () => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {backgroundColor: IOColors['blueIO-500']}
+  wrapper: {
+    flex: 1,
+    backgroundColor: IOColors['blueIO-500']
+  }
 });

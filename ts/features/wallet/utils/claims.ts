@@ -129,7 +129,13 @@ const JPEG_SOF_CODES = [
  */
 export const base64ImageSchema = z
   .object({
-    id: z.enum(['portrait', 'signature_usual_mark']),
+    id: z
+      .string()
+      .transform(str => {
+        const split = str.split(':');
+        return split[split.length - 1];
+      })
+      .pipe(z.enum(['portrait', 'signature_usual_mark'])),
     label: z.string(),
     value: z.string()
   })

@@ -1,4 +1,3 @@
-import React from 'react';
 import {selectIsDebugModeEnabled} from '../../store/reducers/debug';
 import {useAppSelector} from '../../store';
 

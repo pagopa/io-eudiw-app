@@ -1,5 +1,5 @@
 import {Banner, Body, H2, VSpacer} from '@pagopa/io-app-design-system';
-import React, {ComponentProps} from 'react';
+import {ComponentProps} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useHeaderSecondLevel} from '../../../hooks/useHeaderSecondLevel';
 import {useAppDispatch} from '../../../store';
@@ -75,7 +75,6 @@ const OnboardingBiometricAvailable = () => {
       <Banner
         content={t('onboarding:biometric.available.settings')}
         color="neutral"
-        size="small"
         pictogramName="activate"
       />
     </IOScrollView>

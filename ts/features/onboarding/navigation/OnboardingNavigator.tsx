@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {OnboardingCarousel} from '../screens/OnboardingCarousel';
 import OnboardingStart from '../screens/OnboardingStart';

@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {Alert, View, StyleSheet} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useTranslation} from 'react-i18next';
@@ -158,7 +158,7 @@ const PresentationProximityPreview = ({route}: Props) => {
   });
 
   return (
-    <ForceScrollDownView style={styles.scroll}>
+    <ForceScrollDownView style={styles.scroll} threshold={50}>
       <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
         <VSpacer size={24} />
         <View style={styles.header}>

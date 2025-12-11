@@ -5,7 +5,7 @@ import {
   TabNavigation
 } from '@pagopa/io-app-design-system';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import {AppState, StyleSheet, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';

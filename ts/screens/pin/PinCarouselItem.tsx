@@ -1,12 +1,12 @@
 import {
-  IOStyles,
   H4,
   VSpacer,
   CodeInput,
   Body,
-  WithTestID
+  WithTestID,
+  IOVisualCostants
 } from '@pagopa/io-app-design-system';
-import React, {RefObject, memo} from 'react';
+import {RefObject, memo} from 'react';
 import {Dimensions, View} from 'react-native';
 
 const {width} = Dimensions.get('screen');
@@ -43,15 +43,13 @@ export const PinCarouselItem = memo(
     onValueChange
   }: PinCarouselItemProps) => (
     <View
-      style={[
-        IOStyles.horizontalContentPadding,
-        IOStyles.alignCenter,
-        {
-          height: 128,
-          justifyContent: 'space-between',
-          width
-        }
-      ]}
+      style={{
+        paddingHorizontal: IOVisualCostants.appMarginDefault,
+        alignItems: 'center',
+        height: 128,
+        justifyContent: 'space-between',
+        width
+      }}
       testID={testID}>
       <View>
         <H4 ref={titleRef} accessible testID={`${testID}_title`}>
@@ -71,7 +69,7 @@ export const PinCarouselItem = memo(
         length={maxLength}
         onValidate={handleOnValidate}
         onValueChange={onValueChange}
-        variant="dark"
+        variant="neutral"
         value={value}
       />
     </View>

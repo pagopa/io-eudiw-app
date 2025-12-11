@@ -1,5 +1,4 @@
 import {IOColors, VSpacer} from '@pagopa/io-app-design-system';
-import * as React from 'react';
 import {
   Animated,
   ScrollView,
@@ -8,6 +7,7 @@ import {
   GestureResponderEvent,
   useWindowDimensions
 } from 'react-native';
+import {forwardRef, useCallback, useRef} from 'react';
 import {useInteractiveElementDefaultColorName} from '../hooks/theme';
 import {LandingCardComponent} from './LandingCardComponent';
 
@@ -57,7 +57,7 @@ type CarouselDotsProps = Omit<
  */
 const CarouselDots = (props: CarouselDotsProps) => {
   const {carouselCards, dotEasterEggCallback, scrollX, dotColor} = props;
-  const dotTouchCount = React.useRef(0);
+  const dotTouchCount = useRef(0);
 
   const blueColor = useInteractiveElementDefaultColorName();
 
@@ -108,9 +108,9 @@ const CarouselDots = (props: CarouselDotsProps) => {
   );
 };
 
-export const Carousel = React.forwardRef<View, CarouselProps>((props, ref) => {
+export const Carousel = forwardRef<View, CarouselProps>((props, ref) => {
   const {carouselCards, dotEasterEggCallback, dotColor} = props;
-  const scrollX = React.useRef(new Animated.Value(0)).current;
+  const scrollX = useRef(new Animated.Value(0)).current;
   const scrollEvent = Animated.event(
     [
       {
@@ -124,7 +124,7 @@ export const Carousel = React.forwardRef<View, CarouselProps>((props, ref) => {
     {useNativeDriver: false}
   );
 
-  const renderCardComponents = React.useCallback(
+  const renderCardComponents = useCallback(
     () =>
       carouselCards.map(p => (
         <LandingCardComponent

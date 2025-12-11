@@ -1,9 +1,8 @@
-import React from 'react';
 import {FlatList, Pressable, View} from 'react-native';
 import {
-  IOStyles,
   HeaderFirstLevel,
-  VSpacer
+  VSpacer,
+  IOVisualCostants
 } from '@pagopa/io-app-design-system';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
@@ -29,16 +28,22 @@ const WalletHome = () => {
     <>
       <HeaderFirstLevel
         title={t('global:tabNavigator.wallet')}
-        firstAction={{
-          icon: 'coggle',
-          onPress: () =>
-            navigation.navigate('ROOT_MAIN_NAV', {screen: 'MAIN_SETTINGS'}),
-          accessibilityLabel: t('global:settings.title')
-        }}
+        actions={[
+          {
+            icon: 'coggle',
+            onPress: () =>
+              navigation.navigate('ROOT_MAIN_NAV', {screen: 'MAIN_SETTINGS'}),
+            accessibilityLabel: t('global:settings.title')
+          }
+        ]}
       />
       {isWalletOperational ? (
-        <View style={{...IOStyles.flex, ...IOStyles.horizontalContentPadding}}>
-          <View style={{...IOStyles.flex, justifyContent: 'flex-start'}}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: IOVisualCostants.appMarginDefault
+          }}>
+          <View style={{flex: 1, justifyContent: 'flex-start'}}>
             <ActivationBanner
               title={t('wallet:activationBanner.title')}
               content={t('wallet:activationBanner.description')}
