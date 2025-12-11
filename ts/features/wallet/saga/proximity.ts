@@ -246,6 +246,9 @@ function* abortProximityFlow() {
  * This helper saga removes all listeners from the proximity handler and resets
  * the QR code
  */
+
+// #WLEO-741 Refactor Event Listener Handling into a Custom Hook
+
 function* closeFlow() {
   yield* put(resetProximityQrCode());
   yield* call(close);
