@@ -51,8 +51,8 @@ platform :android do
   lane :download_apk do
     version_code = ENV['VERSION_CODE'].to_i
     download_universal_apk_from_google_play(
-      package_name: "it.pagopa.app.ageverification",
-      destination: "AgeVerification-universal.apk",
+      package_name: "it.pagopa.io.app.poc.eudiw",
+      destination: "io-eudiw-app-universal.apk",
       version_code: version_code
     )
   end

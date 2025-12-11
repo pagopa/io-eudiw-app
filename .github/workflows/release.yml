@@ -156,8 +156,8 @@ jobs:
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
-          name: AgeVerification-universal.apk
-          path: android/AgeVerification-universal.apk
+          name: io-eudiw-app-universal.apk
+          path: android/io-eudiw-app-universal.apk
       - id: upload-aab
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
@@ -169,7 +169,7 @@ jobs:
         run: |
           gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} \
             android/app/build/outputs/bundle/release/app-release.aab#android-app-release.aab \
-            android/AgeVerification-universal.apk#AgeVerification-universal.apk
+            android/eudiw-universal.apk#eudiw-universal.apk
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -227,17 +227,17 @@ jobs:
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.0.3
         with:
-          name: AgeVerification.app.dSYM.zip
-          path: ios/AgeVerification.app.dSYM.zip
+          name: io-eudiw-app.app.dSYM.zip
+          path: ios/io-eudiw-app.app.dSYM.zip
       - id: upload-ipa
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
-          name: AgeVerification.ipa
-          path: ios/AgeVerification.ipa
+          name: io-eudiw-app.ipa
+          path: ios/io-eudiw-app.ipa
       - id: upload-ipa-release
         continue-on-error: true
         run: |
-          gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} ios/AgeVerification.ipa#AgeVerification.ipa
+          gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} ios/io-eudiw-app.ipa#io-eudiw-app.ipa
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
