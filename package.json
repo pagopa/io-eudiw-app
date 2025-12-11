@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest --passWithNoTests",
-    "locales": "i18next-resources-for-ts interface -i ./locales/en -o ./ts/i18n/types/resources.d.ts",
+    "locales": "i18next-resources-for-ts toc -i ./locales/en -o ./ts/i18n/types/resources.ts",
     "nuke": "rm -rf ios/Pods && rm -rf ios/DerivedData && cd android && ./gradlew clean && cd .. && rm -rf node_modules",
     "prepare": "husky",
     "tsc": "tsc --noEmit",
