@@ -1,10 +1,6 @@
 /* eslint-disable functional/immutable-data */
 import {createSlice, PayloadAction, createSelector} from '@reduxjs/toolkit';
-import {
-  AcceptedFields,
-  VerifierRequest,
-  Proximity
-} from '@pagopa/io-react-native-proximity';
+import {ISO18013_5} from '@pagopa/io-react-native-iso18013';
 import {RootState} from '../../../store/types';
 import {ParsedCredential} from '../utils/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
@@ -48,9 +44,9 @@ export type ProximityDisclosure = {
 export type ProximityState = {
   qrCode?: string;
   status: ProximityStatus;
-  documentRequest?: VerifierRequest;
+  documentRequest?: ISO18013_5.VerifierRequest;
   proximityDisclosureDescriptor?: ProximityDisclosure;
-  proximityAcceptedFields?: AcceptedFields;
+  proximityAcceptedFields?: ISO18013_5.AcceptedFields;
   errorDetails?: string;
 };
 
@@ -102,7 +98,7 @@ export const proximitySlice = createSlice({
     },
     setProximityStatusReceivedDocument: (
       state,
-      action: PayloadAction<VerifierRequest>
+      action: PayloadAction<ISO18013_5.VerifierRequest>
     ) => {
       state.status = ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT;
       state.documentRequest = action.payload;
@@ -116,7 +112,7 @@ export const proximitySlice = createSlice({
     },
     setProximityStatusAuthorizationSend: (
       state,
-      action: PayloadAction<AcceptedFields>
+      action: PayloadAction<ISO18013_5.AcceptedFields>
     ) => {
       state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_SEND;
       state.proximityAcceptedFields = action.payload;

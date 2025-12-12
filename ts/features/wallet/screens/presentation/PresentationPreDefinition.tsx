@@ -20,6 +20,8 @@ import {wellKnownCredential} from '../../utils/credentials';
 export type PresentationPreDefinitionParams = {
   client_id: string;
   request_uri: string;
+  state?: string | null;
+  request_uri_method?: 'get' | 'post' | null;
 };
 
 type Props = NativeStackScreenProps<

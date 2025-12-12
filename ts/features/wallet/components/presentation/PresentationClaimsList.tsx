@@ -54,6 +54,7 @@ const PresentationClaimsList = ({
             iconColor="grey-700"
           />
           <View style={styles.container}>
+            {/* Temporary fix — this will be resolved with [WLEO-675]. */}
             {requiredDisclosures.map((claim, index) => (
               <View key={`${index}`}>
                 {/* Add a separator view between sections */}
@@ -62,9 +63,9 @@ const PresentationClaimsList = ({
                   <View style={styles.shrinked}>
                     <ClaimText
                       claim={{
-                        id: claim.name,
-                        label: claim.name,
-                        value: claim.value
+                        id: claim.encoded,
+                        label: claim.encoded,
+                        value: claim.encoded
                       }}
                     />
                     <BodySmall weight="Regular" color="grey-700">
@@ -87,17 +88,18 @@ const PresentationClaimsList = ({
             iconColor="grey-700"
           />
           <View style={styles.container}>
+            {/* Temporary fix — this will be resolved with [WLEO-675]. */}
             {optionalDisclosures.map((claim, index) => (
-              <View key={`${index}-${claim.name}`}>
+              <View key={`${index}-${claim.encoded}`}>
                 {/* Add a separator view between sections */}
                 {index !== 0 && <Divider />}
                 <View style={styles.dataItem}>
                   <View style={styles.shrinked}>
                     <ClaimText
                       claim={{
-                        id: claim.name,
-                        label: claim.name,
-                        value: claim.value
+                        id: claim.encoded,
+                        label: claim.encoded,
+                        value: claim.encoded
                       }}
                     />
                     <BodySmall weight="Regular" color="grey-700">
