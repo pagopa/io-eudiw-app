@@ -193,11 +193,13 @@ function* handleProximityResponse() {
   ]);
 
   if (setProximityStatusAuthorizationSend.match(choice)) {
-    const documents = mdocCredentials.map(credential => ({
-      issuerSignedContent: credential.credential,
-      alias: credential.keyTag,
-      docType: credential.credentialType
-    }));
+    const documents: Array<ISO18013_5.RequestedDocument> = mdocCredentials.map(
+      credential => ({
+        issuerSignedContent: credential.credential,
+        alias: credential.keyTag,
+        docType: credential.credentialType
+      })
+    );
 
     const acceptedFields = yield* select(selectProximityAcceptedFields);
 

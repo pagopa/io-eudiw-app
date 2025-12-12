@@ -54,6 +54,7 @@ const PresentationClaimsList = ({
             iconColor="grey-700"
           />
           <View style={styles.container}>
+            {/* Temporary fix — this will be resolved with [WLEO-675]. */}
             {requiredDisclosures.map((claim, index) => (
               <View key={`${index}`}>
                 {/* Add a separator view between sections */}
@@ -87,6 +88,7 @@ const PresentationClaimsList = ({
             iconColor="grey-700"
           />
           <View style={styles.container}>
+            {/* Temporary fix — this will be resolved with [WLEO-675]. */}
             {optionalDisclosures.map((claim, index) => (
               <View key={`${index}-${claim.encoded}`}>
                 {/* Add a separator view between sections */}

@@ -69,6 +69,7 @@ export const handleDcqlRequest: PresentationRequestProcessor<EvaluateDcqlReturn>
       requestObject.dcql_query as DcqlQuery
     );
 
+    // Temporary fix — this will be resolved with [WLEO-675].
     yield* put(
       setPreDefinitionSuccess(
         evaluateDcqlQuery.map(query => ({

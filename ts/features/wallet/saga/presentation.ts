@@ -207,8 +207,7 @@ function* handleResponse<T>(
     yield* call(() =>
       Credential.Presentation.sendAuthorizationErrorResponse(requestObject, {
         error: 'access_denied',
-        errorDescription:
-          'The Wallet did not have the requested Credentials to satisfy the Authorization Request'
+        errorDescription: 'The user cancelled the presentation.'
       })
         .then(() => {})
         .catch(() => {})
