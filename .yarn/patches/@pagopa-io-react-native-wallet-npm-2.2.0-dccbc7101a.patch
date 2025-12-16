@@ -1,30 +1,141 @@
-diff --git a/src/credential/issuance/07-verify-and-parse-credential.ts b/src/credential/issuance/07-verify-and-parse-credential.ts
-index 374f15b9be1ee538ca8f0fa90e173cba3ce3073c..6f887806c2a40488bda817d7c78c917e272f55e6 100644
---- a/src/credential/issuance/07-verify-and-parse-credential.ts
-+++ b/src/credential/issuance/07-verify-and-parse-credential.ts
-@@ -426,9 +426,9 @@ const verifyAndParseCredentialMDoc: VerifyAndParseCredential = async (
-   { credentialCryptoContext, ignoreMissingAttributes },
-   x509CertRoot
- ) => {
--  if (!x509CertRoot) {
--    throw new IoWalletError("Missing x509CertRoot");
--  }
-+  // if (!x509CertRoot) {
-+  //   throw new IoWalletError("Missing x509CertRoot");
-+  // }
+diff --git a/src/credential/issuance/04-complete-user-authorization.ts b/src/credential/issuance/04-complete-user-authorization.ts
+index 7dd9e7dd3c205cae0c773f56987460a83db81e4c..a9c342490a0a47490dad1d48307677f52d13752a 100644
+--- a/src/credential/issuance/04-complete-user-authorization.ts
++++ b/src/credential/issuance/04-complete-user-authorization.ts
+@@ -10,6 +10,7 @@ import { IssuerResponseError, ValidationFailed } from "../../utils/errors";
+ import type { EvaluateIssuerTrust } from "./02-evaluate-issuer-trust";
+ import {
+   decode,
++  EncryptJwe,
+   SignJWT,
+   type CryptoContext,
+ } from "@pagopa/io-react-native-jwt";
+@@ -20,6 +21,7 @@ import { AuthorizationError, AuthorizationIdpError } from "./errors";
+ import { LogLevel, Logger } from "../../utils/logging";
+ import { Presentation } from "..";
+ import type { DcqlQuery } from "dcql";
++import { choosePublicKeyToEncrypt } from "../presentation/08-send-authorization-response";
  
-   const decoded = await verifyCredentialMDoc(
-     credential,
-diff --git a/src/mdoc/index.ts b/src/mdoc/index.ts
-index 83f61501ce4ea4cedd469c453d17867d9ac6aac9..f6a883fcdf8f759d14c4d26d70b69e84b2f005d4 100644
---- a/src/mdoc/index.ts
-+++ b/src/mdoc/index.ts
-@@ -32,7 +32,7 @@ export const verify = async (
-   const x5chain =
-     issuerSigned.issuerAuth.unprotectedHeader.x5chain.map(b64utob64);
-   // Verify the x5chain
--  await verifyX5chain(x5chain, x509CertRoot);
-+  // await verifyX5chain(x5chain, x509CertRoot);
+ /**
+  * The interface of the phase to complete User authorization via strong identification when the response mode is "query" and the request credential is a PersonIdentificationData.
+@@ -31,6 +33,7 @@ export type CompleteUserAuthorizationWithQueryMode = (
+ export type CompleteUserAuthorizationWithFormPostJwtMode = (
+   requestObject: Out<GetRequestedCredentialToBePresented>,
+   pid: string,
++  issuerConf: Out<EvaluateIssuerTrust>["issuerConf"],
+   context: {
+     wiaCryptoContext: CryptoContext;
+     pidCryptoContext: CryptoContext;
+@@ -171,6 +174,7 @@ export const completeUserAuthorizationWithFormPostJwtMode: CompleteUserAuthoriza
+   async (
+     requestObject,
+     pid,
++    issuerConf,
+     { wiaCryptoContext, pidCryptoContext, appFetch = fetch }
+   ) => {
+     Logger.log(
+@@ -203,7 +207,8 @@ export const completeUserAuthorizationWithFormPostJwtMode: CompleteUserAuthoriza
+     const authzResponsePayload = await createAuthzResponsePayload({
+       state: requestObject.state,
+       remotePresentations,
+-      wiaCryptoContext,
++      // wiaCryptoContext,
++      issuerConf,
+     });
  
-   const coseSign1 = issuerSigned.issuerAuth.rawValue;
+     Logger.log(
+@@ -296,25 +301,53 @@ export const parseAuthorizationResponse = (
+ const createAuthzResponsePayload = async ({
+   state,
+   remotePresentations,
+-  wiaCryptoContext,
++  // wiaCryptoContext,
++  issuerConf
+ }: {
+   state?: string;
+   remotePresentations: RemotePresentation[];
+-  wiaCryptoContext: CryptoContext;
++  // wiaCryptoContext: CryptoContext;
++  issuerConf: Out<EvaluateIssuerTrust>["issuerConf"];
+ }): Promise<string> => {
+-  const { kid } = await wiaCryptoContext.getPublicKey();
++  // const { kid } = await wiaCryptoContext.getPublicKey();
  
+-  return new SignJWT(wiaCryptoContext)
+-    .setProtectedHeader({
+-      typ: "jwt",
+-      kid,
+-    })
+-    .setPayload({
+-      /**
+-       * TODO [SIW-2264]: `state` coming from `requestObject` is marked as `optional`
+-       * At the moment, it is not entirely clear whether this value can indeed be omitted
+-       * and, if so, what the consequences of its absence might be.
+-       */
++  // return new SignJWT(wiaCryptoContext)
++  //   .setProtectedHeader({
++  //     typ: "jwt",
++  //     kid,
++  //   })
++  //   .setPayload({
++  //     /**
++  //      * TODO [SIW-2264]: `state` coming from `requestObject` is marked as `optional`
++  //      * At the moment, it is not entirely clear whether this value can indeed be omitted
++  //      * and, if so, what the consequences of its absence might be.
++  //      */
++  //     ...(state ? { state } : {}),
++  //     vp_token: remotePresentations.reduce(
++  //       (vp_token, { credentialId, vpToken }) => ({
++  //         ...vp_token,
++  //         [credentialId]: vpToken,
++  //       }),
++  //       {}
++  //     ),
++  //   })
++  //   .setIssuedAt()
++  //   .setExpirationTime("1h")
++  //   .sign();
++    type Jwe = ConstructorParameters<typeof EncryptJwe>[1];
++
++    if(!issuerConf.openid_credential_verifier)  throw new Error("Issuer configuration missing openid_credential_verifier");
++
++    const jwks = issuerConf.openid_credential_verifier.jwks;
++  
++    if (!jwks || !Array.isArray(jwks.keys)) {
++      throw new Error("JWKS not found in Relying Party configuration.");
++    }
++    
++    const keys = jwks.keys;
++    const encPublicJwk = choosePublicKeyToEncrypt(keys);
++
++    const authzResponsePayload = JSON.stringify({
+       ...(state ? { state } : {}),
+       vp_token: remotePresentations.reduce(
+         (vp_token, { credentialId, vpToken }) => ({
+@@ -323,8 +356,22 @@ const createAuthzResponsePayload = async ({
+         }),
+         {}
+       ),
+-    })
+-    .setIssuedAt()
+-    .setExpirationTime("1h")
+-    .sign();
++    });
++
++    const {
++      authorization_encrypted_response_alg,
++      authorization_encrypted_response_enc,
++    } = issuerConf.openid_credential_verifier;
++
++    const defaultAlg: Jwe["alg"] = encPublicJwk.kty === "EC" ? "ECDH-ES" : "RSA-OAEP-256";
++
++    const encryptedResponse = await new EncryptJwe(authzResponsePayload, {
++      alg: (authorization_encrypted_response_alg as Jwe["alg"]) || defaultAlg,
++      enc:
++        (authorization_encrypted_response_enc as Jwe["enc"]) || "A256CBC-HS512",
++      kid: encPublicJwk.kid,
++    }).encrypt(encPublicJwk);
++
++
++  return encryptedResponse;
+ };
