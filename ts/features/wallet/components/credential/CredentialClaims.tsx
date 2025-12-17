@@ -1,5 +1,5 @@
 import {Divider, H6, ListItemInfo} from '@pagopa/io-app-design-system';
-import React, {Fragment, memo} from 'react';
+import {Fragment, memo} from 'react';
 import i18next from 'i18next';
 import {useTranslation} from 'react-i18next';
 import {Image, View} from 'react-native';

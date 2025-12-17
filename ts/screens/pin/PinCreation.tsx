@@ -7,7 +7,7 @@ import {
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import React, {useCallback, useRef, useState} from 'react';
+import {useCallback, useRef, useState} from 'react';
 import {View, Alert, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
@@ -65,7 +65,7 @@ export const PinCreation = () => {
   const biometricState = useAppSelector(selectStartupBiometricState);
   const hasDeviceScreenLock = useAppSelector(selectStartupHasScreenLock);
 
-  const handleSubmit = React.useCallback(
+  const handleSubmit = useCallback(
     (pinParam: PinString) => {
       dispatch(pinSet(pinParam));
 

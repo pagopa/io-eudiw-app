@@ -8,7 +8,6 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import _ from 'lodash';
-import * as React from 'react';
 import {memo, useCallback, useMemo, useRef} from 'react';
 import {
   Alert,

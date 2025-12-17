@@ -1,12 +1,6 @@
 import {IOColors, LoadingSpinner} from '@pagopa/io-app-design-system';
 
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useRef,
-  useState
-} from 'react';
+import {ReactNode, useCallback, useEffect, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Animated, {FadeIn} from 'react-native-reanimated';
 import {

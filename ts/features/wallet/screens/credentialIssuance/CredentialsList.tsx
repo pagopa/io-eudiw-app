@@ -3,7 +3,7 @@ import {
   ListItemHeader,
   VStack
 } from '@pagopa/io-app-design-system';
-import React, {useCallback, useEffect} from 'react';
+import {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';

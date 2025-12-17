@@ -4,7 +4,7 @@ import {
   useFooterActionsMeasurements
 } from '@pagopa/io-app-design-system';
 
-import React, {Fragment, ReactNode} from 'react';
+import {Fragment, ReactNode} from 'react';
 import Animated, {
   useAnimatedRef,
   useAnimatedScrollHandler,
