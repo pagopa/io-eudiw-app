@@ -2260,7 +2260,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@npm%3A2.2.0#./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch::locator=ioeudiwapp%40workspace%3A.":
+"@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@npm%3A2.2.0#./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch::version=2.2.0&hash=f1346c&locator=ioeudiwapp%40workspace%3A.":
   version: 2.2.0
   resolution: "@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@npm%3A2.2.0#./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch::version=2.2.0&hash=f1346c&locator=ioeudiwapp%40workspace%3A."
   dependencies:
@@ -2281,6 +2281,54 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 00d91e5bad3a8e0c679eed7f03d493ad25247218553ba23c8bcb549aa08c9793b100a1c98590cdeef1931bedabc43cfdd93c6cca6e1513e4767212d323fc380e
+  languageName: node
+  linkType: hard
+
+"@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch::version=2.2.0&hash=e3b555&locator=ioeudiwapp%40workspace%3A.":
+  version: 2.2.0
+  resolution: "@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch::version=2.2.0&hash=e3b555&locator=ioeudiwapp%40workspace%3A."
+  dependencies:
+    dcql: ^0.2.21
+    js-base64: ^3.7.7
+    js-sha256: ^0.9.0
+    jsonpath-plus: ^10.2.0
+    jsrsasign: ^11.1.0
+    parse-url: ^9.2.0
+    react-native-url-polyfill: ^2.0.0
+    react-native-uuid: ^2.0.1
+    uuid: ^11.0.3
+    zod: ^3.21.4
+  peerDependencies:
+    "@pagopa/io-react-native-crypto": "*"
+    "@pagopa/io-react-native-iso18013": "*"
+    "@pagopa/io-react-native-jwt": "*"
+    react: "*"
+    react-native: "*"
+  checksum: e737ad468808a29dc062745e003b7898a5d5ff17b170d2a43c416ab4009547fe9ebc22683df63feb1a3ea36083dda575314ce07556a13b4fcb391fbf0b91df90
+  languageName: node
+  linkType: hard
+
+"@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@patch%253A@pagopa/io-react-native-wallet@npm%25253A2.2.0%2523./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%253A%253Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%252540workspace%25253A.%23./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch%3A%3Aversion=2.2.0&hash=e3b555&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-dc06dcc0d4.patch::locator=ioeudiwapp%40workspace%3A.":
+  version: 2.2.0
+  resolution: "@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@patch%253A@pagopa/io-react-native-wallet@npm%25253A2.2.0%2523./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%253A%253Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%252540workspace%25253A.%23./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch%3A%3Aversion=2.2.0&hash=e3b555&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-dc06dcc0d4.patch::version=2.2.0&hash=dd76e0&locator=ioeudiwapp%40workspace%3A."
+  dependencies:
+    dcql: ^0.2.21
+    js-base64: ^3.7.7
+    js-sha256: ^0.9.0
+    jsonpath-plus: ^10.2.0
+    jsrsasign: ^11.1.0
+    parse-url: ^9.2.0
+    react-native-url-polyfill: ^2.0.0
+    react-native-uuid: ^2.0.1
+    uuid: ^11.0.3
+    zod: ^3.21.4
+  peerDependencies:
+    "@pagopa/io-react-native-crypto": "*"
+    "@pagopa/io-react-native-iso18013": "*"
+    "@pagopa/io-react-native-jwt": "*"
+    react: "*"
+    react-native: "*"
+  checksum: b0332a8eb9787b1e5a03bc4e0beae597cdf1f4b6d744afacc3207d7de0f62851c4063a192a6b402d0289b5d783a0c8800a12b4abc55a0276ea01a4c6439f1040
   languageName: node
   linkType: hard
 
@@ -8286,7 +8334,7 @@ __metadata:
     react-native-easing-gradient: ^1.1.1
     react-native-fingerprint-scanner: "git+https://github.com/hieuvp/react-native-fingerprint-scanner.git#9cecc0db326471c571553ea85f7c016fee2f803d"
     react-native-gesture-handler: ^2.25.0
-    react-native-get-random-values: ^2.0.0
+    react-native-get-random-values: ^1.11.0
     react-native-haptic-feedback: ^2.3.3
     react-native-image-picker: ^7.2.3
     react-native-linear-gradient: ^2.8.3
@@ -12173,7 +12221,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-get-random-values@npm:^1.9.0":
+"react-native-get-random-values@npm:^1.11.0, react-native-get-random-values@npm:^1.9.0":
   version: 1.11.0
   resolution: "react-native-get-random-values@npm:1.11.0"
   dependencies:
@@ -12181,17 +12229,6 @@ __metadata:
   peerDependencies:
     react-native: ">=0.56"
   checksum: 07729f70a007f7a3b8f98ebf687c1298ba288b87dd71d8ba385be6b5a377718b27b97547bbe1db6b225b83ee109dfce0b01721e6ed535d53892f3ac81e6bf975
-  languageName: node
-  linkType: hard
-
-"react-native-get-random-values@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "react-native-get-random-values@npm:2.0.0"
-  dependencies:
-    fast-base64-decode: ^1.0.0
-  peerDependencies:
-    react-native: ">=0.81"
-  checksum: 57e80fa836e61d5ff08d31cfb3df45c00a6616651b3f7521af2d4fd6456aefd05e17eb21a269d458ada0dd58bc8c25eef6b43097eefc542ab6186072f6b653a3
   languageName: node
   linkType: hard
 

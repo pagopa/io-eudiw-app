@@ -1,0 +1,13 @@
+diff --git a/lib/typescript/credential/issuance/04-complete-user-authorization.d.ts b/lib/typescript/credential/issuance/04-complete-user-authorization.d.ts
+index 41f7b6f84d9264e3cbab4bac4e18f4c0d715dfe9..99e0cf957c7b396bd10900fcbf0b4f9eecf88f0e 100644
+--- a/lib/typescript/credential/issuance/04-complete-user-authorization.d.ts
++++ b/lib/typescript/credential/issuance/04-complete-user-authorization.d.ts
+@@ -8,7 +8,7 @@ import { RequestObject } from "../presentation/types";
+  * The interface of the phase to complete User authorization via strong identification when the response mode is "query" and the request credential is a PersonIdentificationData.
+  */
+ export type CompleteUserAuthorizationWithQueryMode = (authRedirectUrl: string) => Promise<AuthorizationResult>;
+-export type CompleteUserAuthorizationWithFormPostJwtMode = (requestObject: Out<GetRequestedCredentialToBePresented>, pid: string, context: {
++export type CompleteUserAuthorizationWithFormPostJwtMode = (requestObject: Out<GetRequestedCredentialToBePresented>, pid: string, issuerConf: Out<EvaluateIssuerTrust>["issuerConf"], context: {
+     wiaCryptoContext: CryptoContext;
+     pidCryptoContext: CryptoContext;
+     appFetch?: GlobalFetch["fetch"];

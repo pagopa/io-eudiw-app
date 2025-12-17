@@ -56,7 +56,7 @@
     "react-native-easing-gradient": "^1.1.1",
     "react-native-fingerprint-scanner": "git+https://github.com/hieuvp/react-native-fingerprint-scanner.git#9cecc0db326471c571553ea85f7c016fee2f803d",
     "react-native-gesture-handler": "^2.25.0",
-    "react-native-get-random-values": "^2.0.0",
+    "react-native-get-random-values": "^1.11.0",
     "react-native-haptic-feedback": "^2.3.3",
     "react-native-image-picker": "^7.2.3",
     "react-native-linear-gradient": "^2.8.3",
@@ -116,6 +116,6 @@
   },
   "packageManager": "yarn@3.6.4",
   "resolutions": {
-    "@pagopa/io-react-native-wallet@2.2.0": "patch:@pagopa/io-react-native-wallet@npm%3A2.2.0#./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch"
+    "@pagopa/io-react-native-wallet@2.2.0": "patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@patch%253A@pagopa/io-react-native-wallet@npm%25253A2.2.0%2523./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%253A%253Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%252540workspace%25253A.%23./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch%3A%3Aversion=2.2.0&hash=e3b555&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-dc06dcc0d4.patch"
   }
 }
