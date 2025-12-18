@@ -1,0 +1,153 @@
+import BootSplash from 'react-native-bootsplash';
+import {Linking} from 'react-native';
+import {isAnyOf, UnknownAction} from '@reduxjs/toolkit';
+import initI18n from '../i18n/i18n';
+import {
+  startupSetAttributes,
+  startupSetError,
+  startupSetLoading,
+  startupSetStatus
+} from '../store/reducers/startup';
+import {
+  getBiometricState,
+  hasDeviceScreenLock
+} from '../features/onboarding/utils/biometric';
+import {checkConfig} from '../config/configSetup';
+import {
+  preferencesReset,
+  preferencesSetIsOnboardingDone,
+  selectisOnboardingComplete
+} from '../store/reducers/preferences';
+import {selectUrl} from '../store/reducers/deeplinking';
+import {isNavigationReady} from '../navigation/utils';
+import {resetLifecycle} from '../features/wallet/store/lifecycle';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '../store/reducers/identification';
+import {
+  AppListener,
+  AppListenerWithAction,
+  AppStartListening
+} from './listenerMiddleware';
+
+/**
+ * Utility generator function to wait for the navigation to be ready before dispatching a navigation event.
+ */
+const waitForNavigationToBeReady = async (listenerApi: AppListener) => {
+  const warningWaitNavigatorTime = 2000;
+  const navigatorPollingTime = 125;
+  // eslint-disable-next-line functional/no-let
+  let isMainNavReady = isNavigationReady();
+  // eslint-disable-next-line functional/no-let
+  let timeoutLogged = false;
+  const startTime = Date.now();
+  while (!isMainNavReady) {
+    const elapsedTime = Date.now() - startTime;
+    if (!timeoutLogged && elapsedTime >= warningWaitNavigatorTime) {
+      timeoutLogged = true;
+    }
+    await listenerApi.delay(navigatorPollingTime);
+    isMainNavReady = isNavigationReady();
+  }
+};
+
+/**
+ * Handles the pending deep link by opening the URL if it exists in the deep linking store.
+ */
+const handlePendingDeepLink = async (listenerApi: AppListener) => {
+  const url = selectUrl(listenerApi.getState());
+  if (url) {
+    await Linking.openURL(url);
+  }
+};
+
+/**
+ * Helper function to start the identification process. It takes the same parameters as a listener
+ * as it interacts with the listener API.
+ * It dispatches the action which triggers the identification modal and then waits for either success or failure.
+ * If successful, it waits for the navigation to be ready before setting the startup status to DONE, otherwise it throws an error.
+ * @param _ - The dispatched action which triggered the listener
+ * @param listenerApi - The listener API
+ */
+const startIdentification = async (listenerApi: AppListener) => {
+  listenerApi.dispatch(startupSetStatus('WAIT_IDENTIFICATION'));
+  await BootSplash.hide({fade: true});
+  listenerApi.dispatch(
+    setIdentificationStarted({canResetPin: true, isValidatingTask: false})
+  );
+  // Wait for either success or failure
+  const action = await listenerApi.take(
+    isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
+  );
+  if (setIdentificationIdentified.match(action[0])) {
+    await waitForNavigationToBeReady(listenerApi);
+    listenerApi.dispatch(startupSetStatus('DONE'));
+    await handlePendingDeepLink(listenerApi);
+  } else if (setIdentificationUnidentified.match(action[0])) {
+    throw new Error('Identification failed');
+  }
+};
+
+/**
+ * Stars the onboarding process by setting the status which will be taked by the navigator to render the onboarding navigation stack.
+ */
+const startOnboarding = async (listenerApi: AppListener) => {
+  listenerApi.dispatch(startupSetStatus('WAIT_ONBOARDING'));
+  await BootSplash.hide({fade: true});
+  await listenerApi.take(isAnyOf(preferencesSetIsOnboardingDone));
+
+  /* This clears the wallet state in order to ensure a clean state, specifically on iOS
+   * where data stored in the keychain is not cleared on app uninstall.
+   */
+  listenerApi.dispatch(resetLifecycle());
+  // TODO: MOUNT HERE THE WALLET SAGA
+  listenerApi.dispatch(startupSetStatus('DONE'));
+};
+
+/**
+ * Helper function to start the startup process. It takes the same parameters as a listener
+ * as it interacts with the listener API.
+ * The startup process consists of initializing i18n, checking biometric and screen lock status,
+ * and then deciding whether to start the onboarding or identification process based on the onboarding completion status which
+ * is persisted in the preferences slice.
+ * The root navigator mounts the appropriate navigator based on the startup status set by this listener.
+ * @param _ - The dispatched action which triggered the listener
+ * @param listenerApi - The listener API
+ */
+const startup: AppListenerWithAction<UnknownAction> = async (
+  _,
+  listenerApi
+) => {
+  try {
+    const state = listenerApi.getState();
+    await initI18n();
+    checkConfig();
+    const biometricState = await getBiometricState();
+    const hasScreenLock = await hasDeviceScreenLock();
+    listenerApi.dispatch(
+      startupSetAttributes({
+        biometricState,
+        hasScreenLock
+      })
+    );
+    const isOnboardingCompleted = selectisOnboardingComplete(state);
+
+    if (isOnboardingCompleted) {
+      await startIdentification(listenerApi);
+    } else {
+      await startOnboarding(listenerApi);
+    }
+  } catch {
+    listenerApi.dispatch(startupSetError());
+    await BootSplash.hide({fade: true});
+  }
+};
+
+export const addStartupListeners = (startAppListening: AppStartListening) => {
+  startAppListening({
+    matcher: isAnyOf(startupSetLoading, preferencesReset),
+    effect: startup
+  });
+};

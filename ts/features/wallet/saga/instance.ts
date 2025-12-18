@@ -1,4 +1,3 @@
-import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
 import Config from 'react-native-config';
 import {WalletInstance} from '@pagopa/io-react-native-wallet';
 import {serializeError} from 'serialize-error';
@@ -15,44 +14,62 @@ import {
   setInstanceCreationRequest,
   setInstanceCreationSuccess
 } from '../store/pidIssuance';
+import {
+  AppListenerWithAction,
+  AppStartListening
+} from '../../../listener/listenerMiddleware';
 
-export function* watchInstanceSaga() {
-  yield* takeLatest([setInstanceCreationRequest], function* (...args) {
-    yield* race({
-      task: call(handleCreateInstance, ...args),
-      cancel: take(resetInstanceCreation)
-    });
-  });
-}
-
-/**
- * Saga which handles the creation of a wallet instance.
- * If a wallet instance already exists this will be skipped.
- * There's no revokation mechanism at the moment, so this doesn't get checked.
- */
-export function* handleCreateInstance() {
+const handleCreateInstance: AppListenerWithAction<
+  ReturnType<typeof setInstanceCreationRequest>
+> = async (_, listenerApi) => {
   try {
-    const instanceKeyTag = yield* select(selectInstanceKeyTag);
+    const state = listenerApi.getState();
+    const instanceKeyTag = selectInstanceKeyTag(state);
 
     if (!instanceKeyTag) {
       const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;
-      const sessionId = yield* select(selectSessionId);
+      const sessionId = selectSessionId(state);
       const appFetch = createWalletProviderFetch(
         walletProviderBaseUrl,
         sessionId
       );
-      const keyTag = yield* call(generateIntegrityHardwareKeyTag);
+      const keyTag = await generateIntegrityHardwareKeyTag();
       const integrityContext = getIntegrityContext(keyTag);
 
-      yield* call(WalletInstance.createWalletInstance, {
+      await WalletInstance.createWalletInstance({
         integrityContext,
         walletProviderBaseUrl,
         appFetch
       });
-      yield* put(setInstanceKeyTag(keyTag));
+      listenerApi.dispatch(setInstanceKeyTag(keyTag));
     }
-    yield* put(setInstanceCreationSuccess());
+    listenerApi.dispatch(setInstanceCreationSuccess());
   } catch (err: unknown) {
-    yield* put(setInstanceCreationError({error: serializeError(err)}));
+    listenerApi.dispatch(
+      setInstanceCreationError({error: serializeError(err)})
+    );
   }
-}
+};
+
+export const addInstanceListener = (startAppListening: AppStartListening) => {
+  startAppListening({
+    actionCreator: setInstanceCreationRequest,
+    effect: async (action, listenerApi) => {
+      // Cancel previous instance creation tasks if any as takeLatest
+      listenerApi.cancelActiveListeners();
+
+      // Also listen for resetInstanceCreation action to abort the instance creation process as race
+      const abortPromise = new Promise<void>(resolve => {
+        startAppListening({
+          actionCreator: resetInstanceCreation,
+          effect: () => resolve()
+        });
+      });
+
+      await Promise.race([
+        handleCreateInstance(action, listenerApi),
+        abortPromise
+      ]);
+    }
+  });
+};

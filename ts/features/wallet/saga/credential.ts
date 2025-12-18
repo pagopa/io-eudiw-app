@@ -3,7 +3,6 @@ import {
   Credential
 } from '@pagopa/io-react-native-wallet';
 import Config from 'react-native-config';
-import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
 import uuid from 'react-native-uuid';
 import {generate} from '@pagopa/io-react-native-crypto';
 import {IOToast} from '@pagopa/io-app-design-system';
@@ -12,6 +11,7 @@ import {
   openAuthenticationSession,
   supportsInAppBrowser
 } from '@pagopa/io-react-native-login-utils';
+import {isAnyOf} from '@reduxjs/toolkit';
 import {regenerateCryptoKey} from '../../../utils/crypto';
 import {DPOP_KEYTAG} from '../utils/crypto';
 import {navigateWithReset} from '../../../navigation/utils';
@@ -30,73 +30,53 @@ import {
   setCredentialIssuancePreAuthSuccess
 } from '../store/credentialIssuance';
 import {
-  IdentificationResultTask,
-  startSequentializedIdentificationProcess
-} from '../../../saga/identification';
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '../../../store/reducers/identification';
+import {
+  AppListenerWithAction,
+  AppStartListening
+} from '../../../listener/listenerMiddleware';
 import {getAttestation} from './attestation';
 
-/**
- * Saga watcher for credential related actions.
- */
-export function* watchCredentialSaga() {
-  yield* takeLatest([setCredentialIssuancePreAuthRequest], function* (...args) {
-    yield* race({
-      task: call(obtainCredential, ...args),
-      cancel: take(resetCredentialIssuance)
-    });
-  });
-  yield* takeLatest(
-    addCredentialWithIdentification,
-    storeCredentialWithIdentification
-  );
-}
-
-/**
- * Function which handles the issuance of a credential.
- * The related state is divided in two parts, pre and post authorization.
- * Pre authorization is the phase before the user is asked to authorize the presentation of the required credentials and claims to the issuer.
- * Post authorization is the phase after the user has authorized the presentation of the required credentials and claims to the issuer.
- * Currently the flow is not complete and thus the authorization is mocked and asks for the whole PID.
- */
-function* obtainCredential() {
+const obtainCredentialListener: AppListenerWithAction<
+  ReturnType<typeof setCredentialIssuancePreAuthRequest>
+> = async (_, listenerApi) => {
   try {
     const {EAA_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
 
     /**
      * Check the passed credential type and throw an error if it's not found.
      */
-    const credentialConfigId = yield* select(selectRequestedCredential);
+    const state = listenerApi.getState();
+    const credentialConfigId = selectRequestedCredential(state);
     if (!credentialConfigId) {
       throw new Error('Credential type not found');
     }
-
     // Get the wallet instance attestation and generate its crypto context
-    const walletInstanceAttestation = yield* call(getAttestation);
-    const wiaCryptoContext = createCryptoContextFor('WIA_KEYTAG');
+    const walletInstanceAttestation = await getAttestation(listenerApi);
 
+    const wiaCryptoContext = createCryptoContextFor('WIA_KEYTAG');
     // Create credential crypto context
     const credentialKeyTag = uuid.v4().toString();
-    yield* call(generate, credentialKeyTag);
+    await generate(credentialKeyTag);
     const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
-
     // Start the issuance flow
     const startFlow: Credential.Issuance.StartFlow = () => ({
       issuerUrl: EAA_PROVIDER_BASE_URL,
       credentialType: credentialConfigId
     });
-
     const {issuerUrl} = startFlow();
 
     // Evaluate issuer trust
-    const {issuerConf} = yield* call(
-      Credential.Issuance.getIssuerConfigOIDFED,
+    const {issuerConf} = await Credential.Issuance.getIssuerConfigOIDFED(
       issuerUrl
     );
 
     // Start user authorization
     const {issuerRequestUri, clientId, codeVerifier, credentialDefinition} =
-      yield* call(
-        Credential.Issuance.startUserAuthorization,
+      await Credential.Issuance.startUserAuthorization(
         issuerConf,
         credentialConfigId,
         {
@@ -105,7 +85,6 @@ function* obtainCredential() {
           wiaCryptoContext
         }
       );
-
     // Extract the credential type from the config
     const credentialConfig =
       issuerConf.credential_configurations_supported[credentialConfigId];
@@ -143,20 +122,19 @@ function* obtainCredential() {
     //   );
     // Start user authorization
 
-    yield* put(
+    listenerApi.dispatch(
       setCredentialIssuancePreAuthSuccess({result: true, credentialType})
     );
-    yield* take(setCredentialIssuancePostAuthRequest);
+    await listenerApi.take(isAnyOf(setCredentialIssuancePostAuthRequest));
 
     // Obtain the Authorization URL
-    const {authUrl} = yield* call(
-      Credential.Issuance.buildAuthorizationUrl,
+    const {authUrl} = await Credential.Issuance.buildAuthorizationUrl(
       issuerRequestUri,
       clientId,
       issuerConf
     );
 
-    const supportsCustomTabs = yield* call(supportsInAppBrowser);
+    const supportsCustomTabs = await supportsInAppBrowser();
     if (!supportsCustomTabs) {
       throw new Error('Custom tabs are not supported');
     }
@@ -164,24 +142,22 @@ function* obtainCredential() {
     const baseRedirectUri = new URL(redirectUri).protocol.replace(':', '');
 
     // Open the authorization URL in the custom tab
-    const authRedirectUrl = yield* call(
-      openAuthenticationSession,
+    const authRedirectUrl = await openAuthenticationSession(
       authUrl,
       baseRedirectUri
     );
 
-    const {code} = yield* call(
-      Credential.Issuance.completeUserAuthorizationWithQueryMode,
-      authRedirectUrl
-    );
+    const {code} =
+      await Credential.Issuance.completeUserAuthorizationWithQueryMode(
+        authRedirectUrl
+      );
     /* End of temporary block code */
 
     // Generate the DPoP context which will be used for the whole issuance flow
-    yield* call(regenerateCryptoKey, DPOP_KEYTAG);
+    await regenerateCryptoKey(DPOP_KEYTAG);
     const dPopCryptoContext = createCryptoContextFor(DPOP_KEYTAG);
 
-    const {accessToken} = yield* call(
-      Credential.Issuance.authorizeAccess,
+    const {accessToken} = await Credential.Issuance.authorizeAccess(
       issuerConf,
       code,
       clientId,
@@ -195,8 +171,7 @@ function* obtainCredential() {
     );
 
     // Obtain the credential
-    const {credential, format} = yield* call(
-      Credential.Issuance.obtainCredential,
+    const {credential, format} = await Credential.Issuance.obtainCredential(
       issuerConf,
       accessToken,
       clientId,
@@ -208,16 +183,16 @@ function* obtainCredential() {
     );
 
     // Parse and verify the credential. The ignoreMissingAttributes flag must be set to false or omitted in production.
-    const {parsedCredential} = yield* call(
-      Credential.Issuance.verifyAndParseCredential,
-      issuerConf,
-      credential,
-      format,
-      credentialConfigId,
-      {credentialCryptoContext, ignoreMissingAttributes: true}
-    );
+    const {parsedCredential} =
+      await Credential.Issuance.verifyAndParseCredential(
+        issuerConf,
+        credential,
+        format,
+        credentialConfigId,
+        {credentialCryptoContext, ignoreMissingAttributes: true}
+      );
 
-    yield* put(
+    listenerApi.dispatch(
       setCredentialIssuancePostAuthSuccess({
         credential: {
           credential,
@@ -231,65 +206,67 @@ function* obtainCredential() {
   } catch (error) {
     // We put the error in both the pre and post auth status as we are unsure where the error occurred.
     const serializableError = JSON.stringify(error);
-    yield* put(setCredentialIssuancePostAuthError({error: serializableError}));
-    yield* put(setCredentialIssuancePreAuthError({error: serializableError}));
+    listenerApi.dispatch(
+      setCredentialIssuancePostAuthError({error: serializableError})
+    );
+    listenerApi.dispatch(
+      setCredentialIssuancePreAuthError({error: serializableError})
+    );
   }
-}
-
-/**
- * Helper function to process the identified case of the {@link storeCredentialWithIdentification} method
- * @param action the action with which {@link storeCredentialWithIdentification} is invoked
- */
-function* onStoreCredentialIdentified(
-  action: ReturnType<typeof addCredentialWithIdentification>
-) {
-  yield* put(addCredential({credential: action.payload.credential}));
-  yield* put(resetCredentialIssuance());
-  navigateWithReset('MAIN_TAB_NAV');
-  IOToast.success(i18next.t('buttons.done', {ns: 'global'}));
-}
-
-/**
- * Helper function to process the unidentified case of the {@link storeCredentialWithIdentification} method
- */
-function* onStoreCredentialUnidentified() {
-  return;
-}
+};
 
 /**
  * Saga to store the credential after pin validation.
  * It dispatches the action which shows the pin validation modal and awaits for the result.
  * If the pin is correct, the credential is stored, the issuance state is resetted and the user is navigated to the main screen.
  */
-function* storeCredentialWithIdentification(
-  action: ReturnType<typeof addCredentialWithIdentification>
-) {
-  const onIdentifiedTask: IdentificationResultTask<
-    typeof onStoreCredentialIdentified
-  > = {
-    fn: onStoreCredentialIdentified,
-    args: [action]
-  };
-
-  const onUnidentifiedTask: IdentificationResultTask<
-    typeof onStoreCredentialUnidentified
-  > = {
-    fn: onStoreCredentialUnidentified,
-    args: []
-  };
-
-  yield* call(
-    startSequentializedIdentificationProcess,
-    {
-      canResetPin: false,
-      isValidatingTask: true
-    },
-    /**
-     * Inline because the function closure needs the {@link action} parameter,
-     * and typescript's inference does not work properly on a function builder
-     * that builds and returns the callback
-     */
-    onIdentifiedTask,
-    onUnidentifiedTask
+const addCredentialWithAuthListener: AppListenerWithAction<
+  ReturnType<typeof addCredentialWithIdentification>
+> = async (action, listenerApi) => {
+  listenerApi.dispatch(
+    setIdentificationStarted({canResetPin: false, isValidatingTask: true})
   );
-}
+  const resAction = await listenerApi.take(
+    isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
+  );
+  if (setIdentificationIdentified.match(resAction[0])) {
+    listenerApi.dispatch(addCredential(action.payload));
+    listenerApi.dispatch(resetCredentialIssuance());
+    navigateWithReset('MAIN_TAB_NAV');
+    IOToast.success(i18next.t('buttons.done', {ns: 'global'}));
+  } else {
+    return;
+  }
+};
+
+export const addCredentialListeners = (
+  startAppListening: AppStartListening
+) => {
+  startAppListening({
+    actionCreator: setCredentialIssuancePreAuthRequest,
+    effect: async (action, listenerApi) => {
+      // This works as a takelatest with a race
+      listenerApi.cancelActiveListeners();
+      await listenerApi.delay(15);
+      const abortPromise = new Promise<void>(resolve => {
+        startAppListening({
+          actionCreator: resetCredentialIssuance,
+          effect: () => resolve()
+        });
+      });
+      await Promise.race([
+        obtainCredentialListener(action, listenerApi),
+        abortPromise
+      ]);
+    }
+  });
+  startAppListening({
+    actionCreator: addCredentialWithIdentification,
+    effect: async (action, listenerApi) => {
+      // This works as a takeLatest
+      listenerApi.cancelActiveListeners();
+      await listenerApi.delay(15);
+      await addCredentialWithAuthListener(action, listenerApi);
+    }
+  });
+};

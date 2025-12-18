@@ -7,10 +7,10 @@ import {
   Credential
 } from '@pagopa/io-react-native-wallet';
 import Config from 'react-native-config';
-import {call, put, takeLatest} from 'typed-redux-saga';
 import uuid from 'react-native-uuid';
 import {generate} from '@pagopa/io-react-native-crypto';
 import {serializeError} from 'serialize-error';
+import {isAnyOf} from '@reduxjs/toolkit';
 import {regenerateCryptoKey} from '../../../utils/crypto';
 import {DPOP_KEYTAG} from '../utils/crypto';
 import {
@@ -25,31 +25,32 @@ import {
   wellKnownCredential,
   wellKnownCredentialConfigurationIDs
 } from '../utils/credentials';
-import {
-  IdentificationResultTask,
-  startSequentializedIdentificationProcess
-} from '../../../saga/identification';
-import {getAttestation} from './attestation';
 
-/**
- * Saga watcher for PID related actions.
- */
-export function* watchPidSaga() {
-  yield* takeLatest(setPidIssuanceRequest, obtainPid);
-  yield* takeLatest(addPidWithIdentification, storePidWithIdentification);
-}
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '../../../store/reducers/identification';
+import {
+  AppListenerWithAction,
+  AppStartListening
+} from '../../../listener/listenerMiddleware';
+import {getAttestation} from './attestation';
 
 /**
  * Saga to obtain the PID credential. It contains the whole issuance flow for a PID, including
  * the strong authentication with `@pagopa/io-react-native-login-utils`.
  * The result is a credential ready to be stored.
  */
-function* obtainPid() {
+const obtainPidListener: AppListenerWithAction<
+  ReturnType<typeof setPidIssuanceRequest>
+> = async (_, listenerApi) => {
   try {
     const {PID_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
 
     // Get the wallet instance attestation and generate its crypto context
-    const walletInstanceAttestation = yield* call(getAttestation);
+    const walletInstanceAttestation = await getAttestation(listenerApi);
+
     const wiaCryptoContext = createCryptoContextFor('WIA_KEYTAG');
 
     // Start the issuance flow
@@ -61,15 +62,13 @@ function* obtainPid() {
     const {issuerUrl, credentialType: credentialConfigId} = startFlow();
 
     // Evaluate issuer trust
-    const {issuerConf} = yield* call(
-      Credential.Issuance.getIssuerConfigOIDFED,
+    const {issuerConf} = await Credential.Issuance.getIssuerConfigOIDFED(
       issuerUrl
     );
 
     // Start user authorization
     const {issuerRequestUri, clientId, codeVerifier, credentialDefinition} =
-      yield* call(
-        Credential.Issuance.startUserAuthorization,
+      await Credential.Issuance.startUserAuthorization(
         issuerConf,
         credentialConfigId,
         {
@@ -93,14 +92,13 @@ function* obtainPid() {
     }
 
     // Obtain the Authorization URL
-    const {authUrl} = yield* call(
-      Credential.Issuance.buildAuthorizationUrl,
+    const {authUrl} = await Credential.Issuance.buildAuthorizationUrl(
       issuerRequestUri,
       clientId,
       issuerConf
     );
 
-    const supportsCustomTabs = yield* call(supportsInAppBrowser);
+    const supportsCustomTabs = await supportsInAppBrowser();
     if (!supportsCustomTabs) {
       throw new Error('Custom tabs are not supported');
     }
@@ -108,28 +106,26 @@ function* obtainPid() {
     const baseRedirectUri = new URL(redirectUri).protocol.replace(':', '');
 
     // Open the authorization URL in the custom tab
-    const authRedirectUrl = yield* call(
-      openAuthenticationSession,
+    const authRedirectUrl = await openAuthenticationSession(
       authUrl,
       baseRedirectUri
     );
 
-    const {code} = yield* call(
-      Credential.Issuance.completeUserAuthorizationWithQueryMode,
-      authRedirectUrl
-    );
+    const {code} =
+      await Credential.Issuance.completeUserAuthorizationWithQueryMode(
+        authRedirectUrl
+      );
 
     // Create credential crypto context
     const credentialKeyTag = uuid.v4().toString();
-    yield* call(generate, credentialKeyTag);
+    await generate(credentialKeyTag);
     const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
 
     // Create DPoP context for the whole issuance flow
-    yield* call(regenerateCryptoKey, DPOP_KEYTAG);
+    await regenerateCryptoKey(DPOP_KEYTAG);
     const dPopCryptoContext = createCryptoContextFor(DPOP_KEYTAG);
 
-    const {accessToken} = yield* call(
-      Credential.Issuance.authorizeAccess,
+    const {accessToken} = await Credential.Issuance.authorizeAccess(
       issuerConf,
       code,
       clientId,
@@ -142,8 +138,7 @@ function* obtainPid() {
       }
     );
 
-    const {credential, format} = yield* call(
-      Credential.Issuance.obtainCredential,
+    const {credential, format} = await Credential.Issuance.obtainCredential(
       issuerConf,
       accessToken,
       clientId,
@@ -154,16 +149,16 @@ function* obtainPid() {
       }
     );
 
-    const {parsedCredential} = yield* call(
-      Credential.Issuance.verifyAndParseCredential,
-      issuerConf,
-      credential,
-      format,
-      wellKnownCredential.PID,
-      {credentialCryptoContext}
-    );
+    const {parsedCredential} =
+      await Credential.Issuance.verifyAndParseCredential(
+        issuerConf,
+        credential,
+        format,
+        wellKnownCredential.PID,
+        {credentialCryptoContext}
+      );
 
-    yield* put(
+    listenerApi.dispatch(
       setPidIssuanceSuccess({
         credential: {
           parsedCredential,
@@ -175,61 +170,55 @@ function* obtainPid() {
       })
     );
   } catch (error) {
-    yield* put(setPidIssuanceError({error: serializeError(error)}));
+    listenerApi.dispatch(setPidIssuanceError({error: serializeError(error)}));
   }
-}
+};
 
 /**
- * Helper function to process the identified case of the {@link storePidWithIdentification} method
- * @param action the action with which {@link storePidWithIdentification} is invoked
- */
-function* onStorePidIdentified(
-  action: ReturnType<typeof addPidWithIdentification>
-) {
-  yield* put(addCredential({credential: action.payload.credential}));
-  yield* put(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
-  navigate('MAIN_WALLET_NAV', {screen: 'PID_ISSUANCE_SUCCESS'});
-}
-
-/**
- * Helper function to process the unidentified case of the {@link storePidWithIdentification} method
- */
-function* onStorePidUnidentified() {
-  return;
-}
-
-/**
- * Saga to store the PID credential after pin validation.
+ * Saga to store the credential after pin validation.
  * It dispatches the action which shows the pin validation modal and awaits for the result.
- * If the pin is correct, the PID is stored and the lifecycle is set to `LIFECYCLE_VALID`.
+ * If the pin is correct, the credential is stored, the issuance state is resetted and the user is navigated to the main screen.
  */
-function* storePidWithIdentification(
-  action: ReturnType<typeof addPidWithIdentification>
-) {
-  const onIdentifiedTask: IdentificationResultTask<
-    (arg0: typeof action) => Generator
-  > = {
-    fn: onStorePidIdentified,
-    args: [action]
-  };
-
-  const onUnidentifiedTask: IdentificationResultTask<() => Generator> = {
-    fn: onStorePidUnidentified,
-    args: []
-  };
-
-  yield* call(
-    startSequentializedIdentificationProcess,
-    {
-      canResetPin: false,
-      isValidatingTask: true
-    },
-    /**
-     * Inline because the function closure needs the {@link action} parameter,
-     * and typescript's inference does not work properly on a function builder
-     * that builds and returns the callback
-     */
-    onIdentifiedTask,
-    onUnidentifiedTask
+const addPidWithAuthListener: AppListenerWithAction<
+  ReturnType<typeof addPidWithIdentification>
+> = async (action, listenerApi) => {
+  listenerApi.dispatch(
+    setIdentificationStarted({canResetPin: false, isValidatingTask: true})
   );
-}
+  const resAction = await listenerApi.take(
+    isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
+  );
+  if (setIdentificationIdentified.match(resAction[0])) {
+    listenerApi.dispatch(
+      addCredential({credential: action.payload.credential})
+    );
+    listenerApi.dispatch(
+      addCredential({credential: action.payload.credential})
+    );
+    listenerApi.dispatch(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
+    navigate('MAIN_WALLET_NAV', {screen: 'PID_ISSUANCE_SUCCESS'});
+  } else {
+    return;
+  }
+};
+
+export const addPidListeners = (startAppListening: AppStartListening) => {
+  startAppListening({
+    actionCreator: setPidIssuanceRequest,
+    effect: async (action, listenerApi) => {
+      // This works as a takeLatest
+      listenerApi.cancelActiveListeners();
+      await listenerApi.delay(15);
+      await obtainPidListener(action, listenerApi);
+    }
+  });
+  startAppListening({
+    actionCreator: addPidWithIdentification,
+    effect: async (action, listenerApi) => {
+      // This works as a takeLatest
+      listenerApi.cancelActiveListeners();
+      await listenerApi.delay(15);
+      await addPidWithAuthListener(action, listenerApi);
+    }
+  });
+};
