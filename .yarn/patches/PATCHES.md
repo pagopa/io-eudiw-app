@@ -27,7 +27,7 @@ The following check is temporarily disabled:
 
 ### authorization-response-jwe-encryption.patch
 
-Created on: **16/12/2025**
+Created on: **18/12/2025**
 
 ### Reason
 

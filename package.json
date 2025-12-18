@@ -116,6 +116,6 @@
   },
   "packageManager": "yarn@3.6.4",
   "resolutions": {
-    "@pagopa/io-react-native-wallet@2.2.0": "patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@patch%253A@pagopa/io-react-native-wallet@npm%25253A2.2.0%2523./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%253A%253Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%252540workspace%25253A.%23./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch%3A%3Aversion=2.2.0&hash=e3b555&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-dc06dcc0d4.patch"
+    "@pagopa/io-react-native-wallet@2.2.0": "patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch"
   }
 }

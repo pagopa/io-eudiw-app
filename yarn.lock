@@ -2284,9 +2284,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch::version=2.2.0&hash=e3b555&locator=ioeudiwapp%40workspace%3A.":
+"@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch::locator=ioeudiwapp%40workspace%3A.":
   version: 2.2.0
-  resolution: "@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch::version=2.2.0&hash=e3b555&locator=ioeudiwapp%40workspace%3A."
+  resolution: "@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch::version=2.2.0&hash=f00e7f&locator=ioeudiwapp%40workspace%3A."
   dependencies:
     dcql: ^0.2.21
     js-base64: ^3.7.7
@@ -2304,31 +2304,7 @@ __metadata:
     "@pagopa/io-react-native-jwt": "*"
     react: "*"
     react-native: "*"
-  checksum: e737ad468808a29dc062745e003b7898a5d5ff17b170d2a43c416ab4009547fe9ebc22683df63feb1a3ea36083dda575314ce07556a13b4fcb391fbf0b91df90
-  languageName: node
-  linkType: hard
-
-"@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@patch%253A@pagopa/io-react-native-wallet@npm%25253A2.2.0%2523./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%253A%253Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%252540workspace%25253A.%23./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch%3A%3Aversion=2.2.0&hash=e3b555&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-dc06dcc0d4.patch::locator=ioeudiwapp%40workspace%3A.":
-  version: 2.2.0
-  resolution: "@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@patch%253A@pagopa/io-react-native-wallet@npm%25253A2.2.0%2523./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%253A%253Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%252540workspace%25253A.%23./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch%3A%3Aversion=2.2.0&hash=e3b555&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-dc06dcc0d4.patch::version=2.2.0&hash=dd76e0&locator=ioeudiwapp%40workspace%3A."
-  dependencies:
-    dcql: ^0.2.21
-    js-base64: ^3.7.7
-    js-sha256: ^0.9.0
-    jsonpath-plus: ^10.2.0
-    jsrsasign: ^11.1.0
-    parse-url: ^9.2.0
-    react-native-url-polyfill: ^2.0.0
-    react-native-uuid: ^2.0.1
-    uuid: ^11.0.3
-    zod: ^3.21.4
-  peerDependencies:
-    "@pagopa/io-react-native-crypto": "*"
-    "@pagopa/io-react-native-iso18013": "*"
-    "@pagopa/io-react-native-jwt": "*"
-    react: "*"
-    react-native: "*"
-  checksum: b0332a8eb9787b1e5a03bc4e0beae597cdf1f4b6d744afacc3207d7de0f62851c4063a192a6b402d0289b5d783a0c8800a12b4abc55a0276ea01a4c6439f1040
+  checksum: aa899203a424458572fd588ad9a784d44b829964ee6aec60f225c2e50ef4f34b0c23f93e6e3fe02e79047af7fff507a7226d9f20ca9f5ed1450a0f516d1e1bd9
   languageName: node
   linkType: hard
 
