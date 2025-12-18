@@ -1381,27 +1381,8 @@ PODS:
     - React-Core
   - react-native-fingerprint-scanner (6.0.0):
     - React
-  - react-native-get-random-values (2.0.0):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
+  - react-native-get-random-values (1.11.0):
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - react-native-image-picker (7.2.3):
     - DoubleConversion
     - glog
@@ -2465,7 +2446,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: 6a39463c32ce831c4c2aa8469273114d894b6be9
   react-native-config: ea75335a7cca1d3326de1da384227e580a7c082e
   react-native-fingerprint-scanner: 91bf6825709dd7bd3abc4588a4772eb097a2b2d8
-  react-native-get-random-values: df5b8b4b63073fd89adbf96a4de154bccfcf00e0
+  react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-image-picker: ede3b0b991aae11b3c1d61c187a833720e255277
   react-native-safe-area-context: 90db9cb1243ba193ef6d05b26ff0600e69112214
   React-NativeModulesApple: fd0545efbb7f936f78edd15a6564a72d2c34bb32
