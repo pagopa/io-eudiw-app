@@ -409,7 +409,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw.pos;
+				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
 				PRODUCT_NAME = IoEudiwApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
