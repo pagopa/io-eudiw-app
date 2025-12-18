@@ -31,14 +31,14 @@ Created on: **18/12/2025**
 
 ### Reason
 
-- The OpenID for Verifiable Credential Issuance (OID4VCI) specification allows authorization responses to be encrypted (JWE) instead of signed (JWS), depending on the verifier configuration.
+- The OpenID for Verifiable Presentations (OID4VP) specification allows authorization responses to be encrypted (JWE) instead of signed (JWS), depending on the verifier configuration.
 - Some credential verifiers advertise authorization_encrypted_response_alg and authorization_encrypted_response_enc parameters in their openid_credential_verifier metadata.
 - The previous implementation always generated a signed JWT (JWS) authorization response using the Wallet Instance Attestation (WIA) crypto context.
 - This caused interoperability issues with verifiers that expect an encrypted authorization response, as defined by their metadata and JWKS.
 - Modifies completeUserAuthorizationWithFormPostJwtMode to pass issuerConf instead of relying on wiaCryptoContext.
 - Refactors createAuthzResponsePayload to build a JSON payload and encrypt it as a JWE.
 - Removes the dependency on signing (SignJWT) for this authorization response path.
-- This ensures the wallet complies with verifier-declared encryption requirements and improves compatibility with OID4VC-compliant relying parties.
+- This ensures the wallet complies with verifier-declared encryption requirements and improves compatibility with OID4VP-compliant relying parties.
 
 ### How to remove or change in the future:
 
