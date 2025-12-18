@@ -7,7 +7,7 @@ import {
   Credential
 } from '@pagopa/io-react-native-wallet';
 import Config from 'react-native-config';
-import {call, put, takeLatest} from 'typed-redux-saga';
+import {call, put, select, takeLatest} from 'typed-redux-saga';
 import uuid from 'react-native-uuid';
 import {generate} from '@pagopa/io-react-native-crypto';
 import {serializeError} from 'serialize-error';
@@ -21,14 +21,13 @@ import {
 import {Lifecycle, setLifecycle} from '../store/lifecycle';
 import {navigate} from '../../../navigation/utils';
 import {addCredential, addPidWithIdentification} from '../store/credentials';
-import {
-  wellKnownCredential,
-  wellKnownCredentialConfigurationIDs
-} from '../utils/credentials';
+import {wellKnownCredentialConfigurationIDs} from '../utils/credentials';
 import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
+import {createWalletProviderFetch} from '../utils/fetch';
+import {selectSessionId} from '../../../store/reducers/preferences';
 import {getAttestation} from './attestation';
 
 /**
@@ -55,33 +54,43 @@ function* obtainPid() {
     // Start the issuance flow
     const startFlow: Credential.Issuance.StartFlow = () => ({
       issuerUrl: PID_PROVIDER_BASE_URL,
-      credentialType: wellKnownCredentialConfigurationIDs.PID
+      credentialId: wellKnownCredentialConfigurationIDs.PID
     });
 
-    const {issuerUrl, credentialType: credentialConfigId} = startFlow();
+    const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;
+    const sessionId = yield* select(selectSessionId);
+    const appFetch = createWalletProviderFetch(
+      walletProviderBaseUrl,
+      sessionId
+    );
+
+    const {issuerUrl, credentialId: credentialConfigId} = startFlow();
 
     // Evaluate issuer trust
     const {issuerConf} = yield* call(
-      Credential.Issuance.getIssuerConfigOIDFED,
-      issuerUrl
+      Credential.Issuance.evaluateIssuerTrust,
+      issuerUrl,
+      {appFetch}
     );
 
     // Start user authorization
-    const {issuerRequestUri, clientId, codeVerifier, credentialDefinition} =
-      yield* call(
-        Credential.Issuance.startUserAuthorization,
-        issuerConf,
-        credentialConfigId,
-        {
-          walletInstanceAttestation,
-          redirectUri,
-          wiaCryptoContext
-        }
-      );
+    const {issuerRequestUri, clientId, codeVerifier} = yield* call(
+      Credential.Issuance.startUserAuthorization,
+      issuerConf,
+      [credentialConfigId],
+      {
+        walletInstanceAttestation,
+        redirectUri,
+        wiaCryptoContext,
+        appFetch
+      }
+    );
 
     // Extract the credential type from the config
     const credentialConfig =
-      issuerConf.credential_configurations_supported[credentialConfigId];
+      issuerConf.openid_credential_issuer.credential_configurations_supported[
+        credentialConfigId
+      ];
     const credentialType =
       credentialConfig.format === 'mso_mdoc'
         ? credentialConfig.scope
@@ -142,15 +151,24 @@ function* obtainPid() {
       }
     );
 
+    // Obtain the credential
+    // # TODO: WLEO-727 - rework to support multiple credentials issuance
+    const {credential_configuration_id, credential_identifiers} =
+      accessToken.authorization_details[0]!;
+
     const {credential, format} = yield* call(
       Credential.Issuance.obtainCredential,
       issuerConf,
       accessToken,
       clientId,
-      credentialDefinition,
+      {
+        credential_configuration_id,
+        credential_identifier: credential_identifiers[0]
+      },
       {
         credentialCryptoContext,
-        dPopCryptoContext
+        dPopCryptoContext,
+        appFetch
       }
     );
 
@@ -158,8 +176,7 @@ function* obtainPid() {
       Credential.Issuance.verifyAndParseCredential,
       issuerConf,
       credential,
-      format,
-      wellKnownCredential.PID,
+      credential_configuration_id,
       {credentialCryptoContext}
     );
 
