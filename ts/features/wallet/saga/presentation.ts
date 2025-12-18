@@ -1,32 +1,31 @@
 import {call, put, select, take, takeLatest} from 'typed-redux-saga';
-import {Credential} from '@pagopa/io-react-native-wallet';
-import {serializeError} from 'serialize-error';
-import {EvaluatedDisclosure} from '@pagopa/io-react-native-wallet/lib/typescript/credential/presentation/types';
 import {
-  AuthResponse,
+  createCryptoContextFor,
+  Credential
+} from '@pagopa/io-react-native-wallet';
+import {serializeError} from 'serialize-error';
+import {CryptoContext} from '@pagopa/io-react-native-jwt';
+import {
+  Descriptor,
   resetPresentation,
   setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionRequest,
   setPostDefinitionSuccess,
   setPreDefinitionError,
-  setPreDefinitionRequest
+  setPreDefinitionRequest,
+  setPreDefinitionSuccess
 } from '../store/presentation';
 import {selectCredentials} from '../store/credentials';
-import {
-  handleDcqlRequest,
-  handleDcqlResponse,
-  handlePresentationDefinitionRequest,
-  handlePresentationDefinitionResponse,
-  JWK,
-  PresentationRequestProcessor,
-  PresentationResponseProcessor,
-  RequestObject
-} from '../utils/presentation';
 import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
+
+type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
+type EvaluateDcqlReturn = Awaited<
+  ReturnType<typeof Credential.Presentation.evaluateDcqlQuery>
+>;
 
 /**
  * Saga watcher for presentation related actions.
@@ -46,28 +45,34 @@ function* handlePresentationPreDefinition(
   action: ReturnType<typeof setPreDefinitionRequest>
 ) {
   try {
-    const {request_uri, client_id} = action.payload;
+    const {request_uri, client_id, state, request_uri_method} = action.payload;
 
-    const {requestUri} = yield* call(
-      Credential.Presentation.startFlowFromQR,
+    const qrParameters = yield* call(Credential.Presentation.startFlowFromQR, {
       request_uri,
-      client_id
-    );
+      client_id,
+      state,
+      request_uri_method
+    });
 
     const {requestObjectEncodedJwt} = yield* call(
       Credential.Presentation.getRequestObject,
-      requestUri
+      qrParameters.request_uri
     );
 
-    const jwks = yield* call(
-      Credential.Presentation.fetchJwksFromRequestObject,
-      requestObjectEncodedJwt
+    const {rpConf, subject} = yield* call(
+      Credential.Presentation.evaluateRelyingPartyTrust,
+      qrParameters.client_id
     );
 
     const {requestObject} = yield* call(
-      Credential.Presentation.verifyRequestObjectSignature,
+      Credential.Presentation.verifyRequestObject,
       requestObjectEncodedJwt,
-      jwks.keys
+      {
+        rpConf,
+        clientId: qrParameters.client_id,
+        rpSubject: subject,
+        state: qrParameters.state
+      }
     );
 
     const credentials = yield* select(selectCredentials);
@@ -75,66 +80,130 @@ function* handlePresentationPreDefinition(
     /**
      * Array of tuples containg the credential keytag and its raw value
      */
-    const credentialsSdJwt: Array<[string, string, string]> = credentials
-      .filter(c => c.format === 'vc+sd-jwt')
-      .map(c => [c.credentialType, c.keyTag, c.credential]);
-    const credentialsMdoc: Array<[string, string, string]> = credentials
-      .filter(c => c.format === 'mso_mdoc')
-      .map(c => [c.credentialType, c.keyTag, c.credential]);
+    const credentialsSdJwt = [
+      ...Object.values(credentials)
+        .filter(c => c.format === ('dc+sd-jwt' as any))
+        .map(c => [createCryptoContextFor(c.keyTag), c.credential])
+    ] as Array<[CryptoContext, string]>;
 
-    /*
-     * Based on the type of request, the {@link handleResponse} function is called with
-     * different processing methods, keeping the common flow structure
+    if (!requestObject.dcql_query) {
+      throw new Error('Only DCQL presentations are supported at the moment');
+    }
+
+    const evaluateDcqlQuery = yield* call(
+      Credential.Presentation.evaluateDcqlQuery,
+      credentialsSdJwt,
+      requestObject.dcql_query as DcqlQuery
+    );
+
+    // Temporary fix — this will be resolved with [WLEO-675].
+    yield* put(
+      setPreDefinitionSuccess(
+        evaluateDcqlQuery.map(query => ({
+          requiredDisclosures:
+            query.requiredDisclosures as unknown as Descriptor[0]['requiredDisclosures'],
+          optionalDisclosures: [],
+          unrequestedDisclosures: []
+        }))
+      )
+    );
+
+    /* Wait for the user to confirm the presentation with the claims or to cancel it
+     *  - In case the user confirms the presentation, the payload will contain a list of the name of optionals claims to be presented
+     *  - In case the user cancels the presentation, no payload will be needed
      */
-    yield* requestObject.dcql_query
-      ? call(
-          handleResponse,
-          requestObject,
-          credentialsSdJwt,
-          credentialsMdoc,
-          jwks.keys,
-          handleDcqlRequest,
-          handleDcqlResponse
-        )
-      : call(
-          handleResponse,
-          requestObject,
-          credentialsSdJwt,
-          credentialsMdoc,
-          jwks.keys,
-          handlePresentationDefinitionRequest,
-          handlePresentationDefinitionResponse
-        );
+    const choice = yield* take([
+      setPostDefinitionRequest,
+      setPostDefinitionCancel
+    ]);
+
+    if (setPostDefinitionRequest.match(choice)) {
+      const onIdentifiedTask: IdentificationResultTask<
+        typeof onPresentCredentialIdentified
+      > = {
+        fn: onPresentCredentialIdentified,
+        args: [evaluateDcqlQuery, requestObject]
+      };
+
+      const onUnidentifiedTask: IdentificationResultTask<
+        typeof onPresentCredentialUnidentified
+      > = {
+        fn: onPresentCredentialUnidentified,
+        args: []
+      };
+
+      yield* call(
+        startSequentializedIdentificationProcess,
+        {
+          canResetPin: false,
+          isValidatingTask: true
+        },
+        /**
+         * Inline because the function closure needs the {@link action} parameter,
+         * and typescript's inference does not work properly on a function builder
+         * that builds and returns the callback
+         */
+        onIdentifiedTask,
+        onUnidentifiedTask
+      );
+    } else {
+      // The result of this call is ignored for the user is not interested in any message
+      yield* call(() =>
+        Credential.Presentation.sendAuthorizationErrorResponse(requestObject, {
+          error: 'access_denied',
+          errorDescription: 'The user cancelled the presentation.'
+        })
+          .then(() => {})
+          .catch(() => {})
+          .finally(() => {
+            put(resetPresentation());
+          })
+      );
+    }
   } catch (e) {
     // We don't know which step is failed thus we set the same error for both
     yield* put(setPostDefinitionError({error: serializeError(e)}));
     yield* put(setPreDefinitionError({error: serializeError(e)}));
   }
 }
+
 /**
- * This helper function performs the credentials' presentation in case of correct identification of the wallet owner
- * @param responseProcessor The same parameter with which {@link handleResponse} was called
- * @param processedRequest The {@link RequestObject} processed by {@link handleResponse}'s requestProcessor param
- * @param requestObject The presentation's {@link RequestObject}
- * @param optionalClaims An {@link EvaluatedDisclosure[]} of the optional disclosures the user chose to share
- * @param jwks The same parameter with which {@link handleResponse} was called
+ * Helper method to send a DCQL response
  */
-function* onPresentCredentialIdentified<T>(
-  responseProcessor: Parameters<typeof handleResponse<T>>[5],
-  processedRequest: T,
-  requestObject: Parameters<typeof handleResponse<T>>[0],
-  optionalClaims: Array<EvaluatedDisclosure>,
-  jwks: Parameters<typeof handleResponse<T>>[3]
+
+function* onPresentCredentialIdentified(
+  toProcess: EvaluateDcqlReturn,
+  requestObject: Awaited<
+    ReturnType<Credential.Presentation.VerifyRequestObject>
+  >['requestObject']
 ) {
-  const authResponse: AuthResponse = yield call(
-    responseProcessor,
-    processedRequest,
-    requestObject,
-    optionalClaims,
-    jwks
+  const credentialsToPresent = toProcess.map(
+    ({requiredDisclosures, ...rest}) => ({
+      ...rest,
+      requestedClaims: requiredDisclosures.map(([, claimName]) => claimName)
+    })
   );
 
-  yield* put(setPostDefinitionSuccess(authResponse as AuthResponse));
+  const {rpConf} = yield* call(
+    Credential.Presentation.evaluateRelyingPartyTrust,
+    requestObject.client_id
+  );
+
+  const remotePresentations = yield* call(
+    Credential.Presentation.prepareRemotePresentations,
+    credentialsToPresent,
+    requestObject.nonce,
+    requestObject.client_id
+  );
+
+  const authResponse = yield* call(
+    Credential.Presentation.sendAuthorizationResponse,
+    requestObject,
+    remotePresentations,
+    rpConf
+  );
+
+  yield* put(setPostDefinitionSuccess(authResponse));
 }
 
 /**
@@ -142,86 +211,4 @@ function* onPresentCredentialIdentified<T>(
  */
 function* onPresentCredentialUnidentified() {
   throw new Error('Identification failed');
-}
-
-/**
- * Helper function that generalizes the last part of a Presentation flow, handling only common user interaction with the saga
- * and delegating the formation of the response to the specific Presentation standard (e.g. DCQL or Presentation Definition)
- */
-function* handleResponse<T>(
-  requestObject: RequestObject,
-  credentialsSdJwt: Array<[string, string, string]>,
-  credentialsMdoc: Array<[string, string, string]>,
-  jwks: Array<JWK>,
-  requestProcessor: PresentationRequestProcessor<T>,
-  responseProcessor: PresentationResponseProcessor<T>
-) {
-  const processedRequest: T = yield call(
-    requestProcessor,
-    requestObject,
-    credentialsSdJwt,
-    credentialsMdoc
-  );
-
-  /* Wait for the user to confirm the presentation with the claims or to cancel it
-   *  - In case the user confirms the presentation, the payload will contain a list of the name of optionals claims to be presented
-   *  - In case the user cancels the presentation, no payload will be needed
-   */
-  const choice = yield* take([
-    setPostDefinitionRequest,
-    setPostDefinitionCancel
-  ]);
-
-  if (setPostDefinitionRequest.match(choice)) {
-    const {payload: optionalClaims} = choice;
-
-    const onIdentifiedTask: IdentificationResultTask<
-      typeof onPresentCredentialIdentified<T>
-    > = {
-      fn: onPresentCredentialIdentified<T>,
-      args: [
-        responseProcessor,
-        processedRequest,
-        requestObject,
-        optionalClaims,
-        jwks
-      ]
-    };
-
-    const onUnidentifiedTask: IdentificationResultTask<
-      typeof onPresentCredentialUnidentified
-    > = {
-      fn: onPresentCredentialUnidentified,
-      args: []
-    };
-
-    yield* call(
-      startSequentializedIdentificationProcess,
-      {
-        canResetPin: false,
-        isValidatingTask: true
-      },
-      /**
-       * Inline because the function closure needs the {@link action} parameter,
-       * and typescript's inference does not work properly on a function builder
-       * that builds and returns the callback
-       */
-      onIdentifiedTask,
-      onUnidentifiedTask
-    );
-  } else {
-    // The result of this call is ignored for the user is not interested in any message
-    yield* call(() =>
-      Credential.Presentation.sendAuthorizationErrorResponse(
-        requestObject,
-        'access_denied',
-        jwks
-      )
-        .then(() => {})
-        .catch(() => {})
-        .finally(() => {
-          put(resetPresentation());
-        })
-    );
-  }
 }
