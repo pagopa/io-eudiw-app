@@ -96,19 +96,6 @@ const PresentationPostDefinition = ({route}: Props) => {
   };
 
   /**
-   * Callback for when the user checks or unchecks an optional disclosure
-   * in the PresentationClaimsList component.
-   * @param encoded - The encoded string of the optional disclosure
-   */
-  // const onOptionalDisclosuresChange = (encoded: OptionalClaims) => {
-  //   if (optionalChecked.includes(encoded)) {
-  //     setOptionalChecked(optionalChecked.filter(item => item !== encoded));
-  //   } else {
-  //     setOptionalChecked([...optionalChecked, encoded]);
-  //   }
-  // };
-
-  /**
    * Checks for changes in the post definition status and navigates to the appropriate screen
    * if the operation was successful or failed.
    */

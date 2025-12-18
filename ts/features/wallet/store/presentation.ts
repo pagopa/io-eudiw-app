@@ -11,7 +11,6 @@ import {
 import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
 import {PresentationPreDefinitionParams} from '../screens/presentation/PresentationPreDefinition';
-import {PIDObject} from '../components/presentation/CredentialTypePresentationClaimsList';
 import {resetLifecycle} from './lifecycle';
 
 /**
@@ -23,7 +22,7 @@ export type EvaluatedDisclosureDescriptor = Awaited<
 >[0]['evaluatedDisclosure'];
 
 export type DcqlDescriptor = {
-  requiredDisclosures: PIDObject;
+  requiredDisclosures: EvaluatedDisclosureDescriptor['requiredDisclosures'];
   optionalDisclosures: [];
   unrequestedDisclosures: [];
 };

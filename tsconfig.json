@@ -9,9 +9,7 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "strictFunctionTypes": true,
-    "useUnknownInCatchVariables": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "useUnknownInCatchVariables": true
   },
   "extends": "@react-native/typescript-config/tsconfig.json"
 }

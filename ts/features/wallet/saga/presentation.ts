@@ -103,7 +103,7 @@ function* handlePresentationPreDefinition(
             query.requiredDisclosures as unknown as Descriptor[0]['requiredDisclosures'],
           optionalDisclosures: [],
           unrequestedDisclosures: []
-        })) as Descriptor
+        }))
       )
     );
 
