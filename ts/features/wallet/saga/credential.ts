@@ -16,11 +16,11 @@ import {
   EvaluateIssuerTrust,
   StartUserAuthorization
 } from '@pagopa/io-react-native-wallet/lib/typescript/credential/issuance';
-import {Out} from '@pagopa/io-react-native-wallet/lib/typescript/utils/misc';
-import {CryptoContext} from '@pagopa/io-react-native-jwt';
-import {regenerateCryptoKey} from '../../../utils/crypto';
-import {DPOP_KEYTAG, WIA_KEYTAG} from '../utils/crypto';
-import {navigateWithReset} from '../../../navigation/utils';
+import { Out } from '@pagopa/io-react-native-wallet/lib/typescript/utils/misc';
+import { CryptoContext } from '@pagopa/io-react-native-jwt';
+import { regenerateCryptoKey } from '../../../utils/crypto';
+import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
+import { navigateWithReset } from '../../../navigation/utils';
 import {
   addCredential,
   addCredentialWithIdentification,
@@ -40,11 +40,11 @@ import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
-import {createWalletProviderFetch} from '../utils/fetch';
-import {selectSessionId} from '../../../store/reducers/preferences';
-import {wellKnownCredential} from '../utils/credentials';
-import {StoredCredential} from '../utils/types';
-import {getAttestation} from './attestation';
+import { createWalletProviderFetch } from '../utils/fetch';
+import { selectSessionId } from '../../../store/reducers/preferences';
+import { wellKnownCredential } from '../utils/credentials';
+import { StoredCredential } from '../utils/types';
+import { getAttestation } from './attestation';
 
 /**
  * Saga watcher for credential related actions.
@@ -103,7 +103,7 @@ function* getCredentialAuthCode(params: {
       appFetch
     );
 
-    const {code} = yield* call(
+    const { code } = yield* call(
       Credential.Issuance.completeUserAuthorizationWithFormPostJwtMode,
       requestObject,
       pid.credential,
@@ -126,7 +126,7 @@ function* getCredentialAuthCode(params: {
       baseRedirectUri
     );
 
-    const {code} = yield* call(
+    const { code } = yield* call(
       Credential.Issuance.completeUserAuthorizationWithQueryMode,
       authRedirectUrl
     );
@@ -181,13 +181,13 @@ function* obtainCredential() {
     const { issuerUrl } = startFlow();
 
     // Evaluate issuer trust
-    const {issuerConf} = yield* call(
+    const { issuerConf } = yield* call(
       Credential.Issuance.evaluateIssuerTrust,
       issuerUrl
     );
 
     // Start user authorization
-    const {issuerRequestUri, clientId, codeVerifier} = yield* call(
+    const { issuerRequestUri, clientId, codeVerifier } = yield* call(
       Credential.Issuance.startUserAuthorization,
       issuerConf,
       [credentialConfigId],
@@ -269,10 +269,10 @@ function* obtainCredential() {
 
     // Obtain the credential
     // # TODO: WLEO-727 - rework to support multiple credentials issuance
-    const {credential_configuration_id, credential_identifiers} =
+    const { credential_configuration_id, credential_identifiers } =
       accessToken.authorization_details[0];
 
-    const {credential, format} = yield* call(
+    const { credential, format } = yield* call(
       Credential.Issuance.obtainCredential,
       issuerConf,
       accessToken,

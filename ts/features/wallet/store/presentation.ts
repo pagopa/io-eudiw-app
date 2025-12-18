@@ -8,10 +8,10 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import {RootState} from '../../../store/types';
-import {preferencesReset} from '../../../store/reducers/preferences';
-import {PresentationPreDefinitionParams} from '../screens/presentation/PresentationPreDefinition';
-import {resetLifecycle} from './lifecycle';
+import { RootState } from '../../../store/types';
+import { preferencesReset } from '../../../store/reducers/preferences';
+import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
+import { resetLifecycle } from './lifecycle';
 
 /**
  * Type for the description which contains the requested claims during the presentation.

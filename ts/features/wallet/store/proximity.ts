@@ -1,23 +1,10 @@
 /* eslint-disable functional/immutable-data */
-<<<<<<< HEAD
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
-import {
-  AcceptedFields,
-  VerifierRequest,
-  Proximity
-} from '@pagopa/io-react-native-proximity';
+import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { RootState } from '../../../store/types';
 import { ParsedCredential } from '../utils/types';
 import { preferencesReset } from '../../../store/reducers/preferences';
 import { resetLifecycle } from './lifecycle';
-=======
-import {createSlice, PayloadAction, createSelector} from '@reduxjs/toolkit';
-import {ISO18013_5} from '@pagopa/io-react-native-iso18013';
-import {RootState} from '../../../store/types';
-import {ParsedCredential} from '../utils/types';
-import {preferencesReset} from '../../../store/reducers/preferences';
-import {resetLifecycle} from './lifecycle';
->>>>>>> main
 
 /**
  * The application-internal statuses used to control the proximity saga

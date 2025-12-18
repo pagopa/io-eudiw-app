@@ -20,7 +20,7 @@ export type AnimatedImageProps = React.ComponentProps<typeof Image>;
 export const AnimatedImage = ({
   style,
   ...props
-}: AnimatedImageProps): JSX.Element => {
+}: AnimatedImageProps): React.JSX.Element => {
   const opacity = useSharedValue(0);
 
   const handleOnLoad = () => {

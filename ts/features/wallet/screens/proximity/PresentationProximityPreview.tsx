@@ -14,8 +14,8 @@ import {
   VSpacer,
   Alert as AlertDs
 } from '@pagopa/io-app-design-system';
-import {ISO18013_5} from '@pagopa/io-react-native-iso18013';
-import {useNavigation} from '@react-navigation/native';
+import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
+import { useNavigation } from '@react-navigation/native';
 import {
   ProximityDisclosure,
   ProximityStatus,

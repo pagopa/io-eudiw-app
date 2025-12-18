@@ -1,10 +1,10 @@
-import {call, put, select, take, takeLatest} from 'typed-redux-saga';
+import { call, put, select, take, takeLatest } from 'typed-redux-saga';
 import {
   createCryptoContextFor,
   Credential
 } from '@pagopa/io-react-native-wallet';
-import {serializeError} from 'serialize-error';
-import {CryptoContext} from '@pagopa/io-react-native-jwt';
+import { serializeError } from 'serialize-error';
+import { CryptoContext } from '@pagopa/io-react-native-jwt';
 import {
   Descriptor,
   resetPresentation,
@@ -45,7 +45,8 @@ function* handlePresentationPreDefinition(
   action: ReturnType<typeof setPreDefinitionRequest>
 ) {
   try {
-    const {request_uri, client_id, state, request_uri_method} = action.payload;
+    const { request_uri, client_id, state, request_uri_method } =
+      action.payload;
 
     const qrParameters = yield* call(Credential.Presentation.startFlowFromQR, {
       request_uri,
@@ -59,12 +60,12 @@ function* handlePresentationPreDefinition(
       qrParameters.request_uri
     );
 
-    const {rpConf, subject} = yield* call(
+    const { rpConf, subject } = yield* call(
       Credential.Presentation.evaluateRelyingPartyTrust,
       qrParameters.client_id
     );
 
-    const {requestObject} = yield* call(
+    const { requestObject } = yield* call(
       Credential.Presentation.verifyRequestObject,
       requestObjectEncodedJwt,
       {
@@ -178,13 +179,13 @@ function* onPresentCredentialIdentified(
   >['requestObject']
 ) {
   const credentialsToPresent = toProcess.map(
-    ({requiredDisclosures, ...rest}) => ({
+    ({ requiredDisclosures, ...rest }) => ({
       ...rest,
       requestedClaims: requiredDisclosures.map(([, claimName]) => claimName)
     })
   );
 
-  const {rpConf} = yield* call(
+  const { rpConf } = yield* call(
     Credential.Presentation.evaluateRelyingPartyTrust,
     requestObject.client_id
   );
