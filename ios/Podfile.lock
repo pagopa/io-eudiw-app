@@ -2096,7 +2096,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.1)
-  - SwiftCBOR (0.5.0)
+  - SwiftCBOR (0.6.0)
   - VisionCamera (4.7.3):
     - VisionCamera/Core (= 4.7.3)
     - VisionCamera/React (= 4.7.3)
@@ -2489,7 +2489,7 @@ SPEC CHECKSUMS:
   RNScreens: b0691b7488fc428136a2e7abab32f751b01b2696
   RNSVG: dfe0c8e3cc0a6f6e8bcee696cf11baf69f2c394d
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  SwiftCBOR: aa87349b4ccddd19f861aa544f7c27d43dee5772
+  SwiftCBOR: b873af28a9cc66003852fdc79a41852a7e54009a
   VisionCamera: 7187b3dac1ff3071234ead959ce311875748e14f
   Yoga: e14bad835e12b6c7e2260fc320bd00e0f4b45add
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
