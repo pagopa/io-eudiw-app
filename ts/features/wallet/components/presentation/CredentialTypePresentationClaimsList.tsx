@@ -13,8 +13,19 @@ import {getCredentialNameByType} from '../../utils/credentials';
 import {getClaimsFullLocale} from '../../utils/locale';
 import {CredentialClaim} from '../credential/CredentialClaims';
 import {ParsedCredential} from '../../utils/types';
-import {PIDObject} from '../../utils/presentation';
 import {ClaimsSelector} from '../../../../components/ClaimsSelector';
+
+export interface PIDField {
+  id: string;
+  value: unknown;
+  name: Record<string, string>;
+}
+
+export interface PIDObject {
+  [pidType: string]: {
+    claims: Record<string, PIDField>;
+  };
+}
 
 /**
  * This is the type definition for the accepted fields that will be presented to the verifier app.

@@ -96,7 +96,6 @@ function* handlePresentationPreDefinition(
       requestObject.dcql_query as DcqlQuery
     );
 
-    // Temporary fix — this will be resolved with [WLEO-675].
     yield* put(
       setPreDefinitionSuccess(
         evaluateDcqlQuery.map(query => ({
@@ -104,7 +103,7 @@ function* handlePresentationPreDefinition(
             query.requiredDisclosures as unknown as Descriptor[0]['requiredDisclosures'],
           optionalDisclosures: [],
           unrequestedDisclosures: []
-        }))
+        })) as Descriptor
       )
     );
 

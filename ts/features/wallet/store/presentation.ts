@@ -10,8 +10,8 @@ import {
 } from '../../../store/utils/asyncStatus';
 import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
-import {PIDObject} from '../utils/presentation';
 import {PresentationPreDefinitionParams} from '../screens/presentation/PresentationPreDefinition';
+import {PIDObject} from '../components/presentation/CredentialTypePresentationClaimsList';
 import {resetLifecycle} from './lifecycle';
 
 /**
