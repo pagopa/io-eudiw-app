@@ -30,6 +30,7 @@ const getAttributesExtractor =
     accumulated: Record<string, ParsedCredential[string]>,
     attribute: string
   ) => {
+    // Retrieves the value for this attribute from the credential, using a key built from the credential type and the attribute name, in the form credential_type:attribute_name.
     const value =
       credential.parsedCredential[
         `${credential.credentialType.substring(

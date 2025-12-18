@@ -1,15 +1,13 @@
 import {
-  ButtonLink,
   ContentWrapper,
   H2,
+  IOButton,
   IOPictograms,
-  IOStyles,
   IconButton,
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
 import _ from 'lodash';
-import * as React from 'react';
 import {memo, useCallback, useMemo, useRef} from 'react';
 import {
   Alert,
@@ -55,7 +53,7 @@ const IdentificationModal = () => {
   const showRetryText = useRef(false);
   const headerRef = useRef<View>(null);
   const colorScheme: ColorSchemeName = 'light';
-  const numberPadVariant = colorScheme ? 'dark' : 'light';
+  const numberPadVariant = colorScheme ? 'primary' : 'neutral';
   const {biometricType} = useBiometricType();
   const pin = useAppSelector(selectPin);
   const dispatch = useAppDispatch();
@@ -206,14 +204,14 @@ const IdentificationModal = () => {
           <ContentWrapper>
             <View>
               <VSpacer size={16} />
-              <View style={IOStyles.alignCenter}>
+              <View style={{alignItems: 'center'}}>
                 <Pictogram
                   pictogramStyle="light-content"
                   name={pictogramKey}
                   size={64}
                 />
               </View>
-              <View accessible ref={headerRef} style={IOStyles.alignCenter}>
+              <View accessible ref={headerRef} style={{alignItems: 'center'}}>
                 <VSpacer size={8} />
                 <H2 color={'white'} style={{textAlign: 'center'}}>
                   {titleLabel}
@@ -224,8 +222,9 @@ const IdentificationModal = () => {
             <NumberPad />
             <View>
               <VSpacer size={32} />
-              <View style={IOStyles.selfCenter}>
-                <ButtonLink
+              <View style={{alignSelf: 'center'}}>
+                <IOButton
+                  variant="link"
                   accessibilityLabel={t('identification.forgot.title')}
                   color="contrast"
                   label={t('identification.forgot.title')}

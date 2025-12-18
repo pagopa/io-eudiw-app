@@ -4,7 +4,7 @@ import {
   NavigatorScreenParams
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React, {useCallback, useEffect} from 'react';
+import {useCallback, useEffect} from 'react';
 import {useIOThemeContext} from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
 import {Linking} from 'react-native';
@@ -70,7 +70,7 @@ export const RootStackNavigator = () => {
     const body = 'Please try again in a few minutes.';
     return (
       <OperationResultScreenContent
-        pictogram="umbrellaNew"
+        pictogram="umbrella"
         title={title}
         subtitle={body}
       />

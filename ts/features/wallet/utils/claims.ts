@@ -131,8 +131,10 @@ export const base64ImageSchema = z
   .object({
     id: z
       .string()
-      .regex(/.*:.*/)
-      .transform(claimId => claimId.split(':')[1])
+      .transform(str => {
+        const split = str.split(':');
+        return split[split.length - 1];
+      })
       .pipe(z.enum(['portrait', 'signature_usual_mark'])),
     label: z.string(),
     value: z.string()

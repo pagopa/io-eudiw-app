@@ -27,14 +27,14 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.0.6",
-    "@pagopa/io-app-design-system": "^4.6.0",
+    "@pagopa/io-app-design-system": "5.11.13-0",
     "@pagopa/io-react-native-crypto": "^1.2.3",
     "@pagopa/io-react-native-integrity": "^0.3.2",
-    "@pagopa/io-react-native-iso18013": "^0.3.0",
+    "@pagopa/io-react-native-iso18013": "^0.7.0",
     "@pagopa/io-react-native-jwt": "2.1.0",
     "@pagopa/io-react-native-login-utils": "^1.0.9",
     "@pagopa/io-react-native-secure-storage": "^0.2.0",
-    "@pagopa/io-react-native-wallet": "^2.2.0",
+    "@pagopa/io-react-native-wallet": "2.2.0",
     "@pagopa/react-native-nodelibs": "^0.1.0",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-clipboard/clipboard": "^1.16.2",
@@ -51,12 +51,12 @@
     "react-i18next": "^15.1.1",
     "react-native": "0.78.2",
     "react-native-bootsplash": "^6.3.9",
-    "react-native-config": "^1.5.3",
+    "react-native-config": "1.5.3",
     "react-native-device-info": "^14.0.0",
     "react-native-easing-gradient": "^1.1.1",
     "react-native-fingerprint-scanner": "git+https://github.com/hieuvp/react-native-fingerprint-scanner.git#9cecc0db326471c571553ea85f7c016fee2f803d",
     "react-native-gesture-handler": "^2.25.0",
-    "react-native-get-random-values": "^2.0.0",
+    "react-native-get-random-values": "^1.11.0",
     "react-native-haptic-feedback": "^2.3.3",
     "react-native-image-picker": "^7.2.3",
     "react-native-linear-gradient": "^2.8.3",
@@ -116,6 +116,6 @@
   },
   "packageManager": "yarn@3.6.4",
   "resolutions": {
-    "@pagopa/io-react-native-wallet@^2.2.0": "patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=e22dd9&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-5d1aab5568.patch"
+    "@pagopa/io-react-native-wallet@2.2.0": "patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch"
   }
 }

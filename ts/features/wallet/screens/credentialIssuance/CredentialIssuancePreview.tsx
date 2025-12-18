@@ -6,7 +6,7 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import {StyleSheet, View} from 'react-native';
-import React, {useCallback} from 'react';
+import {useCallback} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
@@ -47,7 +47,9 @@ export const CredentialPreview = () => {
   const credential = credentialPostStatus.success.data;
 
   return (
-    <ForceScrollDownView contentContainerStyle={styles.scrollView}>
+    <ForceScrollDownView
+      contentContainerStyle={styles.scrollView}
+      threshold={50}>
       <View style={styles.container}>
         <H2>{getCredentialNameByType(credential.credentialType)}</H2>
         <VSpacer size={24} />

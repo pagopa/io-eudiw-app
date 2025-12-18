@@ -1,6 +1,6 @@
 import {IOSpacingScale} from '@pagopa/io-app-design-system';
 
-import React, {PropsWithChildren} from 'react';
+import {PropsWithChildren} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {StoredCredential} from '../../utils/types';
 import {getThemeColorByCredentialType} from '../../utils/style';

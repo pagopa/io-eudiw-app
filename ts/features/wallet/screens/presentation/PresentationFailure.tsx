@@ -1,5 +1,4 @@
 import {useTranslation} from 'react-i18next';
-import React from 'react';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
@@ -36,7 +35,7 @@ const PresentationFailure = () => {
 
   return (
     <OperationResultScreenContent
-      pictogram="umbrellaNew"
+      pictogram="umbrella"
       title={t('wallet:pidIssuance.failure.title')}
       subtitle={t('wallet:pidIssuance.failure.subtitle')}
       action={{

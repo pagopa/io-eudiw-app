@@ -22,8 +22,7 @@ import {selectCredentials} from '../store/credentials';
 import {
   getIsVerifierAuthenticated,
   matchRequestToClaims,
-  verifierCertificates,
-  b64utob64
+  verifierCertificates
 } from '../utils/proximity';
 import {
   IdentificationResultTask,
@@ -37,7 +36,6 @@ const {
   generateResponse,
   getQrCodeString,
   parseVerifierRequest,
-  removeListener,
   sendErrorResponse,
   sendResponse,
   start
@@ -195,11 +193,13 @@ function* handleProximityResponse() {
   ]);
 
   if (setProximityStatusAuthorizationSend.match(choice)) {
-    const documents = mdocCredentials.map(credential => ({
-      issuerSignedContent: b64utob64(credential.credential),
-      alias: credential.keyTag,
-      docType: credential.credentialType
-    }));
+    const documents: Array<ISO18013_5.RequestedDocument> = mdocCredentials.map(
+      credential => ({
+        issuerSignedContent: credential.credential,
+        alias: credential.keyTag,
+        docType: credential.credentialType
+      })
+    );
 
     const acceptedFields = yield* select(selectProximityAcceptedFields);
 
@@ -248,22 +248,10 @@ function* abortProximityFlow() {
  * This helper saga removes all listeners from the proximity handler and resets
  * the QR code
  */
+
+// #WLEO-741 Refactor Event Listener Handling into a Custom Hook
+
 function* closeFlow() {
   yield* put(resetProximityQrCode());
-  yield* call(() => {
-    removeListener('onDeviceConnected');
-  });
-  yield* call(() => {
-    removeListener('onDeviceConnecting');
-  });
-  yield* call(() => {
-    removeListener('onDeviceDisconnected');
-  });
-  yield* call(() => {
-    removeListener('onDocumentRequestReceived');
-  });
-  yield* call(() => {
-    removeListener('onError');
-  });
   yield* call(close);
 }

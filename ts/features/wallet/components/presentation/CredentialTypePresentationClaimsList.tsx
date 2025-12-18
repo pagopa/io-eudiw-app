@@ -1,12 +1,11 @@
-import React, {Dispatch, SetStateAction, useMemo} from 'react';
+import {Dispatch, SetStateAction, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   AnimatedCheckbox,
   Divider,
   H4,
   IOColors,
-  ListItemHeader,
-  RawAccordion
+  ListItemHeader
 } from '@pagopa/io-app-design-system';
 import _ from 'lodash';
 import {useTranslation} from 'react-i18next';
@@ -15,6 +14,7 @@ import {getClaimsFullLocale} from '../../utils/locale';
 import {CredentialClaim} from '../credential/CredentialClaims';
 import {ParsedCredential} from '../../utils/types';
 import {PIDObject} from '../../utils/presentation';
+import {ClaimsSelector} from '../../../../components/ClaimsSelector';
 
 /**
  * This is the type definition for the accepted fields that will be presented to the verifier app.
@@ -189,7 +189,7 @@ const CredentialTypePresentationClaimsList = ({
             {Object.entries(mandatoryDisclosuresViewModel).map(
               ([entry, attributes]) => (
                 <View key={entry} style={styles.credentialContainer}>
-                  <RawAccordion header={<H4>{entry}</H4>}>
+                  <ClaimsSelector header={<H4>{entry}</H4>} defaultOpen>
                     <View style={styles.claimContainer}>
                       {Object.values(attributes).map((value, index) => (
                         <View key={value.id}>
@@ -206,7 +206,7 @@ const CredentialTypePresentationClaimsList = ({
                         </View>
                       ))}
                     </View>
-                  </RawAccordion>
+                  </ClaimsSelector>
                 </View>
               )
             )}
@@ -227,7 +227,7 @@ const CredentialTypePresentationClaimsList = ({
               {Object.entries(optionalDisclosuresViewModel).map(
                 ([entry, attributes]) => (
                   <View key={entry} style={styles.credentialContainer}>
-                    <RawAccordion header={<H4>{entry}</H4>}>
+                    <ClaimsSelector header={<H4>{entry}</H4>} defaultOpen>
                       <View style={styles.claimContainer}>
                         {Object.values(attributes).map((value, index) => (
                           <View key={value.id}>
@@ -274,7 +274,7 @@ const CredentialTypePresentationClaimsList = ({
                           </View>
                         ))}
                       </View>
-                    </RawAccordion>
+                    </ClaimsSelector>
                   </View>
                 )
               )}

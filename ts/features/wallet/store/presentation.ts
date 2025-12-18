@@ -15,16 +15,6 @@ import {PresentationPreDefinitionParams} from '../screens/presentation/Presentat
 import {resetLifecycle} from './lifecycle';
 
 /**
- * Parameters to start a presentation flow.
- */
-export type PresentationParams = {
-  request_uri: string;
-  client_id: string;
-  state: string | null;
-  request_uri_method: 'get' | 'post' | null;
-};
-
-/**
  * Type for the description which contains the requested claims during the presentation.
  */
 

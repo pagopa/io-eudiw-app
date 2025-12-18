@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -56,7 +56,7 @@ const PidIssuanceRequest = () => {
 
   const PidPreview = ({credential}: {credential: StoredCredential}) => (
     <>
-      <ForceScrollDownView contentContainerStyle={styles.scroll}>
+      <ForceScrollDownView contentContainerStyle={styles.scroll} threshold={50}>
         <VStack style={styles.contentWrapper}>
           <H2>{t('wallet:pidIssuance.preview.title')}</H2>
           <H2>{t('wallet:pidIssuance.preview.subtitle')}</H2>

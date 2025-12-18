@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {GestureResponderEvent} from 'react-native';
 import {Banner, VSpacer} from '@pagopa/io-app-design-system';
 import {useNavigation} from '@react-navigation/native';
@@ -39,7 +38,6 @@ export const ActivationBanner = ({
       <Banner
         testID={'ItwBannerTestID'}
         color={'turquoise'}
-        size="big"
         title={title}
         content={content}
         pictogramName={'itWallet'}

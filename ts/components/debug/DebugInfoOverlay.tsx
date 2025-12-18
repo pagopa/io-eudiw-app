@@ -5,7 +5,6 @@ import {
   hexToRgba,
   useIOTheme
 } from '@pagopa/io-app-design-system';
-import * as React from 'react';
 import {useState} from 'react';
 import {Platform, SafeAreaView, StyleSheet, View} from 'react-native';
 import {getAppVersion} from '../../utils/device';

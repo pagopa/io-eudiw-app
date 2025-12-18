@@ -1,5 +1,5 @@
 import {PRESENTATION_INTERNAL_LINKS} from '../../../../navigation/deepLinkSchemas';
-import {PresentationParams} from '../../../wallet/store/presentation';
+import {PresentationPreDefinitionParams} from '../../../wallet/screens/presentation/PresentationPreDefinition';
 
 /**
  * Parses a URL result from a QR code scan to a presentation link.
@@ -7,7 +7,9 @@ import {PresentationParams} from '../../../wallet/store/presentation';
  * @param link - The URL to parse.
  * @returns request_uri and client_id from the URL.
  */
-export const presentationLinkToUrl = (link: string): PresentationParams => {
+export const presentationLinkToUrl = (
+  link: string
+): PresentationPreDefinitionParams => {
   const url = new URL(link);
   if (
     !PRESENTATION_INTERNAL_LINKS.some(
