@@ -14,8 +14,8 @@ import {
   VSpacer,
   Alert as AlertDs
 } from '@pagopa/io-app-design-system';
-import { AcceptedFields } from '@pagopa/io-react-native-proximity';
-import { useNavigation } from '@react-navigation/native';
+import {ISO18013_5} from '@pagopa/io-react-native-iso18013';
+import {useNavigation} from '@react-navigation/native';
 import {
   ProximityDisclosure,
   ProximityStatus,
@@ -76,7 +76,8 @@ const PresentationProximityPreview = ({ route }: Props) => {
     return Object.fromEntries(credentialsBool);
   }, [route.params.descriptor]);
 
-  const [checkState, setCheckState] = useState<AcceptedFields>(baseCheckState);
+  const [checkState, setCheckState] =
+    useState<ISO18013_5.AcceptedFields>(baseCheckState);
 
   useDebugInfo({
     isAuthenticated,

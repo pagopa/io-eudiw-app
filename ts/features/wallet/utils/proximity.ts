@@ -1,6 +1,5 @@
-import { CBOR } from '@pagopa/io-react-native-cbor';
-import { VerifierRequest } from '@pagopa/io-react-native-proximity';
-import { ParsedCredential, StoredCredential } from './types';
+import {ISO18013_5, CBOR} from '@pagopa/io-react-native-iso18013';
+import {ParsedCredential, StoredCredential} from './types';
 
 /**
  * Temporary helper function to convert from Base64URL to Base64
@@ -31,7 +30,14 @@ const getAttributesExtractor =
     accumulated: Record<string, ParsedCredential[string]>,
     attribute: string
   ) => {
-    const value = credential.parsedCredential[attribute];
+    // Retrieves the value for this attribute from the credential, using a key built from the credential type and the attribute name, in the form credential_type:attribute_name.
+    const value =
+      credential.parsedCredential[
+        `${credential.credentialType.substring(
+          0,
+          credential.credentialType.lastIndexOf('.')
+        )}:${attribute}`
+      ];
     // If the credential contains the attribute, add it to the accumulator, otherwise go to the next attribute
     return value ? { ...accumulated, [attribute]: value } : accumulated;
   };
@@ -96,7 +102,7 @@ const getNameSpaceExtractor =
  *          their value and display info as found in the {@link StoredCredentialWithIssuerSigned}
  */
 const extractNamespaces = (
-  namespacesAndIsAuthenticated: VerifierRequest['request'][string],
+  namespacesAndIsAuthenticated: ISO18013_5.VerifierRequest['request'][string],
   credential: StoredCredentialWithIssuerSigned
 ) =>
   Object.entries(namespacesAndIsAuthenticated)
@@ -127,7 +133,7 @@ const extractNamespaces = (
  * @returns see description
  */
 const mapVerifierRequestToClaimInfo = (
-  request: VerifierRequest['request'],
+  request: ISO18013_5.VerifierRequest['request'],
   decodedCredentials: Array<StoredCredentialWithIssuerSigned>
 ) =>
   Object.entries(request).reduce<
@@ -166,7 +172,7 @@ const mapVerifierRequestToClaimInfo = (
  * {@link ParsedCredential} object.
  */
 export const matchRequestToClaims = async (
-  verifierRequest: VerifierRequest,
+  verifierRequest: ISO18013_5.VerifierRequest,
   credentialsMdoc: Array<StoredCredential>
 ) => {
   const decodedCredentials: Array<StoredCredentialWithIssuerSigned> =
@@ -192,7 +198,9 @@ export const matchRequestToClaims = async (
  * @param verifierRequest - The Verifier Request object containing the requested fields
  * @returns true if the verifier request is authenticated, false otherwise
  */
-export const getIsVerifierAuthenticated = (verifierRequest: VerifierRequest) =>
+export const getIsVerifierAuthenticated = (
+  verifierRequest: ISO18013_5.VerifierRequest
+) =>
   Object.values(verifierRequest.request).every(
     credential => credential.isAuthenticated === true
   );

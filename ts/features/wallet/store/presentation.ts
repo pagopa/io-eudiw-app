@@ -8,17 +8,10 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import { RootState } from '../../../store/types';
-import { preferencesReset } from '../../../store/reducers/preferences';
-import { resetLifecycle } from './lifecycle';
-
-/**
- * Parameters to start a presentation flow.
- */
-export type PresentationParams = {
-  request_uri: string;
-  client_id: string;
-};
+import {RootState} from '../../../store/types';
+import {preferencesReset} from '../../../store/reducers/preferences';
+import {PresentationPreDefinitionParams} from '../screens/presentation/PresentationPreDefinition';
+import {resetLifecycle} from './lifecycle';
 
 /**
  * Type for the description which contains the requested claims during the presentation.
@@ -63,7 +56,10 @@ export const presentationSlice = createSlice({
   name: 'presentationSlice',
   initialState,
   reducers: {
-    setPreDefinitionRequest: (state, _: PayloadAction<PresentationParams>) => {
+    setPreDefinitionRequest: (
+      state,
+      _: PayloadAction<PresentationPreDefinitionParams>
+    ) => {
       state.preDefinition = setLoading();
     },
     setPreDefinitionError: (
