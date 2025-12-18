@@ -1,4 +1,6 @@
 require('@pagopa/react-native-nodelibs/globals');
+import 'react-native-get-random-values';
+import React from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {PersistGate} from 'redux-persist/integration/react';
