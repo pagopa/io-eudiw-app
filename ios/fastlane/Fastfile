@@ -56,10 +56,10 @@ platform :ios do
     # Temporary disables automatic code signing to avoid issues during build
     update_code_signing_settings(
       use_automatic_signing: false,
-      path: "AgeVerification.xcodeproj",
+      path: "IoEudiwApp.xcodeproj",
       team_id: "M2X5YQ4BJ7",
       profile_name: "match AppStore it.pagopa.io.app.poc.eudiw",
-      targets: ["AgeVerification"],
+      targets: ["IoEudiwApp"],
       build_configurations: ["Release"],
       code_sign_identity: "iPhone Distribution",
       sdk: "iphoneos*",
