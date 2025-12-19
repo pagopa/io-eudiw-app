@@ -59,28 +59,6 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - pagopa-io-react-native-integrity (0.3.2):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - SwiftCBOR
-    - Yoga
   - pagopa-io-react-native-jwt (2.1.0):
     - DoubleConversion
     - glog
@@ -2096,7 +2074,6 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.1)
-  - SwiftCBOR (0.6.0)
   - VisionCamera (4.7.3):
     - VisionCamera/Core (= 4.7.3)
     - VisionCamera/React (= 4.7.3)
@@ -2119,7 +2096,6 @@ DEPENDENCIES:
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - "IoReactNativeIso18013 (from `../node_modules/@pagopa/io-react-native-iso18013`)"
   - "pagopa-io-react-native-crypto (from `../node_modules/@pagopa/io-react-native-crypto`)"
-  - "pagopa-io-react-native-integrity (from `../node_modules/@pagopa/io-react-native-integrity`)"
   - "pagopa-io-react-native-jwt (from `../node_modules/@pagopa/io-react-native-jwt`)"
   - "pagopa-io-react-native-login-utils (from `../node_modules/@pagopa/io-react-native-login-utils`)"
   - "pagopa-io-react-native-secure-storage (from `../node_modules/@pagopa/io-react-native-secure-storage`)"
@@ -2209,7 +2185,6 @@ SPEC REPOS:
     - JOSESwift
     - OpenSSL-Universal
     - SocketRocket
-    - SwiftCBOR
     - ZXingObjC
 
 EXTERNAL SOURCES:
@@ -2234,8 +2209,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@pagopa/io-react-native-iso18013"
   pagopa-io-react-native-crypto:
     :path: "../node_modules/@pagopa/io-react-native-crypto"
-  pagopa-io-react-native-integrity:
-    :path: "../node_modules/@pagopa/io-react-native-integrity"
   pagopa-io-react-native-jwt:
     :path: "../node_modules/@pagopa/io-react-native-jwt"
   pagopa-io-react-native-login-utils:
@@ -2410,7 +2383,6 @@ SPEC CHECKSUMS:
   JOSESwift: 7784b1b844194d0f534eb6ac4fba5af683bccc79
   OpenSSL-Universal: 6082b0bf950e5636fe0d78def171184e2b3899c2
   pagopa-io-react-native-crypto: 9e7e7f59a8c9a3c75157407d75b09edbf5ee47e1
-  pagopa-io-react-native-integrity: 7a4d98dd5eec5fe9acf2d4322d153b17f5eefb7f
   pagopa-io-react-native-jwt: 5c0eac212ff06d4368b3949cd74649a5e8349a95
   pagopa-io-react-native-login-utils: 625219901ce6d4938abfeb4d44d3496cd5c9c459
   pagopa-io-react-native-secure-storage: 58296f306cf79a2bb68438d1d47505fb5645e62c
@@ -2489,7 +2461,6 @@ SPEC CHECKSUMS:
   RNScreens: b0691b7488fc428136a2e7abab32f751b01b2696
   RNSVG: dfe0c8e3cc0a6f6e8bcee696cf11baf69f2c394d
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  SwiftCBOR: b873af28a9cc66003852fdc79a41852a7e54009a
   VisionCamera: 7187b3dac1ff3071234ead959ce311875748e14f
   Yoga: e14bad835e12b6c7e2260fc320bd00e0f4b45add
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
