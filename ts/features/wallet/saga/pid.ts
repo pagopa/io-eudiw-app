@@ -22,11 +22,6 @@ import {Lifecycle, setLifecycle} from '../store/lifecycle';
 import {navigate} from '../../../navigation/utils';
 import {addCredential, addPidWithIdentification} from '../store/credentials';
 import {
-  wellKnownCredential,
-  wellKnownCredentialConfigurationIDs
-} from '../utils/credentials';
-
-import {
   setIdentificationIdentified,
   setIdentificationStarted,
   setIdentificationUnidentified
@@ -35,6 +30,9 @@ import {
   AppListenerWithAction,
   AppStartListening
 } from '../../../listener/listenerMiddleware';
+import {wellKnownCredentialConfigurationIDs} from '../utils/credentials';
+import {selectSessionId} from '../../../store/reducers/preferences';
+import {createWalletProviderFetch} from '../utils/fetch';
 import {getAttestation} from './attestation';
 
 /**
@@ -48,6 +46,8 @@ const obtainPidListener: AppListenerWithAction<
   try {
     const {PID_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
 
+    const state = listenerApi.getState();
+
     // Get the wallet instance attestation and generate its crypto context
     const walletInstanceAttestation = await getAttestation(listenerApi);
 
@@ -56,31 +56,42 @@ const obtainPidListener: AppListenerWithAction<
     // Start the issuance flow
     const startFlow: Credential.Issuance.StartFlow = () => ({
       issuerUrl: PID_PROVIDER_BASE_URL,
-      credentialType: wellKnownCredentialConfigurationIDs.PID
+      credentialId: wellKnownCredentialConfigurationIDs.PID
     });
 
-    const {issuerUrl, credentialType: credentialConfigId} = startFlow();
+    const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;
+    const sessionId = selectSessionId(state);
+    const appFetch = createWalletProviderFetch(
+      walletProviderBaseUrl,
+      sessionId
+    );
+
+    const {issuerUrl, credentialId: credentialConfigId} = startFlow();
 
     // Evaluate issuer trust
-    const {issuerConf} = await Credential.Issuance.getIssuerConfigOIDFED(
-      issuerUrl
+    const {issuerConf} = await Credential.Issuance.evaluateIssuerTrust(
+      issuerUrl,
+      {appFetch}
     );
 
     // Start user authorization
-    const {issuerRequestUri, clientId, codeVerifier, credentialDefinition} =
+    const {issuerRequestUri, clientId, codeVerifier} =
       await Credential.Issuance.startUserAuthorization(
         issuerConf,
-        credentialConfigId,
+        [credentialConfigId],
         {
           walletInstanceAttestation,
           redirectUri,
-          wiaCryptoContext
+          wiaCryptoContext,
+          appFetch
         }
       );
 
     // Extract the credential type from the config
     const credentialConfig =
-      issuerConf.credential_configurations_supported[credentialConfigId];
+      issuerConf.openid_credential_issuer.credential_configurations_supported[
+        credentialConfigId
+      ];
     const credentialType =
       credentialConfig.format === 'mso_mdoc'
         ? credentialConfig.scope
@@ -138,14 +149,23 @@ const obtainPidListener: AppListenerWithAction<
       }
     );
 
+    // Obtain the credential
+    // # TODO: WLEO-727 - rework to support multiple credentials issuance
+    const {credential_configuration_id, credential_identifiers} =
+      accessToken.authorization_details[0]!;
+
     const {credential, format} = await Credential.Issuance.obtainCredential(
       issuerConf,
       accessToken,
       clientId,
-      credentialDefinition,
+      {
+        credential_configuration_id,
+        credential_identifier: credential_identifiers[0]
+      },
       {
         credentialCryptoContext,
-        dPopCryptoContext
+        dPopCryptoContext,
+        appFetch
       }
     );
 
@@ -153,8 +173,7 @@ const obtainPidListener: AppListenerWithAction<
       await Credential.Issuance.verifyAndParseCredential(
         issuerConf,
         credential,
-        format,
-        wellKnownCredential.PID,
+        credential_configuration_id,
         {credentialCryptoContext}
       );
 

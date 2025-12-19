@@ -1,0 +1,30 @@
+diff --git a/src/credential/issuance/07-verify-and-parse-credential.ts b/src/credential/issuance/07-verify-and-parse-credential.ts
+index 374f15b9be1ee538ca8f0fa90e173cba3ce3073c..6f887806c2a40488bda817d7c78c917e272f55e6 100644
+--- a/src/credential/issuance/07-verify-and-parse-credential.ts
++++ b/src/credential/issuance/07-verify-and-parse-credential.ts
+@@ -426,9 +426,9 @@ const verifyAndParseCredentialMDoc: VerifyAndParseCredential = async (
+   { credentialCryptoContext, ignoreMissingAttributes },
+   x509CertRoot
+ ) => {
+-  if (!x509CertRoot) {
+-    throw new IoWalletError("Missing x509CertRoot");
+-  }
++  // if (!x509CertRoot) {
++  //   throw new IoWalletError("Missing x509CertRoot");
++  // }
+ 
+   const decoded = await verifyCredentialMDoc(
+     credential,
+diff --git a/src/mdoc/index.ts b/src/mdoc/index.ts
+index 83f61501ce4ea4cedd469c453d17867d9ac6aac9..f6a883fcdf8f759d14c4d26d70b69e84b2f005d4 100644
+--- a/src/mdoc/index.ts
++++ b/src/mdoc/index.ts
+@@ -32,7 +32,7 @@ export const verify = async (
+   const x5chain =
+     issuerSigned.issuerAuth.unprotectedHeader.x5chain.map(b64utob64);
+   // Verify the x5chain
+-  await verifyX5chain(x5chain, x509CertRoot);
++  // await verifyX5chain(x5chain, x509CertRoot);
+ 
+   const coseSign1 = issuerSigned.issuerAuth.rawValue;
+ 

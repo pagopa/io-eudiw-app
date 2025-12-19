@@ -55,8 +55,8 @@ export const getAttestation = async (listenerApi: AppListener) => {
       appFetch
     });
 
-    listenerApi.dispatch(setAttestation(attestation));
-    return attestation;
+    listenerApi.dispatch(setAttestation(attestation[0].wallet_attestation));
+    return attestation[0].wallet_attestation;
   } else {
     return existingAttestation;
   }

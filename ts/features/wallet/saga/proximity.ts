@@ -3,6 +3,8 @@ import {
   parseVerifierRequest,
   Proximity
 } from '@pagopa/io-react-native-proximity';
+import {call, put, select, take} from 'typed-redux-saga';
+import {ISO18013_5} from '@pagopa/io-react-native-iso18013';
 import {serializeError} from 'serialize-error';
 import {isAnyOf} from '@reduxjs/toolkit';
 import {
@@ -26,24 +28,30 @@ import {selectCredentials} from '../store/credentials';
 import {
   getIsVerifierAuthenticated,
   matchRequestToClaims,
-  verifierCertificates,
-  b64utob64
+  verifierCertificates
 } from '../utils/proximity';
-import {
-  IdentificationResultTask,
-  startSequentializedIdentificationProcess
-} from '../../../listener/identification';
 import {
   AppListenerWithAction,
   AppStartListening
 } from '../../../listener/listenerMiddleware';
-import {setInstanceCreationRequest} from '../store/pidIssuance';
+
+const {
+  ErrorCode,
+  addListener,
+  close,
+  generateResponse,
+  getQrCodeString,
+  parseVerifierRequest,
+  sendErrorResponse,
+  sendResponse,
+  start
+} = ISO18013_5;
 
 /**
  * Saga that handles the state of a proximity presentation
  */
 const proximityPresentation: AppListenerWithAction<
-  ReturnType<typeof setInstanceCreationRequest>
+  ReturnType<typeof setProximityStatusStarted>
 > = async (_, listenerApi) => {
   try {
     // First thing, we request BLE permissions and we setup the proximity handler
@@ -51,32 +59,49 @@ const proximityPresentation: AppListenerWithAction<
     if (!permissions) {
       throw new Error('Permissions not granted');
     }
-    await Proximity.close().catch(() => {});
+
+    await close().catch(() => {});
 
     // Provide the verifiers certificates
     const certificates = verifierCertificates.map(cert => cert.certificate);
-    await Proximity.start({certificates});
-    // Registering proximity events listeners
-    Proximity.addListener('onDeviceConnecting', () => {});
+
+    await start({
+      certificates: [certificates]
+    });
+
+    addListener('onDeviceConnecting', () => {});
+
+    addListener('onDeviceConnected', () => {
+      store.dispatch(setProximityStatusConnected());
+    });
+
+    addListener('onDocumentRequestReceived', payload => {
+      // A new request has been received
+      if (!payload || !payload.data) {
+        store.dispatch(
+          setProximityStatusError('Bad document request received')
+        );
+      }
+    });
 
     Proximity.addListener('onDeviceConnected', () => {
       listenerApi.dispatch(setProximityStatusConnected());
     });
 
-    Proximity.addListener('onDocumentRequestReceived', payload => {
-      // A new request has been received
-      if (!payload || !payload.data) {
-        listenerApi.dispatch(
-          setProximityStatusError('Bad document request received')
-        );
-        return;
-      }
-
-      // Parse and verify the received request with the exposed function
-      const parsedJson = JSON.parse(payload.data);
-      const parsedRequest = parseVerifierRequest(parsedJson);
-      listenerApi.dispatch(setProximityStatusReceivedDocument(parsedRequest));
+    addListener('onDeviceDisconnected', () => {
+      store.dispatch(setProximityStatusStopped());
     });
+
+    addListener('onError', payload => {
+      store.dispatch(
+        setProximityStatusError(payload?.error ?? 'Unknown internal error')
+      );
+    });
+
+    // Parse and verify the received request with the exposed function
+    const parsedJson = JSON.parse(payload.data);
+    const parsedRequest = parseVerifierRequest(parsedJson);
+    listenerApi.dispatch(setProximityStatusReceivedDocument(parsedRequest));
 
     Proximity.addListener('onDeviceDisconnected', () => {
       listenerApi.dispatch(setProximityStatusStopped());
@@ -89,7 +114,7 @@ const proximityPresentation: AppListenerWithAction<
     });
 
     // Set QR Code
-    const qrCode = await Proximity.getQrCodeString();
+    const qrCode = await getQrCodeString();
     listenerApi.dispatch(setProximityQrCode(qrCode));
 
     /**
@@ -109,12 +134,10 @@ const proximityPresentation: AppListenerWithAction<
         );
 
         if (setProximityStatusError.match(action)) {
-          await Proximity.sendErrorResponse(
-            Proximity.ErrorCode.SESSION_TERMINATED
-          );
+          await sendErrorResponse(ErrorCode.SESSION_TERMINATED);
         }
 
-        await closeFlow();
+        closeFlow();
       })()
     ]);
   } catch (e) {
@@ -129,15 +152,11 @@ const proximityPresentation: AppListenerWithAction<
  * @param acceptedFields The Proximity Presentation's {@link AcceptedFields}
  */
 function* onProximitySendResponseIdentified(
-  documents: Array<Proximity.Document>,
-  acceptedFields: AcceptedFields
+  documents: Array<ISO18013_5.RequestedDocument>,
+  acceptedFields: ISO18013_5.AcceptedFields
 ) {
-  const response = yield* call(
-    Proximity.generateResponse,
-    documents,
-    acceptedFields
-  );
-  yield* call(Proximity.sendResponse, response);
+  const response = yield* call(generateResponse, documents, acceptedFields);
+  yield* call(sendResponse, response);
   yield* put(setProximityStatusAuthorizationComplete());
   // This is needed so that the saga racing with this can trigger
   yield* take(setProximityStatusStopped);
@@ -186,15 +205,16 @@ function* handleProximityResponse() {
   ]);
 
   if (setProximityStatusAuthorizationSend.match(choice)) {
-    const documents: Array<Proximity.Document> = mdocCredentials.map(
+    const documents: Array<ISO18013_5.RequestedDocument> = mdocCredentials.map(
       credential => ({
+        issuerSignedContent: credential.credential,
         alias: credential.keyTag,
-        docType: credential.credentialType,
-        issuerSignedContent: b64utob64(credential.credential)
+        docType: credential.credentialType
       })
     );
 
     const acceptedFields = yield* select(selectProximityAcceptedFields);
+
     if (acceptedFields) {
       const onIdentificationIdentified: IdentificationResultTask<
         typeof onProximitySendResponseIdentified
@@ -231,10 +251,7 @@ function* handleProximityResponse() {
  * Utility function for proximity flows bad termination
  */
 function* abortProximityFlow() {
-  yield* call(
-    Proximity.sendErrorResponse,
-    Proximity.ErrorCode.SESSION_TERMINATED
-  );
+  yield* call(sendErrorResponse, ErrorCode.SESSION_TERMINATED);
   // After sending the error message, this action is triggered to close the flow in the race condition
   yield* put(setProximityStatusStopped());
 }
@@ -243,24 +260,12 @@ function* abortProximityFlow() {
  * This helper saga removes all listeners from the proximity handler and resets
  * the QR code
  */
+
+// #WLEO-741 Refactor Event Listener Handling into a Custom Hook
+
 function* closeFlow() {
   yield* put(resetProximityQrCode());
-  yield* call(() => {
-    Proximity.removeListener('onDeviceConnected');
-  });
-  yield* call(() => {
-    Proximity.removeListener('onDeviceConnecting');
-  });
-  yield* call(() => {
-    Proximity.removeListener('onDeviceDisconnected');
-  });
-  yield* call(() => {
-    Proximity.removeListener('onDocumentRequestReceived');
-  });
-  yield* call(() => {
-    Proximity.removeListener('onError');
-  });
-  yield* call(Proximity.close);
+  yield* call(close);
 }
 
 export const addProximityListener = (startAppListening: AppStartListening) => {
