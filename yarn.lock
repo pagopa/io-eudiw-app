@@ -2181,16 +2181,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-integrity@npm:^0.3.2":
-  version: 0.3.2
-  resolution: "@pagopa/io-react-native-integrity@npm:0.3.2"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 9adf99e81c119b07924a9b4edb58334d7891c958f7928199f69f49496aac4c133f668515141aa54b39c44b6f6a7088ee70d22ae7d48639605cf4d557de6c8f71
-  languageName: node
-  linkType: hard
-
 "@pagopa/io-react-native-iso18013@npm:^0.7.0":
   version: 0.7.0
   resolution: "@pagopa/io-react-native-iso18013@npm:0.7.0"
@@ -8259,7 +8249,6 @@ __metadata:
     "@gorhom/bottom-sheet": ^5.0.6
     "@pagopa/io-app-design-system": 5.11.13-0
     "@pagopa/io-react-native-crypto": ^1.2.3
-    "@pagopa/io-react-native-integrity": ^0.3.2
     "@pagopa/io-react-native-iso18013": ^0.7.0
     "@pagopa/io-react-native-jwt": 2.1.0
     "@pagopa/io-react-native-login-utils": ^1.0.9
