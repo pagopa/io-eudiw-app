@@ -29,7 +29,6 @@
     "@gorhom/bottom-sheet": "^5.0.6",
     "@pagopa/io-app-design-system": "5.11.13-0",
     "@pagopa/io-react-native-crypto": "^1.2.3",
-    "@pagopa/io-react-native-integrity": "^0.3.2",
     "@pagopa/io-react-native-iso18013": "^0.7.0",
     "@pagopa/io-react-native-jwt": "2.1.0",
     "@pagopa/io-react-native-login-utils": "^1.0.9",
