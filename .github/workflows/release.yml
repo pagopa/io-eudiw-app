@@ -169,7 +169,7 @@ jobs:
         run: |
           gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} \
             android/app/build/outputs/bundle/release/app-release.aab#android-app-release.aab \
-            android/eudiw-universal.apk#eudiw-universal.apk
+            android/io-eudiw-app-universal.apk#io-eudiw-app-universal.apk
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
