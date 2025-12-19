@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useMemo} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -26,9 +26,7 @@ import {WalletNavigatorParamsList} from '../../navigation/WalletNavigator';
 import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
 import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
-import CredentialTypePresentationClaimsList, {
-  CredentialTypePresentationClaimsListDescriptor
-} from '../../components/presentation/CredentialTypePresentationClaimsList';
+import CredentialTypePresentationClaimsList from '../../components/presentation/CredentialTypePresentationClaimsList';
 /**
  * Description which contains the requested of the credential to be presented.
  */
@@ -70,7 +68,7 @@ const PresentationPostDefinition = ({route}: Props) => {
     return Object.fromEntries(credentialsBool);
   }, [route.params.descriptor]);
 
-  const [optionalChecked, setOptionalChecked] = useState(baseCheckState);
+  const optionalChecked = baseCheckState;
 
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();
@@ -120,9 +118,7 @@ const PresentationPostDefinition = ({route}: Props) => {
     goBack: cancelAlert
   });
 
-  const requiredDisclosures = route.params.descriptor[0].requiredDisclosures;
-
-  const optionalDisclosures = route.params.descriptor[0].optionalDisclosures;
+  const requiredDisclosures = route.params.descriptor;
 
   /**
    * Helper method to parse a DCQL request
@@ -143,15 +139,7 @@ const PresentationPostDefinition = ({route}: Props) => {
         <Body> {t('wallet:presentation.trust.subtitle')}</Body>
         <VSpacer size={8} />
         <CredentialTypePresentationClaimsList
-          mandatoryDescriptor={
-            requiredDisclosures as unknown as CredentialTypePresentationClaimsListDescriptor
-          }
-          optionalSection={{
-            optionalDescriptor:
-              optionalDisclosures as unknown as CredentialTypePresentationClaimsListDescriptor,
-            optionalCheckState: optionalChecked,
-            setOptionalCheckState: setOptionalChecked
-          }}
+          mandatoryDescriptor={requiredDisclosures}
         />
         <VSpacer size={24} />
         <FeatureInfo

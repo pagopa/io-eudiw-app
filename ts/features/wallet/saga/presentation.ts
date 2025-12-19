@@ -21,6 +21,7 @@ import {
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
 import {ParsedCredential} from '../utils/types';
+import {CredentialTypePresentationClaimsListDescriptor} from '../components/presentation/CredentialTypePresentationClaimsList';
 
 type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 type EvaluateDcqlReturn = Awaited<
@@ -34,17 +35,6 @@ export function* watchPresentationSaga() {
   yield* takeLatest(setPreDefinitionRequest, handlePresentationPreDefinition);
 }
 
-export interface PIDField {
-  id: string;
-  value: unknown;
-  name: Record<string, string>;
-}
-
-export interface PIDObject {
-  [pidType: string]: {
-    claims: Record<string, PIDField>;
-  };
-}
 type RequiredDisclosure = [string, string, unknown];
 
 /**
@@ -61,34 +51,23 @@ export function transformDescriptorObject(
   requiredDisclosures: Array<RequiredDisclosure>,
   parsedCredential: ParsedCredential,
   credentialType: string
-): PIDObject {
-  const claims = requiredDisclosures.reduce<Record<string, PIDField>>(
-    (acc, [id, claimName]) => {
-      const parsed = parsedCredential[claimName];
+): CredentialTypePresentationClaimsListDescriptor {
+  const claims = requiredDisclosures.reduce<
+    CredentialTypePresentationClaimsListDescriptor['string']
+  >((acc, [_, claimName]) => {
+    const parsed = parsedCredential[claimName];
 
-      const name: Record<string, string> =
-        typeof parsed.name === 'string'
-          ? {en: parsed.name}
-          : parsed.name && typeof parsed.name === 'object'
-          ? (parsed.name as Record<string, string>)
-          : {};
-
-      return {
-        ...acc,
-        [claimName]: {
-          id,
-          value: parsed.value,
-          name
-        }
-      };
-    },
-    {}
-  );
+    return {
+      ...acc,
+      ['unused']: {
+        ...acc.unused,
+        [claimName]: parsed
+      }
+    };
+  }, {});
 
   return {
-    [credentialType]: {
-      claims
-    }
+    [credentialType]: claims
   };
 }
 /**
@@ -139,7 +118,7 @@ function* handlePresentationPreDefinition(
      */
     const credentialsSdJwt = [
       ...Object.values(credentials)
-        .filter(c => c.format === ('dc+sd-jwt' as any))
+        .filter(c => c.format === 'dc+sd-jwt')
         .map(c => [createCryptoContextFor(c.keyTag), c.credential])
     ] as Array<[CryptoContext, string]>;
 
@@ -154,22 +133,32 @@ function* handlePresentationPreDefinition(
     );
 
     const allCredentials = yield* select(selectCredentials);
-    const sdJwtCredential = allCredentials.filter(
+    const sdJwtCredentials = allCredentials.filter(
       credential =>
         credential.format === 'dc+sd-jwt' || credential.format === 'vc+sd-jwt'
     );
 
     yield* put(
       setPreDefinitionSuccess(
-        evaluateDcqlQuery.map(query => ({
-          requiredDisclosures: transformDescriptorObject(
-            query.requiredDisclosures,
-            sdJwtCredential[0]?.parsedCredential,
-            sdJwtCredential[0]?.credentialType
-          ),
-          optionalDisclosures: [],
-          unrequestedDisclosures: []
-        }))
+        evaluateDcqlQuery
+          .map(query => {
+            const sdJwtFoundCredential = sdJwtCredentials.find(
+              cred => cred.credentialType === query.vct
+            );
+
+            if (!sdJwtFoundCredential) {
+              throw new Error(
+                `No credential found for the required VC type: ${query.vct}`
+              );
+            }
+
+            return transformDescriptorObject(
+              query.requiredDisclosures,
+              sdJwtFoundCredential.parsedCredential,
+              sdJwtFoundCredential.credentialType
+            );
+          })
+          .reduce((acc, curr) => ({...acc, ...curr}), {})
       )
     );
 
