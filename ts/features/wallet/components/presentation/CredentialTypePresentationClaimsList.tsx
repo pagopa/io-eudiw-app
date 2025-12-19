@@ -15,18 +15,6 @@ import {CredentialClaim} from '../credential/CredentialClaims';
 import {ParsedCredential} from '../../utils/types';
 import {ClaimsSelector} from '../../../../components/ClaimsSelector';
 
-export interface PIDField {
-  id: string;
-  value: unknown;
-  name: Record<string, string>;
-}
-
-export interface PIDObject {
-  [pidType: string]: {
-    claims: Record<string, PIDField>;
-  };
-}
-
 /**
  * This is the type definition for the accepted fields that will be presented to the verifier app.
  * It contains of a nested object structure, where the outermost key represents the credential doctype.
@@ -61,9 +49,7 @@ export type CredentialTypePresentationClaimsListDescriptor = Record<
 type DisclosuresViewModel = Record<string, Record<string, AttributeDescriptor>>;
 
 type CredentialTypePresentationClaimsListProps = {
-  mandatoryDescriptor?:
-    | CredentialTypePresentationClaimsListDescriptor
-    | PIDObject;
+  mandatoryDescriptor?: CredentialTypePresentationClaimsListDescriptor;
   optionalSection?: {
     optionalDescriptor: CredentialTypePresentationClaimsListDescriptor;
     optionalCheckState: CredentialTypePresentationClaimsListOptionalAcceptedFields;

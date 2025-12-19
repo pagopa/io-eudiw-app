@@ -6,7 +6,6 @@ import {
 import {serializeError} from 'serialize-error';
 import {CryptoContext} from '@pagopa/io-react-native-jwt';
 import {
-  Descriptor,
   resetPresentation,
   setPostDefinitionCancel,
   setPostDefinitionError,
@@ -21,6 +20,7 @@ import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
+import {ParsedCredential} from '../utils/types';
 
 type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 type EvaluateDcqlReturn = Awaited<
@@ -34,6 +34,63 @@ export function* watchPresentationSaga() {
   yield* takeLatest(setPreDefinitionRequest, handlePresentationPreDefinition);
 }
 
+export interface PIDField {
+  id: string;
+  value: unknown;
+  name: Record<string, string>;
+}
+
+export interface PIDObject {
+  [pidType: string]: {
+    claims: Record<string, PIDField>;
+  };
+}
+type RequiredDisclosure = [string, string, unknown];
+
+/**
+ * Transforms a list of required disclosures and a parsed credential into a formatted object.
+ * This function maps each required disclosure to its corresponding parsed claim, normalizes
+ * multilingual claim names, and groups them under the provided credential type.
+ *
+ * @param requiredDisclosures - An array of tuples containing the claim ID and claim name that must be disclosed.
+ * @param parsedCredential - The parsed credential object containing claim data extracted from the credential.
+ * @param credentialType - The type of credential under which the transformed claims should be nested.
+ * @returns A {@link PIDObject} containing the structured claims mapped to the given credential type.
+ */
+export function transformDescriptorObject(
+  requiredDisclosures: Array<RequiredDisclosure>,
+  parsedCredential: ParsedCredential,
+  credentialType: string
+): PIDObject {
+  const claims = requiredDisclosures.reduce<Record<string, PIDField>>(
+    (acc, [id, claimName]) => {
+      const parsed = parsedCredential[claimName];
+
+      const name: Record<string, string> =
+        typeof parsed.name === 'string'
+          ? {en: parsed.name}
+          : parsed.name && typeof parsed.name === 'object'
+          ? (parsed.name as Record<string, string>)
+          : {};
+
+      return {
+        ...acc,
+        [claimName]: {
+          id,
+          value: parsed.value,
+          name
+        }
+      };
+    },
+    {}
+  );
+
+  return {
+    [credentialType]: {
+      claims
+    }
+  };
+}
 /**
  * Saga for the credential presentation.
  * It listens for an action which stars the presentation flow.
@@ -96,11 +153,20 @@ function* handlePresentationPreDefinition(
       requestObject.dcql_query as DcqlQuery
     );
 
+    const allCredentials = yield* select(selectCredentials);
+    const sdJwtCredential = allCredentials.filter(
+      credential =>
+        credential.format === 'dc+sd-jwt' || credential.format === 'vc+sd-jwt'
+    );
+
     yield* put(
       setPreDefinitionSuccess(
         evaluateDcqlQuery.map(query => ({
-          requiredDisclosures:
-            query.requiredDisclosures as unknown as Descriptor[0]['requiredDisclosures'],
+          requiredDisclosures: transformDescriptorObject(
+            query.requiredDisclosures,
+            sdJwtCredential[0]?.parsedCredential,
+            sdJwtCredential[0]?.credentialType
+          ),
           optionalDisclosures: [],
           unrequestedDisclosures: []
         }))
