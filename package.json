@@ -113,7 +113,7 @@
   "engines": {
     "node": ">=22"
   },
-  "packageManager": "yarn@3.6.4",
+  "packageManager": "yarn@4.12.0",
   "resolutions": {
     "@pagopa/io-react-native-wallet@2.2.0": "patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch"
   }
