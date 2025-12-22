@@ -1,4 +1,4 @@
-import {useEffect, useMemo} from 'react';
+import {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -50,26 +50,6 @@ const PresentationPostDefinition = ({route}: Props) => {
   const postDefinitionStatus = useAppSelector(selectPostDefinitionStatus);
   const {navigateToWallet} = useNavigateToWalletWithReset();
 
-  // TESTING PURPOSES
-  const baseCheckState = useMemo(() => {
-    const credentialsBool = Object.entries(route.params.descriptor).map(
-      ([credType, namespaces]) => {
-        const namespacesBool = Object.entries(namespaces).map(
-          ([namespace, attributes]) => {
-            const attributesBool = Object.fromEntries(
-              Object.keys(attributes).map(key => [key, true])
-            );
-            return [namespace, attributesBool];
-          }
-        );
-        return [credType, Object.fromEntries(namespacesBool)];
-      }
-    );
-    return Object.fromEntries(credentialsBool);
-  }, [route.params.descriptor]);
-
-  const optionalChecked = baseCheckState;
-
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();
   useHardwareBackButton(() => true);
@@ -120,9 +100,6 @@ const PresentationPostDefinition = ({route}: Props) => {
 
   const requiredDisclosures = route.params.descriptor;
 
-  /**
-   * Helper method to parse a DCQL request
-   */
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>
       <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
@@ -158,7 +135,7 @@ const PresentationPostDefinition = ({route}: Props) => {
           type: 'TwoButtons',
           primary: {
             label: t('global:buttons.confirm'),
-            onPress: () => dispatch(setPostDefinitionRequest(optionalChecked)),
+            onPress: () => dispatch(setPostDefinitionRequest([])),
             loading: postDefinitionStatus.loading
           },
           secondary: {
