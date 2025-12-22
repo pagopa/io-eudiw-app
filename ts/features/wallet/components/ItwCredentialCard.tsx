@@ -3,12 +3,12 @@ import Color from "color";
 import { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import { CardColorScheme, ItwCredentialStatus } from "../types";
-import { DigitalVersionBadge } from "./DigitalVersionBadge";
-import { CardBackground } from "./CardBackground";
 import { useItwDisplayCredentialStatus } from "../hooks/useItwDisplayCredentialStatus";
 import { useThemeColorByCredentialType } from "../utils/itwStyleUtils";
 import { tagPropsByStatus, useBorderColorByStatus, validCredentialStatuses } from "../utils/itwCredentialUtils";
 import { getCredentialNameByType } from "../utils/credentials";
+import { CardBackground } from "./CardBackground";
+import { DigitalVersionBadge } from "./DigitalVersionBadge";
 
 export type ItwCredentialCard = {
   /**
@@ -50,9 +50,7 @@ export const ItwCredentialCard = ({
   const theme = useThemeColorByCredentialType(credentialType);
   const borderColorMap = useBorderColorByStatus();
 
-  const statusTagProps = useMemo<Tag | undefined>(() => {
-    return tagPropsByStatus[status];
-  }, [status]);
+  const statusTagProps = useMemo<Tag | undefined>(() => tagPropsByStatus[status], [status]);
 
   const { titleColor, titleOpacity, colorScheme } = useMemo<StyleProps>(() => {
     // Include "jwtExpired" as a valid status because credentials with this state

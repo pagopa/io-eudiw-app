@@ -2,8 +2,8 @@
  * Utility functions for working with credential claims.
  */
 
+import { isValid } from 'date-fns';
 import { ParsedCredential } from "./types";
-import { isValid } from 'date-fns'
 
 /**
  *

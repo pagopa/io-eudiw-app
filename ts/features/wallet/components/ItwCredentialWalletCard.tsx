@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
+import MAIN_ROUTES from "../../../navigation/main/routes";
+import WALLET_ROUTES from "../navigation/routes";
 import { ItwCredentialCard } from "./ItwCredentialCard";
 import { WalletCardPressableBase } from "./WalletCardPressableBase";
 import { withWalletCardBaseComponent } from "./WalletCardBaseComponent";
-import MAIN_ROUTES from "../../../navigation/main/routes";
-import WALLET_ROUTES from "../navigation/routes";
 
 export type ItwCredentialWalletCardProps = ItwCredentialCard & {
   isPreview?: false; // Cards in wallet cannot be in preview mode

@@ -3,16 +3,16 @@ import { format } from "date-fns";
 import { ComponentProps, useMemo } from "react";
 import { View } from "react-native";
 import I18n from "i18next";
-import {
-  ItwJwtCredentialStatus,
-} from "../utils/itwTypesUtils";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import {
+  ItwJwtCredentialStatus
+} from "../utils/itwTypesUtils";
 import { StoredCredential } from "../utils/types";
 import { useAppSelector } from "../../../store";
 import { itwCredentialsEidSelector, itwCredentialsEidStatusSelector } from "../store/credentials";
 import WALLET_ROUTES from "../navigation/routes";
 import MAIN_ROUTES from "../../../navigation/main/routes";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MainNavigatorParamsList } from "../../../navigation/main/MainStackNavigator";
 
 const defaultLifecycleStatus: Array<ItwJwtCredentialStatus> = [
@@ -34,14 +34,14 @@ type Props = {
  */
 export const ItwEidLifecycleAlert = ({
   lifecycleStatus = defaultLifecycleStatus,
-  navigation,
+  navigation
 }: Props) => {
   const eidOption = useAppSelector(itwCredentialsEidSelector);
   const maybeEidStatus = useAppSelector(itwCredentialsEidStatusSelector);
 
   const startEidReissuing = () => {
     navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-      screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION,
+      screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
     });
   };
 
@@ -111,5 +111,5 @@ export const ItwEidLifecycleAlert = ({
     );
   };
 
-  return eidOption && maybeEidStatus && <Content eid={eidOption} eidStatus={maybeEidStatus} />
+  return eidOption && maybeEidStatus && <Content eid={eidOption} eidStatus={maybeEidStatus} />;
 };

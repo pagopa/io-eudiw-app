@@ -1,11 +1,11 @@
-import { ItwHighlightBanner } from "./ItwHighlightBanner";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
+import { ItwHighlightBanner } from "./ItwHighlightBanner";
 
 export const ItwUpgradeBanner = () => {
   const navigation = useNavigation();
 
-  const {t} = useTranslation('wallet')
+  const {t} = useTranslation('wallet');
 
   const handleOnPress = () => {
     navigation.navigate('MAIN_WALLET_NAV', {
@@ -13,7 +13,7 @@ export const ItwUpgradeBanner = () => {
     });
   };
 
-  //TODO Fix translations
+  // TODO Fix translations
   return (
     <ItwHighlightBanner
       testID="itwUpgradeBannerTestID"

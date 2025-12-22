@@ -2,7 +2,7 @@ import { IOColors, Tag, useIOTheme } from "@pagopa/io-app-design-system";
 import I18n from "i18next";
 import { CredentialType } from "./itwMocksUtils";
 import {
-  ItwCredentialStatus,
+  ItwCredentialStatus
 } from "./itwTypesUtils";
 
 // Credentials that can be actively requested and obtained by the user

@@ -6,10 +6,10 @@ import {StoredCredential} from '../utils/types';
 import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
 import {wellKnownCredential} from '../utils/credentials';
-import {resetLifecycle} from './lifecycle';
 import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
 import { ItwCredentialCard } from '../components/ItwCredentialCard';
+import {resetLifecycle} from './lifecycle';
 
 /* State type definition for the credentials slice.
  * This is stored as an array to avoid overhead due to map not being serializable,
@@ -124,7 +124,7 @@ export const selectCredential = (credentialType: string) =>
     credentials.find(c => c.credentialType === credentialType)
   );
 
-export const itwCredentialsEidSelector = selectCredential(wellKnownCredential.PID)
+export const itwCredentialsEidSelector = selectCredential(wellKnownCredential.PID);
 
 /**
  * Returns the credential status and the error message corresponding to the status assertion error, if present.
@@ -152,7 +152,7 @@ export const itwCredentialsEidExpirationSelector = createSelector(
  * Selects all the credentials beside the PID/EID and transforms them
  * into {@link ItwCredentialCard}
  */
-export const selectWalletCards : (state: RootState) => WalletCard[] = createSelector(
+export const selectWalletCards : (state: RootState) => Array<WalletCard> = createSelector(
   selectCredentials,
   (credentials) => credentials.filter(cred => cred.credentialType !== wellKnownCredential.PID)
   .map(cred => ({
@@ -161,5 +161,5 @@ export const selectWalletCards : (state: RootState) => WalletCard[] = createSele
     credentialType : cred.credentialType,
     credentialStatus : getCredentialStatus(cred) 
   }))
-)
+);
   

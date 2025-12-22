@@ -3,9 +3,9 @@ import { memo, useMemo } from "react";
 import { View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import { useDebugInfo } from "../../../hooks/useDebugInfo";
-import { ItwWalletCardsContainer } from "./ItwWalletCardsContainer";
 import { useAppSelector } from "../../../store";
 import { lifecycleIsOperationalSelector, lifecycleIsValidSelector } from "../store/lifecycle";
+import { ItwWalletCardsContainer } from "./ItwWalletCardsContainer";
 import { ItwUpgradeBanner } from "./ItwUpgradeBanner";
 
 /**
@@ -17,19 +17,17 @@ const WalletCardsContainer = () => {
   const shouldRenderItwCardsContainer = useAppSelector(
     lifecycleIsValidSelector
   );
-  const shouldRenderItwActivationBanner = useAppSelector(lifecycleIsOperationalSelector)
+  const shouldRenderItwActivationBanner = useAppSelector(lifecycleIsOperationalSelector);
 
-  useDebugInfo({shouldRenderItwCardsContainer, shouldRenderItwActivationBanner})
+  useDebugInfo({shouldRenderItwCardsContainer, shouldRenderItwActivationBanner});
 
   // Content to render in the wallet screen, based on the current state
   // TODO check if it's worth it to use the wallet skeleton
-  const walletContent = useMemo(() => {
-    return (
+  const walletContent = useMemo(() => (
       <View testID="walletCardsContainerTestID" style={{ flex: 1 }}>
         {shouldRenderItwCardsContainer && <ItwWalletCardsContainer />}
       </View>
-    );
-  }, [
+    ), [
     shouldRenderItwCardsContainer
   ]);
 

@@ -11,8 +11,8 @@ import Animated from "react-native-reanimated";
 import BackgroundImageValid from "../assets/img/brand/itw_deck_status.svg";
 import BackgroundImageExpired from "../assets/img/brand/itw_deck_status_expired.svg";
 import ItWalletIdLogoImage from "../assets/img/brand/itw_id_logo.svg";
-import { ItwBrandedBox } from "./ItwBrandedBox";
 import { ItwJwtCredentialStatus } from "../types";
+import { ItwBrandedBox } from "./ItwBrandedBox";
 import { ItwSkiaBrandedGradientVariant } from "./ItwBrandedSkiaGradient";
 
 type ItwWalletIdStatusProps = {

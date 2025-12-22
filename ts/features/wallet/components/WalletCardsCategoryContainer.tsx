@@ -50,16 +50,16 @@ export const WalletCardsCategoryContainer = ({
       scrollEnabled={false}
       data={cards}
       renderItem={({ index, item }) => {
-        //renderWalletCardFn is not of use for the eudiw scenarios because only Itw is supported
-        //renderWalletCardFn(item, index < cards.length - 1)
-        const {key : _, type : __, ...cardProps } = item
+        // renderWalletCardFn is not of use for the eudiw scenarios because only Itw is supported
+        // renderWalletCardFn(item, index < cards.length - 1)
+        const {key : _, type : __, ...cardProps } = item;
 
         return <ItwCredentialWalletCard 
           key={item.key}
           testID={`walletCardTestID_${item.type}_${item.key}`}
           cardProps={cardProps}
           isStacked={index < cards.length -1}
-        />
+        />;
       }
       }
       itemLayoutAnimation={itemLayoutAnimation}

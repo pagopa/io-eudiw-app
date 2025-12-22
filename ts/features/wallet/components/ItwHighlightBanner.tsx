@@ -34,7 +34,7 @@ import Animated, {
 import HighlightImage from "../assets/img/l3/highlight.svg";
 import { Renderer } from "../../../components/markdown/types";
 import { getTxtNodeKey } from "../../../components/markdown/renderRules";
-import IOMarkdown from "../../../components/markdown"
+import IOMarkdown from "../../../components/markdown";
 import { itwGradientColors } from "../utils/constants";
 
 type Props = {

@@ -1,7 +1,7 @@
 import { differenceInCalendarDays } from "date-fns";
 import { getCredentialExpireDate } from "./itwClaimsUtils";
 import {
-  ItwCredentialStatus,
+  ItwCredentialStatus
 } from "./itwTypesUtils";
 import { StoredCredential } from "./types";
 
@@ -42,8 +42,8 @@ export const getCredentialStatus = (
   const jwtExpireDays = differenceInCalendarDays(expiration, now);
 
   // Not all credentials have an expiration date
-  const credentialExpireDate = getCredentialExpireDate(parsedCredential)
-  const documentExpireDays = credentialExpireDate ? differenceInCalendarDays(credentialExpireDate, now) : NaN
+  const credentialExpireDate = getCredentialExpireDate(parsedCredential);
+  const documentExpireDays = credentialExpireDate ? differenceInCalendarDays(credentialExpireDate, now) : NaN;
 
 
   if (documentExpireDays <= 0) {

@@ -1,11 +1,11 @@
 import { IOColors } from "@pagopa/io-app-design-system";
 import { StatusBarStyle } from "react-native";
 import { useMemo } from "react";
+import { HeaderSecondLevelHookProps } from "../../../hooks/useHeaderSecondLevel";
+import { getLuminance } from "../../../utils/color";
 import { CredentialType } from "./itwMocksUtils";
 import { useItWalletTheme } from "./theme";
-import { HeaderSecondLevelHookProps } from "../../../hooks/useHeaderSecondLevel";
 import { getCredentialNameByType } from "./credentials";
-import { getLuminance } from "../../../utils/color";
 
 export type CredentialTheme = {
   backgroundColor: string;
