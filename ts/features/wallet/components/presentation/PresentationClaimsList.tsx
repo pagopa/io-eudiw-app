@@ -13,7 +13,7 @@ import {useTranslation} from 'react-i18next';
 import {Descriptor, OptionalClaims} from '../../store/presentation';
 import {ClaimDisplayFormat} from '../../utils/types';
 import {getSafeText, isStringNullyOrEmpty} from '../../../../utils/string';
-import {claimScheme, VerificationEvidenceType} from '../../utils/claims';
+import {claimScheme, VerificationEvidenceClaimType} from '../../utils/claims';
 
 export type RequiredClaimsProps = {
   optionalChecked: Array<OptionalClaims>;
@@ -157,7 +157,7 @@ export const getClaimDisplayValue = (
       case 'drivingPrivileges':
         return decoded.data.value.map(elem => elem.vehicle_category_code);
       case 'verificationEvidence':
-        return JSON.stringify(decoded.data as VerificationEvidenceType);
+        return JSON.stringify(decoded.data as VerificationEvidenceClaimType);
       case 'string':
         return getSafeText(decoded.data.value);
       // Rendering the image as its encoded version temporarily,

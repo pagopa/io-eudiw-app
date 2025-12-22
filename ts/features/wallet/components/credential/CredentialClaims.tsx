@@ -5,8 +5,8 @@ import {useTranslation} from 'react-i18next';
 import {Image, View} from 'react-native';
 import {
   claimScheme,
-  DrivingPrivilegesType,
-  VerificationEvidenceType
+  DrivingPrivilegesClaimType,
+  VerificationEvidenceClaimType
 } from '../../utils/claims';
 import {ClaimDisplayFormat} from '../../utils/types';
 import {useIOBottomSheetModal} from '../../../../hooks/useBottomSheet';
@@ -164,7 +164,7 @@ const DrivingPrivilegesClaimItem = ({
   reversed
 }: {
   label: string;
-  claim: DrivingPrivilegesType['value'][0];
+  claim: DrivingPrivilegesClaimType['value'][0];
   detailsButtonVisible?: boolean;
   reversed: boolean;
 }) => {
@@ -233,7 +233,7 @@ export const VerificationEvidenceClaimItem = ({
   reversed
 }: {
   label: string;
-  claim: VerificationEvidenceType['value'];
+  claim: VerificationEvidenceClaimType['value'];
   detailsButtonVisible: boolean;
   reversed: boolean;
 }) => {

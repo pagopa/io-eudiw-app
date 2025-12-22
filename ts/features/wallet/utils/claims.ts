@@ -13,7 +13,9 @@ export const claimType = {
   verificationEvidence: 'verificationEvidence',
   string: 'string',
   image: 'image',
-  stringArray: 'stringArray'
+  pdf : 'application/pdf',
+  stringArray: 'stringArray',
+  placeOfBirth : 'placeOfBirth'
 } as const;
 
 /**
@@ -92,12 +94,12 @@ export const verificationEvidenceSchema = z
     type: claimType.verificationEvidence
   }));
 
-export type VerificationEvidenceType = z.infer<
+export type VerificationEvidenceClaimType = z.infer<
   typeof verificationEvidenceSchema
 >;
 
 /**
- * schema to validate a dirving privileges claim of the MDL when the base claim label is not specified
+ * Schema to validate a dirving privileges claim of the MDL when the base claim label is not specified
  */
 export const drivingPrivilegesSchema = z
   .array(
@@ -112,7 +114,7 @@ export const drivingPrivilegesSchema = z
     type: claimType.drivingPrivileges
   }));
 
-export type DrivingPrivilegesType = z.infer<typeof drivingPrivilegesSchema>;
+export type DrivingPrivilegesClaimType = z.infer<typeof drivingPrivilegesSchema>;
 
 /**
  * These bytes represent the possible kinds of SOF segments, which contain the image's proportions,
@@ -205,7 +207,7 @@ export const base64ImageSchema = z
     };
   });
 
-export type Base64ImageScheme = z.infer<typeof base64ImageSchema>;
+export type Base64ImageClaimType = z.infer<typeof base64ImageSchema>;
 
 /**
  * Schema to validate claims that are known to be dates for which expiration should be checked
@@ -228,6 +230,18 @@ export const dateThatCanExpireSchema = z
   );
 
 /**
+ * Schema to validate claims representing places of birth
+ */
+export const placeofBirthSchema = z.object({
+  country : z.string(),
+  locality : z.string()
+}).transform((claim) => ({
+  value : claim,
+  type : claimType.placeOfBirth
+}))
+export type PlaceOfBirthClaimType = z.infer<typeof placeofBirthSchema>;
+
+/**
  * Schema to validate a claim which is a union of the previous defined schemas.
  */
 export const claimScheme = z.union([
@@ -239,6 +253,7 @@ export const claimScheme = z.union([
       dateSchema,
       drivingPrivilegesSchema,
       verificationEvidenceSchema,
+      placeofBirthSchema,
       stringArraySchema,
       booleanSchema,
       numberSchema,
