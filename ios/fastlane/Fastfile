@@ -18,114 +18,21 @@ default_platform(:ios)
 platform :ios do
   desc 'Fetch certificates and provisioning profiles'
   lane :certificates do
-    # match(type: 'development')
     match(type: 'appstore')
   end
 
-  desc "Runs all the tests"
-  lane :test do
-    scan
+  desc "Bump app version"
+  lane :bump_version do |options|
+    # Increment the version number based on the bump_type parameter
+    increment_version_number(version_number: "#{ENV['NEW_APP_VERSION']}")
+
+    # increment the build number 
+    increment_build_number
   end
-
-  # A helper lane for refreshing provisioning profiles.
-  lane :refresh_profiles do
-    # match(
-    #   type: "development",
-    #   force: true)
-    match(
-      type: "adhoc",
-      force: true)
-  end
-
-  # Builds the app without signing
-  lane :test_build do |options|
-    # Install pods
-    cocoapods
-
-    # Build the app
-    xcodebuild(
-      workspace: "IoEudiwApp.xcworkspace",
-      scheme: "IoEudiwApp",
-      configuration: "Debug",
-      clean: options[:clean],
-      build: true,
-      destination: "generic/platform=iOS",
-      build_settings: {
-        "CODE_SIGNING_REQUIRED" => "NO",
-        "CODE_SIGN_IDENTITY" => ""
-      }
-    )
-  end
-
-  # Builds the app for TestFlight releases
-  lane :do_testflight_build do
-    sync_code_signing(type: "appstore")
-
-    # Install pods
-    cocoapods
-
-    # build the app
-    gym(
-      scheme: "IoEudiwApp",
-      clean: true,
-      export_method: "app-store",
-      workspace: "IoEudiwApp.xcworkspace",
-      include_symbols: false
-    )
-  end
-
-  desc "Submit a new Beta Build to TestFlight"
+  
+  desc "Submit a new beta build to TestFlight"
   lane :beta_testflight do |options|
-    
-    # xCode 14.2, prevents altool to fail with error "Could not
-    # determine the package’s bundle ID" during the "pilot" step
-    # See https://github.com/fastlane/fastlane/issues/20741
-    ENV['ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD'] = 'false'
 
-    # Ensure that your git status is not dirty
-    ensure_git_status_clean
-
-    # Increment the build number
-    build_number = get_build_number
-
-    # Get the current version from the project
-    version_number = get_version_number
-
-    do_testflight_build
-
-    # generate the changelog based on last commits
-    changelog = changelog_from_git_commits(
-      tag_match_pattern: "ios/testflight/*"
-    )
-
-    versioning_paths = [
-      "IoEudiwApp.xcodeproj/project.pbxproj",
-      "IoEudiwApp/Info.plist",
-      "IoEudiwApp/Info.plist"
-    ]
-    # git_add(path: versioning_paths)
-    # git_commit(path: versioning_paths, message: "[fastlane] New iOS/TestFlight build v#{version_number} (build #{build_number}) [skip ci]")
-
-    # Add a git tag for this build. This will automatically
-    # use an appropriate git tag name
-    # add_git_tag(tag: "ios/testflight/#{version_number}/#{build_number}")
-
-    # Push the new commit and tag back to your git remote
-    # push_to_git_remote
-
-    # upload to itunes store
-    pilot(
-      changelog: changelog,
-      skip_waiting_for_build_processing: true
-    )
-  end
-
-  desc "Submit a new Beta Build to TestFlight, using CircleCI"
-  lane :beta_circleci_testflight do |options|
-
-    # xCode 14.2, prevents altool to fail with error "Could not
-    # determine the package’s bundle ID" during the "pilot" step
-    # See https://github.com/fastlane/fastlane/issues/20741
     ENV['ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD'] = 'false'
 
     # Setup the CI environment
@@ -139,10 +46,24 @@ platform :ios do
       duration: 1200,
     )
 
-    sync_code_signing(type: "appstore", api_key: api_key)
+    sync_code_signing(type: "appstore", app_identifier:"it.pagopa.io.app.poc.eudiw", api_key: api_key)
 
     # Install pods
     cocoapods
+
+   
+
+    # Temporary disables automatic code signing to avoid issues during build
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "IoEudiwApp.xcodeproj",
+      team_id: "M2X5YQ4BJ7",
+      profile_name: "match AppStore it.pagopa.io.app.poc.eudiw",
+      targets: ["IoEudiwApp"],
+      build_configurations: ["Release"],
+      code_sign_identity: "iPhone Distribution",
+      sdk: "iphoneos*",
+    )
 
     # build the app
     gym(
@@ -153,22 +74,11 @@ platform :ios do
       include_symbols: false
     )
 
-    previous_tag = sh("git tag --sort=-taggerdate | grep \\\\-rc\\\\. | sed -n '2 p' | tr -d '\n'")
-
-    # generate the changelog based on last commits
-    changelog = changelog_from_git_commits(
-      tag_match_pattern: "*" +previous_tag + "*" ,
-      pretty:"- %s",
-      merge_commit_filtering: "exclude_merges"
-    )
-
     # upload to App store
     pilot(
       api_key: api_key,
-      changelog: changelog,
       # max wait for App Store Connect processing (30 min)
       wait_processing_timeout_duration: 1800
     )
   end
-
 end
