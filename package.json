@@ -1,6 +1,6 @@
 {
   "name": "ioeudiwapp",
-  "version": "1.15.0-rc.0",
+  "version": "2.1.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -13,11 +13,7 @@
     "prepare": "husky",
     "tsc": "tsc --noEmit",
     "push-hint": "echo \"To publish changes without checks run:\ngit push --no-verify --follow-tags origin $(git rev-parse --abbrev-ref HEAD)\"",
-    "prettier:check": "prettier --check \"ts/**/*.(ts|tsx)\"",
-    "pre-cycle": "scripts/changelog/check_git_status.sh && node scripts/changelog/prepare_to_new_cycle.js",
-    "start-fix-cycle": "yarn pre-cycle && standard-version -t \"\" --prerelease rc --release-as patch --no-verify && yarn push-hint",
-    "start-release-cycle": "yarn pre-cycle && standard-version -t \"\" --prerelease rc --release-as minor --no-verify && yarn push-hint",
-    "start-breaking-cycle": "yarn pre-cycle && standard-version -t \"\" --prerelease rc --release-as major --no-verify && yarn push-hint"
+    "prettier:check": "prettier --check \"ts/**/*.(ts|tsx)\""
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -116,7 +112,7 @@
   "engines": {
     "node": ">=22"
   },
-  "packageManager": "yarn@3.6.4",
+  "packageManager": "yarn@4.12.0",
   "resolutions": {
     "@pagopa/io-react-native-wallet@2.2.0": "patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch"
   }
