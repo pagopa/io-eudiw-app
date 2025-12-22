@@ -227,17 +227,17 @@ jobs:
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.0.3
         with:
-          name: io-eudiw-app.app.dSYM.zip
-          path: ios/io-eudiw-app.app.dSYM.zip
+          name: IoEudiwApp.app.dSYM.zip
+          path: ios/IoEudiwApp.app.dSYM.zip
       - id: upload-ipa
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
-          name: io-eudiw-app.ipa
-          path: ios/io-eudiw-app.ipa
+          name: IoEudiwApp.ipa
+          path: ios/IoEudiwApp.ipa
       - id: upload-ipa-release
         continue-on-error: true
         run: |
-          gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} ios/io-eudiw-app.ipa#io-eudiw-app.ipa
+          gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} ios/IoEudiwApp.ipa#IoEudiwApp.ipa
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
