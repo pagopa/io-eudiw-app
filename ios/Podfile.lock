@@ -58,27 +58,6 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - Yoga
-  - pagopa-io-react-native-integrity (0.3.2):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
     - SwiftCBOR
     - Yoga
   - pagopa-io-react-native-jwt (2.1.0):
@@ -1381,27 +1360,8 @@ PODS:
     - React-Core
   - react-native-fingerprint-scanner (6.0.0):
     - React
-  - react-native-get-random-values (2.0.0):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
+  - react-native-get-random-values (1.11.0):
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - react-native-image-picker (7.2.3):
     - DoubleConversion
     - glog
@@ -2115,7 +2075,6 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.1)
-  - SwiftCBOR (0.5.0)
   - VisionCamera (4.7.3):
     - VisionCamera/Core (= 4.7.3)
     - VisionCamera/React (= 4.7.3)
@@ -2429,7 +2388,6 @@ SPEC CHECKSUMS:
   JOSESwift: 7784b1b844194d0f534eb6ac4fba5af683bccc79
   OpenSSL-Universal: 6082b0bf950e5636fe0d78def171184e2b3899c2
   pagopa-io-react-native-crypto: 9e7e7f59a8c9a3c75157407d75b09edbf5ee47e1
-  pagopa-io-react-native-integrity: 7a4d98dd5eec5fe9acf2d4322d153b17f5eefb7f
   pagopa-io-react-native-jwt: 5c0eac212ff06d4368b3949cd74649a5e8349a95
   pagopa-io-react-native-login-utils: 625219901ce6d4938abfeb4d44d3496cd5c9c459
   pagopa-io-react-native-secure-storage: 58296f306cf79a2bb68438d1d47505fb5645e62c
@@ -2465,7 +2423,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: 6a39463c32ce831c4c2aa8469273114d894b6be9
   react-native-config: ea75335a7cca1d3326de1da384227e580a7c082e
   react-native-fingerprint-scanner: 91bf6825709dd7bd3abc4588a4772eb097a2b2d8
-  react-native-get-random-values: df5b8b4b63073fd89adbf96a4de154bccfcf00e0
+  react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-image-picker: ede3b0b991aae11b3c1d61c187a833720e255277
   react-native-safe-area-context: 90db9cb1243ba193ef6d05b26ff0600e69112214
   React-NativeModulesApple: fd0545efbb7f936f78edd15a6564a72d2c34bb32
@@ -2508,7 +2466,6 @@ SPEC CHECKSUMS:
   RNScreens: b0691b7488fc428136a2e7abab32f751b01b2696
   RNSVG: dfe0c8e3cc0a6f6e8bcee696cf11baf69f2c394d
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  SwiftCBOR: aa87349b4ccddd19f861aa544f7c27d43dee5772
   VisionCamera: 7187b3dac1ff3071234ead959ce311875748e14f
   Yoga: e14bad835e12b6c7e2260fc320bd00e0f4b45add
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
