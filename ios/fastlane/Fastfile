@@ -46,7 +46,7 @@ platform :ios do
       duration: 1200,
     )
 
-    sync_code_signing(type: "appstore", app_identifier:"it.pagopa.io.app.poc.eudiw", api_key: api_key)
+    sync_code_signing(type: "appstore", app_identifier:"it.pagopa.app.io.poc.eudiw", api_key: api_key)
 
     # Install pods
     cocoapods
@@ -58,7 +58,7 @@ platform :ios do
       use_automatic_signing: false,
       path: "IoEudiwApp.xcodeproj",
       team_id: "M2X5YQ4BJ7",
-      profile_name: "match AppStore it.pagopa.io.app.poc.eudiw",
+      profile_name: "match AppStore it.pagopa.app.io.poc.eudiw",
       targets: ["IoEudiwApp"],
       build_configurations: ["Release"],
       code_sign_identity: "iPhone Distribution",
