@@ -85,8 +85,8 @@ android {
         applicationId "it.pagopa.io.app.poc.eudiw"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 44
-        versionName "2.1.0"
+        versionCode 45
+        versionName "2.1.1"
         resValue "string", "build_config_package", "com.ioeudiwapp"
     }
     signingConfigs {
