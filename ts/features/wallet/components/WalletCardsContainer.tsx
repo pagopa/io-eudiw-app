@@ -3,7 +3,6 @@ import { memo, useMemo } from "react";
 import { View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import { useDebugInfo } from "../../../hooks/useDebugInfo";
-import React from "react";
 import { ItwWalletCardsContainer } from "./ItwWalletCardsContainer";
 import { useAppSelector } from "../../../store";
 import { lifecycleIsOperationalSelector, lifecycleIsValidSelector } from "../store/lifecycle";
@@ -16,9 +15,9 @@ import { ItwUpgradeBanner } from "./ItwUpgradeBanner";
  */
 const WalletCardsContainer = () => {
   const shouldRenderItwCardsContainer = useAppSelector(
-    lifecycleIsOperationalSelector
+    lifecycleIsValidSelector
   );
-  const shouldRenderItwActivationBanner = useAppSelector(lifecycleIsValidSelector)
+  const shouldRenderItwActivationBanner = useAppSelector(lifecycleIsOperationalSelector)
 
   useDebugInfo({shouldRenderItwCardsContainer, shouldRenderItwActivationBanner})
 

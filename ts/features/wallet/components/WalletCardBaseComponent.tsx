@@ -1,5 +1,5 @@
 import { WithTestID } from "@pagopa/io-app-design-system";
-import React, { ComponentType } from "react";
+import { ComponentType } from "react";
 
 import { StyleSheet } from "react-native";
 import Animated, {

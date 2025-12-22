@@ -22,7 +22,6 @@ import {
 } from "react-native";
 import I18n from "i18next";
 import { CardColorScheme } from "../types";
-import React from "react";
 
 type DigitalVersionBadgeProps = {
   credentialType: string;

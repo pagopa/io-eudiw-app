@@ -31,8 +31,7 @@ import Animated, {
   withRepeat,
   withTiming
 } from "react-native-reanimated";
-import HighlightImage from "../../../../../img/features/itWallet/l3/highlight.svg";
-import React from "react";
+import HighlightImage from "../assets/img/l3/highlight.svg";
 import { Renderer } from "../../../components/markdown/types";
 import { getTxtNodeKey } from "../../../components/markdown/renderRules";
 import IOMarkdown from "../../../components/markdown"

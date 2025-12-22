@@ -26,4 +26,6 @@ export type StoredCredential = {
   keyTag: string;
   credentialType: string;
   format: 'vc+sd-jwt' | 'mso_mdoc';
+  expiration: string;
+  issuedAt?: string;
 };

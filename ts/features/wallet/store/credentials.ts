@@ -7,6 +7,9 @@ import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
 import {wellKnownCredential} from '../utils/credentials';
 import {resetLifecycle} from './lifecycle';
+import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
+import { ItwJwtCredentialStatus, WalletCard } from '../types';
+import { ItwCredentialCard } from '../components/ItwCredentialCard';
 
 /* State type definition for the credentials slice.
  * This is stored as an array to avoid overhead due to map not being serializable,
@@ -121,6 +124,8 @@ export const selectCredential = (credentialType: string) =>
     credentials.find(c => c.credentialType === credentialType)
   );
 
+export const itwCredentialsEidSelector = selectCredential(wellKnownCredential.PID)
+
 /**
  * Returns the credential status and the error message corresponding to the status assertion error, if present.
  *
@@ -128,12 +133,33 @@ export const selectCredential = (credentialType: string) =>
  * @returns The credential status and the error message corresponding to the status assertion error, if present.
  */
 export const itwCredentialsEidStatusSelector = createSelector(
-  selectCredential(wellKnownCredential.PID),
-  eidOption =>
-    pipe(
-      eidOption,
-      // eID does not have status assertion nor expiry date, so it safe to assume its status is based on the JWT only
-      O.map(eid => getCredentialStatus(eid) as ItwJwtCredentialStatus),
-      O.toUndefined
-    )
+  itwCredentialsEidSelector,
+  pid => pid ? getCredentialStatus(pid) as ItwJwtCredentialStatus : undefined
 );
+
+/**
+ * Returns the eID credential expiration date, if present.
+ *
+ * @param state - The global state.
+ * @returns The eID credential expiration date.
+ */
+export const itwCredentialsEidExpirationSelector = createSelector(
+  itwCredentialsEidSelector,
+  pid => pid?.expiration
+);
+
+/**
+ * Selects all the credentials beside the PID/EID and transforms them
+ * into {@link ItwCredentialCard}
+ */
+export const selectWalletCards : (state: RootState) => WalletCard[] = createSelector(
+  selectCredentials,
+  (credentials) => credentials.filter(cred => cred.credentialType !== wellKnownCredential.PID)
+  .map(cred => ({
+    key : cred.keyTag,
+    type : "itw",
+    credentialType : cred.credentialType,
+    credentialStatus : getCredentialStatus(cred) 
+  }))
+)
+  

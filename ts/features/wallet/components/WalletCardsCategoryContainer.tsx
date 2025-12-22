@@ -7,7 +7,6 @@ import Animated, {
   LinearTransition
 } from "react-native-reanimated";
 import { WalletCard } from "../types";
-import React from "react";
 import { ItwCredentialWalletCard } from "./ItwCredentialWalletCard";
 
 export type WalletCardsCategoryContainerProps = WithTestID<{

@@ -1,5 +1,7 @@
 import { useAppSelector } from "../../../store";
+import { itwCredentialsEidStatusSelector } from "../store/credentials";
 import { ItwCredentialStatus } from "../types";
+import { getItwDisplayCredentialStatus } from "../utils/credentials";
 
 /**
  * Computes the display status of a credential for UI purposes
@@ -17,5 +19,5 @@ export const useItwDisplayCredentialStatus = (
 ): ItwCredentialStatus => {
   const eidStatus = useAppSelector(itwCredentialsEidStatusSelector);
 
-  return getItwDisplayCredentialStatus(credentialStatus, eidStatus, isOffline);
+  return getItwDisplayCredentialStatus(credentialStatus, eidStatus);
 };

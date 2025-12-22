@@ -1,23 +1,32 @@
-import { ListItemHeader, VSpacer } from "@pagopa/io-app-design-system";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import I18n from "i18next";
+import { VSpacer } from "@pagopa/io-app-design-system";
+import { useNavigation } from "@react-navigation/native";
 import { useCallback, useMemo } from "react";
-import React from "react";
 import { useDebugInfo } from "../../../hooks/useDebugInfo";
-import { useIOBottomSheetModal } from "../../../hooks/useBottomSheet";
 import { useAppSelector } from "../../../store";
 import { WalletCardsCategoryContainer } from "./WalletCardsCategoryContainer";
+import { ItwWalletIdStatus } from "./ItwWalletIdStatus";
+import { ItwWalletReadyBanner } from "./ItwWalletReadyBanner";
+import { ItwEidLifecycleAlert } from "./ItwEidLifecycleAlert";
+import { ItwJwtCredentialStatus } from "../utils/itwTypesUtils";
+import { useItwStatusIconColor } from "../hooks/useItwStatusIconColor";
+import { itwCredentialsEidExpirationSelector, itwCredentialsEidStatusSelector, selectWalletCards } from "../store/credentials";
+import WALLET_ROUTES from "../navigation/routes";
+import MAIN_ROUTES from "../../../navigation/main/routes";
+import { wellKnownCredential } from "../utils/credentials";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { MainNavigatorParamsList } from "../../../navigation/main/MainStackNavigator";
+
+const LIFECYCLE_STATUS: Array<ItwJwtCredentialStatus> = [
+  "jwtExpiring",
+  "jwtExpired"
+];
 
 //TODO is withWalletCategoryFilter necessary ?
 export const ItwWalletCardsContainer = () => {
-  const isNewItwRenderable = useAppSelector(itwShouldRenderNewItWalletSelector);
-  const shouldHideEidAlert = useAppSelector(itwShouldHideEidLifecycleAlert);
-  const navigation = useNavigation();
-  const cards = useIOSelector(state =>
-    selectWalletCardsByCategory(state, "itw")
-  );
-  const eidStatus = useIOSelector(itwCredentialsEidStatusSelector);
-  const eidExpiration = useIOSelector(itwCredentialsEidExpirationSelector);
+  const navigation = useNavigation<NativeStackNavigationProp<MainNavigatorParamsList>>();
+  const cards = useAppSelector(selectWalletCards);
+  const eidStatus = useAppSelector(itwCredentialsEidStatusSelector);
+  const eidExpiration = useAppSelector(itwCredentialsEidExpirationSelector);
   const isEidExpired = eidStatus === "jwtExpired";
   const iconColor = useItwStatusIconColor(isEidExpired);
 
@@ -29,28 +38,16 @@ export const ItwWalletCardsContainer = () => {
     }
   });
 
-  const eidInfoBottomSheet = useIOBottomSheetModal({
-    title: <ItwEidInfoBottomSheetTitle isExpired={isEidExpired} />,
-    // Navigation does not seem to work when the bottom sheet's component is not inline
-    component: <ItwEidInfoBottomSheetContent navigation={navigation} />
-  });
-
-  useFocusEffect(
-    useCallback(
-      // Automatically dismiss the bottom sheet when focus is lost
-      () => eidInfoBottomSheet.dismiss,
-      [eidInfoBottomSheet.dismiss]
-    )
-  );
-
   const handleNavigateToItwId = useCallback(() => {
-    navigation.navigate(ITW_ROUTES.MAIN, {
-      screen: ITW_ROUTES.PRESENTATION.PID_DETAIL
+    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+      screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_DETAILS,
+      params : {
+        credentialType : wellKnownCredential.PID
+      }
     });
   }, [navigation]);
 
   const sectionHeader = useMemo((): React.ReactElement => {
-    if (isNewItwRenderable) {
       return (
         <>
           <ItwWalletIdStatus
@@ -61,32 +58,8 @@ export const ItwWalletCardsContainer = () => {
           <VSpacer size={16} />
         </>
       );
-    }
-    return (
-      <ListItemHeader
-        testID={"walletCardsCategoryItwHeaderTestID"}
-        iconName={"legalValue"}
-        iconColor={iconColor}
-        label={I18n.t("features.wallet.cards.categories.itw")}
-        endElement={{
-          type: "buttonLink",
-          componentProps: {
-            accessibilityLabel: I18n.t(
-              "features.itWallet.presentation.bottomSheets.eidInfo.triggerLabel"
-            ),
-            label: I18n.t(
-              "features.itWallet.presentation.bottomSheets.eidInfo.triggerLabel"
-            ),
-            onPress: eidInfoBottomSheet.present,
-            testID: "walletCardsCategoryItwActiveBadgeTestID"
-          }
-        }}
-      />
-    );
   }, [
     iconColor,
-    isNewItwRenderable,
-    eidInfoBottomSheet.present,
     eidStatus,
     eidExpiration,
     handleNavigateToItwId
@@ -102,16 +75,13 @@ export const ItwWalletCardsContainer = () => {
         topElement={
           <>
             <ItwWalletReadyBanner />
-            {!shouldHideEidAlert && (
-              <ItwEidLifecycleAlert
-                lifecycleStatus={LIFECYCLE_STATUS}
-                navigation={navigation}
-              />
-            )}
+            <ItwEidLifecycleAlert
+              lifecycleStatus={LIFECYCLE_STATUS}
+              navigation={navigation}
+            />
           </>
         }
       />
-      {eidInfoBottomSheet.bottomSheet}
     </>
   );
-});
+};

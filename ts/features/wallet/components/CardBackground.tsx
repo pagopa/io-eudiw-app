@@ -17,7 +17,6 @@ import Animated, {
   withTiming
 } from "react-native-reanimated";
 import { CardColorScheme } from "../types";
-import React from "react";
 import { wellKnownCredential } from "../utils/credentials";
 
 type ItwCredentialCardBackgroundProps = {
@@ -109,7 +108,9 @@ export const CardBackground = ({
 const credentialCardBackgrounds: {
   [type: string]: string;
 } = {
-  [wellKnownCredential.DISABILITY_CARD]: require("../../../../../../img/features/itWallet/cards/dc.png"),
-  [wellKnownCredential.HEALTHID]: require("../../../../../../img/features/itWallet/cards/ts.png"),
-  [wellKnownCredential.DRIVING_LICENSE]: require("../../../../../../img/features/itWallet/cards/mdl.png")
+  [wellKnownCredential.PID]: require('../assets/img/credentials/pid.png'),
+  [wellKnownCredential.DRIVING_LICENSE]: require('../assets/img/credentials/mdl.png'),
+  [wellKnownCredential.HEALTHID]: require('../assets/img/credentials/healthID.png'),
+  [wellKnownCredential.FBK_BADGE]: require('../assets/img/credentials/fbkBadge.png'),
+  [wellKnownCredential.DISABILITY_CARD]: require('../assets/img/credentials/disabilityCard.png')
 };

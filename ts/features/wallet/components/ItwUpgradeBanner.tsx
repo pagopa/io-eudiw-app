@@ -1,4 +1,3 @@
-import React from "react";
 import { ItwHighlightBanner } from "./ItwHighlightBanner";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";

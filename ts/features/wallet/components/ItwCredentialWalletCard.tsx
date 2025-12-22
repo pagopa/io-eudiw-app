@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
 import { ItwCredentialCard } from "./ItwCredentialCard";
 import { WalletCardPressableBase } from "./WalletCardPressableBase";
 import { withWalletCardBaseComponent } from "./WalletCardBaseComponent";
+import MAIN_ROUTES from "../../../navigation/main/routes";
+import WALLET_ROUTES from "../navigation/routes";
 
 export type ItwCredentialWalletCardProps = ItwCredentialCard & {
   isPreview?: false; // Cards in wallet cannot be in preview mode
@@ -14,8 +15,8 @@ const WrappedItwCredentialCard = (props: ItwCredentialWalletCardProps) => {
 
 
   const handleOnPress = () => {
-    navigation.navigate(ITW_ROUTES.MAIN, {
-      screen: ITW_ROUTES.PRESENTATION.CREDENTIAL_DETAIL,
+    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+      screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_DETAILS,
       params: {
         credentialType
       }

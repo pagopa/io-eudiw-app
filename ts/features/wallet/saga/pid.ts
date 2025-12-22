@@ -172,7 +172,7 @@ function* obtainPid() {
       }
     );
 
-    const {parsedCredential} = yield* call(
+    const {parsedCredential, expiration, issuedAt} = yield* call(
       Credential.Issuance.verifyAndParseCredential,
       issuerConf,
       credential,
@@ -187,7 +187,9 @@ function* obtainPid() {
           credential,
           credentialType,
           keyTag: credentialKeyTag,
-          format: format as 'vc+sd-jwt' | 'mso_mdoc'
+          format: format as 'vc+sd-jwt' | 'mso_mdoc',
+          expiration : expiration.toISOString(),
+          issuedAt : issuedAt?.toISOString()
         }
       })
     );

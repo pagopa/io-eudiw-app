@@ -1,14 +1,14 @@
 import { HStack, Icon, IOText, Tag } from "@pagopa/io-app-design-system";
 import Color from "color";
-import I18n from "i18next";
 import { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
-import React from "react";
 import { CardColorScheme, ItwCredentialStatus } from "../types";
 import { DigitalVersionBadge } from "./DigitalVersionBadge";
-import { useAppSelector } from "../../../store";
 import { CardBackground } from "./CardBackground";
 import { useItwDisplayCredentialStatus } from "../hooks/useItwDisplayCredentialStatus";
+import { useThemeColorByCredentialType } from "../utils/itwStyleUtils";
+import { tagPropsByStatus, useBorderColorByStatus, validCredentialStatuses } from "../utils/itwCredentialUtils";
+import { getCredentialNameByType } from "../utils/credentials";
 
 export type ItwCredentialCard = {
   /**
@@ -52,7 +52,7 @@ export const ItwCredentialCard = ({
 
   const statusTagProps = useMemo<Tag | undefined>(() => {
     return tagPropsByStatus[status];
-  }, [status, needsItwUpgrade]);
+  }, [status]);
 
   const { titleColor, titleOpacity, colorScheme } = useMemo<StyleProps>(() => {
     // Include "jwtExpired" as a valid status because credentials with this state
@@ -104,7 +104,7 @@ export const ItwCredentialCard = ({
               flexShrink: 1
             }}
           >
-            {getCredentialNameFromType(credentialType, "").toUpperCase()}
+            {getCredentialNameByType(credentialType).toUpperCase()}
           </IOText>
           {statusTagProps && <Tag forceLightMode {...statusTagProps} />}
           {isMultiCredential && (

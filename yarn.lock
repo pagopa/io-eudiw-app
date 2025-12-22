@@ -6038,6 +6038,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "date-fns@npm:4.1.0"
+  checksum: fb681b242cccabed45494468f64282a7d375ea970e0adbcc5dcc92dcb7aba49b2081c2c9739d41bf71ce89ed68dd73bebfe06ca35129490704775d091895710b
+  languageName: node
+  linkType: hard
+
 "dateformat@npm:^3.0.0":
   version: 3.0.3
   resolution: "dateformat@npm:3.0.3"
@@ -8350,6 +8357,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.9.1
     babel-jest: ^29.6.3
     color: ^5.0.3
+    date-fns: ^4.1.0
     eslint: ^8.19.0
     eslint-plugin-functional: ^6.6.3
     eslint-plugin-import: ^2.31.0
