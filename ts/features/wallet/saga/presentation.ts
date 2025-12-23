@@ -6,7 +6,6 @@ import {
 import {serializeError} from 'serialize-error';
 import {CryptoContext} from '@pagopa/io-react-native-jwt';
 import {
-  Descriptor,
   resetPresentation,
   setPostDefinitionCancel,
   setPostDefinitionError,
@@ -21,6 +20,8 @@ import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
+import {ParsedCredential} from '../utils/types';
+import {CredentialTypePresentationClaimsListDescriptor} from '../components/presentation/CredentialTypePresentationClaimsList';
 
 type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 type EvaluateDcqlReturn = Awaited<
@@ -34,6 +35,41 @@ export function* watchPresentationSaga() {
   yield* takeLatest(setPreDefinitionRequest, handlePresentationPreDefinition);
 }
 
+type RequiredDisclosure = [string, string, unknown];
+
+/**
+ * Transforms a list of required disclosures and a parsed credential into a formatted object.
+ * This function maps each required disclosure to its corresponding parsed claim, normalizes
+ * multilingual claim names, and groups them under the provided credential type.
+ *
+ * @param requiredDisclosures - An array of tuples containing the claim ID and claim name that must be disclosed.
+ * @param parsedCredential - The parsed credential object containing claim data extracted from the credential.
+ * @param credentialType - The type of credential under which the transformed claims should be nested.
+ * @returns A {@link PIDObject} containing the structured claims mapped to the given credential type.
+ */
+export function transformDescriptorObject(
+  requiredDisclosures: Array<RequiredDisclosure>,
+  parsedCredential: ParsedCredential,
+  credentialType: string
+): CredentialTypePresentationClaimsListDescriptor {
+  const claims = requiredDisclosures.reduce<
+    CredentialTypePresentationClaimsListDescriptor['string']
+  >((acc, [_, claimName]) => {
+    const parsed = parsedCredential[claimName];
+
+    return {
+      ...acc,
+      ['unused']: {
+        ...acc.unused,
+        [claimName]: parsed
+      }
+    };
+  }, {});
+
+  return {
+    [credentialType]: claims
+  };
+}
 /**
  * Saga for the credential presentation.
  * It listens for an action which stars the presentation flow.
@@ -82,7 +118,7 @@ function* handlePresentationPreDefinition(
      */
     const credentialsSdJwt = [
       ...Object.values(credentials)
-        .filter(c => c.format === ('dc+sd-jwt' as any))
+        .filter(c => c.format === 'dc+sd-jwt')
         .map(c => [createCryptoContextFor(c.keyTag), c.credential])
     ] as Array<[CryptoContext, string]>;
 
@@ -96,15 +132,33 @@ function* handlePresentationPreDefinition(
       requestObject.dcql_query as DcqlQuery
     );
 
-    // Temporary fix — this will be resolved with [WLEO-675].
+    const allCredentials = yield* select(selectCredentials);
+    const sdJwtCredentials = allCredentials.filter(
+      credential =>
+        credential.format === 'dc+sd-jwt' || credential.format === 'vc+sd-jwt'
+    );
+
     yield* put(
       setPreDefinitionSuccess(
-        evaluateDcqlQuery.map(query => ({
-          requiredDisclosures:
-            query.requiredDisclosures as unknown as Descriptor[0]['requiredDisclosures'],
-          optionalDisclosures: [],
-          unrequestedDisclosures: []
-        }))
+        evaluateDcqlQuery
+          .map(query => {
+            const sdJwtFoundCredential = sdJwtCredentials.find(
+              cred => cred.credentialType === query.vct
+            );
+
+            if (!sdJwtFoundCredential) {
+              throw new Error(
+                `No credential found for the required VC type: ${query.vct}`
+              );
+            }
+
+            return transformDescriptorObject(
+              query.requiredDisclosures,
+              sdJwtFoundCredential.parsedCredential,
+              sdJwtFoundCredential.credentialType
+            );
+          })
+          .reduce((acc, curr) => ({...acc, ...curr}), {})
       )
     );
 
