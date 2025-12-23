@@ -15,14 +15,14 @@ module.exports = {
     }
   },
   plugins: ['import', 'sonarjs', 'functional'],
-  ignorePatterns: ['ts/i18n/types/resources.d.ts'],
+  ignorePatterns: ['**/*.js', 'ts/i18n/types/resources.d.ts'],
   rules: {
     'comma-dangle': ['error', 'never'],
     'no-case-declarations': 'off',
     'no-inner-declarations': 'off',
     'prefer-const': 'error',
     curly: 'error',
-    'spaced-comment': ['error', 'always', {block: {balanced: true}}],
+    'spaced-comment': ['error', 'always', { block: { balanced: true } }],
     radix: 'error',
     'one-var': ['error', 'never'],
     'object-shorthand': 'error',
@@ -82,7 +82,7 @@ module.exports = {
     'react/prop-types': 'off',
     'react/display-name': 'off',
     'react/jsx-key': 'error',
-    'react/jsx-no-bind': ['error', {allowArrowFunctions: true}],
+    'react/jsx-no-bind': ['error', { allowArrowFunctions: true }],
     'react/no-unstable-nested-components': [
       'off',
       {

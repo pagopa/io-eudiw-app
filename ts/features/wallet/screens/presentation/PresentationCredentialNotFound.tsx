@@ -1,10 +1,10 @@
-import {useEffect} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {useTranslation} from 'react-i18next';
-import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
-import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
-import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
-import {wellKnownCredential} from '../../utils/credentials';
+import { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+import { OperationResultScreenContent } from '../../../../components/screens/OperationResultScreenContent';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { wellKnownCredential } from '../../utils/credentials';
 import MAIN_ROUTES from '../../../../navigation/main/routes';
 
 /**
@@ -18,7 +18,7 @@ const PresentationCredentialNotFound = ({
   credentialType: string;
 }) => {
   const navigation = useNavigation();
-  const {t} = useTranslation(['global', 'wallet']);
+  const { t } = useTranslation(['global', 'wallet']);
 
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();

@@ -5,14 +5,14 @@ import {
   H1,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {useEffect} from 'react';
-import {StyleSheet} from 'react-native';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
-import {AnimatedImage} from '../../../../components/AnimatedImage';
+import { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { AnimatedImage } from '../../../../components/AnimatedImage';
 import Markdown from '../../../../components/markdown';
-import {useAppDispatch, useAppSelector} from '../../../../store';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   resetInstanceCreation,
   selectInstanceStatus,
@@ -23,10 +23,10 @@ import {
  * Screen which shows the information about the wallet, then registers a wallet instance and gets an attestation.
  */
 const WalletInstanceCreation = () => {
-  const {t} = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation(['wallet', 'global']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const {error, success, loading} = useAppSelector(selectInstanceStatus);
+  const { error, success, loading } = useAppSelector(selectInstanceStatus);
 
   useEffect(() => {
     if (success.status === true) {
@@ -82,7 +82,7 @@ const WalletInstanceCreation = () => {
 };
 
 const styles = StyleSheet.create({
-  banner: {resizeMode: 'cover', width: '100%'}
+  banner: { resizeMode: 'cover', width: '100%' }
 });
 
 export default WalletInstanceCreation;

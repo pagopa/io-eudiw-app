@@ -1,10 +1,10 @@
-import {IOSpacingScale} from '@pagopa/io-app-design-system';
+import { IOSpacingScale } from '@pagopa/io-app-design-system';
 
-import {PropsWithChildren} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {StoredCredential} from '../../utils/types';
-import {getThemeColorByCredentialType} from '../../utils/style';
-import {CredentialCard} from '../credential/CredentialCard';
+import { PropsWithChildren } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { StoredCredential } from '../../utils/types';
+import { getThemeColorByCredentialType } from '../../utils/style';
+import { CredentialCard } from '../credential/CredentialCard';
 
 type Props = {
   credential: StoredCredential;
@@ -14,8 +14,8 @@ type Props = {
  * This component renders the credential card in the presentation screen.
  * If the credential supports the skeumorphic card, it also renders it with the flip button.
  */
-const PresentationCredentialCard = ({credential}: Props) => {
-  const {backgroundColor} = getThemeColorByCredentialType(
+const PresentationCredentialCard = ({ credential }: Props) => {
+  const { backgroundColor } = getThemeColorByCredentialType(
     credential.credentialType
   );
 
@@ -36,7 +36,7 @@ const CardContainer = ({
 }: PropsWithChildren<CardContainerProps>) => (
   <View style={styles.cardContainer}>
     {children}
-    <View style={[styles.cardBackdrop, {backgroundColor}]} />
+    <View style={[styles.cardBackdrop, { backgroundColor }]} />
   </View>
 );
 
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export {PresentationCredentialCard};
+export { PresentationCredentialCard };

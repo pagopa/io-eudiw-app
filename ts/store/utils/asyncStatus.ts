@@ -12,8 +12,8 @@
  */
 type AsyncStatusValues<T = undefined> = {
   loading: boolean;
-  error: {status: false; error: undefined} | {status: true; error: unknown};
-  success: {status: false} | {status: true; data?: T};
+  error: { status: false; error: undefined } | { status: true; error: unknown };
+  success: { status: false } | { status: true; data?: T };
 };
 
 /**
@@ -21,8 +21,8 @@ type AsyncStatusValues<T = undefined> = {
  */
 const setInitial = <T>(): AsyncStatusValues<T> => ({
   loading: false,
-  error: {status: false, error: undefined},
-  success: {status: false}
+  error: { status: false, error: undefined },
+  success: { status: false }
 });
 
 /**
@@ -30,8 +30,8 @@ const setInitial = <T>(): AsyncStatusValues<T> => ({
  */
 const setSuccess = <T>(data?: T): AsyncStatusValues<T> => ({
   loading: false,
-  error: {status: false, error: undefined},
-  success: {status: true, data}
+  error: { status: false, error: undefined },
+  success: { status: true, data }
 });
 
 /**
@@ -39,8 +39,8 @@ const setSuccess = <T>(data?: T): AsyncStatusValues<T> => ({
  */
 const setLoading = <T>(): AsyncStatusValues<T> => ({
   loading: true,
-  error: {status: false, error: undefined},
-  success: {status: false}
+  error: { status: false, error: undefined },
+  success: { status: false }
 });
 
 /**
@@ -50,8 +50,8 @@ const setLoading = <T>(): AsyncStatusValues<T> => ({
  */
 const setError = <T>(error: unknown): AsyncStatusValues<T> => ({
   loading: false,
-  error: {status: true, error},
-  success: {status: false}
+  error: { status: true, error },
+  success: { status: false }
 });
 
-export {setInitial, setSuccess, setLoading, setError, type AsyncStatusValues};
+export { setInitial, setSuccess, setLoading, setError, type AsyncStatusValues };

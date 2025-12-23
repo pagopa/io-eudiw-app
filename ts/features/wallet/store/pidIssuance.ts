@@ -1,6 +1,6 @@
 /* eslint-disable functional/immutable-data */
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {RootState} from '../../../store/types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../../store/types';
 import {
   AsyncStatusValues,
   setError,
@@ -8,9 +8,9 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import {StoredCredential} from '../utils/types';
-import {preferencesReset} from '../../../store/reducers/preferences';
-import {resetLifecycle} from './lifecycle';
+import { StoredCredential } from '../utils/types';
+import { preferencesReset } from '../../../store/reducers/preferences';
+import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the pidIssuance slice
  * issuanceCreation - Async status for the instance creation
@@ -40,7 +40,7 @@ const pidIssuanceStatusSlice = createSlice({
     },
     setInstanceCreationError: (
       state,
-      action: PayloadAction<{error: unknown}>
+      action: PayloadAction<{ error: unknown }>
     ) => {
       state.instanceCreation = setError(action.payload.error);
     },
@@ -53,12 +53,12 @@ const pidIssuanceStatusSlice = createSlice({
     setPidIssuanceRequest: state => {
       state.issuance = setLoading();
     },
-    setPidIssuanceError: (state, action: PayloadAction<{error: unknown}>) => {
+    setPidIssuanceError: (state, action: PayloadAction<{ error: unknown }>) => {
       state.issuance = setError(action.payload.error);
     },
     setPidIssuanceSuccess: (
       state,
-      action: PayloadAction<{credential: StoredCredential}>
+      action: PayloadAction<{ credential: StoredCredential }>
     ) => {
       state.issuance = setSuccess(action.payload.credential);
     },
@@ -91,7 +91,7 @@ export const {
 /**
  * Exports the reducer for the pidIssuance slice.
  */
-export const {reducer: pidIssuanceStatusReducer} = pidIssuanceStatusSlice;
+export const { reducer: pidIssuanceStatusReducer } = pidIssuanceStatusSlice;
 
 /**
  * Selects the instanceCreation async status.

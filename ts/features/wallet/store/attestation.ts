@@ -1,10 +1,10 @@
 /* eslint-disable functional/immutable-data */
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {PersistConfig, persistReducer} from 'redux-persist';
-import {RootState} from '../../../store/types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PersistConfig, persistReducer } from 'redux-persist';
+import { RootState } from '../../../store/types';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
-import {preferencesReset} from '../../../store/reducers/preferences';
-import {resetLifecycle} from './lifecycle';
+import { preferencesReset } from '../../../store/reducers/preferences';
+import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the attestation slice
  * attestation - The wallet instance attestation
@@ -58,7 +58,7 @@ export const attestationReducer = persistReducer(
 /**
  * Exports the actions for the attestation slice.
  */
-export const {setAttestation, resetAttestation} = attestationSlice.actions;
+export const { setAttestation, resetAttestation } = attestationSlice.actions;
 
 /**
  * Select the wallet instance attestation.

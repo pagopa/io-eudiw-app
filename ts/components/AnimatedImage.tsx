@@ -1,4 +1,4 @@
-import {Image} from 'react-native';
+import { Image } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -17,7 +17,10 @@ export type AnimatedImageProps = React.ComponentProps<typeof Image>;
  * @param {object} [props.style] - The style to apply to the image.
  * @returns {JSX.Element} The rendered AnimatedImage component.
  */
-export const AnimatedImage = ({style, ...props}: AnimatedImageProps) => {
+export const AnimatedImage = ({
+  style,
+  ...props
+}: AnimatedImageProps): React.JSX.Element => {
   const opacity = useSharedValue(0);
 
   const handleOnLoad = () => {

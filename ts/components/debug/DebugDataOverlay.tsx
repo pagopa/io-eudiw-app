@@ -4,10 +4,10 @@ import {
   TouchableWithoutFeedback,
   View
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useAppSelector} from '../../store';
-import {selectDebugData} from '../../store/reducers/debug';
-import {DebugPrettyPrint} from './DebugPrettyPrint';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAppSelector } from '../../store';
+import { selectDebugData } from '../../store/reducers/debug';
+import { DebugPrettyPrint } from './DebugPrettyPrint';
 
 type DebugDataOverlayProps = {
   onDismissed?: () => void;
@@ -17,7 +17,7 @@ type DebugDataOverlayProps = {
  * Debug overlay to show all the debug data in a list for each entry in the debug state via {@link DebugPrettyPrint}.
  * Used in {@link DebugInfoOverlay}
  */
-export const DebugDataOverlay = ({onDismissed}: DebugDataOverlayProps) => {
+export const DebugDataOverlay = ({ onDismissed }: DebugDataOverlayProps) => {
   const debugData = useAppSelector(selectDebugData);
 
   return (
@@ -27,7 +27,8 @@ export const DebugDataOverlay = ({onDismissed}: DebugDataOverlayProps) => {
       </TouchableWithoutFeedback>
       <ScrollView
         style={styles.scroll}
-        contentContainerStyle={styles.scrollContainer}>
+        contentContainerStyle={styles.scrollContainer}
+      >
         {Object.entries(debugData).map(([key, value]) => (
           <DebugPrettyPrint
             key={`debug_data_${key}`}

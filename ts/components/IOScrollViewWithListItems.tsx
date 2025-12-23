@@ -8,8 +8,8 @@ import {
   ListItemInfo,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {View} from 'react-native';
-import {IOScrollView, IOScrollViewActions} from './IOScrollView';
+import { View } from 'react-native';
+import { IOScrollView, IOScrollViewActions } from './IOScrollView';
 
 export type IOScrollViewWithListItems = {
   title?: string;
@@ -20,7 +20,7 @@ export type IOScrollViewWithListItems = {
   isHeaderVisible?: boolean;
 };
 
-const ItemsList = ({items}: {items: Array<ListItemInfo>}) => (
+const ItemsList = ({ items }: { items: Array<ListItemInfo> }) => (
   <>
     {items.map((item, index) => (
       <View key={`${item.value}-${index}`}>

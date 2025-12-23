@@ -1,5 +1,5 @@
 import * as SecureStorage from '@pagopa/io-react-native-secure-storage';
-import {type Storage} from 'redux-persist';
+import { type Storage } from 'redux-persist';
 
 /**
  * Creates a custom redux-persist persistor based on `io-react-native-secure-storage`.

@@ -1,6 +1,6 @@
-import {useEffect} from 'react';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 import {
   FooterActions,
   ForceScrollDownView,
@@ -9,9 +9,9 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import {StyleSheet, View} from 'react-native';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
-import {useAppDispatch, useAppSelector} from '../../../../store';
+import { StyleSheet, View } from 'react-native';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   selectPidIssuanceData,
   selectPidIssuanceStatus,
@@ -19,9 +19,9 @@ import {
 } from '../../store/pidIssuance';
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
-import {StoredCredential} from '../../utils/types';
-import {addPidWithIdentification} from '../../store/credentials';
-import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
+import { StoredCredential } from '../../utils/types';
+import { addPidWithIdentification } from '../../store/credentials';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -30,12 +30,12 @@ import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalle
  * If the PID issuance fails, the user is redirected to the failure screen.
  */
 const PidIssuanceRequest = () => {
-  const {t} = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation(['wallet', 'global']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const {error, success, loading} = useAppSelector(selectPidIssuanceStatus);
+  const { error, success, loading } = useAppSelector(selectPidIssuanceStatus);
   const pid = useAppSelector(selectPidIssuanceData);
-  const {navigateToWallet} = useNavigateToWalletWithReset();
+  const { navigateToWallet } = useNavigateToWalletWithReset();
 
   useEffect(() => {
     dispatch(setPidIssuanceRequest());
@@ -54,7 +54,7 @@ const PidIssuanceRequest = () => {
     canGoBack: success.status
   });
 
-  const PidPreview = ({credential}: {credential: StoredCredential}) => (
+  const PidPreview = ({ credential }: { credential: StoredCredential }) => (
     <>
       <ForceScrollDownView contentContainerStyle={styles.scroll} threshold={50}>
         <VStack style={styles.contentWrapper}>
@@ -70,7 +70,7 @@ const PidIssuanceRequest = () => {
           actions={{
             primary: {
               label: t('wallet:pidIssuance.preview.button'),
-              onPress: () => dispatch(addPidWithIdentification({credential})),
+              onPress: () => dispatch(addPidWithIdentification({ credential })),
               icon: 'add',
               iconPosition: 'end'
             },

@@ -1,5 +1,5 @@
-import {useEffect} from 'react';
-import {ViewStyle} from 'react-native';
+import { useEffect } from 'react';
+import { ViewStyle } from 'react-native';
 import {
   AnimatedStyleProp,
   Easing,
@@ -40,8 +40,8 @@ const useSineWaveAnimation = ({
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
       axis === 'x'
-        ? {translateX: translate.value}
-        : {translateY: translate.value}
+        ? { translateX: translate.value }
+        : { translateY: translate.value }
     ]
   }));
 
@@ -71,7 +71,7 @@ const useSineWaveAnimation = ({
     }
   }, [translate, span, enabled, duration]);
 
-  return {animatedStyle};
+  return { animatedStyle };
 };
 
-export {useSineWaveAnimation};
+export { useSineWaveAnimation };

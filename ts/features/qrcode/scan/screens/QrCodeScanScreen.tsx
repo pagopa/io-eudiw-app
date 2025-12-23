@@ -1,15 +1,15 @@
-import {IOToast} from '@pagopa/io-app-design-system';
-import {useNavigation} from '@react-navigation/native';
-import {useTranslation} from 'react-i18next';
-import {Alert} from 'react-native';
+import { IOToast } from '@pagopa/io-app-design-system';
+import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+import { Alert } from 'react-native';
 import ReactNativeHapticFeedback, {
   HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
-import {useQrCodeFileReader} from '../hooks/useQrCodeFileReader';
-import {QrCodeScanBaseScreenComponent} from '../components/QrCodeScanBaseScreenComponent';
-import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
-import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
-import {presentationLinkToUrl} from '../utils/parsing';
+import { useQrCodeFileReader } from '../hooks/useQrCodeFileReader';
+import { QrCodeScanBaseScreenComponent } from '../components/QrCodeScanBaseScreenComponent';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { presentationLinkToUrl } from '../utils/parsing';
 
 /**
  * Types for callback in case of success or error
@@ -20,7 +20,7 @@ export type OnBardCodeError = () => void;
 
 const QrCodeScanScreen = () => {
   const navigation = useNavigation();
-  const {t} = useTranslation('qrcodeScan');
+  const { t } = useTranslation('qrcodeScan');
 
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();
@@ -36,7 +36,7 @@ const QrCodeScanScreen = () => {
           style: 'default'
         }
       ],
-      {cancelable: false}
+      { cancelable: false }
     );
 
   /**
@@ -47,7 +47,7 @@ const QrCodeScanScreen = () => {
    */
   const handleSingleResult = (barcode: string) => {
     try {
-      const {request_uri, client_id} = presentationLinkToUrl(barcode);
+      const { request_uri, client_id } = presentationLinkToUrl(barcode);
       ReactNativeHapticFeedback.trigger(
         HapticFeedbackTypes.notificationSuccess
       );
@@ -74,7 +74,7 @@ const QrCodeScanScreen = () => {
 
   const handleBarcodeError: OnBardCodeError = () => IOToast.error(t('error'));
 
-  const {showImagePicker, isLoading} = useQrCodeFileReader({
+  const { showImagePicker, isLoading } = useQrCodeFileReader({
     onBarcodeSuccess: handleBarcodeSuccess,
     onBarcodeError: handleBarcodeError
   });

@@ -1,5 +1,5 @@
-import {all, call} from 'typed-redux-saga';
-import {startupSaga} from './startup';
+import { all, call } from 'typed-redux-saga';
+import { startupSaga } from './startup';
 
 /**
  * The root saga that forks and includes all the other sagas.

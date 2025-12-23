@@ -1,6 +1,6 @@
-import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
-import {ISO18013_5} from '@pagopa/io-react-native-iso18013';
-import {serializeError} from 'serialize-error';
+import { call, put, race, select, take, takeLatest } from 'typed-redux-saga';
+import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
+import { serializeError } from 'serialize-error';
 import {
   resetProximityQrCode,
   selectProximityAcceptedFields,
@@ -16,9 +16,9 @@ import {
   setProximityStatusStarted,
   setProximityStatusStopped
 } from '../store/proximity';
-import {requestBlePermissions} from '../utils/permissions';
-import {store} from '../../../store';
-import {selectCredentials} from '../store/credentials';
+import { requestBlePermissions } from '../utils/permissions';
+import { store } from '../../../store';
+import { selectCredentials } from '../store/credentials';
 import {
   getIsVerifierAuthenticated,
   matchRequestToClaims,

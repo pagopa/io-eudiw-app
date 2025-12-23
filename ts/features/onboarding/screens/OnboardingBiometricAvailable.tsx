@@ -1,14 +1,14 @@
-import {Banner, Body, H2, VSpacer} from '@pagopa/io-app-design-system';
-import {ComponentProps} from 'react';
-import {useTranslation} from 'react-i18next';
-import {useHeaderSecondLevel} from '../../../hooks/useHeaderSecondLevel';
-import {useAppDispatch} from '../../../store';
+import { Banner, Body, H2, VSpacer } from '@pagopa/io-app-design-system';
+import { ComponentProps } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useHeaderSecondLevel } from '../../../hooks/useHeaderSecondLevel';
+import { useAppDispatch } from '../../../store';
 import {
   preferencesSetIsBiometricEnabled,
   preferencesSetIsOnboardingDone
 } from '../../../store/reducers/preferences';
-import {IOScrollView} from '../../../components/IOScrollView';
-import {mayUserActivateBiometric} from '../utils/biometric';
+import { IOScrollView } from '../../../components/IOScrollView';
+import { mayUserActivateBiometric } from '../utils/biometric';
 
 type IOScrollViewActions = ComponentProps<typeof IOScrollView>['actions'];
 
@@ -18,7 +18,7 @@ type IOScrollViewActions = ComponentProps<typeof IOScrollView>['actions'];
  */
 const OnboardingBiometricAvailable = () => {
   const dispatch = useAppDispatch();
-  const {t} = useTranslation(['onboarding', 'global']);
+  const { t } = useTranslation(['onboarding', 'global']);
 
   useHeaderSecondLevel({
     goBack: () => dispatch(preferencesSetIsOnboardingDone()),

@@ -1,6 +1,6 @@
-import {GestureResponderEvent} from 'react-native';
-import {Banner, VSpacer} from '@pagopa/io-app-design-system';
-import {useNavigation} from '@react-navigation/native';
+import { GestureResponderEvent } from 'react-native';
+import { Banner, VSpacer } from '@pagopa/io-app-design-system';
+import { useNavigation } from '@react-navigation/native';
 /**
  * Common props for the component which are always required.
  */
@@ -14,8 +14,8 @@ type CommonProps = {
  * Discriminated union props for the component which make the onClose callback optional and labelClose required if onClose is defined.
  */
 type TruncateProps =
-  | {onClose?: (event: GestureResponderEvent) => void; labelClose?: never}
-  | {onClose: (event: GestureResponderEvent) => void; labelClose: string};
+  | { onClose?: (event: GestureResponderEvent) => void; labelClose?: never }
+  | { onClose: (event: GestureResponderEvent) => void; labelClose: string };
 
 type ItwActionBannerProps = CommonProps & TruncateProps;
 

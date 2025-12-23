@@ -7,28 +7,28 @@ import {
   Credential
 } from '@pagopa/io-react-native-wallet';
 import Config from 'react-native-config';
-import {call, put, select, takeLatest} from 'typed-redux-saga';
+import { call, put, select, takeLatest } from 'typed-redux-saga';
 import uuid from 'react-native-uuid';
-import {generate} from '@pagopa/io-react-native-crypto';
-import {serializeError} from 'serialize-error';
-import {regenerateCryptoKey} from '../../../utils/crypto';
-import {DPOP_KEYTAG} from '../utils/crypto';
+import { generate } from '@pagopa/io-react-native-crypto';
+import { serializeError } from 'serialize-error';
+import { regenerateCryptoKey } from '../../../utils/crypto';
+import { DPOP_KEYTAG } from '../utils/crypto';
 import {
   setPidIssuanceError,
   setPidIssuanceRequest,
   setPidIssuanceSuccess
 } from '../store/pidIssuance';
-import {Lifecycle, setLifecycle} from '../store/lifecycle';
-import {navigate} from '../../../navigation/utils';
-import {addCredential, addPidWithIdentification} from '../store/credentials';
-import {wellKnownCredentialConfigurationIDs} from '../utils/credentials';
+import { Lifecycle, setLifecycle } from '../store/lifecycle';
+import { navigate } from '../../../navigation/utils';
+import { addCredential, addPidWithIdentification } from '../store/credentials';
+import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
-import {createWalletProviderFetch} from '../utils/fetch';
-import {selectSessionId} from '../../../store/reducers/preferences';
-import {getAttestation} from './attestation';
+import { createWalletProviderFetch } from '../utils/fetch';
+import { selectSessionId } from '../../../store/reducers/preferences';
+import { getAttestation } from './attestation';
 
 /**
  * Saga watcher for PID related actions.
@@ -45,7 +45,7 @@ export function* watchPidSaga() {
  */
 function* obtainPid() {
   try {
-    const {PID_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
+    const { PID_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri } = Config;
 
     // Get the wallet instance attestation and generate its crypto context
     const walletInstanceAttestation = yield* call(getAttestation);
@@ -64,17 +64,17 @@ function* obtainPid() {
       sessionId
     );
 
-    const {issuerUrl, credentialId: credentialConfigId} = startFlow();
+    const { issuerUrl, credentialId: credentialConfigId } = startFlow();
 
     // Evaluate issuer trust
-    const {issuerConf} = yield* call(
+    const { issuerConf } = yield* call(
       Credential.Issuance.evaluateIssuerTrust,
       issuerUrl,
-      {appFetch}
+      { appFetch }
     );
 
     // Start user authorization
-    const {issuerRequestUri, clientId, codeVerifier} = yield* call(
+    const { issuerRequestUri, clientId, codeVerifier } = yield* call(
       Credential.Issuance.startUserAuthorization,
       issuerConf,
       [credentialConfigId],
@@ -102,7 +102,7 @@ function* obtainPid() {
     }
 
     // Obtain the Authorization URL
-    const {authUrl} = yield* call(
+    const { authUrl } = yield* call(
       Credential.Issuance.buildAuthorizationUrl,
       issuerRequestUri,
       clientId,
@@ -123,7 +123,7 @@ function* obtainPid() {
       baseRedirectUri
     );
 
-    const {code} = yield* call(
+    const { code } = yield* call(
       Credential.Issuance.completeUserAuthorizationWithQueryMode,
       authRedirectUrl
     );
@@ -137,7 +137,7 @@ function* obtainPid() {
     yield* call(regenerateCryptoKey, DPOP_KEYTAG);
     const dPopCryptoContext = createCryptoContextFor(DPOP_KEYTAG);
 
-    const {accessToken} = yield* call(
+    const { accessToken } = yield* call(
       Credential.Issuance.authorizeAccess,
       issuerConf,
       code,
@@ -153,10 +153,10 @@ function* obtainPid() {
 
     // Obtain the credential
     // # TODO: WLEO-727 - rework to support multiple credentials issuance
-    const {credential_configuration_id, credential_identifiers} =
+    const { credential_configuration_id, credential_identifiers } =
       accessToken.authorization_details[0]!;
 
-    const {credential, format} = yield* call(
+    const { credential, format } = yield* call(
       Credential.Issuance.obtainCredential,
       issuerConf,
       accessToken,
@@ -172,12 +172,12 @@ function* obtainPid() {
       }
     );
 
-    const {parsedCredential} = yield* call(
+    const { parsedCredential } = yield* call(
       Credential.Issuance.verifyAndParseCredential,
       issuerConf,
       credential,
       credential_configuration_id,
-      {credentialCryptoContext}
+      { credentialCryptoContext }
     );
 
     yield* put(
@@ -192,7 +192,7 @@ function* obtainPid() {
       })
     );
   } catch (error) {
-    yield* put(setPidIssuanceError({error: serializeError(error)}));
+    yield* put(setPidIssuanceError({ error: serializeError(error) }));
   }
 }
 
@@ -203,9 +203,9 @@ function* obtainPid() {
 function* onStorePidIdentified(
   action: ReturnType<typeof addPidWithIdentification>
 ) {
-  yield* put(addCredential({credential: action.payload.credential}));
-  yield* put(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
-  navigate('MAIN_WALLET_NAV', {screen: 'PID_ISSUANCE_SUCCESS'});
+  yield* put(addCredential({ credential: action.payload.credential }));
+  yield* put(setLifecycle({ lifecycle: Lifecycle.LIFECYCLE_VALID }));
+  navigate('MAIN_WALLET_NAV', { screen: 'PID_ISSUANCE_SUCCESS' });
 }
 
 /**

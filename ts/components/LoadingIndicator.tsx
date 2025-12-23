@@ -4,7 +4,7 @@ import {
   WithTestID
 } from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
-import {useInteractiveElementDefaultColor} from '../hooks/theme';
+import { useInteractiveElementDefaultColor } from '../hooks/theme';
 
 export type LoadingIndicator = WithTestID<
   Exclude<

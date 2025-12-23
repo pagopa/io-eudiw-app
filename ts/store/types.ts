@@ -1,4 +1,4 @@
-import {store} from '.';
+import { store } from '.';
 
 /**
  * Type definition for the dispatch function of the Redux store.

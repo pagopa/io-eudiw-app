@@ -5,11 +5,12 @@ import {
   hexToRgba,
   useIOTheme
 } from '@pagopa/io-app-design-system';
-import {useState} from 'react';
-import {Platform, SafeAreaView, StyleSheet, View} from 'react-native';
-import {getAppVersion} from '../../utils/device';
-import {DebugDataIndicator} from './DebugDataIndicator';
-import {DebugDataOverlay} from './DebugDataOverlay';
+import { useState } from 'react';
+import { Platform, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { getAppVersion } from '../../utils/device';
+import { DebugDataIndicator } from './DebugDataIndicator';
+import { DebugDataOverlay } from './DebugDataOverlay';
 
 const debugItemBgColor = hexToRgba(IOColors.white, 0.4);
 const debugItemBorderColor = hexToRgba(IOColors.black, 0.1);
@@ -27,14 +28,15 @@ const DebugInfoOverlay = () => {
   return (
     <>
       <SafeAreaView style={styles.versionContainer} pointerEvents="box-none">
-        <VStack space={4} style={{alignItems: 'center'}}>
+        <VStack space={4} style={{ alignItems: 'center' }}>
           <View style={styles.versionTextWrapper}>
             <IOText
               color={theme['textBody-secondary']}
               font="TitilliumSansPro"
               weight="Semibold"
               size={12}
-              lineHeight={16}>
+              lineHeight={16}
+            >
               {appVersionText}
             </IOText>
           </View>

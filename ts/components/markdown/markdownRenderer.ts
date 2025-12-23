@@ -1,7 +1,7 @@
-import {parse as textLintParse} from '@textlint/markdown-to-ast';
-import {AnyTxtNode, TxtParentNode} from '@textlint/ast-node-types';
-import {omit} from 'lodash';
-import {AnyTxtNodeWithSpacer, IOMarkdownRenderRules, Renderer} from './types';
+import { parse as textLintParse } from '@textlint/markdown-to-ast';
+import { AnyTxtNode, TxtParentNode } from '@textlint/ast-node-types';
+import { omit } from 'lodash';
+import { AnyTxtNodeWithSpacer, IOMarkdownRenderRules, Renderer } from './types';
 
 /**
  *
@@ -51,13 +51,15 @@ function integrateParent<T extends AnyTxtNode>(
   parent?: TxtParentNode
 ): T {
   // @ts-ignore
-  const {parentLight} = omit(parent, 'children');
+  const { parentLight } = omit(parent, 'children');
 
   return 'children' in node
     ? {
         ...node,
-        children: node.children.map(n => integrateParent(n, {...node, parent})),
+        children: node.children.map(n =>
+          integrateParent(n, { ...node, parent })
+        ),
         parent: parentLight
       }
-    : {...node, parent: parentLight};
+    : { ...node, parent: parentLight };
 }

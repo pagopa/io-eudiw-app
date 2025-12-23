@@ -5,14 +5,14 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import {memo, useCallback, useEffect} from 'react';
-import {Alert, View} from 'react-native';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
-import {useAppDispatch, useAppSelector} from '../../../../store';
-import {removeCredential} from '../../store/credentials';
-import {StoredCredential} from '../../utils/types';
-import {useIOBottomSheetModal} from '../../../../hooks/useBottomSheet';
+import { memo, useCallback, useEffect } from 'react';
+import { Alert, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch, useAppSelector } from '../../../../store';
+import { removeCredential } from '../../store/credentials';
+import { StoredCredential } from '../../utils/types';
+import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
 import {
   ProximityStatus,
   resetProximity,
@@ -22,10 +22,10 @@ import {
   setProximityStatusStarted,
   setProximityStatusStopped
 } from '../../store/proximity';
-import {PresentationProximityQrCode} from '../proximity/PresentationProximityQRCode';
-import {useDebugInfo} from '../../../../hooks/useDebugInfo';
-import {wellKnownCredential} from '../../utils/credentials';
-import {resetLifecycle} from '../../store/lifecycle';
+import { PresentationProximityQrCode } from '../proximity/PresentationProximityQRCode';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { wellKnownCredential } from '../../utils/credentials';
+import { resetLifecycle } from '../../store/lifecycle';
 
 type PresentationDetailFooterProps = {
   credential: StoredCredential;
@@ -42,7 +42,7 @@ const PresentationDetailsFooter = ({
 
   const navigation = useNavigation();
   const toast = useIOToast();
-  const {t} = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation(['wallet', 'global']);
   const proximityStatus = useAppSelector(selectProximityStatus);
   const proximityDisclosureDescriptor = useAppSelector(
     selectProximityDisclosureDescriptor
@@ -154,4 +154,4 @@ const PresentationDetailsFooter = ({
 
 const MemoizedPresentationDetailsFooter = memo(PresentationDetailsFooter);
 
-export {MemoizedPresentationDetailsFooter as PresentationDetailsFooter};
+export { MemoizedPresentationDetailsFooter as PresentationDetailsFooter };

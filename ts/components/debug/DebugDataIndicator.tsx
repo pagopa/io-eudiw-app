@@ -6,9 +6,9 @@ import {
   hexToRgba
 } from '@pagopa/io-app-design-system';
 import _ from 'lodash';
-import {Pressable, StyleSheet} from 'react-native';
-import {selectDebugData} from '../../store/reducers/debug';
-import {useAppSelector} from '../../store';
+import { Pressable, StyleSheet } from 'react-native';
+import { selectDebugData } from '../../store/reducers/debug';
+import { useAppSelector } from '../../store';
 
 type DebugDataIndicatorProps = {
   onPress: () => void;
@@ -30,8 +30,9 @@ export const DebugDataIndicator = (props: DebugDataIndicatorProps) => {
     <Pressable
       style={styles.wrapper}
       accessibilityRole="button"
-      onPress={props.onPress}>
-      <HStack space={4} style={{alignItems: 'center'}}>
+      onPress={props.onPress}
+    >
+      <HStack space={4} style={{ alignItems: 'center' }}>
         <Icon name="ladybug" size={16} color="warning-850" />
         <IOText
           size={14}
@@ -41,7 +42,8 @@ export const DebugDataIndicator = (props: DebugDataIndicatorProps) => {
           style={{
             letterSpacing: 0.2,
             textTransform: 'uppercase'
-          }}>
+          }}
+        >
           {dataSize}
         </IOText>
       </HStack>

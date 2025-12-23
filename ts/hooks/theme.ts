@@ -1,4 +1,4 @@
-import {IOColors, useIOTheme} from '@pagopa/io-app-design-system';
+import { IOColors, useIOTheme } from '@pagopa/io-app-design-system';
 
 /**
  * Hook to get the app background color theme.

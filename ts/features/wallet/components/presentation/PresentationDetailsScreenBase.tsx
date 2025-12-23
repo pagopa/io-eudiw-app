@@ -4,15 +4,15 @@ import {
   useFooterActionsMeasurements
 } from '@pagopa/io-app-design-system';
 
-import {Fragment, ReactNode} from 'react';
+import { Fragment, ReactNode } from 'react';
 import Animated, {
   useAnimatedRef,
   useAnimatedScrollHandler,
   useSharedValue
 } from 'react-native-reanimated';
-import {StoredCredential} from '../../utils/types';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
-import {getHeaderPropsByCredentialType} from '../../utils/style';
+import { StoredCredential } from '../../utils/types';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { getHeaderPropsByCredentialType } from '../../utils/style';
 
 export type CredentialCtaProps = Omit<ButtonSolidProps, 'fullWidth'>;
 
@@ -36,7 +36,7 @@ const PresentationDetailsScreenBase = ({
 }: PresentationDetailsScreenBaseProps) => {
   const animatedScrollViewRef = useAnimatedRef<Animated.ScrollView>();
 
-  const {footerActionsMeasurements, handleFooterActionsMeasurements} =
+  const { footerActionsMeasurements, handleFooterActionsMeasurements } =
     useFooterActionsMeasurements();
 
   const gradientOpacity = useSharedValue(1);
@@ -55,7 +55,7 @@ const PresentationDetailsScreenBase = ({
   });
 
   const scrollHandler = useAnimatedScrollHandler(
-    ({contentOffset, layoutMeasurement, contentSize}) => {
+    ({ contentOffset, layoutMeasurement, contentSize }) => {
       // eslint-disable-next-line functional/immutable-data
       scrollTranslationY.value = contentOffset.y;
 
@@ -89,7 +89,8 @@ const PresentationDetailsScreenBase = ({
         scrollEventThrottle={16}
         snapToOffsets={[0, scrollTriggerOffsetValue]}
         snapToEnd={false}
-        decelerationRate="normal">
+        decelerationRate="normal"
+      >
         {children}
       </Animated.ScrollView>
       {footerComponent}
@@ -97,4 +98,4 @@ const PresentationDetailsScreenBase = ({
   );
 };
 
-export {PresentationDetailsScreenBase};
+export { PresentationDetailsScreenBase };

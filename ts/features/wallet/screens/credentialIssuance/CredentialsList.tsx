@@ -3,20 +3,20 @@ import {
   ListItemHeader,
   VStack
 } from '@pagopa/io-app-design-system';
-import {useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
-import {useAppDispatch, useAppSelector} from '../../../../store';
-import {IOScrollViewWithLargeHeader} from '../../../../components/IOScrollViewWithLargeHeader';
+import { useCallback, useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch, useAppSelector } from '../../../../store';
+import { IOScrollViewWithLargeHeader } from '../../../../components/IOScrollViewWithLargeHeader';
 import {
   CredentialsKeys,
   wellKnownCredential,
   wellKnownCredentialConfigurationIDs
 } from '../../utils/credentials';
-import {OnboardingModuleCredential} from '../../components/credential/OnboardingModuleCredential';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
-import {selectCredentials} from '../../store/credentials';
+import { OnboardingModuleCredential } from '../../components/credential/OnboardingModuleCredential';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { selectCredentials } from '../../store/credentials';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePreAuthStatus,
@@ -30,7 +30,7 @@ import {
  * It also shows a badge if the credential is already saved or a loading indicator if the credential is being requested.
  */
 const CredentialsList = () => {
-  const {t} = useTranslation('wallet');
+  const { t } = useTranslation('wallet');
   const credentials = useAppSelector(selectCredentials);
   const dispatch = useAppDispatch();
   const requestedCredential = useAppSelector(selectRequestedCredential);
@@ -80,7 +80,8 @@ const CredentialsList = () => {
     <IOScrollViewWithLargeHeader
       title={{
         label: t('credentialIssuance.list.title')
-      }}>
+      }}
+    >
       <View style={styles.wrapper}>
         <ListItemHeader label={t('credentialIssuance.list.header')} />
         <VStack space={8}>
@@ -100,7 +101,7 @@ const CredentialsList = () => {
                 ]
               )}
               onPress={c =>
-                dispatch(setCredentialIssuancePreAuthRequest({credential: c}))
+                dispatch(setCredentialIssuancePreAuthRequest({ credential: c }))
               }
             />
           ))}

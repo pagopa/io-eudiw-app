@@ -1,9 +1,9 @@
-import {StatusBar} from 'react-native';
-import {IOColors} from '@pagopa/io-app-design-system';
-import {RootStackNavigator} from '../navigation/RootStacknavigator';
-import {useAppSelector} from '../store';
+import { StatusBar } from 'react-native';
+import { IOColors } from '@pagopa/io-app-design-system';
+import { RootStackNavigator } from '../navigation/RootStacknavigator';
+import { useAppSelector } from '../store';
 import DebugInfoOverlay from '../components/debug/DebugInfoOverlay';
-import {selectIsDebugModeEnabled} from '../store/reducers/debug';
+import { selectIsDebugModeEnabled } from '../store/reducers/debug';
 
 /**
  * This is the root container of the app. It contains the main navigation stack and the debug overlay.

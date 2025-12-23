@@ -8,7 +8,7 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import _ from 'lodash';
-import {memo, useCallback, useMemo, useRef} from 'react';
+import { memo, useCallback, useMemo, useRef } from 'react';
 import {
   Alert,
   ColorSchemeName,
@@ -18,18 +18,18 @@ import {
   StyleSheet,
   View
 } from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {t} from 'i18next';
-import {useAppBackgroundAccentColorName} from '../hooks/theme';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { t } from 'i18next';
+import { useAppBackgroundAccentColorName } from '../hooks/theme';
 import {
   biometricAuthenticationRequest,
   getBiometryIconName
 } from '../store/utils/identification';
-import {useBiometricType} from '../hooks/useBiometricType';
-import {IdentificationNumberPad} from '../components/IdentificationNumberPad';
-import {useAppDispatch, useAppSelector} from '../store';
-import {selectPin} from '../store/reducers/pin';
+import { useBiometricType } from '../hooks/useBiometricType';
+import { IdentificationNumberPad } from '../components/IdentificationNumberPad';
+import { useAppDispatch, useAppSelector } from '../store';
+import { selectPin } from '../store/reducers/pin';
 import {
   selectIdentificationStatus,
   setIdentificationIdentified,
@@ -39,7 +39,7 @@ import {
   preferencesReset,
   selectIsBiometricEnabled
 } from '../store/reducers/preferences';
-import {isAndroid} from '../utils/device';
+import { isAndroid } from '../utils/device';
 
 const onRequestCloseHandler = () => undefined;
 
@@ -54,12 +54,14 @@ const IdentificationModal = () => {
   const headerRef = useRef<View>(null);
   const colorScheme: ColorSchemeName = 'light';
   const numberPadVariant = colorScheme ? 'primary' : 'neutral';
-  const {biometricType} = useBiometricType();
+  const { biometricType } = useBiometricType();
   const pin = useAppSelector(selectPin);
   const dispatch = useAppDispatch();
-  const {status, isValidatingTask} = useAppSelector(selectIdentificationStatus);
+  const { status, isValidatingTask } = useAppSelector(
+    selectIdentificationStatus
+  );
   const blueColor = useAppBackgroundAccentColorName();
-  const {top} = useSafeAreaInsets();
+  const { top } = useSafeAreaInsets();
   const isBiometricEnabled = useAppSelector(selectIsBiometricEnabled);
   const topInset = isAndroid ? StatusBar.currentHeight : top;
 
@@ -144,7 +146,7 @@ const IdentificationModal = () => {
             style: 'cancel'
           }
         ],
-        {cancelable: false}
+        { cancelable: false }
       ),
     [isValidatingTask, onPinResetHandler]
   );
@@ -177,11 +179,15 @@ const IdentificationModal = () => {
     <Modal
       statusBarTranslucent
       transparent
-      onRequestClose={onRequestCloseHandler}>
+      onRequestClose={onRequestCloseHandler}
+    >
       {Platform.OS === 'ios' && <StatusBar barStyle={'light-content'} />}
-      <View style={[styles.contentWrapper, {backgroundColor: blueColor}]}>
+      <View style={[styles.contentWrapper, { backgroundColor: blueColor }]}>
         {isValidatingTask && (
-          <View accessible style={[styles.closeButton, {marginTop: topInset}]}>
+          <View
+            accessible
+            style={[styles.closeButton, { marginTop: topInset }]}
+          >
             <ContentWrapper>
               <VSpacer size={16} />
               <IconButton
@@ -200,20 +206,21 @@ const IdentificationModal = () => {
             {
               justifyContent: isValidatingTask ? undefined : 'center'
             }
-          ]}>
+          ]}
+        >
           <ContentWrapper>
             <View>
               <VSpacer size={16} />
-              <View style={{alignItems: 'center'}}>
+              <View style={{ alignItems: 'center' }}>
                 <Pictogram
                   pictogramStyle="light-content"
                   name={pictogramKey}
                   size={64}
                 />
               </View>
-              <View accessible ref={headerRef} style={{alignItems: 'center'}}>
+              <View accessible ref={headerRef} style={{ alignItems: 'center' }}>
                 <VSpacer size={8} />
-                <H2 color={'white'} style={{textAlign: 'center'}}>
+                <H2 color={'white'} style={{ textAlign: 'center' }}>
                   {titleLabel}
                 </H2>
               </View>
@@ -222,7 +229,7 @@ const IdentificationModal = () => {
             <NumberPad />
             <View>
               <VSpacer size={32} />
-              <View style={{alignSelf: 'center'}}>
+              <View style={{ alignSelf: 'center' }}>
                 <IOButton
                   variant="link"
                   accessibilityLabel={t('identification.forgot.title')}
@@ -241,7 +248,7 @@ const IdentificationModal = () => {
 };
 
 const styles = StyleSheet.create({
-  contentWrapper: {flexGrow: 1},
+  contentWrapper: { flexGrow: 1 },
   closeButton: {
     zIndex: 100,
     flexGrow: 1,

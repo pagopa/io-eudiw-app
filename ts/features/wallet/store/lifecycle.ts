@@ -1,9 +1,9 @@
 /* eslint-disable functional/immutable-data */
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {PersistConfig, persistReducer} from 'redux-persist';
-import {RootState} from '../../../store/types';
-import {preferencesReset} from '../../../store/reducers/preferences';
+import { PersistConfig, persistReducer } from 'redux-persist';
+import { RootState } from '../../../store/types';
+import { preferencesReset } from '../../../store/reducers/preferences';
 
 /**
  * Enum for the lifecycle state of the wallet.
@@ -67,7 +67,7 @@ export const lifecycleReducer = persistReducer(
 /**
  * Exports the actions for the lifecycle slice.
  */
-export const {setLifecycle, resetLifecycle} = lifecycleSlice.actions;
+export const { setLifecycle, resetLifecycle } = lifecycleSlice.actions;
 
 /**
  * Select the current wallet lifecycle.

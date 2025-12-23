@@ -1,4 +1,4 @@
-import {ViewStyle} from 'react-native';
+import { ViewStyle } from 'react-native';
 import Animated, {
   AnimateStyle,
   LayoutAnimation,
@@ -29,7 +29,7 @@ type Props = {
  */
 const ScaleInOutAnimation = ({
   visible = true,
-  springConfig = {damping: 500, mass: 3, stiffness: 1000},
+  springConfig = { damping: 500, mass: 3, stiffness: 1000 },
   delayOut = 0,
   delayIn = 0,
   children,
@@ -39,10 +39,10 @@ const ScaleInOutAnimation = ({
     'worklet';
     return {
       initialValues: {
-        transform: [{scale: 0}]
+        transform: [{ scale: 0 }]
       },
       animations: {
-        transform: [{scale: withDelay(delayIn, withSpring(1, springConfig))}]
+        transform: [{ scale: withDelay(delayIn, withSpring(1, springConfig)) }]
       }
     };
   };
@@ -51,10 +51,10 @@ const ScaleInOutAnimation = ({
     'worklet';
     return {
       initialValues: {
-        transform: [{scale: 1}]
+        transform: [{ scale: 1 }]
       },
       animations: {
-        transform: [{scale: withDelay(delayOut, withTiming(0))}]
+        transform: [{ scale: withDelay(delayOut, withTiming(0)) }]
       }
     };
   };
@@ -67,10 +67,11 @@ const ScaleInOutAnimation = ({
     <Animated.View
       style={style as AnimateStyle<ViewStyle>}
       entering={enteringAnimation}
-      exiting={exitingAnimation}>
+      exiting={exitingAnimation}
+    >
       {children}
     </Animated.View>
   );
 };
 
-export {ScaleInOutAnimation};
+export { ScaleInOutAnimation };

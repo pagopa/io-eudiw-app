@@ -1,10 +1,10 @@
-import {call, put, select, take, takeLatest} from 'typed-redux-saga';
+import { call, put, select, take, takeLatest } from 'typed-redux-saga';
 import {
   createCryptoContextFor,
   Credential
 } from '@pagopa/io-react-native-wallet';
-import {serializeError} from 'serialize-error';
-import {CryptoContext} from '@pagopa/io-react-native-jwt';
+import { serializeError } from 'serialize-error';
+import { CryptoContext } from '@pagopa/io-react-native-jwt';
 import {
   resetPresentation,
   setPostDefinitionCancel,
@@ -15,13 +15,13 @@ import {
   setPreDefinitionRequest,
   setPreDefinitionSuccess
 } from '../store/presentation';
-import {selectCredentials} from '../store/credentials';
+import { selectCredentials } from '../store/credentials';
 import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
-import {ParsedCredential} from '../utils/types';
-import {CredentialTypePresentationClaimsListDescriptor} from '../components/presentation/CredentialTypePresentationClaimsList';
+import { ParsedCredential } from '../utils/types';
+import { CredentialTypePresentationClaimsListDescriptor } from '../components/presentation/CredentialTypePresentationClaimsList';
 
 type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 type EvaluateDcqlReturn = Awaited<
@@ -81,7 +81,8 @@ function* handlePresentationPreDefinition(
   action: ReturnType<typeof setPreDefinitionRequest>
 ) {
   try {
-    const {request_uri, client_id, state, request_uri_method} = action.payload;
+    const { request_uri, client_id, state, request_uri_method } =
+      action.payload;
 
     const qrParameters = yield* call(Credential.Presentation.startFlowFromQR, {
       request_uri,
@@ -90,17 +91,17 @@ function* handlePresentationPreDefinition(
       request_uri_method
     });
 
-    const {requestObjectEncodedJwt} = yield* call(
+    const { requestObjectEncodedJwt } = yield* call(
       Credential.Presentation.getRequestObject,
       qrParameters.request_uri
     );
 
-    const {rpConf, subject} = yield* call(
+    const { rpConf, subject } = yield* call(
       Credential.Presentation.evaluateRelyingPartyTrust,
       qrParameters.client_id
     );
 
-    const {requestObject} = yield* call(
+    const { requestObject } = yield* call(
       Credential.Presentation.verifyRequestObject,
       requestObjectEncodedJwt,
       {
@@ -158,7 +159,7 @@ function* handlePresentationPreDefinition(
               sdJwtFoundCredential.credentialType
             );
           })
-          .reduce((acc, curr) => ({...acc, ...curr}), {})
+          .reduce((acc, curr) => ({ ...acc, ...curr }), {})
       )
     );
 
@@ -216,8 +217,8 @@ function* handlePresentationPreDefinition(
     }
   } catch (e) {
     // We don't know which step is failed thus we set the same error for both
-    yield* put(setPostDefinitionError({error: serializeError(e)}));
-    yield* put(setPreDefinitionError({error: serializeError(e)}));
+    yield* put(setPostDefinitionError({ error: serializeError(e) }));
+    yield* put(setPreDefinitionError({ error: serializeError(e) }));
   }
 }
 
@@ -232,13 +233,13 @@ function* onPresentCredentialIdentified(
   >['requestObject']
 ) {
   const credentialsToPresent = toProcess.map(
-    ({requiredDisclosures, ...rest}) => ({
+    ({ requiredDisclosures, ...rest }) => ({
       ...rest,
       requestedClaims: requiredDisclosures.map(([, claimName]) => claimName)
     })
   );
 
-  const {rpConf} = yield* call(
+  const { rpConf } = yield* call(
     Credential.Presentation.evaluateRelyingPartyTrust,
     requestObject.client_id
   );

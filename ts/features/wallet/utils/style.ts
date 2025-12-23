@@ -1,8 +1,8 @@
-import {StatusBarStyle} from 'react-native';
-import {Alert as AlertDs} from '@pagopa/io-app-design-system';
+import { StatusBarStyle } from 'react-native';
+import { Alert as AlertDs } from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
-import {HeaderSecondLevelHookProps} from '../../../hooks/useHeaderSecondLevel';
-import {getCredentialNameByType, wellKnownCredential} from './credentials';
+import { HeaderSecondLevelHookProps } from '../../../hooks/useHeaderSecondLevel';
+import { getCredentialNameByType, wellKnownCredential } from './credentials';
 
 export type CredentialTheme = {
   backgroundColor: string;
@@ -45,7 +45,7 @@ export const getThemeColorByCredentialType = (
 export const getHeaderPropsByCredentialType = (
   credentialType: string
 ): HeaderSecondLevelHookProps => {
-  const {backgroundColor} = getThemeColorByCredentialType(credentialType);
+  const { backgroundColor } = getThemeColorByCredentialType(credentialType);
 
   switch (credentialType) {
     // No custom header props at the moment

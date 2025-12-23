@@ -80,6 +80,8 @@
 	<string>$(PRODUCT_NAME) needs access your location.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) needs access to your Photo Library to upload QR codes.</string>
+	<key>RCTNewArchEnabled</key>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Titillio-Black.otf</string>
