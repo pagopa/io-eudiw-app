@@ -101,7 +101,6 @@ const proximityListener: AppListenerWithAction<
 
     // Set QR Code
     const qrCode = await getQrCodeString();
-    console.log('qrCode', qrCode);
     listenerApi.dispatch(setProximityQrCode(qrCode));
 
     /**
