@@ -1,13 +1,93 @@
 {
+  "generics": {
+    "waiting": "Wait few seconds",
+    "success": "Success",
+    "error": {
+      "title": "C'è un problema sui nostri sistemi",
+      "body": "Riprova tra qualche minuto. Se si ripete, contatta l'assistenza."
+    },
+    "alert": {
+      "title": "Vuoi interrompere l'operazione?",
+      "body": "Dovrai ripetere di nuovo tutti i passaggi",
+      "confirm": "Sì, interrompi",
+      "cancel": "No, riprendi"
+    }
+  },
   "tabNavigator": {
-    "home": "Wallet",
+    "wallet": "Wallet",
     "scanQr": "Scan QR",
     "showQr": "Show QR"
+  },
+  "settings": {
+    "title": "Settings",
+    "reset": {
+      "title": "Reset App",
+      "walletReset": "Reset wallet",
+      "onboardingReset": "Reset onboarding"
+    },
+    "debug": "Enable debug mode",
+    "version": "Version"
   },
   "buttons": {
     "next": "Next",
     "skip": "Skip",
     "start": "Start",
-    "close": "Close"
+    "close": "Close",
+    "delete": "Delete",
+    "continue": "Continue",
+    "activate": "Activate",
+    "notNow": "Not now",
+    "back": "Back",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "help": "Help",
+    "done": "Done",
+    "show": "Show"
+  },
+  "loading": {
+    "body": "Please wait a moment"
+  },
+  "accessibility": {
+    "activityIndicator": {
+      "label": "Loading",
+      "hint": "Wait for the content load"
+    }
+  },
+  "clipboard": {
+    "copyFeedback": "Copied to clipboard"
+  },
+  "identification": {
+    "title": {
+      "validation": "Authorise the operation.",
+      "access": "Hi!"
+    },
+    "forgot": {
+      "title": "Did you forget the the unlock code?",
+      "confirmTitle": "Did you forget the unlock code?",
+      "confirmMsg": "To be able to choose a new unlock code you will need to log in again.",
+      "confirmMsgWithTask": "To be able to choose a new unlock code you will need to cancel the current procedure and log in again."
+    },
+    "error": {
+      "deviceLocked": "Authentication was not successful, the device currently in a lockout of 30 seconds",
+      "DeviceLockedPermanent": "Authentication was not successful, device must be unlocked via password"
+    },
+    "unlockCode": {
+      "accessibility": {
+        "fingerprint": "Login with your fingerprint",
+        "faceId": "Login with the Face ID"
+      }
+    },
+    "biometric": {
+      "title": "Biometric identification",
+      "sensorDescription": "Login quickly"
+    }
+  },
+  "errors": {
+    "generic": "An error occurred"
+  },
+  "cancelOperation": {
+    "title": "Do you want to stop the operation?",
+    "confirm": "Yes, stop",
+    "cancel": "No, continue"
   }
 }
