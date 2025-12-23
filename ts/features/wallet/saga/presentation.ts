@@ -20,8 +20,8 @@ import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
-import {ParsedCredential} from '../utils/types';
-import {CredentialTypePresentationClaimsListDescriptor} from '../components/presentation/CredentialTypePresentationClaimsList';
+import { ParsedCredential } from '../utils/types';
+import { CredentialTypePresentationClaimsListDescriptor } from '../components/presentation/CredentialTypePresentationClaimsList';
 
 type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 type EvaluateDcqlReturn = Awaited<
@@ -159,7 +159,7 @@ function* handlePresentationPreDefinition(
               sdJwtFoundCredential.credentialType
             );
           })
-          .reduce((acc, curr) => ({...acc, ...curr}), {})
+          .reduce((acc, curr) => ({ ...acc, ...curr }), {})
       )
     );
 
