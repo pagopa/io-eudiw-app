@@ -17,8 +17,6 @@ export const createInstanceThunk = createAppAsyncThunk<void, void>(
       const state = getState();
       const instanceKeyTag = selectInstanceKeyTag(state);
 
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate network delay
-
       if (!instanceKeyTag) {
         const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;
         const sessionId = selectSessionId(state);

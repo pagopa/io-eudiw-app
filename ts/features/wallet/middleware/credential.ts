@@ -11,7 +11,7 @@ import {
   openAuthenticationSession,
   supportsInAppBrowser
 } from '@pagopa/io-react-native-login-utils';
-import {isAnyOf} from '@reduxjs/toolkit';
+import {isAnyOf, TaskAbortError} from '@reduxjs/toolkit';
 import {
   EvaluateIssuerTrust,
   StartUserAuthorization
@@ -224,7 +224,6 @@ const obtainCredentialListener: AppListenerWithAction<
     if (!supportsCustomTabs) {
       throw new Error('Custom tabs are not supported');
     }
-    /* End of temporary block code */
 
     const credentialCode = await getCredentialAuthCode({
       credentialType,
@@ -300,6 +299,10 @@ const obtainCredentialListener: AppListenerWithAction<
       })
     );
   } catch (error) {
+    // Ignore if the task was aborted
+    if (error instanceof TaskAbortError) {
+      return;
+    }
     // We put the error in both the pre and post auth status as we are unsure where the error occurred.
     const serializableError = JSON.stringify(error);
     listenerApi.dispatch(

@@ -53,7 +53,11 @@ const pidIssuanceStatusSlice = createSlice({
       state.instanceCreation = setLoading();
     });
     builder.addCase(createInstanceThunk.rejected, (state, action) => {
-      state.instanceCreation = setError(action.error);
+      if (action.meta.aborted) {
+        state.instanceCreation = setInitial();
+      } else {
+        state.instanceCreation = setError(action.error);
+      }
     });
     // Pid issuance thunk
     builder.addCase(obtainPidThunk.fulfilled, (state, action) => {
@@ -63,7 +67,11 @@ const pidIssuanceStatusSlice = createSlice({
       state.issuance = setLoading();
     });
     builder.addCase(obtainPidThunk.rejected, (state, action) => {
-      state.issuance = setError(action.error);
+      if (action.meta.aborted) {
+        state.issuance = setInitial();
+      } else {
+        state.issuance = setError(action.error);
+      }
     });
     // This happens when the whole app state is reset
     builder.addCase(preferencesReset, _ => initialState);

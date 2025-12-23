@@ -18,6 +18,9 @@ import {
   selectInstanceStatus
 } from '../../store/pidIssuance';
 import {createInstanceThunk} from '../../middleware/instance';
+import {useHardwareBackButtonToDismiss} from '../../../../hooks/useHardwareBackButton';
+
+type CreateInstancePromise = ReturnType<ReturnType<typeof createInstanceThunk>>;
 
 /**
  * Screen which shows the information about the wallet, then registers a wallet instance and gets an attestation.
@@ -27,14 +30,7 @@ const WalletInstanceCreation = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const {error, success, loading} = useAppSelector(selectInstanceStatus);
-  const thunkRef = useRef<ReturnType<typeof createInstanceThunk> | null>(null);
-
-  useEffect(() => {
-    const promise = dispatch(createInstanceThunk());
-    return () => {
-      promise.abort();
-    };
-  }, [dispatch]);
+  const thunkRef = useRef<CreateInstancePromise | null>(null);
 
   useEffect(() => {
     if (success.status === true) {
@@ -53,13 +49,23 @@ const WalletInstanceCreation = () => {
     }
   }, [error, navigation]);
 
+  const goBack = () => {
+    thunkRef.current?.abort();
+    navigation.goBack();
+  };
+
+  const onPress = async () => {
+    const promise = dispatch(createInstanceThunk());
+    // eslint-disable-next-line functional/immutable-data
+    thunkRef.current = promise;
+  };
+
   useHeaderSecondLevel({
     title: '',
-    goBack: () => {
-      dispatch(resetInstanceCreation());
-      navigation.goBack();
-    }
+    goBack
   });
+
+  useHardwareBackButtonToDismiss(goBack);
 
   return (
     <ForceScrollDownView threshold={50}>
@@ -81,7 +87,7 @@ const WalletInstanceCreation = () => {
             loading,
             label: t('global:buttons.continue'),
             accessibilityLabel: t('global:buttons.continue'),
-            onPress: () => dispatch(createInstanceThunk())
+            onPress
           }
         }}
       />

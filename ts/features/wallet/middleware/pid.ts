@@ -21,7 +21,10 @@ import {
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
-import {AppListenerWithAction} from '../../../middleware/listener';
+import {
+  AppListenerWithAction,
+  AppStartListening
+} from '../../../middleware/listener';
 import {wellKnownCredentialConfigurationIDs} from '../utils/credentials';
 import {selectSessionId} from '../../../store/reducers/preferences';
 import {createWalletProviderFetch} from '../utils/fetch';
@@ -182,7 +185,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
  * It dispatches the action which shows the pin validation modal and awaits for the result.
  * If the pin is correct, the credential is stored, the issuance state is resetted and the user is navigated to the main screen.
  */
-export const addPidWithAuthListener: AppListenerWithAction<
+const addPidWithAuthListener: AppListenerWithAction<
   ReturnType<typeof addPidWithIdentification>
 > = async (action, listenerApi) => {
   listenerApi.dispatch(
@@ -195,12 +198,21 @@ export const addPidWithAuthListener: AppListenerWithAction<
     listenerApi.dispatch(
       addCredential({credential: action.payload.credential})
     );
-    listenerApi.dispatch(
-      addCredential({credential: action.payload.credential})
-    );
     listenerApi.dispatch(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
     navigate('MAIN_WALLET_NAV', {screen: 'PID_ISSUANCE_SUCCESS'});
   } else {
     return;
   }
+};
+
+export const addPidListeners = (startAppListening: AppStartListening) => {
+  startAppListening({
+    actionCreator: addPidWithIdentification,
+    effect: async (action, listenerApi) => {
+      // Debounce in case of multiple actions dispatched (like a takeLatest)
+      listenerApi.cancelActiveListeners();
+      await listenerApi.delay(15);
+      await addPidWithAuthListener(action, listenerApi);
+    }
+  });
 };
