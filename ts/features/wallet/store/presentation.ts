@@ -11,16 +11,13 @@ import {
 import { RootState } from '../../../store/types';
 import { preferencesReset } from '../../../store/reducers/preferences';
 import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
+import { CredentialTypePresentationClaimsListDescriptor } from '../components/presentation/CredentialTypePresentationClaimsList';
 import { resetLifecycle } from './lifecycle';
 
 /**
  * Type for the description which contains the requested claims during the presentation.
  */
-export type Descriptor = Array<
-  Awaited<
-    ReturnType<typeof Credential.Presentation.evaluateInputDescriptors>
-  >[0]['evaluatedDisclosure']
->;
+export type Descriptor = CredentialTypePresentationClaimsListDescriptor;
 
 /**
  * Response type for the authorization request which is the final step of the presentation flow.
@@ -32,7 +29,7 @@ export type AuthResponse = Awaited<
 /**
  * Type of the optional claims names selected by the user.
  */
-export type OptionalClaims = Descriptor[0]['optionalDisclosures'][0]; // The optional claims selected by the user
+export type OptionalClaims = Descriptor[0]['optionalDisclosures']; // The optional claims selected by the user
 
 /* State type definition for the presentation slice
  * preDefinition - Async status for the prestation before receiving the descriptor
