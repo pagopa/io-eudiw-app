@@ -13,31 +13,39 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
-## iOS
+## Android
 
-### ios certificates
+### android build_release
 
 ```sh
-[bundle exec] fastlane ios certificates
+[bundle exec] fastlane android build_release
 ```
 
-Fetch certificates and provisioning profiles
+Build the App in release mode
 
-### ios bump_version
+### android bump_version
 
 ```sh
-[bundle exec] fastlane ios bump_version
+[bundle exec] fastlane android bump_version
 ```
 
 Bump app version
 
-### ios beta_testflight
+### android alpha_playstore
 
 ```sh
-[bundle exec] fastlane ios beta_testflight
+[bundle exec] fastlane android alpha_playstore
 ```
 
-Submit a new beta build to TestFlight
+Build the App in release mode and deploy in alpha track on the Google Play Store
+
+### android download_apk
+
+```sh
+[bundle exec] fastlane android download_apk
+```
+
+Download universal APK file from Google Play
 
 ----
 
