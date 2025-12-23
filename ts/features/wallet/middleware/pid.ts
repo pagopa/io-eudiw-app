@@ -10,10 +10,9 @@ import Config from 'react-native-config';
 import uuid from 'react-native-uuid';
 import {generate} from '@pagopa/io-react-native-crypto';
 import {serializeError} from 'serialize-error';
-import {createAsyncThunk, isAnyOf} from '@reduxjs/toolkit';
+import {isAnyOf} from '@reduxjs/toolkit';
 import {regenerateCryptoKey} from '../../../utils/crypto';
 import {DPOP_KEYTAG} from '../utils/crypto';
-import {setPidIssuanceError, setPidIssuanceSuccess} from '../store/pidIssuance';
 import {Lifecycle, setLifecycle} from '../store/lifecycle';
 import {navigate} from '../../../navigation/utils';
 import {addCredential, addPidWithIdentification} from '../store/credentials';
@@ -22,22 +21,20 @@ import {
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
-import {
-  AppListenerWithAction,
-  AppStartListening
-} from '../../../listener/listenerMiddleware';
+import {AppListenerWithAction} from '../../../middleware/listener';
 import {wellKnownCredentialConfigurationIDs} from '../utils/credentials';
 import {selectSessionId} from '../../../store/reducers/preferences';
 import {createWalletProviderFetch} from '../utils/fetch';
-import {RootState} from '../../../store/types';
+import {StoredCredential} from '../utils/types';
+import {createAppAsyncThunk} from '../../../middleware/thunk';
 import {getAttestationThunk} from './attestation';
 
 /**
  * Thunk to obtain the PID credential.
  * Replaces the obtainPidListener logic.
  */
-export const obtainPidThunk = createAsyncThunk<void, void, {state: RootState}>(
-  'pidIssuance/obtainPid',
+export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
+  'pidIssuanceStatus/obtainPid',
   async (_, {getState, dispatch, rejectWithValue}) => {
     try {
       const {PID_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
@@ -166,22 +163,15 @@ export const obtainPidThunk = createAsyncThunk<void, void, {state: RootState}>(
           {credentialCryptoContext}
         );
 
-      dispatch(
-        setPidIssuanceSuccess({
-          credential: {
-            parsedCredential,
-            credential,
-            credentialType,
-            keyTag: credentialKeyTag,
-            format: format as 'vc+sd-jwt' | 'mso_mdoc'
-          }
-        })
-      );
-
-      return;
+      return {
+        parsedCredential,
+        credential,
+        credentialType,
+        keyTag: credentialKeyTag,
+        format: format as 'vc+sd-jwt' | 'mso_mdoc'
+      };
     } catch (error) {
       const serialized = serializeError(error);
-      dispatch(setPidIssuanceError({error: serialized}));
       return rejectWithValue(serialized);
     }
   }
@@ -192,7 +182,7 @@ export const obtainPidThunk = createAsyncThunk<void, void, {state: RootState}>(
  * It dispatches the action which shows the pin validation modal and awaits for the result.
  * If the pin is correct, the credential is stored, the issuance state is resetted and the user is navigated to the main screen.
  */
-const addPidWithAuthListener: AppListenerWithAction<
+export const addPidWithAuthListener: AppListenerWithAction<
   ReturnType<typeof addPidWithIdentification>
 > = async (action, listenerApi) => {
   listenerApi.dispatch(
@@ -213,16 +203,4 @@ const addPidWithAuthListener: AppListenerWithAction<
   } else {
     return;
   }
-};
-
-export const addPidListeners = (startAppListening: AppStartListening) => {
-  startAppListening({
-    actionCreator: addPidWithIdentification,
-    effect: async (action, listenerApi) => {
-      // Debounce in case of multiple actions dispatched (like a takeLatest)
-      listenerApi.cancelActiveListeners();
-      await listenerApi.delay(15);
-      await addPidWithAuthListener(action, listenerApi);
-    }
-  });
 };

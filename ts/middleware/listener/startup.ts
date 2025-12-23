@@ -1,36 +1,31 @@
 import BootSplash from 'react-native-bootsplash';
 import {Linking} from 'react-native';
 import {isAnyOf, UnknownAction} from '@reduxjs/toolkit';
-import initI18n from '../i18n/i18n';
+import initI18n from '../../i18n/i18n';
 import {
   startupSetAttributes,
   startupSetError,
-  startupSetLoading,
   startupSetStatus
-} from '../store/reducers/startup';
+} from '../../store/reducers/startup';
 import {
   getBiometricState,
   hasDeviceScreenLock
-} from '../features/onboarding/utils/biometric';
-import {checkConfig} from '../config/configSetup';
+} from '../../features/onboarding/utils/biometric';
+import {checkConfig} from '../../config/configSetup';
 import {
-  preferencesReset,
   preferencesSetIsOnboardingDone,
   selectisOnboardingComplete
-} from '../store/reducers/preferences';
-import {selectUrl} from '../store/reducers/deeplinking';
-import {isNavigationReady} from '../navigation/utils';
-import {resetLifecycle} from '../features/wallet/store/lifecycle';
+} from '../../store/reducers/preferences';
+import {selectUrl} from '../../store/reducers/deeplinking';
+import {isNavigationReady} from '../../navigation/utils';
+import {resetLifecycle} from '../../features/wallet/store/lifecycle';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
   setIdentificationUnidentified
-} from '../store/reducers/identification';
-import {
-  AppListener,
-  AppListenerWithAction,
-  AppStartListening
-} from './listenerMiddleware';
+} from '../../store/reducers/identification';
+import {addWalletListeners} from '../../features/wallet/middleware';
+import {AppListener, AppListenerWithAction, startAppListening} from '.';
 
 /**
  * Utility generator function to wait for the navigation to be ready before dispatching a navigation event.
@@ -116,7 +111,7 @@ const startOnboarding = async (listenerApi: AppListener) => {
  * @param _ - The dispatched action which triggered the listener
  * @param listenerApi - The listener API
  */
-const startup: AppListenerWithAction<UnknownAction> = async (
+export const startupListener: AppListenerWithAction<UnknownAction> = async (
   _,
   listenerApi
 ) => {
@@ -139,15 +134,11 @@ const startup: AppListenerWithAction<UnknownAction> = async (
     } else {
       await startOnboarding(listenerApi);
     }
+
+    // Registers all the listeners related to the app features.
+    addWalletListeners(startAppListening);
   } catch {
     listenerApi.dispatch(startupSetError());
     await BootSplash.hide({fade: true});
   }
-};
-
-export const addStartupListeners = (startAppListening: AppStartListening) => {
-  startAppListening({
-    matcher: isAnyOf(startupSetLoading, preferencesReset),
-    effect: startup
-  });
 };

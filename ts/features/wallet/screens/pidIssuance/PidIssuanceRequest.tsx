@@ -14,14 +14,14 @@ import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
 import {useAppDispatch, useAppSelector} from '../../../../store';
 import {
   selectPidIssuanceData,
-  selectPidIssuanceStatus,
-  setPidIssuanceRequest
+  selectPidIssuanceStatus
 } from '../../store/pidIssuance';
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import {StoredCredential} from '../../utils/types';
 import {addPidWithIdentification} from '../../store/credentials';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
+import {obtainPidThunk} from '../../middleware/pid';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -38,7 +38,10 @@ const PidIssuanceRequest = () => {
   const {navigateToWallet} = useNavigateToWalletWithReset();
 
   useEffect(() => {
-    dispatch(setPidIssuanceRequest());
+    const promise = dispatch(obtainPidThunk());
+    return () => {
+      promise.abort();
+    };
   }, [dispatch]);
 
   useEffect(() => {

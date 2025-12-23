@@ -3,10 +3,13 @@ import {
   addListener,
   Action,
   ListenerEffect,
-  ListenerEffectAPI
+  ListenerEffectAPI,
+  isAnyOf
 } from '@reduxjs/toolkit';
-import {AppDispatch, RootState} from '../store/types';
-import {addStartupListeners} from './startup';
+import {AppDispatch, RootState} from '../../store/types';
+import {startupSetLoading} from '../../store/reducers/startup';
+import {preferencesReset} from '../../store/reducers/preferences';
+import {startupListener} from './startup';
 
 export const listenerMiddleware = createListenerMiddleware();
 
@@ -27,5 +30,11 @@ export type AppListenerWithAction<ActionType extends Action> = ListenerEffect<
 
 export type AppListener = ListenerEffectAPI<RootState, AppDispatch>;
 
-// Register startup listeners
-addStartupListeners(startAppListening);
+/**
+ * Mount here onlylisteners required for the startup process and other global listeners not related to specific features.
+ * Feature-specific listeners are mounted by the startup process itself once the feature is initialized.
+ */
+startAppListening({
+  matcher: isAnyOf(startupSetLoading, preferencesReset),
+  effect: startupListener
+});

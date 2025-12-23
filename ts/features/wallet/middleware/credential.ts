@@ -36,38 +36,27 @@ import {
   setCredentialIssuancePreAuthRequest,
   setCredentialIssuancePreAuthSuccess
 } from '../store/credentialIssuance';
-import {
-  IdentificationResultTask,
-  startSequentializedIdentificationProcess
-} from '../../../saga/identification';
 import {createWalletProviderFetch} from '../utils/fetch';
 import {selectSessionId} from '../../../store/reducers/preferences';
 import {wellKnownCredential} from '../utils/credentials';
 import {StoredCredential} from '../utils/types';
-import {getAttestation} from './attestation';
-
-/**
- * Saga watcher for credential related actions.
- */
-export function* watchCredentialSaga() {
-  yield* takeLatest([setCredentialIssuancePreAuthRequest], function* (...args) {
-    yield* race({
-      task: call(obtainCredential, ...args),
-      cancel: take(resetCredentialIssuance)
-    });
-  });
-  yield* takeLatest(
-    addCredentialWithIdentification,
-    storeCredentialWithIdentification
-  );
-}
+import {
+  AppListenerWithAction,
+  AppStartListening
+} from '../../../middleware/listener';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '../../../store/reducers/identification';
+import {getAttestationThunk} from './attestation';
 
 /**
  * Helper to obtain the authorization code based on the credential type.
  * Handles the distinction between API-based issuance (Disability Card)
  * and browser-based issuance (all the other credentials).
  */
-function* getCredentialAuthCode(params: {
+const getCredentialAuthCode = async (params: {
   credentialType: string;
   pid: StoredCredential | undefined;
   issuerRequestUri: string;
@@ -77,7 +66,7 @@ function* getCredentialAuthCode(params: {
   wiaCryptoContext: CryptoContext;
   redirectUri: string;
   authUrl: string;
-}) {
+}) => {
   const {
     credentialType,
     pid,
@@ -95,45 +84,44 @@ function* getCredentialAuthCode(params: {
       throw new Error('PID required for disability card issuance but missing.');
     }
 
-    const requestObject = yield* call(
-      Credential.Issuance.getRequestedCredentialToBePresented,
-      issuerRequestUri,
-      clientId,
-      issuerConf,
-      appFetch
-    );
-
-    const {code} = yield* call(
-      Credential.Issuance.completeUserAuthorizationWithFormPostJwtMode,
-      requestObject,
-      pid.credential,
-      issuerConf,
-      {
-        wiaCryptoContext,
-        pidCryptoContext: createCryptoContextFor(pid.keyTag),
+    const requestObject =
+      await Credential.Issuance.getRequestedCredentialToBePresented(
+        issuerRequestUri,
+        clientId,
+        issuerConf,
         appFetch
-      }
-    );
+      );
+
+    const {code} =
+      await Credential.Issuance.completeUserAuthorizationWithFormPostJwtMode(
+        requestObject,
+        pid.credential,
+        issuerConf,
+        {
+          wiaCryptoContext,
+          pidCryptoContext: createCryptoContextFor(pid.keyTag),
+          appFetch
+        }
+      );
 
     return code;
   } else {
     const baseRedirectUri = new URL(redirectUri).protocol.replace(':', '');
 
     // Open the authorization URL in the custom tab
-    const authRedirectUrl = yield* call(
-      openAuthenticationSession,
+    const authRedirectUrl = await openAuthenticationSession(
       authUrl,
       baseRedirectUri
     );
 
-    const {code} = yield* call(
-      Credential.Issuance.completeUserAuthorizationWithQueryMode,
-      authRedirectUrl
-    );
+    const {code} =
+      await Credential.Issuance.completeUserAuthorizationWithQueryMode(
+        authRedirectUrl
+      );
 
     return code;
   }
-}
+};
 
 /**
  * Function which handles the issuance of a credential.
@@ -142,7 +130,9 @@ function* getCredentialAuthCode(params: {
  * Post authorization is the phase after the user has authorized the presentation of the required credentials and claims to the issuer.
  * Currently the flow is not complete and thus the authorization is mocked and asks for the whole PID.
  */
-function* obtainCredential() {
+const obtainCredentialListener: AppListenerWithAction<
+  ReturnType<typeof setCredentialIssuancePreAuthRequest>
+> = async (_, listenerApi) => {
   try {
     const {EAA_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
 
@@ -155,19 +145,20 @@ function* obtainCredential() {
       throw new Error('Credential type not found');
     }
     // Get the wallet instance attestation and generate its crypto context
-    const walletInstanceAttestation = yield* call(getAttestation);
+    const walletInstanceAttestation = await listenerApi.dispatch(
+      getAttestationThunk()
+    );
 
     const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
 
-    const wiaCryptoContext = createCryptoContextFor('WIA_KEYTAG');
     // Create credential crypto context
     const credentialKeyTag = uuid.v4().toString();
     await generate(credentialKeyTag);
     const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
 
     const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;
-    const sessionId = yield* select(selectSessionId);
-    const pid = yield* select(selectCredential(wellKnownCredential.PID));
+    const sessionId = selectSessionId(state);
+    const pid = selectCredential(wellKnownCredential.PID)(state);
     const appFetch = createWalletProviderFetch(
       walletProviderBaseUrl,
       sessionId
@@ -181,23 +172,22 @@ function* obtainCredential() {
     const {issuerUrl} = startFlow();
 
     // Evaluate issuer trust
-    const {issuerConf} = yield* call(
-      Credential.Issuance.evaluateIssuerTrust,
+    const {issuerConf} = await Credential.Issuance.evaluateIssuerTrust(
       issuerUrl
     );
 
     // Start user authorization
-    const {issuerRequestUri, clientId, codeVerifier} = yield* call(
-      Credential.Issuance.startUserAuthorization,
-      issuerConf,
-      [credentialConfigId],
-      {
-        walletInstanceAttestation,
-        redirectUri,
-        wiaCryptoContext,
-        appFetch
-      }
-    );
+    const {issuerRequestUri, clientId, codeVerifier} =
+      await Credential.Issuance.startUserAuthorization(
+        issuerConf,
+        [credentialConfigId],
+        {
+          walletInstanceAttestation,
+          redirectUri,
+          wiaCryptoContext,
+          appFetch
+        }
+      );
 
     // Extract the credential type from the config
     const credentialConfig =
@@ -215,7 +205,7 @@ function* obtainCredential() {
       );
     }
 
-    yield* put(
+    listenerApi.dispatch(
       setCredentialIssuancePreAuthSuccess({
         result: true,
         credentialType
@@ -236,7 +226,7 @@ function* obtainCredential() {
     }
     /* End of temporary block code */
 
-    const credentialCode = yield* call(getCredentialAuthCode, {
+    const credentialCode = await getCredentialAuthCode({
       credentialType,
       pid,
       issuerRequestUri,
@@ -270,8 +260,7 @@ function* obtainCredential() {
     const {credential_configuration_id, credential_identifiers} =
       accessToken.authorization_details[0];
 
-    const {credential, format} = yield* call(
-      Credential.Issuance.obtainCredential,
+    const {credential, format} = await Credential.Issuance.obtainCredential(
       issuerConf,
       accessToken,
       clientId,
@@ -287,17 +276,17 @@ function* obtainCredential() {
     );
 
     // Parse and verify the credential. The ignoreMissingAttributes flag must be set to false or omitted in production.
-    const {parsedCredential} = yield* call(
-      Credential.Issuance.verifyAndParseCredential,
-      issuerConf,
-      credential,
-      credential_configuration_id,
-      {
-        credentialCryptoContext,
-        ignoreMissingAttributes: true
-      }
-      // 'x509CertRoot'
-    );
+    const {parsedCredential} =
+      await Credential.Issuance.verifyAndParseCredential(
+        issuerConf,
+        credential,
+        credential_configuration_id,
+        {
+          credentialCryptoContext,
+          ignoreMissingAttributes: true
+        }
+        // 'x509CertRoot'
+      );
 
     listenerApi.dispatch(
       setCredentialIssuancePostAuthSuccess({
@@ -327,7 +316,7 @@ function* obtainCredential() {
  * It dispatches the action which shows the pin validation modal and awaits for the result.
  * If the pin is correct, the credential is stored, the issuance state is resetted and the user is navigated to the main screen.
  */
-const addCredentialWithAuthListener: AppListenerWithAction<
+export const addCredentialWithAuthListener: AppListenerWithAction<
   ReturnType<typeof addCredentialWithIdentification>
 > = async (action, listenerApi) => {
   listenerApi.dispatch(

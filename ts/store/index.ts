@@ -12,7 +12,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import reactotron from '../../ReactotronConfig';
 import walletReducer from '../features/wallet/store/index';
-import {listenerMiddleware} from '../listener/listenerMiddleware';
+import {listenerMiddleware} from '../middleware/listener';
 import {AppDispatch, RootState} from './types';
 import {startupSlice} from './reducers/startup';
 import {pinReducer} from './reducers/pin';

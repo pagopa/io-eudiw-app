@@ -1,4 +1,4 @@
-import {createAsyncThunk, ThunkAction, UnknownAction} from '@reduxjs/toolkit';
+import {ThunkAction, UnknownAction} from '@reduxjs/toolkit';
 import {store} from '.';
 
 /**
