@@ -18,6 +18,7 @@ import {getCredentialNameByType} from '../../utils/credentials';
 import {addCredentialWithIdentification} from '../../store/credentials';
 import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
+import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
 
 export const CredentialPreview = () => {
   const credentialPostStatus = useAppSelector(
@@ -33,7 +34,13 @@ export const CredentialPreview = () => {
   }, [dispatch, navigateToWallet]);
 
   useHeaderSecondLevel({
-    title: ''
+    title: '',
+    goBack: () => cancel()
+  });
+
+  useHardwareBackButton(() => {
+    cancel();
+    return true;
   });
 
   if (

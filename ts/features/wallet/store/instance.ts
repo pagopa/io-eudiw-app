@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {PersistConfig, persistReducer} from 'redux-persist';
 import {RootState} from '../../../store/types';
 import {preferencesReset} from '../../../store/reducers/preferences';
+import {AsyncStatusValues, setInitial} from '../../../store/utils/asyncStatus';
 import {resetLifecycle} from './lifecycle';
 
 /* State type definition for the instance slice
@@ -11,11 +12,13 @@ import {resetLifecycle} from './lifecycle';
  */
 export type InstanceState = {
   keyTag: string | undefined;
+  instanceCreation: AsyncStatusValues;
 };
 
 // Initial state for the instance slice
 const initialState: InstanceState = {
-  keyTag: undefined
+  keyTag: undefined,
+  instanceCreation: setInitial()
 };
 
 /**
@@ -31,6 +34,8 @@ const instanceSlice = createSlice({
     resetInstanceKeyTag: () => initialState
   },
   extraReducers: builder => {
+    // Instance creation thunk
+    
     // This happens when the whole app state is reset
     builder.addCase(preferencesReset, _ => initialState);
     // This happens when the wallet state is reset
@@ -67,3 +72,11 @@ export const {setInstanceKeyTag, resetInstanceKeyTag} = instanceSlice.actions;
  */
 export const selectInstanceKeyTag = (state: RootState) =>
   state.wallet.instance.keyTag;
+
+/**
+ * Selects the instanceCreation async status.
+ * @param state - The root state
+ * @returns The instanceCreation async status
+ */
+export const selectInstanceCreationStatus = (state: RootState) =>
+  state.wallet.instance.instanceCreation;
