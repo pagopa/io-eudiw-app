@@ -10,7 +10,7 @@ import enQrCodeScan from '../../locales/en/qrcodeScan.json';
 const initI18n = async () =>
   await i18next.use(initReactI18next).init({
     compatibilityJSON: 'v3', // We don't need pluralization
-    fallbackLng: 'en',
+    fallbackLng: 'it',
     defaultNS: 'global',
     react: {
       useSuspense: true
