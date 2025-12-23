@@ -2,6 +2,7 @@
 #
 .DS_Store
 
+
 # Xcode
 #
 build/
@@ -35,6 +36,10 @@ local.properties
 !debug.keystore
 .kotlin/
 
+# Visual Studio Code
+#
+.vscode/
+
 # node.js
 #
 node_modules/
@@ -52,11 +57,6 @@ yarn-error.log
 **/fastlane/Preview.html
 **/fastlane/screenshots
 **/fastlane/test_output
-
-
-# Environment files
-#
-.env
 
 # Bundle artifact
 *.jsbundle
