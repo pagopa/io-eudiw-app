@@ -1,4 +1,4 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import {OnboardingCarousel} from '../screens/OnboardingCarousel';
 import OnboardingStart from '../screens/OnboardingStart';
 import {PinCreation, PinCreationProps} from '../../../screens/pin/PinCreation';
@@ -21,7 +21,7 @@ export type OnboardingNavigatorParamsList = {
   [ONBOARDING_ROUTES.BIOMETRIC.NO_SCREEN_LOCK]: undefined;
 };
 
-const Stack = createNativeStackNavigator<OnboardingNavigatorParamsList>();
+const Stack = createStackNavigator<OnboardingNavigatorParamsList>();
 
 /**
  * The onboarding related stack which is used to navigate between onboarding screens on the first app launch.

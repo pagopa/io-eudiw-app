@@ -2,7 +2,7 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
 import {AppState, Linking} from 'react-native';
 import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {isAndroid} from '../../../../utils/device';
 import {MainNavigatorParamsList} from '../../../../navigation/main/MainStackNavigator';
 
@@ -12,7 +12,7 @@ import {MainNavigatorParamsList} from '../../../../navigation/main/MainStackNavi
 export const useCameraPermissionStatus = () => {
   const navigation =
     useNavigation<
-      NativeStackNavigationProp<
+      StackNavigationProp<
         MainNavigatorParamsList,
         keyof MainNavigatorParamsList
       >
