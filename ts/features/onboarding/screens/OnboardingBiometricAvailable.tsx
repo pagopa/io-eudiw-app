@@ -8,7 +8,7 @@ import {
   preferencesSetIsOnboardingDone
 } from '../../../store/reducers/preferences';
 import {IOScrollView} from '../../../components/IOScrollView';
-import {mayUserActivateBiometric} from '../utils/biometric';
+import {confirmBiometricEnabling} from '../../../utils/biometric';
 
 type IOScrollViewActions = ComponentProps<typeof IOScrollView>['actions'];
 
@@ -31,10 +31,8 @@ const OnboardingBiometricAvailable = () => {
    */
   const onPressPrimary = async () => {
     try {
-      await mayUserActivateBiometric(
-        t('onboarding:biometric.popup.sensorDescription')
-      );
-      dispatch(preferencesSetIsBiometricEnabled(true));
+      const enabled = await confirmBiometricEnabling();
+      dispatch(preferencesSetIsBiometricEnabled(enabled));
     } catch (err) {
       if (err === 'PERMISSION_DENIED') {
         dispatch(preferencesSetIsBiometricEnabled(false));

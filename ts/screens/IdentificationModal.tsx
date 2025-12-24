@@ -22,10 +22,6 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {t} from 'i18next';
 import {useAppBackgroundAccentColorName} from '../hooks/theme';
-import {
-  biometricAuthenticationRequest,
-  getBiometryIconName
-} from '../store/utils/identification';
 import {useBiometricType} from '../hooks/useBiometricType';
 import {IdentificationNumberPad} from '../components/IdentificationNumberPad';
 import {useAppDispatch, useAppSelector} from '../store';
@@ -40,6 +36,11 @@ import {
   selectIsBiometricEnabled
 } from '../store/reducers/preferences';
 import {isAndroid} from '../utils/device';
+import {
+  biometricAuthenticationRequest,
+  getBiometricDesignSystemType,
+  getBiometryDesignSystemIconName
+} from '../utils/biometric';
 
 const onRequestCloseHandler = () => undefined;
 
@@ -88,9 +89,12 @@ const IdentificationModal = () => {
           onIdentificationSuccess();
         },
         e => {
-          if (e.name === 'DeviceLocked') {
+          if (!e) {
+            return;
+          }
+          if (e === 'timeout') {
             Alert.alert(t('global:identification:error:deviceLocked'));
-          } else if (e.name === 'DeviceLockedPermanent') {
+          } else if (e === 'lockout') {
             Alert.alert(t('global:identification:error:deviceLockedPermanent'));
           }
         }
@@ -102,8 +106,9 @@ const IdentificationModal = () => {
     () =>
       biometricType
         ? {
-            biometricType,
-            biometricAccessibilityLabel: getBiometryIconName(biometricType),
+            biometricType: getBiometricDesignSystemType(biometricType),
+            biometricAccessibilityLabel:
+              getBiometryDesignSystemIconName(biometricType),
             onBiometricPress: () => onFingerprintRequest()
           }
         : {},

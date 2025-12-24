@@ -24,6 +24,7 @@
 		460A1C5BCC934D08BD15F4A9 /* Titillio-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 15A5A725CA62404FBCEB9B57 /* Titillio-Black.otf */; };
 		4A148B935CED442D9C119D28 /* Titillio-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6DA1A561244B4428BE0E8131 /* Titillio-Thin.otf */; };
 		522AF7EC8E0F400FA1D2BB50 /* TitilliumSansPro-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5B9FE5965E924AA899806CBF /* TitilliumSansPro-Black.otf */; };
+		63889B76F706D1E66C087063 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F127D7149BB3DC2A297F9D /* ExpoModulesProvider.swift */; };
 		696712BA3C4E48378FC69BCC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC4CF7301749440CAE7B3A98 /* Colors.xcassets */; };
 		6CDE7782BAF447ABA15525BB /* Titillio-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5A9395E16369404D96ED52C7 /* Titillio-Semibold.otf */; };
 		72405161325446FC9D3D44AE /* TitilliumSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = AF0B1A517E2A471D83607F87 /* TitilliumSansPro-Light.otf */; };
@@ -81,6 +82,7 @@
 		DC4CF7301749440CAE7B3A98 /* Colors.xcassets */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = Colors.xcassets; path = IoEudiwApp/Colors.xcassets; sourceTree = "<group>"; };
 		DE963A9F2B35E843C3698C24 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = IoEudiwApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		E0BD2A6A78EE9B5992198E54 /* Pods-IoEudiwApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IoEudiwApp.release.xcconfig"; path = "Target Support Files/Pods-IoEudiwApp/Pods-IoEudiwApp.release.xcconfig"; sourceTree = "<group>"; };
+		E2F127D7149BB3DC2A297F9D /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-IoEudiwApp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		EB1BAF542E6B45BF9B46143A /* Titillio-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Regular.otf"; path = "../assets/fonts/Titillio/Titillio-Regular.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F339A846B15749F98D8E5C6F /* TitilliumSansPro-LightItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-LightItalic.otf"; path = "../assets/fonts/TitilliumSansPro/TitilliumSansPro-LightItalic.otf"; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
 				037535AC01784DF283E04F3E /* Resources */,
+				89941ECF3B7D98396440C72A /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -190,6 +193,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		89941ECF3B7D98396440C72A /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				BF6452181FF1A82CE9FD0F46 /* IoEudiwApp */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -197,6 +208,14 @@
 				E0BD2A6A78EE9B5992198E54 /* Pods-IoEudiwApp.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		BF6452181FF1A82CE9FD0F46 /* IoEudiwApp */ = {
+			isa = PBXGroup;
+			children = (
+				E2F127D7149BB3DC2A297F9D /* ExpoModulesProvider.swift */,
+			);
+			name = IoEudiwApp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,6 +226,7 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "IoEudiwApp" */;
 			buildPhases = (
 				1284447137BF125238E289ED /* [CP] Check Pods Manifest.lock */,
+				8B1468F76094E6CA487A182A /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
@@ -313,7 +333,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n# The project root by default is one level up from the ios directory\nexport PROJECT_ROOT=\"$PROJECT_DIR\"/..\n\nif [[ \"$CONFIGURATION\" = *Debug* ]]; then\n  export SKIP_BUNDLING=1\nfi\nif [[ -z \"$ENTRY_FILE\" ]]; then\n  # Set the entry JS file using the bundler's entry resolution.\n  export ENTRY_FILE=\"$(\"$NODE_BINARY\" -e \"require('expo/scripts/resolveAppEntry')\" \"$PROJECT_ROOT\" ios absolute | tail -n 1)\"\nfi\n\nif [[ -z \"$CLI_PATH\" ]]; then\n  # Use Expo CLI\n  export CLI_PATH=\"$(\"$NODE_BINARY\" --print \"require.resolve('@expo/cli')\")\"\nfi\nif [[ -z \"$BUNDLE_COMMAND\" ]]; then\n  # Default Expo CLI command for bundling\n  export BUNDLE_COMMAND=\"export:embed\"\nfi\n\n`\"$NODE_BINARY\" --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/react-native-xcode.sh'\"`\n";
 		};
 		1284447137BF125238E289ED /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -345,14 +365,37 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-IoEudiwApp/Pods-IoEudiwApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-IoEudiwApp/Pods-IoEudiwApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-IoEudiwApp/Pods-IoEudiwApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		8B1468F76094E6CA487A182A /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-IoEudiwApp/expo-configure-project.sh\"\n";
 		};
 		9B40B5ABA9A943DF20AAA69E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -362,9 +405,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-IoEudiwApp/Pods-IoEudiwApp-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-IoEudiwApp/Pods-IoEudiwApp-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -379,6 +426,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F63566792DF6DA7700C178C6 /* AppDelegate.swift in Sources */,
+				63889B76F706D1E66C087063 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +456,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
 				PRODUCT_NAME = IoEudiwApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -440,6 +489,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
 				PRODUCT_NAME = IoEudiwApp;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore it.pagopa.app.io.poc.eudiw";
@@ -522,13 +572,11 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_VERSION = 5.0;
 				USE_HERMES = true;
 			};
 			name = Debug;
@@ -598,12 +646,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
 				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};

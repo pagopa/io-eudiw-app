@@ -9,6 +9,7 @@ import {
   takeLatest
 } from 'typed-redux-saga';
 import {Linking} from 'react-native';
+import {isPinOrFingerprintSet} from 'react-native-device-info';
 import initI18n from '../i18n/i18n';
 import {
   startupSetAttributes,
@@ -16,10 +17,6 @@ import {
   startupSetLoading,
   startupSetStatus
 } from '../store/reducers/startup';
-import {
-  getBiometricState,
-  hasDeviceScreenLock
-} from '../features/onboarding/utils/biometric';
 import {checkConfig} from '../config/configSetup';
 import {
   preferencesReset,
@@ -30,6 +27,7 @@ import {walletSaga} from '../features/wallet/saga';
 import {selectUrl} from '../store/reducers/deeplinking';
 import {isNavigationReady} from '../navigation/utils';
 import {resetLifecycle} from '../features/wallet/store/lifecycle';
+import {getBiometricState} from '../utils/biometric';
 import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
@@ -138,7 +136,7 @@ function* startup() {
     yield* call(initI18n);
     yield* call(checkConfig);
     const biometricState = yield* call(getBiometricState);
-    const hasScreenLock = yield* call(hasDeviceScreenLock);
+    const hasScreenLock = yield* call(isPinOrFingerprintSet);
     yield* put(
       startupSetAttributes({
         biometricState,

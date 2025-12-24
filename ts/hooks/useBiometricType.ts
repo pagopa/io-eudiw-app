@@ -1,33 +1,25 @@
-import {BiometricsValidType} from '@pagopa/io-app-design-system';
 import {useEffect, useState} from 'react';
+import * as LocalAuthentication from 'expo-local-authentication';
 import {useAppSelector} from '../store';
 import {selectIsBiometricEnabled} from '../store/reducers/preferences';
-import {
-  getBiometricsType,
-  isBiometricsValidType
-} from '../features/onboarding/utils/biometric';
 
 /**
  * Hook to get the biometric type if it's enabled.
  * @returns the biometric type and the biometric enabled status.
  */
 export const useBiometricType = () => {
-  const isFingerprintEnabled = useAppSelector(selectIsBiometricEnabled);
+  const isBiometricEnabled = useAppSelector(selectIsBiometricEnabled);
 
   const [biometricType, setBiometricType] = useState<
-    BiometricsValidType | undefined
+    LocalAuthentication.AuthenticationType | undefined
   >(undefined);
   useEffect(() => {
-    if (isFingerprintEnabled) {
-      getBiometricsType().then(
-        biometricsType =>
-          setBiometricType(
-            isBiometricsValidType(biometricsType) ? biometricsType : undefined
-          ),
-        _ => 0
-      );
+    if (isBiometricEnabled) {
+      LocalAuthentication.supportedAuthenticationTypesAsync()
+        .then(types => setBiometricType(types[0]))
+        .catch(() => null);
     }
-  }, [isFingerprintEnabled]);
+  }, [isBiometricEnabled]);
 
-  return {biometricType, isFingerprintEnabled};
+  return {biometricType, isBiometricEnabled};
 };
