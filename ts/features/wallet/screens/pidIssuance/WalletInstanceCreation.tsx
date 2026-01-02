@@ -5,7 +5,7 @@ import {
   H1,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -15,9 +15,12 @@ import Markdown from '../../../../components/markdown';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   resetInstanceCreation,
-  selectInstanceStatus,
-  setInstanceCreationRequest
+  selectInstanceStatus
 } from '../../store/pidIssuance';
+import { createInstanceThunk } from '../../middleware/instance';
+import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
+
+type CreateInstancePromise = ReturnType<ReturnType<typeof createInstanceThunk>>;
 
 /**
  * Screen which shows the information about the wallet, then registers a wallet instance and gets an attestation.
@@ -27,6 +30,7 @@ const WalletInstanceCreation = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { error, success, loading } = useAppSelector(selectInstanceStatus);
+  const thunkRef = useRef<CreateInstancePromise | null>(null);
 
   useEffect(() => {
     if (success.status === true) {
@@ -45,13 +49,23 @@ const WalletInstanceCreation = () => {
     }
   }, [error, navigation]);
 
+  const goBack = () => {
+    thunkRef.current?.abort();
+    navigation.goBack();
+  };
+
+  const onPress = async () => {
+    const promise = dispatch(createInstanceThunk());
+    // eslint-disable-next-line functional/immutable-data
+    thunkRef.current = promise;
+  };
+
   useHeaderSecondLevel({
     title: '',
-    goBack: () => {
-      dispatch(resetInstanceCreation());
-      navigation.goBack();
-    }
+    goBack
   });
+
+  useHardwareBackButtonToDismiss(goBack);
 
   return (
     <ForceScrollDownView threshold={50}>
@@ -73,7 +87,7 @@ const WalletInstanceCreation = () => {
             loading,
             label: t('global:buttons.continue'),
             accessibilityLabel: t('global:buttons.continue'),
-            onPress: () => dispatch(setInstanceCreationRequest())
+            onPress
           }
         }}
       />

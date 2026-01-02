@@ -123,8 +123,7 @@ The React Native documentation provides a [useful guide](https://reactnative.dev
 
 - [`TypeScript`](https://www.typescriptlang.org/)
 - [`React Native`](https://facebook.github.io/react-native)
-- [`Redux`](http://redux.js.org/)
-- [`Redux Saga`](https://redux-saga.js.org/)
+- [`Redux Toolkit`](https://redux-toolkit.js.org/)
 
 ## Wallet libraries ecosystem
 

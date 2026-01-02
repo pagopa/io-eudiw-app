@@ -144,7 +144,7 @@ export const RootStackNavigator = () => {
        * - WAIT_IDENTIFICATION as the user must identify before the main navigation is mounted
        * - LOADING as the main navigation is not mounted yet
        * - NOT_STARTED as the main navigation is not mounted yet
-       * A saga will take care of handling this deep link later.
+       * A listener will take care of handling this deep link later.
        */
       const onReceiveURL = ({ url }: { url: string }) => {
         listener(url);
