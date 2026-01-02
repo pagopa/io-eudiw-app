@@ -1,6 +1,6 @@
-import {BiometricsValidType} from '@pagopa/io-app-design-system';
+import { BiometricsValidType } from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 import FingerprintScanner, {
   AuthenticateAndroid,
   AuthenticateIOS,
@@ -53,7 +53,7 @@ export const biometricAuthenticationRequest = (
         escription: i18next.t('identification.biometric.sensorDescription', {
           ns: 'global'
         }),
-        cancelButton: i18next.t('buttons.cancel', {ns: 'global'})
+        cancelButton: i18next.t('buttons.cancel', { ns: 'global' })
       } as AuthenticateAndroid
     })
   )

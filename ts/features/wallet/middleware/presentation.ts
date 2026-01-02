@@ -2,9 +2,9 @@ import {
   createCryptoContextFor,
   Credential
 } from '@pagopa/io-react-native-wallet';
-import {serializeError} from 'serialize-error';
-import {CryptoContext} from '@pagopa/io-react-native-jwt';
-import {isAnyOf, TaskAbortError} from '@reduxjs/toolkit';
+import { serializeError } from 'serialize-error';
+import { CryptoContext } from '@pagopa/io-react-native-jwt';
+import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import {
   resetPresentation,
   setPostDefinitionCancel,
@@ -15,9 +15,9 @@ import {
   setPreDefinitionRequest,
   setPreDefinitionSuccess
 } from '../store/presentation';
-import {selectCredentials} from '../store/credentials';
-import {ParsedCredential} from '../utils/types';
-import {CredentialTypePresentationClaimsListDescriptor} from '../components/presentation/CredentialTypePresentationClaimsList';
+import { selectCredentials } from '../store/credentials';
+import { ParsedCredential } from '../utils/types';
+import { CredentialTypePresentationClaimsListDescriptor } from '../components/presentation/CredentialTypePresentationClaimsList';
 import {
   AppListenerWithAction,
   AppStartListening
@@ -43,7 +43,8 @@ const presentationListener: AppListenerWithAction<
   ReturnType<typeof setPreDefinitionRequest>
 > = async (action, listenerApi) => {
   try {
-    const {request_uri, client_id, state, request_uri_method} = action.payload;
+    const { request_uri, client_id, state, request_uri_method } =
+      action.payload;
 
     const qrParameters = Credential.Presentation.startFlowFromQR({
       request_uri,
@@ -52,15 +53,15 @@ const presentationListener: AppListenerWithAction<
       request_uri_method
     });
 
-    const {requestObjectEncodedJwt} =
+    const { requestObjectEncodedJwt } =
       await Credential.Presentation.getRequestObject(qrParameters.request_uri);
 
-    const {rpConf, subject} =
+    const { rpConf, subject } =
       await Credential.Presentation.evaluateRelyingPartyTrust(
         qrParameters.client_id
       );
 
-    const {requestObject} = await Credential.Presentation.verifyRequestObject(
+    const { requestObject } = await Credential.Presentation.verifyRequestObject(
       requestObjectEncodedJwt,
       {
         rpConf,
@@ -115,7 +116,7 @@ const presentationListener: AppListenerWithAction<
               sdJwtFoundCredential.credentialType
             );
           })
-          .reduce((acc, curr) => ({...acc, ...curr}), {})
+          .reduce((acc, curr) => ({ ...acc, ...curr }), {})
       )
     );
 
@@ -129,14 +130,14 @@ const presentationListener: AppListenerWithAction<
 
     if (setPostDefinitionRequest.match(choice[0])) {
       listenerApi.dispatch(
-        setIdentificationStarted({canResetPin: false, isValidatingTask: true})
+        setIdentificationStarted({ canResetPin: false, isValidatingTask: true })
       );
       const resAction = await listenerApi.take(
         isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
       );
       if (setIdentificationIdentified.match(resAction[0])) {
         const credentialsToPresent = evaluateDcqlQuery.map(
-          ({requiredDisclosures, ...rest}) => ({
+          ({ requiredDisclosures, ...rest }) => ({
             ...rest,
             requestedClaims: requiredDisclosures.map(
               ([, claimName]) => claimName
@@ -180,10 +181,10 @@ const presentationListener: AppListenerWithAction<
     // We don't know which step is failed thus we set the same error for both
     const serializableError = JSON.stringify(error);
     listenerApi.dispatch(
-      setPostDefinitionError({error: serializeError(serializableError)})
+      setPostDefinitionError({ error: serializeError(serializableError) })
     );
     listenerApi.dispatch(
-      setPreDefinitionError({error: serializeError(serializableError)})
+      setPreDefinitionError({ error: serializeError(serializableError) })
     );
   }
 };

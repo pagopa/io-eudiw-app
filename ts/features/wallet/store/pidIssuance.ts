@@ -1,6 +1,6 @@
 /* eslint-disable functional/immutable-data */
-import {createSlice} from '@reduxjs/toolkit';
-import {RootState} from '../../../store/types';
+import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../../../store/types';
 import {
   AsyncStatusValues,
   setError,
@@ -8,11 +8,11 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import {StoredCredential} from '../utils/types';
-import {preferencesReset} from '../../../store/reducers/preferences';
-import {obtainPidThunk} from '../middleware/pid';
-import {createInstanceThunk} from '../middleware/instance';
-import {resetLifecycle} from './lifecycle';
+import { StoredCredential } from '../utils/types';
+import { preferencesReset } from '../../../store/reducers/preferences';
+import { obtainPidThunk } from '../middleware/pid';
+import { createInstanceThunk } from '../middleware/instance';
+import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the pidIssuance slice
  * issuanceCreation - Async status for the instance creation
@@ -83,13 +83,13 @@ const pidIssuanceStatusSlice = createSlice({
 /**
  * Exports the actions for the pidIssuance slice.
  */
-export const {resetInstanceCreation, resetPidIssuance} =
+export const { resetInstanceCreation, resetPidIssuance } =
   pidIssuanceStatusSlice.actions;
 
 /**
  * Exports the reducer for the pidIssuance slice.
  */
-export const {reducer: pidIssuanceStatusReducer} = pidIssuanceStatusSlice;
+export const { reducer: pidIssuanceStatusReducer } = pidIssuanceStatusSlice;
 
 /**
  * Selects the instanceCreation async status.

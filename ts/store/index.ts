@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-imports */
-import {configureStore} from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import {
   FLUSH,
   PAUSE,
@@ -9,17 +9,17 @@ import {
   REGISTER,
   REHYDRATE
 } from 'redux-persist';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import reactotron from '../../ReactotronConfig';
 import walletReducer from '../features/wallet/store/index';
-import {listenerMiddleware} from '../middleware/listener';
-import {AppDispatch, RootState} from './types';
-import {startupSlice} from './reducers/startup';
-import {pinReducer} from './reducers/pin';
-import {preferencesReducer} from './reducers/preferences';
-import {debugReducer} from './reducers/debug';
-import {identificationReducer} from './reducers/identification';
-import {deepLinkingReducer} from './reducers/deeplinking';
+import { listenerMiddleware } from '../middleware/listener';
+import { AppDispatch, RootState } from './types';
+import { startupSlice } from './reducers/startup';
+import { pinReducer } from './reducers/pin';
+import { preferencesReducer } from './reducers/preferences';
+import { debugReducer } from './reducers/debug';
+import { identificationReducer } from './reducers/identification';
+import { deepLinkingReducer } from './reducers/deeplinking';
 
 /**
  * Redux store configuration.

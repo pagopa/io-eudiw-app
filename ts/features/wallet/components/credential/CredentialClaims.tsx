@@ -1,16 +1,16 @@
-import {Divider, H6, ListItemInfo} from '@pagopa/io-app-design-system';
-import {Fragment, memo} from 'react';
+import { Divider, H6, ListItemInfo } from '@pagopa/io-app-design-system';
+import { Fragment, memo } from 'react';
 import i18next from 'i18next';
-import {useTranslation} from 'react-i18next';
-import {Image, View} from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { Image, View } from 'react-native';
 import {
   claimScheme,
   DrivingPrivilegesType,
   VerificationEvidenceType
 } from '../../utils/claims';
-import {ClaimDisplayFormat} from '../../utils/types';
-import {useIOBottomSheetModal} from '../../../../hooks/useBottomSheet';
-import {getSafeText} from '../../../../utils/string';
+import { ClaimDisplayFormat } from '../../utils/types';
+import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
+import { getSafeText } from '../../../../utils/string';
 
 /**
  * Component which renders a generic text type claim.
@@ -98,7 +98,7 @@ const DateClaimItem = ({
   reversed: boolean;
 }) => {
   const value = claim.toLocaleDateString();
-  const {t} = useTranslation(['wallet']);
+  const { t } = useTranslation(['wallet']);
 
   return (
     <ListItemInfo
@@ -168,10 +168,10 @@ const DrivingPrivilegesClaimItem = ({
   detailsButtonVisible?: boolean;
   reversed: boolean;
 }) => {
-  const {issue_date, expiry_date, vehicle_category_code} = claim;
+  const { issue_date, expiry_date, vehicle_category_code } = claim;
   const localIssueDate = new Date(issue_date).toLocaleDateString();
   const localExpiryDate = new Date(expiry_date).toLocaleDateString();
-  const {t} = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation(['wallet', 'global']);
   const privilegeBottomSheet = useIOBottomSheetModal({
     title: t('wallet:claims.mdl.license', {
       category: vehicle_category_code
@@ -237,8 +237,8 @@ export const VerificationEvidenceClaimItem = ({
   detailsButtonVisible: boolean;
   reversed: boolean;
 }) => {
-  const {organization_id, organization_name, country_code} = claim;
-  const {t} = useTranslation(['wallet', 'global']);
+  const { organization_id, organization_name, country_code } = claim;
+  const { t } = useTranslation(['wallet', 'global']);
   const verificationBottomSheet = useIOBottomSheetModal({
     title: organization_name,
     component: (
@@ -302,7 +302,7 @@ export const StringArrayClaimItem = ({
   detailsButtonVisible: boolean;
   reversed: boolean;
 }) => {
-  const {t} = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation(['wallet', 'global']);
   const verificationBottomSheet = useIOBottomSheetModal({
     title: label,
     maxDynamicContentSizePercent: 0.75,
@@ -310,13 +310,14 @@ export const StringArrayClaimItem = ({
       <>
         {claim.slice(0, claim.length - 1).map((value, index) => (
           <View key={`${label}_${value}_${index}`}>
-            <H6 style={{paddingVertical: 12}}>{value}</H6>
+            <H6 style={{ paddingVertical: 12 }}>{value}</H6>
             <Divider />
           </View>
         ))}
         <H6
           key={`${label}_${claim[claim.length - 1]}_${claim.length - 1}`}
-          style={{paddingVertical: 12}}>
+          style={{ paddingVertical: 12 }}
+        >
           {claim[claim.length - 1]}
         </H6>
       </>
@@ -400,7 +401,8 @@ const CredentialClaim = ({
           <>
             {decoded.data.value.map((elem, index) => (
               <Fragment
-                key={`${index}_${claim.label}_${elem.vehicle_category_code}`}>
+                key={`${index}_${claim.label}_${elem.vehicle_category_code}`}
+              >
                 {index !== 0 && <Divider />}
                 <DrivingPrivilegesClaimItem
                   label={claim.label}
@@ -457,4 +459,4 @@ const CredentialClaim = ({
 };
 
 const MemoizedCredentialClaim = memo(CredentialClaim);
-export {MemoizedCredentialClaim as CredentialClaim};
+export { MemoizedCredentialClaim as CredentialClaim };

@@ -5,20 +5,20 @@ import {
   H1,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {useEffect, useRef} from 'react';
-import {StyleSheet} from 'react-native';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
-import {AnimatedImage} from '../../../../components/AnimatedImage';
+import { useEffect, useRef } from 'react';
+import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { AnimatedImage } from '../../../../components/AnimatedImage';
 import Markdown from '../../../../components/markdown';
-import {useAppDispatch, useAppSelector} from '../../../../store';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   resetInstanceCreation,
   selectInstanceStatus
 } from '../../store/pidIssuance';
-import {createInstanceThunk} from '../../middleware/instance';
-import {useHardwareBackButtonToDismiss} from '../../../../hooks/useHardwareBackButton';
+import { createInstanceThunk } from '../../middleware/instance';
+import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
 
 type CreateInstancePromise = ReturnType<ReturnType<typeof createInstanceThunk>>;
 
@@ -26,10 +26,10 @@ type CreateInstancePromise = ReturnType<ReturnType<typeof createInstanceThunk>>;
  * Screen which shows the information about the wallet, then registers a wallet instance and gets an attestation.
  */
 const WalletInstanceCreation = () => {
-  const {t} = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation(['wallet', 'global']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const {error, success, loading} = useAppSelector(selectInstanceStatus);
+  const { error, success, loading } = useAppSelector(selectInstanceStatus);
   const thunkRef = useRef<CreateInstancePromise | null>(null);
 
   useEffect(() => {
@@ -96,7 +96,7 @@ const WalletInstanceCreation = () => {
 };
 
 const styles = StyleSheet.create({
-  banner: {resizeMode: 'cover', width: '100%'}
+  banner: { resizeMode: 'cover', width: '100%' }
 });
 
 export default WalletInstanceCreation;

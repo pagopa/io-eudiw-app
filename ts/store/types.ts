@@ -1,5 +1,5 @@
-import {ThunkAction, UnknownAction} from '@reduxjs/toolkit';
-import {store} from '.';
+import { ThunkAction, UnknownAction } from '@reduxjs/toolkit';
+import { store } from '.';
 
 /**
  * Type definition for the dispatch function of the Redux store.

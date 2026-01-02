@@ -1,6 +1,6 @@
 /* eslint-disable functional/immutable-data */
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {RootState} from '../../../store/types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../../store/types';
 import {
   AsyncStatusValues,
   setError,
@@ -8,9 +8,9 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import {StoredCredential} from '../utils/types';
-import {preferencesReset} from '../../../store/reducers/preferences';
-import {resetLifecycle} from './lifecycle';
+import { StoredCredential } from '../utils/types';
+import { preferencesReset } from '../../../store/reducers/preferences';
+import { resetLifecycle } from './lifecycle';
 
 type RequestedCredential = string | undefined;
 type RequestedCredentialType = string | undefined;
@@ -66,14 +66,14 @@ export const credentialIssuanceStatusSlice = createSlice({
   reducers: {
     setCredentialIssuancePreAuthRequest: (
       state,
-      action: PayloadAction<{credential: RequestedCredential}>
+      action: PayloadAction<{ credential: RequestedCredential }>
     ) => {
       state.requestedCredential = action.payload.credential;
       state.statusPreAuth = setLoading();
     },
     setCredentialIssuancePreAuthError: (
       state,
-      action: PayloadAction<{error: unknown}>
+      action: PayloadAction<{ error: unknown }>
     ) => {
       state.statusPreAuth = setError(action.payload.error);
     },
@@ -92,13 +92,13 @@ export const credentialIssuanceStatusSlice = createSlice({
     },
     setCredentialIssuancePostAuthError: (
       state,
-      action: PayloadAction<{error: unknown}>
+      action: PayloadAction<{ error: unknown }>
     ) => {
       state.statusPostAuth = setError(action.payload.error);
     },
     setCredentialIssuancePostAuthSuccess: (
       state,
-      action: PayloadAction<{credential: StoredCredential}>
+      action: PayloadAction<{ credential: StoredCredential }>
     ) => {
       state.statusPostAuth = setSuccess(action.payload.credential);
     },
@@ -128,7 +128,7 @@ export const {
 /**
  * Exports the reducer for the credentialIssuance slice.
  */
-export const {reducer: credentialIssuanceStatusReducer} =
+export const { reducer: credentialIssuanceStatusReducer } =
   credentialIssuanceStatusSlice;
 
 export const selectCredentialIssuancePreAuthStatus = (state: RootState) =>

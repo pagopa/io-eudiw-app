@@ -1,5 +1,5 @@
-import {Icon, IOVisualCostants} from '@pagopa/io-app-design-system';
-import {useEffect, useRef, useState} from 'react';
+import { Icon, IOVisualCostants } from '@pagopa/io-app-design-system';
+import { useEffect, useRef, useState } from 'react';
 import {
   AccessibilityProps,
   Animated,
@@ -103,15 +103,17 @@ export const ClaimsSelector: React.FC<Props> = props => {
         accessibilityLabel={
           accessibilityLabel +
           (isOpen ? 'Paragrafo espanso' : 'Paragrafo chiuso')
-        }>
+        }
+      >
         <View style={[styles.row, headerStyle]}>
           <View style={styles.internalHeader}>{props.header}</View>
           <Animated.View
             testID={'ArrowAccordion'}
             style={{
               ...styles.headerIcon,
-              transform: [{rotateZ: arrowAngle}]
-            }}>
+              transform: [{ rotateZ: arrowAngle }]
+            }}
+          >
             <Icon name="chevronTop" color="blueIO-500" size={24} />
           </Animated.View>
         </View>

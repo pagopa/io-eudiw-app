@@ -4,23 +4,23 @@ import {
 } from '@pagopa/io-react-native-wallet';
 import Config from 'react-native-config';
 import uuid from 'react-native-uuid';
-import {generate} from '@pagopa/io-react-native-crypto';
-import {IOToast} from '@pagopa/io-app-design-system';
+import { generate } from '@pagopa/io-react-native-crypto';
+import { IOToast } from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
 import {
   openAuthenticationSession,
   supportsInAppBrowser
 } from '@pagopa/io-react-native-login-utils';
-import {isAnyOf, TaskAbortError} from '@reduxjs/toolkit';
+import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import {
   EvaluateIssuerTrust,
   StartUserAuthorization
 } from '@pagopa/io-react-native-wallet/lib/typescript/credential/issuance';
-import {Out} from '@pagopa/io-react-native-wallet/lib/typescript/utils/misc';
-import {CryptoContext} from '@pagopa/io-react-native-jwt';
-import {regenerateCryptoKey} from '../../../utils/crypto';
-import {DPOP_KEYTAG, WIA_KEYTAG} from '../utils/crypto';
-import {navigateWithReset} from '../../../navigation/utils';
+import { Out } from '@pagopa/io-react-native-wallet/lib/typescript/utils/misc';
+import { CryptoContext } from '@pagopa/io-react-native-jwt';
+import { regenerateCryptoKey } from '../../../utils/crypto';
+import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
+import { navigateWithReset } from '../../../navigation/utils';
 import {
   addCredential,
   addCredentialWithIdentification,
@@ -36,10 +36,10 @@ import {
   setCredentialIssuancePreAuthRequest,
   setCredentialIssuancePreAuthSuccess
 } from '../store/credentialIssuance';
-import {createWalletProviderFetch} from '../utils/fetch';
-import {selectSessionId} from '../../../store/reducers/preferences';
-import {wellKnownCredential} from '../utils/credentials';
-import {StoredCredential} from '../utils/types';
+import { createWalletProviderFetch } from '../utils/fetch';
+import { selectSessionId } from '../../../store/reducers/preferences';
+import { wellKnownCredential } from '../utils/credentials';
+import { StoredCredential } from '../utils/types';
 import {
   AppListenerWithAction,
   AppStartListening
@@ -49,7 +49,7 @@ import {
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
-import {getAttestationThunk} from './attestation';
+import { getAttestationThunk } from './attestation';
 
 /**
  * Helper to obtain the authorization code based on the credential type.
@@ -92,7 +92,7 @@ const getCredentialAuthCode = async (params: {
         appFetch
       );
 
-    const {code} =
+    const { code } =
       await Credential.Issuance.completeUserAuthorizationWithFormPostJwtMode(
         requestObject,
         pid.credential,
@@ -114,7 +114,7 @@ const getCredentialAuthCode = async (params: {
       baseRedirectUri
     );
 
-    const {code} =
+    const { code } =
       await Credential.Issuance.completeUserAuthorizationWithQueryMode(
         authRedirectUrl
       );
@@ -134,7 +134,7 @@ const obtainCredentialListener: AppListenerWithAction<
   ReturnType<typeof setCredentialIssuancePreAuthRequest>
 > = async (_, listenerApi) => {
   try {
-    const {EAA_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
+    const { EAA_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri } = Config;
 
     /**
      * Check the passed credential type and throw an error if it's not found.
@@ -169,15 +169,15 @@ const obtainCredentialListener: AppListenerWithAction<
       issuerUrl: EAA_PROVIDER_BASE_URL,
       credentialId: credentialConfigId
     });
-    const {issuerUrl} = startFlow();
+    const { issuerUrl } = startFlow();
 
     // Evaluate issuer trust
-    const {issuerConf} = await Credential.Issuance.evaluateIssuerTrust(
+    const { issuerConf } = await Credential.Issuance.evaluateIssuerTrust(
       issuerUrl
     );
 
     // Start user authorization
-    const {issuerRequestUri, clientId, codeVerifier} =
+    const { issuerRequestUri, clientId, codeVerifier } =
       await Credential.Issuance.startUserAuthorization(
         issuerConf,
         [credentialConfigId],
@@ -214,7 +214,7 @@ const obtainCredentialListener: AppListenerWithAction<
     await listenerApi.take(isAnyOf(setCredentialIssuancePostAuthRequest));
 
     // Obtain the Authorization URL
-    const {authUrl} = await Credential.Issuance.buildAuthorizationUrl(
+    const { authUrl } = await Credential.Issuance.buildAuthorizationUrl(
       issuerRequestUri,
       clientId,
       issuerConf
@@ -241,7 +241,7 @@ const obtainCredentialListener: AppListenerWithAction<
     await regenerateCryptoKey(DPOP_KEYTAG);
     const dPopCryptoContext = createCryptoContextFor(DPOP_KEYTAG);
 
-    const {accessToken} = await Credential.Issuance.authorizeAccess(
+    const { accessToken } = await Credential.Issuance.authorizeAccess(
       issuerConf,
       credentialCode,
       clientId,
@@ -256,10 +256,10 @@ const obtainCredentialListener: AppListenerWithAction<
 
     // Obtain the credential
     // # TODO: WLEO-727 - rework to support multiple credentials issuance
-    const {credential_configuration_id, credential_identifiers} =
+    const { credential_configuration_id, credential_identifiers } =
       accessToken.authorization_details[0];
 
-    const {credential, format} = await Credential.Issuance.obtainCredential(
+    const { credential, format } = await Credential.Issuance.obtainCredential(
       issuerConf,
       accessToken,
       clientId,
@@ -275,7 +275,7 @@ const obtainCredentialListener: AppListenerWithAction<
     );
 
     // Parse and verify the credential. The ignoreMissingAttributes flag must be set to false or omitted in production.
-    const {parsedCredential} =
+    const { parsedCredential } =
       await Credential.Issuance.verifyAndParseCredential(
         issuerConf,
         credential,
@@ -306,10 +306,10 @@ const obtainCredentialListener: AppListenerWithAction<
     // We put the error in both the pre and post auth status as we are unsure where the error occurred.
     const serializableError = JSON.stringify(error);
     listenerApi.dispatch(
-      setCredentialIssuancePostAuthError({error: serializableError})
+      setCredentialIssuancePostAuthError({ error: serializableError })
     );
     listenerApi.dispatch(
-      setCredentialIssuancePreAuthError({error: serializableError})
+      setCredentialIssuancePreAuthError({ error: serializableError })
     );
   }
 };
@@ -323,7 +323,7 @@ export const addCredentialWithAuthListener: AppListenerWithAction<
   ReturnType<typeof addCredentialWithIdentification>
 > = async (action, listenerApi) => {
   listenerApi.dispatch(
-    setIdentificationStarted({canResetPin: false, isValidatingTask: true})
+    setIdentificationStarted({ canResetPin: false, isValidatingTask: true })
   );
   const resAction = await listenerApi.take(
     isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
@@ -332,7 +332,7 @@ export const addCredentialWithAuthListener: AppListenerWithAction<
     listenerApi.dispatch(addCredential(action.payload));
     listenerApi.dispatch(resetCredentialIssuance());
     navigateWithReset('MAIN_TAB_NAV');
-    IOToast.success(i18next.t('buttons.done', {ns: 'global'}));
+    IOToast.success(i18next.t('buttons.done', { ns: 'global' }));
   } else {
     return;
   }

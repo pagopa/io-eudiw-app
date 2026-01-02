@@ -1,4 +1,4 @@
-import {WalletInstanceAttestation} from '@pagopa/io-react-native-wallet';
+import { WalletInstanceAttestation } from '@pagopa/io-react-native-wallet';
 /**
  * Checks if the Wallet Instance Attestation needs to be requested by
  * checking the expiry date
@@ -8,7 +8,7 @@ import {WalletInstanceAttestation} from '@pagopa/io-react-native-wallet';
 export const isWalletInstanceAttestationValid = (
   attestation: string
 ): boolean => {
-  const {payload} = WalletInstanceAttestation.decode(attestation);
+  const { payload } = WalletInstanceAttestation.decode(attestation);
   const expiryDate = new Date(payload.exp * 1000);
   const now = new Date();
   return now < expiryDate;
