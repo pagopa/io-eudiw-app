@@ -5,7 +5,8 @@ import initI18n from '../../i18n/i18n';
 import {
   startupSetAttributes,
   startupSetError,
-  startupSetStatus
+  startupSetStatus,
+  StartupState
 } from '../../store/reducers/startup';
 import {
   getBiometricState,
@@ -62,13 +63,10 @@ const handlePendingDeepLink = async (listenerApi: AppListener) => {
  * Helper function to start the identification process. It takes the same parameters as a listener
  * as it interacts with the listener API.
  * It dispatches the action which triggers the identification modal and then waits for either success or failure.
- * If successful, it waits for the navigation to be ready before setting the startup status to DONE, otherwise it throws an error.
  * @param _ - The dispatched action which triggered the listener
  * @param listenerApi - The listener API
  */
 const startIdentification = async (listenerApi: AppListener) => {
-  listenerApi.dispatch(startupSetStatus('WAIT_IDENTIFICATION'));
-  await BootSplash.hide({ fade: true });
   listenerApi.dispatch(
     setIdentificationStarted({ canResetPin: true, isValidatingTask: false })
   );
@@ -77,9 +75,7 @@ const startIdentification = async (listenerApi: AppListener) => {
     isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
   );
   if (setIdentificationIdentified.match(action[0])) {
-    await waitForNavigationToBeReady(listenerApi);
-    listenerApi.dispatch(startupSetStatus('DONE'));
-    await handlePendingDeepLink(listenerApi);
+    return;
   } else if (setIdentificationUnidentified.match(action[0])) {
     throw new Error('Identification failed');
   }
@@ -89,15 +85,12 @@ const startIdentification = async (listenerApi: AppListener) => {
  * Stars the onboarding process by setting the status which will be taked by the navigator to render the onboarding navigation stack.
  */
 const startOnboarding = async (listenerApi: AppListener) => {
-  listenerApi.dispatch(startupSetStatus('WAIT_ONBOARDING'));
-  await BootSplash.hide({ fade: true });
   await listenerApi.take(isAnyOf(preferencesSetIsOnboardingDone));
 
   /* This clears the wallet state in order to ensure a clean state, specifically on iOS
    * where data stored in the keychain is not cleared on app uninstall.
    */
   listenerApi.dispatch(resetLifecycle());
-  listenerApi.dispatch(startupSetStatus('DONE'));
 };
 
 /**
@@ -115,6 +108,7 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
   listenerApi
 ) => {
   try {
+    // Initialize env, i18n and check for device capabilities
     const state = listenerApi.getState();
     await initI18n();
     checkConfig();
@@ -126,8 +120,14 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
         hasScreenLock
       })
     );
-    const isOnboardingCompleted = selectisOnboardingComplete(state);
 
+    // Handle onboarding process or identification based on onboarding completion status
+    const isOnboardingCompleted = selectisOnboardingComplete(state);
+    const status: StartupState['startUpStatus'] = isOnboardingCompleted
+      ? 'WAIT_IDENTIFICATION'
+      : 'WAIT_ONBOARDING';
+    listenerApi.dispatch(startupSetStatus(status));
+    await BootSplash.hide({ fade: true });
     if (isOnboardingCompleted) {
       await startIdentification(listenerApi);
     } else {
@@ -136,6 +136,11 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
 
     // Registers all the listeners related to the app features.
     addWalletListeners(startAppListening);
+
+    // Handle deep linking
+    await waitForNavigationToBeReady(listenerApi);
+    listenerApi.dispatch(startupSetStatus('DONE'));
+    await handlePendingDeepLink(listenerApi);
   } catch {
     listenerApi.dispatch(startupSetError());
     await BootSplash.hide({ fade: true });
