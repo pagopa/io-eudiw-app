@@ -21,6 +21,7 @@ import CredentialPreviewClaimsList from '../../components/credential/CredentialP
 import { StoredCredential } from '../../utils/types';
 import { addPidWithIdentification } from '../../store/credentials';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { obtainPidThunk } from '../../middleware/pid';
 
 /**
  * Screen which starts and handles the PID issuance flow.
