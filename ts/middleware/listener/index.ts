@@ -6,10 +6,10 @@ import {
   ListenerEffectAPI,
   isAnyOf
 } from '@reduxjs/toolkit';
-import {AppDispatch, RootState} from '../../store/types';
-import {startupSetLoading} from '../../store/reducers/startup';
-import {preferencesReset} from '../../store/reducers/preferences';
-import {startupListener} from './startup';
+import { AppDispatch, RootState } from '../../store/types';
+import { startupSetLoading } from '../../store/reducers/startup';
+import { preferencesReset } from '../../store/reducers/preferences';
+import { startupListener } from './startup';
 
 export const listenerMiddleware = createListenerMiddleware();
 

@@ -1,18 +1,18 @@
 import Config from 'react-native-config';
-import {WalletInstance} from '@pagopa/io-react-native-wallet';
-import {serializeError} from 'serialize-error';
+import { WalletInstance } from '@pagopa/io-react-native-wallet';
+import { serializeError } from 'serialize-error';
 import {
   generateIntegrityHardwareKeyTag,
   getIntegrityContext
 } from '../utils/integrity';
-import {selectSessionId} from '../../../store/reducers/preferences';
-import {selectInstanceKeyTag, setInstanceKeyTag} from '../store/instance';
-import {createWalletProviderFetch} from '../utils/fetch';
-import {createAppAsyncThunk} from '../../../middleware/thunk';
+import { selectSessionId } from '../../../store/reducers/preferences';
+import { selectInstanceKeyTag, setInstanceKeyTag } from '../store/instance';
+import { createWalletProviderFetch } from '../utils/fetch';
+import { createAppAsyncThunk } from '../../../middleware/thunk';
 
 export const createInstanceThunk = createAppAsyncThunk<void, void>(
   'pidIssuanceStatus/createInstance',
-  async (_, {getState, dispatch, rejectWithValue}) => {
+  async (_, { getState, dispatch, rejectWithValue }) => {
     try {
       const state = getState();
       const instanceKeyTag = selectInstanceKeyTag(state);
@@ -36,7 +36,7 @@ export const createInstanceThunk = createAppAsyncThunk<void, void>(
       }
       return;
     } catch (err: unknown) {
-      return rejectWithValue({error: serializeError(err)});
+      return rejectWithValue({ error: serializeError(err) });
     }
   }
 );

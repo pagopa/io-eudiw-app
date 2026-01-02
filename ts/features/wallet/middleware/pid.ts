@@ -8,14 +8,14 @@ import {
 } from '@pagopa/io-react-native-wallet';
 import Config from 'react-native-config';
 import uuid from 'react-native-uuid';
-import {generate} from '@pagopa/io-react-native-crypto';
-import {serializeError} from 'serialize-error';
-import {isAnyOf} from '@reduxjs/toolkit';
-import {regenerateCryptoKey} from '../../../utils/crypto';
-import {DPOP_KEYTAG} from '../utils/crypto';
-import {Lifecycle, setLifecycle} from '../store/lifecycle';
-import {navigate} from '../../../navigation/utils';
-import {addCredential, addPidWithIdentification} from '../store/credentials';
+import { generate } from '@pagopa/io-react-native-crypto';
+import { serializeError } from 'serialize-error';
+import { isAnyOf } from '@reduxjs/toolkit';
+import { regenerateCryptoKey } from '../../../utils/crypto';
+import { DPOP_KEYTAG } from '../utils/crypto';
+import { Lifecycle, setLifecycle } from '../store/lifecycle';
+import { navigate } from '../../../navigation/utils';
+import { addCredential, addPidWithIdentification } from '../store/credentials';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
@@ -25,12 +25,12 @@ import {
   AppListenerWithAction,
   AppStartListening
 } from '../../../middleware/listener';
-import {wellKnownCredentialConfigurationIDs} from '../utils/credentials';
-import {selectSessionId} from '../../../store/reducers/preferences';
-import {createWalletProviderFetch} from '../utils/fetch';
-import {StoredCredential} from '../utils/types';
-import {createAppAsyncThunk} from '../../../middleware/thunk';
-import {getAttestationThunk} from './attestation';
+import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
+import { selectSessionId } from '../../../store/reducers/preferences';
+import { createWalletProviderFetch } from '../utils/fetch';
+import { StoredCredential } from '../utils/types';
+import { createAppAsyncThunk } from '../../../middleware/thunk';
+import { getAttestationThunk } from './attestation';
 
 /**
  * Thunk to obtain the PID credential.
@@ -38,9 +38,9 @@ import {getAttestationThunk} from './attestation';
  */
 export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
   'pidIssuanceStatus/obtainPid',
-  async (_, {getState, dispatch, rejectWithValue}) => {
+  async (_, { getState, dispatch, rejectWithValue }) => {
     try {
-      const {PID_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
+      const { PID_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri } = Config;
       const state = getState();
 
       const walletInstanceAttestation = await dispatch(getAttestationThunk());
@@ -59,13 +59,13 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
       const credentialConfigId = wellKnownCredentialConfigurationIDs.PID;
 
       // Evaluate issuer trust
-      const {issuerConf} = await Credential.Issuance.evaluateIssuerTrust(
+      const { issuerConf } = await Credential.Issuance.evaluateIssuerTrust(
         issuerUrl,
-        {appFetch}
+        { appFetch }
       );
 
       // Start user authorization
-      const {issuerRequestUri, clientId, codeVerifier} =
+      const { issuerRequestUri, clientId, codeVerifier } =
         await Credential.Issuance.startUserAuthorization(
           issuerConf,
           [credentialConfigId],
@@ -94,7 +94,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
       }
 
       // Obtain the Authorization URL
-      const {authUrl} = await Credential.Issuance.buildAuthorizationUrl(
+      const { authUrl } = await Credential.Issuance.buildAuthorizationUrl(
         issuerRequestUri,
         clientId,
         issuerConf
@@ -111,7 +111,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
         baseRedirectUri
       );
 
-      const {code} =
+      const { code } =
         await Credential.Issuance.completeUserAuthorizationWithQueryMode(
           authRedirectUrl
         );
@@ -125,7 +125,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
       await regenerateCryptoKey(DPOP_KEYTAG);
       const dPopCryptoContext = createCryptoContextFor(DPOP_KEYTAG);
 
-      const {accessToken} = await Credential.Issuance.authorizeAccess(
+      const { accessToken } = await Credential.Issuance.authorizeAccess(
         issuerConf,
         code,
         clientId,
@@ -140,10 +140,10 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
 
       // Obtain the credential
       // # TODO: WLEO-727 - rework to support multiple credentials issuance
-      const {credential_configuration_id, credential_identifiers} =
+      const { credential_configuration_id, credential_identifiers } =
         accessToken.authorization_details[0]!;
 
-      const {credential, format} = await Credential.Issuance.obtainCredential(
+      const { credential, format } = await Credential.Issuance.obtainCredential(
         issuerConf,
         accessToken,
         clientId,
@@ -158,12 +158,12 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
         }
       );
 
-      const {parsedCredential} =
+      const { parsedCredential } =
         await Credential.Issuance.verifyAndParseCredential(
           issuerConf,
           credential,
           credential_configuration_id,
-          {credentialCryptoContext}
+          { credentialCryptoContext }
         );
 
       return {
@@ -189,17 +189,19 @@ const addPidWithAuthListener: AppListenerWithAction<
   ReturnType<typeof addPidWithIdentification>
 > = async (action, listenerApi) => {
   listenerApi.dispatch(
-    setIdentificationStarted({canResetPin: false, isValidatingTask: true})
+    setIdentificationStarted({ canResetPin: false, isValidatingTask: true })
   );
   const resAction = await listenerApi.take(
     isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
   );
   if (setIdentificationIdentified.match(resAction[0])) {
     listenerApi.dispatch(
-      addCredential({credential: action.payload.credential})
+      addCredential({ credential: action.payload.credential })
     );
-    listenerApi.dispatch(setLifecycle({lifecycle: Lifecycle.LIFECYCLE_VALID}));
-    navigate('MAIN_WALLET_NAV', {screen: 'PID_ISSUANCE_SUCCESS'});
+    listenerApi.dispatch(
+      setLifecycle({ lifecycle: Lifecycle.LIFECYCLE_VALID })
+    );
+    navigate('MAIN_WALLET_NAV', { screen: 'PID_ISSUANCE_SUCCESS' });
   } else {
     return;
   }

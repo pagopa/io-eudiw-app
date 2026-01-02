@@ -3,15 +3,15 @@ import {
   createCryptoContextFor,
   WalletInstanceAttestation
 } from '@pagopa/io-react-native-wallet';
-import {selectSessionId} from '../../../store/reducers/preferences';
-import {AppThunk} from '../../../store/types';
-import {selectAttestation, setAttestation} from '../store/attestation';
-import {selectInstanceKeyTag} from '../store/instance';
-import {isWalletInstanceAttestationValid} from '../utils/attestation';
-import {createWalletProviderFetch} from '../utils/fetch';
-import {getIntegrityContext} from '../utils/integrity';
-import {WIA_KEYTAG} from '../utils/crypto';
-import {regenerateCryptoKey} from '../../../utils/crypto';
+import { selectSessionId } from '../../../store/reducers/preferences';
+import { AppThunk } from '../../../store/types';
+import { selectAttestation, setAttestation } from '../store/attestation';
+import { selectInstanceKeyTag } from '../store/instance';
+import { isWalletInstanceAttestationValid } from '../utils/attestation';
+import { createWalletProviderFetch } from '../utils/fetch';
+import { getIntegrityContext } from '../utils/integrity';
+import { WIA_KEYTAG } from '../utils/crypto';
+import { regenerateCryptoKey } from '../../../utils/crypto';
 
 export const getAttestationThunk =
   (): AppThunk<Promise<string>> => async (dispatch, getState) => {

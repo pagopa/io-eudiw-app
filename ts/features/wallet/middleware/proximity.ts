@@ -1,6 +1,6 @@
-import {ISO18013_5} from '@pagopa/io-react-native-iso18013';
-import {serializeError} from 'serialize-error';
-import {isAnyOf, TaskAbortError} from '@reduxjs/toolkit';
+import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
+import { serializeError } from 'serialize-error';
+import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import {
   resetProximityQrCode,
   selectProximityAcceptedFields,
@@ -16,9 +16,9 @@ import {
   setProximityStatusStarted,
   setProximityStatusStopped
 } from '../store/proximity';
-import {requestBlePermissions} from '../utils/permissions';
-import {store} from '../../../store';
-import {selectCredentials} from '../store/credentials';
+import { requestBlePermissions } from '../utils/permissions';
+import { store } from '../../../store';
+import { selectCredentials } from '../store/credentials';
 import {
   getIsVerifierAuthenticated,
   matchRequestToClaims,
@@ -189,7 +189,7 @@ const responseHandler = async (listenerApi: AppListener) => {
 
     if (acceptedFields) {
       listenerApi.dispatch(
-        setIdentificationStarted({canResetPin: false, isValidatingTask: true})
+        setIdentificationStarted({ canResetPin: false, isValidatingTask: true })
       );
       const resAction = await listenerApi.take(
         isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)

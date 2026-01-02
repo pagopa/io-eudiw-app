@@ -1,6 +1,6 @@
 import BootSplash from 'react-native-bootsplash';
-import {Linking} from 'react-native';
-import {isAnyOf, UnknownAction} from '@reduxjs/toolkit';
+import { Linking } from 'react-native';
+import { isAnyOf, UnknownAction } from '@reduxjs/toolkit';
 import initI18n from '../../i18n/i18n';
 import {
   startupSetAttributes,
@@ -11,21 +11,21 @@ import {
   getBiometricState,
   hasDeviceScreenLock
 } from '../../features/onboarding/utils/biometric';
-import {checkConfig} from '../../config/configSetup';
+import { checkConfig } from '../../config/configSetup';
 import {
   preferencesSetIsOnboardingDone,
   selectisOnboardingComplete
 } from '../../store/reducers/preferences';
-import {selectUrl} from '../../store/reducers/deeplinking';
-import {isNavigationReady} from '../../navigation/utils';
-import {resetLifecycle} from '../../features/wallet/store/lifecycle';
+import { selectUrl } from '../../store/reducers/deeplinking';
+import { isNavigationReady } from '../../navigation/utils';
+import { resetLifecycle } from '../../features/wallet/store/lifecycle';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '../../store/reducers/identification';
-import {addWalletListeners} from '../../features/wallet/middleware';
-import {AppListener, AppListenerWithAction, startAppListening} from '.';
+import { addWalletListeners } from '../../features/wallet/middleware';
+import { AppListener, AppListenerWithAction, startAppListening } from '.';
 
 /**
  * Utility generator function to wait for the navigation to be ready before dispatching a navigation event.
@@ -68,9 +68,9 @@ const handlePendingDeepLink = async (listenerApi: AppListener) => {
  */
 const startIdentification = async (listenerApi: AppListener) => {
   listenerApi.dispatch(startupSetStatus('WAIT_IDENTIFICATION'));
-  await BootSplash.hide({fade: true});
+  await BootSplash.hide({ fade: true });
   listenerApi.dispatch(
-    setIdentificationStarted({canResetPin: true, isValidatingTask: false})
+    setIdentificationStarted({ canResetPin: true, isValidatingTask: false })
   );
   // Wait for either success or failure
   const action = await listenerApi.take(
@@ -90,7 +90,7 @@ const startIdentification = async (listenerApi: AppListener) => {
  */
 const startOnboarding = async (listenerApi: AppListener) => {
   listenerApi.dispatch(startupSetStatus('WAIT_ONBOARDING'));
-  await BootSplash.hide({fade: true});
+  await BootSplash.hide({ fade: true });
   await listenerApi.take(isAnyOf(preferencesSetIsOnboardingDone));
 
   /* This clears the wallet state in order to ensure a clean state, specifically on iOS
@@ -139,6 +139,6 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
     addWalletListeners(startAppListening);
   } catch {
     listenerApi.dispatch(startupSetError());
-    await BootSplash.hide({fade: true});
+    await BootSplash.hide({ fade: true });
   }
 };
