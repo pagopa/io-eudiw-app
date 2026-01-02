@@ -8,7 +8,7 @@ import {
   take,
   takeLatest
 } from 'typed-redux-saga';
-import {Linking} from 'react-native';
+import { Linking } from 'react-native';
 import initI18n from '../i18n/i18n';
 import {
   startupSetAttributes,
@@ -20,16 +20,16 @@ import {
   getBiometricState,
   hasDeviceScreenLock
 } from '../features/onboarding/utils/biometric';
-import {checkConfig} from '../config/configSetup';
+import { checkConfig } from '../config/configSetup';
 import {
   preferencesReset,
   preferencesSetIsOnboardingDone,
   selectisOnboardingComplete
 } from '../store/reducers/preferences';
-import {walletSaga} from '../features/wallet/saga';
-import {selectUrl} from '../store/reducers/deeplinking';
-import {isNavigationReady} from '../navigation/utils';
-import {resetLifecycle} from '../features/wallet/store/lifecycle';
+import { walletSaga } from '../features/wallet/saga';
+import { selectUrl } from '../store/reducers/deeplinking';
+import { isNavigationReady } from '../navigation/utils';
+import { resetLifecycle } from '../features/wallet/store/lifecycle';
 import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
@@ -39,7 +39,7 @@ import {
  * Helper function that is called when the wallet owner successfully identifies at application startup
  */
 function* onStartupIdentified() {
-  yield* call(BootSplash.hide, {fade: true});
+  yield* call(BootSplash.hide, { fade: true });
   yield* fork(walletSaga);
   yield* call(waitForNavigationToBeReady);
   yield* put(startupSetStatus('DONE'));
@@ -118,7 +118,7 @@ function* handlePendingDeepLink() {
  */
 function* startOnboarding() {
   yield* put(startupSetStatus('WAIT_ONBOARDING'));
-  yield* call(BootSplash.hide, {fade: true});
+  yield* call(BootSplash.hide, { fade: true });
   yield* take(preferencesSetIsOnboardingDone);
   /* This clears the wallet state in order to ensure a clean state, specifically on iOS
    * where data stored in the keychain is not cleared on app uninstall.
@@ -153,7 +153,7 @@ function* startup() {
     }
   } catch {
     yield* put(startupSetError());
-    yield* call(BootSplash.hide, {fade: true});
+    yield* call(BootSplash.hide, { fade: true });
   }
 }
 

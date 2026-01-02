@@ -10,9 +10,9 @@ import {
   WithTestID,
   IOVisualCostants
 } from '@pagopa/io-app-design-system';
-import {ComponentProps, forwardRef, useState} from 'react';
-import {LayoutChangeEvent, StyleSheet, View} from 'react-native';
-import {IOScrollView} from './IOScrollView';
+import { ComponentProps, forwardRef, useState } from 'react';
+import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
+import { IOScrollView } from './IOScrollView';
 
 export type LargeHeaderTitleProps = {
   label: string;
@@ -53,7 +53,7 @@ export const IOScrollViewWithLargeHeader = forwardRef<View, Props>(
     const theme = useIOTheme();
 
     const getTitleHeight = (event: LayoutChangeEvent) => {
-      const {height} = event.nativeEvent.layout;
+      const { height } = event.nativeEvent.layout;
       setTitleHeight(height);
     };
 
@@ -63,12 +63,14 @@ export const IOScrollViewWithLargeHeader = forwardRef<View, Props>(
         snapOffset={titleHeight}
         includeContentMargins={false}
         excludeEndContentMargin={excludeEndContentMargin}
-        testID={testID}>
+        testID={testID}
+      >
         <View
           ref={ref}
           accessible
           style={styles.titleContainer}
-          onLayout={getTitleHeight}>
+          onLayout={getTitleHeight}
+        >
           {title.section && (
             <BodySmall weight="Semibold" color={theme['textBody-tertiary']}>
               {title.section}
@@ -78,7 +80,8 @@ export const IOScrollViewWithLargeHeader = forwardRef<View, Props>(
             color={theme['textHeading-default']}
             testID={title?.testID}
             accessibilityLabel={title.accessibilityLabel ?? title.label}
-            accessibilityRole="header">
+            accessibilityRole="header"
+          >
             {title.label}
           </H2>
         </View>

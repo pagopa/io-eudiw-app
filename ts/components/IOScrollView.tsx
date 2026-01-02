@@ -12,7 +12,7 @@ import {
   hexToRgba,
   useIOTheme
 } from '@pagopa/io-app-design-system';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import {
   ComponentProps,
   Fragment,
@@ -30,7 +30,7 @@ import {
   View,
   ViewStyle
 } from 'react-native';
-import {easeGradient} from 'react-native-easing-gradient';
+import { easeGradient } from 'react-native-easing-gradient';
 import LinearGradient from 'react-native-linear-gradient';
 import Animated, {
   AnimatedRef,
@@ -41,8 +41,8 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue
 } from 'react-native-reanimated';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {WithTestID} from '../types/utils';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { WithTestID } from '../types/utils';
 
 export type IOScrollViewActions =
   | {
@@ -195,10 +195,10 @@ export const IOScrollView = ({
      (both light and dark themes) */
   const HEADER_BG_COLOR: ColorValue = IOColors[theme['appBackground-primary']];
 
-  const {colors, locations} = easeGradient({
+  const { colors, locations } = easeGradient({
     colorStops: {
-      0: {color: hexToRgba(HEADER_BG_COLOR, 0)},
-      1: {color: HEADER_BG_COLOR}
+      0: { color: hexToRgba(HEADER_BG_COLOR, 0) },
+      1: { color: HEADER_BG_COLOR }
     },
     easing: Easing.ease,
     extraColorStopsPerTransition: 20
@@ -223,7 +223,7 @@ export const IOScrollView = ({
     bottomMargin + actionBlockHeight + contentEndMargin;
 
   const handleScroll = useAnimatedScrollHandler(
-    ({contentOffset, layoutMeasurement, contentSize}) => {
+    ({ contentOffset, layoutMeasurement, contentSize }) => {
       const scrollPosition = contentOffset.y;
       const maxScrollHeight = contentSize.height - layoutMeasurement.height;
       const scrollPercentage = scrollPosition / maxScrollHeight;
@@ -292,7 +292,8 @@ export const IOScrollView = ({
           /* Apply the same logic used in the
           `OperationResultScreenContent` component */
           centerContent ? styles.centerContentWrapper : {}
-        ]}>
+        ]}
+      >
         {children}
       </Animated.ScrollView>
       {actions && (
@@ -305,7 +306,8 @@ export const IOScrollView = ({
             }
           ]}
           pointerEvents="box-none"
-          {...(testID && {testID: `${testID}-actions`})}>
+          {...(testID && { testID: `${testID}-actions` })}
+        >
           <Animated.View
             style={[
               styles.gradientContainer,
@@ -313,7 +315,8 @@ export const IOScrollView = ({
                 backgroundColor: hexToRgba(IOColors['error-500'], 0.15)
               }
             ]}
-            pointerEvents="none">
+            pointerEvents="none"
+          >
             <Animated.View
               style={[
                 opacityTransition,
@@ -322,7 +325,8 @@ export const IOScrollView = ({
                   borderTopWidth: 1,
                   backgroundColor: hexToRgba(IOColors['error-500'], 0.4)
                 }
-              ]}>
+              ]}
+            >
               <LinearGradient
                 style={{
                   height: gradientAreaHeight - safeBackgroundBlockHeight
@@ -346,7 +350,8 @@ export const IOScrollView = ({
           <View
             style={styles.buttonContainer}
             onLayout={getActionBlockHeight}
-            pointerEvents="box-none">
+            pointerEvents="box-none"
+          >
             {renderActionButtons(actions, extraBottomMargin)}
           </View>
         </View>
@@ -375,7 +380,8 @@ const renderActionButtons = (
           style={{
             alignSelf: 'center',
             marginBottom: extraBottomMargin
-          }}>
+          }}
+        >
           <VSpacer size={spaceBetweenActionAndLink} />
           <ButtonLink
             color="primary"
@@ -393,7 +399,8 @@ const renderActionButtons = (
             style={{
               alignSelf: 'center',
               marginBottom: extraBottomMargin
-            }}>
+            }}
+          >
             <VSpacer size={spaceBetweenActionAndLink} />
             <ButtonLink color="primary" {...tertiaryAction} />
           </View>

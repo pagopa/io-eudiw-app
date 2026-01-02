@@ -1,4 +1,4 @@
-import {call, fork, put, take} from 'typed-redux-saga';
+import { call, fork, put, take } from 'typed-redux-saga';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,

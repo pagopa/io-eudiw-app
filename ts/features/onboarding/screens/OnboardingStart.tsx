@@ -5,10 +5,11 @@ import {
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {useTranslation} from 'react-i18next';
-import {useHeaderSecondLevel} from '../../../hooks/useHeaderSecondLevel';
+import { StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useHeaderSecondLevel } from '../../../hooks/useHeaderSecondLevel';
 
 /**
  * Onboarding screen which is shown after the initial carousel.
@@ -16,7 +17,7 @@ import {useHeaderSecondLevel} from '../../../hooks/useHeaderSecondLevel';
  */
 const OnboardingStart = () => {
   const navigation = useNavigation();
-  const {t} = useTranslation(['global', 'onboarding']);
+  const { t } = useTranslation(['global', 'onboarding']);
 
   useHeaderSecondLevel({
     title: '',
@@ -26,13 +27,13 @@ const OnboardingStart = () => {
   const onStartPress = () =>
     navigation.navigate('ROOT_ONBOARDING_NAV', {
       screen: 'ONBOARDING_PIN_CREATION',
-      params: {isOnboarding: true}
+      params: { isOnboarding: true }
     });
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <Pictogram name="cie" size={180} />
           <VSpacer size={24} />
           <H3 style={styles.text}>{t('onboarding:start.title')}</H3>
@@ -64,5 +65,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  text: {textAlign: 'center'}
+  text: { textAlign: 'center' }
 });

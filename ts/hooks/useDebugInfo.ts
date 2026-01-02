@@ -1,11 +1,11 @@
-import {useFocusEffect} from '@react-navigation/native';
-import {useCallback} from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 import {
   resetDebugData,
   selectIsDebugModeEnabled,
   setDebugData
 } from '../store/reducers/debug';
-import {useAppDispatch, useAppSelector} from '../store';
+import { useAppDispatch, useAppSelector } from '../store';
 
 /**
  * Sets debug data for the mounted component. Removes it when the component is unmounted

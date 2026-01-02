@@ -6,10 +6,10 @@ import {
   WithTestID,
   IOVisualCostants
 } from '@pagopa/io-app-design-system';
-import {RefObject, memo} from 'react';
-import {Dimensions, View} from 'react-native';
+import { RefObject, memo } from 'react';
+import { Dimensions, View } from 'react-native';
 
-const {width} = Dimensions.get('screen');
+const { width } = Dimensions.get('screen');
 
 export type PinCarouselItemProps = WithTestID<{
   title: string;
@@ -50,7 +50,8 @@ export const PinCarouselItem = memo(
         justifyContent: 'space-between',
         width
       }}
-      testID={testID}>
+      testID={testID}
+    >
       <View>
         <H4 ref={titleRef} accessible testID={`${testID}_title`}>
           {title}
@@ -60,7 +61,8 @@ export const PinCarouselItem = memo(
         <Body
           accessible
           testID={`${testID}_description`}
-          style={{textAlign: 'center'}}>
+          style={{ textAlign: 'center' }}
+        >
           {description}
         </Body>
       )}

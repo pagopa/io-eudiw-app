@@ -1,5 +1,5 @@
-import {z} from 'zod';
-import {PIN_LENGTH} from '../../../utils/pin';
+import { z } from 'zod';
+import { PIN_LENGTH } from '../../../utils/pin';
 
 /**
  * A string representing a PIN which follows the PIN_REGEX constraint.
