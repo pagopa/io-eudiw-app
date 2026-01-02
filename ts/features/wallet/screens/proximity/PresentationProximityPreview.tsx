@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, View, StyleSheet } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
 import {
   Body,
@@ -38,10 +38,7 @@ import CredentialTypePresentationClaimsList from '../../components/presentation/
 
 export type PresentationProximityPreviewProps = ProximityDisclosure;
 
-type Props = NativeStackScreenProps<
-  WalletNavigatorParamsList,
-  'PROXIMITY_PREVIEW'
->;
+type Props = StackScreenProps<WalletNavigatorParamsList, 'PROXIMITY_PREVIEW'>;
 
 /**
  * Screen that shows the claims required for a Proximity presentation
