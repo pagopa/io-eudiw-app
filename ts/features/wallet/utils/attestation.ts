@@ -1,4 +1,5 @@
 import { WalletInstanceAttestation } from '@pagopa/io-react-native-wallet';
+
 /**
  * Checks if the Wallet Instance Attestation needs to be requested by
  * checking the expiry date
