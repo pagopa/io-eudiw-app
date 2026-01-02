@@ -13,6 +13,11 @@ import { getIntegrityContext } from '../utils/integrity';
 import { WIA_KEYTAG } from '../utils/crypto';
 import { regenerateCryptoKey } from '../../../utils/crypto';
 
+/**
+ * Thunk to obtain the wallet instance attestation.
+ * It requests the attestation if not in the store or if it's invalid.
+ * It sets the new value in the store and returns it, otherwise it returns the existing one.
+ */
 export const getAttestationThunk =
   (): AppThunk<Promise<string>> => async (dispatch, getState) => {
     const state = getState();

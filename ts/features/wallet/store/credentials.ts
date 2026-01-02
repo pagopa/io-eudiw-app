@@ -47,12 +47,12 @@ const credentialsSlice = createSlice({
         state.credentials.push(credential);
       }
     },
-    // Empty action which will be intercepted by the saga and trigger the identification before storing the PID
+    // Empty action which will be intercepted by the listener and trigger the identification before storing the PID
     addPidWithIdentification: (
       _,
       __: PayloadAction<{ credential: StoredCredential }>
     ) => {},
-    // Empty action which will be intercepted by the saga and trigger the identification before storing a credential
+    // Empty action which will be intercepted by the listener and trigger the identification before storing a credential
     addCredentialWithIdentification: (
       _,
       __: PayloadAction<{ credential: StoredCredential }>

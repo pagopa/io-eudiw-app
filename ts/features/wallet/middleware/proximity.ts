@@ -48,7 +48,7 @@ const {
 } = ISO18013_5;
 
 /**
- * Saga that handles the state of a proximity presentation
+ * Listener that handles the state of a proximity presentation
  */
 const proximityListener: AppListenerWithAction<
   ReturnType<typeof setProximityStatusStarted>
@@ -221,7 +221,7 @@ const abortProximityFlow = async (listenerApi: AppListener) => {
 };
 
 /**
- * This helper saga removes all listeners from the proximity handler and resets
+ * This helper function removes all listeners from the proximity handler and resets
  * the QR code
  */
 

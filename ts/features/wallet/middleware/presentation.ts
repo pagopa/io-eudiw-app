@@ -33,7 +33,7 @@ type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 type RequiredDisclosure = [string, string, unknown];
 
 /**
- * Saga for the credential presentation.
+ * Listener for the credential presentation.
  * It listens for an action which stars the presentation flow.
  * The presentation is divided by two steps:
  * - Pre-definition: the app asks for the required claims to be presented to the RP;

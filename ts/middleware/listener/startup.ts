@@ -97,7 +97,6 @@ const startOnboarding = async (listenerApi: AppListener) => {
    * where data stored in the keychain is not cleared on app uninstall.
    */
   listenerApi.dispatch(resetLifecycle());
-  // TODO: MOUNT HERE THE WALLET SAGA
   listenerApi.dispatch(startupSetStatus('DONE'));
 };
 

@@ -23,7 +23,6 @@ import { deepLinkingReducer } from './reducers/deeplinking';
 
 /**
  * Redux store configuration.
- * Ignore all the action types dispatched by Redux Persist and add the saga middleware.
  */
 export const store = configureStore({
   reducer: {

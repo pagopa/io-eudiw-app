@@ -315,7 +315,7 @@ const obtainCredentialListener: AppListenerWithAction<
 };
 
 /**
- * Saga to store the credential after pin validation.
+ * Listener to store the credential after pin validation.
  * It dispatches the action which shows the pin validation modal and awaits for the result.
  * If the pin is correct, the credential is stored, the issuance state is resetted and the user is navigated to the main screen.
  */
