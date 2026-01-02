@@ -1,5 +1,5 @@
-import {useMemo, memo} from 'react';
-import {Badge, IOIcons, ModuleCredential} from '@pagopa/io-app-design-system';
+import { useMemo, memo } from 'react';
+import { Badge, IOIcons, ModuleCredential } from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
 import {
   wellKnownCredential,
@@ -24,7 +24,7 @@ const credentialIconByType: Record<string, IOIcons> = {
 
 const activeBadge: Badge = {
   variant: 'success',
-  text: i18next.t('credentialIssuance.badges.saved', {ns: 'wallet'})
+  text: i18next.t('credentialIssuance.badges.saved', { ns: 'wallet' })
 };
 
 /**
@@ -68,4 +68,4 @@ const OnboardingModuleCredential = ({
 };
 
 const MemoizedComponent = memo(OnboardingModuleCredential);
-export {MemoizedComponent as OnboardingModuleCredential};
+export { MemoizedComponent as OnboardingModuleCredential };

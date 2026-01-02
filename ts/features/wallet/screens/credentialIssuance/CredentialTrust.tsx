@@ -9,17 +9,17 @@ import {
   IOVisualCostants,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
-import {useAppDispatch, useAppSelector} from '../../../../store';
-import {selectCredential} from '../../store/credentials';
+import { useCallback, useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch, useAppSelector } from '../../../../store';
+import { selectCredential } from '../../store/credentials';
 import {
   getCredentialNameByType,
   wellKnownCredential
 } from '../../utils/credentials';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus,
@@ -37,8 +37,8 @@ import CredentialTypePresentationClaimsList, {
 const CredentialTrust = () => {
   const dispatch = useAppDispatch();
   const pid = useAppSelector(selectCredential(wellKnownCredential.PID));
-  const {t} = useTranslation(['global', 'wallet']);
-  const {loading, error, success} = useAppSelector(
+  const { t } = useTranslation(['global', 'wallet']);
+  const { loading, error, success } = useAppSelector(
     selectCredentialIssuancePostAuthStatus
   );
   const requestedCredential = useAppSelector(selectRequestedCredentialType);
@@ -57,7 +57,7 @@ const CredentialTrust = () => {
     dispatch(resetCredentialIssuance());
   }, [dispatch, navigation]);
 
-  useHeaderSecondLevel({title: '', goBack});
+  useHeaderSecondLevel({ title: '', goBack });
 
   /**
    * When the post auth request is successful, navigate to the preview screen
@@ -105,7 +105,7 @@ const CredentialTrust = () => {
 
   return (
     <ForceScrollDownView threshold={50}>
-      <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
+      <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
         <VSpacer size={24} />
         <View style={styles.header}>
           <Icon name={'device'} color={'grey-450'} size={24} />

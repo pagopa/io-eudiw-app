@@ -7,28 +7,28 @@ import {
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {useCallback, useRef, useState} from 'react';
-import {View, Alert, StyleSheet} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
-import {useNavigation} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useTranslation} from 'react-i18next';
-import {StackScreenProps} from '@react-navigation/stack';
-import {pinSet} from '../../store/reducers/pin';
-import {preferencesSetIsOnboardingDone} from '../../store/reducers/preferences';
-import {isValidPinNumber, PIN_LENGTH} from '../../utils/pin';
-import {PinString} from '../../features/onboarding/types/PinString';
-import {CarouselFlat} from '../../components/CarouselFlat';
-import {useHeaderSecondLevel} from '../../hooks/useHeaderSecondLevel';
-import {isDevEnv} from '../../utils/env';
+import { useCallback, useRef, useState } from 'react';
+import { View, Alert, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
+import { StackScreenProps } from '@react-navigation/stack';
+import { pinSet } from '../../store/reducers/pin';
+import { preferencesSetIsOnboardingDone } from '../../store/reducers/preferences';
+import { isValidPinNumber, PIN_LENGTH } from '../../utils/pin';
+import { PinString } from '../../features/onboarding/types/PinString';
+import { CarouselFlat } from '../../components/CarouselFlat';
+import { useHeaderSecondLevel } from '../../hooks/useHeaderSecondLevel';
+import { isDevEnv } from '../../utils/env';
 import {
   selectStartupBiometricState,
   selectStartupHasScreenLock
 } from '../../store/reducers/startup';
-import {OnboardingNavigatorParamsList} from '../../features/onboarding/navigation/OnboardingNavigator';
-import {useAppDispatch, useAppSelector} from '../../store';
+import { OnboardingNavigatorParamsList } from '../../features/onboarding/navigation/OnboardingNavigator';
+import { useAppDispatch, useAppSelector } from '../../store';
 import usePinValidationBottomSheet from '../../features/onboarding/hooks/usePinValidationBottomSheet';
-import {PinCarouselItem, PinCarouselItemProps} from './PinCarouselItem';
+import { PinCarouselItem, PinCarouselItemProps } from './PinCarouselItem';
 
 const CREATION_INDEX = 0;
 const CONFIRMATION_INDEX = 1;
@@ -50,7 +50,7 @@ type PinMode = 'creation' | 'confirmation';
  * process and the profile settings.
  * This component will allow the user to create a new pin or change the existing one.
  */
-export const PinCreation = ({route}: PinCreationScreenProps) => {
+export const PinCreation = ({ route }: PinCreationScreenProps) => {
   const isOnboarding = route.params.isOnboarding ?? false;
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -61,8 +61,8 @@ export const PinCreation = ({route}: PinCreationScreenProps) => {
   const carouselRef = useRef<FlatList>(null);
   const titleCreationRef = useRef<View>(null);
   const titleConfirmationRef = useRef<View>(null);
-  const {present, bottomSheet} = usePinValidationBottomSheet();
-  const {t} = useTranslation(['global', 'onboarding']);
+  const { present, bottomSheet } = usePinValidationBottomSheet();
+  const { t } = useTranslation(['global', 'onboarding']);
   const biometricState = useAppSelector(selectStartupBiometricState);
   const hasDeviceScreenLock = useAppSelector(selectStartupHasScreenLock);
 
@@ -245,7 +245,7 @@ export const PinCreation = ({route}: PinCreationScreenProps) => {
         <CarouselFlat
           ref={carouselRef}
           testID="pin-creation-carousel"
-          style={{flexGrow: 0}}
+          style={{ flexGrow: 0 }}
           data={data}
           Component={PinCarouselItem}
           scrollEnabled={false}
@@ -259,7 +259,7 @@ export const PinCreation = ({route}: PinCreationScreenProps) => {
             deleteAccessibilityLabel={t('global:buttons.delete')}
           />
           <VSpacer />
-          <View style={{alignSelf: 'center'}}>
+          <View style={{ alignSelf: 'center' }}>
             <IOButton
               variant="link"
               onPress={present}

@@ -1,9 +1,9 @@
-import {truncate} from 'lodash';
+import { truncate } from 'lodash';
 
 /**
  * Truncate long strings to avoid performance issues when rendering claims.
  */
-export const getSafeText = (text: string) => truncate(text, {length: 128});
+export const getSafeText = (text: string) => truncate(text, { length: 128 });
 
 /**
  * Checks whether a string is null, undefined or empty.

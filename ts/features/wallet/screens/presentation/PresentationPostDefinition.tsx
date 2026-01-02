@@ -1,6 +1,6 @@
-import {useEffect} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {useTranslation} from 'react-i18next';
+import { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import {
   Body,
   FeatureInfo,
@@ -12,20 +12,20 @@ import {
   IOVisualCostants,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {Alert, StyleSheet, View} from 'react-native';
-import {StackScreenProps} from '@react-navigation/stack';
-import {useAppDispatch, useAppSelector} from '../../../../store';
+import { Alert, StyleSheet, View } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   Descriptor,
   selectPostDefinitionStatus,
   setPostDefinitionCancel,
   setPostDefinitionRequest
 } from '../../store/presentation';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
-import {WalletNavigatorParamsList} from '../../navigation/WalletNavigator';
-import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
-import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
-import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import CredentialTypePresentationClaimsList from '../../components/presentation/CredentialTypePresentationClaimsList';
 /**
  * Description which contains the requested of the credential to be presented.
@@ -43,12 +43,12 @@ type Props = StackScreenProps<
  * Presentation for the issuance flow after the user has received the descriptor containing the requested claims.
  * It requires the descrptor containg the requested claims in order to render the screen, passed via navigation params.
  */
-const PresentationPostDefinition = ({route}: Props) => {
+const PresentationPostDefinition = ({ route }: Props) => {
   const navigation = useNavigation();
-  const {t} = useTranslation(['global', 'wallet']);
+  const { t } = useTranslation(['global', 'wallet']);
   const dispatch = useAppDispatch();
   const postDefinitionStatus = useAppSelector(selectPostDefinitionStatus);
-  const {navigateToWallet} = useNavigateToWalletWithReset();
+  const { navigateToWallet } = useNavigateToWalletWithReset();
 
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();
@@ -102,7 +102,7 @@ const PresentationPostDefinition = ({route}: Props) => {
 
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>
-      <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
+      <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
         <VSpacer size={24} />
         <View style={styles.header}>
           <Icon name={'device'} color={'grey-450'} size={24} />
