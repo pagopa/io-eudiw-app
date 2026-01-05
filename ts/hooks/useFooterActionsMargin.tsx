@@ -1,5 +1,5 @@
-import {IOVisualCostants} from '@pagopa/io-app-design-system';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { IOVisualCostants } from '@pagopa/io-app-design-system';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type FooterActionsMargin = {
   bottomMargin: number;

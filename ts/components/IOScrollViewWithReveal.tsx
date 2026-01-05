@@ -13,7 +13,7 @@ import {
   VSpacer,
   WithTestID
 } from '@pagopa/io-app-design-system';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import {
   ComponentProps,
@@ -22,8 +22,8 @@ import {
   useLayoutEffect
 } from 'react';
 
-import {ColorValue, StyleSheet, View} from 'react-native';
-import {easeGradient} from 'react-native-easing-gradient';
+import { ColorValue, StyleSheet, View } from 'react-native';
+import { easeGradient } from 'react-native-easing-gradient';
 import LinearGradient from 'react-native-linear-gradient';
 import Animated, {
   AnimatedRef,
@@ -37,7 +37,7 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated';
 
-import {useFooterActionsMargin} from '../hooks/useFooterActionsMargin';
+import { useFooterActionsMargin } from '../hooks/useFooterActionsMargin';
 
 type ButtonBlockProps = Omit<
   IOButtonBlockSpecificProps,
@@ -130,15 +130,15 @@ export const IOScrollViewWithReveal = ({
     there's a layout shift in the button container */
   const actionBlockHeight: number = 100;
 
-  const {bottomMargin, needSafeAreaMargin} = useFooterActionsMargin();
+  const { bottomMargin, needSafeAreaMargin } = useFooterActionsMargin();
 
   /* GENERATE EASING GRADIENT */
   const APP_BG_COLOR: ColorValue = IOColors[theme['appBackground-primary']];
 
-  const {colors, locations} = easeGradient({
+  const { colors, locations } = easeGradient({
     colorStops: {
-      0: {color: hexToRgba(APP_BG_COLOR, 0)},
-      1: {color: APP_BG_COLOR}
+      0: { color: hexToRgba(APP_BG_COLOR, 0) },
+      1: { color: APP_BG_COLOR }
     },
     easing: Easing.out(Easing.ease),
     extraColorStopsPerTransition: 20
@@ -162,7 +162,7 @@ export const IOScrollViewWithReveal = ({
   const safeBottomAreaHeight = bottomMargin + actionBlockHeight;
 
   const handleScroll = useAnimatedScrollHandler(
-    ({contentOffset, layoutMeasurement, contentSize}) => {
+    ({ contentOffset, layoutMeasurement, contentSize }) => {
       const scrollPosition = contentOffset.y;
       const maxScrollHeight = contentSize.height - layoutMeasurement.height;
       const scrollPercentage = scrollPosition / maxScrollHeight;
@@ -228,7 +228,8 @@ export const IOScrollViewWithReveal = ({
             paddingBottom: actions ? safeBottomAreaHeight : bottomMargin,
             flexGrow: 1
           }
-        ]}>
+        ]}
+      >
         {children}
       </Animated.ScrollView>
       {actions && (
@@ -241,7 +242,8 @@ export const IOScrollViewWithReveal = ({
             }
           ]}
           pointerEvents="box-none"
-          {...(testID && {testID: `${testID}-actions`})}>
+          {...(testID && { testID: `${testID}-actions` })}
+        >
           <Animated.View
             style={[
               styles.gradientContainer,
@@ -249,7 +251,8 @@ export const IOScrollViewWithReveal = ({
                 backgroundColor: hexToRgba(IOColors['error-500'], 0.15)
               }
             ]}
-            pointerEvents="none">
+            pointerEvents="none"
+          >
             <Animated.View
               style={[
                 opacityTransition,
@@ -258,7 +261,8 @@ export const IOScrollViewWithReveal = ({
                   borderTopWidth: 1,
                   backgroundColor: hexToRgba(IOColors['error-500'], 0.4)
                 }
-              ]}>
+              ]}
+            >
               <LinearGradient
                 style={{
                   height: gradientAreaHeight - safeBackgroundBlockHeight
@@ -284,12 +288,13 @@ export const IOScrollViewWithReveal = ({
               onLayout={event => {
                 anchorLinkHeight.value = event.nativeEvent.layout.height;
               }}
-              style={[{alignSelf: 'center'}, anchorLinkAnimatedStyle]}>
+              style={[{ alignSelf: 'center' }, anchorLinkAnimatedStyle]}
+            >
               <IOButton variant="link" {...actions.anchor} />
               <VSpacer size={spaceBetweenActionAndLink} />
             </Animated.View>
 
-            <View style={{marginBottom: extraBottomMargin}}>
+            <View style={{ marginBottom: extraBottomMargin }}>
               <IOButton variant="solid" fullWidth {...actions.primary} />
             </View>
           </View>

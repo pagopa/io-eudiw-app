@@ -1,7 +1,7 @@
 import I18n from 'i18next';
-import {Alert} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {useHardwareBackButton} from '../../../hooks/useHardwareBackButton.tsx';
+import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useHardwareBackButton } from '../../../hooks/useHardwareBackButton.tsx';
 
 type ItwDismissalDialogProps = {
   handleDismiss?: () => void;
@@ -28,14 +28,15 @@ export const useItwDismissalDialog = ({
   const navigation = useNavigation();
 
   const title =
-    customLabels.title ?? I18n.t('generics.alert.title', {ns: 'global'});
+    customLabels.title ?? I18n.t('generics.alert.title', { ns: 'global' });
   const body =
-    customLabels.body ?? I18n.t('generics.alert.body', {ns: 'global'});
+    customLabels.body ?? I18n.t('generics.alert.body', { ns: 'global' });
   const confirmLabel =
     customLabels.confirmLabel ??
-    I18n.t('generics.alert.confirm', {ns: 'global'});
+    I18n.t('generics.alert.confirm', { ns: 'global' });
   const cancelLabel =
-    customLabels.cancelLabel ?? I18n.t('generics.alert.cancel', {ns: 'global'});
+    customLabels.cancelLabel ??
+    I18n.t('generics.alert.cancel', { ns: 'global' });
 
   const show = () => {
     Alert.alert(title, body, [
@@ -58,5 +59,5 @@ export const useItwDismissalDialog = ({
     return true;
   });
 
-  return {show};
+  return { show };
 };

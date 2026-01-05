@@ -25,8 +25,8 @@ import PresentationProximityFailure, {
   PresentationProximityFailureProps
 } from '../screens/proximity/PresentationProximityFailure';
 import PresentationProximitySuccess from '../screens/proximity/PresentationProximitySuccess';
-import {WalletInstanceCreation} from '../screens/pidIssuance/WalletInstanceCreation';
-import {IdentificationMethod} from '../screens/pidIssuance/IdentificationMethod';
+import { WalletInstanceCreation } from '../screens/pidIssuance/WalletInstanceCreation';
+import { IdentificationMethod } from '../screens/pidIssuance/IdentificationMethod';
 import WALLET_ROUTES from './routes';
 
 /**

@@ -1,4 +1,4 @@
-import {parse as textLintParse} from '@textlint/markdown-to-ast';
+import { parse as textLintParse } from '@textlint/markdown-to-ast';
 import {
   AnyTxtNode,
   TxtHeaderNode,
@@ -9,9 +9,9 @@ import {
   TxtParentNode,
   TxtStrNode
 } from '@textlint/ast-node-types';
-import {omit} from 'lodash';
-import {isIos} from '../../utils/device';
-import {AnyTxtNodeWithSpacer, IOMarkdownRenderRules, Renderer} from './types';
+import { omit } from 'lodash';
+import { isIos } from '../../utils/device';
+import { AnyTxtNodeWithSpacer, IOMarkdownRenderRules, Renderer } from './types';
 
 /**
  *
@@ -72,10 +72,12 @@ function integrateParent<T extends AnyTxtNode>(
   return 'children' in node
     ? {
         ...node,
-        children: node.children.map(n => integrateParent(n, {...node, parent})),
+        children: node.children.map(n =>
+          integrateParent(n, { ...node, parent })
+        ),
         parent: parentLight
       }
-    : {...node, parent: parentLight};
+    : { ...node, parent: parentLight };
 }
 
 /**
@@ -122,7 +124,7 @@ export const convertReferenceLinksToInline = (markdownText: string): string => {
     const url = match[2].replace(/^<|>$/g, '');
     // Title is not supported but we capture it in case it will be in the future
     const title = match[3] || '';
-    linkDefinitions.set(label, {url, title});
+    linkDefinitions.set(label, { url, title });
   }
 
   // Remove all link definitions from the text
@@ -138,7 +140,7 @@ export const convertReferenceLinksToInline = (markdownText: string): string => {
     const linkDef = linkDefinitions.get(actualLabel);
     if (linkDef) {
       // At the moment, we do not support title
-      const {url} = linkDef;
+      const { url } = linkDef;
       return `[${linkText}](${url})`;
     }
 

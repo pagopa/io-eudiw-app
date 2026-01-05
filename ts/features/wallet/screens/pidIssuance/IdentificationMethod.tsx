@@ -5,11 +5,11 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import {View} from 'react-native';
+import { View } from 'react-native';
 import I18n from 'i18next';
-import {useNavigation} from '@react-navigation/native';
-import {IOScrollViewWithLargeHeader} from '../../../../components/IOScrollViewWithLargeHeader';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
+import { useNavigation } from '@react-navigation/native';
+import { IOScrollViewWithLargeHeader } from '../../../../components/IOScrollViewWithLargeHeader';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 
 export type ItwIdentificationNavigationParams = {
   eidReissuing?: boolean;
@@ -41,7 +41,8 @@ export const IdentificationMethod = () => {
       }}
       description={I18n.t('identification.modeSelection.description.issuance', {
         ns: 'wallet'
-      })}>
+      })}
+    >
       <ContentWrapper>
         <VSpacer size={8} />
         <VStack space={16}>
@@ -51,7 +52,7 @@ export const IdentificationMethod = () => {
             })}
             subtitle={I18n.t(
               'identification.modeSelection.mode.ciePin.subtitle',
-              {ns: 'wallet'}
+              { ns: 'wallet' }
             )}
             testID="CiePinMethodModuleTestID"
             icon="cieCard"
@@ -69,7 +70,7 @@ export const IdentificationMethod = () => {
             })}
             subtitle={I18n.t(
               'identification.modeSelection.mode.spid.subtitle',
-              {ns: 'wallet'}
+              { ns: 'wallet' }
             )}
             testID="SpidMethodModuleTestID"
             icon="spid"
@@ -89,7 +90,7 @@ export const IdentificationMethod = () => {
             icon="cie"
             onPress={handleOnPress}
           />
-          <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <IOButton
               variant="link"
               textAlign="center"

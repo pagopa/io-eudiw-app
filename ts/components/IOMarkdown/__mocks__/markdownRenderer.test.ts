@@ -1,4 +1,4 @@
-import {convertReferenceLinksToInline} from '../markdownRenderer';
+import { convertReferenceLinksToInline } from '../markdownRenderer';
 
 describe('convertReferenceLinksToInline', () => {
   // Test 1: Basic functionality

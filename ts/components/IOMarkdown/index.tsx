@@ -1,13 +1,13 @@
-import {memo} from 'react';
-import {View} from 'react-native';
-import {IOMarkdownRenderRules} from './types';
+import { memo } from 'react';
+import { View } from 'react-native';
+import { IOMarkdownRenderRules } from './types';
 import {
   convertReferenceLinksToInline,
   getRenderMarkdown,
   parse,
   sanitizeMarkdownForImages
 } from './markdownRenderer';
-import {DEFAULT_RULES} from './renderRules';
+import { DEFAULT_RULES } from './renderRules';
 
 type UnsafeProps = Omit<IOMarkdownProps, 'onError'>;
 
@@ -34,7 +34,7 @@ export type IOMarkdownProps = {
  *
  * It's possible to override every single rule by passing a custom `rules` object.
  */
-const UnsafeIOMarkdown = ({content, rules}: UnsafeProps) => {
+const UnsafeIOMarkdown = ({ content, rules }: UnsafeProps) => {
   const inlineLinkMarkdown = convertReferenceLinksToInline(content);
   const sanitizedMarkdown = sanitizeMarkdownForImages(inlineLinkMarkdown);
   const parsedContent = parse(sanitizedMarkdown);
@@ -48,7 +48,7 @@ const UnsafeIOMarkdown = ({content, rules}: UnsafeProps) => {
   return <View>{parsedContent.map(renderMarkdown)}</View>;
 };
 
-const IOMarkdown = ({content, rules}: IOMarkdownProps) => (
+const IOMarkdown = ({ content, rules }: IOMarkdownProps) => (
   <UnsafeIOMarkdown content={content} rules={rules} />
 );
 export default memo(IOMarkdown);
