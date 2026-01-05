@@ -145,7 +145,7 @@ const QrCodeScanBaseScreenComponent = ({
 
   const customGoBack = useMemo(
     () => (
-      <View style={{ marginLeft: 24 }}>
+      <View style={styles.goBack}>
         <IconButton
           icon="closeLarge"
           onPress={navigation.goBack}
@@ -159,7 +159,7 @@ const QrCodeScanBaseScreenComponent = ({
 
   const torchButton = useMemo(
     () => (
-      <View style={{ marginRight: 24 }}>
+      <View style={styles.torch}>
         <IconButton
           icon={isTorchOn ? 'lightFilled' : 'light'}
           accessibilityLabel={t('qrcodeScan:flash')}
@@ -236,6 +236,12 @@ const styles = StyleSheet.create({
   },
   navigationContainer: {
     paddingVertical: 16
+  },
+  torch: {
+    marginRight: 24
+  },
+  goBack: {
+    marginLeft: 24
   }
 });
 
