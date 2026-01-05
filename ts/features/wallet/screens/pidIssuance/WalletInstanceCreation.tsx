@@ -12,9 +12,9 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import {useCallback, useEffect, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import I18n from 'i18next';
 import Animated, {
   useAnimatedRef,
@@ -27,19 +27,19 @@ import Feature2Image from '../../assets/img/discovery/feature_2.svg';
 import Feature3Image from '../../assets/img/discovery/feature_3.svg';
 import Feature4Image from '../../assets/img/discovery/feature_4.svg';
 import Feature5Image from '../../assets/img/discovery/feature_5.svg';
-import {AnimatedImage} from '../../../../components/AnimatedImage.tsx';
+import { AnimatedImage } from '../../../../components/AnimatedImage.tsx';
 
-import {useAppDispatch, useAppSelector} from '../../../../store/index.ts';
+import { useAppDispatch, useAppSelector } from '../../../../store/index.ts';
 import {
   resetInstanceCreation,
   selectInstanceStatus,
   setInstanceCreationRequest
 } from '../../store/pidIssuance.ts';
-import {useItwDismissalDialog} from '../../hook/useItwDismissalDialog.tsx';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel.tsx';
-import {IOScrollViewWithReveal} from '../../../../components/IOScrollViewWithReveal.tsx';
+import { useItwDismissalDialog } from '../../hook/useItwDismissalDialog.tsx';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel.tsx';
+import { IOScrollViewWithReveal } from '../../../../components/IOScrollViewWithReveal.tsx';
 import IOMarkdown from '../../../../components/IOMarkdown/index.tsx';
-import {generateItwIOMarkdownRules} from '../../utils/markdown.ts';
+import { generateItwIOMarkdownRules } from '../../utils/markdown.ts';
 
 // Offset to avoid to scroll to the block without margins
 const scrollOffset: number = 12;
@@ -52,7 +52,7 @@ const intersectionRatio: number = 0.3;
  */
 export const WalletInstanceCreation = () => {
   const navigation = useNavigation();
-  const {error, success, loading} = useAppSelector(selectInstanceStatus);
+  const { error, success, loading } = useAppSelector(selectInstanceStatus);
   const dispatch = useAppDispatch();
 
   useHeaderSecondLevel({
@@ -132,14 +132,19 @@ export const WalletInstanceCreation = () => {
       actions={{
         primary: {
           loading,
-          label: I18n.t('discovery.screen.itw.actions.primary', {ns: 'wallet'}),
+          label: I18n.t('discovery.screen.itw.actions.primary', {
+            ns: 'wallet'
+          }),
           onPress: () => dispatch(setInstanceCreationRequest())
         },
         anchor: {
-          label: I18n.t('discovery.screen.itw.actions.anchor', {ns: 'wallet'}),
+          label: I18n.t('discovery.screen.itw.actions.anchor', {
+            ns: 'wallet'
+          }),
           onPress: handleScrollToHighlights
         }
-      }}>
+      }}
+    >
       <AnimatedImage
         source={require('../../assets/img/discovery/itw_hero.png')}
         style={styles.hero}
@@ -155,23 +160,33 @@ export const WalletInstanceCreation = () => {
         <VStack space={16}>
           <FeatureBlock
             image={<Feature1Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.1', {ns: 'wallet'})}
+            content={I18n.t('discovery.screen.itw.features.1', {
+              ns: 'wallet'
+            })}
           />
           <FeatureBlock
             image={<Feature2Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.2', {ns: 'wallet'})}
+            content={I18n.t('discovery.screen.itw.features.2', {
+              ns: 'wallet'
+            })}
           />
           <FeatureBlock
             image={<Feature3Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.3', {ns: 'wallet'})}
+            content={I18n.t('discovery.screen.itw.features.3', {
+              ns: 'wallet'
+            })}
           />
           <FeatureBlock
             image={<Feature4Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.4', {ns: 'wallet'})}
+            content={I18n.t('discovery.screen.itw.features.4', {
+              ns: 'wallet'
+            })}
           />
           <FeatureBlock
             image={<Feature5Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.5', {ns: 'wallet'})}
+            content={I18n.t('discovery.screen.itw.features.5', {
+              ns: 'wallet'
+            })}
           />
         </VStack>
       </ContentWrapper>
@@ -183,7 +198,8 @@ export const WalletInstanceCreation = () => {
             y: event.nativeEvent.layout.y,
             height: event.nativeEvent.layout.height
           });
-        }}>
+        }}
+      >
         <ContentWrapper>
           <Divider />
           <DetailBlock
@@ -228,7 +244,7 @@ export const WalletInstanceCreation = () => {
 
           <VSpacer size={24} />
           <IOMarkdown
-            content={I18n.t('discovery.screen.itw.tos', {ns: 'wallet'})}
+            content={I18n.t('discovery.screen.itw.tos', { ns: 'wallet' })}
             rules={generateItwIOMarkdownRules({
               linkCallback: () => null,
               paragraphSize: 'small'
@@ -240,7 +256,10 @@ export const WalletInstanceCreation = () => {
   );
 };
 
-const FeatureBlock = (props: {content: string; image: React.ReactElement}) => {
+const FeatureBlock = (props: {
+  content: string;
+  image: React.ReactElement;
+}) => {
   const theme = useIOTheme();
 
   return (
@@ -249,9 +268,12 @@ const FeatureBlock = (props: {content: string; image: React.ReactElement}) => {
       style={{
         ...styles.feature,
         borderColor: IOColors[theme['cardBorder-default']]
-      }}>
+      }}
+    >
       {props.image}
-      <BodySmall style={{flex: 1, flexWrap: 'wrap'}}>{props.content}</BodySmall>
+      <BodySmall style={{ flex: 1, flexWrap: 'wrap' }}>
+        {props.content}
+      </BodySmall>
     </HStack>
   );
 };
@@ -265,7 +287,7 @@ const DetailBlock = (props: {
 
   return (
     <VStack space={8} style={styles.detail}>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <H4>{props.title}</H4>
         <Icon
           name={props.icon}

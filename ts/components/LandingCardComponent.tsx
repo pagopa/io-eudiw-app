@@ -2,7 +2,12 @@
  * This component renders the card displayed in the landing page carousel
  */
 
-import {View, ScrollView, useWindowDimensions, StyleSheet} from 'react-native';
+import {
+  View,
+  ScrollView,
+  useWindowDimensions,
+  StyleSheet
+} from 'react-native';
 import {
   Body,
   H3,
@@ -12,7 +17,7 @@ import {
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {forwardRef} from 'react';
+import { forwardRef } from 'react';
 
 type Props = {
   id: number;
@@ -62,7 +67,8 @@ export const LandingCardComponent = forwardRef<View, Props>((props, ref) => {
         style={[wrapperStyle, styles.wrapper]}
         accessible={true}
         accessibilityLabel={accessibilityLabel}
-        accessibilityHint={accessibilityHint}>
+        accessibilityHint={accessibilityHint}
+      >
         <Pictogram
           size={180}
           name={pictogramName}
@@ -72,14 +78,16 @@ export const LandingCardComponent = forwardRef<View, Props>((props, ref) => {
         <H3
           importantForAccessibility="no"
           style={styles.centeredText}
-          color={titleColor}>
+          color={titleColor}
+        >
           {title}
         </H3>
         <VSpacer />
         <Body
           importantForAccessibility="no"
           style={styles.centeredText}
-          color={contentColor}>
+          color={contentColor}
+        >
           {content}
         </Body>
         <VSpacer />
@@ -89,8 +97,8 @@ export const LandingCardComponent = forwardRef<View, Props>((props, ref) => {
 });
 
 const styles = StyleSheet.create({
-  centeredText: {textAlign: 'center'},
-  container: {flexGrow: 1, justifyContent: 'center'},
+  centeredText: { textAlign: 'center' },
+  container: { flexGrow: 1, justifyContent: 'center' },
   wrapper: {
     paddingHorizontal: IOVisualCostants.appMarginDefault,
     alignItems: 'center'

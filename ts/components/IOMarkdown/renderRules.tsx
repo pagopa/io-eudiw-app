@@ -44,16 +44,16 @@ import {
   useLayoutEffect,
   useState
 } from 'react';
-import {Dimensions, Image, Pressable, Text, View} from 'react-native';
+import { Dimensions, Image, Pressable, Text, View } from 'react-native';
 import I18n from 'i18next';
-import {openWebUrl} from '../../utils/url';
-import {isAndroid} from '../../utils/device';
+import { openWebUrl } from '../../utils/url';
+import { isAndroid } from '../../utils/device';
 import {
   extractAllLinksFromRootNode,
   isParagraphNodeInHierarchy,
   LinkData
 } from './markdownRenderer';
-import {IOMarkdownRenderRules, Renderer} from './types';
+import { IOMarkdownRenderRules, Renderer } from './types';
 
 export type ParagraphSize = 'small' | 'default';
 
@@ -81,7 +81,7 @@ export function getPictogramName(value?: Nullable<string>): IOPictogramsBleed {
   return isValidPictogram ? (value as IOPictogramsBleed) : 'notification';
 }
 
-export function getStrValue({children}: TxtParentNode): string {
+export function getStrValue({ children }: TxtParentNode): string {
   return children.reduce((acc, inc) => {
     if (inc.type === 'Str' || inc.type === 'Code') {
       return acc + inc.value;
@@ -141,7 +141,7 @@ export const generateAccesibilityLinkViewsIfNeeded = (
       accessibilityRole="link"
       collapsable={false}
       collapsableChildren={false}
-      style={{height: 1}}
+      style={{ height: 1 }}
       key={`${nodeKey}_${index}`}
       onPress={() => onPress(link.url)}
     />
@@ -187,7 +187,11 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
     render: Renderer,
     screenReaderEnabled: boolean
   ) {
-    return paragraphNodeToReactNative(paragraph, {screenReaderEnabled}, render);
+    return paragraphNodeToReactNative(
+      paragraph,
+      { screenReaderEnabled },
+      render
+    );
   },
   /**
    * @param emphasis The `Emphasis` node.
@@ -196,7 +200,7 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
    */
   Emphasis(emphasis: TxtEmphasisNode, render: Renderer) {
     return (
-      <Text key={getTxtNodeKey(emphasis)} style={{fontStyle: 'italic'}}>
+      <Text key={getTxtNodeKey(emphasis)} style={{ fontStyle: 'italic' }}>
         {emphasis.children.map(render)}
       </Text>
     );
@@ -208,7 +212,7 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
    */
   Strong(strong: TxtStrongNode, render: Renderer) {
     return (
-      <Text key={getTxtNodeKey(strong)} style={{fontWeight: '600'}}>
+      <Text key={getTxtNodeKey(strong)} style={{ fontWeight: '600' }}>
         {strong.children.map(render)}
       </Text>
     );
@@ -229,7 +233,7 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
   Link(link: TxtLinkNode, render: Renderer) {
     return linkNodeToReactNative(
       link,
-      {onPress: () => handleOpenLink(link.url)},
+      { onPress: () => handleOpenLink(link.url) },
       render
     );
   },
@@ -250,7 +254,7 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
         const aspectRatio = width / height;
         const maxScreenWidth = width > screenWidth ? screenWidth : width;
 
-        setImageSize({width: maxScreenWidth, aspectRatio});
+        setImageSize({ width: maxScreenWidth, aspectRatio });
       });
     }, [screenWidth, image.url]);
 
@@ -298,17 +302,19 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
       <Fragment key={nodeKey}>
         <View>
           {isFirstList && <VSpacer size={8} />}
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             {isFirstList && <HSpacer size={12} />}
             <View
-              style={{flex: 1, flexGrow: 1}}
+              style={{ flex: 1, flexGrow: 1 }}
               accessible={true}
-              accessibilityRole="list">
+              accessibilityRole="list"
+            >
               {list.children.map((child, i) => (
                 <View
                   accessible
                   key={`${child.type}_${i}`}
-                  style={{flexDirection: 'row'}}>
+                  style={{ flexDirection: 'row' }}
+                >
                   {getLeftAdornment(i)}
                   <HSpacer size={8} />
                   {render(child)}
@@ -336,8 +342,9 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
     return (
       <View
         accessible={false}
-        style={{flex: 1, flexShrink: 1}}
-        key={getTxtNodeKey(listItem)}>
+        style={{ flex: 1, flexShrink: 1 }}
+        key={getTxtNodeKey(listItem)}
+      >
         {listItem.children.map(render)}
       </View>
     );
@@ -351,7 +358,7 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
    * @param props The custom `Spacer` component used to add space between the first level content.
    * @returns The rendered `VSpacer` component.
    */
-  Spacer: ({key, size}) => <VSpacer key={key} size={size} />,
+  Spacer: ({ key, size }) => <VSpacer key={key} size={size} />,
   /**
    *
    * @param blockQuote The `BlockQuote` node.
@@ -424,7 +431,7 @@ export const headerNodeToReactNative = (
   header: TxtHeaderNode,
   headingsMap: Record<
     number,
-    ExoticComponent<{children?: ReactNode | undefined}>
+    ExoticComponent<{ children?: ReactNode | undefined }>
   >,
   onPress: (url: string) => void,
   render: Renderer,
@@ -470,7 +477,7 @@ export const htmlNodeToReactNative = (
 
 export const linkNodeToReactNative = (
   link: TxtLinkNode,
-  options: {onPress: () => void; size?: ParagraphSize},
+  options: { onPress: () => void; size?: ParagraphSize },
   render: Renderer
 ) => {
   const BodyComponent = options.size === 'small' ? BodySmall : Body;
@@ -480,7 +487,8 @@ export const linkNodeToReactNative = (
       asLink
       avoidPressable
       key={getTxtNodeKey(link)}
-      onPress={options.onPress}>
+      onPress={options.onPress}
+    >
       {link.children.map(render)}
     </BodyComponent>
   );
@@ -488,12 +496,12 @@ export const linkNodeToReactNative = (
 
 export const paragraphNodeToReactNative = (
   paragraph: TxtParagraphNode,
-  options: {screenReaderEnabled: boolean; size?: ParagraphSize},
+  options: { screenReaderEnabled: boolean; size?: ParagraphSize },
   render: Renderer
 ) => {
   if (paragraph.children.length > 0 && paragraph.children[0].type === 'Image') {
     return (
-      <View key={getTxtNodeKey(paragraph)} style={{marginVertical: 16}}>
+      <View key={getTxtNodeKey(paragraph)} style={{ marginVertical: 16 }}>
         {paragraph.children.map(render)}
       </View>
     );

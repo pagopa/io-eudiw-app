@@ -1,11 +1,11 @@
-import {HStack, IOColors, IOText} from '@pagopa/io-app-design-system';
-import {ImageSourcePropType, StyleSheet, View} from 'react-native';
-import {getThemeColorByCredentialType} from '../../utils/style';
+import { HStack, IOColors, IOText } from '@pagopa/io-app-design-system';
+import { ImageSourcePropType, StyleSheet, View } from 'react-native';
+import { getThemeColorByCredentialType } from '../../utils/style';
 import {
   getCredentialNameByType,
   wellKnownCredential
 } from '../../utils/credentials';
-import {AnimatedImage} from '../../../../components/AnimatedImage';
+import { AnimatedImage } from '../../../../components/AnimatedImage';
 
 export type CredentialCard = {
   credentialType: string;
@@ -35,7 +35,7 @@ const getStyleProps = (credentialType: string): StyleProps => {
  * Renders a credential card based on the credential type.
  * Each credential type is mapped to a specific background image.
  */
-export const CredentialCard = ({credentialType}: CredentialCard) => {
+export const CredentialCard = ({ credentialType }: CredentialCard) => {
   const styleProps = getStyleProps(credentialType);
 
   return (
@@ -60,7 +60,8 @@ export const CredentialCard = ({credentialType}: CredentialCard) => {
               opacity: styleProps.titleOpacity,
               flex: 1,
               flexShrink: 1
-            }}>
+            }}
+          >
             {getCredentialNameByType(credentialType).toUpperCase()}
           </IOText>
           {styleProps.cardLogoSource && (
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: IOColors['grey-100']
   },
-  cardBackground: {height: '100%', width: '100%'},
+  cardBackground: { height: '100%', width: '100%' },
   header: {
     display: 'flex',
     flexDirection: 'row',

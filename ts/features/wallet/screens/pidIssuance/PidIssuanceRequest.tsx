@@ -1,6 +1,6 @@
-import {useEffect} from 'react';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 import {
   Body,
   ForceScrollDownView,
@@ -9,10 +9,10 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import I18n from 'i18next';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
-import {useAppDispatch, useAppSelector} from '../../../../store';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   selectPidIssuanceData,
   selectPidIssuanceStatus,
@@ -20,8 +20,8 @@ import {
 } from '../../store/pidIssuance';
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
-import {StoredCredential} from '../../utils/types';
-import {addPidWithIdentification} from '../../store/credentials';
+import { StoredCredential } from '../../utils/types';
+import { addPidWithIdentification } from '../../store/credentials';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -30,10 +30,10 @@ import {addPidWithIdentification} from '../../store/credentials';
  * If the PID issuance fails, the user is redirected to the failure screen.
  */
 const PidIssuanceRequest = () => {
-  const {t} = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation(['wallet', 'global']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const {error, success, loading} = useAppSelector(selectPidIssuanceStatus);
+  const { error, success, loading } = useAppSelector(selectPidIssuanceStatus);
   const pid = useAppSelector(selectPidIssuanceData);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const PidIssuanceRequest = () => {
     canGoBack: success.status
   });
 
-  const PidPreview = ({credential}: {credential: StoredCredential}) => (
+  const PidPreview = ({ credential }: { credential: StoredCredential }) => (
     <>
       <ForceScrollDownView
         contentContainerStyle={styles.scroll}
@@ -64,10 +64,11 @@ const PidIssuanceRequest = () => {
               label: I18n.t('buttons.continue', {
                 ns: 'global'
               }),
-              onPress: () => dispatch(addPidWithIdentification({credential}))
+              onPress: () => dispatch(addPidWithIdentification({ credential }))
             }
           }
-        }}>
+        }}
+      >
         <VStack style={styles.contentWrapper}>
           <H2>{t('wallet:pidIssuance.preview.title')}</H2>
           <VSpacer size={16} />

@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import {initReactI18next} from 'react-i18next';
+import { initReactI18next } from 'react-i18next';
 import itGlobal from '../../locales/it/global.json';
 import itOnboarding from '../../locales/it/onboarding.json';
 import itWallet from '../../locales/it/wallet.json';

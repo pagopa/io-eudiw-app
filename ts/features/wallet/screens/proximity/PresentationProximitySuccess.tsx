@@ -1,7 +1,7 @@
-import {useTranslation} from 'react-i18next';
-import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
-import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
-import {useAppDispatch, useAppSelector} from '../../../../store';
+import { useTranslation } from 'react-i18next';
+import { OperationResultScreenContent } from '../../../../components/screens/OperationResultScreenContent';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   resetProximity,
   selectProximityAcceptedFields,
@@ -9,11 +9,11 @@ import {
   selectProximityErrorDetails,
   selectProximityStatus
 } from '../../store/proximity';
-import {useDebugInfo} from '../../../../hooks/useDebugInfo';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
 
 const PresentationProximitySuccess = () => {
-  const {t} = useTranslation('wallet');
-  const {navigateToWallet} = useNavigateToWalletWithReset();
+  const { t } = useTranslation('wallet');
+  const { navigateToWallet } = useNavigateToWalletWithReset();
   const dispatch = useAppDispatch();
 
   const proximityStatus = useAppSelector(selectProximityStatus);

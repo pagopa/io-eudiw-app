@@ -5,18 +5,18 @@ import {
   IOVisualCostants,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {StyleSheet, View} from 'react-native';
-import {useCallback} from 'react';
-import {useTranslation} from 'react-i18next';
-import {useAppDispatch, useAppSelector} from '../../../../store';
+import { StyleSheet, View } from 'react-native';
+import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus
 } from '../../store/credentialIssuance';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
-import {getCredentialNameByType} from '../../utils/credentials';
-import {addCredentialWithIdentification} from '../../store/credentials';
-import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { getCredentialNameByType } from '../../utils/credentials';
+import { addCredentialWithIdentification } from '../../store/credentials';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 
 export const CredentialPreview = () => {
@@ -24,8 +24,8 @@ export const CredentialPreview = () => {
     selectCredentialIssuancePostAuthStatus
   );
   const dispatch = useAppDispatch();
-  const {t} = useTranslation(['wallet', 'global']);
-  const {navigateToWallet} = useNavigateToWalletWithReset();
+  const { t } = useTranslation(['wallet', 'global']);
+  const { navigateToWallet } = useNavigateToWalletWithReset();
 
   const cancel = useCallback(() => {
     dispatch(resetCredentialIssuance());
@@ -49,7 +49,8 @@ export const CredentialPreview = () => {
   return (
     <ForceScrollDownView
       contentContainerStyle={styles.scrollView}
-      threshold={50}>
+      threshold={50}
+    >
       <View style={styles.container}>
         <H2>{getCredentialNameByType(credential.credentialType)}</H2>
         <VSpacer size={24} />

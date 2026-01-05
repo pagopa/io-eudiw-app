@@ -1,4 +1,4 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PidIssuanceFailure from '../screens/pidIssuance/PidIssuanceFailure';
 import PidIssuancRequest from '../screens/pidIssuance/PidIssuanceRequest';
 import PidIssuanceSuccess from '../screens/pidIssuance/PidIssuanceSuccess';
@@ -15,7 +15,7 @@ import PresentationPostDefinition, {
 } from '../screens/presentation/PresentationPostDefinition';
 import PresentationSuccess from '../screens/presentation/PresentationSuccess';
 import CredentialTrust from '../screens/credentialIssuance/CredentialTrust';
-import {CredentialPreview} from '../screens/credentialIssuance/CredentialIssuancePreview';
+import { CredentialPreview } from '../screens/credentialIssuance/CredentialIssuancePreview';
 import CredentialFailure from '../screens/credentialIssuance/CredentialFailure';
 import CredentialsList from '../screens/credentialIssuance/CredentialsList';
 import PresentationProximityPreview, {
@@ -71,7 +71,8 @@ const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();
 const WalletNavigator = () => (
   <Stack.Navigator
     initialRouteName={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
-    screenOptions={{headerShown: false}}>
+    screenOptions={{ headerShown: false }}
+  >
     <Stack.Group>
       <Stack.Screen
         name={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}

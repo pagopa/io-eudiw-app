@@ -1,11 +1,11 @@
-import {ListItemInfo} from '@pagopa/io-app-design-system';
-import {useMemo} from 'react';
-import {Platform} from 'react-native';
-import {useTranslation} from 'react-i18next';
-import {useHeaderSecondLevel} from '../../../hooks/useHeaderSecondLevel';
-import {useAppDispatch} from '../../../store';
-import {IOScrollViewWithListItems} from '../../../components/IOScrollViewWithListItems';
-import {preferencesSetIsOnboardingDone} from '../../../store/reducers/preferences';
+import { ListItemInfo } from '@pagopa/io-app-design-system';
+import { useMemo } from 'react';
+import { Platform } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useHeaderSecondLevel } from '../../../hooks/useHeaderSecondLevel';
+import { useAppDispatch } from '../../../store';
+import { IOScrollViewWithListItems } from '../../../components/IOScrollViewWithListItems';
+import { preferencesSetIsOnboardingDone } from '../../../store/reducers/preferences';
 
 /**
  * A screen to be shown if the user has not set a screen lock with intructions on how to set it.
@@ -13,7 +13,7 @@ import {preferencesSetIsOnboardingDone} from '../../../store/reducers/preference
  */
 const OnboardingBiometricNoScreenLock = () => {
   const dispatch = useAppDispatch();
-  const {t} = useTranslation(['onboarding', 'global']);
+  const { t } = useTranslation(['onboarding', 'global']);
 
   useHeaderSecondLevel({
     title: '',
