@@ -2877,6 +2877,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-navigation/stack@npm:^7.6.11":
+  version: 7.6.13
+  resolution: "@react-navigation/stack@npm:7.6.13"
+  dependencies:
+    "@react-navigation/elements": "npm:^2.9.3"
+    color: "npm:^4.2.3"
+    use-latest-callback: "npm:^0.2.4"
+  peerDependencies:
+    "@react-navigation/native": ^7.1.26
+    react: ">= 18.2.0"
+    react-native: "*"
+    react-native-gesture-handler: ">= 2.0.0"
+    react-native-safe-area-context: ">= 4.0.0"
+    react-native-screens: ">= 4.0.0"
+  checksum: 10/0abbb6e48075d73b70164a304bd7b6a8c12c1ca146c7e792421003e0442f8352ce1975bf52b49ea905937fcef950f6110008e6dbffe27dcc2041006c906903d7
+  languageName: node
+  linkType: hard
+
 "@reduxjs/toolkit@npm:^2.11.1":
   version: 2.11.2
   resolution: "@reduxjs/toolkit@npm:2.11.2"

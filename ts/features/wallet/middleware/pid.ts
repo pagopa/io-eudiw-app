@@ -30,6 +30,7 @@ import { selectSessionId } from '../../../store/reducers/preferences';
 import { createWalletProviderFetch } from '../utils/fetch';
 import { StoredCredential } from '../utils/types';
 import { createAppAsyncThunk } from '../../../middleware/thunk';
+import { takeLatestEffect } from '../../../middleware/listener/effects';
 import { getAttestationThunk } from './attestation';
 
 /**
@@ -210,11 +211,6 @@ const addPidWithAuthListener: AppListenerWithAction<
 export const addPidListeners = (startAppListening: AppStartListening) => {
   startAppListening({
     actionCreator: addPidWithIdentification,
-    effect: async (action, listenerApi) => {
-      // Debounce in case of multiple actions dispatched (like a takeLatest)
-      listenerApi.cancelActiveListeners();
-      await listenerApi.delay(15);
-      await addPidWithAuthListener(action, listenerApi);
-    }
+    effect: takeLatestEffect(addPidWithAuthListener)
   });
 };

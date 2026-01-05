@@ -1,50 +1,97 @@
 import {
+  BodySmall,
   ContentWrapper,
-  FooterActions,
-  ForceScrollDownView,
-  H1,
-  VSpacer
+  Divider,
+  H2,
+  H4,
+  HStack,
+  Icon,
+  IOColors,
+  IOIcons,
+  useIOTheme,
+  VSpacer,
+  VStack
 } from '@pagopa/io-app-design-system';
-import { useEffect, useRef } from 'react';
-import { StyleSheet } from 'react-native';
-import { useTranslation } from 'react-i18next';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { AnimatedImage } from '../../../../components/AnimatedImage';
+import I18n from 'i18next';
+import Animated, {
+  useAnimatedRef,
+  useDerivedValue,
+  useScrollViewOffset,
+  useSharedValue
+} from 'react-native-reanimated';
+import Feature1Image from '../../assets/img/discovery/feature_1.svg';
+import Feature2Image from '../../assets/img/discovery/feature_2.svg';
+import Feature3Image from '../../assets/img/discovery/feature_3.svg';
+import Feature4Image from '../../assets/img/discovery/feature_4.svg';
+import Feature5Image from '../../assets/img/discovery/feature_5.svg';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   resetInstanceCreation,
   selectInstanceStatus
 } from '../../store/pidIssuance';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
+import { IOScrollViewWithReveal } from '../../../../components/IOScrollViewWithReveal';
+import { AnimatedImage } from '../../../../components/AnimatedImage';
+import { generateItwIOMarkdownRules } from '../../utils/markdown';
+import IOMarkdown from '../../../../components/IOMarkdown';
 import { createInstanceThunk } from '../../middleware/instance';
+import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+
+// Offset to avoid to scroll to the block without margins
+const scrollOffset: number = 12;
+// Percentage of the visible block after which the anchor link is hidden
+const intersectionRatio: number = 0.3;
 
 type CreateInstancePromise = ReturnType<ReturnType<typeof createInstanceThunk>>;
 
 /**
- * Screen which shows the information about the wallet, then registers a wallet instance and gets an attestation.
+ * This is the component that shows the information about the activation of the wallet and creates the wallet instance.
  */
-const WalletInstanceCreation = () => {
-  const { t } = useTranslation(['wallet', 'global']);
+export const WalletInstanceCreation = () => {
   const navigation = useNavigation();
-  const dispatch = useAppDispatch();
   const { error, success, loading } = useAppSelector(selectInstanceStatus);
+  const dispatch = useAppDispatch();
+
   const thunkRef = useRef<CreateInstancePromise | null>(null);
 
-  const goBack = () => {
-    thunkRef.current?.abort();
-    navigation.goBack();
-  };
+  const dismissalDialog = useItwDismissalDialog({
+    customLabels: {
+      title: I18n.t('discovery.screen.itw.dismissalDialog.title', {
+        ns: 'wallet'
+      }),
+      body: I18n.t('discovery.screen.itw.dismissalDialog.body', {
+        ns: 'wallet'
+      }),
+      confirmLabel: I18n.t('discovery.screen.itw.dismissalDialog.confirm', {
+        ns: 'wallet'
+      }),
+      cancelLabel: I18n.t('discovery.screen.itw.dismissalDialog.cancel', {
+        ns: 'wallet'
+      })
+    },
+    handleDismiss: () => {
+      thunkRef.current?.abort();
+      navigation.goBack();
+    }
+  });
 
-  const onPress = async () => {
-    const promise = dispatch(createInstanceThunk());
-    // eslint-disable-next-line functional/immutable-data
-    thunkRef.current = promise;
-  };
+  useHardwareBackButtonToDismiss(() => dismissalDialog.show());
+  useDisableGestureNavigation();
+
+  useHeaderSecondLevel({
+    title: '',
+    goBack: () => dismissalDialog.show()
+  });
 
   useEffect(() => {
     if (success.status === true) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PID_ISSUANCE_REQUEST'
+        screen: 'PID_ISSUANCE_ID_METHOD'
       });
       dispatch(resetInstanceCreation());
     }
@@ -58,41 +105,232 @@ const WalletInstanceCreation = () => {
     }
   }, [error, navigation]);
 
-  useHeaderSecondLevel({
-    title: '',
-    goBack
+  const [productHighlightsLayout, setProductHighlightsLayout] = useState({
+    y: 0,
+    height: 0
   });
 
+  const productHighlightsRef = useRef<View>(null);
+  const animatedRef = useAnimatedRef<Animated.ScrollView>();
+  const scrollPosition = useScrollViewOffset(animatedRef);
+  const hideAnchorLink = useSharedValue(false);
+
+  useDerivedValue(() => {
+    const threshold: number =
+      productHighlightsLayout.height * (1 - intersectionRatio);
+
+    if (productHighlightsLayout.y > 0) {
+      // eslint-disable-next-line functional/immutable-data
+      hideAnchorLink.value =
+        scrollPosition.value >= productHighlightsLayout.y - threshold;
+    }
+  });
+
+  const handleScrollToHighlights = useCallback(() => {
+    animatedRef.current?.scrollTo({
+      y: productHighlightsLayout.y - scrollOffset,
+      animated: true
+    });
+  }, [animatedRef, productHighlightsLayout]);
+
+  const onPress = async () => {
+    const promise = dispatch(createInstanceThunk());
+    // eslint-disable-next-line functional/immutable-data
+    thunkRef.current = promise;
+  };
+
   return (
-    <ForceScrollDownView threshold={50}>
+    <IOScrollViewWithReveal
+      testID="itwDiscoveryInfoComponentTestID"
+      animatedRef={animatedRef}
+      hideAnchorAction={hideAnchorLink}
+      actions={{
+        primary: {
+          loading,
+          label: I18n.t('discovery.screen.itw.actions.primary', {
+            ns: 'wallet'
+          }),
+          onPress
+        },
+        anchor: {
+          label: I18n.t('discovery.screen.itw.actions.anchor', {
+            ns: 'wallet'
+          }),
+          onPress: handleScrollToHighlights
+        }
+      }}
+    >
       <AnimatedImage
-        source={require('../../assets/img/itw_hero.png')}
-        style={styles.banner}
+        source={require('../../assets/img/discovery/itw_hero.png')}
+        style={styles.hero}
       />
       <VSpacer size={24} />
       <ContentWrapper>
-        <H1>{t('wallet:walletInstanceCreation.title')}</H1>
+        <H2>
+          {I18n.t('discovery.screen.itw.title', {
+            ns: 'wallet'
+          })}
+        </H2>
         <VSpacer size={24} />
-        <Markdown content={t('wallet:walletInstanceCreation.description')} />
+        <VStack space={16}>
+          <FeatureBlock
+            image={<Feature1Image width={48} height={48} />}
+            content={I18n.t('discovery.screen.itw.features.1', {
+              ns: 'wallet'
+            })}
+          />
+          <FeatureBlock
+            image={<Feature2Image width={48} height={48} />}
+            content={I18n.t('discovery.screen.itw.features.2', {
+              ns: 'wallet'
+            })}
+          />
+          <FeatureBlock
+            image={<Feature3Image width={48} height={48} />}
+            content={I18n.t('discovery.screen.itw.features.3', {
+              ns: 'wallet'
+            })}
+          />
+          <FeatureBlock
+            image={<Feature4Image width={48} height={48} />}
+            content={I18n.t('discovery.screen.itw.features.4', {
+              ns: 'wallet'
+            })}
+          />
+          <FeatureBlock
+            image={<Feature5Image width={48} height={48} />}
+            content={I18n.t('discovery.screen.itw.features.5', {
+              ns: 'wallet'
+            })}
+          />
+        </VStack>
       </ContentWrapper>
-      <FooterActions
-        fixed={false}
-        actions={{
-          type: 'SingleButton',
-          primary: {
-            loading,
-            label: t('global:buttons.continue'),
-            accessibilityLabel: t('global:buttons.continue'),
-            onPress
-          }
+      <VSpacer size={32} />
+      <View
+        ref={productHighlightsRef}
+        onLayout={event => {
+          setProductHighlightsLayout({
+            y: event.nativeEvent.layout.y,
+            height: event.nativeEvent.layout.height
+          });
         }}
-      />
-    </ForceScrollDownView>
+      >
+        <ContentWrapper>
+          <Divider />
+          <DetailBlock
+            title={I18n.t('discovery.screen.itw.details.1.title', {
+              ns: 'wallet'
+            })}
+            content={I18n.t('discovery.screen.itw.details.1.content', {
+              ns: 'wallet'
+            })}
+            icon="security"
+          />
+          <Divider />
+          <DetailBlock
+            title={I18n.t('discovery.screen.itw.details.2.title', {
+              ns: 'wallet'
+            })}
+            content={I18n.t('discovery.screen.itw.details.2.content', {
+              ns: 'wallet'
+            })}
+            icon="fiscalCodeIndividual"
+          />
+          <Divider />
+          <DetailBlock
+            title={I18n.t('discovery.screen.itw.details.3.title', {
+              ns: 'wallet'
+            })}
+            content={I18n.t('discovery.screen.itw.details.3.content', {
+              ns: 'wallet'
+            })}
+            icon="navQrWallet"
+          />
+          <Divider />
+          <DetailBlock
+            title={I18n.t('discovery.screen.itw.details.4.title', {
+              ns: 'wallet'
+            })}
+            content={I18n.t('discovery.screen.itw.details.4.content', {
+              ns: 'wallet'
+            })}
+            icon="euStars"
+          />
+
+          <VSpacer size={24} />
+          <IOMarkdown
+            content={I18n.t('discovery.screen.itw.tos', { ns: 'wallet' })}
+            rules={generateItwIOMarkdownRules({
+              linkCallback: () => null,
+              paragraphSize: 'small'
+            })}
+          />
+        </ContentWrapper>
+      </View>
+    </IOScrollViewWithReveal>
+  );
+};
+
+const FeatureBlock = (props: {
+  content: string;
+  image: React.ReactElement;
+}) => {
+  const theme = useIOTheme();
+
+  return (
+    <HStack
+      space={16}
+      style={{
+        ...styles.feature,
+        borderColor: IOColors[theme['cardBorder-default']]
+      }}
+    >
+      {props.image}
+      <BodySmall style={{ flex: 1, flexWrap: 'wrap' }}>
+        {props.content}
+      </BodySmall>
+    </HStack>
+  );
+};
+
+const DetailBlock = (props: {
+  title: string;
+  content: string;
+  icon: IOIcons;
+}) => {
+  const theme = useIOTheme();
+
+  return (
+    <VStack space={8} style={styles.detail}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <H4>{props.title}</H4>
+        <Icon
+          name={props.icon}
+          size={24}
+          color={theme['interactiveElem-default']}
+        />
+      </View>
+      <IOMarkdown content={props.content} />
+    </VStack>
   );
 };
 
 const styles = StyleSheet.create({
-  banner: { resizeMode: 'cover', width: '100%' }
+  hero: {
+    width: '100%',
+    height: 'auto',
+    resizeMode: 'cover',
+    aspectRatio: 4 / 3
+  },
+  feature: {
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderCurve: 'continuous'
+  },
+  detail: {
+    paddingVertical: 16
+  }
 });
-
-export default WalletInstanceCreation;

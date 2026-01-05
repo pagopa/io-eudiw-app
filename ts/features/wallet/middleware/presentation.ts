@@ -27,6 +27,7 @@ import {
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
+import { takeLatestEffect } from '../../../middleware/listener/effects';
 
 type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 
@@ -228,11 +229,6 @@ export const addPresentationListeners = (
 ) => {
   startAppListening({
     actionCreator: setPreDefinitionRequest,
-    effect: async (action, listenerApi) => {
-      // Debounce in case of multiple actions dispatched (like a takeLatest)
-      listenerApi.cancelActiveListeners();
-      await listenerApi.delay(15);
-      await presentationListener(action, listenerApi);
-    }
+    effect: takeLatestEffect(presentationListener)
   });
 };

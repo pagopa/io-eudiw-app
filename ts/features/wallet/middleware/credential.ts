@@ -49,6 +49,10 @@ import {
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
+import {
+  takeLatestEffect,
+  raceEffect
+} from '../../../middleware/listener/effects';
 import { getAttestationThunk } from './attestation';
 
 /**
@@ -343,29 +347,13 @@ export const addCredentialListeners = (
 ) => {
   startAppListening({
     actionCreator: setCredentialIssuancePreAuthRequest,
-    effect: async (action, listenerApi) => {
-      // This works as a takelatest with a race
-      listenerApi.cancelActiveListeners();
-      await listenerApi.delay(15);
-      const abortPromise = new Promise<void>(resolve => {
-        startAppListening({
-          actionCreator: resetCredentialIssuance,
-          effect: () => resolve()
-        });
-      });
-      await Promise.race([
-        obtainCredentialListener(action, listenerApi),
-        abortPromise
-      ]);
-    }
+    effect: raceEffect(obtainCredentialListener, [
+      listenerApi => listenerApi.take(isAnyOf(resetCredentialIssuance))
+    ])
   });
+
   startAppListening({
     actionCreator: addCredentialWithIdentification,
-    effect: async (action, listenerApi) => {
-      // This works as a takeLatest
-      listenerApi.cancelActiveListeners();
-      await listenerApi.delay(15);
-      await addCredentialWithAuthListener(action, listenerApi);
-    }
+    effect: takeLatestEffect(addCredentialWithAuthListener)
   });
 };
