@@ -95,12 +95,9 @@
       "subtitle": "Hai verificato la tua identità.\nIl tuo portafoglio IT-Wallet sarà associato a questi dati:"
     },
     "success": {
-      "title": "It's all ready!",
-      "subtitle": "You can now add your documents and access online services.",
-      "buttons": {
-        "add": "Add your first document",
-        "later": "Later"
-      }
+      "title": "Il tuo IT-Wallet è pronto!",
+      "subtitle": "Ora hai accesso ai vantaggi del nuovo portafoglio digitale di Stato.",
+      "button": "Esplora IT-Wallet"
     },
     "failure": {
       "title": "An unexpected error occurred",

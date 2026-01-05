@@ -20,16 +20,8 @@ const PidIssuanceSuccess = () => {
       title={t('wallet:pidIssuance.success.title')}
       subtitle={t('wallet:pidIssuance.success.subtitle')}
       action={{
-        accessibilityLabel: t('wallet:pidIssuance.success.buttons.add'),
-        label: t('wallet:pidIssuance.success.buttons.add'),
-        onPress: () => {
-          dispatch(resetPidIssuance());
-          navigateToWallet();
-        }
-      }}
-      secondaryAction={{
-        label: t('wallet:pidIssuance.success.buttons.later'),
-        accessibilityLabel: t('wallet:pidIssuance.success.buttons.later'),
+        accessibilityLabel: t('wallet:pidIssuance.success.button'),
+        label: t('wallet:pidIssuance.success.button'),
         onPress: () => {
           dispatch(resetPidIssuance());
           navigateToWallet();
