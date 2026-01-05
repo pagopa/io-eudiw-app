@@ -34,6 +34,7 @@ import {
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
+import { takeLatestEffect } from '../../../middleware/listener/effects';
 
 const {
   ErrorCode,
@@ -235,11 +236,6 @@ const closeFlow = async (listenerApi: AppListener) => {
 export const addProximityListeners = (startAppListening: AppStartListening) => {
   startAppListening({
     actionCreator: setProximityStatusStarted,
-    effect: async (action, listenerApi) => {
-      // This works as a takeLatest
-      listenerApi.cancelActiveListeners();
-      await listenerApi.delay(15);
-      await proximityListener(action, listenerApi);
-    }
+    effect: takeLatestEffect(proximityListener)
   });
 };
