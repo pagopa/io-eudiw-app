@@ -25,6 +25,8 @@ import {
 } from '../../store/proximity';
 import { LoadingIndicator } from '../../../../components/LoadingIndicator';
 import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 
 /**
  * Shows the QR code for the proximity presentation.
