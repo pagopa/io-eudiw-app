@@ -22,9 +22,9 @@ import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import { StoredCredential } from '../../utils/types';
 import { addPidWithIdentification } from '../../store/credentials';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -39,7 +39,7 @@ const PidIssuanceRequest = () => {
   const { error, success, loading } = useAppSelector(selectPidIssuanceStatus);
   const pid = useAppSelector(selectPidIssuanceData);
 
-  useHardwareBackButton(() => true);
+  useHardwareBackButtonToDismiss(() => dismissalDialog.show());
   useDisableGestureNavigation();
 
   useEffect(() => {
