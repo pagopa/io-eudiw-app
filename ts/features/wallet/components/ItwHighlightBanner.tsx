@@ -262,7 +262,10 @@ const StaticContent = (props: Props) => {
         <VStack space={8} style={{ flex: 1 }}>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ alignSelf: 'center' }}>
-              <Badge variant="highlight" text={I18n.t('global.badges.new')} />
+              <Badge
+                variant="highlight"
+                text={I18n.t('badges.new', { ns: 'global' })}
+              />
             </View>
           </View>
           <H4 color="white">{title}</H4>

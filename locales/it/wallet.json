@@ -1,21 +1,32 @@
 {
   "credentials": {
     "names": {
-      "mdl": "Driving License",
-      "pid": "Digital Identity",
+      "mdl": "Patente di guida",
+      "pid": "IT-Wallet ID",
       "hiid": "Health ID",
-      "fbk": "FBK Digital Badge",
-      "disabilityCard": "Disability Card",
-      "unknown": "Unknown"
+      "fbk": "Badge digitale FBK",
+      "disabilityCard": "Carta Europea della Disabilità",
+      "unknown": "Credenziale Sconosciuta"
     },
     "details": {
       "fbk": "You can use your FBK digital badge to enter different office locations, and access enterprise mobile and web-based services."
-    }
+    },
+    "status": {
+      "expired": "Scaduta",
+      "expiring": "In scadenza",
+      "pending": "In lavorazione",
+      "invalid": "Non valida",
+      "verificationExpiring": "Azione richiesta",
+      "verificationExpired": "Azione richiesta",
+      "upgradePending": "Da aggiornare",
+      "unknown": "Non disponibile"
+    },
+    "digital" : "Versione Digitale"
   },
   "activationBanner": {
-    "title": "Your digital documents always with you!",
-    "description": "Activate the Wallet to keep your digital identity and personal documents on your device.",
-    "action": "Start"
+    "title": "IT-Wallet per i tuoi documenti",
+    "description": "Porta i tuoi documenti digitali verso funzionalità evolute con l'unico portafoglio digitale di Stato: **pubblico, sicuro e gratuito**. Garantito dallo Stato, accessibile solo a te.",
+    "action": "Ottieni IT-Wallet"
   },
   "discovery": {
     "screen": {
@@ -143,6 +154,30 @@
     "successWithRedirect": {
       "title": "Done!",
       "subtitle": "You will be redirected to the partner site"
+    },
+    "bottomSheets": {
+      "eidInfo": {
+        "title": "Documenti su IO:\nidentità verificata",
+        "titleExpired": "Documenti su IO:\nverifica la tua identità",
+        "contentTop": "Con **Documenti su IO** salvi nel Portafoglio di IO le versioni digitali dei tuoi documenti.",
+        "contentBottom": "###### Come funziona?\n\nLa tua **identità è verificata** in fase di attivazione tramite SPID o CIE.",
+        "triggerLabel": "Cos'è?",
+        "alert": {
+          "documents": {
+            "valid": "L'ultima verifica è del {{date}}.",
+            "expiring": "Conferma la tua identità con CIE o SPID entro il {{date}} per continuare a usare Documenti su IO senza limitazioni.",
+            "expired": "Conferma la tua identità con CIE o SPID per continuare a usare Documenti su IO senza limitazioni.",
+            "action": "Inizia",
+            "offline": "Torna online e conferma la tua identità con CIE o SPID per continuare a usare Documenti su IO senza limitazioni."
+          },
+          "itw": {
+            "valid": "Hai attivato il tuo ID con CIE il {{date}}.",
+            "expiring": "Rinnova il tuo ID per continuare ad usare IT-Wallet entro il {{date}}.",
+            "expired": "Rinnova il tuo ID per continuare ad usare IT-Wallet.",
+            "action": "Rinnova ID"
+          }
+        }
+      }
     }
   },
   "proximity": {
@@ -232,6 +267,14 @@
       "title": "An unexpected error occurred",
       "subtitle": "Your request to the issuing entity was not successful.",
       "button": "I understand"
+    }
+  },
+  "issuance" : {
+    "emptyWallet" : {
+      "readyBanner" : {
+          "content": "È tutto pronto: aggiungi un documento al tuo Portafoglio di IO.",
+          "action": "Aggiungi documento"
+      }
     }
   }
 }

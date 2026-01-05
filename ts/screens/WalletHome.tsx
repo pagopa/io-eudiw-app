@@ -40,7 +40,7 @@ const WalletHome = () => {
               navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
                 screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST
               }),
-            accessibilityLabel: t('global:settings.title') // TODO Insert correct label
+            accessibilityLabel: t('global:settings.title')
           } satisfies HeaderActionProps,
           settings
         ]

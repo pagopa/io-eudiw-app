@@ -24,7 +24,6 @@ const LIFECYCLE_STATUS: Array<ItwJwtCredentialStatus> = [
   'jwtExpired'
 ];
 
-// TODO is withWalletCategoryFilter necessary ?
 export const ItwWalletCardsContainer = () => {
   const navigation =
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();

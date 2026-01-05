@@ -47,28 +47,28 @@ export const useBorderColorByStatus: () => {
 export const tagPropsByStatus: { [key in ItwCredentialStatus]?: Tag } = {
   invalid: {
     variant: 'error',
-    text: I18n.t('features.itWallet.card.status.invalid')
+    text: I18n.t('credentials.status.invalid', { ns: 'wallet' })
   },
   expired: {
     variant: 'error',
-    text: I18n.t('features.itWallet.card.status.expired')
+    text: I18n.t('credentials.status.expired', { ns: 'wallet' })
   },
   jwtExpired: {
     variant: 'error',
-    text: I18n.t('features.itWallet.card.status.verificationExpired')
+    text: I18n.t('credentials.status.verificationExpired', { ns: 'wallet' })
   },
   expiring: {
     variant: 'warning',
-    text: I18n.t('features.itWallet.card.status.expiring')
+    text: I18n.t('credentials.status.expiring', { ns: 'wallet' })
   },
   jwtExpiring: {
     variant: 'warning',
-    text: I18n.t('features.itWallet.card.status.verificationExpiring')
+    text: I18n.t('credentials.status.verificationExpiring', { ns: 'wallet' })
   },
   unknown: {
     variant: 'custom',
     icon: { name: 'infoFilled', color: 'grey-450' },
-    text: I18n.t('features.itWallet.card.status.unknown')
+    text: I18n.t('credentials.status.unknown', { ns: 'wallet' })
   }
 };
 

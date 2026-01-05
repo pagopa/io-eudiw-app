@@ -38,15 +38,15 @@ const getColorPropsByScheme = (
   colorScheme: CardColorScheme
 ) => {
   const mapCredentialTypes: Record<string, CredentialTypesProps> = {
-    mDL: {
+    'org.iso.18013.5.1.mDL': {
       foreground: '#5E303E',
       background: '#FADCF5'
     },
-    EuropeanDisabilityCard: {
+    'urn:eu.europa.ec.eudi:edc:1': {
       foreground: '#01527F',
       background: '#E8EEF4'
     },
-    EuropeanHealthInsuranceCard: {
+    'eu.europa.ec.eudi.hiid.1': {
       foreground: '#032D5C',
       background: '#ABD8F2'
     },
@@ -158,7 +158,7 @@ const DigitalVersionBadge = ({
             )
           }}
         >
-          {`${I18n.t('features.itWallet.card.digital')}`}
+          {`${I18n.t('credentials.digital', { ns: 'wallet' })}`}
         </Text>
       </View>
     </View>

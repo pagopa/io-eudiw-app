@@ -14,9 +14,9 @@
     }
   },
   "tabNavigator": {
-    "wallet": "Wallet",
-    "scanQr": "Scan QR",
-    "showQr": "Show QR"
+    "wallet": "Portafoglio",
+    "scanQr": "Inquadra",
+    "showQr": "Mostra QR"
   },
   "settings": {
     "title": "Settings",
@@ -89,5 +89,8 @@
     "title": "Do you want to stop the operation?",
     "confirm": "Yes, stop",
     "cancel": "No, continue"
+  },
+  "badges" : {
+    "new" : "Novità"
   }
 }
