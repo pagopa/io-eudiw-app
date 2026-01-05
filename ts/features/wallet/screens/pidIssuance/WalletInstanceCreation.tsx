@@ -47,7 +47,7 @@ const scrollOffset: number = 12;
 const intersectionRatio: number = 0.3;
 
 /**
- * This is the component that shows the information about the activation of
+ * This is the component that shows the information about the activation of the wallet and creates the wallet instance.
  */
 export const WalletInstanceCreation = () => {
   const navigation = useNavigation();
