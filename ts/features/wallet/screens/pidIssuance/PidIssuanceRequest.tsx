@@ -25,6 +25,7 @@ import { addPidWithIdentification } from '../../store/credentials';
 import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -38,6 +39,7 @@ const PidIssuanceRequest = () => {
   const dispatch = useAppDispatch();
   const { error, success, loading } = useAppSelector(selectPidIssuanceStatus);
   const pid = useAppSelector(selectPidIssuanceData);
+  const { navigateToWallet } = useNavigateToWalletWithReset();
 
   useHardwareBackButtonToDismiss(() => dismissalDialog.show());
   useDisableGestureNavigation();
@@ -76,7 +78,8 @@ const PidIssuanceRequest = () => {
       cancelLabel: I18n.t('discovery.screen.itw.dismissalDialog.cancel', {
         ns: 'wallet'
       })
-    }
+    },
+    handleDismiss: () => navigateToWallet()
   });
 
   const PidPreview = ({ credential }: { credential: StoredCredential }) => (
