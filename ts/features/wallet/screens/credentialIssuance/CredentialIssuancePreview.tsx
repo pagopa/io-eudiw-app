@@ -67,7 +67,7 @@ export const CredentialPreview = () => {
         fixed={false}
         actions={{
           primary: {
-            label: t('wallet:pidIssuance.preview.button'),
+            label: t('global:buttons.continue'),
             onPress: () =>
               dispatch(
                 addCredentialWithIdentification({

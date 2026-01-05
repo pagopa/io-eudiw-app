@@ -11,14 +11,12 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { AnimatedImage } from '../../../../components/AnimatedImage';
-import Markdown from '../../../../components/markdown';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   resetInstanceCreation,
   selectInstanceStatus
 } from '../../store/pidIssuance';
 import { createInstanceThunk } from '../../middleware/instance';
-import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
 
 type CreateInstancePromise = ReturnType<ReturnType<typeof createInstanceThunk>>;
 
@@ -31,6 +29,17 @@ const WalletInstanceCreation = () => {
   const dispatch = useAppDispatch();
   const { error, success, loading } = useAppSelector(selectInstanceStatus);
   const thunkRef = useRef<CreateInstancePromise | null>(null);
+
+  const goBack = () => {
+    thunkRef.current?.abort();
+    navigation.goBack();
+  };
+
+  const onPress = async () => {
+    const promise = dispatch(createInstanceThunk());
+    // eslint-disable-next-line functional/immutable-data
+    thunkRef.current = promise;
+  };
 
   useEffect(() => {
     if (success.status === true) {
@@ -49,23 +58,10 @@ const WalletInstanceCreation = () => {
     }
   }, [error, navigation]);
 
-  const goBack = () => {
-    thunkRef.current?.abort();
-    navigation.goBack();
-  };
-
-  const onPress = async () => {
-    const promise = dispatch(createInstanceThunk());
-    // eslint-disable-next-line functional/immutable-data
-    thunkRef.current = promise;
-  };
-
   useHeaderSecondLevel({
     title: '',
     goBack
   });
-
-  useHardwareBackButtonToDismiss(goBack);
 
   return (
     <ForceScrollDownView threshold={50}>

@@ -12,8 +12,6 @@ import {
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   ProximityStatus,
@@ -27,6 +25,8 @@ import {
 } from '../../store/proximity';
 import { LoadingIndicator } from '../../../../components/LoadingIndicator';
 import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 
 /**
  * Shows the QR code for the proximity presentation.
