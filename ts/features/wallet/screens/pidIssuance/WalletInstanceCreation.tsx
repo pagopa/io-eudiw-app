@@ -48,7 +48,6 @@ const intersectionRatio: number = 0.3;
 
 /**
  * This is the component that shows the information about the activation of
- * IT-Wallet. Must be used only for L3 activations.
  */
 export const WalletInstanceCreation = () => {
   const navigation = useNavigation();
