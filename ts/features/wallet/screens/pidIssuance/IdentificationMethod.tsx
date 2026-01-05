@@ -12,7 +12,6 @@ import { IOScrollViewWithLargeHeader } from '../../../../components/IOScrollView
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 
 export type ItwIdentificationNavigationParams = {
-  eidReissuing?: boolean;
   animationEnabled?: boolean;
 };
 
