@@ -35,7 +35,7 @@ import {
   selectInstanceStatus,
   setInstanceCreationRequest
 } from '../../store/pidIssuance.ts';
-import { useItwDismissalDialog } from '../../hook/useItwDismissalDialog.tsx';
+import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog.tsx';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel.tsx';
 import { IOScrollViewWithReveal } from '../../../../components/IOScrollViewWithReveal.tsx';
 import IOMarkdown from '../../../../components/IOMarkdown/index.tsx';
