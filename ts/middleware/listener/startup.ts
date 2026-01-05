@@ -82,7 +82,7 @@ const startIdentification = async (listenerApi: AppListener) => {
 };
 
 /**
- * Stars the onboarding process by setting the status which will be taked by the navigator to render the onboarding navigation stack.
+ * Starts the onboarding process by setting the status which will be taken by the navigator to render the onboarding navigation stack.
  */
 const startOnboarding = async (listenerApi: AppListener) => {
   await listenerApi.take(isAnyOf(preferencesSetIsOnboardingDone));
