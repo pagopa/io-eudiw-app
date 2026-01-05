@@ -1,5 +1,5 @@
 import { Prettify } from '../../../types/utils';
-import { ItwCredentialCard } from '../components/ItwCredentialCard';
+import { ItwCredentialCard } from '../components/credential/ItwCredentialCard';
 
 // Digital credential status
 export type ItwJwtCredentialStatus = 'valid' | 'jwtExpired' | 'jwtExpiring';

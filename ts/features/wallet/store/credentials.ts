@@ -8,7 +8,7 @@ import { preferencesReset } from '../../../store/reducers/preferences';
 import { wellKnownCredential } from '../utils/credentials';
 import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
-import { ItwCredentialCard } from '../components/ItwCredentialCard';
+import { ItwCredentialCard } from '../components/credential/ItwCredentialCard';
 import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the credentials slice.

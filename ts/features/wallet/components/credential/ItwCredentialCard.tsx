@@ -2,15 +2,15 @@ import { HStack, Icon, IOText, Tag } from '@pagopa/io-app-design-system';
 import Color from 'color';
 import { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { CardColorScheme, ItwCredentialStatus } from '../types';
-import { useItwDisplayCredentialStatus } from '../hooks/useItwDisplayCredentialStatus';
-import { useThemeColorByCredentialType } from '../utils/itwStyleUtils';
+import { CardColorScheme, ItwCredentialStatus } from '../../types';
+import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredentialStatus';
+import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
 import {
   tagPropsByStatus,
   useBorderColorByStatus,
   validCredentialStatuses
-} from '../utils/itwCredentialUtils';
-import { getCredentialNameByType } from '../utils/credentials';
+} from '../../utils/itwCredentialUtils';
+import { getCredentialNameByType } from '../../utils/credentials';
 import { CardBackground } from './CardBackground';
 import { DigitalVersionBadge } from './DigitalVersionBadge';
 
