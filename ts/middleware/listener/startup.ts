@@ -29,7 +29,7 @@ import { addWalletListeners } from '../../features/wallet/middleware';
 import { AppListener, AppListenerWithAction, startAppListening } from '.';
 
 /**
- * Utility generator function to wait for the navigation to be ready before dispatching a navigation event.
+ * Utility function to wait for the navigation to be ready before dispatching a navigation event.
  */
 const waitForNavigationToBeReady = async (listenerApi: AppListener) => {
   const warningWaitNavigatorTime = 2000;
