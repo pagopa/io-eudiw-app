@@ -22,6 +22,10 @@ import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import { StoredCredential } from '../../utils/types';
 import { addPidWithIdentification } from '../../store/credentials';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { goBack } from '../../../../navigation/utils';
+import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -35,6 +39,9 @@ const PidIssuanceRequest = () => {
   const dispatch = useAppDispatch();
   const { error, success, loading } = useAppSelector(selectPidIssuanceStatus);
   const pid = useAppSelector(selectPidIssuanceData);
+
+  useHardwareBackButton(() => true);
+  useDisableGestureNavigation();
 
   useEffect(() => {
     dispatch(setPidIssuanceRequest());
@@ -50,7 +57,27 @@ const PidIssuanceRequest = () => {
 
   useHeaderSecondLevel({
     title: '',
-    canGoBack: success.status
+    canGoBack: success.status,
+    goBack: () => {
+      dismissalDialog.show();
+    }
+  });
+
+  const dismissalDialog = useItwDismissalDialog({
+    customLabels: {
+      title: I18n.t('discovery.screen.itw.dismissalDialog.title', {
+        ns: 'wallet'
+      }),
+      body: I18n.t('discovery.screen.itw.dismissalDialog.body', {
+        ns: 'wallet'
+      }),
+      confirmLabel: I18n.t('discovery.screen.itw.dismissalDialog.confirm', {
+        ns: 'wallet'
+      }),
+      cancelLabel: I18n.t('discovery.screen.itw.dismissalDialog.cancel', {
+        ns: 'wallet'
+      })
+    }
   });
 
   const PidPreview = ({ credential }: { credential: StoredCredential }) => (
