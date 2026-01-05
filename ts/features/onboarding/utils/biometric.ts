@@ -4,7 +4,7 @@ import FingerprintScanner, {
   FingerprintScannerError,
   Errors
 } from 'react-native-fingerprint-scanner';
-import {isPinOrFingerprintSet} from 'react-native-device-info';
+import { isPinOrFingerprintSet } from 'react-native-device-info';
 
 /**
  * Retrieve biometric settings from the base system. This function wraps the basic

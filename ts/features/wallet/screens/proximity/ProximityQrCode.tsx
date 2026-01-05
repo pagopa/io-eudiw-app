@@ -1,6 +1,6 @@
-import {useTranslation} from 'react-i18next';
-import {useEffect} from 'react';
-import {View} from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {
   Body,
@@ -10,11 +10,9 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import {useNavigation} from '@react-navigation/native';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
-import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
-import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
-import {useAppDispatch, useAppSelector} from '../../../../store';
+import { useNavigation } from '@react-navigation/native';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   ProximityStatus,
   resetProximity,
@@ -25,15 +23,17 @@ import {
   selectProximityStatus,
   setProximityStatusStopped
 } from '../../store/proximity';
-import {LoadingIndicator} from '../../../../components/LoadingIndicator';
-import {useDebugInfo} from '../../../../hooks/useDebugInfo';
+import { LoadingIndicator } from '../../../../components/LoadingIndicator';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 
 /**
  * Shows the QR code for the proximity presentation.
  * It also shows the current state of the proximity presentation and a state message.
  */
 const ProximityQrCode = () => {
-  const {t} = useTranslation(['global', 'wallet']);
+  const { t } = useTranslation(['global', 'wallet']);
   const navigation = useNavigation();
   const qrCode = useAppSelector(selectProximityQrCode);
   const proximityStatus = useAppSelector(selectProximityStatus);
@@ -71,7 +71,7 @@ const ProximityQrCode = () => {
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_PREVIEW',
-        params: {descriptor, isAuthenticated}
+        params: { descriptor, isAuthenticated }
       });
       // If we reach this state, it means that a connection has already been established but failed before
       // reaching the preview screen: the bottom spinner of the modal has been activated,
@@ -83,7 +83,7 @@ const ProximityQrCode = () => {
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_FAILURE',
-        params: {fatal: true}
+        params: { fatal: true }
       });
     }
   }, [proximityStatus, navigation, descriptor, isAuthenticated]);
@@ -94,7 +94,7 @@ const ProximityQrCode = () => {
       <VSpacer size={16} />
       <Body>{t('wallet:proximity.showQr.body')}</Body>
       <VSpacer size={40} />
-      <View style={{alignItems: 'center'}}>
+      <View style={{ alignItems: 'center' }}>
         {qrCode ? (
           <>
             <QRCode size={280} value={qrCode} />
@@ -109,9 +109,9 @@ const ProximityQrCode = () => {
         {proximityStatus === ProximityStatus.PROXIMITY_STATUS_CONNECTED ||
           (proximityStatus ===
             ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT && (
-            <VStack space={16} style={{alignItems: 'center'}}>
+            <VStack space={16} style={{ alignItems: 'center' }}>
               <LoadingIndicator size={24} />
-              <H6 textStyle={{textAlign: 'center'}}>
+              <H6 textStyle={{ textAlign: 'center' }}>
                 {t('wallet:proximity.connected.body')}
               </H6>
               <VSpacer size={32} />

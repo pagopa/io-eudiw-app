@@ -1,11 +1,11 @@
 /* eslint-disable functional/immutable-data */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import _ from 'lodash';
-import {PersistConfig, persistReducer} from 'redux-persist';
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { PersistConfig, persistReducer } from 'redux-persist';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import {RootState} from '../types';
-import {preferencesReset} from './preferences';
+import { RootState } from '../types';
+import { preferencesReset } from './preferences';
 
 /*
  * State type definition for the debug  slice
@@ -30,7 +30,7 @@ const debugSlice = createSlice({
   name: 'debug',
   initialState,
   reducers: {
-    setDebugModeEnabled: (state, action: PayloadAction<{state: boolean}>) => {
+    setDebugModeEnabled: (state, action: PayloadAction<{ state: boolean }>) => {
       state.isDebugModeEnabled = action.payload.state;
       state.debugData = {};
     },
@@ -57,7 +57,7 @@ const debugSlice = createSlice({
 /**
  * Exports the actions for the debug slice.
  */
-export const {setDebugModeEnabled, setDebugData, resetDebugData} =
+export const { setDebugModeEnabled, setDebugData, resetDebugData } =
   debugSlice.actions;
 
 const debugPersist: PersistConfig<DebugState> = {

@@ -3,10 +3,10 @@ import {
   Credential
 } from '@pagopa/io-react-native-wallet';
 import Config from 'react-native-config';
-import {call, put, race, select, take, takeLatest} from 'typed-redux-saga';
+import { call, put, race, select, take, takeLatest } from 'typed-redux-saga';
 import uuid from 'react-native-uuid';
-import {generate} from '@pagopa/io-react-native-crypto';
-import {IOToast} from '@pagopa/io-app-design-system';
+import { generate } from '@pagopa/io-react-native-crypto';
+import { IOToast } from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
 import {
   openAuthenticationSession,
@@ -16,11 +16,11 @@ import {
   EvaluateIssuerTrust,
   StartUserAuthorization
 } from '@pagopa/io-react-native-wallet/lib/typescript/credential/issuance';
-import {Out} from '@pagopa/io-react-native-wallet/lib/typescript/utils/misc';
-import {CryptoContext} from '@pagopa/io-react-native-jwt';
-import {regenerateCryptoKey} from '../../../utils/crypto';
-import {DPOP_KEYTAG, WIA_KEYTAG} from '../utils/crypto';
-import {navigateWithReset} from '../../../navigation/utils';
+import { Out } from '@pagopa/io-react-native-wallet/lib/typescript/utils/misc';
+import { CryptoContext } from '@pagopa/io-react-native-jwt';
+import { regenerateCryptoKey } from '../../../utils/crypto';
+import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
+import { navigateWithReset } from '../../../navigation/utils';
 import {
   addCredential,
   addCredentialWithIdentification,
@@ -40,11 +40,11 @@ import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
-import {createWalletProviderFetch} from '../utils/fetch';
-import {selectSessionId} from '../../../store/reducers/preferences';
-import {wellKnownCredential} from '../utils/credentials';
-import {StoredCredential} from '../utils/types';
-import {getAttestation} from './attestation';
+import { createWalletProviderFetch } from '../utils/fetch';
+import { selectSessionId } from '../../../store/reducers/preferences';
+import { wellKnownCredential } from '../utils/credentials';
+import { StoredCredential } from '../utils/types';
+import { getAttestation } from './attestation';
 
 /**
  * Saga watcher for credential related actions.
@@ -103,7 +103,7 @@ function* getCredentialAuthCode(params: {
       appFetch
     );
 
-    const {code} = yield* call(
+    const { code } = yield* call(
       Credential.Issuance.completeUserAuthorizationWithFormPostJwtMode,
       requestObject,
       pid.credential,
@@ -126,7 +126,7 @@ function* getCredentialAuthCode(params: {
       baseRedirectUri
     );
 
-    const {code} = yield* call(
+    const { code } = yield* call(
       Credential.Issuance.completeUserAuthorizationWithQueryMode,
       authRedirectUrl
     );
@@ -144,7 +144,7 @@ function* getCredentialAuthCode(params: {
  */
 function* obtainCredential() {
   try {
-    const {EAA_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri} = Config;
+    const { EAA_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri } = Config;
 
     /**
      * Check the passed credential type and throw an error if it's not found.
@@ -178,16 +178,16 @@ function* obtainCredential() {
       credentialId: credentialConfigId
     });
 
-    const {issuerUrl} = startFlow();
+    const { issuerUrl } = startFlow();
 
     // Evaluate issuer trust
-    const {issuerConf} = yield* call(
+    const { issuerConf } = yield* call(
       Credential.Issuance.evaluateIssuerTrust,
       issuerUrl
     );
 
     // Start user authorization
-    const {issuerRequestUri, clientId, codeVerifier} = yield* call(
+    const { issuerRequestUri, clientId, codeVerifier } = yield* call(
       Credential.Issuance.startUserAuthorization,
       issuerConf,
       [credentialConfigId],
@@ -224,7 +224,7 @@ function* obtainCredential() {
     yield* take(setCredentialIssuancePostAuthRequest);
 
     // Obtain the Authorization URL
-    const {authUrl} = yield* call(
+    const { authUrl } = yield* call(
       Credential.Issuance.buildAuthorizationUrl,
       issuerRequestUri,
       clientId,
@@ -253,7 +253,7 @@ function* obtainCredential() {
     yield* call(regenerateCryptoKey, DPOP_KEYTAG);
     const dPopCryptoContext = createCryptoContextFor(DPOP_KEYTAG);
 
-    const {accessToken} = yield* call(
+    const { accessToken } = yield* call(
       Credential.Issuance.authorizeAccess,
       issuerConf,
       credentialCode,
@@ -269,10 +269,10 @@ function* obtainCredential() {
 
     // Obtain the credential
     // # TODO: WLEO-727 - rework to support multiple credentials issuance
-    const {credential_configuration_id, credential_identifiers} =
+    const { credential_configuration_id, credential_identifiers } =
       accessToken.authorization_details[0];
 
-    const {credential, format} = yield* call(
+    const { credential, format } = yield* call(
       Credential.Issuance.obtainCredential,
       issuerConf,
       accessToken,
@@ -317,8 +317,10 @@ function* obtainCredential() {
   } catch (error) {
     // We put the error in both the pre and post auth status as we are unsure where the error occurred.
     const serializableError = JSON.stringify(error);
-    yield* put(setCredentialIssuancePostAuthError({error: serializableError}));
-    yield* put(setCredentialIssuancePreAuthError({error: serializableError}));
+    yield* put(
+      setCredentialIssuancePostAuthError({ error: serializableError })
+    );
+    yield* put(setCredentialIssuancePreAuthError({ error: serializableError }));
   }
 }
 
@@ -329,10 +331,10 @@ function* obtainCredential() {
 function* onStoreCredentialIdentified(
   action: ReturnType<typeof addCredentialWithIdentification>
 ) {
-  yield* put(addCredential({credential: action.payload.credential}));
+  yield* put(addCredential({ credential: action.payload.credential }));
   yield* put(resetCredentialIssuance());
   navigateWithReset('MAIN_TAB_NAV');
-  IOToast.success(i18next.t('buttons.done', {ns: 'global'}));
+  IOToast.success(i18next.t('buttons.done', { ns: 'global' }));
 }
 
 /**

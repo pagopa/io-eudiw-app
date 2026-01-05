@@ -18,7 +18,7 @@ import { lifecycleIsValidSelector } from '../features/wallet/store/lifecycle';
  * available in the wallet.
  */
 const WalletHome = () => {
-  const {t} = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation(['wallet', 'global']);
   const navigation = useNavigation();
   const shouldRenderItwCardsContainer = useAppSelector(
     lifecycleIsValidSelector

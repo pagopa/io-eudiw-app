@@ -2,9 +2,9 @@ import {
   HeaderActionProps,
   HeaderSecondLevel
 } from '@pagopa/io-app-design-system';
-import {useNavigation} from '@react-navigation/native';
-import {ComponentProps, useLayoutEffect, useMemo} from 'react';
-import {useTranslation} from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { ComponentProps, useLayoutEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type SpecificHookProps = {
   canGoBack?: boolean;
@@ -89,7 +89,7 @@ export const useHeaderSecondLevel = ({
   animatedRef
 }: HeaderSecondLevelHookProps) => {
   const navigation = useNavigation();
-  const {t} = useTranslation('global');
+  const { t } = useTranslation('global');
 
   const backProps = useMemo(
     () =>

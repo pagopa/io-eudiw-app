@@ -1,6 +1,6 @@
 /* eslint-disable functional/immutable-data */
-import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {PersistConfig, persistReducer} from 'redux-persist';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PersistConfig, persistReducer } from 'redux-persist';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
 import {StoredCredential} from '../utils/types';
 import {RootState} from '../../../store/types';
@@ -36,9 +36,9 @@ const credentialsSlice = createSlice({
   reducers: {
     addCredential: (
       state,
-      action: PayloadAction<{credential: StoredCredential}>
+      action: PayloadAction<{ credential: StoredCredential }>
     ) => {
-      const {credential} = action.payload;
+      const { credential } = action.payload;
       const existingIndex = state.credentials.findIndex(
         c => c.credentialType === credential.credentialType
       );
@@ -53,19 +53,19 @@ const credentialsSlice = createSlice({
     // Empty action which will be intercepted by the saga and trigger the identification before storing the PID
     addPidWithIdentification: (
       _,
-      __: PayloadAction<{credential: StoredCredential}>
+      __: PayloadAction<{ credential: StoredCredential }>
     ) => {},
     // Empty action which will be intercepted by the saga and trigger the identification before storing a credential
     addCredentialWithIdentification: (
       _,
-      __: PayloadAction<{credential: StoredCredential}>
+      __: PayloadAction<{ credential: StoredCredential }>
     ) => {},
     removeCredential: (
       state,
-      action: PayloadAction<{credentialType: string}>
+      action: PayloadAction<{ credentialType: string }>
     ) => {
       // If the credential is the PID, ignore it as it is not removable without resetting the lifecycle
-      const {credentialType} = action.payload;
+      const { credentialType } = action.payload;
       if (credentialType !== wellKnownCredential.PID) {
         return {
           credentials: state.credentials.filter(

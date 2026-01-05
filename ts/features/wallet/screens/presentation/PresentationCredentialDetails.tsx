@@ -1,22 +1,22 @@
-import {ContentWrapper, VSpacer} from '@pagopa/io-app-design-system';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {useDebugInfo} from '../../../../hooks/useDebugInfo';
-import {WalletNavigatorParamsList} from '../../navigation/WalletNavigator';
-import {useAppSelector} from '../../../../store';
-import {selectCredential} from '../../store/credentials';
-import {StoredCredential} from '../../utils/types';
+import { ContentWrapper, VSpacer } from '@pagopa/io-app-design-system';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
+import { useAppSelector } from '../../../../store';
+import { selectCredential } from '../../store/credentials';
+import { StoredCredential } from '../../utils/types';
 
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
-import {PresentationDetailsScreenBase} from '../../components/presentation/PresentationDetailsScreenBase';
-import {PresentationDetailsHeader} from '../../components/presentation/PresentationDetailsHeader';
-import {PresentationDetailsFooter} from '../../components/presentation/PresentationDetailsFooter';
+import { PresentationDetailsScreenBase } from '../../components/presentation/PresentationDetailsScreenBase';
+import { PresentationDetailsHeader } from '../../components/presentation/PresentationDetailsHeader';
+import { PresentationDetailsFooter } from '../../components/presentation/PresentationDetailsFooter';
 import CredentialNotFound from './PresentationCredentialNotFound';
 
 export type PresentationCredentialDetailNavigationParams = {
   credentialType: string;
 };
 
-type Props = NativeStackScreenProps<
+type Props = StackScreenProps<
   WalletNavigatorParamsList,
   'PRESENTATION_CREDENTIAL_DETAILS'
 >;
@@ -24,8 +24,8 @@ type Props = NativeStackScreenProps<
 /**
  * Component that renders the credential detail screen.
  */
-export const PresentationCredentialDetails = ({route}: Props) => {
-  const {credentialType} = route.params;
+export const PresentationCredentialDetails = ({ route }: Props) => {
+  const { credentialType } = route.params;
   const credential = useAppSelector(selectCredential(credentialType));
 
   if (!credential) {

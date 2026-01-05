@@ -4,20 +4,23 @@ import {
   TabItem,
   TabNavigation
 } from '@pagopa/io-app-design-system';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {useCallback, useEffect, useMemo, useState} from 'react';
-import {AppState, StyleSheet, View} from 'react-native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { AppState, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useTranslation} from 'react-i18next';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {MainNavigatorParamsList} from '../../../../navigation/main/MainStackNavigator';
-import {useQrCodeCameraScanner} from '../hooks/useQrCodeCameraScanner';
+import {
+  SafeAreaView,
+  useSafeAreaInsets
+} from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
+import { useQrCodeCameraScanner } from '../hooks/useQrCodeCameraScanner';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
-import {isAndroid} from '../../../../utils/device';
-import {OnBarcodeSuccess, OnBardCodeError} from '../screens/QrCodeScanScreen';
-import {useCameraPermissionStatus} from '../hooks/useCameraPermissionStatus';
-import {CameraPermissionView} from './CameraPermissionView';
+import { isAndroid } from '../../../../utils/device';
+import { OnBarcodeSuccess, OnBardCodeError } from '../screens/QrCodeScanScreen';
+import { useCameraPermissionStatus } from '../hooks/useCameraPermissionStatus';
+import { CameraPermissionView } from './CameraPermissionView';
 
 type Props = {
   onBarcodeSuccess: OnBarcodeSuccess;
@@ -27,7 +30,7 @@ type Props = {
   isDisabled?: boolean;
 };
 
-type NavigationProps = NativeStackNavigationProp<
+type NavigationProps = StackNavigationProp<
   MainNavigatorParamsList,
   'MAIN_SCAN_QR'
 >;
@@ -52,7 +55,7 @@ const QrCodeScanBaseScreenComponent = ({
   const isFocused = useIsFocused();
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<NavigationProps>();
-  const {t} = useTranslation(['global', 'qrcodeScan']);
+  const { t } = useTranslation(['global', 'qrcodeScan']);
 
   const [isAppInBackground, setIsAppInBackground] = useState(
     AppState.currentState !== 'active'
@@ -75,10 +78,13 @@ const QrCodeScanBaseScreenComponent = ({
     };
   }, []);
 
-  const {cameraPermissionStatus, requestCameraPermission, openCameraSettings} =
-    useCameraPermissionStatus();
+  const {
+    cameraPermissionStatus,
+    requestCameraPermission,
+    openCameraSettings
+  } = useCameraPermissionStatus();
 
-  const {cameraComponent, hasTorch, isTorchOn, toggleTorch} =
+  const { cameraComponent, hasTorch, isTorchOn, toggleTorch } =
     useQrCodeCameraScanner({
       onBarcodeSuccess,
       onBarcodeError,
@@ -139,24 +145,28 @@ const QrCodeScanBaseScreenComponent = ({
 
   const customGoBack = useMemo(
     () => (
-      <IconButton
-        icon="closeLarge"
-        onPress={navigation.goBack}
-        accessibilityLabel={t('global:buttons.close')}
-        color="contrast"
-      />
+      <View style={styles.goBack}>
+        <IconButton
+          icon="closeLarge"
+          onPress={navigation.goBack}
+          accessibilityLabel={t('global:buttons.close')}
+          color="contrast"
+        />
+      </View>
     ),
     [navigation.goBack, t]
   );
 
   const torchButton = useMemo(
     () => (
-      <IconButton
-        icon={isTorchOn ? 'lightFilled' : 'light'}
-        accessibilityLabel={t('qrcodeScan:flash')}
-        onPress={handleTorchToggle}
-        color="contrast"
-      />
+      <View style={styles.torch}>
+        <IconButton
+          icon={isTorchOn ? 'lightFilled' : 'light'}
+          accessibilityLabel={t('qrcodeScan:flash')}
+          onPress={handleTorchToggle}
+          color="contrast"
+        />
+      </View>
     ),
     [handleTorchToggle, isTorchOn, t]
   );
@@ -175,7 +185,7 @@ const QrCodeScanBaseScreenComponent = ({
   }, [customGoBack, navigation, shouldDisplayTorchButton, torchButton]);
 
   return (
-    <View style={[styles.screen, {paddingBottom: insets.bottom}]}>
+    <View style={[styles.screen, { paddingBottom: insets.bottom }]}>
       <View style={styles.cameraContainer}>{cameraView}</View>
       <View style={styles.navigationContainer}>
         <TabNavigation tabAlignment="center" selectedIndex={0} color="dark">
@@ -189,7 +199,8 @@ const QrCodeScanBaseScreenComponent = ({
       </View>
       <LinearGradient
         colors={['#03134480', '#03134400']}
-        style={styles.headerContainer}>
+        style={styles.headerContainer}
+      >
         <SafeAreaView>
           {/* This overrides BaseHeader status bar configuration */}
           <FocusAwareStatusBar
@@ -225,7 +236,13 @@ const styles = StyleSheet.create({
   },
   navigationContainer: {
     paddingVertical: 16
+  },
+  torch: {
+    marginRight: 24
+  },
+  goBack: {
+    marginLeft: 24
   }
 });
 
-export {QrCodeScanBaseScreenComponent};
+export { QrCodeScanBaseScreenComponent };

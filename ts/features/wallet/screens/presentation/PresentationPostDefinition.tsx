@@ -1,7 +1,6 @@
-import {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {useTranslation} from 'react-i18next';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import {
   Body,
   FeatureInfo,
@@ -13,26 +12,21 @@ import {
   IOVisualCostants,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {Alert, StyleSheet, View} from 'react-native';
-import {useAppDispatch, useAppSelector} from '../../../../store';
+import { Alert, StyleSheet, View } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   Descriptor,
-  OptionalClaims,
   selectPostDefinitionStatus,
   setPostDefinitionCancel,
   setPostDefinitionRequest
 } from '../../store/presentation';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
-import {WalletNavigatorParamsList} from '../../navigation/WalletNavigator';
-import {
-  getCredentialNameByType,
-  wellKnownCredential
-} from '../../utils/credentials';
-import PresentationClaimsList from '../../components/presentation/PresentationClaimsList';
-import {useDisableGestureNavigation} from '../../../../hooks/useDisableGestureNavigation';
-import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
-import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
-
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import CredentialTypePresentationClaimsList from '../../components/presentation/CredentialTypePresentationClaimsList';
 /**
  * Description which contains the requested of the credential to be presented.
  */
@@ -40,7 +34,7 @@ export type PresentationPostDefinitionParams = {
   descriptor: Descriptor;
 };
 
-type Props = NativeStackScreenProps<
+type Props = StackScreenProps<
   WalletNavigatorParamsList,
   'PRESENTATION_POST_DEFINITION'
 >;
@@ -49,15 +43,12 @@ type Props = NativeStackScreenProps<
  * Presentation for the issuance flow after the user has received the descriptor containing the requested claims.
  * It requires the descrptor containg the requested claims in order to render the screen, passed via navigation params.
  */
-const PresentationPostDefinition = ({route}: Props) => {
+const PresentationPostDefinition = ({ route }: Props) => {
   const navigation = useNavigation();
-  const {t} = useTranslation(['global', 'wallet']);
+  const { t } = useTranslation(['global', 'wallet']);
   const dispatch = useAppDispatch();
   const postDefinitionStatus = useAppSelector(selectPostDefinitionStatus);
-  const {navigateToWallet} = useNavigateToWalletWithReset();
-  const [optionalChecked, setOptionalChecked] = useState(
-    [] as Array<OptionalClaims>
-  );
+  const { navigateToWallet } = useNavigateToWalletWithReset();
 
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();
@@ -80,19 +71,6 @@ const PresentationPostDefinition = ({route}: Props) => {
         style: 'cancel'
       }
     ]);
-  };
-
-  /**
-   * Callback for when the user checks or unchecks an optional disclosure
-   * in the PresentationClaimsList component.
-   * @param encoded - The encoded string of the optional disclosure
-   */
-  const onOptionalDisclosuresChange = (encoded: OptionalClaims) => {
-    if (optionalChecked.includes(encoded)) {
-      setOptionalChecked(optionalChecked.filter(item => item !== encoded));
-    } else {
-      setOptionalChecked([...optionalChecked, encoded]);
-    }
   };
 
   /**
@@ -120,9 +98,11 @@ const PresentationPostDefinition = ({route}: Props) => {
     goBack: cancelAlert
   });
 
+  const requiredDisclosures = route.params.descriptor;
+
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>
-      <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
+      <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
         <VSpacer size={24} />
         <View style={styles.header}>
           <Icon name={'device'} color={'grey-450'} size={24} />
@@ -135,11 +115,8 @@ const PresentationPostDefinition = ({route}: Props) => {
         <H2>{t('wallet:presentation.trust.title')}</H2>
         <Body> {t('wallet:presentation.trust.subtitle')}</Body>
         <VSpacer size={8} />
-        <PresentationClaimsList
-          optionalChecked={optionalChecked}
-          setOptionalChecked={onOptionalDisclosuresChange}
-          descriptor={route.params.descriptor}
-          source={getCredentialNameByType(wellKnownCredential.PID)}
+        <CredentialTypePresentationClaimsList
+          mandatoryDescriptor={requiredDisclosures}
         />
         <VSpacer size={24} />
         <FeatureInfo
@@ -158,7 +135,7 @@ const PresentationPostDefinition = ({route}: Props) => {
           type: 'TwoButtons',
           primary: {
             label: t('global:buttons.confirm'),
-            onPress: () => dispatch(setPostDefinitionRequest(optionalChecked)),
+            onPress: () => dispatch(setPostDefinitionRequest([])),
             loading: postDefinitionStatus.loading
           },
           secondary: {

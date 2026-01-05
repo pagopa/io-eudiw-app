@@ -1,6 +1,5 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import PidIssuanceFailure from '../screens/pidIssuance/PidIssuanceFailure';
-import WalletInstanceCreation from '../screens/pidIssuance/WalletInstanceCreation';
 import PidIssuancRequest from '../screens/pidIssuance/PidIssuanceRequest';
 import PidIssuanceSuccess from '../screens/pidIssuance/PidIssuanceSuccess';
 import {
@@ -16,7 +15,7 @@ import PresentationPostDefinition, {
 } from '../screens/presentation/PresentationPostDefinition';
 import PresentationSuccess from '../screens/presentation/PresentationSuccess';
 import CredentialTrust from '../screens/credentialIssuance/CredentialTrust';
-import {CredentialPreview} from '../screens/credentialIssuance/CredentialIssuancePreview';
+import { CredentialPreview } from '../screens/credentialIssuance/CredentialIssuancePreview';
 import CredentialFailure from '../screens/credentialIssuance/CredentialFailure';
 import CredentialsList from '../screens/credentialIssuance/CredentialsList';
 import PresentationProximityPreview, {
@@ -26,6 +25,8 @@ import PresentationProximityFailure, {
   PresentationProximityFailureProps
 } from '../screens/proximity/PresentationProximityFailure';
 import PresentationProximitySuccess from '../screens/proximity/PresentationProximitySuccess';
+import { WalletInstanceCreation } from '../screens/pidIssuance/WalletInstanceCreation';
+import { IdentificationMethod } from '../screens/pidIssuance/IdentificationMethod';
 import WALLET_ROUTES from './routes';
 
 /**
@@ -35,6 +36,7 @@ import WALLET_ROUTES from './routes';
 export type WalletNavigatorParamsList = {
   // Pid issuance
   [WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION]: undefined;
+  [WALLET_ROUTES.PID_ISSUANCE.ID_METHOD]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.REQUEST]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.SUCCESS]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.FAILURE]: undefined;
@@ -60,7 +62,7 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.PROXIMITY.FAILURE]: PresentationProximityFailureProps;
 };
 
-const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();
+const Stack = createStackNavigator<WalletNavigatorParamsList>();
 
 /**
  * The wallted related stack which is used to navigate between wallet related screens.
@@ -69,11 +71,16 @@ const Stack = createNativeStackNavigator<WalletNavigatorParamsList>();
 const WalletNavigator = () => (
   <Stack.Navigator
     initialRouteName={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
-    screenOptions={{headerShown: false}}>
+    screenOptions={{ headerShown: false }}
+  >
     <Stack.Group>
       <Stack.Screen
         name={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
         component={WalletInstanceCreation}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PID_ISSUANCE.ID_METHOD}
+        component={IdentificationMethod}
       />
       <Stack.Screen
         name={WALLET_ROUTES.PID_ISSUANCE.FAILURE}

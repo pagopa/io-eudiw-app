@@ -18,9 +18,9 @@ import {
   isValidElement,
   PropsWithChildren
 } from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { Platform, StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type OperationResultScreenContentProps = WithTestID<{
   pictogram?: IOPictograms;
@@ -70,26 +70,28 @@ const OperationResultScreenContent = forwardRef<
       edges={isHeaderVisible ? ['bottom'] : undefined}
       style={styles.container}
       testID={testID}
-      ref={ref}>
+      ref={ref}
+    >
       <ScrollView
         centerContent={true}
         contentContainerStyle={[
           styles.wrapper,
           /* Android fallback because `centerContent` is only an iOS property */
           Platform.OS === 'android' && styles.wrapper_android
-        ]}>
+        ]}
+      >
         {pictogram && (
           <View style={styles.alignCenter}>
             <Pictogram name={pictogram} size={120} />
             <VSpacer size={24} />
           </View>
         )}
-        <H3 style={{textAlign: 'center'}}>{title}</H3>
+        <H3 style={{ textAlign: 'center' }}>{title}</H3>
         {subtitle && (
           <>
             <VSpacer size={8} />
             {typeof subtitle === 'string' ? (
-              <Body style={{textAlign: 'center'}}>{subtitle}</Body>
+              <Body style={{ textAlign: 'center' }}>{subtitle}</Body>
             ) : (
               <ComposedBodyFromArray body={subtitle} textAlign="center" />
             )}
@@ -138,5 +140,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export {OperationResultScreenContent};
-export type {OperationResultScreenContentProps};
+export { OperationResultScreenContent };
+export type { OperationResultScreenContentProps };

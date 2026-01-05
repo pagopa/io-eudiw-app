@@ -5,11 +5,11 @@ import {
   NumberPad,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {useCallback, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import { useCallback, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import i18next from 'i18next';
-import {NumberButton} from '@pagopa/io-app-design-system/lib/typescript/components/numberpad/NumberButton';
-import {isDevEnv} from '../utils/env';
+import { NumberButton } from '@pagopa/io-app-design-system/lib/typescript/components/numberpad/NumberButton';
+import { isDevEnv } from '../utils/env';
 
 const PIN_LENGTH = 6;
 const CODE_INPUT_ERROR_ANIMATION_DURATION = 500;
@@ -43,7 +43,7 @@ export const IdentificationNumberPad = (
 ) => {
   const [value, setValue] = useState('');
 
-  const {pin, pinValidation, numberPadVariant, biometricsConfig} = props;
+  const { pin, pinValidation, numberPadVariant, biometricsConfig } = props;
 
   const onValueChange = useCallback((v: number) => {
     setValue(prev => (prev.length < PIN_LENGTH ? `${prev}${v}` : prev));
@@ -101,7 +101,8 @@ export const IdentificationNumberPad = (
             position: 'absolute',
             /* Ugly magic number, but the position is nicer with this value */
             bottom: 38
-          }}>
+          }}
+        >
           <IconButton
             icon="unlocked"
             iconSize={16}
@@ -116,7 +117,9 @@ export const IdentificationNumberPad = (
       <VSpacer size={48} />
       <View>
         <NumberPad
-          deleteAccessibilityLabel={i18next.t('buttons.delete', {ns: 'global'})}
+          deleteAccessibilityLabel={i18next.t('buttons.delete', {
+            ns: 'global'
+          })}
           onDeletePress={onDeletePress}
           onNumberPress={onValueChange}
           variant={numberPadVariant}
