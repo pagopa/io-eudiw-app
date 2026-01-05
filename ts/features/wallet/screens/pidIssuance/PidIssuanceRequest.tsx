@@ -24,7 +24,6 @@ import { StoredCredential } from '../../utils/types';
 import { addPidWithIdentification } from '../../store/credentials';
 import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import { goBack } from '../../../../navigation/utils';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 
 /**
