@@ -4,8 +4,8 @@ import {
   Rect,
   LinearGradient as SkiaLinearGradient,
   vec
-} from "@shopify/react-native-skia";
-import { LayoutRectangle } from "react-native";
+} from '@shopify/react-native-skia';
+import { LayoutRectangle } from 'react-native';
 import {
   Extrapolation,
   interpolate,
@@ -14,18 +14,18 @@ import {
   useAnimatedSensor,
   useDerivedValue,
   useSharedValue
-} from "react-native-reanimated";
+} from 'react-native-reanimated';
 import {
   ITW_BRAND_GRADIENT,
   ITW_BRAND_GRADIENT_ERROR,
   ITW_BRAND_GRADIENT_WARNING
-} from "../utils/theme";
+} from '../utils/theme';
 
-export type ItwSkiaBrandedGradientVariant = "default" | "warning" | "error";
+export type ItwSkiaBrandedGradientVariant = 'default' | 'warning' | 'error';
 
 type ItwIridescentBorderProps = {
-  width: LayoutRectangle["width"];
-  height: LayoutRectangle["height"];
+  width: LayoutRectangle['width'];
+  height: LayoutRectangle['height'];
   variant?: ItwSkiaBrandedGradientVariant;
 };
 
@@ -37,7 +37,7 @@ type ItwIridescentBorderProps = {
 export const ItwBrandedSkiaGradient = ({
   width,
   height,
-  variant = "default"
+  variant = 'default'
 }: ItwIridescentBorderProps) => {
   /* Sensors */
   const rotationSensor = useAnimatedSensor(SensorType.ROTATION);

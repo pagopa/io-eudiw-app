@@ -289,7 +289,7 @@ function* obtainCredential() {
     );
 
     // Parse and verify the credential. The ignoreMissingAttributes flag must be set to false or omitted in production.
-    const {parsedCredential, expiration, issuedAt} = yield* call(
+    const { parsedCredential, expiration, issuedAt } = yield* call(
       Credential.Issuance.verifyAndParseCredential,
       issuerConf,
       credential,
@@ -309,8 +309,8 @@ function* obtainCredential() {
           credentialType,
           keyTag: credentialKeyTag,
           format: format as 'vc+sd-jwt' | 'mso_mdoc',
-          expiration : expiration.toISOString(),
-          issuedAt : issuedAt?.toISOString()
+          expiration: expiration.toISOString(),
+          issuedAt: issuedAt?.toISOString()
         }
       })
     );

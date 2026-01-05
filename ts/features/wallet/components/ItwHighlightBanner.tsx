@@ -8,18 +8,18 @@ import {
   VStack,
   WithTestID,
   useScaleAnimation
-} from "@pagopa/io-app-design-system";
+} from '@pagopa/io-app-design-system';
 import {
   Blend,
   Canvas,
   LinearGradient,
   RoundedRect,
   vec
-} from "@shopify/react-native-skia";
-import { TxtParagraphNode, TxtStrongNode } from "@textlint/ast-node-types";
-import I18n from "i18next";
-import { useEffect, useMemo, useState } from "react";
-import { AccessibilityRole, Pressable, StyleSheet, View } from "react-native";
+} from '@shopify/react-native-skia';
+import { TxtParagraphNode, TxtStrongNode } from '@textlint/ast-node-types';
+import I18n from 'i18next';
+import { useEffect, useMemo, useState } from 'react';
+import { AccessibilityRole, Pressable, StyleSheet, View } from 'react-native';
 import Animated, {
   Easing,
   Extrapolation,
@@ -30,12 +30,12 @@ import Animated, {
   useSharedValue,
   withRepeat,
   withTiming
-} from "react-native-reanimated";
-import HighlightImage from "../assets/img/l3/highlight.svg";
-import { Renderer } from "../../../components/markdown/types";
-import { getTxtNodeKey } from "../../../components/markdown/renderRules";
-import IOMarkdown from "../../../components/markdown";
-import { itwGradientColors } from "../utils/constants";
+} from 'react-native-reanimated';
+import HighlightImage from '../assets/img/l3/highlight.svg';
+import { itwGradientColors } from '../utils/constants';
+import { getTxtNodeKey } from '../../../components/IOMarkdown/renderRules';
+import { Renderer } from '../../../components/IOMarkdown/types';
+import IOMarkdown from '../../../components/IOMarkdown';
 
 type Props = {
   title: string;
@@ -47,14 +47,14 @@ type Props = {
   accessibilityHint?: string;
   accessibilityRole?: AccessibilityRole;
   // Variant props
-  size?: "small" | "large";
+  size?: 'small' | 'large';
 };
 
 export const ItwHighlightBanner = (props: WithTestID<Props>) => {
-  const { testID, onPress, size = "large" } = props;
+  const { testID, onPress, size = 'large' } = props;
 
   const { progress, onPressIn, onPressOut, scaleAnimatedStyle } =
-    useScaleAnimation("slight");
+    useScaleAnimation('slight');
 
   const shadowAnimatedStyle = useAnimatedStyle(() => {
     const scale = interpolate(
@@ -71,7 +71,7 @@ export const ItwHighlightBanner = (props: WithTestID<Props>) => {
     };
   });
 
-  if (size === "small") {
+  if (size === 'small') {
     return (
       <Pressable
         testID={testID}
@@ -208,7 +208,7 @@ const StaticContent = (props: Props) => {
     description,
     action,
     onPress,
-    size = "large",
+    size = 'large',
     accessibilityHint,
     accessibilityLabel,
     accessibilityRole
@@ -218,8 +218,8 @@ const StaticContent = (props: Props) => {
   // if they are present. Removes markdown formatting characters like asterisks.
   const fallbackAccessibilityLabel = [title, description, action]
     .filter(Boolean)
-    .join("\n")
-    .replace(/\*/g, "");
+    .join('\n')
+    .replace(/\*/g, '');
 
   const markdownRules = useMemo(
     () => ({
@@ -256,18 +256,18 @@ const StaticContent = (props: Props) => {
       // A11y related props
       accessibilityLabel={accessibilityLabel ?? fallbackAccessibilityLabel}
       accessibilityHint={accessibilityHint}
-      accessibilityRole={action !== undefined ? accessibilityRole : "text"}
+      accessibilityRole={action !== undefined ? accessibilityRole : 'text'}
     >
       <HStack space={32}>
         <VStack space={8} style={{ flex: 1 }}>
-          <View style={{ flexDirection: "row" }}>
-            <View style={{ alignSelf: "center" }}>
-              <Badge variant="highlight" text={I18n.t("global.badges.new")} />
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ alignSelf: 'center' }}>
+              <Badge variant="highlight" text={I18n.t('global.badges.new')} />
             </View>
           </View>
           <H4 color="white">{title}</H4>
         </VStack>
-        {size === "large" && (
+        {size === 'large' && (
           <HighlightImage
             width={100}
             height={100}
@@ -276,7 +276,7 @@ const StaticContent = (props: Props) => {
         )}
       </HStack>
       <IOMarkdown rules={markdownRules} content={description} />
-      {size === "large" && (
+      {size === 'large' && (
         <IOButton
           variant="solid"
           color="contrast"
@@ -285,7 +285,7 @@ const StaticContent = (props: Props) => {
           fullWidth
         />
       )}
-      {size === "small" && (
+      {size === 'small' && (
         // Disable pointer events to avoid pressed state on the button
         <Pressable
           pointerEvents="none"
@@ -310,11 +310,11 @@ const StaticContent = (props: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: IOColors["blueIO-500"],
-    display: "flex",
+    backgroundColor: IOColors['blueIO-500'],
+    display: 'flex',
     padding: 16,
     borderRadius: 16,
-    overflow: "visible",
+    overflow: 'visible',
     shadowColor: IOColors.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   gradient: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,

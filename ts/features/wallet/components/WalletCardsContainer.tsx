@@ -1,12 +1,15 @@
-import { VStack } from "@pagopa/io-app-design-system";
-import { memo, useMemo } from "react";
-import { View } from "react-native";
-import Animated, { LinearTransition } from "react-native-reanimated";
-import { useDebugInfo } from "../../../hooks/useDebugInfo";
-import { useAppSelector } from "../../../store";
-import { lifecycleIsOperationalSelector, lifecycleIsValidSelector } from "../store/lifecycle";
-import { ItwWalletCardsContainer } from "./ItwWalletCardsContainer";
-import { ItwUpgradeBanner } from "./ItwUpgradeBanner";
+import { VStack } from '@pagopa/io-app-design-system';
+import { memo, useMemo } from 'react';
+import { View } from 'react-native';
+import Animated, { LinearTransition } from 'react-native-reanimated';
+import { useDebugInfo } from '../../../hooks/useDebugInfo';
+import { useAppSelector } from '../../../store';
+import {
+  lifecycleIsOperationalSelector,
+  lifecycleIsValidSelector
+} from '../store/lifecycle';
+import { ItwWalletCardsContainer } from './ItwWalletCardsContainer';
+import { ItwUpgradeBanner } from './ItwUpgradeBanner';
 
 /**
  * A component which renders the wallet cards container
@@ -17,19 +20,25 @@ const WalletCardsContainer = () => {
   const shouldRenderItwCardsContainer = useAppSelector(
     lifecycleIsValidSelector
   );
-  const shouldRenderItwActivationBanner = useAppSelector(lifecycleIsOperationalSelector);
+  const shouldRenderItwActivationBanner = useAppSelector(
+    lifecycleIsOperationalSelector
+  );
 
-  useDebugInfo({shouldRenderItwCardsContainer, shouldRenderItwActivationBanner});
+  useDebugInfo({
+    shouldRenderItwCardsContainer,
+    shouldRenderItwActivationBanner
+  });
 
   // Content to render in the wallet screen, based on the current state
   // TODO check if it's worth it to use the wallet skeleton
-  const walletContent = useMemo(() => (
+  const walletContent = useMemo(
+    () => (
       <View testID="walletCardsContainerTestID" style={{ flex: 1 }}>
         {shouldRenderItwCardsContainer && <ItwWalletCardsContainer />}
       </View>
-    ), [
-    shouldRenderItwCardsContainer
-  ]);
+    ),
+    [shouldRenderItwCardsContainer]
+  );
 
   return (
     <Animated.View
@@ -47,14 +56,10 @@ const WalletCardsContainer = () => {
  */
 const WalletBannersContainer = memo(() => (
   <VStack space={16}>
-    <ItwUpgradeBanner/>
+    <ItwUpgradeBanner />
     {/* Dummy view wich adds a spacer in case one of the above banners is rendered */}
     <View />
   </VStack>
 ));
 
-
-export {
-  ItwWalletCardsContainer,
-  WalletCardsContainer
-};
+export { ItwWalletCardsContainer, WalletCardsContainer };

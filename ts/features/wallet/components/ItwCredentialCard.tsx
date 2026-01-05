@@ -1,14 +1,18 @@
-import { HStack, Icon, IOText, Tag } from "@pagopa/io-app-design-system";
-import Color from "color";
-import { useMemo } from "react";
-import { StyleSheet, View } from "react-native";
-import { CardColorScheme, ItwCredentialStatus } from "../types";
-import { useItwDisplayCredentialStatus } from "../hooks/useItwDisplayCredentialStatus";
-import { useThemeColorByCredentialType } from "../utils/itwStyleUtils";
-import { tagPropsByStatus, useBorderColorByStatus, validCredentialStatuses } from "../utils/itwCredentialUtils";
-import { getCredentialNameByType } from "../utils/credentials";
-import { CardBackground } from "./CardBackground";
-import { DigitalVersionBadge } from "./DigitalVersionBadge";
+import { HStack, Icon, IOText, Tag } from '@pagopa/io-app-design-system';
+import Color from 'color';
+import { useMemo } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { CardColorScheme, ItwCredentialStatus } from '../types';
+import { useItwDisplayCredentialStatus } from '../hooks/useItwDisplayCredentialStatus';
+import { useThemeColorByCredentialType } from '../utils/itwStyleUtils';
+import {
+  tagPropsByStatus,
+  useBorderColorByStatus,
+  validCredentialStatuses
+} from '../utils/itwCredentialUtils';
+import { getCredentialNameByType } from '../utils/credentials';
+import { CardBackground } from './CardBackground';
+import { DigitalVersionBadge } from './DigitalVersionBadge';
 
 export type ItwCredentialCard = {
   /**
@@ -43,25 +47,28 @@ type StyleProps = {
 
 export const ItwCredentialCard = ({
   credentialType,
-  credentialStatus = "valid",
+  credentialStatus = 'valid',
   isMultiCredential
 }: ItwCredentialCard) => {
   const status = useItwDisplayCredentialStatus(credentialStatus);
   const theme = useThemeColorByCredentialType(credentialType);
   const borderColorMap = useBorderColorByStatus();
 
-  const statusTagProps = useMemo<Tag | undefined>(() => tagPropsByStatus[status], [status]);
+  const statusTagProps = useMemo<Tag | undefined>(
+    () => tagPropsByStatus[status],
+    [status]
+  );
 
   const { titleColor, titleOpacity, colorScheme } = useMemo<StyleProps>(() => {
     // Include "jwtExpired" as a valid status because credentials with this state
     // should not appear faded. Only the "expired" status should be displayed with reduced opacity.
-    const isValid = [...validCredentialStatuses, "jwtExpired"].includes(status);
+    const isValid = [...validCredentialStatuses, 'jwtExpired'].includes(status);
 
-    if (status === "unknown") {
+    if (status === 'unknown') {
       return {
         titleColor: Color(theme.textColor).grayscale().hex(),
         titleOpacity: 0.5,
-        colorScheme: "greyscale"
+        colorScheme: 'greyscale'
       };
     }
 
@@ -69,14 +76,14 @@ export const ItwCredentialCard = ({
       return {
         titleColor: theme.textColor,
         titleOpacity: 1,
-        colorScheme: "default"
+        colorScheme: 'default'
       };
     }
 
     return {
       titleColor: theme.textColor,
       titleOpacity: 0.5,
-      colorScheme: "faded"
+      colorScheme: 'faded'
     };
   }, [theme, status]);
 
@@ -91,7 +98,9 @@ export const ItwCredentialCard = ({
           <IOText
             size={16}
             lineHeight={20}
-            font={"TitilliumSansPro" /* TODO: Check if preferences are needed */}
+            font={
+              'TitilliumSansPro' /* TODO: Check if preferences are needed */
+            }
             weight="Semibold"
             maxFontSizeMultiplier={1.25}
             style={{
@@ -123,24 +132,24 @@ const styles = StyleSheet.create({
   cardContainer: {
     aspectRatio: 16 / 10,
     borderRadius: 8,
-    overflow: "hidden"
+    overflow: 'hidden'
   },
   border: {
-    position: "absolute",
+    position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
     borderRadius: 8,
-    borderCurve: "continuous",
+    borderCurve: 'continuous',
     borderWidth: 2,
     zIndex: 11
   },
   header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingTop: 14
   }

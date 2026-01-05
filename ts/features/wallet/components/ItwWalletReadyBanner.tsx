@@ -1,11 +1,11 @@
-import { Banner } from "@pagopa/io-app-design-system";
-import { View } from "react-native";
-import I18n from "i18next";
-import { useNavigation } from "@react-navigation/native";
-import { useAppSelector } from "../../../store";
-import { itwShouldRenderWalletReadyBannerSelector } from "../store/selectors/wallet";
-import WALLET_ROUTES from "../navigation/routes";
-import MAIN_ROUTES from "../../../navigation/main/routes";
+import { Banner } from '@pagopa/io-app-design-system';
+import { View } from 'react-native';
+import I18n from 'i18next';
+import { useNavigation } from '@react-navigation/native';
+import { useAppSelector } from '../../../store';
+import { itwShouldRenderWalletReadyBannerSelector } from '../store/selectors/wallet';
+import WALLET_ROUTES from '../navigation/routes';
+import MAIN_ROUTES from '../../../navigation/main/routes';
 
 export const ItwWalletReadyBanner = () => {
   const navigation = useNavigation();
@@ -24,14 +24,12 @@ export const ItwWalletReadyBanner = () => {
   return (
     <View style={{ marginHorizontal: -8 }}>
       <Banner
-        title={
-            undefined
-        }
+        title={undefined}
         content={I18n.t(
-            "features.itWallet.issuance.emptyWallet.readyBanner.content"
+          'features.itWallet.issuance.emptyWallet.readyBanner.content'
         )}
         action={I18n.t(
-          "features.itWallet.issuance.emptyWallet.readyBanner.action"
+          'features.itWallet.issuance.emptyWallet.readyBanner.action'
         )}
         color="turquoise"
         onPress={handleOnPress}

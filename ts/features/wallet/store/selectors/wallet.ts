@@ -2,11 +2,14 @@
  * Cross-slice selectors for the wallet's internal logic
  */
 
-import { createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../../../../store/types";
-import { itwCredentialsEidStatusSelector, selectCredentials } from "../credentials";
-import { lifecycleIsValidSelector } from "../lifecycle";
-import { wellKnownCredential } from "../../utils/credentials";
+import { createSelector } from '@reduxjs/toolkit';
+import { RootState } from '../../../../store/types';
+import {
+  itwCredentialsEidStatusSelector,
+  selectCredentials
+} from '../credentials';
+import { lifecycleIsValidSelector } from '../lifecycle';
+import { wellKnownCredential } from '../../utils/credentials';
 
 /**
  * Returns the credentials object from the itw credentials state, excluding the PID credential.
@@ -17,7 +20,10 @@ import { wellKnownCredential } from "../../utils/credentials";
  */
 export const itwCredentialsSelector = createSelector(
   selectCredentials,
-  credentials => credentials.filter(credential => credential.credentialType !== wellKnownCredential.PID)
+  credentials =>
+    credentials.filter(
+      credential => credential.credentialType !== wellKnownCredential.PID
+    )
 );
 
 /**
@@ -58,5 +64,5 @@ export const itwShouldRenderWalletReadyBannerSelector = (state: RootState) =>
   lifecycleIsValidSelector(state) &&
   // NOTE: Wallet instance status not yet implemented
   // NOTE: Online status checks not yet implemented
-  itwCredentialsEidStatusSelector(state) !== "jwtExpired" &&
+  itwCredentialsEidStatusSelector(state) !== 'jwtExpired' &&
   itwIsWalletEmptySelector(state);

@@ -1,9 +1,7 @@
-import { IOColors, Tag, useIOTheme } from "@pagopa/io-app-design-system";
-import I18n from "i18next";
-import { CredentialType } from "./itwMocksUtils";
-import {
-  ItwCredentialStatus
-} from "./itwTypesUtils";
+import { IOColors, Tag, useIOTheme } from '@pagopa/io-app-design-system';
+import I18n from 'i18next';
+import { CredentialType } from './itwMocksUtils';
+import { ItwCredentialStatus } from './itwTypesUtils';
 
 // Credentials that can be actively requested and obtained by the user
 export const availableCredentials = [
@@ -36,41 +34,41 @@ export const useBorderColorByStatus: () => {
   const theme = useIOTheme();
 
   return {
-    valid: IOColors[theme["appBackground-primary"]],
-    invalid: IOColors["error-600"],
-    expired: IOColors["error-600"],
-    expiring: IOColors["warning-700"],
-    jwtExpired: IOColors["error-600"],
-    jwtExpiring: IOColors["warning-700"],
-    unknown: IOColors["grey-300"]
+    valid: IOColors[theme['appBackground-primary']],
+    invalid: IOColors['error-600'],
+    expired: IOColors['error-600'],
+    expiring: IOColors['warning-700'],
+    jwtExpired: IOColors['error-600'],
+    jwtExpiring: IOColors['warning-700'],
+    unknown: IOColors['grey-300']
   };
 };
 
 export const tagPropsByStatus: { [key in ItwCredentialStatus]?: Tag } = {
   invalid: {
-    variant: "error",
-    text: I18n.t("features.itWallet.card.status.invalid")
+    variant: 'error',
+    text: I18n.t('features.itWallet.card.status.invalid')
   },
   expired: {
-    variant: "error",
-    text: I18n.t("features.itWallet.card.status.expired")
+    variant: 'error',
+    text: I18n.t('features.itWallet.card.status.expired')
   },
   jwtExpired: {
-    variant: "error",
-    text: I18n.t("features.itWallet.card.status.verificationExpired")
+    variant: 'error',
+    text: I18n.t('features.itWallet.card.status.verificationExpired')
   },
   expiring: {
-    variant: "warning",
-    text: I18n.t("features.itWallet.card.status.expiring")
+    variant: 'warning',
+    text: I18n.t('features.itWallet.card.status.expiring')
   },
   jwtExpiring: {
-    variant: "warning",
-    text: I18n.t("features.itWallet.card.status.verificationExpiring")
+    variant: 'warning',
+    text: I18n.t('features.itWallet.card.status.verificationExpiring')
   },
   unknown: {
-    variant: "custom",
-    icon: { name: "infoFilled", color: "grey-450" },
-    text: I18n.t("features.itWallet.card.status.unknown")
+    variant: 'custom',
+    icon: { name: 'infoFilled', color: 'grey-450' },
+    text: I18n.t('features.itWallet.card.status.unknown')
   }
 };
 
@@ -78,7 +76,7 @@ export const tagPropsByStatus: { [key in ItwCredentialStatus]?: Tag } = {
  * List of statuses that make a credential valid, especially for UI purposes.
  */
 export const validCredentialStatuses: Array<ItwCredentialStatus> = [
-  "valid",
-  "expiring",
-  "jwtExpiring"
+  'valid',
+  'expiring',
+  'jwtExpiring'
 ];

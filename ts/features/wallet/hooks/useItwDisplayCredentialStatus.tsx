@@ -1,7 +1,7 @@
-import { useAppSelector } from "../../../store";
-import { itwCredentialsEidStatusSelector } from "../store/credentials";
-import { ItwCredentialStatus } from "../types";
-import { getItwDisplayCredentialStatus } from "../utils/credentials";
+import { useAppSelector } from '../../../store';
+import { itwCredentialsEidStatusSelector } from '../store/credentials';
+import { ItwCredentialStatus } from '../types';
+import { getItwDisplayCredentialStatus } from '../utils/credentials';
 
 /**
  * Computes the display status of a credential for UI purposes

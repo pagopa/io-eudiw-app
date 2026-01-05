@@ -2,11 +2,11 @@ import {
   PressableBaseProps,
   useScaleAnimation,
   WithTestID
-} from "@pagopa/io-app-design-system";
-import { PropsWithChildren } from "react";
+} from '@pagopa/io-app-design-system';
+import { PropsWithChildren } from 'react';
 
-import { Pressable } from "react-native";
-import Animated from "react-native-reanimated";
+import { Pressable } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 export type WalletCardPressableBaseProps = WithTestID<PressableBaseProps>;
 

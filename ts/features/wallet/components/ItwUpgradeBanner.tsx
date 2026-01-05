@@ -1,15 +1,15 @@
-import { useTranslation } from "react-i18next";
-import { useNavigation } from "@react-navigation/native";
-import { ItwHighlightBanner } from "./ItwHighlightBanner";
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { ItwHighlightBanner } from './ItwHighlightBanner';
 
 export const ItwUpgradeBanner = () => {
   const navigation = useNavigation();
 
-  const {t} = useTranslation('wallet');
+  const { t } = useTranslation('wallet');
 
   const handleOnPress = () => {
     navigation.navigate('MAIN_WALLET_NAV', {
-      screen : 'PID_ISSUANCE_INSTANCE_CREATION'
+      screen: 'PID_ISSUANCE_INSTANCE_CREATION'
     });
   };
 
@@ -17,15 +17,9 @@ export const ItwUpgradeBanner = () => {
   return (
     <ItwHighlightBanner
       testID="itwUpgradeBannerTestID"
-      title={t(
-        `activationBanner.title`
-      )}
-      description={t(
-        `activationBanner.description`
-      )}
-      action={t(
-        `activationBanner.action`
-      )}
+      title={t(`activationBanner.title`)}
+      description={t(`activationBanner.description`)}
+      action={t(`activationBanner.action`)}
       onPress={handleOnPress}
     />
   );

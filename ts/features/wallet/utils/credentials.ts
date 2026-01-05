@@ -54,10 +54,10 @@ export const getCredentialNameByType = (type?: string): string => {
 };
 
 const EXCLUDED_CREDENTIAL_STATUSES: ReadonlyArray<ItwCredentialStatus> = [
-  "expired",
-  "expiring",
-  "invalid",
-  "unknown"
+  'expired',
+  'expiring',
+  'invalid',
+  'unknown'
 ];
 
 /**
@@ -77,19 +77,18 @@ const EXCLUDED_CREDENTIAL_STATUSES: ReadonlyArray<ItwCredentialStatus> = [
  */
 export const getItwDisplayCredentialStatus = (
   credentialStatus: ItwCredentialStatus,
-  eidStatus: ItwJwtCredentialStatus | undefined,
+  eidStatus: ItwJwtCredentialStatus | undefined
 ): ItwCredentialStatus => {
   // Excluded statuses are never overridden
   if (EXCLUDED_CREDENTIAL_STATUSES.includes(credentialStatus)) {
     return credentialStatus;
   }
 
-  const isEidValid = eidStatus === "valid";
-
+  const isEidValid = eidStatus === 'valid';
 
   // Invalid eid → treat as "valid"
   if (!isEidValid) {
-    return "valid";
+    return 'valid';
   }
 
   // Default: eid valid and online → keep real status

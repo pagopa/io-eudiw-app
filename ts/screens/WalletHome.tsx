@@ -2,8 +2,8 @@ import {
   HeaderActionProps,
   HeaderFirstLevel
 } from '@pagopa/io-app-design-system';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 import { useMemo } from 'react';
 import { WalletCardsContainer } from '../features/wallet/components/WalletCardsContainer';
 import { IOScrollView } from '../components/IOScrollView';
@@ -24,24 +24,28 @@ const WalletHome = () => {
     lifecycleIsValidSelector
   );
 
-  const actions : HeaderFirstLevel['actions'] = useMemo(() => {
-    const settings : HeaderActionProps = {
+  const actions: HeaderFirstLevel['actions'] = useMemo(() => {
+    const settings: HeaderActionProps = {
       icon: 'coggle',
       onPress: () =>
-        navigation.navigate('ROOT_MAIN_NAV', {screen: 'MAIN_SETTINGS'}),
+        navigation.navigate('ROOT_MAIN_NAV', { screen: 'MAIN_SETTINGS' }),
       accessibilityLabel: t('global:settings.title')
-    }; 
+    };
 
-    return shouldRenderItwCardsContainer ? [
-      {
-        icon : 'add',
-        onPress : () => 
-          navigation.navigate(MAIN_ROUTES.WALLET_NAV, {screen : WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST}),
-        accessibilityLabel: t('global:settings.title') // TODO Insert correct label
-      } satisfies HeaderActionProps,
-      settings
-    ] : [settings];
-  },[navigation, shouldRenderItwCardsContainer, t]);
+    return shouldRenderItwCardsContainer
+      ? [
+          {
+            icon: 'add',
+            onPress: () =>
+              navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+                screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST
+              }),
+            accessibilityLabel: t('global:settings.title') // TODO Insert correct label
+          } satisfies HeaderActionProps,
+          settings
+        ]
+      : [settings];
+  }, [navigation, shouldRenderItwCardsContainer, t]);
 
   return (
     <>
@@ -49,10 +53,7 @@ const WalletHome = () => {
         title={t('global:tabNavigator.wallet')}
         actions={actions}
       />
-      <IOScrollView
-        centerContent={true}
-        excludeSafeAreaMargins={true}
-      >
+      <IOScrollView centerContent={true} excludeSafeAreaMargins={true}>
         <WalletCardsContainer />
       </IOScrollView>
     </>

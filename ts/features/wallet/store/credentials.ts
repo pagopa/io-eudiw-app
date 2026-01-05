@@ -2,14 +2,14 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
-import {StoredCredential} from '../utils/types';
-import {RootState} from '../../../store/types';
-import {preferencesReset} from '../../../store/reducers/preferences';
-import {wellKnownCredential} from '../utils/credentials';
+import { StoredCredential } from '../utils/types';
+import { RootState } from '../../../store/types';
+import { preferencesReset } from '../../../store/reducers/preferences';
+import { wellKnownCredential } from '../utils/credentials';
 import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
 import { ItwCredentialCard } from '../components/ItwCredentialCard';
-import {resetLifecycle} from './lifecycle';
+import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the credentials slice.
  * This is stored as an array to avoid overhead due to map not being serializable,
@@ -124,7 +124,9 @@ export const selectCredential = (credentialType: string) =>
     credentials.find(c => c.credentialType === credentialType)
   );
 
-export const itwCredentialsEidSelector = selectCredential(wellKnownCredential.PID);
+export const itwCredentialsEidSelector = selectCredential(
+  wellKnownCredential.PID
+);
 
 /**
  * Returns the credential status and the error message corresponding to the status assertion error, if present.
@@ -134,7 +136,8 @@ export const itwCredentialsEidSelector = selectCredential(wellKnownCredential.PI
  */
 export const itwCredentialsEidStatusSelector = createSelector(
   itwCredentialsEidSelector,
-  pid => pid ? getCredentialStatus(pid) as ItwJwtCredentialStatus : undefined
+  pid =>
+    pid ? (getCredentialStatus(pid) as ItwJwtCredentialStatus) : undefined
 );
 
 /**
@@ -152,14 +155,14 @@ export const itwCredentialsEidExpirationSelector = createSelector(
  * Selects all the credentials beside the PID/EID and transforms them
  * into {@link ItwCredentialCard}
  */
-export const selectWalletCards : (state: RootState) => Array<WalletCard> = createSelector(
-  selectCredentials,
-  (credentials) => credentials.filter(cred => cred.credentialType !== wellKnownCredential.PID)
-  .map(cred => ({
-    key : cred.keyTag,
-    type : "itw",
-    credentialType : cred.credentialType,
-    credentialStatus : getCredentialStatus(cred) 
-  }))
-);
-  
+export const selectWalletCards: (state: RootState) => Array<WalletCard> =
+  createSelector(selectCredentials, credentials =>
+    credentials
+      .filter(cred => cred.credentialType !== wellKnownCredential.PID)
+      .map(cred => ({
+        key: cred.keyTag,
+        type: 'itw',
+        credentialType: cred.credentialType,
+        credentialStatus: getCredentialStatus(cred)
+      }))
+  );

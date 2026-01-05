@@ -4,24 +4,24 @@ import {
   IOBadgeVSpacing,
   IOColors,
   makeFontStyleObject
-} from "@pagopa/io-app-design-system";
+} from '@pagopa/io-app-design-system';
 import {
   Canvas,
   LinearGradient,
   RoundedRect,
   vec
-} from "@shopify/react-native-skia";
-import Color from "color";
-import { memo, useState } from "react";
+} from '@shopify/react-native-skia';
+import Color from 'color';
+import { memo, useState } from 'react';
 import {
   LayoutChangeEvent,
   Platform,
   StyleSheet,
   Text,
   View
-} from "react-native";
-import I18n from "i18next";
-import { CardColorScheme } from "../types";
+} from 'react-native';
+import I18n from 'i18next';
+import { CardColorScheme } from '../types';
 
 type DigitalVersionBadgeProps = {
   credentialType: string;
@@ -39,28 +39,28 @@ const getColorPropsByScheme = (
 ) => {
   const mapCredentialTypes: Record<string, CredentialTypesProps> = {
     mDL: {
-      foreground: "#5E303E",
-      background: "#FADCF5"
+      foreground: '#5E303E',
+      background: '#FADCF5'
     },
     EuropeanDisabilityCard: {
-      foreground: "#01527F",
-      background: "#E8EEF4"
+      foreground: '#01527F',
+      background: '#E8EEF4'
     },
     EuropeanHealthInsuranceCard: {
-      foreground: "#032D5C",
-      background: "#ABD8F2"
+      foreground: '#032D5C',
+      background: '#ABD8F2'
     },
     education_degree: {
-      foreground: "#403C36",
-      background: ["#ECECEC", "#F2F1CE"]
+      foreground: '#403C36',
+      background: ['#ECECEC', '#F2F1CE']
     },
     education_enrollment: {
-      foreground: "#403C36",
-      background: ["#ECECEC", "#E0F2CE"]
+      foreground: '#403C36',
+      background: ['#ECECEC', '#E0F2CE']
     },
     residency: {
-      foreground: "#403C36",
-      background: ["#ECECEC", "#F2E4CE"]
+      foreground: '#403C36',
+      background: ['#ECECEC', '#F2E4CE']
     }
   };
 
@@ -69,7 +69,7 @@ const getColorPropsByScheme = (
     return;
   }
 
-  if (colorScheme === "greyscale") {
+  if (colorScheme === 'greyscale') {
     if (Array.isArray(baseColorProps.background)) {
       return {
         foreground: Color(baseColorProps.foreground).grayscale().hex(),
@@ -89,7 +89,7 @@ const getColorPropsByScheme = (
 
 const DigitalVersionBadge = ({
   credentialType,
-  colorScheme = "default"
+  colorScheme = 'default'
 }: DigitalVersionBadgeProps) => {
   const [layout, setLayout] = useState<{
     width: number;
@@ -139,26 +139,26 @@ const DigitalVersionBadge = ({
             </RoundedRect>
           </Canvas>
         )}
-        {colorScheme !== "default" && <View style={styles.faded} />}
+        {colorScheme !== 'default' && <View style={styles.faded} />}
         <Text
           numberOfLines={1}
           ellipsizeMode="tail"
           allowFontScaling={false}
           style={{
             color: foreground,
-            alignSelf: "center",
-            textTransform: "uppercase",
+            alignSelf: 'center',
+            textTransform: 'uppercase',
             flexShrink: 1,
             zIndex: 20,
             ...makeFontStyleObject(
               12,
-              "TitilliumSansPro" /* TODO: Check if font preferences needed */,
+              'TitilliumSansPro' /* TODO: Check if font preferences needed */,
               16,
-              "Semibold"
+              'Semibold'
             )
           }}
         >
-          {`${I18n.t("features.itWallet.card.digital")}`}
+          {`${I18n.t('features.itWallet.card.digital')}`}
         </Text>
       </View>
     </View>
@@ -167,21 +167,21 @@ const DigitalVersionBadge = ({
 
 const styles = StyleSheet.create({
   wrapper: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 16,
     right: 2
   },
   badge: {
-    overflow: "hidden",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    overflow: 'hidden',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     ...Platform.select({
       android: {
-        textAlignVertical: "center"
+        textAlignVertical: 'center'
       }
     }),
-    borderCurve: "continuous",
+    borderCurve: 'continuous',
     borderRadius: IOBadgeRadius,
     paddingHorizontal: IOBadgeHSpacing,
     paddingVertical: IOBadgeVSpacing,

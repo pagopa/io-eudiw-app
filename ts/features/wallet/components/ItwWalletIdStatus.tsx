@@ -3,17 +3,17 @@ import {
   Icon,
   IOButton,
   useScaleAnimation
-} from "@pagopa/io-app-design-system";
-import { format } from "date-fns";
-import { ComponentProps } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
-import Animated from "react-native-reanimated";
-import BackgroundImageValid from "../assets/img/brand/itw_deck_status.svg";
-import BackgroundImageExpired from "../assets/img/brand/itw_deck_status_expired.svg";
-import ItWalletIdLogoImage from "../assets/img/brand/itw_id_logo.svg";
-import { ItwJwtCredentialStatus } from "../types";
-import { ItwBrandedBox } from "./ItwBrandedBox";
-import { ItwSkiaBrandedGradientVariant } from "./ItwBrandedSkiaGradient";
+} from '@pagopa/io-app-design-system';
+import { format } from 'date-fns';
+import { ComponentProps } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import Animated from 'react-native-reanimated';
+import BackgroundImageValid from '../assets/img/brand/itw_deck_status.svg';
+import BackgroundImageExpired from '../assets/img/brand/itw_deck_status_expired.svg';
+import ItWalletIdLogoImage from '../assets/img/brand/itw_id_logo.svg';
+import { ItwJwtCredentialStatus } from '../types';
+import { ItwBrandedBox } from './ItwBrandedBox';
+import { ItwSkiaBrandedGradientVariant } from './ItwBrandedSkiaGradient';
 
 type ItwWalletIdStatusProps = {
   pidStatus?: ItwJwtCredentialStatus;
@@ -26,45 +26,45 @@ const statusIconPropsByPidStatus: Record<
   ComponentProps<typeof Icon>
 > = {
   valid: {
-    name: "success",
-    color: "success-700",
-    testID: "itwWalletIdStatusValidIconTestID"
+    name: 'success',
+    color: 'success-700',
+    testID: 'itwWalletIdStatusValidIconTestID'
   },
   jwtExpiring: {
-    name: "warningFilled",
-    color: "warning-700",
-    testID: "itwWalletIdStatusExpiringIconTestID"
+    name: 'warningFilled',
+    color: 'warning-700',
+    testID: 'itwWalletIdStatusExpiringIconTestID'
   },
   jwtExpired: {
-    name: "errorFilled",
-    color: "error-600",
-    testID: "itwWalletIdStatusExpiredIconTestID"
+    name: 'errorFilled',
+    color: 'error-600',
+    testID: 'itwWalletIdStatusExpiredIconTestID'
   }
 };
 
 export const ItwWalletIdStatus = ({
   onPress,
-  pidStatus = "valid",
+  pidStatus = 'valid',
   pidExpiration
 }: ItwWalletIdStatusProps) => {
   const { onPressIn, onPressOut, scaleAnimatedStyle } =
-    useScaleAnimation("slight");
+    useScaleAnimation('slight');
 
   const BackgroundImage =
-    pidStatus !== "jwtExpired" ? BackgroundImageValid : BackgroundImageExpired;
+    pidStatus !== 'jwtExpired' ? BackgroundImageValid : BackgroundImageExpired;
 
   const borderVariantByPidStatus: Record<
     ItwJwtCredentialStatus,
     ItwSkiaBrandedGradientVariant
   > = {
-    valid: "default",
-    jwtExpiring: "warning",
-    jwtExpired: "error"
+    valid: 'default',
+    jwtExpiring: 'warning',
+    jwtExpired: 'error'
   };
 
   return (
     <Pressable
-      testID={"itwWalletIdStatusTestID"}
+      testID={'itwWalletIdStatusTestID'}
       onPress={onPress}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
@@ -78,7 +78,7 @@ export const ItwWalletIdStatus = ({
           <BackgroundImage
             style={[
               styles.backgroundImage,
-              pidStatus === "valid"
+              pidStatus === 'valid'
                 ? styles.backgroundImageStickyTop
                 : styles.backgroundImageStickyBottom
             ]}
@@ -93,22 +93,22 @@ export const ItwWalletIdStatus = ({
           </View>
 
           {/* Content  */}
-          {pidStatus === "jwtExpiring" && (
+          {pidStatus === 'jwtExpiring' && (
             <Body style={styles.content}>
-              Conferma la tua identità entro il{" "}
+              Conferma la tua identità entro il{' '}
               <Body weight="Semibold">
-                {format(pidExpiration || "", "DD/MM/YYYY")}
+                {format(pidExpiration || '', 'DD/MM/YYYY')}
               </Body>
             </Body>
           )}
-          {pidStatus === "jwtExpired" && (
+          {pidStatus === 'jwtExpired' && (
             <Body style={styles.content}>
               Conferma la tua identità per continuare con i tuoi documenti
             </Body>
           )}
 
           {/* Optional Action Button  */}
-          {pidStatus === "jwtExpired" && (
+          {pidStatus === 'jwtExpired' && (
             <View pointerEvents="none">
               <IOButton variant="link" label="Inizia" onPress={() => null} />
             </View>
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     marginHorizontal: -8
   },
   backgroundImage: {
-    position: "absolute",
+    position: 'absolute',
     right: -1
   },
   backgroundImageStickyBottom: {
@@ -134,11 +134,11 @@ const styles = StyleSheet.create({
     top: -8
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8
   },
   content: {
-    maxWidth: "80%"
+    maxWidth: '80%'
   }
 });
