@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import {
-  FooterActions,
+  Body,
   ForceScrollDownView,
   H2,
   IOVisualCostants,
@@ -10,6 +10,7 @@ import {
   VStack
 } from '@pagopa/io-app-design-system';
 import { StyleSheet, View } from 'react-native';
+import I18n from 'i18next';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
@@ -21,6 +22,9 @@ import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import { StoredCredential } from '../../utils/types';
 import { addPidWithIdentification } from '../../store/credentials';
+import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
+import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
@@ -37,6 +41,9 @@ const PidIssuanceRequest = () => {
   const pid = useAppSelector(selectPidIssuanceData);
   const { navigateToWallet } = useNavigateToWalletWithReset();
 
+  useHardwareBackButtonToDismiss(() => dismissalDialog.show());
+  useDisableGestureNavigation();
+
   useEffect(() => {
     dispatch(setPidIssuanceRequest());
   }, [dispatch]);
@@ -51,36 +58,55 @@ const PidIssuanceRequest = () => {
 
   useHeaderSecondLevel({
     title: '',
-    canGoBack: success.status
+    canGoBack: success.status,
+    goBack: () => {
+      dismissalDialog.show();
+    }
+  });
+
+  const dismissalDialog = useItwDismissalDialog({
+    customLabels: {
+      title: I18n.t('discovery.screen.itw.dismissalDialog.title', {
+        ns: 'wallet'
+      }),
+      body: I18n.t('discovery.screen.itw.dismissalDialog.body', {
+        ns: 'wallet'
+      }),
+      confirmLabel: I18n.t('discovery.screen.itw.dismissalDialog.confirm', {
+        ns: 'wallet'
+      }),
+      cancelLabel: I18n.t('discovery.screen.itw.dismissalDialog.cancel', {
+        ns: 'wallet'
+      })
+    },
+    handleDismiss: () => navigateToWallet()
   });
 
   const PidPreview = ({ credential }: { credential: StoredCredential }) => (
     <>
-      <ForceScrollDownView contentContainerStyle={styles.scroll} threshold={50}>
+      <ForceScrollDownView
+        contentContainerStyle={styles.scroll}
+        footerActions={{
+          actions: {
+            type: 'SingleButton',
+            primary: {
+              label: I18n.t('buttons.continue', {
+                ns: 'global'
+              }),
+              onPress: () => dispatch(addPidWithIdentification({ credential }))
+            }
+          }
+        }}
+      >
         <VStack style={styles.contentWrapper}>
           <H2>{t('wallet:pidIssuance.preview.title')}</H2>
-          <H2>{t('wallet:pidIssuance.preview.subtitle')}</H2>
+          <VSpacer size={16} />
+          <Body>{t('wallet:pidIssuance.preview.subtitle')}</Body>
           <VSpacer size={24} />
           <View>
             <CredentialPreviewClaimsList data={credential} isPreview={true} />
           </View>
         </VStack>
-        <FooterActions
-          fixed={false}
-          actions={{
-            primary: {
-              label: t('wallet:pidIssuance.preview.button'),
-              onPress: () => dispatch(addPidWithIdentification({ credential })),
-              icon: 'add',
-              iconPosition: 'end'
-            },
-            secondary: {
-              label: t('global:buttons.cancel'),
-              onPress: navigateToWallet
-            },
-            type: 'TwoButtons'
-          }}
-        />
       </ForceScrollDownView>
     </>
   );
