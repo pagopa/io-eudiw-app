@@ -53,7 +53,7 @@ export type AppListenerWithAction<ActionType extends Action> = ListenerEffect<
 export type AppListener = ListenerEffectAPI<RootState, AppDispatch>;
 
 /**
- * Mount here onlylisteners required for the startup process and other global listeners not related to specific features.
+ * Mount here only listeners required for the startup process and other global listeners not related to specific features.
  * Feature-specific listeners are mounted by the startup process itself once the feature is initialized.
  */
 startAppListening({
