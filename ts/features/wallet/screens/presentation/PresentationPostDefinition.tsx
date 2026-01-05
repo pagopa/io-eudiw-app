@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
   Body,
   FeatureInfo,
@@ -14,6 +13,7 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import { Alert, StyleSheet, View } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   Descriptor,
@@ -34,7 +34,7 @@ export type PresentationPostDefinitionParams = {
   descriptor: Descriptor;
 };
 
-type Props = NativeStackScreenProps<
+type Props = StackScreenProps<
   WalletNavigatorParamsList,
   'PRESENTATION_POST_DEFINITION'
 >;

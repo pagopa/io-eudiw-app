@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import { Body } from '@pagopa/io-app-design-system';
 import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
@@ -24,7 +24,7 @@ export type PresentationPreDefinitionParams = {
   request_uri_method?: 'get' | 'post' | null;
 };
 
-type Props = NativeStackScreenProps<
+type Props = StackScreenProps<
   WalletNavigatorParamsList,
   'PRESENTATION_PRE_DEFINITION'
 >;

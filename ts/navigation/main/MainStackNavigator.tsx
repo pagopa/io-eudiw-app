@@ -1,4 +1,4 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { TabNavigator } from '../tab/TabNavigator';
 import WalletNavigator, {
@@ -20,7 +20,7 @@ export type MainNavigatorParamsList = {
   [MAIN_ROUTES.SHOW_QR]: undefined;
 };
 
-const Stack = createNativeStackNavigator<MainNavigatorParamsList>();
+const Stack = createStackNavigator<MainNavigatorParamsList>();
 
 /**
  * The main stack navigator which renders screen after the onboarding has been completed.
