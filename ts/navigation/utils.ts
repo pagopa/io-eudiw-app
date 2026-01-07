@@ -1,5 +1,5 @@
-import {createNavigationContainerRef} from '@react-navigation/native';
-import {RootStackParamList} from './RootStacknavigator';
+import { createNavigationContainerRef } from '@react-navigation/native';
+import { RootStackParamList } from './RootStacknavigator';
 
 /**
  * Navigation reference which can be used to navigate outside of React context.
@@ -37,7 +37,7 @@ export function navigateWithReset<RouteName extends keyof RootStackParamList>(
   if (navigationRef.isReady()) {
     navigationRef.reset({
       index: 0,
-      routes: [{name: args[0], params: args[1]}]
+      routes: [{ name: args[0], params: args[1] }]
     });
   }
 }

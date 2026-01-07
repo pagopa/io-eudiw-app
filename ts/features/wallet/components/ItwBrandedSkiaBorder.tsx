@@ -6,15 +6,15 @@ import {
   Paint,
   RoundedRect,
   Group as SkiaGroup
-} from "@shopify/react-native-skia";
-import { ColorSchemeName, LayoutRectangle } from "react-native";
-import { ItwBrandedSkiaGradient } from "./ItwBrandedSkiaGradient";
+} from '@shopify/react-native-skia';
+import { ColorSchemeName, LayoutRectangle } from 'react-native';
+import { ItwBrandedSkiaGradient } from './ItwBrandedSkiaGradient';
 
-export type ItwIridescentBorderVariant = "default" | "warning" | "error";
+export type ItwIridescentBorderVariant = 'default' | 'warning' | 'error';
 
 type ItwIridescentBorderProps = {
-  width: LayoutRectangle["width"];
-  height: LayoutRectangle["height"];
+  width: LayoutRectangle['width'];
+  height: LayoutRectangle['height'];
   variant?: ItwIridescentBorderVariant;
   thickness?: number;
   cornerRadius?: number;
@@ -31,10 +31,10 @@ export const ItwBrandedSkiaBorder = ({
   height,
   thickness = 3,
   cornerRadius = 16,
-  variant = "default",
-  themeType = "light"
+  variant = 'default',
+  themeType = 'light'
 }: ItwIridescentBorderProps) => {
-  const isLightMode = themeType === "light";
+  const isLightMode = themeType === 'light';
 
   /* Styles */
   const gradientTickOpacity = isLightMode ? 1 : 0.8;
@@ -44,7 +44,7 @@ export const ItwBrandedSkiaBorder = ({
     <Mask
       mode="alpha"
       mask={
-        <SkiaGroup blendMode={"colorDodge"} opacity={gradientBorderOpacity}>
+        <SkiaGroup blendMode={'colorDodge'} opacity={gradientBorderOpacity}>
           <ItwBrandedSkiaGradient
             width={width}
             height={height}
@@ -67,8 +67,8 @@ export const ItwBrandedSkiaBorder = ({
           height={height}
           r={cornerRadius}
           strokeWidth={thickness}
-          strokeJoin={"round"}
-          style={"stroke"}
+          strokeJoin={'round'}
+          style={'stroke'}
         />
       </SkiaGroup>
     </Mask>

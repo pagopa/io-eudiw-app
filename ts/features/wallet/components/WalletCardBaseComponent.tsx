@@ -1,12 +1,12 @@
-import { WithTestID } from "@pagopa/io-app-design-system";
-import { ComponentType } from "react";
+import { WithTestID } from '@pagopa/io-app-design-system';
+import { ComponentType } from 'react';
 
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 import Animated, {
   FadeIn,
   FadeOut,
   LinearTransition
-} from "react-native-reanimated";
+} from 'react-native-reanimated';
 
 // Wallet card base component props, which declares common props that wallet cards must have
 export type WalletCardComponentBaseProps<P> = WithTestID<{

@@ -2,15 +2,13 @@ import {
   HeaderActionProps,
   HeaderFirstLevel
 } from '@pagopa/io-app-design-system';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 import { useMemo } from 'react';
 import { WalletCardsContainer } from '../features/wallet/components/WalletCardsContainer';
 import { IOScrollView } from '../components/IOScrollView';
 import MAIN_ROUTES from '../navigation/main/routes';
 import WALLET_ROUTES from '../features/wallet/navigation/routes';
-import { useAppSelector } from '../store';
-import { lifecycleIsValidSelector } from '../features/wallet/store/lifecycle';
 
 /**
  * Wallet home to be rendered as the first page in the tab navigator.
@@ -18,30 +16,28 @@ import { lifecycleIsValidSelector } from '../features/wallet/store/lifecycle';
  * available in the wallet.
  */
 const WalletHome = () => {
-  const {t} = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation(['wallet', 'global']);
   const navigation = useNavigation();
-  const shouldRenderItwCardsContainer = useAppSelector(
-    lifecycleIsValidSelector
-  );
 
-  const actions : HeaderFirstLevel['actions'] = useMemo(() => {
-    const settings : HeaderActionProps = {
-      icon: 'coggle',
-      onPress: () =>
-        navigation.navigate('ROOT_MAIN_NAV', {screen: 'MAIN_SETTINGS'}),
-      accessibilityLabel: t('global:settings.title')
-    }; 
-
-    return shouldRenderItwCardsContainer ? [
+  const actions: HeaderFirstLevel['actions'] = useMemo(
+    () => [
       {
-        icon : 'add',
-        onPress : () => 
-          navigation.navigate(MAIN_ROUTES.WALLET_NAV, {screen : WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST}),
-        accessibilityLabel: t('global:settings.title') // TODO Insert correct label
+        icon: 'add',
+        onPress: () =>
+          navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+            screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST
+          }),
+        accessibilityLabel: t('global:settings.title')
       } satisfies HeaderActionProps,
-      settings
-    ] : [settings];
-  },[navigation, shouldRenderItwCardsContainer, t]);
+      {
+        icon: 'coggle',
+        onPress: () =>
+          navigation.navigate('ROOT_MAIN_NAV', { screen: 'MAIN_SETTINGS' }),
+        accessibilityLabel: t('global:settings.title')
+      }
+    ],
+    [navigation, t]
+  );
 
   return (
     <>
@@ -49,10 +45,7 @@ const WalletHome = () => {
         title={t('global:tabNavigator.wallet')}
         actions={actions}
       />
-      <IOScrollView
-        centerContent={true}
-        excludeSafeAreaMargins={true}
-      >
+      <IOScrollView centerContent={true} excludeSafeAreaMargins={true}>
         <WalletCardsContainer />
       </IOScrollView>
     </>

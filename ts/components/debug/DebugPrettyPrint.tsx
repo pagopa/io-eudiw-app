@@ -5,11 +5,11 @@ import {
   IOText,
   IconButton,
 } from '@pagopa/io-app-design-system';
-import {StyleSheet, View} from 'react-native';
-import {useMemo, useState} from 'react';
-import {truncateObjectStrings} from '../../utils/debug';
-import {Prettify} from '../../types/utils';
-import {withDebugEnabled} from './withDebugEnabled';
+import { StyleSheet, View } from 'react-native';
+import { useMemo, useState } from 'react';
+import { truncateObjectStrings } from '../../utils/debug';
+import { Prettify } from '../../types/utils';
+import { withDebugEnabled } from './withDebugEnabled';
 import { clipboardSetStringWithFeedback } from '../../utils/clipboard';
 
 type ExpandableProps =
@@ -35,7 +35,7 @@ type Props = Prettify<
  * The component it is rendered only if debug mode is enabled
  */
 export const DebugPrettyPrint = withDebugEnabled(
-  ({title, data, expandable = true, isExpanded = false}: Props) => {
+  ({ title, data, expandable = true, isExpanded = false }: Props) => {
     const [expanded, setExpanded] = useState(isExpanded);
 
     const content = useMemo(() => {
@@ -50,7 +50,8 @@ export const DebugPrettyPrint = withDebugEnabled(
             size={12}
             lineHeight={18}
             color="grey-650"
-            weight="Medium">
+            weight="Medium"
+          >
             {JSON.stringify(truncateObjectStrings(data), null, 2)}
           </IOText>
         </View>

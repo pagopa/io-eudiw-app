@@ -1,4 +1,4 @@
-import { IOColors } from "@pagopa/io-app-design-system";
+import { IOColors } from '@pagopa/io-app-design-system';
 import {
   BlendColor,
   Canvas,
@@ -7,17 +7,17 @@ import {
   RoundedRect,
   useImage,
   vec
-} from "@shopify/react-native-skia";
-import { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+} from '@shopify/react-native-skia';
+import { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
   useSharedValue,
   withTiming
-} from "react-native-reanimated";
-import { CardColorScheme } from "../types";
-import { wellKnownCredential } from "../utils/credentials";
+} from 'react-native-reanimated';
+import { CardColorScheme } from '../../types';
+import { wellKnownCredential } from '../../utils/credentials';
 
 type ItwCredentialCardBackgroundProps = {
   credentialType: string;
@@ -64,7 +64,7 @@ export const CardBackground = ({
         style={[
           loadingOverlayOpacityTransition,
           StyleSheet.absoluteFillObject,
-          { backgroundColor: IOColors["grey-100"] }
+          { backgroundColor: IOColors['grey-100'] }
         ]}
       />
       <Canvas style={{ flex: 1 }}>
@@ -74,9 +74,9 @@ export const CardBackground = ({
             fit="fill"
             width={size.width}
             height={size.height}
-            opacity={colorScheme === "default" ? 1 : 0.4}
+            opacity={colorScheme === 'default' ? 1 : 0.4}
           >
-            {colorScheme === "greyscale" && (
+            {colorScheme === 'greyscale' && (
               <BlendColor color="white" mode="color" />
             )}
           </Image>
@@ -91,12 +91,7 @@ export const CardBackground = ({
             <LinearGradient
               start={vec(0, 0)}
               end={vec(size.width, size.height)}
-              colors={
-                [
-                  IOColors["grey-100"],
-                  IOColors["grey-200"]
-                ]
-              }
+              colors={[IOColors['grey-100'], IOColors['grey-200']]}
             />
           </RoundedRect>
         )}
@@ -108,9 +103,9 @@ export const CardBackground = ({
 const credentialCardBackgrounds: {
   [type: string]: string;
 } = {
-  [wellKnownCredential.PID]: require('../assets/img/credentials/pid.png'),
-  [wellKnownCredential.DRIVING_LICENSE]: require('../assets/img/credentials/mdl.png'),
-  [wellKnownCredential.HEALTHID]: require('../assets/img/credentials/healthID.png'),
-  [wellKnownCredential.FBK_BADGE]: require('../assets/img/credentials/fbkBadge.png'),
-  [wellKnownCredential.DISABILITY_CARD]: require('../assets/img/credentials/disabilityCard.png')
+  [wellKnownCredential.PID]: require('../../assets/img/credentials/pid.png'),
+  [wellKnownCredential.DRIVING_LICENSE]: require('../../assets/img/credentials/mdl.png'),
+  [wellKnownCredential.HEALTHID]: require('../../assets/img/credentials/healthID.png'),
+  [wellKnownCredential.FBK_BADGE]: require('../../assets/img/credentials/fbkBadge.png'),
+  [wellKnownCredential.DISABILITY_CARD]: require('../../assets/img/credentials/disabilityCard.png')
 };

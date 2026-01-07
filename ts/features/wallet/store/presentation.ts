@@ -1,6 +1,6 @@
 /* eslint-disable functional/immutable-data */
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {Credential} from '@pagopa/io-react-native-wallet';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Credential } from '@pagopa/io-react-native-wallet';
 import {
   AsyncStatusValues,
   setError,
@@ -8,19 +8,16 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import {RootState} from '../../../store/types';
-import {preferencesReset} from '../../../store/reducers/preferences';
-import {PresentationPreDefinitionParams} from '../screens/presentation/PresentationPreDefinition';
-import {resetLifecycle} from './lifecycle';
+import { RootState } from '../../../store/types';
+import { preferencesReset } from '../../../store/reducers/preferences';
+import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
+import { CredentialTypePresentationClaimsListDescriptor } from '../components/presentation/CredentialTypePresentationClaimsList';
+import { resetLifecycle } from './lifecycle';
 
 /**
  * Type for the description which contains the requested claims during the presentation.
  */
-export type Descriptor = Array<
-  Awaited<
-    ReturnType<typeof Credential.Presentation.evaluateInputDescriptors>
-  >[0]['evaluatedDisclosure']
->;
+export type Descriptor = CredentialTypePresentationClaimsListDescriptor;
 
 /**
  * Response type for the authorization request which is the final step of the presentation flow.
@@ -32,7 +29,7 @@ export type AuthResponse = Awaited<
 /**
  * Type of the optional claims names selected by the user.
  */
-export type OptionalClaims = Descriptor[0]['optionalDisclosures'][0]; // The optional claims selected by the user
+export type OptionalClaims = Descriptor[0]['optionalDisclosures']; // The optional claims selected by the user
 
 /* State type definition for the presentation slice
  * preDefinition - Async status for the prestation before receiving the descriptor
@@ -62,7 +59,10 @@ export const presentationSlice = createSlice({
     ) => {
       state.preDefinition = setLoading();
     },
-    setPreDefinitionError: (state, action: PayloadAction<{error: unknown}>) => {
+    setPreDefinitionError: (
+      state,
+      action: PayloadAction<{ error: unknown }>
+    ) => {
       state.preDefinition = setError(action.payload.error);
     },
     setPreDefinitionSuccess: (state, action: PayloadAction<Descriptor>) => {
@@ -84,7 +84,7 @@ export const presentationSlice = createSlice({
     setPostDefinitionCancel: _ => {},
     setPostDefinitionError: (
       state,
-      action: PayloadAction<{error: unknown}>
+      action: PayloadAction<{ error: unknown }>
     ) => {
       state.postDefinition = setError(action.payload.error);
     },
@@ -125,7 +125,7 @@ export const {
 /**
  * Exports the reducer for the presetation slice.
  */
-export const {reducer: presentationReducer} = presentationSlice;
+export const { reducer: presentationReducer } = presentationSlice;
 
 /**
  * Selects for the preDefinition status in the presentation slice, containg the

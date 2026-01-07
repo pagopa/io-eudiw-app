@@ -9,17 +9,17 @@ import {
   IOVisualCostants,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import {useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
-import {useAppDispatch, useAppSelector} from '../../../../store';
-import {selectCredential} from '../../store/credentials';
+import { useCallback, useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch, useAppSelector } from '../../../../store';
+import { selectCredential } from '../../store/credentials';
 import {
   getCredentialNameByType,
   wellKnownCredential
 } from '../../utils/credentials';
-import {useHeaderSecondLevel} from '../../../../hooks/useHeaderSecondLevel';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus,
@@ -29,6 +29,9 @@ import {
 import CredentialTypePresentationClaimsList, {
   CredentialTypePresentationClaimsListDescriptor
 } from '../../components/presentation/CredentialTypePresentationClaimsList';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 
 /**
  * Screen which shows the user the credentials and claims that will be shared with the credential issuer
@@ -37,12 +40,13 @@ import CredentialTypePresentationClaimsList, {
 const CredentialTrust = () => {
   const dispatch = useAppDispatch();
   const pid = useAppSelector(selectCredential(wellKnownCredential.PID));
-  const {t} = useTranslation(['global', 'wallet']);
-  const {loading, error, success} = useAppSelector(
+  const { t } = useTranslation(['global', 'wallet']);
+  const { loading, error, success } = useAppSelector(
     selectCredentialIssuancePostAuthStatus
   );
   const requestedCredential = useAppSelector(selectRequestedCredentialType);
   const navigation = useNavigation();
+  const { navigateToWallet } = useNavigateToWalletWithReset();
 
   const navigateToErrorScreen = useCallback(
     () =>
@@ -52,12 +56,37 @@ const CredentialTrust = () => {
     [navigation]
   );
 
-  const goBack = useCallback(() => {
-    navigation.goBack();
+  const cancel = useCallback(() => {
     dispatch(resetCredentialIssuance());
-  }, [dispatch, navigation]);
+    navigateToWallet();
+  }, [dispatch, navigateToWallet]);
 
-  useHeaderSecondLevel({title: '', goBack});
+  const dismissalDialog = useItwDismissalDialog({
+    handleDismiss: cancel,
+    customLabels: {
+      title: t('generic.alert.title', {
+        ns: 'wallet'
+      }),
+      body: t('generic.alert.body', {
+        ns: 'wallet'
+      }),
+      confirmLabel: t('generic.alert.confirm', {
+        ns: 'wallet'
+      }),
+      cancelLabel: t('generic.alert.cancel', {
+        ns: 'wallet'
+      })
+    }
+  });
+
+  useHeaderSecondLevel({
+    title: '',
+    goBack: () => {
+      dismissalDialog.show();
+    }
+  });
+
+  useDisableGestureNavigation();
 
   /**
    * When the post auth request is successful, navigate to the preview screen
@@ -105,7 +134,7 @@ const CredentialTrust = () => {
 
   return (
     <ForceScrollDownView threshold={50}>
-      <View style={{margin: IOVisualCostants.appMarginDefault, flexGrow: 1}}>
+      <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
         <VSpacer size={24} />
         <View style={styles.header}>
           <Icon name={'device'} color={'grey-450'} size={24} />
@@ -147,7 +176,9 @@ const CredentialTrust = () => {
           },
           secondary: {
             label: t('global:buttons.cancel'),
-            onPress: goBack
+            onPress: () => {
+              dismissalDialog.show();
+            }
           }
         }}
       />

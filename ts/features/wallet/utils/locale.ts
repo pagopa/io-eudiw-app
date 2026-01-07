@@ -24,5 +24,5 @@ export const localeToClaimsLocales = new Map<string, ClaimsLocales>([
  * @returns a enum value for the claims locale.
  */
 export const getClaimsFullLocale = (): ClaimsLocales =>
-  localeToClaimsLocales.get(i18next.resolvedLanguage ?? ClaimsLocales.en) ??
-  ClaimsLocales.en;
+  localeToClaimsLocales.get(i18next.resolvedLanguage ?? ClaimsLocales.it) ??
+  ClaimsLocales.it;

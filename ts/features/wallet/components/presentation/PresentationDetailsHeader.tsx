@@ -1,15 +1,15 @@
-import {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Alert, VSpacer} from '@pagopa/io-app-design-system';
-import {StoredCredential} from '../../utils/types';
+import { memo } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Alert, VSpacer } from '@pagopa/io-app-design-system';
+import { StoredCredential } from '../../utils/types';
 import {
   getCredentialAlertPropsByCredentialType,
   getThemeColorByCredentialType
 } from '../../utils/style';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
-import {PresentationCredentialCard} from './PresentationCredentialCard';
+import { PresentationCredentialCard } from './PresentationCredentialCard';
 
-type ItwPresentationDetailsHeaderProps = {credential: StoredCredential};
+type ItwPresentationDetailsHeaderProps = { credential: StoredCredential };
 
 /**
  * This component renders the header for the presentation details screen of a credential
@@ -18,7 +18,7 @@ type ItwPresentationDetailsHeaderProps = {credential: StoredCredential};
 const PresentationDetailsHeader = ({
   credential
 }: ItwPresentationDetailsHeaderProps) => {
-  const {backgroundColor, statusBarStyle} = getThemeColorByCredentialType(
+  const { backgroundColor, statusBarStyle } = getThemeColorByCredentialType(
     credential.credentialType
   );
 
@@ -53,4 +53,4 @@ const styles = StyleSheet.create({
 
 const MemoizedItwPresentationDetailsHeader = memo(PresentationDetailsHeader);
 
-export {MemoizedItwPresentationDetailsHeader as PresentationDetailsHeader};
+export { MemoizedItwPresentationDetailsHeader as PresentationDetailsHeader };

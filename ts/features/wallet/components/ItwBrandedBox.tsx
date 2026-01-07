@@ -1,19 +1,19 @@
 /* eslint-disable functional/immutable-data */
-import { useIOThemeContext } from "@pagopa/io-app-design-system";
+import { useIOThemeContext } from '@pagopa/io-app-design-system';
 import {
   Canvas,
   Circle as SkiaCircle,
   Group as SkiaGroup,
   RadialGradient as SkiaRadialGradient,
   vec
-} from "@shopify/react-native-skia";
-import { PropsWithChildren, useState } from "react";
+} from '@shopify/react-native-skia';
+import { PropsWithChildren, useState } from 'react';
 import {
   LayoutChangeEvent,
   LayoutRectangle,
   StyleSheet,
   View
-} from "react-native";
+} from 'react-native';
 import {
   Extrapolation,
   interpolate,
@@ -22,10 +22,10 @@ import {
   useAnimatedSensor,
   useDerivedValue,
   useSharedValue
-} from "react-native-reanimated";
-import { useItWalletTheme } from "../utils/theme";
-import { ItwSkiaBrandedGradientVariant } from "./ItwBrandedSkiaGradient";
-import { ItwBrandedSkiaBorder } from "./ItwBrandedSkiaBorder";
+} from 'react-native-reanimated';
+import { useItWalletTheme } from '../utils/theme';
+import { ItwSkiaBrandedGradientVariant } from './ItwBrandedSkiaGradient';
+import { ItwBrandedSkiaBorder } from './ItwBrandedSkiaBorder';
 
 type ItwIridescentBorderProps = {
   variant?: ItwSkiaBrandedGradientVariant;
@@ -35,7 +35,7 @@ type ItwIridescentBorderProps = {
 
 /* Light */
 const lightScaleMultiplier = 1;
-const lightSize: LayoutRectangle["width"] = 250;
+const lightSize: LayoutRectangle['width'] = 250;
 const visibleLightPercentage = 0.25; // Visible light when it's near box boundaries
 
 /**
@@ -44,12 +44,12 @@ const visibleLightPercentage = 0.25; // Visible light when it's near box boundar
 export const ItwBrandedBox = ({
   borderThickness = 3,
   cornerRadius = 16,
-  variant = "default",
+  variant = 'default',
   children
 }: PropsWithChildren<ItwIridescentBorderProps>) => {
   const theme = useItWalletTheme();
   const { themeType } = useIOThemeContext();
-  const isLightMode = themeType === "light";
+  const isLightMode = themeType === 'light';
 
   const [size, setSize] = useState<{ width: number; height: number }>({
     width: 0,
@@ -121,22 +121,22 @@ export const ItwBrandedBox = ({
             0.647, 0.71, 0.775, 0.845, 0.919, 1
           ]}
           colors={[
-            "rgba(255,255,255,1)",
-            "rgba(255,255,255,0.987)",
-            "rgba(255,255,255,0.95)",
-            "rgba(255,255,255,0.89)",
-            "rgba(255,255,255,0.825)",
-            "rgba(255,255,255,0.74)",
-            "rgba(255,255,255,0.65)",
-            "rgba(255,255,255,0.55)",
-            "rgba(255,255,255,0.45)",
-            "rgba(255,255,255,0.35)",
-            "rgba(255,255,255,0.26)",
-            "rgba(255,255,255,0.175)",
-            "rgba(255,255,255,0.1)",
-            "rgba(255,255,255,0.05)",
-            "rgba(255,255,255,0.01)",
-            "rgba(255,255,255,0)"
+            'rgba(255,255,255,1)',
+            'rgba(255,255,255,0.987)',
+            'rgba(255,255,255,0.95)',
+            'rgba(255,255,255,0.89)',
+            'rgba(255,255,255,0.825)',
+            'rgba(255,255,255,0.74)',
+            'rgba(255,255,255,0.65)',
+            'rgba(255,255,255,0.55)',
+            'rgba(255,255,255,0.45)',
+            'rgba(255,255,255,0.35)',
+            'rgba(255,255,255,0.26)',
+            'rgba(255,255,255,0.175)',
+            'rgba(255,255,255,0.1)',
+            'rgba(255,255,255,0.05)',
+            'rgba(255,255,255,0.01)',
+            'rgba(255,255,255,0)'
           ]}
         />
       </SkiaCircle>
@@ -154,7 +154,7 @@ export const ItwBrandedBox = ({
       style={[
         styles.container,
         {
-          backgroundColor: theme["banner-background"]
+          backgroundColor: theme['banner-background']
         }
       ]}
     >
@@ -164,7 +164,7 @@ export const ItwBrandedBox = ({
       {/* Skia Canvas for border and light effect */}
       <Canvas
         style={{
-          position: "absolute",
+          position: 'absolute',
           height: size.height,
           width: size.width
         }}
@@ -189,9 +189,9 @@ export const ItwBrandedBox = ({
 const styles = StyleSheet.create({
   container: {
     borderRadius: 16,
-    borderCurve: "continuous",
+    borderCurve: 'continuous',
     padding: 16,
     gap: 6,
-    overflow: "hidden"
+    overflow: 'hidden'
   }
 });

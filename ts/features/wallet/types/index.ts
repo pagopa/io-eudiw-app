@@ -1,15 +1,15 @@
-import { Prettify } from "../../../types/utils";
-import { ItwCredentialCard } from "../components/ItwCredentialCard";
+import { Prettify } from '../../../types/utils';
+import { ItwCredentialCard } from '../components/credential/ItwCredentialCard';
 
 // Digital credential status
-export type ItwJwtCredentialStatus = "valid" | "jwtExpired" | "jwtExpiring";
+export type ItwJwtCredentialStatus = 'valid' | 'jwtExpired' | 'jwtExpiring';
 // Combined status of a credential, that includes both the physical and the digital version
 export type ItwCredentialStatus =
-  | "unknown"
-  | "valid"
-  | "invalid"
-  | "expiring"
-  | "expired"
+  | 'unknown'
+  | 'valid'
+  | 'invalid'
+  | 'expiring'
+  | 'expired'
   | ItwJwtCredentialStatus;
 
 /**
@@ -27,24 +27,22 @@ type WalletCardBase = {
   hidden?: true;
 };
 
-
 // IT Wallet
 export type WalletCardItw = Prettify<
   {
-    type: "itw";
+    type: 'itw';
   } & ItwCredentialCard
 >;
 
-
 // This card type renders a loading skeleton, used as a placeholder for other cards
 export type WalletCardPlaceholder = {
-  type: "placeholder";
+  type: 'placeholder';
 };
 
 // Base WalletCard type, which includes all card types
-export type WalletCard = WalletCardBase & WalletCardItw ;
+export type WalletCard = WalletCardBase & WalletCardItw;
 
 // Used to map the card to the specific component that will render the card.
-export type WalletCardType = WalletCard["type"];
+export type WalletCardType = WalletCard['type'];
 
-export type CardColorScheme = "default" | "faded" | "greyscale";
+export type CardColorScheme = 'default' | 'faded' | 'greyscale';
