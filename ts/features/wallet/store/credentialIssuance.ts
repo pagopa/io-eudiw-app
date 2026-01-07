@@ -12,7 +12,7 @@ import { StoredCredential } from '../utils/types';
 import { preferencesReset } from '../../../store/reducers/preferences';
 import { resetLifecycle } from './lifecycle';
 
-type RequestedCredential = string | undefined;
+export type RequestedCredential = string | undefined;
 type RequestedCredentialType = string | undefined;
 
 type ObtainCredentialPreAuthResult = boolean;

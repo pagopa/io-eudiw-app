@@ -9,8 +9,6 @@ import { WalletCardsContainer } from '../features/wallet/components/WalletCardsC
 import { IOScrollView } from '../components/IOScrollView';
 import MAIN_ROUTES from '../navigation/main/routes';
 import WALLET_ROUTES from '../features/wallet/navigation/routes';
-import { useAppSelector } from '../store';
-import { lifecycleIsValidSelector } from '../features/wallet/store/lifecycle';
 
 /**
  * Wallet home to be rendered as the first page in the tab navigator.
@@ -20,32 +18,26 @@ import { lifecycleIsValidSelector } from '../features/wallet/store/lifecycle';
 const WalletHome = () => {
   const { t } = useTranslation(['wallet', 'global']);
   const navigation = useNavigation();
-  const shouldRenderItwCardsContainer = useAppSelector(
-    lifecycleIsValidSelector
+
+  const actions: HeaderFirstLevel['actions'] = useMemo(
+    () => [
+      {
+        icon: 'add',
+        onPress: () =>
+          navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+            screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST
+          }),
+        accessibilityLabel: t('global:settings.title')
+      } satisfies HeaderActionProps,
+      {
+        icon: 'coggle',
+        onPress: () =>
+          navigation.navigate('ROOT_MAIN_NAV', { screen: 'MAIN_SETTINGS' }),
+        accessibilityLabel: t('global:settings.title')
+      }
+    ],
+    [navigation, t]
   );
-
-  const actions: HeaderFirstLevel['actions'] = useMemo(() => {
-    const settings: HeaderActionProps = {
-      icon: 'coggle',
-      onPress: () =>
-        navigation.navigate('ROOT_MAIN_NAV', { screen: 'MAIN_SETTINGS' }),
-      accessibilityLabel: t('global:settings.title')
-    };
-
-    return shouldRenderItwCardsContainer
-      ? [
-          {
-            icon: 'add',
-            onPress: () =>
-              navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-                screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST
-              }),
-            accessibilityLabel: t('global:settings.title')
-          } satisfies HeaderActionProps,
-          settings
-        ]
-      : [settings];
-  }, [navigation, shouldRenderItwCardsContainer, t]);
 
   return (
     <>

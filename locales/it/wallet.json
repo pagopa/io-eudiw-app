@@ -23,11 +23,6 @@
     },
     "digital" : "Versione Digitale"
   },
-  "activationBanner": {
-    "title": "IT-Wallet per i tuoi documenti",
-    "description": "Porta i tuoi documenti digitali verso funzionalità evolute con l'unico portafoglio digitale di Stato: **pubblico, sicuro e gratuito**. Garantito dallo Stato, accessibile solo a te.",
-    "action": "Ottieni IT-Wallet"
-  },
   "discovery": {
     "screen": {
       "itw": {
@@ -131,7 +126,8 @@
             "confirm": "Yes, remove"
           }
         }
-      }
+      },
+      "partOf" : "Parte di"
     },
     "loading": {
       "title": "We are doing some security checks",
@@ -234,7 +230,11 @@
     "addCredential": "Add document",
     "badges": {
       "saved": "Saved"
-    }
+    },
+        "screen": {
+          "emptyMessage": "La tua Patente di guida, la tua Tessera Sanitaria e altri documenti digitali appariranno qui!",
+          "cta": "Aggiungi un documento"
+        }
   },
   "credentialIssuance": {
     "badges": {
@@ -275,6 +275,14 @@
           "content": "È tutto pronto: aggiungi un documento al tuo Portafoglio di IO.",
           "action": "Aggiungi documento"
       }
+    }
+  },
+  "generic" : {
+    "alert": {
+      "title": "Vuoi interrompere l'operazione?",
+      "body": "Dovrai ripetere di nuovo tutti i passaggi",
+      "confirm": "Sì, interrompi",
+      "cancel": "No, riprendi"
     }
   }
 }

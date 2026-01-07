@@ -11,6 +11,7 @@ import {
 import { StoredCredential } from '../utils/types';
 import { preferencesReset } from '../../../store/reducers/preferences';
 import { resetLifecycle } from './lifecycle';
+import { RequestedCredential } from './credentialIssuance';
 
 /* State type definition for the pidIssuance slice
  * issuanceCreation - Async status for the instance creation
@@ -19,12 +20,14 @@ import { resetLifecycle } from './lifecycle';
 export type PidIssuanceStatusState = {
   instanceCreation: AsyncStatusValues;
   issuance: AsyncStatusValues<StoredCredential>;
+  pendingCredential: RequestedCredential;
 };
 
 // Initial state for the pidIssuance slice
 const initialState: PidIssuanceStatusState = {
   instanceCreation: setInitial(),
-  issuance: setInitial()
+  issuance: setInitial(),
+  pendingCredential: undefined
 };
 
 /**
@@ -64,6 +67,12 @@ const pidIssuanceStatusSlice = createSlice({
     },
     resetPidIssuance: state => {
       state.issuance = setInitial();
+    },
+    setPendingCredential: (
+      state,
+      action: PayloadAction<{ credential: RequestedCredential }>
+    ) => {
+      state.pendingCredential = action.payload.credential;
     }
   },
   extraReducers: builder => {
@@ -85,6 +94,7 @@ export const {
   setPidIssuanceRequest,
   setPidIssuanceError,
   setPidIssuanceSuccess,
+  setPendingCredential,
   resetPidIssuance
 } = pidIssuanceStatusSlice.actions;
 
@@ -126,3 +136,11 @@ export const selectPidIssuanceData = (state: RootState) =>
  */
 export const selectPidIssuanceError = (state: RootState) =>
   state.wallet.pidIssuanceStatus.issuance.error.error;
+
+/**
+ * Selects the pending credential to issue after the Wallet Eid has been obtained
+ * @param state - The root state
+ * @returns The credential to issue after the wallet is operational
+ */
+export const selectPendingCredential = (state: RootState) =>
+  state.wallet.pidIssuanceStatus.pendingCredential;

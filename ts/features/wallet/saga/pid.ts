@@ -14,12 +14,12 @@ import { serializeError } from 'serialize-error';
 import { regenerateCryptoKey } from '../../../utils/crypto';
 import { DPOP_KEYTAG } from '../utils/crypto';
 import {
+  selectPendingCredential,
   setPidIssuanceError,
   setPidIssuanceRequest,
   setPidIssuanceSuccess
 } from '../store/pidIssuance';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
-import { navigate } from '../../../navigation/utils';
 import { addCredential, addPidWithIdentification } from '../store/credentials';
 import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 import {
@@ -28,6 +28,10 @@ import {
 } from '../../../saga/identification';
 import { createWalletProviderFetch } from '../utils/fetch';
 import { selectSessionId } from '../../../store/reducers/preferences';
+import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
+import { navigate } from '../../../navigation/utils';
+import MAIN_ROUTES from '../../../navigation/main/routes';
+import WALLET_ROUTES from '../navigation/routes';
 import { getAttestation } from './attestation';
 
 /**
@@ -207,7 +211,20 @@ function* onStorePidIdentified(
 ) {
   yield* put(addCredential({ credential: action.payload.credential }));
   yield* put(setLifecycle({ lifecycle: Lifecycle.LIFECYCLE_VALID }));
-  navigate('MAIN_WALLET_NAV', { screen: 'PID_ISSUANCE_SUCCESS' });
+
+  // Get the pending required credential to be obtained after the Pid
+  const pendingCredential = yield* select(selectPendingCredential);
+  if (!pendingCredential) {
+    throw new Error(
+      'Error: The issuance flow has not specified any credential'
+    );
+  }
+  yield* put(
+    setCredentialIssuancePreAuthRequest({ credential: pendingCredential })
+  );
+  navigate(MAIN_ROUTES.WALLET_NAV, {
+    screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
+  });
 }
 
 /**
