@@ -8,7 +8,6 @@ import { preferencesReset } from '../../../store/reducers/preferences';
 import { wellKnownCredential } from '../utils/credentials';
 import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
-import { ItwCredentialCard } from '../components/credential/ItwCredentialCard';
 import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the credentials slice.
@@ -124,7 +123,7 @@ export const selectCredential = (credentialType: string) =>
     credentials.find(c => c.credentialType === credentialType)
   );
 
-export const itwCredentialsEidSelector = selectCredential(
+export const itwCredentialsPidSelector = selectCredential(
   wellKnownCredential.PID
 );
 
@@ -134,25 +133,25 @@ export const itwCredentialsEidSelector = selectCredential(
  * @param state - The global state.
  * @returns The credential status and the error message corresponding to the status assertion error, if present.
  */
-export const itwCredentialsEidStatusSelector = createSelector(
-  itwCredentialsEidSelector,
+export const itwCredentialsPidStatusSelector = createSelector(
+  itwCredentialsPidSelector,
   pid =>
     pid ? (getCredentialStatus(pid) as ItwJwtCredentialStatus) : undefined
 );
 
 /**
- * Returns the eID credential expiration date, if present.
+ * Returns the pid credential expiration date, if present.
  *
  * @param state - The global state.
- * @returns The eID credential expiration date.
+ * @returns The pid credential expiration date.
  */
-export const itwCredentialsEidExpirationSelector = createSelector(
-  itwCredentialsEidSelector,
+export const itwCredentialsPidExpirationSelector = createSelector(
+  itwCredentialsPidSelector,
   pid => pid?.expiration
 );
 
 /**
- * Selects all the credentials beside the PID/EID and transforms them
+ * Selects all the credentials beside the PID and transforms them
  * into {@link ItwCredentialCard}
  */
 export const selectWalletCards: (state: RootState) => Array<WalletCard> =

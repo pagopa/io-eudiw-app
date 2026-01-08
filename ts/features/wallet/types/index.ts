@@ -22,7 +22,7 @@ type WalletCardBase = {
   key: string;
   /**
    * Marks a card as hidden. Hidden cards are not displayed in the wallet UI
-   * Usefull when we need to remove card without deleting its data from the wallet
+   * Useful when we need to remove card without deleting its data from the wallet
    */
   hidden?: true;
 };

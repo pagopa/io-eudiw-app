@@ -6,15 +6,15 @@ import { useDebugInfo } from '../../../hooks/useDebugInfo';
 import { useAppSelector } from '../../../store';
 import { ItwJwtCredentialStatus } from '../utils/itwTypesUtils';
 import {
-  itwCredentialsEidExpirationSelector,
-  itwCredentialsEidStatusSelector,
+  itwCredentialsPidExpirationSelector,
+  itwCredentialsPidStatusSelector,
   selectWalletCards
 } from '../store/credentials';
 import WALLET_ROUTES from '../navigation/routes';
 import MAIN_ROUTES from '../../../navigation/main/routes';
 import { wellKnownCredential } from '../utils/credentials';
 import { MainNavigatorParamsList } from '../../../navigation/main/MainStackNavigator';
-import { ItwEidLifecycleAlert } from './ItwEidLifecycleAlert';
+import { ItwPidLifecycleAlert } from './ItwPidLifecycleAlert';
 import { ItwWalletReadyBanner } from './ItwWalletReadyBanner';
 import { ItwWalletIdStatus } from './ItwWalletIdStatus';
 import { WalletCardsCategoryContainer } from './WalletCardsCategoryContainer';
@@ -28,13 +28,13 @@ export const ItwWalletCardsContainer = () => {
   const navigation =
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
   const cards = useAppSelector(selectWalletCards);
-  const eidStatus = useAppSelector(itwCredentialsEidStatusSelector);
-  const eidExpiration = useAppSelector(itwCredentialsEidExpirationSelector);
+  const pidStatus = useAppSelector(itwCredentialsPidStatusSelector);
+  const pidExpiration = useAppSelector(itwCredentialsPidExpirationSelector);
 
   useDebugInfo({
     itw: {
-      eidStatus,
-      eidExpiration,
+      pidStatus,
+      pidExpiration,
       cards
     }
   });
@@ -52,14 +52,14 @@ export const ItwWalletCardsContainer = () => {
     (): React.ReactElement => (
       <>
         <ItwWalletIdStatus
-          pidStatus={eidStatus}
-          pidExpiration={eidExpiration}
+          pidStatus={pidStatus}
+          pidExpiration={pidExpiration}
           onPress={handleNavigateToItwId}
         />
         <VSpacer size={16} />
       </>
     ),
-    [eidStatus, eidExpiration, handleNavigateToItwId]
+    [pidStatus, pidExpiration, handleNavigateToItwId]
   );
 
   return (
@@ -72,7 +72,7 @@ export const ItwWalletCardsContainer = () => {
         topElement={
           <>
             <ItwWalletReadyBanner />
-            <ItwEidLifecycleAlert
+            <ItwPidLifecycleAlert
               lifecycleStatus={LIFECYCLE_STATUS}
               navigation={navigation}
             />

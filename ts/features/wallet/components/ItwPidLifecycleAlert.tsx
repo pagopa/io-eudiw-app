@@ -9,8 +9,8 @@ import { ItwJwtCredentialStatus } from '../utils/itwTypesUtils';
 import { StoredCredential } from '../utils/types';
 import { useAppSelector } from '../../../store';
 import {
-  itwCredentialsEidSelector,
-  itwCredentialsEidStatusSelector
+  itwCredentialsPidSelector,
+  itwCredentialsPidStatusSelector
 } from '../store/credentials';
 import WALLET_ROUTES from '../navigation/routes';
 import MAIN_ROUTES from '../../../navigation/main/routes';
@@ -24,7 +24,7 @@ const defaultLifecycleStatus: Array<ItwJwtCredentialStatus> = [
 
 type Props = {
   /**
-   * The eID statuses that will render the alert.
+   * The pid statuses that will render the alert.
    */
   lifecycleStatus?: Array<ItwJwtCredentialStatus>;
   navigation: ReturnType<
@@ -33,105 +33,105 @@ type Props = {
 };
 
 /**
- * This component renders an alert that displays information on the eID status.
+ * This component renders an alert that displays information on the pid status.
  */
-export const ItwEidLifecycleAlert = ({
+export const ItwPidLifecycleAlert = ({
   lifecycleStatus = defaultLifecycleStatus,
   navigation
 }: Props) => {
-  const eid = useAppSelector(itwCredentialsEidSelector);
-  const maybeEidStatus = useAppSelector(itwCredentialsEidStatusSelector);
+  const pid = useAppSelector(itwCredentialsPidSelector);
+  const maybePidStatus = useAppSelector(itwCredentialsPidStatusSelector);
 
-  const startEidReissuing = () => {
+  const startPidReissuing = () => {
     navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
       screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
     });
   };
 
   const Content = ({
-    eidCredential,
-    eidStatus
+    pidCredential,
+    pidStatus
   }: {
-    eidCredential: StoredCredential;
-    eidStatus: ItwJwtCredentialStatus;
+    pidCredential: StoredCredential;
+    pidStatus: ItwJwtCredentialStatus;
   }) => {
     const nameSpace = 'itw';
 
     const alertProps = useMemo<ComponentProps<typeof Alert>>(() => {
-      const eIDAlertPropsMap: Record<
+      const pidAlertPropsMap: Record<
         ItwJwtCredentialStatus,
         ComponentProps<typeof Alert>
       > = {
         valid: {
-          testID: 'itwEidLifecycleAlertTestID_valid',
+          testID: 'itwPidLifecycleAlertTestID_valid',
           variant: 'success',
           content: I18n.t(
-            `presentation.bottomSheets.eidInfo.alert.${nameSpace}.valid`,
+            `presentation.bottomSheets.pidInfo.alert.${nameSpace}.valid`,
             {
-              date: eidCredential.issuedAt
-                ? format(eidCredential.issuedAt, 'dd-MM-yyyy')
+              date: pidCredential.issuedAt
+                ? format(pidCredential.issuedAt, 'dd-MM-yyyy')
                 : '-',
               ns: 'wallet'
             }
           )
         },
         jwtExpiring: {
-          testID: 'itwEidLifecycleAlertTestID_jwtExpiring',
+          testID: 'itwPidLifecycleAlertTestID_jwtExpiring',
           variant: 'warning',
           content: I18n.t(
-            `presentation.bottomSheets.eidInfo.alert.${nameSpace}.expiring`,
+            `presentation.bottomSheets.pidInfo.alert.${nameSpace}.expiring`,
             // TODO [SIW-3225]: date in bold
             {
-              date: format(eidCredential.expiration, 'dd-MM-yyyy'),
+              date: format(pidCredential.expiration, 'dd-MM-yyyy'),
               ns: 'wallet'
             }
           ),
           action: I18n.t(
-            `presentation.bottomSheets.eidInfo.alert.${nameSpace}.action`,
+            `presentation.bottomSheets.pidInfo.alert.${nameSpace}.action`,
             {
               ns: 'wallet'
             }
           ),
-          onPress: startEidReissuing
+          onPress: startPidReissuing
         },
         jwtExpired: {
-          testID: 'itwEidLifecycleAlertTestID_jwtExpired',
+          testID: 'itwPidLifecycleAlertTestID_jwtExpired',
           variant: 'error',
           content: I18n.t(
-            `presentation.bottomSheets.eidInfo.alert.${nameSpace}.expired`,
+            `presentation.bottomSheets.pidInfo.alert.${nameSpace}.expired`,
             {
               ns: 'wallet'
             }
           ),
           action: I18n.t(
-            `presentation.bottomSheets.eidInfo.alert.${nameSpace}.action`,
+            `presentation.bottomSheets.pidInfo.alert.${nameSpace}.action`,
             { ns: 'wallet' }
           ),
-          onPress: startEidReissuing
+          onPress: startPidReissuing
         }
       };
 
-      return eIDAlertPropsMap[eidStatus];
+      return pidAlertPropsMap[pidStatus];
     }, [
-      eidStatus,
-      eidCredential.issuedAt,
-      eidCredential.expiration,
+      pidStatus,
+      pidCredential.issuedAt,
+      pidCredential.expiration,
       nameSpace
     ]);
 
-    if (!lifecycleStatus.includes(eidStatus)) {
+    if (!lifecycleStatus.includes(pidStatus)) {
       return null;
     }
 
     return (
-      <View style={{ marginBottom: 16 }} testID={`itwEidLifecycleAlertTestID`}>
+      <View style={{ marginBottom: 16 }} testID={`itwPidLifecycleAlertTestID`}>
         <Alert {...alertProps} />
       </View>
     );
   };
 
   return (
-    eid &&
-    maybeEidStatus && <Content eidCredential={eid} eidStatus={maybeEidStatus} />
+    pid &&
+    maybePidStatus && <Content pidCredential={pid} pidStatus={'jwtExpiring'} />
   );
 };

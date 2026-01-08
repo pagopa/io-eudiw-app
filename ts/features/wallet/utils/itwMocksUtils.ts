@@ -1,5 +1,5 @@
 import dc from '../__mocks__/dc.json';
-import eid from '../__mocks__/eid.json';
+import pid from '../__mocks__/pid.json';
 import dcL3 from '../__mocks__/L3/dcL3.json';
 import edL3 from '../__mocks__/L3/edL3.json';
 import eeL3 from '../__mocks__/L3/eeL3.json';
@@ -30,7 +30,7 @@ export enum CredentialType {
 }
 
 export const ItwStoredCredentialsMocks = {
-  eid: eid as unknown as StoredCredential,
+  pid: pid as unknown as StoredCredential,
   dc: dc as unknown as StoredCredential,
   mdl: mdl as unknown as StoredCredential,
   ts: ts as unknown as StoredCredential,

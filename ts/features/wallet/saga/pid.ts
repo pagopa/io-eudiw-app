@@ -29,7 +29,7 @@ import {
 import { createWalletProviderFetch } from '../utils/fetch';
 import { selectSessionId } from '../../../store/reducers/preferences';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
-import { navigate } from '../../../navigation/utils';
+import { navigate, navigateWithReset } from '../../../navigation/utils';
 import MAIN_ROUTES from '../../../navigation/main/routes';
 import WALLET_ROUTES from '../navigation/routes';
 import { getAttestation } from './attestation';
@@ -214,17 +214,17 @@ function* onStorePidIdentified(
 
   // Get the pending required credential to be obtained after the Pid
   const pendingCredential = yield* select(selectPendingCredential);
-  if (!pendingCredential) {
-    throw new Error(
-      'Error: The issuance flow has not specified any credential'
+  if (pendingCredential) {
+    yield* put(
+      setCredentialIssuancePreAuthRequest({ credential: pendingCredential })
     );
+    navigate(MAIN_ROUTES.WALLET_NAV, {
+      screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
+    });
+  } else {
+    // This should not happen, so by default the flow will just reset navigation and go back home
+    navigateWithReset(MAIN_ROUTES.TAB_NAV);
   }
-  yield* put(
-    setCredentialIssuancePreAuthRequest({ credential: pendingCredential })
-  );
-  navigate(MAIN_ROUTES.WALLET_NAV, {
-    screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
-  });
 }
 
 /**

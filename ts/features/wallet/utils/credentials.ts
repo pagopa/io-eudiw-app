@@ -62,35 +62,35 @@ const EXCLUDED_CREDENTIAL_STATUSES: ReadonlyArray<ItwCredentialStatus> = [
 
 /**
  * Determines which credential status should be displayed in the UI
- * based on the current eID status and offline conditions.
+ * based on the current pid status and offline conditions.
  *
  * Logic summary:
  * - Excluded statuses ("expired", "expiring", "invalid", "unknown") are never overridden.
  * - Online:
- *   - Show actual credential status if eID is valid.
+ *   - Show actual credential status if pid is valid.
  *   - Otherwise, show "valid".
  *
  * @param credentialStatus The actual credential status
- * @param eidStatus The current eID status
+ * @param pidStatus The current pid status
  * @param isOffline Whether the app is operating offline
  * @returns {ItwCredentialStatus}The display status for the credential
  */
 export const getItwDisplayCredentialStatus = (
   credentialStatus: ItwCredentialStatus,
-  eidStatus: ItwJwtCredentialStatus | undefined
+  pidStatus: ItwJwtCredentialStatus | undefined
 ): ItwCredentialStatus => {
   // Excluded statuses are never overridden
   if (EXCLUDED_CREDENTIAL_STATUSES.includes(credentialStatus)) {
     return credentialStatus;
   }
 
-  const isEidValid = eidStatus === 'valid';
+  const isPidValid = pidStatus === 'valid';
 
-  // Invalid eid → treat as "valid"
-  if (!isEidValid) {
+  // Invalid pid → treat as "valid"
+  if (!isPidValid) {
     return 'valid';
   }
 
-  // Default: eid valid and online → keep real status
+  // Default: pid valid and online → keep real status
   return credentialStatus;
 };
