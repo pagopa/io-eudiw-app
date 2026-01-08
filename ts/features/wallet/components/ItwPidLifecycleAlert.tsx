@@ -132,6 +132,6 @@ export const ItwPidLifecycleAlert = ({
 
   return (
     pid &&
-    maybePidStatus && <Content pidCredential={pid} pidStatus={'jwtExpiring'} />
+    maybePidStatus && <Content pidCredential={pid} pidStatus={maybePidStatus} />
   );
 };
