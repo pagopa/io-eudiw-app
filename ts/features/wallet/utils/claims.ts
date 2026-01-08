@@ -12,6 +12,8 @@ export const claimType = {
   drivingPrivileges: 'drivingPrivileges',
   verificationEvidence: 'verificationEvidence',
   string: 'string',
+  emptyString : 'emptyString',
+  boolean : 'boolean',
   image: 'image',
   pdf : 'application/pdf',
   stringArray: 'stringArray',
@@ -54,6 +56,14 @@ export const stringSchema = z.string().transform(str => ({
 }));
 
 /**
+ * Schema to validate an empty string
+ */
+export const emptyStringSchema = z.string().refine(str => str === '').transform(str => ({
+  value : str,
+  type : claimType.emptyString
+}))
+
+/**
  * Schema to validate an array of strings when the base claim label is not specified.
  */
 export const stringArraySchema = z
@@ -68,8 +78,8 @@ export const stringArraySchema = z
  * Schema to validate a boolean when the base claim label is not specified
  */
 export const booleanSchema = z.boolean().transform(bool => ({
-  value: bool ? 'Yes' : 'No',
-  type: claimType.string
+  value: bool,
+  type: claimType.boolean
 }));
 
 /**
@@ -209,6 +219,26 @@ export const base64ImageSchema = z
 
 export type Base64ImageClaimType = z.infer<typeof base64ImageSchema>;
 
+export const pdfSchema = z
+  .object({
+    id: z
+      .string()
+      .transform(str => {
+        const split = str.split(':');
+        return split[split.length - 1];
+      })
+      // For the moment, there is no known PDF claim, so the claim name is generic
+      .pipe(z.enum(['pdf'])),
+    label: z.string(),
+    value: z.string()
+  })
+  .transform(obj => obj.value)
+  .transform(pdf => ({
+      value: 'data:application/pdf;base64,' + pdf,
+      type: claimType.pdf,
+  }))
+
+
 /**
  * Schema to validate claims that are known to be dates for which expiration should be checked
  */
@@ -246,6 +276,7 @@ export type PlaceOfBirthClaimType = z.infer<typeof placeofBirthSchema>;
  */
 export const claimScheme = z.union([
   base64ImageSchema,
+  pdfSchema,
   dateThatCanExpireSchema,
   // In case there isn't a schema for a specific label, we fallback to simply parsing the value
   baseClaimSchemaExtracted.pipe(
@@ -257,6 +288,7 @@ export const claimScheme = z.union([
       stringArraySchema,
       booleanSchema,
       numberSchema,
+      emptyStringSchema,
       stringSchema
     ])
   )

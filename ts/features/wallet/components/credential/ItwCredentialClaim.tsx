@@ -2,13 +2,15 @@ import { Divider, ListItemInfo } from "@pagopa/io-app-design-system";
 import { Fragment, useMemo } from "react";
 import { Image } from "react-native";
 import I18n from "i18next";
-import { claimScheme, DrivingPrivilegesClaimType, PlaceOfBirthClaimType } from "../../utils/claims";
+import { claimScheme, DrivingPrivilegesClaimType, PlaceOfBirthClaimType, verificationEvidenceSchema } from "../../utils/claims";
 import { HIDDEN_CLAIM_TEXT } from "../../utils/constants";
 import { getSafeText } from "../../../../utils/string";
 import { clipboardSetStringWithFeedback } from "../../../../utils/clipboard";
 import { ItwCredentialStatus } from "../../utils/itwTypesUtils";
 import { useIOBottomSheetModal } from "../../../../hooks/useBottomSheet";
 import { ClaimDisplayFormat } from "../../utils/types";
+import z from "zod";
+import { useTranslation } from "react-i18next";
 
 /**
  * Helper function to get the accessibility text for hidden claims.
@@ -367,6 +369,75 @@ const DrivingPrivilegesClaimItem = ({
   );
 };
 
+export type VerificationEvidenceClaimType = z.infer<
+  typeof verificationEvidenceSchema
+>;
+
+/**
+ * Component which renders a verification evidence type claim.
+ * It features a bottom sheet with information about the organization id, name and country code.
+ */
+export const VerificationEvidenceClaimItem = ({
+  label,
+  claim,
+  detailsButtonVisible = true,
+  reversed
+}: {
+  label: string;
+  claim: VerificationEvidenceClaimType['value'];
+  detailsButtonVisible: boolean;
+  reversed: boolean;
+}) => {
+  const { organization_id, organization_name, country_code } = claim;
+  const { t } = useTranslation(['wallet', 'global']);
+  const verificationBottomSheet = useIOBottomSheetModal({
+    title: organization_name,
+    component: (
+      <>
+        <ListItemInfo
+          label={t('wallet:claims.mdl.verificationEvidence.organizationId')}
+          value={organization_id}
+          accessibilityLabel={`${t(
+            'wallet:claims.mdl.verificationEvidence.organizationId'
+          )} ${organization_id}`}
+        />
+        <Divider />
+        <ListItemInfo
+          label={t('wallet:claims.mdl.verificationEvidence.countryCode')}
+          value={country_code}
+          accessibilityLabel={`${t(
+            'wallet:claims.mdl.verificationEvidence.countryCode'
+          )} ${country_code}`}
+        />
+      </>
+    )
+  });
+
+  const endElement: ListItemInfo['endElement'] = detailsButtonVisible
+    ? {
+        type: 'buttonLink',
+        componentProps: {
+          label: t('global:buttons.show'),
+          onPress: () => verificationBottomSheet.present(),
+          accessibilityLabel: t('global:buttons.show')
+        }
+      }
+    : undefined;
+
+  return (
+    <>
+      <ListItemInfo
+        label={label}
+        value={organization_name}
+        endElement={endElement}
+        accessibilityLabel={`${label} ${organization_name}`}
+        reversed={reversed}
+      />
+      {verificationBottomSheet.bottomSheet}
+    </>
+  );
+};
+
 /**
  * Component which renders a claim.
  * It renders a different component based on the type of the claim.
@@ -381,13 +452,11 @@ export const ItwCredentialClaim = ({
   hidden,
   isPreview,
   credentialStatus,
-  credentialType
 }: {
   claim: ClaimDisplayFormat;
   hidden?: boolean;
   isPreview?: boolean;
   credentialStatus?: ItwCredentialStatus;
-  credentialType?: string;
 }) => {
 
   const decoded = claimScheme.safeParse(claim.value)
@@ -427,10 +496,57 @@ export const ItwCredentialClaim = ({
             hidden={hidden}
           />
         );
-      case ''
+      case 'application/pdf' : 
+        return <AttachmentsClaimItem name={claim.label} hidden={hidden} />;
+      case 'drivingPrivileges' :
+          return decoded.data.value.map((elem, index) => (
+            <Fragment key={`${index}_${claim.label}_${elem.vehicle_category_code}`}>
+              {index !== 0 && <Divider />}
+              <DrivingPrivilegesClaimItem
+                label={claim.label}
+                claim={elem}
+                detailsButtonVisible={!isPreview}
+                hidden={hidden}
+              />
+            </Fragment>
+          ));
+      case 'boolean' : 
+          return (
+            <BoolClaimItem
+              label={claim.label}
+              claim={decoded.data.value}
+              hidden={hidden}
+            />
+          );
+      case 'stringArray' : 
+          return (
+            <PlainTextClaimItem
+              label={claim.label}
+              claim={decoded.data.value.join(", ")}
+              hidden={hidden}
+            />
+          );
+      case 'emptyString' :
+          return null; // We want to hide the claim if it's empty
+      case 'string' :
+          return (
+            <PlainTextClaimItem
+              label={claim.label}
+              claim={decoded.data.value}
+              isCopyable={!isPreview}
+              hidden={hidden}
+            />
+          ); // must be the last one to be checked due to overlap with IPatternStringTag
+      case 'verificationEvidence' :
+        return <VerificationEvidenceClaimItem 
+          label={claim.label}
+          claim={decoded.data.value}
+          detailsButtonVisible={!isPreview}
+          reversed={!isPreview}
+        />
     }
   }
-
+  return <UnknownClaimItem label={claim.label} _claim={decoded} />;
 }
   pipe(
     claim.value,
