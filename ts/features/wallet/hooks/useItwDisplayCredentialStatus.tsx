@@ -1,11 +1,11 @@
 import { useAppSelector } from '../../../store';
-import { itwCredentialsEidStatusSelector } from '../store/credentials';
+import { itwCredentialsPidStatusSelector } from '../store/credentials';
 import { ItwCredentialStatus } from '../types';
 import { getItwDisplayCredentialStatus } from '../utils/credentials';
 
 /**
  * Computes the display status of a credential for UI purposes
- * by combining store selectors (eID status and offline state)
+ * by combining store selectors (pid status and offline state)
  * with the pure logic from getItwDisplayCredentialStatus.
  *
  * This hook does not reflect the credential’s real status — it adapts
@@ -17,7 +17,7 @@ import { getItwDisplayCredentialStatus } from '../utils/credentials';
 export const useItwDisplayCredentialStatus = (
   credentialStatus: ItwCredentialStatus
 ): ItwCredentialStatus => {
-  const eidStatus = useAppSelector(itwCredentialsEidStatusSelector);
+  const pidStatus = useAppSelector(itwCredentialsPidStatusSelector);
 
-  return getItwDisplayCredentialStatus(credentialStatus, eidStatus);
+  return getItwDisplayCredentialStatus(credentialStatus, pidStatus);
 };

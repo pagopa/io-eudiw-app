@@ -138,7 +138,7 @@ export const selectPidIssuanceError = (state: RootState) =>
   state.wallet.pidIssuanceStatus.issuance.error.error;
 
 /**
- * Selects the pending credential to issue after the Wallet Eid has been obtained
+ * Selects the pending credential to issue after the Wallet Pid has been obtained
  * @param state - The root state
  * @returns The credential to issue after the wallet is operational
  */

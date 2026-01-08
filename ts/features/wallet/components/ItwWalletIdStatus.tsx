@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import { ComponentProps } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
+import I18n from 'i18next';
 import BackgroundImageValid from '../assets/img/brand/itw_deck_status.svg';
 import BackgroundImageExpired from '../assets/img/brand/itw_deck_status_expired.svg';
 import ItWalletIdLogoImage from '../assets/img/brand/itw_id_logo.svg';
@@ -95,22 +96,30 @@ export const ItwWalletIdStatus = ({
           {/* Content  */}
           {pidStatus === 'jwtExpiring' && (
             <Body style={styles.content}>
-              Conferma la tua identità entro il{' '}
+              {I18n.t('credentials.pidStatusAlert.confirmIdentityBefore', {
+                ns: 'wallet'
+              })}
               <Body weight="Semibold">
-                {format(pidExpiration || '', 'DD/MM/YYYY')}
+                {format(pidExpiration || '', 'dd/MM/yyyy')}
               </Body>
             </Body>
           )}
           {pidStatus === 'jwtExpired' && (
             <Body style={styles.content}>
-              Conferma la tua identità per continuare con i tuoi documenti
+              {I18n.t('credentials.pidStatusAlert.confirmIdentity', {
+                ns: 'wallet'
+              })}
             </Body>
           )}
 
           {/* Optional Action Button  */}
           {pidStatus === 'jwtExpired' && (
             <View pointerEvents="none">
-              <IOButton variant="link" label="Inizia" onPress={() => null} />
+              <IOButton
+                variant="link"
+                label={I18n.t('buttons.start', { ns: 'global' })}
+                onPress={() => null}
+              />
             </View>
           )}
         </ItwBrandedBox>

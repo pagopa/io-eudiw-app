@@ -51,7 +51,7 @@ const CredentialsList = () => {
 
   const isCredentialRequested = (type: string) => requestedCredential === type;
 
-  const shouldIssueEidFirst = useAppSelector(lifecycleIsOperationalSelector);
+  const shouldIssuePidFirst = useAppSelector(lifecycleIsOperationalSelector);
 
   useHeaderSecondLevel({
     title: '',
@@ -64,23 +64,23 @@ const CredentialsList = () => {
    * to obtain the requested credential.
    */
   useEffect(() => {
-    if (preAuthStatus.success.status && !shouldIssueEidFirst) {
+    if (preAuthStatus.success.status && !shouldIssuePidFirst) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'CREDENTIAL_ISSUANCE_TRUST'
       });
     }
-  }, [preAuthStatus.success, navigation, shouldIssueEidFirst]);
+  }, [preAuthStatus.success, navigation, shouldIssuePidFirst]);
 
   /**
    * If an error occurs during the pre auth request, navigate to the failure screen.
    */
   useEffect(() => {
-    if (preAuthStatus.error.status && !shouldIssueEidFirst) {
+    if (preAuthStatus.error.status && !shouldIssuePidFirst) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'CREDENTIAL_ISSUANCE_FAILURE'
       });
     }
-  }, [preAuthStatus.error, navigation, shouldIssueEidFirst]);
+  }, [preAuthStatus.error, navigation, shouldIssuePidFirst]);
 
   return (
     <IOScrollViewWithLargeHeader
@@ -109,7 +109,7 @@ const CredentialsList = () => {
                   ]
                 )}
                 onPress={c => {
-                  if (shouldIssueEidFirst) {
+                  if (shouldIssuePidFirst) {
                     dispatch(setPendingCredential({ credential: c }));
                     navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
                       screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION

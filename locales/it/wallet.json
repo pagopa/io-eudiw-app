@@ -21,6 +21,10 @@
       "upgradePending": "Da aggiornare",
       "unknown": "Non disponibile"
     },
+    "pidStatusAlert" : {
+      "confirmIdentityBefore" : "Conferma la tua identità entro il ",
+      "confirmIdentity" : "Conferma la tua identità per continuare con i tuoi documenti"
+    },
     "digital" : "Versione Digitale"
   },
   "discovery": {
@@ -152,7 +156,7 @@
       "subtitle": "You will be redirected to the partner site"
     },
     "bottomSheets": {
-      "eidInfo": {
+      "pidInfo": {
         "title": "Documenti su IO:\nidentità verificata",
         "titleExpired": "Documenti su IO:\nverifica la tua identità",
         "contentTop": "Con **Documenti su IO** salvi nel Portafoglio di IO le versioni digitali dei tuoi documenti.",

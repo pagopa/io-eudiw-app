@@ -94,7 +94,7 @@
           "locale": "it-IT",
           "logo": {
             "uri": "https://pre.eaa.wallet.ipzs.it/1-0/public/logo.svg",
-            "alt_text": "logo di questo eID Provider"
+            "alt_text": "logo di questo Pid Provider"
           }
         },
         {
@@ -102,7 +102,7 @@
           "locale": "en-US",
           "logo": {
             "uri": "https://pre.eaa.wallet.ipzs.it/1-0/public/logo.svg",
-            "alt_text": "eID Provider's logo"
+            "alt_text": "Pid Provider's logo"
           }
         }
       ],

@@ -5,7 +5,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../../../../store/types';
 import {
-  itwCredentialsEidStatusSelector,
+  itwCredentialsPidStatusSelector,
   selectCredentials
 } from '../credentials';
 import { lifecycleIsValidSelector } from '../lifecycle';
@@ -27,7 +27,7 @@ export const itwCredentialsSelector = createSelector(
 );
 
 /**
- * Returns the number of credentials in the credentials object, excluding the eID credential.
+ * Returns the number of credentials in the credentials object, excluding the pid credential.
  *
  * @param state - The global state.
  * @returns The number of credentials.
@@ -39,7 +39,7 @@ const itwCredentialsSizeSelector = createSelector(
 
 /**
  * Returns whether the wallet is empty, i.e. it does not have any credential.
- * The eID is not considered, only other (Q)EAAs.
+ * The pid is not considered, only other (Q)EAAs.
  *
  * Note: this selector does not check the wallet validity.
  *
@@ -53,9 +53,9 @@ export const itwIsWalletEmptySelector = createSelector(
 
 /**
  * Returns if the wallet ready banner should be visible. The banner is visible if:
- * - The Wallet has valid Wallet Instance with a known status, and a valid eID
+ * - The Wallet has valid Wallet Instance with a known status, and a valid pid
  * - The Wallet Instance is not in a failure status (NOTE: this check is not yet implemented)
- * - The eID is not expired
+ * - The pid is not expired
  * - The Wallet is empty
  * @param state the application global state
  * @returns true if the banner should be visible, false otherwise
@@ -64,5 +64,5 @@ export const itwShouldRenderWalletReadyBannerSelector = (state: RootState) =>
   lifecycleIsValidSelector(state) &&
   // NOTE: Wallet instance status not yet implemented
   // NOTE: Online status checks not yet implemented
-  itwCredentialsEidStatusSelector(state) !== 'jwtExpired' &&
+  itwCredentialsPidStatusSelector(state) !== 'jwtExpired' &&
   itwIsWalletEmptySelector(state);
