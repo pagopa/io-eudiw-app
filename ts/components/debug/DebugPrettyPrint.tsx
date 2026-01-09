@@ -3,14 +3,14 @@ import {
   HStack,
   IOColors,
   IOText,
-  IconButton,
+  IconButton
 } from '@pagopa/io-app-design-system';
 import { StyleSheet, View } from 'react-native';
 import { useMemo, useState } from 'react';
 import { truncateObjectStrings } from '../../utils/debug';
 import { Prettify } from '../../types/utils';
-import { withDebugEnabled } from './withDebugEnabled';
 import { clipboardSetStringWithFeedback } from '../../utils/clipboard';
+import { withDebugEnabled } from './withDebugEnabled';
 
 type ExpandableProps =
   | {

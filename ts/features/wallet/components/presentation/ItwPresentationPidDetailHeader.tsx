@@ -3,13 +3,13 @@ import {
   ContentWrapper,
   IOAppMargin,
   VStack
-} from "@pagopa/io-app-design-system";
-import I18n from "i18next";
-import { StyleSheet, View } from "react-native";
-import ITWalletIDImage from "../../../../../../img/features/itWallet/brand/itw_id_logo.svg";
-import FocusAwareStatusBar from "../../../../../components/ui/FocusAwareStatusBar";
-import { getLuminance } from "../../../../../utils/color";
-import { useItWalletTheme } from "../../../common/utils/theme";
+} from '@pagopa/io-app-design-system';
+import I18n from 'i18next';
+import { StyleSheet, View } from 'react-native';
+import ITWalletIDImage from '../../assets/img/brand/itw_id_logo.svg';
+import { useItWalletTheme } from '../../utils/theme';
+import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
+import { getLuminance } from '../../../../utils/color';
 
 export const ItwPresentationPidDetailHeader = () => {
   const theme = useItWalletTheme();
@@ -17,24 +17,24 @@ export const ItwPresentationPidDetailHeader = () => {
   return (
     <>
       <FocusAwareStatusBar
-        backgroundColor={theme["header-background"]}
+        backgroundColor={theme['header-background']}
         barStyle={
-          getLuminance(theme["header-background"]) < 0.5
-            ? "light-content"
-            : "dark-content"
+          getLuminance(theme['header-background']) < 0.5
+            ? 'light-content'
+            : 'dark-content'
         }
       />
       <View
         style={[
           styles.scrollHack,
-          { backgroundColor: theme["header-background"] }
+          { backgroundColor: theme['header-background'] }
         ]}
       >
         <ContentWrapper>
           <VStack space={8} style={styles.content}>
             <ITWalletIDImage width={140} height={34} />
             <Body>
-              {I18n.t("features.itWallet.presentation.itWalletId.description")}
+              {I18n.t('presentation.itWalletId.description', { ns: 'wallet' })}
             </Body>
           </VStack>
         </ContentWrapper>

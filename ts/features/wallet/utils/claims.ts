@@ -12,12 +12,12 @@ export const claimType = {
   drivingPrivileges: 'drivingPrivileges',
   verificationEvidence: 'verificationEvidence',
   string: 'string',
-  emptyString : 'emptyString',
-  boolean : 'boolean',
+  emptyString: 'emptyString',
+  boolean: 'boolean',
   image: 'image',
-  pdf : 'application/pdf',
+  pdf: 'application/pdf',
   stringArray: 'stringArray',
-  placeOfBirth : 'placeOfBirth'
+  placeOfBirth: 'placeOfBirth'
 } as const;
 
 /**
@@ -58,10 +58,13 @@ export const stringSchema = z.string().transform(str => ({
 /**
  * Schema to validate an empty string
  */
-export const emptyStringSchema = z.string().refine(str => str === '').transform(str => ({
-  value : str,
-  type : claimType.emptyString
-}))
+export const emptyStringSchema = z
+  .string()
+  .refine(str => str === '')
+  .transform(str => ({
+    value: str,
+    type: claimType.emptyString
+  }));
 
 /**
  * Schema to validate an array of strings when the base claim label is not specified.
@@ -124,7 +127,9 @@ export const drivingPrivilegesSchema = z
     type: claimType.drivingPrivileges
   }));
 
-export type DrivingPrivilegesClaimType = z.infer<typeof drivingPrivilegesSchema>;
+export type DrivingPrivilegesClaimType = z.infer<
+  typeof drivingPrivilegesSchema
+>;
 
 /**
  * These bytes represent the possible kinds of SOF segments, which contain the image's proportions,
@@ -234,10 +239,9 @@ export const pdfSchema = z
   })
   .transform(obj => obj.value)
   .transform(pdf => ({
-      value: 'data:application/pdf;base64,' + pdf,
-      type: claimType.pdf,
-  }))
-
+    value: 'data:application/pdf;base64,' + pdf,
+    type: claimType.pdf
+  }));
 
 /**
  * Schema to validate claims that are known to be dates for which expiration should be checked
@@ -262,13 +266,15 @@ export const dateThatCanExpireSchema = z
 /**
  * Schema to validate claims representing places of birth
  */
-export const placeofBirthSchema = z.object({
-  country : z.string(),
-  locality : z.string()
-}).transform((claim) => ({
-  value : claim,
-  type : claimType.placeOfBirth
-}))
+export const placeofBirthSchema = z
+  .object({
+    country: z.string(),
+    locality: z.string()
+  })
+  .transform(claim => ({
+    value: claim,
+    type: claimType.placeOfBirth
+  }));
 export type PlaceOfBirthClaimType = z.infer<typeof placeofBirthSchema>;
 
 /**

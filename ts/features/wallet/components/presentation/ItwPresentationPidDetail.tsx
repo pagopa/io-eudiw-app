@@ -1,16 +1,17 @@
-import { Divider, ListItemHeader } from "@pagopa/io-app-design-system";
-import { View } from "react-native";
-import { Fragment } from "react/jsx-runtime";
-import { useMemo, useState } from "react";
-import I18n from "i18next";
-import { StoredCredential } from "../../utils/types";
-import { useNavigation } from "@react-navigation/native";
-import { parseClaims } from "../../utils/claims";
-import { WellKnownClaim } from "../../utils/itwClaimsUtils";
-import { ItwEidLifecycleAlert } from "../ItwEidLifecycleAlert";
-import { ItwCredentialClaim } from "../credential/ItwCredentialClaim";
-import { MainNavigatorParamsList } from "../../../../navigation/main/MainStackNavigator";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { Divider, ListItemHeader } from '@pagopa/io-app-design-system';
+import { View } from 'react-native';
+import { Fragment } from 'react/jsx-runtime';
+import { useMemo, useState } from 'react';
+import I18n from 'i18next';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { StoredCredential } from '../../utils/types';
+import { parseClaims } from '../../utils/claims';
+import { WellKnownClaim } from '../../utils/itwClaimsUtils';
+import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
+import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
+import { ItwPidLifecycleAlert } from '../ItwPidLifecycleAlert';
+import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
 
 type Props = {
   credential: StoredCredential;
@@ -18,11 +19,12 @@ type Props = {
 
 export const ItwPresentationPidDetail = ({ credential }: Props) => {
   const [claimsHidden, setClaimsHidden] = useState(false);
-  const navigation = useNavigation<NativeStackNavigationProp<MainNavigatorParamsList>>();
+  const navigation =
+    useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
 
-  const listItemHeaderLabel = I18n.t(
-    "features.itWallet.presentation.itWalletId.listItemHeader"
-  );
+  const listItemHeaderLabel = I18n.t('presentation.itWalletId.listItemHeader', {
+    ns: 'wallet'
+  });
   const claims = useMemo(
     () =>
       parseClaims(credential.parsedCredential, {
@@ -31,11 +33,11 @@ export const ItwPresentationPidDetail = ({ credential }: Props) => {
     [credential.parsedCredential]
   );
 
-  const endElement = useMemo<ListItemHeader["endElement"]>(
+  const endElement = useMemo<ListItemHeader['endElement']>(
     () => ({
-      type: "iconButton",
+      type: 'iconButton',
       componentProps: {
-        icon: claimsHidden ? "eyeHide" : "eyeShow",
+        icon: claimsHidden ? 'eyeHide' : 'eyeShow',
         accessibilityLabel: listItemHeaderLabel,
         onPress: () => setClaimsHidden(state => !state)
       }
@@ -45,7 +47,7 @@ export const ItwPresentationPidDetail = ({ credential }: Props) => {
 
   return (
     <View>
-      <ItwEidLifecycleAlert navigation={navigation} />
+      <ItwPidLifecycleAlert navigation={navigation} />
       {claims.length > 0 && (
         <ListItemHeader label={listItemHeaderLabel} endElement={endElement} />
       )}

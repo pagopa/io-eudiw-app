@@ -1,19 +1,19 @@
 import {
   FooterActions,
-  useFooterActionsMeasurements,
-} from "@pagopa/io-app-design-system";
-import { Fragment, ReactNode } from "react";
+  useFooterActionsMeasurements
+} from '@pagopa/io-app-design-system';
+import { Fragment, ReactNode } from 'react';
 import Animated, {
   useAnimatedRef,
   useAnimatedScrollHandler,
   useSharedValue
-} from "react-native-reanimated";
-import { StoredCredential } from "../../utils/types";
-import { useAppSelector } from "../../../../store";
-import { lifecycleIsValidSelector } from "../../store/lifecycle";
-import { useHeaderPropsByCredentialType } from "../../utils/itwStyleUtils";
-import { useHeaderSecondLevel } from "../../../../hooks/useHeaderSecondLevel";
-import { ButtonBlockProps } from "../../../../components/ui/utils/buttons";
+} from 'react-native-reanimated';
+import { StoredCredential } from '../../utils/types';
+import { useAppSelector } from '../../../../store';
+import { lifecycleIsValidSelector } from '../../store/lifecycle';
+import { useHeaderPropsByCredentialType } from '../../utils/itwStyleUtils';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { ButtonBlockProps } from '../../../../components/ui/utils/buttons';
 
 export type CredentialCtaProps = ButtonBlockProps;
 
@@ -42,7 +42,7 @@ const ItwPresentationDetailsScreenBase = ({
     itwFeaturesEnabled
   );
 
-//TODO add support toast?
+  // TODO add support toast?
 
   useHeaderSecondLevel({
     scrollValues: {
@@ -79,7 +79,7 @@ const ItwPresentationDetailsScreenBase = ({
         <FooterActions
           onMeasure={handleFooterActionsMeasurements}
           actions={{
-            type: "SingleButton",
+            type: 'SingleButton',
             primary: ctaProps
           }}
         />
