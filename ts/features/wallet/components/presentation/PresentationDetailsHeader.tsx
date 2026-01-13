@@ -1,15 +1,18 @@
 import {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Alert, VSpacer} from '@pagopa/io-app-design-system';
-import {StoredCredential} from '../../utils/types';
 import {
   getCredentialAlertPropsByCredentialType,
   getThemeColorByCredentialType
 } from '../../utils/style';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
+import {StoredCredentialEudiw} from '../../utils/eudiwClaimsUtils';
+import {StoredCredential} from '../../utils/types';
 import {PresentationCredentialCard} from './PresentationCredentialCard';
 
-type ItwPresentationDetailsHeaderProps = {credential: StoredCredential};
+type EudiwPresentationDetailsHeaderProps = {
+  credential: StoredCredentialEudiw | StoredCredential;
+};
 
 /**
  * This component renders the header for the presentation details screen of a credential
@@ -17,7 +20,7 @@ type ItwPresentationDetailsHeaderProps = {credential: StoredCredential};
  */
 const PresentationDetailsHeader = ({
   credential
-}: ItwPresentationDetailsHeaderProps) => {
+}: EudiwPresentationDetailsHeaderProps) => {
   const {backgroundColor, statusBarStyle} = getThemeColorByCredentialType(
     credential.credentialType
   );

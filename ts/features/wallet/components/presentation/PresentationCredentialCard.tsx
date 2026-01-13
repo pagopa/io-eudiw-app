@@ -1,13 +1,16 @@
 import {IOSpacingScale} from '@pagopa/io-app-design-system';
-
-import {PropsWithChildren} from 'react';
+import {PropsWithChildren, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {StoredCredential} from '../../utils/types';
 import {getThemeColorByCredentialType} from '../../utils/style';
+import {FlipGestureDetector} from '../credential/CredentialCard/FlipGestureDetector';
+import {EudiwSkeumorphicCard} from '../credential/CredentialCard/index';
+import {StoredCredentialEudiw} from '../../utils/eudiwClaimsUtils';
+import {wellKnownCredential} from '../../utils/credentials';
 import {CredentialCard} from '../credential/CredentialCard';
+import {StoredCredential} from '../../utils/types';
 
 type Props = {
-  credential: StoredCredential;
+  credential: StoredCredentialEudiw | StoredCredential;
 };
 
 /**
@@ -18,10 +21,26 @@ const PresentationCredentialCard = ({credential}: Props) => {
   const {backgroundColor} = getThemeColorByCredentialType(
     credential.credentialType
   );
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const disabilityCard =
+    credential.credentialType === wellKnownCredential.DISABILITY_CARD;
 
   return (
     <CardContainer backgroundColor={backgroundColor}>
-      <CredentialCard credentialType={credential.credentialType} />
+      {!disabilityCard ? (
+        <CredentialCard credentialType={credential.credentialType} />
+      ) : (
+        <FlipGestureDetector isFlipped={isFlipped} setIsFlipped={setIsFlipped}>
+          <EudiwSkeumorphicCard
+            credential={credential}
+            isFlipped={isFlipped}
+            status={'valid'}
+            valuesHidden={false}
+            onPress={() => setIsFlipped(!isFlipped)}
+          />
+        </FlipGestureDetector>
+      )}
     </CardContainer>
   );
 };
