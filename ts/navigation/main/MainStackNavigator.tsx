@@ -1,6 +1,6 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigatorScreenParams} from '@react-navigation/native';
-import {TabNavigator} from '../tab/TabNavigator';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigatorScreenParams } from '@react-navigation/native';
+import { TabNavigator } from '../tab/TabNavigator';
 import WalletNavigator, {
   WalletNavigatorParamsList
 } from '../../features/wallet/navigation/WalletNavigator';
@@ -20,7 +20,7 @@ export type MainNavigatorParamsList = {
   [MAIN_ROUTES.SHOW_QR]: undefined;
 };
 
-const Stack = createNativeStackNavigator<MainNavigatorParamsList>();
+const Stack = createStackNavigator<MainNavigatorParamsList>();
 
 /**
  * The main stack navigator which renders screen after the onboarding has been completed.
@@ -29,18 +29,19 @@ const Stack = createNativeStackNavigator<MainNavigatorParamsList>();
 const MainStackNavigator = () => (
   <Stack.Navigator
     initialRouteName={MAIN_ROUTES.TAB_NAV}
-    screenOptions={{headerShown: false}}>
+    screenOptions={{ headerShown: false }}
+  >
     <Stack.Screen name={MAIN_ROUTES.TAB_NAV} component={TabNavigator} />
     <Stack.Screen name={MAIN_ROUTES.WALLET_NAV} component={WalletNavigator} />
     <Stack.Screen
       name={MAIN_ROUTES.SCAN_QR}
       component={QrCodeScanScreen}
-      options={{animation: 'slide_from_bottom'}}
+      options={{ animation: 'slide_from_bottom' }}
     />
     <Stack.Screen
       name={MAIN_ROUTES.SHOW_QR}
       component={ProximityQrCode}
-      options={{animation: 'slide_from_bottom'}}
+      options={{ animation: 'slide_from_bottom' }}
     />
     <Stack.Screen name={MAIN_ROUTES.SETTINGS} component={Settings} />
   </Stack.Navigator>

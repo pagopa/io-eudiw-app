@@ -1,13 +1,13 @@
-import {IOSpacingScale} from '@pagopa/io-app-design-system';
-import {PropsWithChildren, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {getThemeColorByCredentialType} from '../../utils/style';
-import {FlipGestureDetector} from '../credential/CredentialCard/FlipGestureDetector';
-import {EudiwSkeumorphicCard} from '../credential/CredentialCard/index';
-import {StoredCredentialEudiw} from '../../utils/eudiwClaimsUtils';
-import {wellKnownCredential} from '../../utils/credentials';
-import {CredentialCard} from '../credential/CredentialCard';
-import {StoredCredential} from '../../utils/types';
+import { IOSpacingScale } from '@pagopa/io-app-design-system';
+import { PropsWithChildren, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { getThemeColorByCredentialType } from '../../utils/style';
+import { FlipGestureDetector } from '../credential/CredentialCard/FlipGestureDetector';
+import { EudiwSkeumorphicCard } from '../credential/CredentialCard/index';
+import { StoredCredentialEudiw } from '../../utils/eudiwClaimsUtils';
+import { wellKnownCredential } from '../../utils/credentials';
+import { CredentialCard } from '../credential/CredentialCard';
+import { StoredCredential } from '../../utils/types';
 
 type Props = {
   credential: StoredCredentialEudiw | StoredCredential;
@@ -17,8 +17,8 @@ type Props = {
  * This component renders the credential card in the presentation screen.
  * If the credential supports the skeumorphic card, it also renders it with the flip button.
  */
-const PresentationCredentialCard = ({credential}: Props) => {
-  const {backgroundColor} = getThemeColorByCredentialType(
+const PresentationCredentialCard = ({ credential }: Props) => {
+  const { backgroundColor } = getThemeColorByCredentialType(
     credential.credentialType
   );
   const [isFlipped, setIsFlipped] = useState(false);
@@ -55,7 +55,7 @@ const CardContainer = ({
 }: PropsWithChildren<CardContainerProps>) => (
   <View style={styles.cardContainer}>
     {children}
-    <View style={[styles.cardBackdrop, {backgroundColor}]} />
+    <View style={[styles.cardBackdrop, { backgroundColor }]} />
   </View>
 );
 
@@ -77,4 +77,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export {PresentationCredentialCard};
+export { PresentationCredentialCard };

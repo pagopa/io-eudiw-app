@@ -1,7 +1,7 @@
 /* eslint-disable functional/immutable-data */
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {RootState} from '../types';
-import {preferencesReset} from './preferences';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../types';
+import { preferencesReset } from './preferences';
 
 /**
  * State definition for the deep linking slice.
@@ -24,7 +24,7 @@ const deeplinkingSlice = createSlice({
   name: 'deeplinking',
   initialState,
   reducers: {
-    setUrl: (state, action: PayloadAction<{url: string}>) => {
+    setUrl: (state, action: PayloadAction<{ url: string }>) => {
       state.url = action.payload.url;
     },
     resetUrl: () => initialState
@@ -35,7 +35,7 @@ const deeplinkingSlice = createSlice({
   }
 });
 
-export const {reducer: deepLinkingReducer} = deeplinkingSlice;
+export const { reducer: deepLinkingReducer } = deeplinkingSlice;
 
 export const credentialsSelector = (state: RootState) =>
   state.wallet.credentials;
@@ -43,7 +43,7 @@ export const credentialsSelector = (state: RootState) =>
 /**
  * Exports the actions for the credentials slice.
  */
-export const {setUrl, resetUrl} = deeplinkingSlice.actions;
+export const { setUrl, resetUrl } = deeplinkingSlice.actions;
 
 /**
  * Select the pending url from the deep linking state.

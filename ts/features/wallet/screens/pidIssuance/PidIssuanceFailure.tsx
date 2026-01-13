@@ -1,28 +1,28 @@
-import {useTranslation} from 'react-i18next';
-import {useAppDispatch, useAppSelector} from '../../../../store';
-import {OperationResultScreenContent} from '../../../../components/screens/OperationResultScreenContent';
+import { useTranslation } from 'react-i18next';
+import { useAppDispatch, useAppSelector } from '../../../../store';
+import { OperationResultScreenContent } from '../../../../components/screens/OperationResultScreenContent';
 import {
   resetInstanceCreation,
   resetPidIssuance,
   selectPidIssuanceError
 } from '../../store/pidIssuance';
-import {useHardwareBackButton} from '../../../../hooks/useHardwareBackButton';
-import {useDebugInfo} from '../../../../hooks/useDebugInfo';
-import {useNavigateToWalletWithReset} from '../../../../hooks/useNavigateToWalletWithReset';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Filure screen of the pid issuance flow.
  * Currently it only shows a message and a button to go back to the main screen.
  */
 const PidIssuanceFailure = () => {
-  const {t} = useTranslation(['global', 'wallet']);
+  const { t } = useTranslation(['global', 'wallet']);
   const dispatch = useAppDispatch();
   const error = useAppSelector(selectPidIssuanceError);
-  const {navigateToWallet} = useNavigateToWalletWithReset();
+  const { navigateToWallet } = useNavigateToWalletWithReset();
 
   useHardwareBackButton(() => true);
 
-  useDebugInfo({error});
+  useDebugInfo({ error });
 
   const onPress = () => {
     dispatch(resetInstanceCreation());

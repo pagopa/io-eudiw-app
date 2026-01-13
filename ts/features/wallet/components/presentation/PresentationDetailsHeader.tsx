@@ -1,14 +1,14 @@
-import {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Alert, VSpacer} from '@pagopa/io-app-design-system';
+import { memo } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Alert, VSpacer } from '@pagopa/io-app-design-system';
 import {
   getCredentialAlertPropsByCredentialType,
   getThemeColorByCredentialType
 } from '../../utils/style';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
-import {StoredCredentialEudiw} from '../../utils/eudiwClaimsUtils';
-import {StoredCredential} from '../../utils/types';
-import {PresentationCredentialCard} from './PresentationCredentialCard';
+import { StoredCredentialEudiw } from '../../utils/eudiwClaimsUtils';
+import { StoredCredential } from '../../utils/types';
+import { PresentationCredentialCard } from './PresentationCredentialCard';
 
 type EudiwPresentationDetailsHeaderProps = {
   credential: StoredCredentialEudiw | StoredCredential;
@@ -21,7 +21,7 @@ type EudiwPresentationDetailsHeaderProps = {
 const PresentationDetailsHeader = ({
   credential
 }: EudiwPresentationDetailsHeaderProps) => {
-  const {backgroundColor, statusBarStyle} = getThemeColorByCredentialType(
+  const { backgroundColor, statusBarStyle } = getThemeColorByCredentialType(
     credential.credentialType
   );
 
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
 
 const MemoizedItwPresentationDetailsHeader = memo(PresentationDetailsHeader);
 
-export {MemoizedItwPresentationDetailsHeader as PresentationDetailsHeader};
+export { MemoizedItwPresentationDetailsHeader as PresentationDetailsHeader };

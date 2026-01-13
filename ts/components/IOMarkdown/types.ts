@@ -1,4 +1,4 @@
-import {VSpacer} from '@pagopa/io-app-design-system';
+import { VSpacer } from '@pagopa/io-app-design-system';
 import {
   TxtHeaderNode,
   TxtListNode,
@@ -18,16 +18,17 @@ import {
   TxtHorizontalRuleNode,
   AnyTxtNode
 } from '@textlint/ast-node-types';
-import {ReactNode, ComponentProps} from 'react';
+import { ReactNode, ComponentProps } from 'react';
 
 export type Renderer = (txtNode: AnyTxtNodeWithSpacer) => ReactNode;
 export type RuleRenderer<P, F extends Renderer | void = void> = (
   param: P,
-  renderer: F
+  renderer: F,
+  screenReaderEnabled: boolean
 ) => ReactNode;
 export type AnyTxtNodeWithSpacer =
   | AnyTxtNode
-  | {type: 'Spacer'; size: number; key: string};
+  | { type: 'Spacer'; size: number; key: string };
 
 type TxtNodeMap = {
   [ASTNodeTypes.Header]: TxtHeaderNode;
@@ -50,7 +51,7 @@ type RendererMap = {
   [K in keyof TxtNodeMap]: RuleRenderer<TxtNodeMap[K], Renderer>;
 } & {
   [ASTNodeTypes.Comment]: RuleRenderer<null>;
-  Spacer: RuleRenderer<ComponentProps<typeof VSpacer> & {key: string}>;
+  Spacer: RuleRenderer<ComponentProps<typeof VSpacer> & { key: string }>;
 };
 
 export type IOMarkdownRenderRules = RendererMap;

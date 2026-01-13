@@ -3,7 +3,7 @@ import {
   IOThemeDark,
   IOThemeLight
 } from '@pagopa/io-app-design-system';
-import {DarkTheme, DefaultTheme} from '@react-navigation/native';
+import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 
 /**
  * React navigation dark theme.

@@ -3,28 +3,31 @@ import {
   NavigationContainer,
   NavigatorScreenParams
 } from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useCallback, useEffect} from 'react';
-import {useIOThemeContext} from '@pagopa/io-app-design-system';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useCallback, useEffect } from 'react';
+import { useIOThemeContext } from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
-import {Linking} from 'react-native';
+import { Linking } from 'react-native';
 import OnboardingNavigator, {
   OnboardingNavigatorParamsList
 } from '../features/onboarding/navigation/OnboardingNavigator';
-import {useAppDispatch, useAppSelector} from '../store';
-import {selectStartupState, startupSetLoading} from '../store/reducers/startup';
-import {WalletNavigatorParamsList} from '../features/wallet/navigation/WalletNavigator';
+import { useAppDispatch, useAppSelector } from '../store';
+import {
+  selectStartupState,
+  startupSetLoading
+} from '../store/reducers/startup';
+import { WalletNavigatorParamsList } from '../features/wallet/navigation/WalletNavigator';
 import LoadingScreenContent from '../components/LoadingScreenContent';
-import {OperationResultScreenContent} from '../components/screens/OperationResultScreenContent';
-import {setUrl} from '../store/reducers/deeplinking';
-import {IONavigationDarkTheme, IONavigationLightTheme} from './theme';
+import { OperationResultScreenContent } from '../components/screens/OperationResultScreenContent';
+import { setUrl } from '../store/reducers/deeplinking';
+import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
 import ROOT_ROUTES from './routes';
 import MainStackNavigator, {
   MainNavigatorParamsList
 } from './main/MainStackNavigator';
 import MAIN_ROUTES from './main/routes';
-import {navigationRef} from './utils';
-import {PRESENTATION_INTERNAL_LINKS} from './deepLinkSchemas';
+import { navigationRef } from './utils';
+import { PRESENTATION_INTERNAL_LINKS } from './deepLinkSchemas';
 
 export type RootStackParamList = {
   // Main
@@ -41,7 +44,7 @@ export type RootStackParamList = {
   [MAIN_ROUTES.WALLET_NAV]: NavigatorScreenParams<WalletNavigatorParamsList>;
 };
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 
 /**
  * Type definition for the screens to be rendered based on the startup and onboarding states.
@@ -57,7 +60,7 @@ type Screens = {
  */
 export const RootStackNavigator = () => {
   const isStartupDone = useAppSelector(selectStartupState);
-  const {themeType} = useIOThemeContext();
+  const { themeType } = useIOThemeContext();
   const dispatch = useAppDispatch();
 
   const Loading = () => (
@@ -84,7 +87,7 @@ export const RootStackNavigator = () => {
   const getInitialScreen = useCallback((): Screens => {
     switch (isStartupDone) {
       case 'DONE':
-        return {name: ROOT_ROUTES.MAIN_NAV, component: MainStackNavigator};
+        return { name: ROOT_ROUTES.MAIN_NAV, component: MainStackNavigator };
 
       case 'WAIT_ONBOARDING':
         return {
@@ -94,13 +97,13 @@ export const RootStackNavigator = () => {
 
       case 'ERROR':
         // An error occurred during startup
-        return {name: ROOT_ROUTES.ERROR, component: GenericError};
+        return { name: ROOT_ROUTES.ERROR, component: GenericError };
 
       case 'LOADING':
       case 'NOT_STARTED':
       case 'WAIT_IDENTIFICATION':
       default:
-        return {name: ROOT_ROUTES.LOADING, component: Loading};
+        return { name: ROOT_ROUTES.LOADING, component: Loading };
     }
   }, [isStartupDone]);
 
@@ -130,7 +133,7 @@ export const RootStackNavigator = () => {
        */
       const url = await Linking.getInitialURL();
       if (url) {
-        dispatch(setUrl({url}));
+        dispatch(setUrl({ url }));
       }
       return url;
     },
@@ -143,14 +146,14 @@ export const RootStackNavigator = () => {
        * - NOT_STARTED as the main navigation is not mounted yet
        * A saga will take care of handling this deep link later.
        */
-      const onReceiveURL = ({url}: {url: string}) => {
+      const onReceiveURL = ({ url }: { url: string }) => {
         listener(url);
         if (
           isStartupDone === 'WAIT_IDENTIFICATION' ||
           isStartupDone === 'LOADING' ||
           isStartupDone === 'NOT_STARTED'
         ) {
-          dispatch(setUrl({url}));
+          dispatch(setUrl({ url }));
         }
       };
 
@@ -170,8 +173,9 @@ export const RootStackNavigator = () => {
         themeType === 'light' ? IONavigationLightTheme : IONavigationDarkTheme
       }
       linking={linking}
-      ref={navigationRef}>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      ref={navigationRef}
+    >
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name={initialScreen.name}
           component={initialScreen.component}
