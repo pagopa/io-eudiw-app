@@ -1,5 +1,5 @@
 import I18n from 'i18next';
-import {ItwJwtCredentialStatus} from './eudiwTypesUtils';
+import { ItwJwtCredentialStatus } from './eudiwTypesUtils';
 
 // Combined status of a credential, that includes both the physical and the digital version
 export type EudiwCredentialStatus =

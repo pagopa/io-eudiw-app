@@ -1,9 +1,9 @@
-import {IOColors} from '@pagopa/io-app-design-system';
-import {memo} from 'react';
-import {ImageSourcePropType, StyleSheet, View} from 'react-native';
-import {AnimatedImage} from '../../../../../components/AnimatedImage';
-import {StoredCredential} from '../../../utils/types';
-import {wellKnownCredential} from '../../../utils/credentials';
+import { IOColors } from '@pagopa/io-app-design-system';
+import { memo } from 'react';
+import { ImageSourcePropType, StyleSheet, View } from 'react-native';
+import { AnimatedImage } from '../../../../../components/AnimatedImage';
+import { StoredCredential } from '../../../utils/types';
+import { wellKnownCredential } from '../../../utils/credentials';
 
 type CardBackgroundProps = {
   credentialType: StoredCredential['credentialType'];
@@ -15,7 +15,7 @@ export type CardSide = 'front' | 'back';
 /**
  * Renders the background of a card based on its type and side
  */
-const CardBackground = ({credentialType, side}: CardBackgroundProps) => {
+const CardBackground = ({ credentialType, side }: CardBackgroundProps) => {
   const cardAssets = assetsMap[credentialType];
 
   if (cardAssets === undefined) {
@@ -59,4 +59,4 @@ const styles = StyleSheet.create({
 
 const MemoizedCardBackground = memo(CardBackground);
 
-export {MemoizedCardBackground as CardBackground};
+export { MemoizedCardBackground as CardBackground };

@@ -1,10 +1,10 @@
-import {ReactNode} from 'react';
+import { ReactNode } from 'react';
 import {
   Directions,
   Gesture,
   GestureDetector
 } from 'react-native-gesture-handler';
-import {runOnJS} from 'react-native-reanimated';
+import { runOnJS } from 'react-native-reanimated';
 
 const directions = {
   updown: Directions.UP + Directions.DOWN,

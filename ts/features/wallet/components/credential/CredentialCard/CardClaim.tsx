@@ -1,7 +1,7 @@
-import {WithTestID} from '@pagopa/io-app-design-system';
-import {memo, ReactElement, ReactNode, useMemo} from 'react';
-import {StyleSheet, View, ViewStyle} from 'react-native';
-import {ParsedCredential} from '../../../utils/types';
+import { WithTestID } from '@pagopa/io-app-design-system';
+import { memo, ReactElement, ReactNode, useMemo } from 'react';
+import { StyleSheet, View, ViewStyle } from 'react-native';
+import { ParsedCredential } from '../../../utils/types';
 import {
   ClaimValue,
   DrivingPrivilegesClaim,
@@ -18,17 +18,17 @@ import {
   PercentPosition,
   Prettify
 } from '../../../utils/eudiwTypesUtils';
-import {ClaimLabel, ClaimLabelProps} from './ClaimLabel';
-import {ClaimImage} from './ClaimImage';
+import { ClaimLabel, ClaimLabelProps } from './ClaimLabel';
+import { ClaimImage } from './ClaimImage';
 
 type HorizontalClaimPosition = Either<
-  {left: PercentPosition},
-  {right: PercentPosition}
+  { left: PercentPosition },
+  { right: PercentPosition }
 >;
 
 type VerticalClaimPosition = Either<
-  {top: PercentPosition},
-  {bottom: PercentPosition}
+  { top: PercentPosition },
+  { bottom: PercentPosition }
 >;
 
 export type ClaimPosition = HorizontalClaimPosition & VerticalClaimPosition;
@@ -92,7 +92,8 @@ const CardClaim = ({
     <CardClaimContainer
       testID={testID}
       position={position}
-      dimensions={dimensions}>
+      dimensions={dimensions}
+    >
       {claimContent}
     </CardClaimContainer>
   );

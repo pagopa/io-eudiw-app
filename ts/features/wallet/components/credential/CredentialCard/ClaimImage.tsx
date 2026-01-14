@@ -4,8 +4,8 @@ import {
   Blur,
   Skia
 } from '@shopify/react-native-skia';
-import {useMemo, useState} from 'react';
-import {View} from 'react-native';
+import { useMemo, useState } from 'react';
+import { View } from 'react-native';
 
 type ClaimImageProps = {
   base64: string;
@@ -17,7 +17,7 @@ type ClaimImageProps = {
  * The image is displayed on a Skia canvas, and the blur level can be adjusted
  * via the `blur` prop.
  */
-export const ClaimImage = ({base64, blur = 0}: ClaimImageProps) => {
+export const ClaimImage = ({ base64, blur = 0 }: ClaimImageProps) => {
   const [dimensions, setDimensions] = useState<{
     width: number;
     height: number;
@@ -31,14 +31,15 @@ export const ClaimImage = ({base64, blur = 0}: ClaimImageProps) => {
 
   return (
     <View
-      style={{flex: 1}}
+      style={{ flex: 1 }}
       onLayout={event => {
         setDimensions({
           width: event.nativeEvent.layout.width,
           height: event.nativeEvent.layout.height
         });
-      }}>
-      <Canvas style={{flex: 1}}>
+      }}
+    >
+      <Canvas style={{ flex: 1 }}>
         {dimensions && (
           <SkiaImage
             image={image}
@@ -46,7 +47,8 @@ export const ClaimImage = ({base64, blur = 0}: ClaimImageProps) => {
             x={0}
             y={0}
             width={dimensions.width}
-            height={dimensions.height}>
+            height={dimensions.height}
+          >
             <Blur blur={blur} />
           </SkiaImage>
         )}

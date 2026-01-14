@@ -1,9 +1,9 @@
 import I18n from 'i18next';
-import {differenceInCalendarDays, isValid} from 'date-fns';
-import {truncate} from 'lodash';
-import {ParsedCredential} from './types';
-import {getClaimsFullLocale} from './locale';
-import {IssuerConfiguration, StoredStatusAssertion} from './eudiwTypesUtils';
+import { differenceInCalendarDays, isValid } from 'date-fns';
+import { truncate } from 'lodash';
+import { ParsedCredential } from './types';
+import { getClaimsFullLocale } from './locale';
+import { IssuerConfiguration, StoredStatusAssertion } from './eudiwTypesUtils';
 
 /**
  * CLAIMS MANIPULATION UTILS
@@ -68,9 +68,9 @@ export type ClaimDisplayFormat =
 
 export const parseClaims = (
   parsedCredential: ParsedCredential,
-  options: {exclude?: Array<string>} = {}
+  options: { exclude?: Array<string> } = {}
 ): Array<ClaimDisplayFormat> => {
-  const {exclude = []} = options;
+  const { exclude = [] } = options;
 
   return Object.entries(parsedCredential)
     .filter(([key]) => !exclude.includes(key))
@@ -151,7 +151,7 @@ export const SimpleDateClaim = {
 };
 
 export const PlaceOfBirthClaim = {
-  is: (u: any): u is {country: string; locality: string} =>
+  is: (u: any): u is { country: string; locality: string } =>
     u && typeof u.country === 'string' && typeof u.locality === 'string'
 };
 
@@ -273,7 +273,7 @@ export const extractFiscalCode = (s: string): string | undefined => {
   return match ? match[0] : undefined;
 };
 
-export const getSafeText = (text: string) => truncate(text, {length: 128});
+export const getSafeText = (text: string) => truncate(text, { length: 128 });
 
 export const isExpirationDateClaim = (claim: ClaimDisplayFormat) =>
   claim.id === WellKnownClaim.expiry_date;

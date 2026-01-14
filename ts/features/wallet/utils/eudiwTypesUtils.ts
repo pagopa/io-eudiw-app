@@ -3,7 +3,7 @@ import {
   Trust,
   WalletInstance
 } from '@pagopa/io-react-native-wallet';
-import {ParsedCredential} from './types';
+import { ParsedCredential } from './types';
 
 /**
  * Alias type for the return type of the start issuance flow operation.
@@ -46,7 +46,7 @@ export type IssuerConfiguration = Awaited<
  */
 export type MdocSupportedCredentialConfiguration = Extract<
   IssuerConfiguration['openid_credential_issuer']['credential_configurations_supported'][string],
-  {format: 'mso_mdoc'}
+  { format: 'mso_mdoc' }
 >;
 
 /**

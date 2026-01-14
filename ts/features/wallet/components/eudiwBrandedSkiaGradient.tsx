@@ -4,7 +4,7 @@ import {
   LinearGradient as SkiaLinearGradient,
   vec
 } from '@shopify/react-native-skia';
-import {LayoutRectangle} from 'react-native';
+import { LayoutRectangle } from 'react-native';
 import {
   Extrapolation,
   interpolate,
@@ -125,7 +125,8 @@ export const ItwBrandedSkiaGradient = ({
       y={gradientY}
       width={width}
       height={gradientHeight}
-      transform={skiaGradientTransform}>
+      transform={skiaGradientTransform}
+    >
       <SkiaLinearGradient
         mode="mirror"
         start={vec(0, 0)}

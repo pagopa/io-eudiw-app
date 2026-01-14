@@ -1,7 +1,7 @@
-import {IOColors, Tag, useScaleAnimation} from '@pagopa/io-app-design-system';
-import {ReactNode, useMemo, useState} from 'react';
+import { IOColors, Tag, useScaleAnimation } from '@pagopa/io-app-design-system';
+import { ReactNode, useMemo, useState } from 'react';
 
-import {Canvas} from '@shopify/react-native-skia';
+import { Canvas } from '@shopify/react-native-skia';
 import I18n from 'i18next';
 import {
   AccessibilityProps,
@@ -13,7 +13,7 @@ import {
   ViewStyle
 } from 'react-native';
 import Animated from 'react-native-reanimated';
-import {StoredCredentialEudiw} from '../../../utils/eudiwClaimsUtils';
+import { StoredCredentialEudiw } from '../../../utils/eudiwClaimsUtils';
 import {
   accessibilityLabelByStatus,
   EudiwCredentialStatus
@@ -29,10 +29,10 @@ import {
   EudiwBrandedSkiaBorder,
   EudiwIridescentBorderVariant
 } from '../../eudiwBrandedSkiaBorder';
-import {StoredCredential} from '../../../utils/types';
-import {CardBackground} from './CardBackground';
-import {CardData} from './CardData';
-import {FlippableCard} from './FlippableCard';
+import { StoredCredential } from '../../../utils/types';
+import { CardBackground } from './CardBackground';
+import { CardData } from './CardData';
+import { FlippableCard } from './FlippableCard';
 
 export type EudiwSkeumorphicCardProps = {
   credential: StoredCredentialEudiw | StoredCredential;
@@ -96,7 +96,7 @@ export const EudiwSkeumorphicCard = ({
             ? 'features.itWallet.presentation.credentialDetails.card.back'
             : 'features.itWallet.presentation.credentialDetails.card.front'
         )}`,
-        accessibilityValue: {text: accessibilityLabelByStatus[status]}
+        accessibilityValue: { text: accessibilityLabelByStatus[status] }
       } as AccessibilityProps),
     [credential.credentialType, isFlipped, status]
   );
@@ -110,7 +110,7 @@ export const EudiwSkeumorphicCard = ({
     />
   );
 
-  const {onPressIn, onPressOut, scaleAnimatedStyle} = useScaleAnimation();
+  const { onPressIn, onPressOut, scaleAnimatedStyle } = useScaleAnimation();
 
   if (onPress) {
     return (
@@ -119,7 +119,8 @@ export const EudiwSkeumorphicCard = ({
         {...accessibilityProps}
         accessibilityRole="button"
         onPressIn={onPressIn}
-        onPressOut={onPressOut}>
+        onPressOut={onPressOut}
+      >
         <Animated.View style={scaleAnimatedStyle}>{card}</Animated.View>
       </Pressable>
     );
@@ -154,10 +155,10 @@ type CardSideBaseProps = {
   isItw: boolean;
 };
 
-const CardSideBase = ({status, children, isItw}: CardSideBaseProps) => {
+const CardSideBase = ({ status, children, isItw }: CardSideBaseProps) => {
   const borderColorMap = useBorderColorByStatus();
 
-  const [size, setSize] = useState<{width: number; height: number}>({
+  const [size, setSize] = useState<{ width: number; height: number }>({
     width: 0,
     height: 0
   });
@@ -174,8 +175,8 @@ const CardSideBase = ({status, children, isItw}: CardSideBaseProps) => {
   };
 
   const handleOnLayout = (event: LayoutChangeEvent) => {
-    const {width, height} = event.nativeEvent.layout;
-    setSize({width, height});
+    const { width, height } = event.nativeEvent.layout;
+    setSize({ width, height });
   };
 
   return (
@@ -201,7 +202,8 @@ const CardSideBase = ({status, children, isItw}: CardSideBaseProps) => {
             width: size.width,
             height: size.height
           }}
-          testID="itWalletBrandBorderTestID">
+          testID="itWalletBrandBorderTestID"
+        >
           {/* Animated gradient border */}
           <EudiwBrandedSkiaBorder
             width={size.width}

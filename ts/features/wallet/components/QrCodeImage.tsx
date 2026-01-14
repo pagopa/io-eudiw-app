@@ -1,7 +1,7 @@
-import {IOColors, IOSkeleton} from '@pagopa/io-app-design-system';
-import {memo, useMemo} from 'react';
-import {useWindowDimensions, View} from 'react-native';
-import QRCode, {QRCodeProps} from 'react-native-qrcode-svg';
+import { IOColors, IOSkeleton } from '@pagopa/io-app-design-system';
+import { memo, useMemo } from 'react';
+import { useWindowDimensions, View } from 'react-native';
+import QRCode, { QRCodeProps } from 'react-native-qrcode-svg';
 
 export type QrCodeImageProps = {
   // Value to decode and present using a QR Code
@@ -38,7 +38,7 @@ const QrCodeImage = ({
   accessibilityLabel = defaultAccessibilityLabel,
   onError
 }: QrCodeImageProps) => {
-  const {width} = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   const realSize = useMemo<number>(() => {
     if (typeof size === 'number') {
@@ -54,7 +54,8 @@ const QrCodeImage = ({
     <View
       accessible={true}
       accessibilityRole="image"
-      accessibilityLabel={accessibilityLabel}>
+      accessibilityLabel={accessibilityLabel}
+    >
       <QRCode
         value={value}
         size={realSize}
@@ -70,4 +71,4 @@ const QrCodeImage = ({
 };
 
 const MemoizedQrCodeImage = memo(QrCodeImage);
-export {MemoizedQrCodeImage as QrCodeImage};
+export { MemoizedQrCodeImage as QrCodeImage };

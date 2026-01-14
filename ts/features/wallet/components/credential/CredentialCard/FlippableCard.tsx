@@ -1,5 +1,5 @@
-import {ReactElement, useEffect, memo} from 'react';
-import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import { ReactElement, useEffect, memo } from 'react';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -36,30 +36,32 @@ const FlippableCard = ({
 
   const regularCardAnimatedStyle = useAnimatedStyle(() => {
     const spinValue = interpolate(Number(isFlipped.value), [0, 1], [0, 180]);
-    const rotateValue = withTiming(`${spinValue}deg`, {duration});
+    const rotateValue = withTiming(`${spinValue}deg`, { duration });
 
     return {
-      transform: [{rotateY: rotateValue}]
+      transform: [{ rotateY: rotateValue }]
     };
   }, []);
 
   const flippedCardAnimatedStyle = useAnimatedStyle(() => {
     const spinValue = interpolate(Number(isFlipped.value), [0, 1], [180, 360]);
-    const rotateValue = withTiming(`${spinValue}deg`, {duration});
+    const rotateValue = withTiming(`${spinValue}deg`, { duration });
 
     return {
-      transform: [{rotateY: rotateValue}]
+      transform: [{ rotateY: rotateValue }]
     };
   }, []);
 
   return (
     <View style={containerStyle}>
       <Animated.View
-        style={[styles.card, styles.front, regularCardAnimatedStyle]}>
+        style={[styles.card, styles.front, regularCardAnimatedStyle]}
+      >
         {FrontComponent}
       </Animated.View>
       <Animated.View
-        style={[styles.card, styles.back, flippedCardAnimatedStyle]}>
+        style={[styles.card, styles.back, flippedCardAnimatedStyle]}
+      >
         {BackComponent}
       </Animated.View>
     </View>
@@ -85,4 +87,4 @@ const styles = StyleSheet.create({
 
 const MemoizedFlippableCard = memo(FlippableCard);
 
-export {MemoizedFlippableCard as FlippableCard};
+export { MemoizedFlippableCard as FlippableCard };

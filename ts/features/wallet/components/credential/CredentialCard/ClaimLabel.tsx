@@ -3,8 +3,8 @@ import {
   IOFontWeight,
   makeFontStyleObject
 } from '@pagopa/io-app-design-system';
-import {FunctionComponent, PropsWithChildren} from 'react';
-import {Text, TextStyle, useWindowDimensions} from 'react-native';
+import { FunctionComponent, PropsWithChildren } from 'react';
+import { Text, TextStyle, useWindowDimensions } from 'react-native';
 
 export type ClaimLabelProps = {
   fontSize?: number;
@@ -30,7 +30,7 @@ export const ClaimLabel: FunctionComponent<
   hidden,
   ...props
 }) => {
-  const {width} = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   // 360 is the width of the screen in the smallest device
   // We calculated the optimal font size for a 360px screen
@@ -59,7 +59,8 @@ export const ClaimLabel: FunctionComponent<
         // so it is safe to force the text color and make sure it is readable
         color: IOColors['grey-900'],
         textTransform
-      }}>
+      }}
+    >
       {hidden ? HIDDEN_CLAIM_TEXT : props.children}
     </Text>
   );

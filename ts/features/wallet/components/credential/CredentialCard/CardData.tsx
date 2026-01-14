@@ -1,7 +1,7 @@
-import {ElementType, Fragment, memo} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {ParsedCredential, StoredCredential} from '../../../utils/types';
-import {wellKnownCredential} from '../../../utils/credentials';
+import { ElementType, Fragment, memo } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { ParsedCredential, StoredCredential } from '../../../utils/types';
+import { wellKnownCredential } from '../../../utils/credentials';
 import {
   DrivingPrivilegesClaim,
   DrivingPrivilegesClaimType,
@@ -9,10 +9,10 @@ import {
   StoredCredentialEudiw,
   StringClaim
 } from '../../../utils/eudiwClaimsUtils';
-import {QrCodeImage} from '../../QrCodeImage';
-import {CardSide} from './CardBackground';
-import {CardClaim, CardClaimContainer, CardClaimRenderer} from './CardClaim';
-import {ClaimLabel} from './ClaimLabel';
+import { QrCodeImage } from '../../QrCodeImage';
+import { CardSide } from './CardBackground';
+import { CardClaim, CardClaimContainer, CardClaimRenderer } from './CardClaim';
+import { ClaimLabel } from './ClaimLabel';
 
 type DataComponentProps = {
   claims: ParsedCredential;
@@ -28,11 +28,11 @@ const mdlClaimsFallback: Record<string, string> = {
   document_iss_authority: 'issuing_authority'
 };
 
-const MdlFrontData = ({claims, valuesHidden}: DataComponentProps) => {
+const MdlFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
   const row = 11.6; // Row padding, defines the first row position
   const rowStep = 6.9; // Row step, defines the space between each row
   const rows: ReadonlyArray<number> = Array.from(
-    {length: 6},
+    { length: 6 },
     (_, i) => row + rowStep * i
   );
   const cols: ReadonlyArray<number> = [34, 57.5];
@@ -51,7 +51,7 @@ const MdlFrontData = ({claims, valuesHidden}: DataComponentProps) => {
     <View testID="mdlFrontDataTestID" style={styles.container}>
       <CardClaim
         claim={getClaim('portrait')}
-        position={{left: '4%', top: '30%'}}
+        position={{ left: '4%', top: '30%' }}
         dimensions={{
           width: '22.5%',
           aspectRatio: 77 / 93 // This aspect ration was extracted from the Figma design
@@ -60,59 +60,59 @@ const MdlFrontData = ({claims, valuesHidden}: DataComponentProps) => {
       />
       <CardClaim
         claim={getClaim('family_name')}
-        position={{left: `${cols[0]}%`, top: `${rows[0]}%`}}
+        position={{ left: `${cols[0]}%`, top: `${rows[0]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
         claim={getClaim('given_name')}
-        position={{left: `${cols[0]}%`, top: `${rows[1]}%`}}
+        position={{ left: `${cols[0]}%`, top: `${rows[1]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
         claim={getClaim('birth_date')}
-        position={{left: `${cols[0]}%`, top: `${rows[2]}%`}}
+        position={{ left: `${cols[0]}%`, top: `${rows[2]}%` }}
         dateFormat="DD/MM/YY"
         hidden={valuesHidden}
       />
       <CardClaim
         claim={getClaim('birth_place')}
-        position={{left: `${cols[0] + 17}%`, top: `${rows[2]}%`}}
+        position={{ left: `${cols[0] + 17}%`, top: `${rows[2]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
         claim={getClaim('issue_date')}
-        position={{left: `${cols[0]}%`, top: `${rows[3]}%`}}
+        position={{ left: `${cols[0]}%`, top: `${rows[3]}%` }}
         fontWeight={'Bold'}
         dateFormat={'DD/MM/YYYY'}
         hidden={valuesHidden}
       />
       <CardClaim
         claim={getClaim('issuing_authority')}
-        position={{left: `${cols[1]}%`, top: `${rows[3]}%`}}
+        position={{ left: `${cols[1]}%`, top: `${rows[3]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
         claim={getClaim('expiry_date')}
-        position={{left: `${cols[0]}%`, top: `${rows[4]}%`}}
+        position={{ left: `${cols[0]}%`, top: `${rows[4]}%` }}
         fontWeight={'Bold'}
         dateFormat={'DD/MM/YYYY'}
         hidden={valuesHidden}
       />
       <CardClaim
         claim={getClaim('document_number')}
-        position={{left: `${cols[0]}%`, top: `${rows[5]}%`}}
+        position={{ left: `${cols[0]}%`, top: `${rows[5]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
         claim={getClaim('driving_privileges')}
-        position={{left: '8%', bottom: '17.9%'}}
+        position={{ left: '8%', bottom: '17.9%' }}
         hidden={valuesHidden}
       />
     </View>
   );
 };
 
-const MdlBackData = ({claims, valuesHidden}: DataComponentProps) => {
+const MdlBackData = ({ claims, valuesHidden }: DataComponentProps) => {
   const drivingPrivileges = [
     'AM',
     'A1',
@@ -154,7 +154,8 @@ const MdlBackData = ({claims, valuesHidden}: DataComponentProps) => {
             position={{
               left: `41.5%`,
               top: `${privilegesTableRows[driving_privilege] || 0}%`
-            }}>
+            }}
+          >
             <ClaimLabel fontSize={9} hidden={valuesHidden}>
               {issue_date.toString('DD/MM/YY')}
             </ClaimLabel>
@@ -164,7 +165,8 @@ const MdlBackData = ({claims, valuesHidden}: DataComponentProps) => {
             position={{
               left: `55%`,
               top: `${privilegesTableRows[driving_privilege] || 0}%`
-            }}>
+            }}
+          >
             <ClaimLabel fontSize={9} hidden={valuesHidden}>
               {expiry_date.toString('DD/MM/YY')}
             </ClaimLabel>
@@ -175,7 +177,8 @@ const MdlBackData = ({claims, valuesHidden}: DataComponentProps) => {
               position={{
                 left: `68.5%`,
                 top: `${privilegesTableRows[driving_privilege] || 0}%`
-              }}>
+              }}
+            >
               <ClaimLabel fontSize={9}>{restrictions_conditions}</ClaimLabel>
             </CardClaimContainer>
           )}
@@ -203,7 +206,7 @@ const MdlBackData = ({claims, valuesHidden}: DataComponentProps) => {
       />
       <CardClaim
         claim={claims.restrictions_conditions}
-        position={{left: '8%', bottom: '6.5%'}}
+        position={{ left: '8%', bottom: '6.5%' }}
         fontSize={9}
         hidden={valuesHidden}
       />
@@ -211,12 +214,12 @@ const MdlBackData = ({claims, valuesHidden}: DataComponentProps) => {
   );
 };
 
-const DcFrontData = ({claims, valuesHidden}: DataComponentProps) => {
+const DcFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
   const row = 44.5;
   const rowStep = 11.4;
 
   const rows: ReadonlyArray<number> = Array.from(
-    {length: 5},
+    { length: 5 },
     (_, i) => row + rowStep * i
   );
 
@@ -224,7 +227,7 @@ const DcFrontData = ({claims, valuesHidden}: DataComponentProps) => {
     <View testID="dcFrontDataTestID" style={styles.container}>
       <CardClaim
         claim={claims.portrait}
-        position={{left: '2.55%', bottom: '1.%'}}
+        position={{ left: '2.55%', bottom: '1.%' }}
         dimensions={{
           width: '24.7%',
           aspectRatio: 73 / 106
@@ -233,29 +236,29 @@ const DcFrontData = ({claims, valuesHidden}: DataComponentProps) => {
       />
       <CardClaim
         claim={claims.given_name}
-        position={{right: '3.5%', top: `${rows[0]}%`}}
+        position={{ right: '3.5%', top: `${rows[0]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
         claim={claims.family_name}
-        position={{right: '3.5%', top: `${rows[1]}%`}}
+        position={{ right: '3.5%', top: `${rows[1]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
         claim={claims.birth_date}
-        position={{right: '3.5%', top: `${rows[2]}%`}}
+        position={{ right: '3.5%', top: `${rows[2]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
         claim={claims.document_number}
-        position={{right: '3.5%', top: `${rows[3]}%`}}
+        position={{ right: '3.5%', top: `${rows[3]}%` }}
         hidden={valuesHidden}
       />
     </View>
   );
 };
 
-const DcBackData = ({claims}: DataComponentProps) => (
+const DcBackData = ({ claims }: DataComponentProps) => (
   <View testID="dcBackDataTestID" style={styles.container}>
     <CardClaimRenderer
       claim={claims.link_qr_code}
@@ -265,7 +268,8 @@ const DcBackData = ({claims}: DataComponentProps) => (
           position={{
             right: `6%`,
             top: `10%`
-          }}>
+          }}
+        >
           <QrCodeImage value={qrCode} size={'28.5%'} />
         </CardClaimContainer>
       )}
@@ -281,7 +285,10 @@ const dataComponentMap: Record<
     front: MdlFrontData,
     back: MdlBackData
   },
-  [wellKnownCredential.DISABILITY_CARD]: {front: DcFrontData, back: DcBackData}
+  [wellKnownCredential.DISABILITY_CARD]: {
+    front: DcFrontData,
+    back: DcBackData
+  }
 };
 
 type CardDataProps = {
@@ -290,7 +297,7 @@ type CardDataProps = {
   valuesHidden: boolean;
 };
 
-const CardData = ({credential, side, valuesHidden}: CardDataProps) => {
+const CardData = ({ credential, side, valuesHidden }: CardDataProps) => {
   const componentMap = dataComponentMap[credential.credentialType];
   const DataComponent = componentMap?.[side];
   if (!DataComponent) {
@@ -316,4 +323,4 @@ const styles = StyleSheet.create({
 
 const MemoizeCardData = memo(CardData);
 
-export {MemoizeCardData as CardData};
+export { MemoizeCardData as CardData };

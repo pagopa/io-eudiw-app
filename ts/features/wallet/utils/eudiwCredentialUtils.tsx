@@ -1,11 +1,11 @@
-import {IOColors, Tag, useIOTheme} from '@pagopa/io-app-design-system';
-import {SdJwt, Mdoc} from '@pagopa/io-react-native-wallet';
+import { IOColors, Tag, useIOTheme } from '@pagopa/io-app-design-system';
+import { SdJwt, Mdoc } from '@pagopa/io-react-native-wallet';
 import I18n from 'i18next';
-import {wellKnownCredentialConfigurationIDs} from './credentials';
-import {EudiwCredentialStatus} from './eudiwAccessibilityUtils';
-import {CredentialFormat} from './eudiwTypesUtils';
-import {StoredCredentialEudiw} from './eudiwClaimsUtils';
-import {StoredCredential} from './types';
+import { wellKnownCredentialConfigurationIDs } from './credentials';
+import { EudiwCredentialStatus } from './eudiwAccessibilityUtils';
+import { CredentialFormat } from './eudiwTypesUtils';
+import { StoredCredentialEudiw } from './eudiwClaimsUtils';
+import { StoredCredential } from './types';
 
 export const availableCredentials = [
   wellKnownCredentialConfigurationIDs.DRIVING_LICENSE,
@@ -88,7 +88,7 @@ export const useBorderColorByStatus: () => {
   };
 };
 
-export const tagPropsByStatus: {[key in EudiwCredentialStatus]?: Tag} = {
+export const tagPropsByStatus: { [key in EudiwCredentialStatus]?: Tag } = {
   invalid: {
     variant: 'error',
     text: I18n.t('features.itWallet.card.status.invalid')
@@ -111,7 +111,7 @@ export const tagPropsByStatus: {[key in EudiwCredentialStatus]?: Tag} = {
   },
   unknown: {
     variant: 'custom',
-    icon: {name: 'infoFilled', color: 'grey-450'},
+    icon: { name: 'infoFilled', color: 'grey-450' },
     text: I18n.t('features.itWallet.card.status.unknown')
   }
 };
@@ -151,7 +151,7 @@ export const isEudiwCredential = ({
       return false;
     }
 
-    const {assurance_level, trust_framework} = verification;
+    const { assurance_level, trust_framework } = verification;
     return (
       assurance_level === 'high' || trust_framework === 'it_l2+document_proof'
     );

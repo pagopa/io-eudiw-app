@@ -7,8 +7,8 @@ import {
   RoundedRect,
   Group as SkiaGroup
 } from '@shopify/react-native-skia';
-import {ColorSchemeName, LayoutRectangle} from 'react-native';
-import {ItwBrandedSkiaGradient} from './eudiwBrandedSkiaGradient';
+import { ColorSchemeName, LayoutRectangle } from 'react-native';
+import { ItwBrandedSkiaGradient } from './eudiwBrandedSkiaGradient';
 
 export type EudiwIridescentBorderVariant = 'default' | 'warning' | 'error';
 
@@ -51,13 +51,15 @@ export const EudiwBrandedSkiaBorder = ({
             variant={variant}
           />
         </SkiaGroup>
-      }>
+      }
+    >
       <SkiaGroup
         layer={
           <Paint>
             <ColorMatrix matrix={OpacityMatrix(gradientTickOpacity)} />
           </Paint>
-        }>
+        }
+      >
         <RoundedRect
           x={0}
           y={0}
