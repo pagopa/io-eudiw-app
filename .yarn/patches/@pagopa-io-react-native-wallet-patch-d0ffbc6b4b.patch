@@ -1,5 +1,18 @@
+diff --git a/lib/typescript/credential/issuance/04-complete-user-authorization.d.ts b/lib/typescript/credential/issuance/04-complete-user-authorization.d.ts
+index 41f7b6f84d9264e3cbab4bac4e18f4c0d715dfe9..99e0cf957c7b396bd10900fcbf0b4f9eecf88f0e 100644
+--- a/lib/typescript/credential/issuance/04-complete-user-authorization.d.ts
++++ b/lib/typescript/credential/issuance/04-complete-user-authorization.d.ts
+@@ -8,7 +8,7 @@ import { RequestObject } from "../presentation/types";
+  * The interface of the phase to complete User authorization via strong identification when the response mode is "query" and the request credential is a PersonIdentificationData.
+  */
+ export type CompleteUserAuthorizationWithQueryMode = (authRedirectUrl: string) => Promise<AuthorizationResult>;
+-export type CompleteUserAuthorizationWithFormPostJwtMode = (requestObject: Out<GetRequestedCredentialToBePresented>, pid: string, context: {
++export type CompleteUserAuthorizationWithFormPostJwtMode = (requestObject: Out<GetRequestedCredentialToBePresented>, pid: string, issuerConf: Out<EvaluateIssuerTrust>["issuerConf"], context: {
+     wiaCryptoContext: CryptoContext;
+     pidCryptoContext: CryptoContext;
+     appFetch?: GlobalFetch["fetch"];
 diff --git a/src/credential/issuance/04-complete-user-authorization.ts b/src/credential/issuance/04-complete-user-authorization.ts
-index 7dd9e7dd3c205cae0c773f56987460a83db81e4c..020a35683da649a7b03cff863893064cd910bedd 100644
+index 7dd9e7dd3c205cae0c773f56987460a83db81e4c..03cab788457a1b2a4fbd7dd53f46832e520b49c1 100644
 --- a/src/credential/issuance/04-complete-user-authorization.ts
 +++ b/src/credential/issuance/04-complete-user-authorization.ts
 @@ -10,6 +10,7 @@ import { IssuerResponseError, ValidationFailed } from "../../utils/errors";
@@ -112,7 +125,7 @@ index 7dd9e7dd3c205cae0c773f56987460a83db81e4c..020a35683da649a7b03cff863893064c
        ...(state ? { state } : {}),
        vp_token: remotePresentations.reduce(
          (vp_token, { credentialId, vpToken }) => ({
-@@ -323,8 +356,23 @@ const createAuthzResponsePayload = async ({
+@@ -323,8 +356,24 @@ const createAuthzResponsePayload = async ({
          }),
          {}
        ),
@@ -139,4 +152,5 @@ index 7dd9e7dd3c205cae0c773f56987460a83db81e4c..020a35683da649a7b03cff863893064c
 +
 +  return encryptedResponse;
  };
++
 +
