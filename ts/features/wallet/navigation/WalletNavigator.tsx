@@ -2,10 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import PidIssuanceFailure from '../screens/pidIssuance/PidIssuanceFailure';
 import PidIssuancRequest from '../screens/pidIssuance/PidIssuanceRequest';
 import PidIssuanceSuccess from '../screens/pidIssuance/PidIssuanceSuccess';
-import {
-  PresentationCredentialDetailNavigationParams,
-  PresentationCredentialDetails
-} from '../screens/presentation/PresentationCredentialDetails';
+import { PresentationCredentialDetailNavigationParams } from '../screens/presentation/PresentationCredentialDetails';
 import PresentationPreDefinition, {
   PresentationPreDefinitionParams
 } from '../screens/presentation/PresentationPreDefinition';
@@ -28,6 +25,16 @@ import PresentationProximitySuccess from '../screens/proximity/PresentationProxi
 import { WalletInstanceCreation } from '../screens/pidIssuance/WalletInstanceCreation';
 import { IdentificationMethod } from '../screens/pidIssuance/IdentificationMethod';
 import { ItwPresentationPidDetailScreen } from '../screens/presentation/ItwPresentationPidDetailScreen';
+import {
+  ItwPresentationCredentialCardModal,
+  ItwPresentationCredentialCardModalNavigationParams
+} from '../screens/presentation/ItwPresentationCredentialCardModal';
+import { ItwPresentationCredentialFiscalCodeModal } from '../screens/presentation/ItwPresentationCredentialFiscalCodeModal';
+import {
+  ItwPresentationCredentialAttachmentNavigationParams,
+  ItwPresentationCredentialAttachmentScreen
+} from '../screens/presentation/ItwPresentationCredentialAttachmentScreen';
+import { ItwPresentationCredentialDetailScreen } from '../screens/presentation/ItwPresentationCredentialDetailScreen';
 import WALLET_ROUTES from './routes';
 
 /**
@@ -46,6 +53,11 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.PRESENTATION.PID_DETAIL]: undefined;
   [WALLET_ROUTES.PRESENTATION
     .CREDENTIAL_DETAILS]: PresentationCredentialDetailNavigationParams;
+  [WALLET_ROUTES.PRESENTATION
+    .CREDENTIAL_CARD_MODAL]: ItwPresentationCredentialCardModalNavigationParams;
+  [WALLET_ROUTES.PRESENTATION.CREDENTIAL_FISCAL_CODE_MODAL]: undefined;
+  [WALLET_ROUTES.PRESENTATION
+    .CREDENTIAL_ATTACHMENT]: ItwPresentationCredentialAttachmentNavigationParams;
   [WALLET_ROUTES.PRESENTATION.PRE_DEFINITION]: PresentationPreDefinitionParams;
   [WALLET_ROUTES.PRESENTATION.FAILURE]: undefined;
   [WALLET_ROUTES.PRESENTATION
@@ -102,7 +114,19 @@ const WalletNavigator = () => (
       />
       <Stack.Screen
         name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_DETAILS}
-        component={PresentationCredentialDetails}
+        component={ItwPresentationCredentialDetailScreen}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_MODAL}
+        component={ItwPresentationCredentialCardModal}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_FISCAL_CODE_MODAL}
+        component={ItwPresentationCredentialFiscalCodeModal}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_ATTACHMENT}
+        component={ItwPresentationCredentialAttachmentScreen}
       />
     </Stack.Group>
     <Stack.Group>

@@ -311,8 +311,6 @@ const DrivingPrivilegesClaimItem = ({
   detailsButtonVisible?: boolean;
   hidden?: boolean;
 }) => {
-  const localExpiryDate = new Date(claim.expiry_date).toLocaleString();
-  const localIssueDate = new Date(claim.issue_date).toLocaleString();
   const privilegeBottomSheet = useIOBottomSheetModal({
     title: I18n.t('verifiableCredentials.claims.mdl.category', {
       ns: 'wallet',
@@ -324,26 +322,26 @@ const DrivingPrivilegesClaimItem = ({
           label={I18n.t('verifiableCredentials.claims.mdl.issuedDate', {
             ns: 'wallet'
           })}
-          value={localIssueDate}
+          value={claim.issue_date}
           accessibilityLabel={`${I18n.t(
             'verifiableCredentials.claims.mdl.issuedDate',
             {
               ns: 'wallet'
             }
-          )} ${localIssueDate}`}
+          )} ${claim.issue_date}`}
         />
         <Divider />
         <ListItemInfo
           label={I18n.t('verifiableCredentials.claims.mdl.expirationDate', {
             ns: 'wallet'
           })}
-          value={localExpiryDate}
+          value={claim.expiry_date}
           accessibilityLabel={`${I18n.t(
             'verifiableCredentials.claims.mdl.expirationDate',
             {
               ns: 'wallet'
             }
-          )} ${localExpiryDate}`}
+          )} ${claim.expiry_date}`}
         />
         {/* claim.restrictions_conditions && (
           <>

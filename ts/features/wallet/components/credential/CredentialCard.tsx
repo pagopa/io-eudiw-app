@@ -76,17 +76,17 @@ export const CredentialCard = ({ credentialType }: CredentialCard) => {
 const credentialCardBackgrounds: {
   [type: string]: ImageSourcePropType;
 } = {
-  [wellKnownCredential.PID]: require('../../assets/img/credentials/pid.png'),
-  [wellKnownCredential.DRIVING_LICENSE]: require('../../assets/img/credentials/mdl.png'),
-  [wellKnownCredential.HEALTHID]: require('../../assets/img/credentials/healthID.png'),
-  [wellKnownCredential.FBK_BADGE]: require('../../assets/img/credentials/fbkBadge.png'),
-  [wellKnownCredential.DISABILITY_CARD]: require('../../assets/img/credentials/disabilityCard.png')
+  [wellKnownCredential.PID]: require('../../assets/img/cards/pid.png'),
+  [wellKnownCredential.DRIVING_LICENSE]: require('../../assets/img/cards/mdl.png'),
+  [wellKnownCredential.HEALTHID]: require('../../assets/img/cards/healthID.png'),
+  [wellKnownCredential.FBK_BADGE]: require('../../assets/img/cards/fbkBadge.png'),
+  [wellKnownCredential.DISABILITY_CARD]: require('../../assets/img/cards/disabilityCard.png')
 };
 
 const credentialCardLogos: {
   [type: string]: ImageSourcePropType;
 } = {
-  [wellKnownCredential.FBK_BADGE]: require('../../assets/img/credentials/FBKLogo.png')
+  [wellKnownCredential.FBK_BADGE]: require('../../assets/img/cards/FBKLogo.png')
 };
 
 const styles = StyleSheet.create({

@@ -32,7 +32,7 @@ const baseClaimSchema = z.object({
 /**
  * {@link baseClaimSchema} transformation extracting the value property from the schema to allow pipelining
  */
-const baseClaimSchemaExtracted = baseClaimSchema.transform(
+export const baseClaimSchemaExtracted = baseClaimSchema.transform(
   baseClaim => baseClaim.value
 );
 
@@ -40,8 +40,7 @@ const baseClaimSchemaExtracted = baseClaimSchema.transform(
  * Schema to validate a string that represents a date when the base claim label is not specified.
  */
 export const dateSchema = z
-  .string()
-  .date()
+  .union([z.string().date(), z.string().datetime()])
   .transform(str => ({
     value: new Date(str),
     type: claimType.date
@@ -123,7 +122,11 @@ export const drivingPrivilegesSchema = z
     })
   )
   .transform(arr => ({
-    value: arr,
+    value: arr.map(category => ({
+      vehicle_category_code: category.vehicle_category_code,
+      issue_date: new Date(category.issue_date).toLocaleDateString(),
+      expiry_date: new Date(category.expiry_date).toLocaleDateString()
+    })),
     type: claimType.drivingPrivileges
   }));
 

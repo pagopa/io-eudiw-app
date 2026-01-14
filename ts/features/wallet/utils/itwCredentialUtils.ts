@@ -80,3 +80,29 @@ export const validCredentialStatuses: Array<ItwCredentialStatus> = [
   'expiring',
   'jwtExpiring'
 ];
+
+export const itwGetCredentialNameByCredentialType = (): Record<
+  string,
+  string
+> => ({
+  [CredentialType.EUROPEAN_DISABILITY_CARD]: I18n.t(
+    'credentials.names.disabilityCard',
+    {
+      ns: 'wallet'
+    }
+  ),
+  [CredentialType.DRIVING_LICENSE]: I18n.t('credentials.names.mdl', {
+    ns: 'wallet'
+  }),
+  [CredentialType.PID]: I18n.t('credentials.names.pid', {
+    ns: 'wallet'
+  })
+});
+
+export const getCredentialNameFromType = (
+  credentialType: string | undefined,
+  withDefault: string = ''
+): string =>
+  credentialType !== undefined
+    ? itwGetCredentialNameByCredentialType()[credentialType]
+    : withDefault;

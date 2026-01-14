@@ -83,7 +83,7 @@
     }
   },
   "errors": {
-    "generic": "An error occurred"
+    "generic": "Si è verificato un errore"
   },
   "cancelOperation": {
     "title": "Do you want to stop the operation?",

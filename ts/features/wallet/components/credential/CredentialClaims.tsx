@@ -169,8 +169,6 @@ const DrivingPrivilegesClaimItem = ({
   reversed: boolean;
 }) => {
   const { issue_date, expiry_date, vehicle_category_code } = claim;
-  const localIssueDate = new Date(issue_date).toLocaleDateString();
-  const localExpiryDate = new Date(expiry_date).toLocaleDateString();
   const { t } = useTranslation(['wallet', 'global']);
   const privilegeBottomSheet = useIOBottomSheetModal({
     title: t('wallet:claims.mdl.license', {
@@ -180,18 +178,18 @@ const DrivingPrivilegesClaimItem = ({
       <>
         <ListItemInfo
           label={t('wallet:claims.generic.issueDate')}
-          value={localIssueDate}
+          value={issue_date}
           accessibilityLabel={`${t(
             'wallet:claims.generic.issueDate'
-          )} ${localIssueDate}`}
+          )} ${issue_date}`}
         />
         <Divider />
         <ListItemInfo
           label={t('wallet:claims.generic.expiryDate')}
-          value={localExpiryDate}
+          value={expiry_date}
           accessibilityLabel={`${t(
             'wallet:claims.generic.expiryDate'
-          )} ${localExpiryDate}`}
+          )} ${expiry_date}`}
         />
       </>
     )

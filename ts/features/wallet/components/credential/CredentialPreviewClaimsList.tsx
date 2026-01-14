@@ -2,7 +2,7 @@ import { Divider } from '@pagopa/io-app-design-system';
 import { View } from 'react-native';
 import { StoredCredential } from '../../utils/types';
 import { parseClaims } from '../../utils/claims';
-import { CredentialClaim } from './CredentialClaims';
+import { ItwCredentialClaim } from './ItwCredentialClaim';
 
 type CredentialClaimsListProps = {
   data: StoredCredential;
@@ -25,7 +25,7 @@ const CredentialPreviewClaimsList = ({
     <>
       {claims.map((elem, index) => (
         <View key={index}>
-          <CredentialClaim claim={elem} isPreview={isPreview} />
+          <ItwCredentialClaim claim={elem} isPreview={isPreview} />
           {index < claims.length - 1 && <Divider />}
         </View>
       ))}

@@ -116,6 +116,29 @@
     }
   },
   "presentation": {
+    "alerts": {
+      "statusAction": "Cosa posso fare?",
+      "mdl": {
+        "content": "Puoi usare la tua Patente su IO solo in Italia esclusivamente per dimostrare l'abilitazione alla guida in caso di controlli delle Forze dell'ordine.",
+        "invalid": {
+          "cta": "Rimuovi documento dal Portafoglio"
+        }
+      },
+      "expired": {
+        "content": "Il documento non è più valido. Se sei già in possesso del nuovo documento valido, puoi aggiornare la versione digitale nel Portafoglio",
+        "action": "Aggiorna il documento"
+      },
+      "expiring": {
+        "content": "Mancano {{days}} giorni alla scadenza del documento."
+      },
+      "jwtVerification": {
+        "content": {
+          "jwtExpiring": "Verifica la versione digitale del tuo documento entro il {{date}} per continuare a usarlo senza limitazioni.",
+          "jwtExpired": "Verifica ora la versione digitale del tuo documento per continuare a usarlo senza limitazioni."
+        },
+        "action": "Inizia"
+      }
+    },
     "credentialNotFound": {
       "title": "Aggiungi il documento al Portafoglio",
       "subtitle": "Per usare i documenti su IO, prima aggiungili al Portafoglio. È facile e veloce."
@@ -230,6 +253,19 @@
             "action": "Rinnova ID"
           }
         }
+      },
+      "org.iso.18013.5.1.mDL": {
+        "expiring": {
+          "title": "Patente su IO: documento in scadenza",
+          "content": "Rinnova la tua Patente di guida presso gli uffici della Motorizzazione Civile o un ente abilitato del tuo territorio.\n\nÈ necessaria una visita medica con un medico autorizzato e provvedere al pagamento dei bollettini che ti saranno indicati.\n\n###### Quali documenti devo preparare?\n\nLa Patente di guida (in scadenza o scaduta), un documento di identità, il Codice Fiscale e una foto recente (formato tessera).",
+          "cta": "Scopri di più"
+        }
+      },
+      "urn:eu.europa.ec.eudi:edc:1": {
+        "expiring": {
+          "title": "Carta europea della disabilità su IO: documento in scadenza",
+          "content": "Puoi richiedere il rinnovo della tua Carta europea della disabilità (CED) contattando l'ente che l'ha emessa.\n\nVerifica le modalità e i documenti richiesti sul sito ufficiale dell'INPS, oppure contattando la tua ASL locale, poiché il rinnovo può variare in base al tipo di disabilità e alle normative del tuo territorio."
+        }
       }
     },
     "itWalletId": {
@@ -247,6 +283,14 @@
           "cancel": "No, torna indietro"
         }
       }
+    },
+    "ctas": {
+      "showQRCode": "Mostra QR Code di verifica"
+    },
+    "statusAssertionUnknown": {
+      "title": "Non siamo riusciti a caricare {{credentialName}}",
+      "content": "Chiudi e riapri l'app per riprovare.",
+      "primaryAction": "Ho capito"
     }
   },
   "proximity": {
@@ -382,6 +426,19 @@
         "primary": "Aggiungi al Portafoglio",
         "secondary": "Annulla"
       }
+    },
+    "credentialNotFound": {
+      "title": "Aggiungi il documento al Portafoglio",
+      "subtitle": "Per usare i documenti su IO, prima aggiungili al Portafoglio. È facile e veloce."
+    },
+    "walletInstanceNotActive": {
+      "itWallet": {
+        "title": "Ottieni IT-Wallet per continuare",
+        "body": "Per aggiungere nuovi documenti al tuo Portafoglio di IO ottieni IT-Wallet: ti basta avere con te la Carta di Identità Elettronica (CIE).",
+        "bodyBold": ""
+      },
+      "primaryAction": "Inizia",
+      "secondaryAction": "Non ora"
     }
   },
   "generic" : {
@@ -393,6 +450,10 @@
     },
     "featureUnavailable": {
       "title": "In arrivo: questa funzione sarà disponibile a breve"
+    },
+    "error": {
+      "title": "C'è un problema sui nostri sistemi",
+      "body": "Riprova tra qualche minuto. Se si ripete, contatta l'assistenza."
     }
   }
 }
