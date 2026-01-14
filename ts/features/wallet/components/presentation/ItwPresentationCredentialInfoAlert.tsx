@@ -4,8 +4,8 @@ import I18n from 'i18next';
 import { useAppSelector } from '../../../../store';
 import { StoredCredential } from '../../utils/types';
 import { ItwCredentialStatus } from '../../utils/itwTypesUtils';
-import { CredentialType } from '../../utils/itwMocksUtils';
 import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
+import { wellKnownCredential } from '../../utils/credentials';
 
 type Props = {
   credential: StoredCredential;
@@ -30,7 +30,7 @@ const ItwPresentationCredentialInfoAlert = ({ credential }: Props) => {
     return null;
   }
 
-  if (credentialType === CredentialType.DRIVING_LICENSE) {
+  if (credentialType === wellKnownCredential.DRIVING_LICENSE) {
     return (
       <Alert
         testID="itwMdlBannerTestID"

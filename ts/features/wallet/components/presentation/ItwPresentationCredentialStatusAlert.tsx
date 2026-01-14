@@ -5,7 +5,6 @@ import { Alert, IOButton, IOToast, VStack } from '@pagopa/io-app-design-system';
 import I18n from 'i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { StoredCredential } from '../../utils/types';
-import { CredentialType } from '../../utils/itwMocksUtils';
 import {
   ItwCredentialStatus,
   ItwJwtCredentialStatus
@@ -51,7 +50,7 @@ type CredentialStatusAlertProps = {
 };
 
 export enum CredentialAlertType {
-  EID_LIFECYCLE = 'EID_LIFECYCLE',
+  PID_LIFECYCLE = 'PID_LIFECYCLE',
   JWT_VERIFICATION = 'JWT_VERIFICATION',
   DOCUMENT_EXPIRING = 'DOCUMENT_EXPIRING',
   ISSUER_DYNAMIC_ERROR = 'ISSUER_DYNAMIC_ERROR',
@@ -141,7 +140,7 @@ const ItwPresentationCredentialStatusAlert = ({ credential }: Props) => {
   }
 
   switch (alertType) {
-    case CredentialAlertType.EID_LIFECYCLE:
+    case CredentialAlertType.PID_LIFECYCLE:
       return <ItwPidLifecycleAlert navigation={navigation} />;
     case CredentialAlertType.JWT_VERIFICATION:
       return <JwtVerificationAlert credential={credential} status={status} />;
@@ -214,11 +213,13 @@ const DocumentExpiringAlert = ({ credential }: CredentialStatusAlertProps) => {
   }, []);
 
   const bottomSheet = useIOBottomSheetModal({
-    title: I18n.t(`${bottomSheetNs}.title`, { ns: 'wallet' }),
+//    title: I18n.t(`${bottomSheetNs}.title`, { ns: 'wallet' }),
+    //This API is needed to bypass translation engine interpretations of ":" symbols as namespaces
+    title: I18n.getResource(I18n.language, 'wallet', `${bottomSheetNs}.title`),
     component: (
       <VStack space={24}>
         <IOMarkdown
-          content={I18n.t(`${bottomSheetNs}.content`, { ns: 'wallet' })}
+          content={I18n.getResource(I18n.language, 'wallet', `${bottomSheetNs}.content`)}
         />
         {showCta && (
           <View style={{ marginBottom: 16 }}>
@@ -268,7 +269,7 @@ const IssuerDynamicErrorAlert = ({
   credential
 }: IssuerDynamicErrorAlertProps) => {
   const localizedMessage = getLocalizedMessageOrFallback(message);
-  const showCta = credential.credentialType === CredentialType.DRIVING_LICENSE;
+  const showCta = credential.credentialType === wellKnownCredential.DRIVING_LICENSE;
 
   const { confirmAndRemoveCredential } =
     useItwRemoveCredentialWithConfirm(credential);
@@ -312,11 +313,17 @@ const IssuerDynamicErrorAlert = ({
 const getLocalizedMessageOrFallback = (
   message: IssuerDynamicErrorAlertProps['message']
 ) =>
-  message[getClaimsFullLocale()] ??
-  message[ClaimsLocales.it] ?? {
-    title: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
-    description: I18n.t('credentials.status.unknown', { ns: 'wallet' })
-  };
+  message ?
+  (
+    message[getClaimsFullLocale()] ??
+    message[ClaimsLocales.it] ?? {
+      title: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
+      description: I18n.t('credentials.status.unknown', { ns: 'wallet' })
+    }
+  ) : {
+      title: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
+      description: I18n.t('credentials.status.unknown', { ns: 'wallet' })
+    }
 
 const Memoized = memo(ItwPresentationCredentialStatusAlert);
 

@@ -119,7 +119,7 @@
     "alerts": {
       "statusAction": "Cosa posso fare?",
       "mdl": {
-        "content": "Puoi usare la tua Patente su IO solo in Italia esclusivamente per dimostrare l'abilitazione alla guida in caso di controlli delle Forze dell'ordine.",
+        "content": "La tua Patente su IO ha lo stesso valore legale del documento fisico, solo sul territorio italiano.",
         "invalid": {
           "cta": "Rimuovi documento dal Portafoglio"
         }

@@ -1,9 +1,9 @@
 import { Divider, ListItemInfo } from '@pagopa/io-app-design-system';
 import I18n from 'i18next';
 import { useMemo } from 'react';
-import { CredentialType } from '../utils/itwMocksUtils';
 import { useItwInfoBottomSheet } from '../hooks/useItwInfoBottomSheet';
 import { StoredCredential } from '../utils/types';
+import { wellKnownCredential } from '../utils/credentials';
 // import { useAppSelector } from "../../../store";
 
 type ItwIssuanceMetadataProps = {
@@ -98,7 +98,7 @@ export const ItwIssuanceMetadata = ({
   const authSource = 'PAGOPA';
 
   const releasedByKey =
-    credential.credentialType === CredentialType.PID
+    credential.credentialType === wellKnownCredential.PID
       ? 'releasedByPid'
       : 'releasedBy';
 

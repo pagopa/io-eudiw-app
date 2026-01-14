@@ -12,7 +12,6 @@ import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
-import { CredentialType } from '../../utils/itwMocksUtils';
 import { StoredCredential } from '../../utils/types';
 import { useDebugInfo } from '../../../../hooks/useDebugInfo';
 import { selectCredential } from '../../store/credentials';
@@ -68,17 +67,7 @@ export const ItwPresentationCredentialDetailScreen = ({ route }: Props) => {
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
   const { credentialType } = route.params;
 
-  /**
-   * Since the driver’s license is mapped as mDL but from the deeplink provided by iPatente
-   * come in as presentation/credential-detail/MDL, it is necessary to enforce a lowercase
-   * check for this case so the correct key is resolved.
-   */
-  const normalizedCredentialType = credentialType.replace(
-    /^mdl$/i,
-    CredentialType.DRIVING_LICENSE
-  );
-
-  const credential = useAppSelector(selectCredential(normalizedCredentialType));
+  const credential = useAppSelector(selectCredential(credentialType));
 
   const isWalletValid = useAppSelector(lifecycleIsValidSelector);
 
@@ -113,7 +102,7 @@ export const ItwPresentationCredentialDetailScreen = ({ route }: Props) => {
 
   if (!credential) {
     // If the credential is not found, we render a screen that allows the user to request that credential.
-    return <ItwCredentialNotFound credentialType={normalizedCredentialType} />;
+    return <ItwCredentialNotFound credentialType={credentialType} />;
   }
   return (
     <>
