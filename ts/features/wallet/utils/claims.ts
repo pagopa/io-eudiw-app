@@ -276,3 +276,112 @@ export const parseClaims = (
       return { label: attributeName, value: attribute.value, id: key };
     });
 };
+
+export const parseClaim = (claim: unknown): ClaimScheme | undefined => {
+  const parsed = claimScheme.safeParse(claim);
+  return parsed.success ? parsed.data : undefined;
+};
+
+const getClaimById = (
+  claims: Array<ClaimDisplayFormat>,
+  id: string
+): ClaimDisplayFormat | undefined => claims.find(c => c.id === id);
+
+export const getParsedClaim = (
+  claims: Array<ClaimDisplayFormat>,
+  id: string
+): ClaimScheme | undefined => {
+  const raw = getClaimById(claims, id);
+  return raw ? parseClaim(raw) : undefined;
+};
+
+export const SimpleDateFormat = {
+  DDMMYYYY: 'DD/MM/YYYY',
+  DDMMYY: 'DD/MM/YY'
+} as const;
+
+export type SimpleDateFormat =
+  (typeof SimpleDateFormat)[keyof typeof SimpleDateFormat];
+
+export class SimpleDate {
+  constructor(
+    private year: number,
+    private month: number,
+    private day: number
+  ) {}
+
+  toString(format: SimpleDateFormat = 'DD/MM/YYYY'): string {
+    const dayString = this.day.toString().padStart(2, '0');
+    const monthString = (this.month + 1).toString().padStart(2, '0');
+    const yearString = this.year.toString();
+    return format
+      .replace('DD', dayString)
+      .replace('MM', monthString)
+      .replace('YYYY', yearString)
+      .replace('YY', yearString.slice(-2));
+  }
+
+  toDate(): Date {
+    return new Date(this.year, this.month, this.day);
+  }
+  toDateWithoutTimezone(): Date {
+    return new Date(Date.UTC(this.year, this.month, this.day));
+  }
+  getFullYear(): number {
+    return this.year;
+  }
+  getMonth(): number {
+    return this.month;
+  }
+  getDate(): number {
+    return this.day;
+  }
+
+  static fromString(str: string): SimpleDate | null {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+      return null;
+    }
+    return new SimpleDate(
+      +str.slice(0, 4),
+      +str.slice(5, 7) - 1,
+      +str.slice(8, 10)
+    );
+  }
+}
+
+export type DrivingPrivilegeClaimType = {
+  driving_privilege: string;
+  issue_date: SimpleDate;
+  expiry_date: SimpleDate;
+  restrictions_conditions: string | null;
+};
+
+export type DrivingPrivilegesClaimType = Array<DrivingPrivilegeClaimType>;
+
+export type DrivingPrivilegesItemFlatRawType = {
+  vehicle_category_code: string;
+  issue_date: SimpleDate;
+  expiry_date: SimpleDate;
+};
+
+export type DrivingPrivilegesFlatRawType =
+  Array<DrivingPrivilegesItemFlatRawType>;
+
+export const DrivingPrivilegesClaim = {
+  is: (u: unknown): u is DrivingPrivilegesClaimType => {
+    // eslint-disable-next-line functional/no-let
+    let data = u;
+
+    if (typeof u === 'string') {
+      try {
+        data = JSON.parse(u);
+      } catch {
+        return false;
+      }
+    }
+
+    return (
+      Array.isArray(data) && data.length > 0 && 'driving_privilege' in data[0]
+    );
+  }
+};

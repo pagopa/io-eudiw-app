@@ -1,30 +1,21 @@
 import { ElementType, Fragment, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ParsedCredential, StoredCredential } from '../../../utils/types';
+import { ClaimDisplayFormat, StoredCredential } from '../../../utils/types';
 import { wellKnownCredential } from '../../../utils/credentials';
-import {
-  DrivingPrivilegesClaim,
-  DrivingPrivilegesClaimType,
-  DrivingPrivilegesCustomClaim,
-  StringClaim
-} from '../../../utils/itwClaimsUtils';
 import { QrCodeImage } from '../../QrCodeImage';
+import {
+  ClaimScheme,
+  claimType,
+  getParsedClaim,
+  parseClaims
+} from '../../../utils/claims';
 import { CardSide } from './CardBackground';
 import { CardClaim, CardClaimContainer, CardClaimRenderer } from './CardClaim';
 import { ClaimLabel } from './ClaimLabel';
 
 type DataComponentProps = {
-  claims: ParsedCredential;
+  claims: Array<ClaimDisplayFormat>;
   valuesHidden: boolean;
-};
-
-/**
- * Mapping of new claims to old claims for MDL. Some of them have been renamed
- * between specs 0.7 and 1.0, so this is necessary to ensure backward compatibility.
- */
-const mdlClaimsFallback: Record<string, string> = {
-  birth_place: 'place_of_birth',
-  document_iss_authority: 'issuing_authority'
 };
 
 const MdlFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
@@ -36,20 +27,10 @@ const MdlFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
   );
   const cols: ReadonlyArray<number> = [34, 57.5];
 
-  const stripMdlPrefix = (key: string) =>
-    key.includes(':') ? key.split(':')[1] : key;
-
-  const normalizedClaims = Object.fromEntries(
-    Object.entries(claims).map(([key, value]) => [stripMdlPrefix(key), value])
-  );
-
-  const getClaim = (claimName: string) =>
-    normalizedClaims[claimName] ?? claims[mdlClaimsFallback[claimName]];
-
   return (
     <View testID="mdlFrontDataTestID" style={styles.container}>
       <CardClaim
-        claim={getClaim('portrait')}
+        claim={getParsedClaim(claims, 'family_name')}
         position={{ left: '4%', top: '30%' }}
         dimensions={{
           width: '22.5%',
@@ -58,52 +39,52 @@ const MdlFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={getClaim('family_name')}
+        claim={getParsedClaim(claims, 'portrait')}
         position={{ left: `${cols[0]}%`, top: `${rows[0]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={getClaim('given_name')}
+        claim={getParsedClaim(claims, 'given_name')}
         position={{ left: `${cols[0]}%`, top: `${rows[1]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={getClaim('birth_date')}
+        claim={getParsedClaim(claims, 'birth_date')}
         position={{ left: `${cols[0]}%`, top: `${rows[2]}%` }}
         dateFormat="DD/MM/YY"
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={getClaim('birth_place')}
+        claim={getParsedClaim(claims, 'birth_place')}
         position={{ left: `${cols[0] + 17}%`, top: `${rows[2]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={getClaim('issue_date')}
+        claim={getParsedClaim(claims, 'issue_date')}
         position={{ left: `${cols[0]}%`, top: `${rows[3]}%` }}
         fontWeight={'Bold'}
         dateFormat={'DD/MM/YYYY'}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={getClaim('issuing_authority')}
+        claim={getParsedClaim(claims, 'issuing_authority')}
         position={{ left: `${cols[1]}%`, top: `${rows[3]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={getClaim('expiry_date')}
+        claim={getParsedClaim(claims, 'expiry_date')}
         position={{ left: `${cols[0]}%`, top: `${rows[4]}%` }}
         fontWeight={'Bold'}
         dateFormat={'DD/MM/YYYY'}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={getClaim('document_number')}
+        claim={getParsedClaim(claims, 'document_number')}
         position={{ left: `${cols[0]}%`, top: `${rows[5]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={getClaim('driving_privileges')}
+        claim={getParsedClaim(claims, 'driving_privileges')}
         position={{ left: '8%', bottom: '17.9%' }}
         hidden={valuesHidden}
       />
@@ -140,71 +121,84 @@ const MdlBackData = ({ claims, valuesHidden }: DataComponentProps) => {
     {} as Record<string, number>
   );
 
-  const renderData = (privileges: DrivingPrivilegesClaimType) =>
-    privileges.map(
-      ({
-        driving_privilege,
-        issue_date,
-        expiry_date,
-        restrictions_conditions
-      }) => (
-        <Fragment key={`driving_privilege_row_${driving_privilege}`}>
-          <CardClaimContainer
-            position={{
-              left: `41.5%`,
-              top: `${privilegesTableRows[driving_privilege] || 0}%`
-            }}
-          >
-            <ClaimLabel fontSize={9} hidden={valuesHidden}>
-              {issue_date.toString('DD/MM/YY')}
-            </ClaimLabel>
-          </CardClaimContainer>
-          <CardClaimContainer
-            key={`driving_privilege_${driving_privilege}`}
-            position={{
-              left: `55%`,
-              top: `${privilegesTableRows[driving_privilege] || 0}%`
-            }}
-          >
-            <ClaimLabel fontSize={9} hidden={valuesHidden}>
-              {expiry_date.toString('DD/MM/YY')}
-            </ClaimLabel>
-          </CardClaimContainer>
-          {restrictions_conditions && (
+  const drivingPrivilegesClaim =
+    getParsedClaim(claims, 'driving_privileges') ??
+    getParsedClaim(claims, 'driving_privileges_details');
+
+  const drivingPrivilegesOnly =
+    drivingPrivilegesClaim?.type === claimType.drivingPrivileges
+      ? drivingPrivilegesClaim
+      : undefined;
+
+  const renderData = (claim: ClaimScheme & { type: 'drivingPrivileges' }) => (
+    <>
+      {claim.value.map(
+        ({
+          vehicle_category_code,
+          issue_date,
+          expiry_date,
+          restrictions_conditions
+        }: {
+          vehicle_category_code: string;
+          issue_date: string;
+          expiry_date: string;
+          restrictions_conditions?: string;
+        }) => (
+          <Fragment key={`driving_privilege_row_${vehicle_category_code}`}>
             <CardClaimContainer
-              key={`driving_privilege_restricted_conditions_${driving_privilege}`}
               position={{
-                left: `68.5%`,
-                top: `${privilegesTableRows[driving_privilege] || 0}%`
+                left: `41.5%`,
+                top: `${privilegesTableRows[vehicle_category_code] || 0}%`
               }}
             >
-              <ClaimLabel fontSize={9}>{restrictions_conditions}</ClaimLabel>
+              <ClaimLabel fontSize={9} hidden={valuesHidden}>
+                {issue_date}
+              </ClaimLabel>
             </CardClaimContainer>
-          )}
-        </Fragment>
-      )
-    );
+
+            <CardClaimContainer
+              position={{
+                left: `55%`,
+                top: `${privilegesTableRows[vehicle_category_code] || 0}%`
+              }}
+            >
+              <ClaimLabel fontSize={9} hidden={valuesHidden}>
+                {expiry_date}
+              </ClaimLabel>
+            </CardClaimContainer>
+
+            {restrictions_conditions && (
+              <CardClaimContainer
+                position={{
+                  left: `68.5%`,
+                  top: `${privilegesTableRows[vehicle_category_code] || 0}%`
+                }}
+              >
+                <ClaimLabel fontSize={9}>{restrictions_conditions}</ClaimLabel>
+              </CardClaimContainer>
+            )}
+          </Fragment>
+        )
+      )}
+    </>
+  );
   return (
     <View testID="mdlBackDataTestID" style={styles.container}>
       {/*
       This is the renderer of the new MDL back driving privileges data
        */}
-      <CardClaimRenderer
-        claim={claims.driving_privileges}
-        is={DrivingPrivilegesCustomClaim.is}
-        component={renderData}
-      />
       {/*
       This is the renderer of the old MDL back driving privileges data
       TODO: remove this when the old MDL will not be supported anymore
        */}
       <CardClaimRenderer
-        claim={claims.driving_privileges_details}
-        is={DrivingPrivilegesClaim.is}
+        claim={drivingPrivilegesOnly}
+        type={claimType.drivingPrivileges}
         component={renderData}
       />
+
       <CardClaim
-        claim={claims.restrictions_conditions}
+        claim={getParsedClaim(claims, 'restrictions_conditions')}
         position={{ left: '8%', bottom: '6.5%' }}
         fontSize={9}
         hidden={valuesHidden}
@@ -225,7 +219,7 @@ const DcFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
   return (
     <View testID="dcFrontDataTestID" style={styles.container}>
       <CardClaim
-        claim={claims.portrait}
+        claim={getParsedClaim(claims, 'portrait')}
         position={{ left: '2.55%', bottom: '1.%' }}
         dimensions={{
           width: '24.7%',
@@ -234,22 +228,22 @@ const DcFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={claims.given_name}
+        claim={getParsedClaim(claims, 'given_name')}
         position={{ right: '3.5%', top: `${rows[0]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={claims.family_name}
+        claim={getParsedClaim(claims, 'family_name')}
         position={{ right: '3.5%', top: `${rows[1]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={claims.birth_date}
+        claim={getParsedClaim(claims, 'birth_date')}
         position={{ right: '3.5%', top: `${rows[2]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={claims.document_number}
+        claim={getParsedClaim(claims, 'document_number')}
         position={{ right: '3.5%', top: `${rows[3]}%` }}
         hidden={valuesHidden}
       />
@@ -257,24 +251,31 @@ const DcFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
   );
 };
 
-const DcBackData = ({ claims }: DataComponentProps) => (
-  <View testID="dcBackDataTestID" style={styles.container}>
-    <CardClaimRenderer
-      claim={claims.link_qr_code}
-      is={StringClaim.is}
-      component={qrCode => (
-        <CardClaimContainer
-          position={{
-            right: `6%`,
-            top: `10%`
-          }}
-        >
-          <QrCodeImage value={qrCode} size={'28.5%'} />
-        </CardClaimContainer>
-      )}
-    />
-  </View>
-);
+const DcBackData = ({ claims }: DataComponentProps) => {
+  const qrCodeClaim = getParsedClaim(claims, 'link_qr_code');
+
+  const qrCodeStringClaim =
+    qrCodeClaim?.type === claimType.string ? qrCodeClaim : undefined;
+
+  return (
+    <View testID="dcBackDataTestID" style={styles.container}>
+      <CardClaimRenderer
+        claim={qrCodeStringClaim}
+        type={claimType.string}
+        component={claim => (
+          <CardClaimContainer
+            position={{
+              right: `6%`,
+              top: `10%`
+            }}
+          >
+            <QrCodeImage value={claim.value} size={'28.5%'} />
+          </CardClaimContainer>
+        )}
+      />
+    </View>
+  );
+};
 
 const dataComponentMap: Record<
   string,
@@ -303,10 +304,12 @@ const CardData = ({ credential, side, valuesHidden }: CardDataProps) => {
     return null;
   }
 
+  const parsedClaims = parseClaims(credential.parsedCredential);
+
   return (
     <DataComponent
       key={`credential_data_${credential.credentialType}_${side}`}
-      claims={credential.parsedCredential}
+      claims={parsedClaims}
       valuesHidden={valuesHidden}
     />
   );

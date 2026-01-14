@@ -1,23 +1,18 @@
 import { WithTestID } from '@pagopa/io-app-design-system';
-import { memo, ReactElement, ReactNode, useMemo } from 'react';
+import { JSX, memo, ReactNode, useMemo } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import { ParsedCredential } from '../../../utils/types';
-import {
-  ClaimValue,
-  DrivingPrivilegesClaim,
-  DrivingPrivilegesCustomClaim,
-  ImageClaim,
-  NestedClaim,
-  PlaceOfBirthClaim,
-  SimpleDateClaim,
-  SimpleDateFormat
-} from '../../../utils/itwClaimsUtils';
+import { format } from 'date-fns';
 
 import {
   Either,
   PercentPosition,
   Prettify
 } from '../../../utils/itwTypesUtils';
+import {
+  ClaimScheme,
+  claimType,
+  SimpleDateFormat
+} from '../../../utils/claims';
 import { ClaimLabel, ClaimLabelProps } from './ClaimLabel';
 import { ClaimImage } from './ClaimImage';
 
@@ -40,13 +35,12 @@ export type ClaimDimensions = Prettify<
 
 export type CardClaimProps = Prettify<
   {
-    claim?: ParsedCredential[number];
+    claim?: ClaimScheme;
     position?: ClaimPosition;
     dimensions?: ClaimDimensions;
     dateFormat?: SimpleDateFormat;
   } & ClaimLabelProps
 >;
-
 const CardClaim = ({
   claim,
   position,
@@ -56,38 +50,56 @@ const CardClaim = ({
   ...labelProps
 }: WithTestID<CardClaimProps>) => {
   const claimContent = useMemo(() => {
-    const decodedResult = ClaimValue.decode(claim?.value);
-
-    // eslint-disable-next-line no-underscore-dangle
-    if (!decodedResult || decodedResult._tag === 'Left') {
+    if (!claim) {
       return null;
     }
 
-    const decoded = decodedResult.value;
+    switch (claim.type) {
+      case claimType.date:
+      case claimType.expireDate: {
+        const formattedDate = format(
+          claim.value,
+          dateFormat === 'DD/MM/YY' ? 'dd/MM/yy' : 'dd/MM/yyyy'
+        );
+        return <ClaimLabel {...labelProps}>{formattedDate}</ClaimLabel>;
+      }
 
-    if (NestedClaim.is(decoded)) {
-      return null;
-    }
-    if (SimpleDateClaim.is(decoded)) {
-      const formattedDate = decoded.toString(dateFormat);
-      return <ClaimLabel {...labelProps}>{formattedDate}</ClaimLabel>;
-    } else if (ImageClaim.is(decoded)) {
-      return <ClaimImage base64={decoded} blur={labelProps.hidden ? 7 : 0} />;
-    } else if (
-      DrivingPrivilegesClaim.is(decoded) ||
-      DrivingPrivilegesCustomClaim.is(decoded)
-    ) {
-      const privileges = decoded.map(p => p.driving_privilege).join(' ');
-      return <ClaimLabel {...labelProps}>{privileges}</ClaimLabel>;
-    } else if (PlaceOfBirthClaim.is(decoded)) {
-      return <ClaimLabel {...labelProps}>{decoded.locality}</ClaimLabel>;
-    } else {
-      return <ClaimLabel {...labelProps}>{String(decoded)}</ClaimLabel>;
+      case claimType.image:
+        return (
+          <ClaimImage base64={claim.value} blur={labelProps.hidden ? 7 : 0} />
+        );
+
+      case claimType.drivingPrivileges: {
+        const privileges = claim.value
+          .map(p => p.vehicle_category_code)
+          .join(' ');
+        return <ClaimLabel {...labelProps}>{privileges}</ClaimLabel>;
+      }
+
+      case claimType.verificationEvidence:
+        return (
+          <ClaimLabel {...labelProps}>
+            {claim.value.organization_name}
+          </ClaimLabel>
+        );
+
+      case claimType.string:
+      case claimType.stringArray:
+      default:
+        return (
+          <ClaimLabel {...labelProps}>
+            {Array.isArray(claim.value)
+              ? claim.value.join(', ')
+              : String(claim.value)}
+          </ClaimLabel>
+        );
     }
   }, [claim, labelProps, dateFormat]);
+
   if (!claimContent) {
     return null;
   }
+
   return (
     <CardClaimContainer
       testID={testID}
@@ -105,28 +117,22 @@ const styles = StyleSheet.create({
   }
 });
 
-export type CardClaimRendererProps<T> = {
-  claim?: ParsedCredential[number];
-  is: (value: unknown) => value is T;
-  component: (decoded: T) => ReactElement | Iterable<ReactElement>;
+type CardClaimRendererProps<T extends ClaimScheme> = {
+  claim?: T;
+  type: T['type'];
+  component: (claim: T) => JSX.Element;
 };
 
-const CardClaimRenderer = <T,>({
+const CardClaimRenderer = <T extends ClaimScheme>({
   claim,
-  is,
+  type,
   component
 }: CardClaimRendererProps<T>) => {
-  const decodedResult = ClaimValue.decode(claim?.value);
-
-  // eslint-disable-next-line no-underscore-dangle
-  if (decodedResult && decodedResult._tag === 'Right') {
-    const value = decodedResult.value;
-    if (is(value)) {
-      return component(value);
-    }
+  if (!claim || claim.type !== type) {
+    return null;
   }
 
-  return null;
+  return component(claim);
 };
 
 export type CardClaimContainerProps = WithTestID<{

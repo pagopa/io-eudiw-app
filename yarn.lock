@@ -2321,7 +2321,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-clipboard/clipboard@npm:^1.16.2":
+"@react-native-clipboard/clipboard@npm:^1.16.3":
   version: 1.16.3
   resolution: "@react-native-clipboard/clipboard@npm:1.16.3"
   peerDependencies:
@@ -2797,7 +2797,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/bottom-tabs@npm:^7.3.14":
+"@react-navigation/bottom-tabs@npm:^7.8.12":
   version: 7.9.1
   resolution: "@react-navigation/bottom-tabs@npm:7.9.1"
   dependencies:
@@ -2832,6 +2832,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-navigation/elements@npm:^2.9.3":
+  version: 2.9.3
+  resolution: "@react-navigation/elements@npm:2.9.3"
+  dependencies:
+    color: "npm:^4.2.3"
+    use-latest-callback: "npm:^0.2.4"
+    use-sync-external-store: "npm:^1.5.0"
+  peerDependencies:
+    "@react-native-masked-view/masked-view": ">= 0.2.0"
+    "@react-navigation/native": ^7.1.26
+    react: ">= 18.2.0"
+    react-native: "*"
+    react-native-safe-area-context: ">= 4.0.0"
+  peerDependenciesMeta:
+    "@react-native-masked-view/masked-view":
+      optional: true
+  checksum: 10/96cd302eef1ebbbaa2eea205e47ae9f5644e909a4995fc8944b6160ab9586adec2a82b02e09714a2df92034bc90148649225fd080fb040d1b18d2428f603979d
+  languageName: node
+  linkType: hard
+
 "@react-navigation/elements@npm:^2.9.4":
   version: 2.9.4
   resolution: "@react-navigation/elements@npm:2.9.4"
@@ -2852,7 +2872,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native@npm:^7.1.10":
+"@react-navigation/native@npm:^7.1.25":
   version: 7.1.27
   resolution: "@react-navigation/native@npm:7.1.27"
   dependencies:
@@ -2878,20 +2898,20 @@ __metadata:
   linkType: hard
 
 "@react-navigation/stack@npm:^7.6.11":
-  version: 7.6.14
-  resolution: "@react-navigation/stack@npm:7.6.14"
+  version: 7.6.13
+  resolution: "@react-navigation/stack@npm:7.6.13"
   dependencies:
-    "@react-navigation/elements": "npm:^2.9.4"
+    "@react-navigation/elements": "npm:^2.9.3"
     color: "npm:^4.2.3"
     use-latest-callback: "npm:^0.2.4"
   peerDependencies:
-    "@react-navigation/native": ^7.1.27
+    "@react-navigation/native": ^7.1.26
     react: ">= 18.2.0"
     react-native: "*"
     react-native-gesture-handler: ">= 2.0.0"
     react-native-safe-area-context: ">= 4.0.0"
     react-native-screens: ">= 4.0.0"
-  checksum: 10/7e2d77e73d318b0a51467784fe971f6a63d488b197418c8133bac1cd9efdd53eafc3a55e3d9cebccebc6c0b395dbcb385464dc13a6dbec9c6c9c205877e79998
+  checksum: 10/0abbb6e48075d73b70164a304bd7b6a8c12c1ca146c7e792421003e0442f8352ce1975bf52b49ea905937fcef950f6110008e6dbffe27dcc2041006c906903d7
   languageName: node
   linkType: hard
 
@@ -2950,7 +2970,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@reduxjs/toolkit@npm:^2.3.0":
+"@reduxjs/toolkit@npm:^2.11.1":
   version: 2.11.2
   resolution: "@reduxjs/toolkit@npm:2.11.2"
   dependencies:
@@ -8239,7 +8259,7 @@ __metadata:
     "@pagopa/io-react-native-wallet": "npm:2.2.0"
     "@pagopa/react-native-nodelibs": "npm:^0.1.0"
     "@react-native-async-storage/async-storage": "npm:^2.2.0"
-    "@react-native-clipboard/clipboard": "npm:^1.16.2"
+    "@react-native-clipboard/clipboard": "npm:^1.16.3"
     "@react-native-community/cli": "npm:20.0.0"
     "@react-native-community/cli-platform-android": "npm:20.0.0"
     "@react-native-community/cli-platform-ios": "npm:20.0.0"
@@ -8247,10 +8267,10 @@ __metadata:
     "@react-native/eslint-config": "npm:0.81.5"
     "@react-native/metro-config": "npm:0.81.5"
     "@react-native/typescript-config": "npm:0.81.5"
-    "@react-navigation/bottom-tabs": "npm:^7.3.14"
-    "@react-navigation/native": "npm:^7.1.10"
+    "@react-navigation/bottom-tabs": "npm:^7.8.12"
+    "@react-navigation/native": "npm:^7.1.25"
     "@react-navigation/stack": "npm:^7.6.11"
-    "@reduxjs/toolkit": "npm:^2.3.0"
+    "@reduxjs/toolkit": "npm:^2.11.1"
     "@shopify/react-native-skia": "npm:^2.4.14"
     "@textlint/markdown-to-ast": "npm:^14.3.0"
     "@types/jest": "npm:^29.5.13"
