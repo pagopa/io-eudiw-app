@@ -50,7 +50,7 @@ const MdlFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
   const cols: ReadonlyArray<number> = [34, 57.5];
 
   return (
-    <View testID="mdlFrontDclaim" style={styles.container}>
+    <View testID="mdlFrontDataTestID" style={styles.container}>
       <CardClaim
         claim={getClaimMdl('portrait', claims)}
         position={{ left: '4%', top: '30%' }}
