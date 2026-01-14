@@ -1,4 +1,5 @@
 import { Credential } from '@pagopa/io-react-native-wallet';
+import { IssuerConfiguration } from './itwTypesUtils';
 
 export type ParsedCredential = Awaited<
   ReturnType<typeof Credential.Issuance.verifyAndParseCredential>
@@ -28,4 +29,5 @@ export type StoredCredential = {
   format: 'vc+sd-jwt' | 'mso_mdoc' | 'dc+sd-jwt';
   expiration: string;
   issuedAt?: string;
+  issuerConf : IssuerConfiguration
 };

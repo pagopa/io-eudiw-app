@@ -291,7 +291,8 @@
       "title": "Non siamo riusciti a caricare {{credentialName}}",
       "content": "Chiudi e riapri l'app per riprovare.",
       "primaryAction": "Ho capito"
-    }
+    },
+    "authSource" : "PagoPa S.p.A."
   },
   "proximity": {
     "showQr": {

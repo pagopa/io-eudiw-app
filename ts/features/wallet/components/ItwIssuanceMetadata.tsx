@@ -80,22 +80,13 @@ export const ItwIssuanceMetadata = ({
   credential,
   isPreview
 }: ItwIssuanceMetadataProps) => {
-  // TODO: Understand the origin for these data
-  const releaserName = 'PAGOPA';
-  // credential.issuerConf.federation_entity.organization_name;
+  const releaserName = 
+   credential.issuerConf.federation_entity.organization_name;
 
-  /*
-  const credentialsFromCatalogue = useAppSelector(
-    itwCredentialsCatalogueByTypesSelector
-  );
-
-  const authSource =
-    credentialsFromCatalogue &&
-    credentialsFromCatalogue[credential.credentialType]
-      ? getItwAuthSource(credentialsFromCatalogue[credential.credentialType])
-      : getAuthSource(credential);
-   */
-  const authSource = 'PAGOPA';
+  /* TODO: [WLEO-846] In case of introduction of the credential catalogue
+           it will be necessary to obtain the auth source from it.
+  */
+  const authSource = I18n.t('presentation.authSource', {ns : 'wallet'});
 
   const releasedByKey =
     credential.credentialType === wellKnownCredential.PID
