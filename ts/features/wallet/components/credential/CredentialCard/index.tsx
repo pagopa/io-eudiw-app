@@ -13,43 +13,42 @@ import {
   ViewStyle
 } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { StoredCredentialEudiw } from '../../../utils/eudiwClaimsUtils';
 import {
   accessibilityLabelByStatus,
-  EudiwCredentialStatus
-} from '../../../utils/eudiwAccessibilityUtils';
+  ItwCredentialStatus
+} from '../../../utils/itwAccessibilityUtils';
 import {
   getCredentialNameFromType,
-  isEudiwCredential,
+  isItwCredential,
   tagPropsByStatus,
   useBorderColorByStatus,
   validCredentialStatuses
-} from '../../../utils/eudiwCredentialUtils';
+} from '../../../utils/itwCredentialUtils';
 import {
-  EudiwBrandedSkiaBorder,
-  EudiwIridescentBorderVariant
-} from '../../eudiwBrandedSkiaBorder';
+  ItwBrandedSkiaBorder,
+  ItwIridescentBorderVariant
+} from '../../ItwBrandedSkiaBorder';
 import { StoredCredential } from '../../../utils/types';
 import { CardBackground } from './CardBackground';
 import { CardData } from './CardData';
 import { FlippableCard } from './FlippableCard';
 
-export type EudiwSkeumorphicCardProps = {
-  credential: StoredCredentialEudiw | StoredCredential;
-  status: EudiwCredentialStatus;
+export type ItwSkeumorphicCardProps = {
+  credential: StoredCredential;
+  status: ItwCredentialStatus;
   valuesHidden: boolean;
   isFlipped?: boolean;
   onPress?: () => void;
 };
 
-export const EudiwSkeumorphicCard = ({
+export const ItwSkeumorphicCard = ({
   credential,
   status,
   isFlipped = false,
   onPress,
   valuesHidden
-}: EudiwSkeumorphicCardProps) => {
-  const isItw = useMemo(() => isEudiwCredential(credential), [credential]);
+}: ItwSkeumorphicCardProps) => {
+  const isItw = useMemo(() => isItwCredential(credential), [credential]);
 
   const FrontSide = useMemo(
     () => (
@@ -137,8 +136,8 @@ export const EudiwSkeumorphicCard = ({
  * Maps credential status to the corresponding gradient variant.
  */
 const gradientVariantByStatus: Record<
-  EudiwCredentialStatus,
-  EudiwIridescentBorderVariant
+  ItwCredentialStatus,
+  ItwIridescentBorderVariant
 > = {
   valid: 'default',
   expiring: 'warning',
@@ -150,7 +149,7 @@ const gradientVariantByStatus: Record<
 };
 
 type CardSideBaseProps = {
-  status: EudiwCredentialStatus;
+  status: ItwCredentialStatus;
   children: ReactNode;
   isItw: boolean;
 };
@@ -205,7 +204,7 @@ const CardSideBase = ({ status, children, isItw }: CardSideBaseProps) => {
           testID="itWalletBrandBorderTestID"
         >
           {/* Animated gradient border */}
-          <EudiwBrandedSkiaBorder
+          <ItwBrandedSkiaBorder
             width={size.width}
             height={size.height}
             variant={gradientVariantByStatus[status]}

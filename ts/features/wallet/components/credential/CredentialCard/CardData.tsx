@@ -6,9 +6,8 @@ import {
   DrivingPrivilegesClaim,
   DrivingPrivilegesClaimType,
   DrivingPrivilegesCustomClaim,
-  StoredCredentialEudiw,
   StringClaim
-} from '../../../utils/eudiwClaimsUtils';
+} from '../../../utils/itwClaimsUtils';
 import { QrCodeImage } from '../../QrCodeImage';
 import { CardSide } from './CardBackground';
 import { CardClaim, CardClaimContainer, CardClaimRenderer } from './CardClaim';
@@ -292,7 +291,7 @@ const dataComponentMap: Record<
 };
 
 type CardDataProps = {
-  credential: StoredCredentialEudiw | StoredCredential;
+  credential: StoredCredential;
   side: CardSide;
   valuesHidden: boolean;
 };

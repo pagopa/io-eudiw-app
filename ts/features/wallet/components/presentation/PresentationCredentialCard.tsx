@@ -3,14 +3,13 @@ import { PropsWithChildren, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { getThemeColorByCredentialType } from '../../utils/style';
 import { FlipGestureDetector } from '../credential/CredentialCard/FlipGestureDetector';
-import { EudiwSkeumorphicCard } from '../credential/CredentialCard/index';
-import { StoredCredentialEudiw } from '../../utils/eudiwClaimsUtils';
+import { ItwSkeumorphicCard } from '../credential/CredentialCard/index';
 import { wellKnownCredential } from '../../utils/credentials';
 import { CredentialCard } from '../credential/CredentialCard';
 import { StoredCredential } from '../../utils/types';
 
 type Props = {
-  credential: StoredCredentialEudiw | StoredCredential;
+  credential: StoredCredential;
 };
 
 /**
@@ -32,7 +31,7 @@ const PresentationCredentialCard = ({ credential }: Props) => {
         <CredentialCard credentialType={credential.credentialType} />
       ) : (
         <FlipGestureDetector isFlipped={isFlipped} setIsFlipped={setIsFlipped}>
-          <EudiwSkeumorphicCard
+          <ItwSkeumorphicCard
             credential={credential}
             isFlipped={isFlipped}
             status={'valid'}

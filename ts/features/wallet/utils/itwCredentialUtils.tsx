@@ -2,9 +2,8 @@ import { IOColors, Tag, useIOTheme } from '@pagopa/io-app-design-system';
 import { SdJwt, Mdoc } from '@pagopa/io-react-native-wallet';
 import I18n from 'i18next';
 import { wellKnownCredentialConfigurationIDs } from './credentials';
-import { EudiwCredentialStatus } from './eudiwAccessibilityUtils';
-import { CredentialFormat } from './eudiwTypesUtils';
-import { StoredCredentialEudiw } from './eudiwClaimsUtils';
+import { ItwCredentialStatus } from './itwAccessibilityUtils';
+import { CredentialFormat } from './itwTypesUtils';
 import { StoredCredential } from './types';
 
 export const availableCredentials = [
@@ -31,7 +30,7 @@ export const isUpcomingCredential = (type: string): boolean =>
 //   newCredentials.includes(type as NewCredential);
 
 export const itwGetCredentialNameByCredentialType = (
-  isEudiwCredential: boolean
+  isItwCredential: boolean
 ): Record<string, string> => ({
   [wellKnownCredentialConfigurationIDs.DISABILITY_CARD]: I18n.t(
     'features.itWallet.credentialName.dc'
@@ -43,7 +42,7 @@ export const itwGetCredentialNameByCredentialType = (
     'features.itWallet.credentialName.mdl'
   ),
   [wellKnownCredentialConfigurationIDs.PID]: I18n.t(
-    isEudiwCredential
+    isItwCredential
       ? 'features.itWallet.credentialName.pid'
       : 'features.itWallet.credentialName.eid'
   )
@@ -61,19 +60,19 @@ export const itwGetCredentialNameByCredentialType = (
 export const getCredentialNameFromType = (
   credentialType: string | undefined,
   withDefault: string = '',
-  isEudiwCredential: boolean = false
+  isItwCredential: boolean = false
 ): string => {
   if (!credentialType) {
     return withDefault;
   }
   return (
-    itwGetCredentialNameByCredentialType(isEudiwCredential)[credentialType] ??
+    itwGetCredentialNameByCredentialType(isItwCredential)[credentialType] ??
     withDefault
   );
 };
 
 export const useBorderColorByStatus: () => {
-  [key in EudiwCredentialStatus]: string;
+  [key in ItwCredentialStatus]: string;
 } = () => {
   const theme = useIOTheme();
 
@@ -88,7 +87,7 @@ export const useBorderColorByStatus: () => {
   };
 };
 
-export const tagPropsByStatus: { [key in EudiwCredentialStatus]?: Tag } = {
+export const tagPropsByStatus: { [key in ItwCredentialStatus]?: Tag } = {
   invalid: {
     variant: 'error',
     text: I18n.t('features.itWallet.card.status.invalid')
@@ -119,17 +118,17 @@ export const tagPropsByStatus: { [key in EudiwCredentialStatus]?: Tag } = {
 /**
  * List of statuses that make a credential valid, especially for UI purposes.
  */
-export const validCredentialStatuses: Array<EudiwCredentialStatus> = [
+export const validCredentialStatuses: Array<ItwCredentialStatus> = [
   'valid',
   'expiring',
   'jwtExpiring'
 ];
 
-export const isEudiwCredential = ({
+export const isItwCredential = ({
   format,
   credential,
   parsedCredential
-}: StoredCredentialEudiw | StoredCredential): boolean => {
+}: StoredCredential): boolean => {
   try {
     // eslint-disable-next-line functional/no-let
     let verification: any = null;

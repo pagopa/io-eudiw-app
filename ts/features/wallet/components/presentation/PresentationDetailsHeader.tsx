@@ -6,12 +6,11 @@ import {
   getThemeColorByCredentialType
 } from '../../utils/style';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
-import { StoredCredentialEudiw } from '../../utils/eudiwClaimsUtils';
 import { StoredCredential } from '../../utils/types';
 import { PresentationCredentialCard } from './PresentationCredentialCard';
 
-type EudiwPresentationDetailsHeaderProps = {
-  credential: StoredCredentialEudiw | StoredCredential;
+type ItwPresentationDetailsHeaderProps = {
+  credential: StoredCredential;
 };
 
 /**
@@ -20,7 +19,7 @@ type EudiwPresentationDetailsHeaderProps = {
  */
 const PresentationDetailsHeader = ({
   credential
-}: EudiwPresentationDetailsHeaderProps) => {
+}: ItwPresentationDetailsHeaderProps) => {
   const { backgroundColor, statusBarStyle } = getThemeColorByCredentialType(
     credential.credentialType
   );

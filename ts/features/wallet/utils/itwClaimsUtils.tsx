@@ -3,7 +3,7 @@ import { differenceInCalendarDays, isValid } from 'date-fns';
 import { truncate } from 'lodash';
 import { ParsedCredential } from './types';
 import { getClaimsFullLocale } from './locale';
-import { IssuerConfiguration, StoredStatusAssertion } from './eudiwTypesUtils';
+import { IssuerConfiguration, StoredStatusAssertion } from './itwTypesUtils';
 
 /**
  * CLAIMS MANIPULATION UTILS
@@ -12,21 +12,21 @@ import { IssuerConfiguration, StoredStatusAssertion } from './eudiwTypesUtils';
 /**
  * Type for a stored credential.
  */
-export type StoredCredentialEudiw = {
-  keyTag: string;
-  credential: string;
-  format: string;
+export type StoredCredential = {
   parsedCredential: ParsedCredential;
+  credential: string;
+  keyTag: string;
   credentialType: string;
-  credentialId: string;
-  issuerConf: IssuerConfiguration; // The Wallet might still contain older credentials
+  format: 'vc+sd-jwt' | 'mso_mdoc' | 'dc+sd-jwt';
+  credentialId?: string;
+  issuerConf?: IssuerConfiguration; // The Wallet might still contain older credentials
   storedStatusAssertion?: StoredStatusAssertion;
   /**
    * The SD-JWT issuance and expiration dates in ISO format.
    * These might be different from the underlying document's dates.
    */
   // TODO: [SIW-2740] This type needs to be rafactored once mdoc format will be available
-  jwt: {
+  jwt?: {
     expiration: string;
     issuedAt?: string;
   };
@@ -286,7 +286,7 @@ export const extractClaim =
   };
 
 export const getFiscalCodeFromCredential = (
-  credential: StoredCredentialEudiw | undefined
+  credential: StoredCredential | undefined
 ): string => {
   const raw = credential?.parsedCredential?.[WellKnownClaim.tax_id_code]?.value;
   if (typeof raw !== 'string') {
@@ -296,13 +296,13 @@ export const getFiscalCodeFromCredential = (
 };
 
 export const getFirstNameFromCredential = (
-  credential: StoredCredentialEudiw | undefined
+  credential: StoredCredential | undefined
 ): string =>
   (credential?.parsedCredential?.[WellKnownClaim.given_name]
     ?.value as string) ?? '';
 
 export const getFamilyNameFromCredential = (
-  credential: StoredCredentialEudiw | undefined
+  credential: StoredCredential | undefined
 ): string =>
   (credential?.parsedCredential?.[WellKnownClaim.family_name]
     ?.value as string) ?? '';

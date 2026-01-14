@@ -11,13 +11,13 @@ import {
   PlaceOfBirthClaim,
   SimpleDateClaim,
   SimpleDateFormat
-} from '../../../utils/eudiwClaimsUtils';
+} from '../../../utils/itwClaimsUtils';
 
 import {
   Either,
   PercentPosition,
   Prettify
-} from '../../../utils/eudiwTypesUtils';
+} from '../../../utils/itwTypesUtils';
 import { ClaimLabel, ClaimLabelProps } from './ClaimLabel';
 import { ClaimImage } from './ClaimImage';
 

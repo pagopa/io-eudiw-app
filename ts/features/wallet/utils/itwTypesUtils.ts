@@ -114,7 +114,7 @@ export type StoredCredential = {
 // Digital credential status
 export type ItwJwtCredentialStatus = 'valid' | 'jwtExpired' | 'jwtExpiring';
 // Combined status of a credential, that includes both the physical and the digital version
-export type EudiwCredentialStatus =
+export type ItwCredentialStatus =
   | 'unknown'
   | 'valid'
   | 'invalid'

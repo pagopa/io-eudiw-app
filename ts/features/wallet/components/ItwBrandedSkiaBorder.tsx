@@ -8,14 +8,14 @@ import {
   Group as SkiaGroup
 } from '@shopify/react-native-skia';
 import { ColorSchemeName, LayoutRectangle } from 'react-native';
-import { ItwBrandedSkiaGradient } from './eudiwBrandedSkiaGradient';
+import { ItwBrandedSkiaGradient } from './ItwBrandedSkiaGradient';
 
-export type EudiwIridescentBorderVariant = 'default' | 'warning' | 'error';
+export type ItwIridescentBorderVariant = 'default' | 'warning' | 'error';
 
 type ItwIridescentBorderProps = {
   width: LayoutRectangle['width'];
   height: LayoutRectangle['height'];
-  variant?: EudiwIridescentBorderVariant;
+  variant?: ItwIridescentBorderVariant;
   thickness?: number;
   cornerRadius?: number;
   themeType?: ColorSchemeName;
@@ -26,7 +26,7 @@ type ItwIridescentBorderProps = {
  *
  * Renders an animated IT-Wallet branded gradient using Skia and device rotation sensor data.
  */
-export const EudiwBrandedSkiaBorder = ({
+export const ItwBrandedSkiaBorder = ({
   width,
   height,
   thickness = 3,

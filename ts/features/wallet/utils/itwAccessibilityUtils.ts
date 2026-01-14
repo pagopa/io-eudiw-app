@@ -1,8 +1,8 @@
 import I18n from 'i18next';
-import { ItwJwtCredentialStatus } from './eudiwTypesUtils';
+import { ItwJwtCredentialStatus } from './itwTypesUtils';
 
 // Combined status of a credential, that includes both the physical and the digital version
-export type EudiwCredentialStatus =
+export type ItwCredentialStatus =
   | 'unknown'
   | 'valid'
   | 'invalid'
@@ -11,7 +11,7 @@ export type EudiwCredentialStatus =
   | ItwJwtCredentialStatus;
 
 export const accessibilityLabelByStatus: {
-  [key in EudiwCredentialStatus]?: string;
+  [key in ItwCredentialStatus]?: string;
 } = {
   invalid: I18n.t('features.itWallet.card.status.invalid'),
   expired: I18n.t('features.itWallet.card.status.expired'),
