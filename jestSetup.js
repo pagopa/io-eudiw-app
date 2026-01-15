@@ -1,3 +1,6 @@
+import initI18n from "./ts/i18n/i18n.ts";
+
+void initI18n();
 
 jest.mock("react-native-haptic-feedback", () => ({
   ...jest.requireActual("react-native-haptic-feedback"),
