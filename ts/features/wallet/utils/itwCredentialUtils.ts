@@ -1,7 +1,9 @@
 import { IOColors, Tag, useIOTheme } from '@pagopa/io-app-design-system';
 import I18n from 'i18next';
+import { SdJwt, Mdoc } from '@pagopa/io-react-native-wallet';
 import { CredentialType } from './itwMocksUtils';
-import { ItwCredentialStatus } from './itwTypesUtils';
+import { CredentialFormat, ItwCredentialStatus } from './itwTypesUtils';
+import { StoredCredential } from './types';
 
 // Credentials that can be actively requested and obtained by the user
 export const availableCredentials = [
@@ -80,3 +82,38 @@ export const validCredentialStatuses: Array<ItwCredentialStatus> = [
   'expiring',
   'jwtExpiring'
 ];
+
+export const isItwCredential = ({
+  format,
+  credential,
+  parsedCredential
+}: StoredCredential): boolean => {
+  try {
+    // eslint-disable-next-line functional/no-let
+    let verification: any = null;
+
+    switch (format) {
+      case CredentialFormat.SD_JWT:
+        verification = SdJwt.getVerification(credential);
+        break;
+      case CredentialFormat.MDOC:
+        verification =
+          Mdoc.getVerificationFromParsedCredential(parsedCredential);
+        break;
+      case CredentialFormat.LEGACY_SD_JWT:
+      default:
+        verification = null;
+    }
+
+    if (!verification) {
+      return false;
+    }
+
+    const { assurance_level, trust_framework } = verification;
+    return (
+      assurance_level === 'high' || trust_framework === 'it_l2+document_proof'
+    );
+  } catch (e) {
+    return false;
+  }
+};
