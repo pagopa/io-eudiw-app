@@ -193,7 +193,8 @@ function* obtainPid() {
           keyTag: credentialKeyTag,
           format: format as 'vc+sd-jwt' | 'mso_mdoc',
           expiration: expiration.toISOString(),
-          issuedAt: issuedAt?.toISOString()
+          issuedAt: issuedAt?.toISOString(),
+          issuerConf
         }
       })
     );
