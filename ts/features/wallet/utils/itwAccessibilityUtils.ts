@@ -13,9 +13,23 @@ export type ItwCredentialStatus =
 export const accessibilityLabelByStatus: {
   [key in ItwCredentialStatus]?: string;
 } = {
-  invalid: I18n.t('features.itWallet.card.status.invalid'),
-  expired: I18n.t('features.itWallet.card.status.expired'),
-  jwtExpired: I18n.t('features.itWallet.card.status.verificationExpired'),
-  expiring: I18n.t('features.itWallet.card.status.expiring'),
-  jwtExpiring: I18n.t('features.itWallet.card.status.verificationExpiring')
+  invalid: I18n.t('features.itWallet.credentials.status.invalid', '', {
+    ns: 'wallet'
+  }),
+  expired: I18n.t('features.itWallet.credentials.status.expired', '', {
+    ns: 'wallet'
+  }),
+  jwtExpired: I18n.t(
+    'features.itWallet.credentials.status.verificationExpired',
+    '',
+    { ns: 'wallet' }
+  ),
+  expiring: I18n.t('features.itWallet.credentials.status.expiring', '', {
+    ns: 'wallet'
+  }),
+  jwtExpiring: I18n.t(
+    'features.itWallet.credentials.status.verificationExpiring',
+    '',
+    { ns: 'wallet' }
+  )
 };

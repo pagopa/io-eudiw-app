@@ -1,38 +1,4 @@
-import {
-  Credential,
-  Trust,
-  WalletInstance
-} from '@pagopa/io-react-native-wallet';
-import { ParsedCredential } from './types';
-
-/**
- * Alias type for the return type of the start issuance flow operation.
- */
-export type StartIssuanceFlow = Awaited<
-  ReturnType<Credential.Issuance.StartFlow>
->;
-
-/** Alias for RequestObject
- * It is not exposed from the wallet package, so we extract the type
- * from the operation description.
- * Consider add the type into the package public interface
- */
-export type RequestObject = Awaited<
-  ReturnType<Credential.Presentation.VerifyRequestObject>
->['requestObject'];
-
-/**
- * Alias type for the relying party entity configuration.
- */
-export type RpEntityConfiguration =
-  Trust.Types.RelyingPartyEntityConfiguration['payload']['metadata'];
-
-// /**
-//  * Alias for the IssuerConfiguration type v0.7.1
-//  */
-// export type LegacyIssuerConfiguration = Awaited<
-//   ReturnType<LegacyCredential.Issuance.EvaluateIssuerTrust>
-// >['issuerConf'];
+import { Credential, WalletInstance } from '@pagopa/io-react-native-wallet';
 
 /**
  * Alias for the IssuerConfiguration type
@@ -40,21 +6,6 @@ export type RpEntityConfiguration =
 export type IssuerConfiguration = Awaited<
   ReturnType<Credential.Issuance.EvaluateIssuerTrust>
 >['issuerConf'];
-
-/**
- * Alias for the SupportedCredentialConfiguration type
- */
-export type MdocSupportedCredentialConfiguration = Extract<
-  IssuerConfiguration['openid_credential_issuer']['credential_configurations_supported'][string],
-  { format: 'mso_mdoc' }
->;
-
-/**
- * Alias for the AccessToken type
- */
-export type CredentialAccessToken = Awaited<
-  ReturnType<Credential.Issuance.AuthorizeAccess>
->['accessToken'];
 
 /**
  * Alias for the ParsedStatusAssertion type
@@ -70,12 +21,6 @@ export type WalletInstanceStatus = Awaited<
   ReturnType<typeof WalletInstance.getWalletInstanceStatus>
 >;
 
-/**
- * Alias for the WalletInstanceRevocationReason type
- */
-export type WalletInstanceRevocationReason =
-  WalletInstanceStatus['revocation_reason'];
-
 export type StoredStatusAssertion =
   | {
       credentialStatus: 'valid';
@@ -87,29 +32,6 @@ export type StoredStatusAssertion =
       // Error code that might contain more details on the invalid status, provided by the issuer
       errorCode?: string;
     };
-
-/**
- * Type for a stored credential.
- */
-export type StoredCredential = {
-  keyTag: string;
-  credential: string;
-  format: string;
-  parsedCredential: ParsedCredential;
-  credentialType: string;
-  credentialId: string;
-  issuerConf: IssuerConfiguration; // The Wallet might still contain older credentials
-  storedStatusAssertion?: StoredStatusAssertion;
-  /**
-   * The SD-JWT issuance and expiration dates in ISO format.
-   * These might be different from the underlying document's dates.
-   */
-  // TODO: [SIW-2740] This type needs to be rafactored once mdoc format will be available
-  jwt: {
-    expiration: string;
-    issuedAt?: string;
-  };
-};
 
 // Digital credential status
 export type ItwJwtCredentialStatus = 'valid' | 'jwtExpired' | 'jwtExpiring';
@@ -129,12 +51,6 @@ export const enum CredentialFormat {
   SD_JWT = 'dc+sd-jwt',
   LEGACY_SD_JWT = 'vc+sd-jwt'
 }
-
-export type WalletInstanceAttestations = {
-  jwt: string;
-  [CredentialFormat.SD_JWT]?: string;
-  [CredentialFormat.MDOC]?: string;
-};
 
 export type PercentPosition = `${number}%`;
 /**

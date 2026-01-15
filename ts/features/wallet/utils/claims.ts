@@ -294,14 +294,13 @@ export const getParsedClaim = (
   const raw = getClaimById(claims, id);
   return raw ? parseClaim(raw) : undefined;
 };
+export type SimpleDateFormat =
+  (typeof SimpleDateFormat)[keyof typeof SimpleDateFormat];
 
 export const SimpleDateFormat = {
   DDMMYYYY: 'DD/MM/YYYY',
   DDMMYY: 'DD/MM/YY'
 } as const;
-
-export type SimpleDateFormat =
-  (typeof SimpleDateFormat)[keyof typeof SimpleDateFormat];
 
 export class SimpleDate {
   constructor(
@@ -364,24 +363,21 @@ export type DrivingPrivilegesItemFlatRawType = {
   expiry_date: SimpleDate;
 };
 
-export type DrivingPrivilegesFlatRawType =
-  Array<DrivingPrivilegesItemFlatRawType>;
+// export const DrivingPrivilegesClaim = {
+//   is: (u: unknown): u is DrivingPrivilegesClaimType => {
+//     // eslint-disable-next-line functional/no-let
+//     let data = u;
 
-export const DrivingPrivilegesClaim = {
-  is: (u: unknown): u is DrivingPrivilegesClaimType => {
-    // eslint-disable-next-line functional/no-let
-    let data = u;
+//     if (typeof u === 'string') {
+//       try {
+//         data = JSON.parse(u);
+//       } catch {
+//         return false;
+//       }
+//     }
 
-    if (typeof u === 'string') {
-      try {
-        data = JSON.parse(u);
-      } catch {
-        return false;
-      }
-    }
-
-    return (
-      Array.isArray(data) && data.length > 0 && 'driving_privilege' in data[0]
-    );
-  }
-};
+//     return (
+//       Array.isArray(data) && data.length > 0 && 'driving_privilege' in data[0]
+//     );
+//   }
+// };

@@ -1,5 +1,4 @@
 import { Credential } from '@pagopa/io-react-native-wallet';
-import { IssuerConfiguration, StoredStatusAssertion } from './itwTypesUtils';
 
 export type ParsedCredential = Awaited<
   ReturnType<typeof Credential.Issuance.verifyAndParseCredential>
@@ -27,16 +26,17 @@ export type StoredCredential = {
   keyTag: string;
   credentialType: string;
   format: 'vc+sd-jwt' | 'mso_mdoc' | 'dc+sd-jwt';
-  credentialId?: string;
-  issuerConf?: IssuerConfiguration; // The Wallet might still contain older credentials
-  storedStatusAssertion?: StoredStatusAssertion;
-  /**
-   * The SD-JWT issuance and expiration dates in ISO format.
-   * These might be different from the underlying document's dates.
-   */
-  // TODO: [SIW-2740] This type needs to be rafactored once mdoc format will be available
-  jwt?: {
-    expiration: string;
-    issuedAt?: string;
-  };
+  // Commented out properties are to be re-added when their types are available
+  // credentialId?: string;
+  // issuerConf?: IssuerConfiguration; // The Wallet might still contain older credentials
+  // storedStatusAssertion?: StoredStatusAssertion;
+  // /**
+  //  * The SD-JWT issuance and expiration dates in ISO format.
+  //  * These might be different from the underlying document's dates.
+  //  */
+  // // TODO: [SIW-2740] This type needs to be rafactored once mdoc format will be available
+  // jwt?: {
+  //   expiration: string;
+  //   issuedAt?: string;
+  // };
 };

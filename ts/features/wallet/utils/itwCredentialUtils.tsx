@@ -2,8 +2,7 @@ import { IOColors, Tag, useIOTheme } from '@pagopa/io-app-design-system';
 import { SdJwt, Mdoc } from '@pagopa/io-react-native-wallet';
 import I18n from 'i18next';
 import { wellKnownCredentialConfigurationIDs } from './credentials';
-import { ItwCredentialStatus } from './itwAccessibilityUtils';
-import { CredentialFormat } from './itwTypesUtils';
+import { CredentialFormat, ItwCredentialStatus } from './itwTypesUtils';
 import { StoredCredential } from './types';
 
 export const availableCredentials = [

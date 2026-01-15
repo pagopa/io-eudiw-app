@@ -2,9 +2,7 @@ import { IOColors, Tag, useScaleAnimation } from '@pagopa/io-app-design-system';
 import { ReactNode, useMemo, useState } from 'react';
 
 import { Canvas } from '@shopify/react-native-skia';
-import I18n from 'i18next';
 import {
-  AccessibilityProps,
   LayoutChangeEvent,
   Pressable,
   StyleProp,
@@ -14,11 +12,6 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import {
-  accessibilityLabelByStatus,
-  ItwCredentialStatus
-} from '../../../utils/itwAccessibilityUtils';
-import {
-  getCredentialNameFromType,
   isItwCredential,
   tagPropsByStatus,
   useBorderColorByStatus,
@@ -29,6 +22,7 @@ import {
   ItwIridescentBorderVariant
 } from '../../ItwBrandedSkiaBorder';
 import { StoredCredential } from '../../../utils/types';
+import { ItwCredentialStatus } from '../../../utils/itwTypesUtils';
 import { CardBackground } from './CardBackground';
 import { CardData } from './CardData';
 import { FlippableCard } from './FlippableCard';
@@ -84,22 +78,6 @@ export const ItwSkeumorphicCard = ({
     [credential, status, valuesHidden, isItw]
   );
 
-  const accessibilityProps = useMemo(
-    () =>
-      ({
-        accessible: true,
-        accessibilityLabel: `${getCredentialNameFromType(
-          credential.credentialType
-        )}, ${I18n.t(
-          isFlipped
-            ? 'features.itWallet.presentation.credentialDetails.card.back'
-            : 'features.itWallet.presentation.credentialDetails.card.front'
-        )}`,
-        accessibilityValue: { text: accessibilityLabelByStatus[status] }
-      } as AccessibilityProps),
-    [credential.credentialType, isFlipped, status]
-  );
-
   const card = (
     <FlippableCard
       containerStyle={[styles.card]}
@@ -115,7 +93,7 @@ export const ItwSkeumorphicCard = ({
     return (
       <Pressable
         onPress={onPress}
-        {...accessibilityProps}
+        // {...accessibilityProps}
         accessibilityRole="button"
         onPressIn={onPressIn}
         onPressOut={onPressOut}
@@ -126,9 +104,8 @@ export const ItwSkeumorphicCard = ({
   }
 
   return (
-    <View {...accessibilityProps} accessibilityRole="image">
-      {card}
-    </View>
+    // {...accessibilityProps}
+    <View accessibilityRole="image">{card}</View>
   );
 };
 
