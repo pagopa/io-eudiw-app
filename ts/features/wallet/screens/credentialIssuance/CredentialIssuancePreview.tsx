@@ -18,7 +18,8 @@ import { getCredentialNameByType } from '../../utils/credentials';
 import { addCredentialWithIdentification } from '../../store/credentials';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 
 export const CredentialPreview = () => {
   const credentialPostStatus = useAppSelector(
@@ -33,15 +34,32 @@ export const CredentialPreview = () => {
     navigateToWallet();
   }, [dispatch, navigateToWallet]);
 
-  useHeaderSecondLevel({
-    title: '',
-    goBack: () => cancel()
+  const dismissalDialog = useItwDismissalDialog({
+    handleDismiss: cancel,
+    customLabels: {
+      title: t('generic.alert.title', {
+        ns: 'wallet'
+      }),
+      body: t('generic.alert.body', {
+        ns: 'wallet'
+      }),
+      confirmLabel: t('generic.alert.confirm', {
+        ns: 'wallet'
+      }),
+      cancelLabel: t('generic.alert.cancel', {
+        ns: 'wallet'
+      })
+    }
   });
 
-  useHardwareBackButton(() => {
-    cancel();
-    return true;
+  useHeaderSecondLevel({
+    title: '',
+    goBack: () => {
+      dismissalDialog.show();
+    }
   });
+
+  useDisableGestureNavigation();
 
   if (
     !credentialPostStatus.success.status ||
@@ -79,7 +97,9 @@ export const CredentialPreview = () => {
           },
           secondary: {
             label: t('global:buttons.cancel'),
-            onPress: cancel
+            onPress: () => {
+              dismissalDialog.show();
+            }
           },
           type: 'TwoButtons'
         }}

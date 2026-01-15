@@ -14,7 +14,7 @@ import { isAnyOf } from '@reduxjs/toolkit';
 import { regenerateCryptoKey } from '../../../utils/crypto';
 import { DPOP_KEYTAG } from '../utils/crypto';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
-import { navigate } from '../../../navigation/utils';
+import { navigate, navigateWithReset } from '../../../navigation/utils';
 import { addCredential, addPidWithIdentification } from '../store/credentials';
 import {
   setIdentificationIdentified,
@@ -31,6 +31,10 @@ import { createWalletProviderFetch } from '../utils/fetch';
 import { StoredCredential } from '../utils/types';
 import { createAppAsyncThunk } from '../../../middleware/thunk';
 import { takeLatestEffect } from '../../../middleware/listener/effects';
+import { selectPendingCredential } from '../store/pidIssuance';
+import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
+import MAIN_ROUTES from '../../../navigation/main/routes';
+import WALLET_ROUTES from '../navigation/routes';
 import { getAttestationThunk } from './attestation';
 
 /**
@@ -159,7 +163,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
         }
       );
 
-      const { parsedCredential } =
+      const { parsedCredential, expiration, issuedAt } =
         await Credential.Issuance.verifyAndParseCredential(
           issuerConf,
           credential,
@@ -172,7 +176,9 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
         credential,
         credentialType,
         keyTag: credentialKeyTag,
-        format: format as 'vc+sd-jwt' | 'mso_mdoc'
+        format: format as 'vc+sd-jwt' | 'mso_mdoc',
+        expiration: expiration.toISOString(),
+        issuedAt: issuedAt?.toISOString()
       };
     } catch (error) {
       const serialized = serializeError(error);
@@ -202,7 +208,19 @@ const addPidWithAuthListener: AppListenerWithAction<
     listenerApi.dispatch(
       setLifecycle({ lifecycle: Lifecycle.LIFECYCLE_VALID })
     );
-    navigate('MAIN_WALLET_NAV', { screen: 'PID_ISSUANCE_SUCCESS' });
+    // Get the pending required credential to be obtained after the Pid
+    const pendingCredential = selectPendingCredential(listenerApi.getState());
+    if (pendingCredential) {
+      listenerApi.dispatch(
+        setCredentialIssuancePreAuthRequest({ credential: pendingCredential })
+      );
+      navigate(MAIN_ROUTES.WALLET_NAV, {
+        screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
+      });
+    } else {
+      // This should not happen, so by default the flow will just reset navigation and go back home
+      navigateWithReset(MAIN_ROUTES.TAB_NAV);
+    }
   } else {
     return;
   }

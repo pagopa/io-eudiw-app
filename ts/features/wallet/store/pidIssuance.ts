@@ -1,5 +1,5 @@
 /* eslint-disable functional/immutable-data */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../../store/types';
 import {
   AsyncStatusValues,
@@ -13,6 +13,7 @@ import { preferencesReset } from '../../../store/reducers/preferences';
 import { obtainPidThunk } from '../middleware/pid';
 import { createInstanceThunk } from '../middleware/instance';
 import { resetLifecycle } from './lifecycle';
+import { RequestedCredential } from './credentialIssuance';
 
 /* State type definition for the pidIssuance slice
  * issuanceCreation - Async status for the instance creation
@@ -21,12 +22,14 @@ import { resetLifecycle } from './lifecycle';
 export type PidIssuanceStatusState = {
   instanceCreation: AsyncStatusValues;
   issuance: AsyncStatusValues<StoredCredential>;
+  pendingCredential: RequestedCredential;
 };
 
 // Initial state for the pidIssuance slice
 const initialState: PidIssuanceStatusState = {
   instanceCreation: setInitial(),
-  issuance: setInitial()
+  issuance: setInitial(),
+  pendingCredential: undefined
 };
 
 /**
@@ -42,6 +45,12 @@ const pidIssuanceStatusSlice = createSlice({
     },
     resetPidIssuance: state => {
       state.issuance = setInitial();
+    },
+    setPendingCredential: (
+      state,
+      action: PayloadAction<{ credential: RequestedCredential }>
+    ) => {
+      state.pendingCredential = action.payload.credential;
     }
   },
   extraReducers: builder => {
@@ -83,7 +92,7 @@ const pidIssuanceStatusSlice = createSlice({
 /**
  * Exports the actions for the pidIssuance slice.
  */
-export const { resetInstanceCreation, resetPidIssuance } =
+export const { resetInstanceCreation, resetPidIssuance, setPendingCredential } =
   pidIssuanceStatusSlice.actions;
 
 /**
@@ -124,3 +133,11 @@ export const selectPidIssuanceData = (state: RootState) =>
  */
 export const selectPidIssuanceError = (state: RootState) =>
   state.wallet.pidIssuanceStatus.issuance.error.error;
+
+/**
+ * Selects the pending credential to issue after the Wallet Pid has been obtained
+ * @param state - The root state
+ * @returns The credential to issue after the wallet is operational
+ */
+export const selectPendingCredential = (state: RootState) =>
+  state.wallet.pidIssuanceStatus.pendingCredential;

@@ -29,6 +29,9 @@ import {
 import CredentialTypePresentationClaimsList, {
   CredentialTypePresentationClaimsListDescriptor
 } from '../../components/presentation/CredentialTypePresentationClaimsList';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 
 /**
  * Screen which shows the user the credentials and claims that will be shared with the credential issuer
@@ -43,6 +46,7 @@ const CredentialTrust = () => {
   );
   const requestedCredential = useAppSelector(selectRequestedCredentialType);
   const navigation = useNavigation();
+  const { navigateToWallet } = useNavigateToWalletWithReset();
 
   const navigateToErrorScreen = useCallback(
     () =>
@@ -52,12 +56,37 @@ const CredentialTrust = () => {
     [navigation]
   );
 
-  const goBack = useCallback(() => {
-    navigation.goBack();
+  const cancel = useCallback(() => {
     dispatch(resetCredentialIssuance());
-  }, [dispatch, navigation]);
+    navigateToWallet();
+  }, [dispatch, navigateToWallet]);
 
-  useHeaderSecondLevel({ title: '', goBack });
+  const dismissalDialog = useItwDismissalDialog({
+    handleDismiss: cancel,
+    customLabels: {
+      title: t('generic.alert.title', {
+        ns: 'wallet'
+      }),
+      body: t('generic.alert.body', {
+        ns: 'wallet'
+      }),
+      confirmLabel: t('generic.alert.confirm', {
+        ns: 'wallet'
+      }),
+      cancelLabel: t('generic.alert.cancel', {
+        ns: 'wallet'
+      })
+    }
+  });
+
+  useHeaderSecondLevel({
+    title: '',
+    goBack: () => {
+      dismissalDialog.show();
+    }
+  });
+
+  useDisableGestureNavigation();
 
   /**
    * When the post auth request is successful, navigate to the preview screen
@@ -147,7 +176,9 @@ const CredentialTrust = () => {
           },
           secondary: {
             label: t('global:buttons.cancel'),
-            onPress: goBack
+            onPress: () => {
+              dismissalDialog.show();
+            }
           }
         }}
       />

@@ -279,7 +279,7 @@ const obtainCredentialListener: AppListenerWithAction<
     );
 
     // Parse and verify the credential. The ignoreMissingAttributes flag must be set to false or omitted in production.
-    const { parsedCredential } =
+    const { parsedCredential, expiration, issuedAt } =
       await Credential.Issuance.verifyAndParseCredential(
         issuerConf,
         credential,
@@ -298,7 +298,9 @@ const obtainCredentialListener: AppListenerWithAction<
           parsedCredential,
           credentialType,
           keyTag: credentialKeyTag,
-          format: format as 'vc+sd-jwt' | 'mso_mdoc'
+          format: format as 'vc+sd-jwt' | 'mso_mdoc',
+          expiration: expiration.toISOString(),
+          issuedAt: issuedAt?.toISOString()
         }
       })
     );
