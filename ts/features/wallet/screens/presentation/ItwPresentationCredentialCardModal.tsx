@@ -22,7 +22,10 @@ import { ItwPresentationCredentialCardFlipButton } from '../../components/presen
 import { ItwPresentationCredentialCardHideValuesButton } from '../../components/presentation/ItwPresentationCredentialCardHideValuesButton';
 import { FlipGestureDetector } from '../../components/credential/ItwSkeumorphicCard/FlipGestureDetector';
 import { useAppDispatch, useAppSelector } from '../../../../store';
-import { itwIsClaimValueHiddenSelector, itwSetClaimValuesHidden } from '../../store/credentials';
+import {
+  itwIsClaimValueHiddenSelector,
+  itwSetClaimValuesHidden
+} from '../../store/credentials';
 
 export type ItwPresentationCredentialCardModalNavigationParams = {
   credential: StoredCredential;
@@ -43,7 +46,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
   const [isFlipped, setFlipped] = useState(false);
   const theme = useIOTheme();
   const dispatch = useAppDispatch();
-  const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector)
+  const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
 
   usePreventScreenCapture();
   useMaxBrightness({ useSmoothTransition: true });
@@ -66,7 +69,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
 
   const handleClaimVisibility = useCallback(() => {
     dispatch(itwSetClaimValuesHidden(!valuesHidden));
-  }, [valuesHidden]);
+  }, [valuesHidden, dispatch]);
 
   return (
     <View

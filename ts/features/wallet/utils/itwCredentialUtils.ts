@@ -4,7 +4,6 @@ import { CredentialType } from './itwMocksUtils';
 import { ItwCredentialStatus } from './itwTypesUtils';
 import { wellKnownCredential } from './credentials';
 
-
 // New credentials that can be actively requested and obtained by the user
 export const newCredentials = [
   CredentialType.EDUCATION_DEGREE,

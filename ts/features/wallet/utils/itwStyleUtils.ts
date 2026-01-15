@@ -42,8 +42,8 @@ export const useThemeColorByCredentialType = (
         };
       case wellKnownCredential.DISABILITY_CARD:
         return {
-          backgroundColor: "#315B76",
-          textColor: "#17406F"
+          backgroundColor: '#315B76',
+          textColor: '#17406F'
         };
     }
   }, [credentialType, theme, withL3Design]);

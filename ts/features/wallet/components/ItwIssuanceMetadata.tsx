@@ -80,13 +80,13 @@ export const ItwIssuanceMetadata = ({
   credential,
   isPreview
 }: ItwIssuanceMetadataProps) => {
-  const releaserName = 
-   credential.issuerConf.federation_entity.organization_name;
+  const releaserName =
+    credential.issuerConf.federation_entity.organization_name;
 
   /* TODO: [WLEO-846] In case of introduction of the credential catalogue
            it will be necessary to obtain the auth source from it.
   */
-  const authSource = I18n.t('presentation.authSource', {ns : 'wallet'});
+  const authSource = I18n.t('presentation.authSource', { ns: 'wallet' });
 
   const releasedByKey =
     credential.credentialType === wellKnownCredential.PID

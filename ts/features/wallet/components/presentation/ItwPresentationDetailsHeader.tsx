@@ -11,7 +11,10 @@ import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
 import { useAppSelector } from '../../../../store';
 import { lifecycleIsValidSelector } from '../../store/lifecycle';
-import { wellKnownCredential, WellKnownCredentialTypes } from '../../utils/credentials';
+import {
+  wellKnownCredential,
+  WellKnownCredentialTypes
+} from '../../utils/credentials';
 import { ItwPresentationCredentialCard } from './ItwPresentationCredentialCard';
 
 type ItwPresentationDetailsHeaderProps = {

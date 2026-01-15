@@ -2,7 +2,12 @@ import { render } from '@testing-library/react-native';
 import { Text } from 'react-native';
 import z from 'zod';
 import { CardClaim, CardClaimRenderer } from '../CardClaim';
-import { baseClaimSchemaExtracted, DrivingPrivilegesClaimType, drivingPrivilegesSchema, pdfSchema } from '../../../../utils/claims';
+import {
+  baseClaimSchemaExtracted,
+  DrivingPrivilegesClaimType,
+  drivingPrivilegesSchema,
+  pdfSchema
+} from '../../../../utils/claims';
 
 describe('CardClaim', () => {
   it('should return null if claim is not decoded correctly', () => {
@@ -63,11 +68,25 @@ describe('CardClaimRenderer', () => {
       <CardClaimRenderer
         claim={{
           label: 'test',
-          value:
-            [{"vehicle_category_code":"AM","issue_date":"1935-01-23","expiry_date":"2035-02-16","restrictions_conditions":""},{"vehicle_category_code":"B","issue_date":"1935-01-23","expiry_date":"2035-02-16","restrictions_conditions":""}],
+          value: [
+            {
+              vehicle_category_code: 'AM',
+              issue_date: '1935-01-23',
+              expiry_date: '2035-02-16',
+              restrictions_conditions: ''
+            },
+            {
+              vehicle_category_code: 'B',
+              issue_date: '1935-01-23',
+              expiry_date: '2035-02-16',
+              restrictions_conditions: ''
+            }
+          ],
           id: 'Some id'
         }}
-        parser={baseClaimSchemaExtracted.pipe(drivingPrivilegesSchema.transform(({ value }) => value))}
+        parser={baseClaimSchemaExtracted.pipe(
+          drivingPrivilegesSchema.transform(({ value }) => value)
+        )}
         component={(decoded: DrivingPrivilegesClaimType['value']) =>
           decoded.map(p => (
             <Text

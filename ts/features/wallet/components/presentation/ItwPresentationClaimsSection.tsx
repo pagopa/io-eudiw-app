@@ -15,7 +15,10 @@ import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
 import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
 import { ItwQrCodeClaimImage } from '../credential/ItwQrCodeClaimImage';
 import { useAppDispatch, useAppSelector } from '../../../../store';
-import { itwIsClaimValueHiddenSelector, itwSetClaimValuesHidden } from '../../store/credentials';
+import {
+  itwIsClaimValueHiddenSelector,
+  itwSetClaimValuesHidden
+} from '../../store/credentials';
 
 type ItwPresentationClaimsSectionProps = {
   credential: StoredCredential;
@@ -35,8 +38,8 @@ export const ItwPresentationClaimsSection = ({
     exclude: [WellKnownClaim.unique_id, WellKnownClaim.content]
   });
 
-  const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector)
-  const dispatch = useAppDispatch()
+  const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
+  const dispatch = useAppDispatch();
 
   const handleToggleClaimVisibility = () => {
     dispatch(itwSetClaimValuesHidden(!valuesHidden));

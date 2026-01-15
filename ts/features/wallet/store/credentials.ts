@@ -72,16 +72,13 @@ const credentialsSlice = createSlice({
           credentials: state.credentials.filter(
             c => c.credentialType !== credentialType
           ),
-          valuesHidden : state.valuesHidden
+          valuesHidden: state.valuesHidden
         };
       }
       return state;
     },
-    itwSetClaimValuesHidden: (
-      state,
-      action: PayloadAction<boolean>
-    ) => {
-      state.valuesHidden = action.payload
+    itwSetClaimValuesHidden: (state, action: PayloadAction<boolean>) => {
+      state.valuesHidden = action.payload;
     },
     resetCredentials: () => initialState
   },
@@ -177,4 +174,4 @@ export const selectWalletCards: (state: RootState) => Array<WalletCard> =
   );
 
 export const itwIsClaimValueHiddenSelector = (state: RootState) =>
-  state.wallet.credentials.valuesHidden
+  state.wallet.credentials.valuesHidden;

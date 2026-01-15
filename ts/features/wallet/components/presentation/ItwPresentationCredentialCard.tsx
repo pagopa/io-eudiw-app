@@ -17,9 +17,9 @@ import { FlipGestureDetector } from '../credential/ItwSkeumorphicCard/FlipGestur
 import { ItwSkeumorphicCard } from '../credential/ItwSkeumorphicCard';
 import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import WALLET_ROUTES from '../../navigation/routes';
-import { ItwPresentationCredentialCardFlipButton } from './ItwPresentationCredentialCardFlipButton';
 import { useAppSelector } from '../../../../store';
 import { itwIsClaimValueHiddenSelector } from '../../store/credentials';
+import { ItwPresentationCredentialCardFlipButton } from './ItwPresentationCredentialCardFlipButton';
 
 type Props = {
   credential: StoredCredential;

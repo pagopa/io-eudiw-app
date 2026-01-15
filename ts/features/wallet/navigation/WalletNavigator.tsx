@@ -33,7 +33,10 @@ import {
   ItwPresentationCredentialAttachmentNavigationParams,
   ItwPresentationCredentialAttachmentScreen
 } from '../screens/presentation/ItwPresentationCredentialAttachmentScreen';
-import { ItwPresentationCredentialDetailNavigationParams, ItwPresentationCredentialDetailScreen } from '../screens/presentation/ItwPresentationCredentialDetailScreen';
+import {
+  ItwPresentationCredentialDetailNavigationParams,
+  ItwPresentationCredentialDetailScreen
+} from '../screens/presentation/ItwPresentationCredentialDetailScreen';
 import WALLET_ROUTES from './routes';
 
 /**

@@ -213,13 +213,17 @@ const DocumentExpiringAlert = ({ credential }: CredentialStatusAlertProps) => {
   }, []);
 
   const bottomSheet = useIOBottomSheetModal({
-//    title: I18n.t(`${bottomSheetNs}.title`, { ns: 'wallet' }),
-    //This API is needed to bypass translation engine interpretations of ":" symbols as namespaces
+    //    title: I18n.t(`${bottomSheetNs}.title`, { ns: 'wallet' }),
+    // This API is needed to bypass translation engine interpretations of ":" symbols as namespaces
     title: I18n.getResource(I18n.language, 'wallet', `${bottomSheetNs}.title`),
     component: (
       <VStack space={24}>
         <IOMarkdown
-          content={I18n.getResource(I18n.language, 'wallet', `${bottomSheetNs}.content`)}
+          content={I18n.getResource(
+            I18n.language,
+            'wallet',
+            `${bottomSheetNs}.content`
+          )}
         />
         {showCta && (
           <View style={{ marginBottom: 16 }}>
@@ -269,7 +273,8 @@ const IssuerDynamicErrorAlert = ({
   credential
 }: IssuerDynamicErrorAlertProps) => {
   const localizedMessage = getLocalizedMessageOrFallback(message);
-  const showCta = credential.credentialType === wellKnownCredential.DRIVING_LICENSE;
+  const showCta =
+    credential.credentialType === wellKnownCredential.DRIVING_LICENSE;
 
   const { confirmAndRemoveCredential } =
     useItwRemoveCredentialWithConfirm(credential);
@@ -313,17 +318,16 @@ const IssuerDynamicErrorAlert = ({
 const getLocalizedMessageOrFallback = (
   message: IssuerDynamicErrorAlertProps['message']
 ) =>
-  message ?
-  (
-    message[getClaimsFullLocale()] ??
-    message[ClaimsLocales.it] ?? {
-      title: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
-      description: I18n.t('credentials.status.unknown', { ns: 'wallet' })
-    }
-  ) : {
-      title: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
-      description: I18n.t('credentials.status.unknown', { ns: 'wallet' })
-    }
+  message
+    ? message[getClaimsFullLocale()] ??
+      message[ClaimsLocales.it] ?? {
+        title: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
+        description: I18n.t('credentials.status.unknown', { ns: 'wallet' })
+      }
+    : {
+        title: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
+        description: I18n.t('credentials.status.unknown', { ns: 'wallet' })
+      };
 
 const Memoized = memo(ItwPresentationCredentialStatusAlert);
 

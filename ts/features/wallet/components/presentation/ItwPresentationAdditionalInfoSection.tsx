@@ -1,9 +1,9 @@
 import { memo } from 'react';
 import { StoredCredential } from '../../utils/types';
-import { ItwPresentationNewCredentialValidityAlert } from './ItwPresentationNewCredentialValidityAlert';
-import { ItwPresentationFiscalCode } from './ItwPresentationFiscalCode';
 import { wellKnownCredential } from '../../utils/credentials';
 import { CredentialType } from '../../utils/itwMocksUtils';
+import { ItwPresentationNewCredentialValidityAlert } from './ItwPresentationNewCredentialValidityAlert';
+import { ItwPresentationFiscalCode } from './ItwPresentationFiscalCode';
 
 type Props = {
   credential: StoredCredential;
@@ -12,7 +12,7 @@ type Props = {
 /**
  * This component returns the additional information required by a credential details screen, which is not
  * part of the credential claims
- * 
+ *
  * TODO: Should this be removed or left empty?
  */
 const ItwPresentationAdditionalInfoSection = ({ credential }: Props) => {

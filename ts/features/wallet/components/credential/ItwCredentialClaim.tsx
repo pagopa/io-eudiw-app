@@ -72,7 +72,7 @@ const BoolClaimItem = ({
   label: string;
   claim: boolean;
   hidden?: boolean;
-  reversed : boolean
+  reversed: boolean;
 }) => {
   const realValue = I18n.t(
     `presentation.credentialDetails.boolClaim.${claim}`,
@@ -112,7 +112,7 @@ const PlainTextClaimItem = ({
   claim: string;
   isCopyable?: boolean;
   hidden?: boolean;
-  reversed : boolean
+  reversed: boolean;
 }) => {
   const safeValue = getSafeText(claim);
   const displayValue = hidden ? HIDDEN_CLAIM_TEXT : safeValue;
@@ -154,7 +154,7 @@ const DateClaimItem = ({
   claim: Date;
   status?: ItwCredentialStatus;
   hidden?: boolean;
-  reversed: boolean
+  reversed: boolean;
 }) => {
   // Remove the timezone offset to display the date in its original format
   const realValue = claim.toLocaleDateString();
@@ -217,7 +217,14 @@ const DateClaimItem = ({
  * @param label - the label of the claim
  * @param _claim - the claim value of unknown type. We are not interested in its value but it's needed for the exaustive type checking.
  */
-const UnknownClaimItem = ({ label, reversed }: { label: string; _claim?: unknown, reversed: boolean }) => (
+const UnknownClaimItem = ({
+  label,
+  reversed
+}: {
+  label: string;
+  _claim?: unknown;
+  reversed: boolean;
+}) => (
   <PlainTextClaimItem
     label={label}
     claim={I18n.t(
@@ -243,7 +250,7 @@ const ImageClaimItem = ({
   label: string;
   claim: string;
   hidden?: boolean;
-  reversed: boolean
+  reversed: boolean;
 }) =>
   hidden ? (
     <PlainTextClaimItem label={label} claim="" hidden reversed={reversed} />
@@ -279,7 +286,7 @@ const AttachmentsClaimItem = ({
 }: {
   name: string;
   hidden?: boolean;
-  reversed: boolean
+  reversed: boolean;
 }) =>
   hidden ? (
     <PlainTextClaimItem
@@ -331,7 +338,7 @@ const DrivingPrivilegesClaimItem = ({
   claim: DrivingPrivilegesClaimType['value'][0];
   detailsButtonVisible?: boolean;
   hidden?: boolean;
-  reversed : boolean
+  reversed: boolean;
 }) => {
   const privilegeBottomSheet = useIOBottomSheetModal({
     title: I18n.t('verifiableCredentials.claims.mdl.category', {
@@ -504,13 +511,13 @@ export const ItwCredentialClaim = ({
   hidden,
   isPreview,
   credentialStatus,
-  reversed=false
+  reversed = false
 }: {
   claim: ClaimDisplayFormat;
   hidden?: boolean;
   isPreview?: boolean;
   credentialStatus?: ItwCredentialStatus;
-  reversed?: boolean
+  reversed?: boolean;
 }) => {
   const decoded = claimScheme.safeParse(claim);
 
@@ -554,7 +561,13 @@ export const ItwCredentialClaim = ({
           />
         );
       case 'application/pdf':
-        return <AttachmentsClaimItem name={claim.label} hidden={hidden} reversed={reversed} />;
+        return (
+          <AttachmentsClaimItem
+            name={claim.label}
+            hidden={hidden}
+            reversed={reversed}
+          />
+        );
       case 'drivingPrivileges':
         return decoded.data.value.map((elem, index) => (
           <Fragment
@@ -611,5 +624,11 @@ export const ItwCredentialClaim = ({
         );
     }
   }
-  return <UnknownClaimItem label={claim.label} _claim={decoded} reversed={reversed} />;
+  return (
+    <UnknownClaimItem
+      label={claim.label}
+      _claim={decoded}
+      reversed={reversed}
+    />
+  );
 };
