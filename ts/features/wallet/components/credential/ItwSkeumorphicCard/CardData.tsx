@@ -7,7 +7,7 @@ import {
   DrivingPrivilegesClaimType,
   drivingPrivilegesSchema
 } from '../../../utils/claims';
-import { QrCodeImage } from '../../../../../components/QrCodeImage';
+import { QrCodeImage } from '../../QrCodeImage';
 import { wellKnownCredential } from '../../../utils/credentials';
 import { getClaimsFullLocale } from '../../../utils/locale';
 import { CardSide } from './types';

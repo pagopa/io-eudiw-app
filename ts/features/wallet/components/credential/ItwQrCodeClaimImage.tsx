@@ -1,6 +1,6 @@
 import { Appearance, StyleSheet, View } from 'react-native';
 import { ClaimDisplayFormat } from '../../utils/types';
-import { QrCodeImage } from '../../../../components/QrCodeImage';
+import { QrCodeImage } from '../QrCodeImage';
 
 type ItwQrCodeClaimImageProps = {
   claim: ClaimDisplayFormat;
