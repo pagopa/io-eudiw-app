@@ -28,11 +28,6 @@ import {
   ItwPresentationCredentialCardModal,
   ItwPresentationCredentialCardModalNavigationParams
 } from '../screens/presentation/ItwPresentationCredentialCardModal';
-import { ItwPresentationCredentialFiscalCodeModal } from '../screens/presentation/ItwPresentationCredentialFiscalCodeModal';
-import {
-  ItwPresentationCredentialAttachmentNavigationParams,
-  ItwPresentationCredentialAttachmentScreen
-} from '../screens/presentation/ItwPresentationCredentialAttachmentScreen';
 import {
   ItwPresentationCredentialDetailNavigationParams,
   ItwPresentationCredentialDetailScreen
@@ -57,9 +52,6 @@ export type WalletNavigatorParamsList = {
     .CREDENTIAL_DETAILS]: ItwPresentationCredentialDetailNavigationParams;
   [WALLET_ROUTES.PRESENTATION
     .CREDENTIAL_CARD_MODAL]: ItwPresentationCredentialCardModalNavigationParams;
-  [WALLET_ROUTES.PRESENTATION.CREDENTIAL_FISCAL_CODE_MODAL]: undefined;
-  [WALLET_ROUTES.PRESENTATION
-    .CREDENTIAL_ATTACHMENT]: ItwPresentationCredentialAttachmentNavigationParams;
   [WALLET_ROUTES.PRESENTATION.PRE_DEFINITION]: PresentationPreDefinitionParams;
   [WALLET_ROUTES.PRESENTATION.FAILURE]: undefined;
   [WALLET_ROUTES.PRESENTATION
@@ -121,14 +113,6 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_MODAL}
         component={ItwPresentationCredentialCardModal}
-      />
-      <Stack.Screen
-        name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_FISCAL_CODE_MODAL}
-        component={ItwPresentationCredentialFiscalCodeModal}
-      />
-      <Stack.Screen
-        name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_ATTACHMENT}
-        component={ItwPresentationCredentialAttachmentScreen}
       />
     </Stack.Group>
     <Stack.Group>

@@ -27,11 +27,9 @@ import {
   CredentialCtaProps,
   ItwPresentationDetailsScreenBase
 } from '../../components/presentation/ItwPresentationDetailsScreenBase';
-import { WellKnownClaim } from '../../utils/itwClaimsUtils';
 import { ItwPresentationCredentialUnknownStatus } from '../../components/presentation/ItwPresentationCredentialUnknownStatus';
 import { ItwPresentationDetailsHeader } from '../../components/presentation/ItwPresentationDetailsHeader';
 import { PoweredByItWalletText } from '../../components/PoweredByItWalletText';
-import { ItwPresentationAdditionalInfoSection } from '../../components/presentation/ItwPresentationAdditionalInfoSection';
 import { ItwPresentationCredentialStatusAlert } from '../../components/presentation/ItwPresentationCredentialStatusAlert';
 import { ItwPresentationCredentialInfoAlert } from '../../components/presentation/ItwPresentationCredentialInfoAlert';
 import { ItwPresentationClaimsSection } from '../../components/presentation/ItwPresentationClaimsSection';
@@ -172,9 +170,7 @@ export const ItwPresentationCredentialDetail = ({
   }, [proximityStatus, QrCodeModal, navigation]);
 
   const ctaProps = useMemo<Optional<CredentialCtaProps>>(() => {
-    const { parsedCredential } = credential;
     const credentialType = credential.credentialType;
-    const contentClaim = parsedCredential[WellKnownClaim.content];
 
     if (credentialType === wellKnownCredential.DRIVING_LICENSE) {
       return {
@@ -189,24 +185,8 @@ export const ItwPresentationCredentialDetail = ({
       };
     }
 
-    // If the "content" claim exists, return a CTA to view and download it.
-    if (contentClaim) {
-      return {
-        label: I18n.t('itWallet.presentation.ctas.openPdf'), // TODO: Maybe attachment will be removed
-        icon: 'docPaymentTitle',
-        onPress: () => {
-          navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-            screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_ATTACHMENT,
-            params: {
-              attachmentClaim: contentClaim
-            }
-          });
-        }
-      };
-    }
-
     return undefined;
-  }, [credential, navigation, QrCodeModal, dispatch]);
+  }, [credential, QrCodeModal, dispatch]);
 
   if (status === 'unknown') {
     return <ItwPresentationCredentialUnknownStatus credential={credential} />;
@@ -221,7 +201,6 @@ export const ItwPresentationCredentialDetail = ({
       <VSpacer size={24} />
       <ContentWrapper>
         <VStack space={24}>
-          <ItwPresentationAdditionalInfoSection credential={credential} />
           <ItwPresentationCredentialStatusAlert credential={credential} />
           <ItwPresentationCredentialInfoAlert credential={credential} />
           <ItwPresentationClaimsSection credential={credential} />

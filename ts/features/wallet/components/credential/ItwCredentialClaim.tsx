@@ -16,6 +16,7 @@ import { clipboardSetStringWithFeedback } from '../../../../utils/clipboard';
 import { ItwCredentialStatus } from '../../utils/itwTypesUtils';
 import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
 import { ClaimDisplayFormat } from '../../utils/types';
+import { format } from '../../utils/dates';
 
 /**
  * Helper function to get the accessibility text for hidden claims.
@@ -275,50 +276,6 @@ const ImageClaimItem = ({
   );
 
 /**
- * Component which renders an attachment claim
- * @param name - name of the file
- * @param hidden - a flag to hide the claim value
- */
-const AttachmentsClaimItem = ({
-  name,
-  hidden,
-  reversed
-}: {
-  name: string;
-  hidden?: boolean;
-  reversed: boolean;
-}) =>
-  hidden ? (
-    <PlainTextClaimItem
-      label={I18n.t('verifiableCredentials.claims.attachments', {
-        ns: 'wallet'
-      })}
-      claim=""
-      hidden
-      reversed={reversed}
-    />
-  ) : (
-    <ListItemInfo
-      label={I18n.t('verifiableCredentials.claims.attachments', {
-        ns: 'wallet'
-      })}
-      value={name}
-      accessibilityLabel={`${I18n.t(
-        'verifiableCredentials.claims.attachments',
-        { ns: 'wallet' }
-      )}: ${name}`}
-      endElement={{
-        type: 'badge',
-        componentProps: {
-          variant: 'default',
-          text: 'PDF'
-        }
-      }}
-      reversed={reversed}
-    />
-  );
-
-/**
  * Component which renders a driving privileges type claim.
  * It features a bottom sheet with information about the issued and expiration date of the claim.
  * @param label the label of the claim
@@ -351,7 +308,7 @@ const DrivingPrivilegesClaimItem = ({
           label={I18n.t('verifiableCredentials.claims.mdl.issuedDate', {
             ns: 'wallet'
           })}
-          value={claim.issue_date}
+          value={format(claim.issue_date, 'DD/MM/YYYY')}
           accessibilityLabel={`${I18n.t(
             'verifiableCredentials.claims.mdl.issuedDate',
             {
@@ -365,7 +322,7 @@ const DrivingPrivilegesClaimItem = ({
           label={I18n.t('verifiableCredentials.claims.mdl.expirationDate', {
             ns: 'wallet'
           })}
-          value={claim.expiry_date}
+          value={format(claim.expiry_date, 'DD/MM/YYYY')}
           accessibilityLabel={`${I18n.t(
             'verifiableCredentials.claims.mdl.expirationDate',
             {
@@ -374,20 +331,6 @@ const DrivingPrivilegesClaimItem = ({
           )} ${claim.expiry_date}`}
           reversed={reversed}
         />
-        {/* claim.restrictions_conditions && (
-          <>
-            <Divider />
-            <ListItemInfo
-              label={I18n.t(
-                "features.itWallet.verifiableCredentials.claims.mdl.restrictionConditions"
-              )}
-              value={claim.restrictions_conditions}
-              accessibilityLabel={`${I18n.t(
-                "features.itWallet.verifiableCredentials.claims.mdl.restrictionConditions"
-              )} ${claim.restrictions_conditions}`}
-            />
-          </>
-        ) */}
       </>
     )
   });
@@ -556,14 +499,6 @@ export const ItwCredentialClaim = ({
           <ImageClaimItem
             label={claim.label}
             claim={decoded.data.value}
-            hidden={hidden}
-            reversed={reversed}
-          />
-        );
-      case 'application/pdf':
-        return (
-          <AttachmentsClaimItem
-            name={claim.label}
             hidden={hidden}
             reversed={reversed}
           />

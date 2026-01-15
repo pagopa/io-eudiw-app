@@ -7,6 +7,7 @@ import { Either, Prettify } from '../../../../../types/utils';
 import { ClaimDisplayFormat } from '../../../utils/types';
 import { SimpleDateFormat } from '../../../utils/itwClaimsUtils';
 import { claimScheme } from '../../../utils/claims';
+import { format } from '../../../utils/dates';
 import { ClaimImage } from './ClaimImage';
 import { ClaimLabel, ClaimLabelProps } from './ClaimLabel';
 
@@ -67,7 +68,7 @@ const CardClaim = ({
           return <ClaimLabel {...labelProps}>{parsed.value}</ClaimLabel>;
         case 'date':
         case 'expireDate':
-          const formattedDate = parsed.value.toLocaleDateString();
+          const formattedDate = format(parsed.value, dateFormat);
           return <ClaimLabel {...labelProps}>{formattedDate}</ClaimLabel>;
         case 'image':
           return (
@@ -95,7 +96,7 @@ const CardClaim = ({
     }
 
     return null;
-  }, [claim, labelProps]);
+  }, [claim, labelProps, dateFormat]);
 
   if (!claimContent) {
     return null;

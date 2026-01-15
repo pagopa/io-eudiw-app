@@ -5,8 +5,7 @@ import { CardClaim, CardClaimRenderer } from '../CardClaim';
 import {
   baseClaimSchemaExtracted,
   DrivingPrivilegesClaimType,
-  drivingPrivilegesSchema,
-  pdfSchema
+  drivingPrivilegesSchema
 } from '../../../../utils/claims';
 
 describe('CardClaim', () => {
@@ -35,21 +34,6 @@ describe('CardClaim', () => {
 });
 
 describe('CardClaimRenderer', () => {
-  it('should return null if claim is not decoded correctly', () => {
-    const { queryByTestId, queryByText } = render(
-      <CardClaimRenderer
-        claim={{ label: 'test', value: 'Some string', id: 'Some id' }}
-        parser={pdfSchema.transform(({ value }) => value)}
-        component={() => (
-          <Text testID="claimTestID">This should not be rendered!</Text>
-        )}
-      />
-    );
-
-    expect(queryByTestId('claimTestID')).toBeFalsy();
-    expect(queryByText('This should not be rendered!')).toBeFalsy();
-  });
-
   it('should correctly render a string claim', () => {
     const { queryByTestId, queryByText } = render(
       <CardClaimRenderer

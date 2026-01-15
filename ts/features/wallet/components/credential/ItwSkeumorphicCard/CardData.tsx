@@ -10,6 +10,7 @@ import {
 import { QrCodeImage } from '../../QrCodeImage';
 import { wellKnownCredential } from '../../../utils/credentials';
 import { getClaimsFullLocale } from '../../../utils/locale';
+import { format } from '../../../utils/dates';
 import { CardSide } from './types';
 import { ClaimLabel } from './ClaimLabel';
 import { CardClaim, CardClaimContainer, CardClaimRenderer } from './CardClaim';
@@ -157,7 +158,7 @@ const MdlBackData = ({ claims, valuesHidden }: DataComponentProps) => {
           }}
         >
           <ClaimLabel fontSize={9} hidden={valuesHidden}>
-            {issue_date}
+            {format(issue_date, 'DD/MM/YY')}
           </ClaimLabel>
         </CardClaimContainer>
         <CardClaimContainer
@@ -168,20 +169,9 @@ const MdlBackData = ({ claims, valuesHidden }: DataComponentProps) => {
           }}
         >
           <ClaimLabel fontSize={9} hidden={valuesHidden}>
-            {expiry_date}
+            {format(expiry_date, 'DD/MM/YY')}
           </ClaimLabel>
         </CardClaimContainer>
-        {/* TODO: Check if this is needed: restrictions_conditions && (
-            <CardClaimContainer
-              key={`driving_privilege_restricted_conditions_${vehicle_category_code}`}
-              position={{
-                left: `68.5%`,
-                top: `${privilegesTableRows[vehicle_category_code] || 0}%`
-              }}
-            >
-              <ClaimLabel fontSize={9}>{restrictions_conditions}</ClaimLabel>
-            </CardClaimContainer>
-          ) */}
       </Fragment>
     ));
   return (
@@ -196,14 +186,6 @@ const MdlBackData = ({ claims, valuesHidden }: DataComponentProps) => {
         )}
         component={renderData}
       />
-      {/* TODO: Restrictions conditions should not exist anymore
-        <CardClaim
-          claim={getClaimMdl("restrictions_conditions", claims)}
-          position={{ left: "8%", bottom: "6.5%" }}
-          fontSize={9}
-          hidden={valuesHidden}
-        />
-        */}
     </View>
   );
 };

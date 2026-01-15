@@ -122,11 +122,7 @@ export const drivingPrivilegesSchema = z
     })
   )
   .transform(arr => ({
-    value: arr.map(category => ({
-      vehicle_category_code: category.vehicle_category_code,
-      issue_date: new Date(category.issue_date).toLocaleDateString(),
-      expiry_date: new Date(category.expiry_date).toLocaleDateString()
-    })),
+    value: arr,
     type: claimType.drivingPrivileges
   }));
 
@@ -227,25 +223,6 @@ export const base64ImageSchema = z
 
 export type Base64ImageClaimType = z.infer<typeof base64ImageSchema>;
 
-export const pdfSchema = z
-  .object({
-    id: z
-      .string()
-      .transform(str => {
-        const split = str.split(':');
-        return split[split.length - 1];
-      })
-      // For the moment, there is no known PDF claim, so the claim name is generic
-      .pipe(z.enum(['pdf'])),
-    label: z.string(),
-    value: z.string()
-  })
-  .transform(obj => obj.value)
-  .transform(pdf => ({
-    value: 'data:application/pdf;base64,' + pdf,
-    type: claimType.pdf
-  }));
-
 /**
  * Schema to validate claims that are known to be dates for which expiration should be checked
  */
@@ -285,7 +262,6 @@ export type PlaceOfBirthClaimType = z.infer<typeof placeofBirthSchema>;
  */
 export const claimScheme = z.union([
   base64ImageSchema,
-  pdfSchema,
   dateThatCanExpireSchema,
   // In case there isn't a schema for a specific label, we fallback to simply parsing the value
   baseClaimSchemaExtracted.pipe(

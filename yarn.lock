@@ -2361,20 +2361,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/art@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@react-native-community/art@npm:1.2.0"
-  dependencies:
-    art: "npm:^0.10.3"
-    invariant: "npm:^2.2.4"
-    prop-types: "npm:^15.7.2"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10/3ea1d1b3b72f92b4826e522fec49bbedca612c7db01ba673a0dbd3fe20df5dfd963ce560b33f9e9e4d2c4d04d1f7072befb11b1d7b34987609bc3d94e2791f78
-  languageName: node
-  linkType: hard
-
 "@react-native-community/cli-clean@npm:20.0.0":
   version: 20.0.0
   resolution: "@react-native-community/cli-clean@npm:20.0.0"
@@ -2800,13 +2786,6 @@ __metadata:
     metro-config: "npm:^0.83.1"
     metro-runtime: "npm:^0.83.1"
   checksum: 10/13af9cb8f743e8ae51fe0c77db4c61070ef31074b985911ad03b53ec79985f3ba261f1b0026bc62b1b070a3954c8928b73d2d956fc13bad6ece3699b3f5d7254
-  languageName: node
-  linkType: hard
-
-"@react-native/normalize-color@npm:*":
-  version: 2.1.0
-  resolution: "@react-native/normalize-color@npm:2.1.0"
-  checksum: 10/a72b98538e6b7e265fb0669b8767d5f788777fb1a0ac1df7b0c82d8b3a804c8122aa7b819688c5e36fcf90b5ba93050b0070e29d3f0d70ab9530c2abd2bb9f9e
   languageName: node
   linkType: hard
 
@@ -4334,13 +4313,6 @@ __metadata:
   version: 1.0.1
   resolution: "arrify@npm:1.0.1"
   checksum: 10/745075dd4a4624ff0225c331dacb99be501a515d39bcb7c84d24660314a6ec28e68131b137e6f7e16318170842ce97538cd298fc4cd6b2cc798e0b957f2747e7
-  languageName: node
-  linkType: hard
-
-"art@npm:^0.10.3":
-  version: 0.10.3
-  resolution: "art@npm:0.10.3"
-  checksum: 10/264f3df84dfe5071dbd6eea43995e1cb35003d87e1680b99c842fcb7c6a5a26461ddf4f7af73d6e0a8b06d70cbc8c9282f563611e48a53f1654ec85ac6b273c7
   languageName: node
   linkType: hard
 
@@ -5895,13 +5867,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"crypto-js@npm:4.2.0":
-  version: 4.2.0
-  resolution: "crypto-js@npm:4.2.0"
-  checksum: 10/c7bcc56a6e01c3c397e95aa4a74e4241321f04677f9a618a8f48a63b5781617248afb9adb0629824792e7ec20ca0d4241a49b6b2938ae6f973ec4efc5c53c924
-  languageName: node
-  linkType: hard
-
 "css-select@npm:^5.1.0":
   version: 5.2.2
   resolution: "css-select@npm:5.2.2"
@@ -6194,17 +6159,6 @@ __metadata:
   version: 2.0.0
   resolution: "depd@npm:2.0.0"
   checksum: 10/c0c8ff36079ce5ada64f46cc9d6fd47ebcf38241105b6e0c98f412e8ad91f084bcf906ff644cc3a4bd876ca27a62accb8b0fff72ea6ed1a414b89d8506f4a5ca
-  languageName: node
-  linkType: hard
-
-"deprecated-react-native-prop-types@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "deprecated-react-native-prop-types@npm:2.3.0"
-  dependencies:
-    "@react-native/normalize-color": "npm:*"
-    invariant: "npm:*"
-    prop-types: "npm:*"
-  checksum: 10/5abbad5b6d6830ca92151167f42611256ada1e8991b5066ed3659f3bbe909ae87949f3e7f075f1b685256138cad81423222220f4c6d5740376db19cb9f793312
   languageName: node
   linkType: hard
 
@@ -8309,7 +8263,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"invariant@npm:*, invariant@npm:^2.2.4":
+"invariant@npm:^2.2.4":
   version: 2.2.4
   resolution: "invariant@npm:2.2.4"
   dependencies:
@@ -8376,7 +8330,6 @@ __metadata:
     react: "npm:19.1.0"
     react-i18next: "npm:^15.1.1"
     react-native: "npm:0.81.5"
-    react-native-barcode-builder: "npm:^2.0.0"
     react-native-blob-util: "npm:0.15.0"
     react-native-bootsplash: "npm:^6.3.11"
     react-native-config: "npm:^1.6.1"
@@ -8388,7 +8341,6 @@ __metadata:
     react-native-haptic-feedback: "npm:^2.3.3"
     react-native-image-picker: "npm:^8.2.1"
     react-native-linear-gradient: "npm:^2.8.3"
-    react-native-pdf: "npm:6.7.7"
     react-native-permissions: "npm:^5.4.4"
     react-native-qrcode-svg: "npm:^6.3.21"
     react-native-reanimated: "npm:^3.19.4"
@@ -8396,7 +8348,6 @@ __metadata:
     react-native-screen-brightness: "npm:^2.0.0-alpha"
     react-native-screens: "npm:^4.18.0"
     react-native-screenshot-prevent: "npm:^1.2.1"
-    react-native-share: "npm:^12.2.2"
     react-native-svg: "npm:^15.15.1"
     react-native-svg-transformer: "npm:^1.5.2"
     react-native-url-polyfill: "npm:^3.0.0"
@@ -9493,13 +9444,6 @@ __metadata:
   bin:
     js-yaml: bin/js-yaml.js
   checksum: 10/a52d0519f0f4ef5b4adc1cde466cb54c50d56e2b4a983b9d5c9c0f2f99462047007a6274d7e95617a21d3c91fde3ee6115536ed70991cd645ba8521058b78f77
-  languageName: node
-  linkType: hard
-
-"jsbarcode@npm:^3.8.0":
-  version: 3.12.3
-  resolution: "jsbarcode@npm:3.12.3"
-  checksum: 10/3a7a9dd6294bea68121c3db95aeac547423c113e49bf4d74ac33e84daf47f9c37f2e6992fad3f825fe0c885e60df2cf545034beeba24a5877b4223d9e2645c56
   languageName: node
   linkType: hard
 
@@ -11878,7 +11822,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:*, prop-types@npm:^15.7.2, prop-types@npm:^15.8.0, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.8.0, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -12132,30 +12076,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-barcode-builder@npm:2.0.0":
-  version: 2.0.0
-  resolution: "react-native-barcode-builder@npm:2.0.0"
-  dependencies:
-    "@react-native-community/art": "npm:^1.2.0"
-    jsbarcode: "npm:^3.8.0"
-  peerDependencies:
-    prop-types: ^15.5.0
-  checksum: 10/12ccb235e4d88ca05993111514ca4f9759827e06c2116b2f4bc840b967084222faa7c1c56985452b16cd98e6aa99190e5dcb0f7f2ed5fb2442b10421aa12e959
-  languageName: node
-  linkType: hard
-
-"react-native-barcode-builder@patch:react-native-barcode-builder@npm%3A2.0.0#./.yarn/patches/react-native-barcode-builder-npm-2.0.0-e67f3e2020.patch::locator=ioeudiwapp%40workspace%3A.":
-  version: 2.0.0
-  resolution: "react-native-barcode-builder@patch:react-native-barcode-builder@npm%3A2.0.0#./.yarn/patches/react-native-barcode-builder-npm-2.0.0-e67f3e2020.patch::version=2.0.0&hash=3291db&locator=ioeudiwapp%40workspace%3A."
-  dependencies:
-    "@react-native-community/art": "npm:^1.2.0"
-    jsbarcode: "npm:^3.8.0"
-  peerDependencies:
-    prop-types: ^15.5.0
-  checksum: 10/5c2e0e2e648c8b751648a5de7f6545c45b12c4841b3a4ec3ab8d483cdf0d9584fd21e50094158cbb6a0a077b1d011f12ca1dfdf9c34135a09ba13ec07fb9767d
-  languageName: node
-  linkType: hard
-
 "react-native-blob-util@npm:0.15.0":
   version: 0.15.0
   resolution: "react-native-blob-util@npm:0.15.0"
@@ -12339,34 +12259,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-pdf@npm:6.7.7":
-  version: 6.7.7
-  resolution: "react-native-pdf@npm:6.7.7"
-  dependencies:
-    crypto-js: "npm:4.2.0"
-    deprecated-react-native-prop-types: "npm:^2.3.0"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-    react-native-blob-util: ">=0.13.7"
-  checksum: 10/b6e24c82103be0b03820ea3239509f369660fb701252e4d9888b1cbf1bcf5895e81f631c8e71e16a6579075080c79c0d311fe5cdf45511099a944893b8239263
-  languageName: node
-  linkType: hard
-
-"react-native-pdf@patch:react-native-pdf@npm%3A6.7.7#./.yarn/patches/react-native-pdf-npm-6.7.7-7aa1e3a631.patch::locator=ioeudiwapp%40workspace%3A.":
-  version: 6.7.7
-  resolution: "react-native-pdf@patch:react-native-pdf@npm%3A6.7.7#./.yarn/patches/react-native-pdf-npm-6.7.7-7aa1e3a631.patch::version=6.7.7&hash=0e934d&locator=ioeudiwapp%40workspace%3A."
-  dependencies:
-    crypto-js: "npm:4.2.0"
-    deprecated-react-native-prop-types: "npm:^2.3.0"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-    react-native-blob-util: ">=0.13.7"
-  checksum: 10/95979a38bd795ded5267cb09c3253d54661cf6a9919777fd6a73fbe5a6ca4490c64b2008dd2f36285b7ab74d9d94042ad18edf7e2cb7b8b74109cfddb6da2c5f
-  languageName: node
-  linkType: hard
-
 "react-native-permissions@npm:^5.4.4":
   version: 5.4.4
   resolution: "react-native-permissions@npm:5.4.4"
@@ -12498,13 +12390,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/bfdc70cbf392c655cc2d9d13d7adf8b423d89866716dd1d681afcabf18e9e4387e5f111a55f8049ade41413bef73dea33fc865000a5b5725c81ad3658eba477d
-  languageName: node
-  linkType: hard
-
-"react-native-share@npm:^12.2.2":
-  version: 12.2.2
-  resolution: "react-native-share@npm:12.2.2"
-  checksum: 10/792417d71c07862e4f471b0dfe1e45f79150cbe64791ec8f755c75c46bfd5006f35cd3caa05d09e00671e5551c8f05627bcfe50348edd187d2f5e11d1ff236bf
   languageName: node
   linkType: hard
 
