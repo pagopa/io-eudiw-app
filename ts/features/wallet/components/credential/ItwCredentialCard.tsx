@@ -99,7 +99,7 @@ export const ItwCredentialCard = ({
             size={16}
             lineHeight={20}
             font={
-              'TitilliumSansPro' /* TODO: Check if preferences are needed */
+              'TitilliumSansPro' /* TODO: [WLEO-845] Check if preferences are needed */
             }
             weight="Semibold"
             maxFontSizeMultiplier={1.25}

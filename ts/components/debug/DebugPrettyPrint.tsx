@@ -3,15 +3,13 @@ import {
   HStack,
   IOColors,
   IOText,
-  IconButton,
-  useIOToast
+  IconButton
 } from '@pagopa/io-app-design-system';
 import { StyleSheet, View } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { useTranslation } from 'react-i18next';
 import { useMemo, useState } from 'react';
 import { truncateObjectStrings } from '../../utils/debug';
 import { Prettify } from '../../types/utils';
+import { clipboardSetStringWithFeedback } from '../../utils/clipboard';
 import { withDebugEnabled } from './withDebugEnabled';
 
 type ExpandableProps =
@@ -38,9 +36,7 @@ type Props = Prettify<
  */
 export const DebugPrettyPrint = withDebugEnabled(
   ({ title, data, expandable = true, isExpanded = false }: Props) => {
-    const toast = useIOToast();
     const [expanded, setExpanded] = useState(isExpanded);
-    const { t } = useTranslation('global');
 
     const content = useMemo(() => {
       if ((expandable && !expanded) || !expandable) {
@@ -61,14 +57,6 @@ export const DebugPrettyPrint = withDebugEnabled(
         </View>
       );
     }, [data, expandable, expanded]);
-
-    /**
-     * Copy a text to the device clipboard and give a feedback.
-     */
-    const clipboardSetStringWithFeedback = (text: string) => {
-      Clipboard.setString(text);
-      toast.success(t('clipboard.copyFeedback'));
-    };
 
     return (
       <View testID="DebugPrettyPrintTestID" style={styles.container}>

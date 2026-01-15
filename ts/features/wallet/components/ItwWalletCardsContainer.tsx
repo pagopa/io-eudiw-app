@@ -12,7 +12,6 @@ import {
 } from '../store/credentials';
 import WALLET_ROUTES from '../navigation/routes';
 import MAIN_ROUTES from '../../../navigation/main/routes';
-import { wellKnownCredential } from '../utils/credentials';
 import { MainNavigatorParamsList } from '../../../navigation/main/MainStackNavigator';
 import { ItwPidLifecycleAlert } from './ItwPidLifecycleAlert';
 import { ItwWalletReadyBanner } from './ItwWalletReadyBanner';
@@ -41,10 +40,7 @@ export const ItwWalletCardsContainer = () => {
 
   const handleNavigateToItwId = useCallback(() => {
     navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-      screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_DETAILS,
-      params: {
-        credentialType: wellKnownCredential.PID
-      }
+      screen: WALLET_ROUTES.PRESENTATION.PID_DETAIL
     });
   }, [navigation]);
 

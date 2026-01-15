@@ -18,11 +18,13 @@ import { resetLifecycle } from './lifecycle';
  */
 export type CredentialsState = {
   credentials: Array<StoredCredential>;
+  valuesHidden: boolean;
 };
 
 // Initial state for the credential slice
 const initialState: CredentialsState = {
-  credentials: []
+  credentials: [],
+  valuesHidden: false
 };
 
 /**
@@ -69,10 +71,14 @@ const credentialsSlice = createSlice({
         return {
           credentials: state.credentials.filter(
             c => c.credentialType !== credentialType
-          )
+          ),
+          valuesHidden: state.valuesHidden
         };
       }
       return state;
+    },
+    itwSetClaimValuesHidden: (state, action: PayloadAction<boolean>) => {
+      state.valuesHidden = action.payload;
     },
     resetCredentials: () => initialState
   },
@@ -112,6 +118,7 @@ export const {
   removeCredential,
   addCredentialWithIdentification,
   addPidWithIdentification,
+  itwSetClaimValuesHidden,
   resetCredentials
 } = credentialsSlice.actions;
 
@@ -165,3 +172,6 @@ export const selectWalletCards: (state: RootState) => Array<WalletCard> =
         credentialStatus: getCredentialStatus(cred)
       }))
   );
+
+export const itwIsClaimValueHiddenSelector = (state: RootState) =>
+  state.wallet.credentials.valuesHidden;

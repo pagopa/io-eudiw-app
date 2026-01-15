@@ -3,7 +3,7 @@ import {
   ListItemHeader,
   VStack
 } from '@pagopa/io-app-design-system';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -19,7 +19,6 @@ import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { selectCredentials } from '../../store/credentials';
 import {
   resetCredentialIssuance,
-  selectCredentialIssuancePreAuthStatus,
   selectRequestedCredential,
   setCredentialIssuancePreAuthRequest
 } from '../../store/credentialIssuance';
@@ -27,6 +26,7 @@ import { lifecycleIsOperationalSelector } from '../../store/lifecycle';
 import { setPendingCredential } from '../../store/pidIssuance';
 import MAIN_ROUTES from '../../../../navigation/main/routes';
 import WALLET_ROUTES from '../../navigation/routes';
+import { useCredentialIssuanceNavigationListeners } from '../../hooks/useCredentialIssuanceNavigationListeners';
 
 /**
  * The list of the obtainable credentias.
@@ -38,7 +38,6 @@ const CredentialsList = () => {
   const credentials = useAppSelector(selectCredentials);
   const dispatch = useAppDispatch();
   const requestedCredential = useAppSelector(selectRequestedCredential);
-  const preAuthStatus = useAppSelector(selectCredentialIssuancePreAuthStatus);
   const navigation = useNavigation();
 
   const goBack = useCallback(() => {
@@ -52,35 +51,12 @@ const CredentialsList = () => {
   const isCredentialRequested = (type: string) => requestedCredential === type;
 
   const shouldIssuePidFirst = useAppSelector(lifecycleIsOperationalSelector);
+  useCredentialIssuanceNavigationListeners();
 
   useHeaderSecondLevel({
     title: '',
     goBack
   });
-
-  /**
-   * If the pre auth request is successful, navigate to the trust screen
-   * where the user will be requested to confirm the presentation of the required credentials and claims
-   * to obtain the requested credential.
-   */
-  useEffect(() => {
-    if (preAuthStatus.success.status && !shouldIssuePidFirst) {
-      navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'CREDENTIAL_ISSUANCE_TRUST'
-      });
-    }
-  }, [preAuthStatus.success, navigation, shouldIssuePidFirst]);
-
-  /**
-   * If an error occurs during the pre auth request, navigate to the failure screen.
-   */
-  useEffect(() => {
-    if (preAuthStatus.error.status && !shouldIssuePidFirst) {
-      navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'CREDENTIAL_ISSUANCE_FAILURE'
-      });
-    }
-  }, [preAuthStatus.error, navigation, shouldIssuePidFirst]);
 
   return (
     <IOScrollViewWithLargeHeader

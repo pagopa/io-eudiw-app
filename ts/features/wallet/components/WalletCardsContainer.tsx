@@ -29,7 +29,6 @@ const WalletCardsContainer = () => {
   });
 
   // Content to render in the wallet screen, based on the current state
-  // TODO check if it's worth it to use the wallet skeleton
   const walletContent = useMemo(() => {
     if (shouldRenderItwActivationBanner) {
       return <WalletEmptyScreenContent />;
