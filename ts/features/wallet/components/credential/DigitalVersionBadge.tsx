@@ -152,7 +152,7 @@ const DigitalVersionBadge = ({
             zIndex: 20,
             ...makeFontStyleObject(
               12,
-              'TitilliumSansPro' /* TODO: Check if font preferences needed */,
+              'TitilliumSansPro' /* TODO: [WLEO-845] Check if font preferences needed */,
               16,
               'Semibold'
             )

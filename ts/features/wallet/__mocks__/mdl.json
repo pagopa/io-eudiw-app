@@ -57,14 +57,6 @@
         "en-US": "Issuing country"
       }
     },
-    "org.iso.18013.5.1:driving_privileges": {
-      "value_type": "string",
-      "value": "AM B",
-      "name": {
-        "it-IT": "Categoria",
-        "en-US": "Driving privileges"
-      }
-    },
     "org.iso.18013.5.1:expiry_date": {
       "value_type": "string",
       "value": "2035-02-16",
@@ -89,9 +81,9 @@
         "en-US": "Restriction condition"
       }
     },
-    "org.iso.18013.5.1:driving_privileges_details": {
+    "org.iso.18013.5.1:driving_privileges": {
       "value_type": "string",
-      "value": "[{\"driving_privilege\":\"AM\",\"issue_date\":\"1935-01-23\",\"expiry_date\":\"2035-02-16\",\"restrictions_conditions\":\"\"},{\"driving_privilege\":\"B\",\"issue_date\":\"1935-01-23\",\"expiry_date\":\"2035-02-16\",\"restrictions_conditions\":\"78\"}]",
+      "value": [{"vehicle_category_code":"AM","issue_date":"1935-01-23","expiry_date":"2035-02-16","restrictions_conditions":""},{"vehicle_category_code":"B","issue_date":"1935-01-23","expiry_date":"2035-02-16","restrictions_conditions":"78"}],
       "name": {
         "it-IT": "Dettagli patente",
         "en-US": "Driving privilege details"

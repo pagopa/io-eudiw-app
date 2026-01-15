@@ -248,13 +248,11 @@ const DcFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
         position={{ right: '3.5%', top: `${rows[3]}%` }}
         hidden={valuesHidden}
       />
-      {/* TODO: expiry_date missing from claims
-        <CardClaim
-          claim={getClaimDc("expiry_date",claims)}
-          position={{ right: "3.5%", top: `${rows[4]}%` }}
-          hidden={valuesHidden}
-        />
-        */}
+      <CardClaim
+        claim={getClaimDc('expiry_date', claims)}
+        position={{ right: '3.5%', top: `${rows[4]}%` }}
+        hidden={valuesHidden}
+      />
     </View>
   );
 };
