@@ -1,5 +1,5 @@
+/* eslint-disable functional/immutable-data */
 import {
-  Canvas,
   Rect,
   LinearGradient as SkiaLinearGradient,
   vec
@@ -14,36 +14,11 @@ import {
   useDerivedValue,
   useSharedValue
 } from 'react-native-reanimated';
-
-export const ITW_BRAND_GRADIENT = [
-  'rgba(220, 227, 252, 1)',
-  'rgba(25, 104, 240, 1)',
-  'rgba(255, 179, 87, 1)',
-  'rgba(205, 210, 252, 1)',
-  'rgba(25, 104, 240, 1)',
-  'rgba(255, 234, 189, 1)',
-  'rgba(255, 179, 87, 1)'
-];
-
-export const ITW_BRAND_GRADIENT_WARNING = [
-  'rgba(255, 179, 87, 1)',
-  'rgba(255, 234, 189, 1)',
-  'rgba(255, 179, 87, 1)',
-  'rgba(205, 210, 252, 1)',
-  'rgba(255, 179, 87, 1)',
-  'rgba(255, 234, 189, 1)',
-  'rgba(220, 227, 252, 1)'
-];
-
-export const ITW_BRAND_GRADIENT_ERROR = [
-  'rgba(255, 87, 87, 1)',
-  'rgba(255, 189, 189, 1)',
-  'rgba(255, 87, 87, 1)',
-  'rgba(252, 205, 205, 1)',
-  'rgba(255, 87, 87, 1)',
-  'rgba(255, 189, 189, 1)',
-  'rgba(220, 227, 252, 1)'
-];
+import {
+  ITW_BRAND_GRADIENT,
+  ITW_BRAND_GRADIENT_ERROR,
+  ITW_BRAND_GRADIENT_WARNING
+} from '../utils/theme';
 
 export type ItwSkiaBrandedGradientVariant = 'default' | 'warning' | 'error';
 
@@ -84,10 +59,8 @@ export const ItwBrandedSkiaGradient = ({
     () => rotationSensor.sensor.value,
     s => {
       if (initialRoll.value === 0) {
-        // eslint-disable-next-line functional/immutable-data
         initialRoll.value = s.roll;
       }
-      // eslint-disable-next-line functional/immutable-data
       currentRoll.value = s.roll;
     },
     []

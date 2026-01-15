@@ -39,4 +39,6 @@ export type StoredCredential = {
   //   expiration: string;
   //   issuedAt?: string;
   // };
+  expiration: string;
+  issuedAt?: string;
 };
