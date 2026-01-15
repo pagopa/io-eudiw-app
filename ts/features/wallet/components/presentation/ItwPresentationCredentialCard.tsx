@@ -18,6 +18,8 @@ import { ItwSkeumorphicCard } from '../credential/ItwSkeumorphicCard';
 import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import WALLET_ROUTES from '../../navigation/routes';
 import { ItwPresentationCredentialCardFlipButton } from './ItwPresentationCredentialCardFlipButton';
+import { useAppSelector } from '../../../../store';
+import { itwIsClaimValueHiddenSelector } from '../../store/credentials';
 
 type Props = {
   credential: StoredCredential;
@@ -38,8 +40,7 @@ const ItwPresentationCredentialCard = ({ credential }: Props) => {
     setIsFlipped(_ => !_);
   }, []);
 
-  // TODO : Check if it is needed to insert the preference/make it editable
-  // const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
+  const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
 
   const handleCardPress = () => {
     navigation.navigate(WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_MODAL, {
@@ -61,7 +62,7 @@ const ItwPresentationCredentialCard = ({ credential }: Props) => {
             credential={credential}
             isFlipped={isFlipped}
             status={status}
-            valuesHidden={false}
+            valuesHidden={valuesHidden}
             onPress={handleCardPress}
           />
         </FlipGestureDetector>

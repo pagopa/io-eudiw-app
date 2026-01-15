@@ -4,7 +4,7 @@ import {
   IconButton,
   useIOTheme
 } from '@pagopa/io-app-design-system';
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useMemo } from 'react';
 import { View } from 'react-native';
 import I18n from 'i18next';
 import { StoredCredential } from '../../utils/types';
@@ -14,6 +14,8 @@ import { WellKnownClaim } from '../../utils/itwClaimsUtils';
 import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
 import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
 import { ItwQrCodeClaimImage } from '../credential/ItwQrCodeClaimImage';
+import { useAppDispatch, useAppSelector } from '../../../../store';
+import { itwIsClaimValueHiddenSelector, itwSetClaimValuesHidden } from '../../store/credentials';
 
 type ItwPresentationClaimsSectionProps = {
   credential: StoredCredential;
@@ -33,11 +35,11 @@ export const ItwPresentationClaimsSection = ({
     exclude: [WellKnownClaim.unique_id, WellKnownClaim.content]
   });
 
-  // TODO : Local state or storage preference
-  const [valuesHidden, itwSetClaimValuesHidden] = useState(false);
+  const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector)
+  const dispatch = useAppDispatch()
 
   const handleToggleClaimVisibility = () => {
-    itwSetClaimValuesHidden(!valuesHidden);
+    dispatch(itwSetClaimValuesHidden(!valuesHidden));
   };
 
   const renderHideValuesToggle = () => (
