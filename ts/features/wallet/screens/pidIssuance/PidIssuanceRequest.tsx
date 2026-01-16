@@ -20,12 +20,12 @@ import {
 } from '../../store/pidIssuance';
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
-import { StoredCredential } from '../../utils/types';
 import { addPidWithIdentification } from '../../store/credentials';
 import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { StoredCredential } from '../../utils/itwTypesUtils';
 
 /**
  * Screen which starts and handles the PID issuance flow.

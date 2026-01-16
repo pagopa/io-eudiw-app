@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import { removeCredential } from '../../store/credentials';
-import { StoredCredential } from '../../utils/types';
 import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
 import {
   ProximityStatus,
@@ -26,6 +25,7 @@ import { PresentationProximityQrCode } from '../proximity/PresentationProximityQ
 import { useDebugInfo } from '../../../../hooks/useDebugInfo';
 import { wellKnownCredential } from '../../utils/credentials';
 import { resetLifecycle } from '../../store/lifecycle';
+import { StoredCredential } from '../../utils/itwTypesUtils';
 
 type PresentationDetailFooterProps = {
   credential: StoredCredential;

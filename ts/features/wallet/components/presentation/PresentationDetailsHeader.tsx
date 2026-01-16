@@ -6,7 +6,7 @@ import {
   getThemeColorByCredentialType
 } from '../../utils/style';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
-import { StoredCredential } from '../../utils/types';
+import { StoredCredential } from '../../utils/itwTypesUtils';
 import { PresentationCredentialCard } from './PresentationCredentialCard';
 
 type ItwPresentationDetailsHeaderProps = {

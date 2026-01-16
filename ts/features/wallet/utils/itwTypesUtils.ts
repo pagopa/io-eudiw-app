@@ -75,3 +75,29 @@ export type Only<T, U> = {
  * Creates a type that can be either T with none of the properties from U, or U with none of the properties from T
  */
 export type Either<T, U> = Only<T, U> | Only<U, T>;
+
+export type ParsedCredential = Awaited<
+  ReturnType<typeof Credential.Issuance.verifyAndParseCredential>
+>['parsedCredential'];
+
+/**
+ * Type for each claim to be displayed.
+ */
+export type ClaimDisplayFormat = {
+  id: string;
+  label: string;
+  value: unknown;
+};
+
+/**
+ * Type for a credential which is stored in the wallet.
+ */
+export type StoredCredential = {
+  parsedCredential: ParsedCredential;
+  credential: string;
+  keyTag: string;
+  credentialType: string;
+  format: 'vc+sd-jwt' | 'mso_mdoc' | 'dc+sd-jwt';
+  expiration: string;
+  issuedAt?: string;
+};

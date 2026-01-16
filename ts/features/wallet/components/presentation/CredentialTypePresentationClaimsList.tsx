@@ -12,8 +12,8 @@ import { useTranslation } from 'react-i18next';
 import { getCredentialNameByType } from '../../utils/credentials';
 import { getClaimsFullLocale } from '../../utils/locale';
 import { CredentialClaim } from '../credential/CredentialClaims';
-import { ParsedCredential } from '../../utils/types';
 import { ClaimsSelector } from '../../../../components/ClaimsSelector';
+import { ParsedCredential } from '../../utils/itwTypesUtils';
 
 /**
  * This is the type definition for the accepted fields that will be presented to the verifier app.

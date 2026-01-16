@@ -6,7 +6,7 @@ import { FlipGestureDetector } from '../credential/ItwSkeumorphicCard/FlipGestur
 import { ItwSkeumorphicCard } from '../credential/ItwSkeumorphicCard/index';
 import { wellKnownCredential } from '../../utils/credentials';
 import { CredentialCard } from '../credential/CredentialCard';
-import { StoredCredential } from '../../utils/types';
+import { StoredCredential } from '../../utils/itwTypesUtils';
 
 type Props = {
   credential: StoredCredential;

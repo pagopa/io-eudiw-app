@@ -8,9 +8,10 @@ import {
   DrivingPrivilegesType,
   VerificationEvidenceType
 } from '../../utils/claims';
-import { ClaimDisplayFormat } from '../../utils/types';
+
 import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
 import { getSafeText } from '../../../../utils/string';
+import { ClaimDisplayFormat } from '../../utils/itwTypesUtils';
 
 /**
  * Component which renders a generic text type claim.

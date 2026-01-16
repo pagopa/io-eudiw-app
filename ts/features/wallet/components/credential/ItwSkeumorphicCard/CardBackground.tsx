@@ -2,8 +2,8 @@ import { IOColors } from '@pagopa/io-app-design-system';
 import { memo } from 'react';
 import { ImageSourcePropType, StyleSheet, View } from 'react-native';
 import { AnimatedImage } from '../../../../../components/AnimatedImage';
-import { StoredCredential } from '../../../utils/types';
 import { wellKnownCredential } from '../../../utils/credentials';
+import { StoredCredential } from '../../../utils/itwTypesUtils';
 
 type CardBackgroundProps = {
   credentialType: StoredCredential['credentialType'];

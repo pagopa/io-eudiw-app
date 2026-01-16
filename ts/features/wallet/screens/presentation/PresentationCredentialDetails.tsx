@@ -4,12 +4,12 @@ import { useDebugInfo } from '../../../../hooks/useDebugInfo';
 import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import { useAppSelector } from '../../../../store';
 import { selectCredential } from '../../store/credentials';
-import { StoredCredential } from '../../utils/types';
 
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import { PresentationDetailsScreenBase } from '../../components/presentation/PresentationDetailsScreenBase';
 import { PresentationDetailsHeader } from '../../components/presentation/PresentationDetailsHeader';
 import { PresentationDetailsFooter } from '../../components/presentation/PresentationDetailsFooter';
+import { StoredCredential } from '../../utils/itwTypesUtils';
 import CredentialNotFound from './PresentationCredentialNotFound';
 
 export type PresentationCredentialDetailNavigationParams = {
