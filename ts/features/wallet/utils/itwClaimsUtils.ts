@@ -3,7 +3,7 @@
  */
 
 import { isValid } from 'date-fns';
-import { ParsedCredential } from './types';
+import { ParsedCredential } from './itwTypesUtils';
 
 /**
  *

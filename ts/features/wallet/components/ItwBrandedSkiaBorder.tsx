@@ -1,4 +1,5 @@
 import {
+  Canvas,
   ColorMatrix,
   Mask,
   OpacityMatrix,

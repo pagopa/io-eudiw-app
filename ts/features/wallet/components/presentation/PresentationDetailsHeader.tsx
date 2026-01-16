@@ -1,22 +1,29 @@
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Alert, VSpacer } from '@pagopa/io-app-design-system';
-import { StoredCredential } from '../../utils/types';
 import {
   getCredentialAlertPropsByCredentialType,
   getThemeColorByCredentialType
 } from '../../utils/style';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
+import {
+  ClaimDisplayFormat,
+  StoredCredential
+} from '../../utils/itwTypesUtils';
 import { PresentationCredentialCard } from './PresentationCredentialCard';
 
-type ItwPresentationDetailsHeaderProps = { credential: StoredCredential };
+type ItwPresentationDetailsHeaderProps = {
+  credential: StoredCredential;
+  claims: Array<ClaimDisplayFormat>;
+};
 
 /**
  * This component renders the header for the presentation details screen of a credential
  * If the credential needs to show the card, it will render the card, otherwise it will render the header with the title
  */
 const PresentationDetailsHeader = ({
-  credential
+  credential,
+  claims
 }: ItwPresentationDetailsHeaderProps) => {
   const { backgroundColor, statusBarStyle } = getThemeColorByCredentialType(
     credential.credentialType
@@ -32,7 +39,7 @@ const PresentationDetailsHeader = ({
         backgroundColor={backgroundColor}
         barStyle={statusBarStyle}
       />
-      <PresentationCredentialCard credential={credential} />
+      <PresentationCredentialCard credential={credential} claims={claims} />
       {alertProps && (
         <>
           <VSpacer size={24} />

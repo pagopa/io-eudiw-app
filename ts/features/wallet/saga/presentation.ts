@@ -20,8 +20,8 @@ import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
 } from '../../../saga/identification';
-import { ParsedCredential } from '../utils/types';
 import { CredentialTypePresentationClaimsListDescriptor } from '../components/presentation/CredentialTypePresentationClaimsList';
+import { ParsedCredential } from '../utils/itwTypesUtils';
 
 type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 type EvaluateDcqlReturn = Awaited<

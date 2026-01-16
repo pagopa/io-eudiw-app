@@ -5,8 +5,10 @@ import { View } from 'react-native';
 import I18n from 'i18next';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ItwJwtCredentialStatus } from '../utils/itwTypesUtils';
-import { StoredCredential } from '../utils/types';
+import {
+  ItwJwtCredentialStatus,
+  StoredCredential
+} from '../utils/itwTypesUtils';
 import { useAppSelector } from '../../../store';
 import {
   itwCredentialsPidSelector,

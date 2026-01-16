@@ -1,5 +1,5 @@
 import { ISO18013_5, CBOR } from '@pagopa/io-react-native-iso18013';
-import { ParsedCredential, StoredCredential } from './types';
+import { ParsedCredential, StoredCredential } from './itwTypesUtils';
 
 /**
  * Temporary helper function to convert from Base64URL to Base64

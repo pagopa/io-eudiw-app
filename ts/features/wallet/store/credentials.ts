@@ -2,12 +2,12 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
-import { StoredCredential } from '../utils/types';
 import { RootState } from '../../../store/types';
 import { preferencesReset } from '../../../store/reducers/preferences';
 import { wellKnownCredential } from '../utils/credentials';
 import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
+import { StoredCredential } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the credentials slice.

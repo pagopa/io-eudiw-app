@@ -9,8 +9,7 @@ import tsL3 from '../__mocks__/L3/tsL3.json';
 import mdl from '../__mocks__/mdl.json';
 import statusAssertion from '../__mocks__/statusAssertion.json';
 import ts from '../__mocks__/ts.json';
-import { ParsedStatusAssertion } from './itwTypesUtils';
-import { StoredCredential } from './types';
+import { ParsedStatusAssertion, StoredCredential } from './itwTypesUtils';
 
 export const ISSUER_MOCK_NAME = 'Istituto Poligrafico e Zecca dello Stato';
 

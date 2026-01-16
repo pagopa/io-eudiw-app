@@ -1,6 +1,7 @@
 import * as z from 'zod';
-import { ClaimDisplayFormat, ParsedCredential } from './types';
+
 import { getClaimsFullLocale } from './locale';
+import { ClaimDisplayFormat, ParsedCredential } from './itwTypesUtils';
 
 /**
  * Constants to represent the type of the claim.
@@ -276,3 +277,32 @@ export const parseClaims = (
       return { label: attributeName, value: attribute.value, id: key };
     });
 };
+
+export type ParsedClaimsRecord = Record<string, ClaimScheme | undefined>;
+
+export const parseClaim = (claim: unknown): ClaimScheme | undefined => {
+  const parsed = claimScheme.safeParse(claim);
+  return parsed.success ? parsed.data : undefined;
+};
+
+/**
+ * Converts the array of claims into a Record (Object)
+ * so we can access them via keys
+ */
+export const parseClaimsToRecord = (
+  claims: Array<ClaimDisplayFormat>
+): ParsedClaimsRecord =>
+  claims.reduce(
+    (acc, claim) => ({
+      ...acc,
+      [claim.id]: parseClaim(claim)
+    }),
+    {} as ParsedClaimsRecord
+  );
+export type SimpleDateFormat =
+  (typeof SimpleDateFormat)[keyof typeof SimpleDateFormat];
+
+export const SimpleDateFormat = {
+  DDMMYYYY: 'DD/MM/YYYY',
+  DDMMYY: 'DD/MM/YY'
+} as const;

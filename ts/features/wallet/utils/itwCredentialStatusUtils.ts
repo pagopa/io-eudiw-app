@@ -1,7 +1,6 @@
 import { differenceInCalendarDays } from 'date-fns';
 import { getCredentialExpireDate } from './itwClaimsUtils';
-import { ItwCredentialStatus } from './itwTypesUtils';
-import { StoredCredential } from './types';
+import { ItwCredentialStatus, StoredCredential } from './itwTypesUtils';
 
 const DEFAULT_EXPIRING_DAYS = 30;
 
