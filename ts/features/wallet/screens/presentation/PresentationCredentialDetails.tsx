@@ -10,6 +10,7 @@ import { PresentationDetailsScreenBase } from '../../components/presentation/Pre
 import { PresentationDetailsHeader } from '../../components/presentation/PresentationDetailsHeader';
 import { PresentationDetailsFooter } from '../../components/presentation/PresentationDetailsFooter';
 import { StoredCredential } from '../../utils/itwTypesUtils';
+import { parseClaims } from '../../utils/claims';
 import CredentialNotFound from './PresentationCredentialNotFound';
 
 export type PresentationCredentialDetailNavigationParams = {
@@ -48,12 +49,14 @@ const PresentationCredentialDetail = ({
 }: ItwPresentationCredentialDetailProps) => {
   useDebugInfo(credential);
 
+  const claims = parseClaims(credential.parsedCredential);
+
   return (
     <PresentationDetailsScreenBase credential={credential}>
-      <PresentationDetailsHeader credential={credential} />
+      <PresentationDetailsHeader credential={credential} claims={claims} />
       <VSpacer size={24} />
       <ContentWrapper>
-        <CredentialPreviewClaimsList data={credential} isPreview={false} />
+        <CredentialPreviewClaimsList claims={claims} isPreview={false} />
         <PresentationDetailsFooter credential={credential} />
       </ContentWrapper>
     </PresentationDetailsScreenBase>
