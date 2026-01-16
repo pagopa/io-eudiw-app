@@ -5,7 +5,6 @@ import { QrCodeImage } from '../../QrCodeImage';
 import {
   ClaimScheme,
   claimType,
-  parseClaims,
   parseClaimsToRecord
 } from '../../../utils/claims';
 import {
@@ -301,21 +300,25 @@ type CardDataProps = {
   credential: StoredCredential;
   side: CardSide;
   valuesHidden: boolean;
+  claims: Array<ClaimDisplayFormat>;
 };
 
-const CardData = ({ credential, side, valuesHidden }: CardDataProps) => {
+const CardData = ({
+  credential,
+  side,
+  valuesHidden,
+  claims
+}: CardDataProps) => {
   const componentMap = dataComponentMap[credential.credentialType];
   const DataComponent = componentMap?.[side];
   if (!DataComponent) {
     return null;
   }
 
-  const parsedClaims = parseClaims(credential.parsedCredential);
-
   return (
     <DataComponent
       key={`credential_data_${credential.credentialType}_${side}`}
-      claims={parsedClaims}
+      claims={claims}
       valuesHidden={valuesHidden}
     />
   );

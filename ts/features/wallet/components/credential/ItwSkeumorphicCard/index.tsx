@@ -21,6 +21,7 @@ import {
   ItwIridescentBorderVariant
 } from '../../ItwBrandedSkiaBorder';
 import {
+  ClaimDisplayFormat,
   ItwCredentialStatus,
   StoredCredential
 } from '../../../utils/itwTypesUtils';
@@ -34,6 +35,7 @@ export type ItwSkeumorphicCardProps = {
   valuesHidden: boolean;
   isFlipped?: boolean;
   onPress?: () => void;
+  claims: Array<ClaimDisplayFormat>;
 };
 
 export const ItwSkeumorphicCard = ({
@@ -41,7 +43,8 @@ export const ItwSkeumorphicCard = ({
   status,
   isFlipped = false,
   onPress,
-  valuesHidden
+  valuesHidden,
+  claims
 }: ItwSkeumorphicCardProps) => {
   const FrontSide = useMemo(
     () => (
@@ -51,13 +54,14 @@ export const ItwSkeumorphicCard = ({
           side="front"
         />
         <CardData
+          claims={claims}
           credential={credential}
           side="front"
           valuesHidden={valuesHidden}
         />
       </CardSideBase>
     ),
-    [credential, status, valuesHidden]
+    [credential, status, valuesHidden, claims]
   );
 
   const BackSide = useMemo(
@@ -68,13 +72,14 @@ export const ItwSkeumorphicCard = ({
           side="back"
         />
         <CardData
+          claims={claims}
           credential={credential}
           side="back"
           valuesHidden={valuesHidden}
         />
       </CardSideBase>
     ),
-    [credential, status, valuesHidden]
+    [credential, status, valuesHidden, claims]
   );
 
   const card = (

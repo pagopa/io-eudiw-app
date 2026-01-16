@@ -6,11 +6,15 @@ import {
   getThemeColorByCredentialType
 } from '../../utils/style';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+import {
+  ClaimDisplayFormat,
+  StoredCredential
+} from '../../utils/itwTypesUtils';
 import { PresentationCredentialCard } from './PresentationCredentialCard';
 
 type ItwPresentationDetailsHeaderProps = {
   credential: StoredCredential;
+  claims: Array<ClaimDisplayFormat>;
 };
 
 /**
@@ -18,7 +22,8 @@ type ItwPresentationDetailsHeaderProps = {
  * If the credential needs to show the card, it will render the card, otherwise it will render the header with the title
  */
 const PresentationDetailsHeader = ({
-  credential
+  credential,
+  claims
 }: ItwPresentationDetailsHeaderProps) => {
   const { backgroundColor, statusBarStyle } = getThemeColorByCredentialType(
     credential.credentialType
@@ -34,7 +39,7 @@ const PresentationDetailsHeader = ({
         backgroundColor={backgroundColor}
         barStyle={statusBarStyle}
       />
-      <PresentationCredentialCard credential={credential} />
+      <PresentationCredentialCard credential={credential} claims={claims} />
       {alertProps && (
         <>
           <VSpacer size={24} />

@@ -6,17 +6,21 @@ import { FlipGestureDetector } from '../credential/ItwSkeumorphicCard/FlipGestur
 import { ItwSkeumorphicCard } from '../credential/ItwSkeumorphicCard/index';
 import { wellKnownCredential } from '../../utils/credentials';
 import { CredentialCard } from '../credential/CredentialCard';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+import {
+  ClaimDisplayFormat,
+  StoredCredential
+} from '../../utils/itwTypesUtils';
 
 type Props = {
   credential: StoredCredential;
+  claims: Array<ClaimDisplayFormat>;
 };
 
 /**
  * This component renders the credential card in the presentation screen.
  * If the credential supports the skeumorphic card, it also renders it with the flip button.
  */
-const PresentationCredentialCard = ({ credential }: Props) => {
+const PresentationCredentialCard = ({ credential, claims }: Props) => {
   const { backgroundColor } = getThemeColorByCredentialType(
     credential.credentialType
   );
@@ -32,6 +36,7 @@ const PresentationCredentialCard = ({ credential }: Props) => {
       ) : (
         <FlipGestureDetector isFlipped={isFlipped} setIsFlipped={setIsFlipped}>
           <ItwSkeumorphicCard
+            claims={claims}
             credential={credential}
             isFlipped={isFlipped}
             status={'valid'}
