@@ -5,7 +5,8 @@ import { QrCodeImage } from '../../QrCodeImage';
 import {
   ClaimScheme,
   claimType,
-  parseClaimsToRecord
+  parseClaimsToRecord,
+  ParsedClaimsRecord
 } from '../../../utils/claims';
 import {
   ClaimDisplayFormat,
@@ -16,7 +17,7 @@ import { CardClaim, CardClaimContainer, CardClaimRenderer } from './CardClaim';
 import { ClaimLabel } from './ClaimLabel';
 
 type DataComponentProps = {
-  claims: Array<ClaimDisplayFormat>;
+  claims: ParsedClaimsRecord;
   valuesHidden: boolean;
 };
 
@@ -28,12 +29,11 @@ const MdlFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
     (_, i) => row + rowStep * i
   );
   const cols: ReadonlyArray<number> = [34, 57.5];
-  const parsedClaims = useMemo(() => parseClaimsToRecord(claims), [claims]);
 
   return (
     <View testID="mdlFrontDataTestID" style={styles.container}>
       <CardClaim
-        claim={parsedClaims.family_name}
+        claim={claims.family_name}
         position={{ left: '4%', top: '30%' }}
         dimensions={{
           width: '22.5%',
@@ -42,52 +42,52 @@ const MdlFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={parsedClaims.portrait}
+        claim={claims.portrait}
         position={{ left: `${cols[0]}%`, top: `${rows[0]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={parsedClaims.given_name}
+        claim={claims.given_name}
         position={{ left: `${cols[0]}%`, top: `${rows[1]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={parsedClaims.birth_date}
+        claim={claims.birth_date}
         position={{ left: `${cols[0]}%`, top: `${rows[2]}%` }}
         dateFormat={'DD/MM/YY'}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={parsedClaims.birth_place}
+        claim={claims.birth_place}
         position={{ left: `${cols[0] + 17}%`, top: `${rows[2]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={parsedClaims.issue_date}
+        claim={claims.issue_date}
         position={{ left: `${cols[0]}%`, top: `${rows[3]}%` }}
         fontWeight={'Bold'}
         dateFormat={'DD/MM/YYYY'}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={parsedClaims.issuing_authority}
+        claim={claims.issuing_authority}
         position={{ left: `${cols[1]}%`, top: `${rows[3]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={parsedClaims.expiry_date}
+        claim={claims.expiry_date}
         position={{ left: `${cols[0]}%`, top: `${rows[4]}%` }}
         fontWeight={'Bold'}
         dateFormat={'DD/MM/YYYY'}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={parsedClaims.document_number}
+        claim={claims.document_number}
         position={{ left: `${cols[0]}%`, top: `${rows[5]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={parsedClaims.driving_privileges}
+        claim={claims.driving_privileges}
         position={{ left: '8%', bottom: '17.9%' }}
         hidden={valuesHidden}
       />
@@ -123,10 +123,9 @@ const MdlBackData = ({ claims, valuesHidden }: DataComponentProps) => {
     }),
     {} as Record<string, number>
   );
-  const parsedClaims = useMemo(() => parseClaimsToRecord(claims), [claims]);
 
   const drivingPrivilegesClaim =
-    parsedClaims.driving_privileges ?? parsedClaims.driving_privileges_details;
+    claims.driving_privileges ?? claims.driving_privileges_details;
 
   const drivingPrivilegesOnly =
     drivingPrivilegesClaim?.type === claimType.drivingPrivileges
@@ -201,7 +200,7 @@ const MdlBackData = ({ claims, valuesHidden }: DataComponentProps) => {
       />
 
       <CardClaim
-        claim={parsedClaims.restrictions_conditions}
+        claim={claims.restrictions_conditions}
         position={{ left: '8%', bottom: '6.5%' }}
         fontSize={9}
         hidden={valuesHidden}
@@ -218,12 +217,11 @@ const DcFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
     { length: 5 },
     (_, i) => row + rowStep * i
   );
-  const parsedClaims = useMemo(() => parseClaimsToRecord(claims), [claims]);
 
   return (
     <View testID="dcFrontDataTestID" style={styles.container}>
       <CardClaim
-        claim={parsedClaims.portrait}
+        claim={claims.portrait}
         position={{ left: '2.55%', bottom: '1.%' }}
         dimensions={{
           width: '24.7%',
@@ -232,22 +230,22 @@ const DcFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={parsedClaims.given_name}
+        claim={claims.given_name}
         position={{ right: '3.5%', top: `${rows[0]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={parsedClaims.family_name}
+        claim={claims.family_name}
         position={{ right: '3.5%', top: `${rows[1]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={parsedClaims.birth_date}
+        claim={claims.birth_date}
         position={{ right: '3.5%', top: `${rows[2]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={parsedClaims.document_number}
+        claim={claims.document_number}
         position={{ right: '3.5%', top: `${rows[3]}%` }}
         hidden={valuesHidden}
       />
@@ -256,8 +254,7 @@ const DcFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
 };
 
 const DcBackData = ({ claims }: DataComponentProps) => {
-  const parsedClaims = useMemo(() => parseClaimsToRecord(claims), [claims]);
-  const qrCodeClaim = parsedClaims.link_qr_code;
+  const qrCodeClaim = claims.link_qr_code;
 
   const qrCodeStringClaim =
     qrCodeClaim?.type === claimType.string ? qrCodeClaim : undefined;
@@ -311,6 +308,7 @@ const CardData = ({
 }: CardDataProps) => {
   const componentMap = dataComponentMap[credential.credentialType];
   const DataComponent = componentMap?.[side];
+  const parsedClaims = useMemo(() => parseClaimsToRecord(claims), [claims]);
   if (!DataComponent) {
     return null;
   }
@@ -318,7 +316,7 @@ const CardData = ({
   return (
     <DataComponent
       key={`credential_data_${credential.credentialType}_${side}`}
-      claims={claims}
+      claims={parsedClaims}
       valuesHidden={valuesHidden}
     />
   );
