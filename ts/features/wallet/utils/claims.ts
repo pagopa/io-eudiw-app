@@ -280,7 +280,7 @@ export const parseClaims = (
 
 export type ParsedClaimsRecord = Record<string, ClaimScheme | undefined>;
 
-export const parseClaim = (claim: unknown): ClaimScheme | undefined => {
+export const parseSingleClaim = (claim: unknown): ClaimScheme | undefined => {
   const parsed = claimScheme.safeParse(claim);
   return parsed.success ? parsed.data : undefined;
 };
@@ -295,7 +295,7 @@ export const parseClaimsToRecord = (
   claims.reduce(
     (acc, claim) => ({
       ...acc,
-      [claim.id]: parseClaim(claim)
+      [claim.id]: parseSingleClaim(claim)
     }),
     {} as ParsedClaimsRecord
   );
