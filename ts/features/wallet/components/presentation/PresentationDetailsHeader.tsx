@@ -1,11 +1,7 @@
 import { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Alert, VSpacer } from '@pagopa/io-app-design-system';
+import { View } from 'react-native';
 import { StoredCredential } from '../../utils/types';
-import {
-  getCredentialAlertPropsByCredentialType,
-  getThemeColorByCredentialType
-} from '../../utils/style';
+import { getThemeColorByCredentialType } from '../../utils/style';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
 import { PresentationCredentialCard } from './PresentationCredentialCard';
 
@@ -22,10 +18,6 @@ const PresentationDetailsHeader = ({
     credential.credentialType
   );
 
-  const alertProps = getCredentialAlertPropsByCredentialType(
-    credential.credentialType
-  );
-
   return (
     <View>
       <FocusAwareStatusBar
@@ -33,23 +25,9 @@ const PresentationDetailsHeader = ({
         barStyle={statusBarStyle}
       />
       <PresentationCredentialCard credential={credential} />
-      {alertProps && (
-        <>
-          <VSpacer size={24} />
-          <View style={styles.alertContainer}>
-            <Alert {...alertProps} />
-          </View>
-        </>
-      )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  alertContainer: {
-    paddingHorizontal: 16
-  }
-});
 
 const MemoizedItwPresentationDetailsHeader = memo(PresentationDetailsHeader);
 
