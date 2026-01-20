@@ -200,11 +200,7 @@ const CredentialTypePresentationClaimsList = ({
                             <View style={styles.dataItemLeft}>
                               <CredentialClaim
                                 isPreview={true}
-                                claim={
-                                  value.parsed
-                                    ? value
-                                    : { ...value, parsed: undefined }
-                                }
+                                claim={value}
                                 reversed={true}
                               />
                             </View>
@@ -242,11 +238,7 @@ const CredentialTypePresentationClaimsList = ({
                               <View style={styles.dataItemLeft}>
                                 <CredentialClaim
                                   isPreview={true}
-                                  claim={
-                                    value.parsed
-                                      ? value
-                                      : { ...value, parsed: undefined }
-                                  }
+                                  claim={value}
                                   reversed={true}
                                 />
                               </View>
