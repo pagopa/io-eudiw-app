@@ -1,17 +1,13 @@
-import { ElementType, Fragment, memo, useMemo } from 'react';
+import { ElementType, Fragment, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { wellKnownCredential } from '../../../utils/credentials';
 import { QrCodeImage } from '../../QrCodeImage';
 import {
   ClaimScheme,
   claimType,
-  parseClaimsToRecord,
   ParsedClaimsRecord
 } from '../../../utils/claims';
-import {
-  ClaimDisplayFormat,
-  StoredCredential
-} from '../../../utils/itwTypesUtils';
+import { StoredCredential } from '../../../utils/itwTypesUtils';
 import { CardSide } from './CardBackground';
 import { CardClaim, CardClaimContainer, CardClaimRenderer } from './CardClaim';
 import { ClaimLabel } from './ClaimLabel';
@@ -125,7 +121,8 @@ const MdlBackData = ({ claims, valuesHidden }: DataComponentProps) => {
   );
 
   const drivingPrivilegesClaim =
-    claims.driving_privileges ?? claims.driving_privileges_details;
+    claims.driving_privileges.parsed ??
+    claims.driving_privileges_details.parsed;
 
   const drivingPrivilegesOnly =
     drivingPrivilegesClaim?.type === claimType.drivingPrivileges
@@ -249,12 +246,17 @@ const DcFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
         position={{ right: '3.5%', top: `${rows[3]}%` }}
         hidden={valuesHidden}
       />
+      <CardClaim
+        claim={claims.expiry_date}
+        position={{ right: '3.5%', top: `${rows[4]}%` }}
+        hidden={valuesHidden}
+      />
     </View>
   );
 };
 
 const DcBackData = ({ claims }: DataComponentProps) => {
-  const qrCodeClaim = claims.link_qr_code;
+  const qrCodeClaim = claims.link_qr_code.parsed;
 
   const qrCodeStringClaim =
     qrCodeClaim?.type === claimType.string ? qrCodeClaim : undefined;
@@ -297,7 +299,7 @@ type CardDataProps = {
   credential: StoredCredential;
   side: CardSide;
   valuesHidden: boolean;
-  claims: Array<ClaimDisplayFormat>;
+  claims: ParsedClaimsRecord;
 };
 
 const CardData = ({
@@ -308,7 +310,6 @@ const CardData = ({
 }: CardDataProps) => {
   const componentMap = dataComponentMap[credential.credentialType];
   const DataComponent = componentMap?.[side];
-  const parsedClaims = useMemo(() => parseClaimsToRecord(claims), [claims]);
   if (!DataComponent) {
     return null;
   }
@@ -316,7 +317,7 @@ const CardData = ({
   return (
     <DataComponent
       key={`credential_data_${credential.credentialType}_${side}`}
-      claims={parsedClaims}
+      claims={claims}
       valuesHidden={valuesHidden}
     />
   );

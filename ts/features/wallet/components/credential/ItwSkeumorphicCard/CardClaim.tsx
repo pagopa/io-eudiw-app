@@ -11,8 +11,10 @@ import {
 import {
   ClaimScheme,
   claimType,
+  ParsedClaimsRecord,
   SimpleDateFormat
 } from '../../../utils/claims';
+import { UnknownClaimItem } from '../CredentialClaims';
 import { ClaimLabel, ClaimLabelProps } from './ClaimLabel';
 import { ClaimImage } from './ClaimImage';
 
@@ -35,7 +37,7 @@ export type ClaimDimensions = Prettify<
 
 export type CardClaimProps = Prettify<
   {
-    claim?: ClaimScheme;
+    claim?: ParsedClaimsRecord[string];
     position?: ClaimPosition;
     dimensions?: ClaimDimensions;
     dateFormat?: SimpleDateFormat;
@@ -54,45 +56,52 @@ const CardClaim = ({
       return null;
     }
 
-    switch (claim.type) {
-      case claimType.date:
-      case claimType.expireDate: {
-        const formattedDate = format(
-          claim.value,
-          dateFormat === 'DD/MM/YY' ? 'dd/MM/yy' : 'dd/MM/yyyy'
-        );
-        return <ClaimLabel {...labelProps}>{formattedDate}</ClaimLabel>;
+    if (claim.parsed !== undefined) {
+      switch (claim.parsed.type) {
+        case claimType.date:
+        case claimType.expireDate: {
+          const formattedDate = format(
+            claim.parsed.value,
+            dateFormat === 'DD/MM/YY' ? 'dd/MM/yy' : 'dd/MM/yyyy'
+          );
+          return <ClaimLabel {...labelProps}>{formattedDate}</ClaimLabel>;
+        }
+
+        case claimType.image:
+          return (
+            <ClaimImage
+              base64={claim.parsed.value}
+              blur={labelProps.hidden ? 7 : 0}
+            />
+          );
+
+        case claimType.drivingPrivileges: {
+          const privileges = claim.parsed.value
+            .map(p => p.vehicle_category_code)
+            .join(' ');
+          return <ClaimLabel {...labelProps}>{privileges}</ClaimLabel>;
+        }
+
+        case claimType.verificationEvidence:
+          return (
+            <ClaimLabel {...labelProps}>
+              {claim.parsed.value.organization_name}
+            </ClaimLabel>
+          );
+
+        case claimType.string:
+        case claimType.stringArray:
+        default:
+          return (
+            <ClaimLabel {...labelProps}>
+              {Array.isArray(claim.parsed.value)
+                ? claim.parsed.value.join(', ')
+                : String(claim.parsed.value)}
+            </ClaimLabel>
+          );
       }
-
-      case claimType.image:
-        return (
-          <ClaimImage base64={claim.value} blur={labelProps.hidden ? 7 : 0} />
-        );
-
-      case claimType.drivingPrivileges: {
-        const privileges = claim.value
-          .map(p => p.vehicle_category_code)
-          .join(' ');
-        return <ClaimLabel {...labelProps}>{privileges}</ClaimLabel>;
-      }
-
-      case claimType.verificationEvidence:
-        return (
-          <ClaimLabel {...labelProps}>
-            {claim.value.organization_name}
-          </ClaimLabel>
-        );
-
-      case claimType.string:
-      case claimType.stringArray:
-      default:
-        return (
-          <ClaimLabel {...labelProps}>
-            {Array.isArray(claim.value)
-              ? claim.value.join(', ')
-              : String(claim.value)}
-          </ClaimLabel>
-        );
+    } else {
+      return <UnknownClaimItem label={claim.label} reversed={false} />;
     }
   }, [claim, labelProps, dateFormat]);
 

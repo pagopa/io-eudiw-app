@@ -20,7 +20,7 @@ import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWal
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import { parseClaims } from '../../utils/claims';
+import { parseClaimsToRecord } from '../../utils/claims';
 
 export const CredentialPreview = () => {
   const credentialPostStatus = useAppSelector(
@@ -71,7 +71,7 @@ export const CredentialPreview = () => {
   }
 
   const credential = credentialPostStatus.success.data;
-  const parsedClaims = parseClaims(credential.parsedCredential);
+  const parsedClaims = parseClaimsToRecord(credential.parsedCredential);
 
   return (
     <ForceScrollDownView

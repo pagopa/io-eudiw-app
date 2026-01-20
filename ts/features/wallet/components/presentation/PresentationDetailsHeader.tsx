@@ -6,15 +6,13 @@ import {
   getThemeColorByCredentialType
 } from '../../utils/style';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
-import {
-  ClaimDisplayFormat,
-  StoredCredential
-} from '../../utils/itwTypesUtils';
+import { StoredCredential } from '../../utils/itwTypesUtils';
+import { ParsedClaimsRecord } from '../../utils/claims';
 import { PresentationCredentialCard } from './PresentationCredentialCard';
 
 type ItwPresentationDetailsHeaderProps = {
   credential: StoredCredential;
-  claims: Array<ClaimDisplayFormat>;
+  claims: ParsedClaimsRecord;
 };
 
 /**

@@ -26,7 +26,7 @@ import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { StoredCredential } from '../../utils/itwTypesUtils';
-import { parseClaims } from '../../utils/claims';
+import { parseClaimsToRecord } from '../../utils/claims';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -84,7 +84,7 @@ const PidIssuanceRequest = () => {
   });
 
   const PidPreview = ({ credential }: { credential: StoredCredential }) => {
-    const parsedClaims = parseClaims(credential.parsedCredential);
+    const parsedClaims = parseClaimsToRecord(credential.parsedCredential);
 
     return (
       <>

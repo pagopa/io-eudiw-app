@@ -6,14 +6,12 @@ import { FlipGestureDetector } from '../credential/ItwSkeumorphicCard/FlipGestur
 import { ItwSkeumorphicCard } from '../credential/ItwSkeumorphicCard/index';
 import { wellKnownCredential } from '../../utils/credentials';
 import { CredentialCard } from '../credential/CredentialCard';
-import {
-  ClaimDisplayFormat,
-  StoredCredential
-} from '../../utils/itwTypesUtils';
+import { StoredCredential } from '../../utils/itwTypesUtils';
+import { ParsedClaimsRecord } from '../../utils/claims';
 
 type Props = {
   credential: StoredCredential;
-  claims: Array<ClaimDisplayFormat>;
+  claims: ParsedClaimsRecord;
 };
 
 /**
