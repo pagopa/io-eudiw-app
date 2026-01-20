@@ -18,7 +18,6 @@ const credentialIconByType: Record<string, IOIcons> = {
   [wellKnownCredential.DRIVING_LICENSE]: 'car',
   [wellKnownCredential.PID]: 'fingerprint',
   [wellKnownCredential.HEALTHID]: 'healthCard',
-  [wellKnownCredential.FBK_BADGE]: 'categJobOffers',
   [wellKnownCredential.DISABILITY_CARD]: 'accessibility'
 };
 
