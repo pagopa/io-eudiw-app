@@ -13,7 +13,6 @@ export type CredentialCard = {
 
 type StyleProps = {
   cardBackgroundSource: ImageSourcePropType;
-  cardLogoSource?: ImageSourcePropType;
   titleColor: string;
   titleOpacity: number;
 };
@@ -62,9 +61,6 @@ export const CredentialCard = ({ credentialType }: CredentialCard) => {
           >
             {getCredentialNameByType(credentialType).toUpperCase()}
           </IOText>
-          {styleProps.cardLogoSource && (
-            <AnimatedImage source={styleProps.cardLogoSource} />
-          )}
         </HStack>
       </View>
     </View>
