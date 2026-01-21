@@ -134,22 +134,23 @@
       "subtitle": "Wait few seconds"
     },
     "trust": {
-      "title": "Allow your data to be read",
-      "subtitle": "They will be shared to access to services.",
-      "requiredClaims": "Required data",
-      "optionalClaims": "Optional data",
+    "title": "Dati richiesti",
+      "subtitle": "Saranno mostrati a **{{relyingParty}}** per accedere ai servizi richiesti.",
+      "requiredClaims": "Dati necessari",
+      "optionalClaims": "Dati facoltativi",
       "disclaimer": {
-        "0": "Your data is safe and will be processed only for the purposes described in the Privacy Policy.",
-        "1": "The data will be shared only for the time necessary to issue the credential."
-      }
+            "0": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
+            "1": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento."
+      },
+      "tos": "Premendo **Continua** dichiari di aver letto e compreso l'[Informativa Privacy]({{privacyUrl}})."
     },
     "success": {
-      "title": "Done!",
-      "subtitle": "Continue on the partner site"
+      "title": "Fatto!",
+      "subtitle": "Continua sul sito dell'ente"
     },
     "successWithRedirect": {
-      "title": "Done!",
-      "subtitle": "You will be redirected to the partner site"
+      "title": "Fatto!",
+      "subtitle": "Ora puoi continuare a usare i servizi sul sito dell'ente."
     },
     "bottomSheets": {
       "pidInfo": {

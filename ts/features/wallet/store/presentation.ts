@@ -12,6 +12,7 @@ import { RootState } from '../../../store/types';
 import { preferencesReset } from '../../../store/reducers/preferences';
 import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
 import { CredentialTypePresentationClaimsListDescriptor } from '../components/presentation/CredentialTypePresentationClaimsList';
+import { FederationEntity } from '../types';
 import { resetLifecycle } from './lifecycle';
 
 /**
@@ -38,12 +39,14 @@ export type OptionalClaims = Descriptor[0]['optionalDisclosures']; // The option
 export type PresentationState = {
   preDefinition: AsyncStatusValues<Descriptor>;
   postDefinition: AsyncStatusValues<AuthResponse>;
+  relyingPartyData?: FederationEntity | null;
 };
 
 // Initial state for the presentation slice
 const initialState: PresentationState = {
   preDefinition: setInitial(),
-  postDefinition: setInitial()
+  postDefinition: setInitial(),
+  relyingPartyData: null
 };
 
 /**
@@ -67,6 +70,9 @@ export const presentationSlice = createSlice({
     },
     setPreDefinitionSuccess: (state, action: PayloadAction<Descriptor>) => {
       state.preDefinition = setSuccess(action.payload);
+    },
+    setRelyingPartyData: (state, action: PayloadAction<FederationEntity>) => {
+      state.relyingPartyData = action.payload;
     },
     resetPreDefinition: state => {
       state.preDefinition = setInitial();
@@ -119,6 +125,7 @@ export const {
   setPostDefinitionError,
   setPostDefinitionSuccess,
   setPostDefinitionRequestWithAuth,
+  setRelyingPartyData,
   resetPresentation
 } = presentationSlice.actions;
 
@@ -164,3 +171,11 @@ export const selectPostDefinitionResult = (state: RootState) =>
   state.wallet.presentation.postDefinition.success.status === true
     ? state.wallet.presentation.postDefinition.success.data
     : undefined;
+
+/**
+ * Selects the Relying Party data.
+ * @param state - The root state
+ * @returns the relying party data if present
+ */
+export const selectRelyingPartyData = (state: RootState) =>
+  state.wallet.presentation.relyingPartyData;

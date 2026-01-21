@@ -13,7 +13,8 @@ import {
   setPostDefinitionSuccess,
   setPreDefinitionError,
   setPreDefinitionRequest,
-  setPreDefinitionSuccess
+  setPreDefinitionSuccess,
+  setRelyingPartyData
 } from '../store/presentation';
 import { selectCredentials } from '../store/credentials';
 import {
@@ -100,6 +101,8 @@ function* handlePresentationPreDefinition(
       Credential.Presentation.evaluateRelyingPartyTrust,
       qrParameters.client_id
     );
+
+    yield* put(setRelyingPartyData(rpConf.federation_entity));
 
     const { requestObject } = yield* call(
       Credential.Presentation.verifyRequestObject,
