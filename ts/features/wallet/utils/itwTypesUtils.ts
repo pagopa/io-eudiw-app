@@ -81,15 +81,6 @@ export type ParsedCredential = Awaited<
 >['parsedCredential'];
 
 /**
- * Type for each claim to be displayed.
- */
-export type ClaimDisplayFormat = {
-  id: string;
-  label: string;
-  value: unknown;
-};
-
-/**
  * Type for a credential which is stored in the wallet.
  */
 export type StoredCredential = {

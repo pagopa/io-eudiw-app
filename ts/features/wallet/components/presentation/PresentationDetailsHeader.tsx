@@ -1,20 +1,14 @@
 import { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Alert, VSpacer } from '@pagopa/io-app-design-system';
-import {
-  getCredentialAlertPropsByCredentialType,
-  getThemeColorByCredentialType
-} from '../../utils/style';
+import { View } from 'react-native';
+import { getThemeColorByCredentialType } from '../../utils/style';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
-import {
-  ClaimDisplayFormat,
-  StoredCredential
-} from '../../utils/itwTypesUtils';
+import { StoredCredential } from '../../utils/itwTypesUtils';
+import { ParsedClaimsRecord } from '../../utils/claims';
 import { PresentationCredentialCard } from './PresentationCredentialCard';
 
 type ItwPresentationDetailsHeaderProps = {
   credential: StoredCredential;
-  claims: Array<ClaimDisplayFormat>;
+  claims: ParsedClaimsRecord;
 };
 
 /**
@@ -29,10 +23,6 @@ const PresentationDetailsHeader = ({
     credential.credentialType
   );
 
-  const alertProps = getCredentialAlertPropsByCredentialType(
-    credential.credentialType
-  );
-
   return (
     <View>
       <FocusAwareStatusBar
@@ -40,23 +30,9 @@ const PresentationDetailsHeader = ({
         barStyle={statusBarStyle}
       />
       <PresentationCredentialCard credential={credential} claims={claims} />
-      {alertProps && (
-        <>
-          <VSpacer size={24} />
-          <View style={styles.alertContainer}>
-            <Alert {...alertProps} />
-          </View>
-        </>
-      )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  alertContainer: {
-    paddingHorizontal: 16
-  }
-});
 
 const MemoizedItwPresentationDetailsHeader = memo(PresentationDetailsHeader);
 

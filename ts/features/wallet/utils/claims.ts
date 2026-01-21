@@ -1,7 +1,7 @@
 import * as z from 'zod';
 
 import { getClaimsFullLocale } from './locale';
-import { ClaimDisplayFormat, ParsedCredential } from './itwTypesUtils';
+import { ParsedCredential } from './itwTypesUtils';
 
 /**
  * Constants to represent the type of the claim.
@@ -22,7 +22,6 @@ export const claimType = {
  */
 const baseClaimSchema = z.object({
   id: z.string(),
-  label: z.string(),
   value: z.unknown()
 });
 
@@ -137,7 +136,6 @@ export const base64ImageSchema = z
         return split[split.length - 1];
       })
       .pipe(z.enum(['portrait', 'signature_usual_mark'])),
-    label: z.string(),
     value: z.string()
   })
   .transform(obj => obj.value)
@@ -214,7 +212,6 @@ export type Base64ImageScheme = z.infer<typeof base64ImageSchema>;
 export const dateThatCanExpireSchema = z
   .object({
     id: z.enum(['expiry_date']),
-    label: z.string(),
     value: z.string()
   })
   .transform(obj => obj.value)
@@ -250,55 +247,47 @@ export const claimScheme = z.union([
 
 export type ClaimScheme = z.infer<typeof claimScheme>;
 
+export type ParsedClaimsRecord = Record<
+  string,
+  { label: string; parsed: ClaimScheme | undefined }
+>;
 /**
- * Parses the claims from the credential.
- * For each Record entry it maps the key and the attribute value to a label and a value.
- * The label is taken from the attribute name which is either a string or a record of locale and string.
- * If the type of the attribute name is string then when take it's value because locales have not been set.
- * If the type of the attribute name is record then we take the value of the locale that matches the current locale.
- * If there's no locale that matches the current locale then we take the attribute key as the name.
- * The value is taken from the attribute value.
- * @param parsedCredential - the parsed credential.
- * @returns the array of {@link ClaimDisplayFormat} of the credential contained in its configuration schema.
- */
-export const parseClaims = (
-  parsedCredential: ParsedCredential,
-  options: { exclude?: Array<string> } = {}
-): Array<ClaimDisplayFormat> => {
-  const { exclude = [] } = options;
-  return Object.entries(parsedCredential)
-    .filter(([key]) => !exclude.includes(key))
-    .map(([key, attribute]) => {
-      const attributeName =
-        typeof attribute.name === 'string'
-          ? attribute.name
-          : attribute.name?.[getClaimsFullLocale()] || key;
-
-      return { label: attributeName, value: attribute.value, id: key };
-    });
-};
-
-export type ParsedClaimsRecord = Record<string, ClaimScheme | undefined>;
-
-export const parseSingleClaim = (claim: unknown): ClaimScheme | undefined => {
-  const parsed = claimScheme.safeParse(claim);
-  return parsed.success ? parsed.data : undefined;
-};
-
-/**
- * Converts the array of claims into a Record (Object)
- * so we can access them via keys
+ * Parses the credential claims and transforms them into an indexed record.
+ * For each entry in the credential, it maps the key and the attribute to a label and a processed value.
+ * * * The label is determined by the attribute name:
+ * - If the name is a string, it is used directly (locales not set).
+ * - If the name is a localization record, the translation matching the current locale is selected.
+ * - If no match is found for the locale, the attribute key is used as a fallback.
+ * * * The function also allows filtering specific claims through the `exclude` option.
+ * * @param parsedCredential - The source parsed credential.
+ * @param options - Configuration options, including a list of keys to exclude.
+ * @returns A {@link ParsedClaimsRecord} object containing the mapped and validated claims.
  */
 export const parseClaimsToRecord = (
-  claims: Array<ClaimDisplayFormat>
-): ParsedClaimsRecord =>
-  claims.reduce(
-    (acc, claim) => ({
-      ...acc,
-      [claim.id]: parseSingleClaim(claim)
-    }),
-    {} as ParsedClaimsRecord
+  parsedCredential: ParsedCredential,
+  options: { exclude?: Array<string> } = {}
+): ParsedClaimsRecord => {
+  const { exclude = [] } = options;
+  return Object.fromEntries(
+    Object.entries(parsedCredential)
+      .filter(([key]) => !exclude.includes(key))
+      .map(([key, attribute]) => {
+        const attributeName =
+          typeof attribute.name === 'string'
+            ? attribute.name
+            : attribute.name?.[getClaimsFullLocale()] || key;
+
+        return [
+          key,
+          {
+            label: attributeName,
+            parsed: claimScheme.parse({ value: attribute.value, id: key })
+          }
+        ];
+      })
   );
+};
+
 export type SimpleDateFormat =
   (typeof SimpleDateFormat)[keyof typeof SimpleDateFormat];
 

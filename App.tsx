@@ -7,6 +7,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {
   IODSExperimentalContextProvider,
+  IONewTypefaceContextProvider,
   IOThemeContextProvider,
   ToastProvider
 } from '@pagopa/io-app-design-system';
@@ -21,6 +22,7 @@ function App(): React.JSX.Element {
     <GestureHandlerRootView style={styles.gestureHandlerContainer}>
       <SafeAreaProvider>
         <IODSExperimentalContextProvider isExperimentaEnabled={true}>
+          <IONewTypefaceContextProvider>
           <IOThemeContextProvider theme={'light'}>
             <Provider store={store}>
               <PersistGate loading={null} persistor={persistor}>
@@ -33,6 +35,7 @@ function App(): React.JSX.Element {
               </PersistGate>
             </Provider>
           </IOThemeContextProvider>
+          </IONewTypefaceContextProvider>
         </IODSExperimentalContextProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

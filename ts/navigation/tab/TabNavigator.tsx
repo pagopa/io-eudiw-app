@@ -1,11 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { IOColors } from '@pagopa/io-app-design-system';
+import { IOColors, makeFontStyleObject } from '@pagopa/io-app-design-system';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { TabIconComponent } from '../../components/TabIconComponent';
 import WalletHome from '../../screens/WalletHome';
-import { useAppDispatch } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { setProximityStatusStarted } from '../../features/wallet/store/proximity';
+import { fontPreferenceSelector } from '../../store/reducers/preferences';
 import TAB_ROUTES from './routes';
 
 /**
@@ -29,6 +30,8 @@ export const TabNavigator = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
+  const typefacePreference = useAppSelector(fontPreferenceSelector);
+
   /**
    * Used to mock tab content. This will never be rendered.
    */
@@ -44,6 +47,14 @@ export const TabNavigator = () => {
     <>
       <Tab.Navigator
         screenOptions={{
+          tabBarLabelStyle: makeFontStyleObject(
+            11,
+            typefacePreference === 'comfortable'
+              ? 'Titillio'
+              : 'TitilliumSansPro',
+            14,
+            'Regular'
+          ),
           headerShown: false,
           tabBarHideOnKeyboard: true,
           tabBarAllowFontScaling: false,

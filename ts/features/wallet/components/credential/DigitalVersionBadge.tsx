@@ -22,6 +22,8 @@ import {
 } from 'react-native';
 import I18n from 'i18next';
 import { CardColorScheme } from '../../types';
+import { useAppSelector } from '../../../../store';
+import { fontPreferenceSelector } from '../../../../store/reducers/preferences';
 
 type DigitalVersionBadgeProps = {
   credentialType: string;
@@ -91,6 +93,7 @@ const DigitalVersionBadge = ({
   credentialType,
   colorScheme = 'default'
 }: DigitalVersionBadgeProps) => {
+  const typefacePreference = useAppSelector(fontPreferenceSelector);
   const [layout, setLayout] = useState<{
     width: number;
     height: number;
@@ -152,7 +155,9 @@ const DigitalVersionBadge = ({
             zIndex: 20,
             ...makeFontStyleObject(
               12,
-              'TitilliumSansPro' /* TODO: Check if font preferences needed */,
+              typefacePreference === 'comfortable'
+                ? 'Titillio'
+                : 'TitilliumSansPro',
               16,
               'Semibold'
             )

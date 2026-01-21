@@ -1,10 +1,10 @@
 import { Divider } from '@pagopa/io-app-design-system';
 import { View } from 'react-native';
-import { ClaimDisplayFormat } from '../../utils/itwTypesUtils';
+import { ParsedClaimsRecord } from '../../utils/claims';
 import { CredentialClaim } from './CredentialClaims';
 
 type CredentialClaimsListProps = {
-  claims: Array<ClaimDisplayFormat>;
+  claims: ParsedClaimsRecord;
   isPreview: boolean;
 };
 
@@ -19,10 +19,10 @@ const CredentialPreviewClaimsList = ({
   isPreview
 }: CredentialClaimsListProps) => (
   <>
-    {claims.map((elem, index) => (
+    {Object.values(claims).map((elem, index) => (
       <View key={index}>
         <CredentialClaim claim={elem} isPreview={isPreview} />
-        {index < claims.length - 1 && <Divider />}
+        {index < Object.values(claims).length - 1 && <Divider />}
       </View>
     ))}
   </>

@@ -21,10 +21,10 @@ import {
   ItwIridescentBorderVariant
 } from '../../ItwBrandedSkiaBorder';
 import {
-  ClaimDisplayFormat,
   ItwCredentialStatus,
   StoredCredential
 } from '../../../utils/itwTypesUtils';
+import { ParsedClaimsRecord } from '../../../utils/claims';
 import { CardBackground } from './CardBackground';
 import { CardData } from './CardData';
 import { FlippableCard } from './FlippableCard';
@@ -35,7 +35,7 @@ export type ItwSkeumorphicCardProps = {
   valuesHidden: boolean;
   isFlipped?: boolean;
   onPress?: () => void;
-  claims: Array<ClaimDisplayFormat>;
+  claims: ParsedClaimsRecord;
 };
 
 export const ItwSkeumorphicCard = ({
