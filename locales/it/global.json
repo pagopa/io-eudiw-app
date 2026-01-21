@@ -1,6 +1,6 @@
 {
   "generics": {
-    "waiting": "Wait few seconds",
+    "waiting": "Aspetta qualche secondo",
     "success": "Success",
     "error": {
       "title": "C'è un problema sui nostri sistemi",
@@ -47,12 +47,12 @@
     "start": "Inizia",
     "close": "Close",
     "delete": "Delete",
-    "continue": "Continue",
+    "continue": "Continua",
     "activate": "Activate",
     "notNow": "Not now",
     "back": "Back",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
+    "cancel": "Cancella",
+    "confirm": "Conferma",
     "help": "Help",
     "done": "Done",
     "show": "Show"

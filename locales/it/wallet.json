@@ -209,18 +209,19 @@
       "partOf": "Parte di"
     },
     "loading": {
-      "title": "We are doing some security checks",
-      "subtitle": "Wait few seconds"
+      "title": "Stiamo facendo dei controlli di sicurezza",
+      "subtitle": "Attendi qualche secondo"
     },
     "trust": {
-      "title": "Allow your data to be read",
-      "subtitle": "They will be shared to access to services.",
-      "requiredClaims": "Required data",
-      "optionalClaims": "Optional data",
+      "title": "Dati richiesti",
+      "subtitle": "Saranno mostrati a **Comune di Soleluna** per accedere ai servizi richiesti",
+      "requiredClaims": "Dati necessari",
+      "optionalClaims": "Dati facoltativi",
       "disclaimer": {
-        "0": "Your data is safe and will be processed only for the purposes described in the Privacy Policy.",
-        "1": "The data will be shared only for the time necessary to issue the credential."
-      }
+        "0": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
+        "1": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento"
+      },
+      "tos": "Premendo **Continua** dichiari di aver letto e compreso l'[Informativa Privacy]({{privacyUrl}})."
     },
     "success": {
       "title": "Done!",
@@ -383,8 +384,8 @@
       }
     },
     "list": {
-      "title": "What would you like to add to the Wallet?",
-      "header": "Documents"
+      "title": "Cosa vorresti aggiungere al Portafoglio?",
+      "header": "Documenti"
     },
     "trust": {
       "title": "{{credential}}: Required Data",
