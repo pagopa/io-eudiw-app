@@ -24,7 +24,7 @@ describe('CardData', () => {
           ItwStoredCredentialsMocks.mdl.parsedCredential
         )}
         side="front"
-        mode='vertical'
+        mode="vertical"
         valuesHidden={false}
       />
     );
