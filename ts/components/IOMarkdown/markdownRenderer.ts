@@ -1,4 +1,3 @@
-import { parse as textLintParse } from '@textlint/markdown-to-ast';
 import {
   AnyTxtNode,
   TxtHeaderNode,
@@ -9,6 +8,7 @@ import {
   TxtParentNode,
   TxtStrNode
 } from '@textlint/ast-node-types';
+import { parse as textLintParse } from '@textlint/markdown-to-ast';
 import { omit } from 'lodash';
 import { isIos } from '../../utils/device';
 import { AnyTxtNodeWithSpacer, IOMarkdownRenderRules, Renderer } from './types';
@@ -155,10 +155,8 @@ export const sanitizeMarkdownForImages = (
   const markdownImageRegex = /!\[.*?\]\((.*?)\)/g;
 
   const reversedMatches: Array<RegExpExecArray> = [];
-  // eslint-disable-next-line functional/no-let
   let match: RegExpExecArray | null;
   while ((match = markdownImageRegex.exec(inputMarkdownContent)) !== null) {
-    // eslint-disable-next-line functional/immutable-data
     reversedMatches.unshift(match);
   }
 
@@ -183,10 +181,7 @@ export const insertNewLinesIfNeededOnMatch = (
 ): string => {
   const matchStartIndex = imageMatch.index;
   const matchEndIndex = matchStartIndex + imageMatch[0].length;
-
-  // eslint-disable-next-line functional/no-let
   let endNewLineOccurrences = 0;
-  // eslint-disable-next-line functional/no-let
   let j = matchEndIndex;
   while (j < markdownContent.length) {
     const character = markdownContent[j];
@@ -205,9 +200,7 @@ export const insertNewLinesIfNeededOnMatch = (
     newLinesToAddToEnd +
     markdownContent.slice(matchEndIndex);
 
-  // eslint-disable-next-line functional/no-let
   let startNewLineOccurrences = 0;
-  // eslint-disable-next-line functional/no-let
   let i = Math.max(0, matchStartIndex - 1);
   while (i >= 0) {
     const character = intermediateMarkdownContent[i];
@@ -274,7 +267,6 @@ export const extractAllLinksFromNodeWithChildren = (
       extractLinkDataFromRootNode(node, composedLink);
       const text = composedLink.join('');
       const url = node.url;
-      // eslint-disable-next-line functional/immutable-data
       allLinks.push({
         text,
         url
@@ -291,7 +283,6 @@ export const extractLinkDataFromRootNode = (
 ): void =>
   inputNode.children.forEach(node => {
     if (isTxtStrNode(node)) {
-      // eslint-disable-next-line functional/immutable-data
       links.push(node.value);
     } else if (isTxtParentNode(node)) {
       extractLinkDataFromRootNode(node, links);

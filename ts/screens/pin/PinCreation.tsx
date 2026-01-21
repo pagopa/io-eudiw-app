@@ -1,4 +1,4 @@
-/* eslint-disable functional/immutable-data */
+/* eslint-disable  */
 import {
   ContentWrapper,
   FooterActions,
@@ -7,27 +7,27 @@ import {
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import { useCallback, useRef, useState } from 'react';
-import { View, Alert, StyleSheet } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
+import { useCallback, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Alert, StyleSheet, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { CarouselFlat } from '../../components/CarouselFlat';
+import usePinValidationBottomSheet from '../../features/onboarding/hooks/usePinValidationBottomSheet';
+import { OnboardingNavigatorParamsList } from '../../features/onboarding/navigation/OnboardingNavigator';
+import { PinString } from '../../features/onboarding/types/PinString';
+import { useHeaderSecondLevel } from '../../hooks/useHeaderSecondLevel';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { pinSet } from '../../store/reducers/pin';
 import { preferencesSetIsOnboardingDone } from '../../store/reducers/preferences';
-import { isValidPinNumber, PIN_LENGTH } from '../../utils/pin';
-import { PinString } from '../../features/onboarding/types/PinString';
-import { CarouselFlat } from '../../components/CarouselFlat';
-import { useHeaderSecondLevel } from '../../hooks/useHeaderSecondLevel';
-import { isDevEnv } from '../../utils/env';
 import {
   selectStartupBiometricState,
   selectStartupHasScreenLock
 } from '../../store/reducers/startup';
-import { OnboardingNavigatorParamsList } from '../../features/onboarding/navigation/OnboardingNavigator';
-import { useAppDispatch, useAppSelector } from '../../store';
-import usePinValidationBottomSheet from '../../features/onboarding/hooks/usePinValidationBottomSheet';
+import { isDevEnv } from '../../utils/env';
+import { isValidPinNumber, PIN_LENGTH } from '../../utils/pin';
 import { PinCarouselItem, PinCarouselItemProps } from './PinCarouselItem';
 
 const CREATION_INDEX = 0;

@@ -1,3 +1,4 @@
+import { generate } from '@pagopa/io-react-native-crypto';
 import {
   openAuthenticationSession,
   supportsInAppBrowser
@@ -6,32 +7,31 @@ import {
   createCryptoContextFor,
   Credential
 } from '@pagopa/io-react-native-wallet';
-import Config from 'react-native-config';
-import { call, put, select, takeLatest } from 'typed-redux-saga';
 import uuid from 'react-native-uuid';
-import { generate } from '@pagopa/io-react-native-crypto';
 import { serializeError } from 'serialize-error';
+import { call, put, select, takeLatest } from 'typed-redux-saga';
+import { getEnv } from '../../../../ts/config/env';
+import MAIN_ROUTES from '../../../navigation/main/routes';
+import { navigate, navigateWithReset } from '../../../navigation/utils';
+import {
+  IdentificationResultTask,
+  startSequentializedIdentificationProcess
+} from '../../../saga/identification';
+import { selectSessionId } from '../../../store/reducers/preferences';
 import { regenerateCryptoKey } from '../../../utils/crypto';
-import { DPOP_KEYTAG } from '../utils/crypto';
+import WALLET_ROUTES from '../navigation/routes';
+import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
+import { addCredential, addPidWithIdentification } from '../store/credentials';
+import { Lifecycle, setLifecycle } from '../store/lifecycle';
 import {
   selectPendingCredential,
   setPidIssuanceError,
   setPidIssuanceRequest,
   setPidIssuanceSuccess
 } from '../store/pidIssuance';
-import { Lifecycle, setLifecycle } from '../store/lifecycle';
-import { addCredential, addPidWithIdentification } from '../store/credentials';
 import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
-import {
-  IdentificationResultTask,
-  startSequentializedIdentificationProcess
-} from '../../../saga/identification';
+import { DPOP_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
-import { selectSessionId } from '../../../store/reducers/preferences';
-import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
-import { navigate, navigateWithReset } from '../../../navigation/utils';
-import MAIN_ROUTES from '../../../navigation/main/routes';
-import WALLET_ROUTES from '../navigation/routes';
 import { getAttestation } from './attestation';
 
 /**
@@ -49,7 +49,11 @@ export function* watchPidSaga() {
  */
 function* obtainPid() {
   try {
-    const { PID_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri } = Config;
+    const {
+      EXPO_PUBLIC_PID_PROVIDER_BASE_URL,
+      EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri,
+      EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl
+    } = getEnv();
 
     // Get the wallet instance attestation and generate its crypto context
     const walletInstanceAttestation = yield* call(getAttestation);
@@ -57,11 +61,9 @@ function* obtainPid() {
 
     // Start the issuance flow
     const startFlow: Credential.Issuance.StartFlow = () => ({
-      issuerUrl: PID_PROVIDER_BASE_URL,
+      issuerUrl: EXPO_PUBLIC_PID_PROVIDER_BASE_URL,
       credentialId: wellKnownCredentialConfigurationIDs.PID
     });
-
-    const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;
     const sessionId = yield* select(selectSessionId);
     const appFetch = createWalletProviderFetch(
       walletProviderBaseUrl,

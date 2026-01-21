@@ -7,7 +7,7 @@ import {
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import _ from 'lodash';
+import { t } from 'i18next';
 import { memo, useCallback, useMemo, useRef } from 'react';
 import {
   Alert,
@@ -20,25 +20,24 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { t } from 'i18next';
-import { useAppBackgroundAccentColorName } from '../hooks/theme';
-import {
-  biometricAuthenticationRequest,
-  getBiometryIconName
-} from '../store/utils/identification';
-import { useBiometricType } from '../hooks/useBiometricType';
 import { IdentificationNumberPad } from '../components/IdentificationNumberPad';
+import { useAppBackgroundAccentColorName } from '../hooks/theme';
+import { useBiometricType } from '../hooks/useBiometricType';
 import { useAppDispatch, useAppSelector } from '../store';
-import { selectPin } from '../store/reducers/pin';
 import {
   selectIdentificationStatus,
   setIdentificationIdentified,
   setIdentificationUnidentified
 } from '../store/reducers/identification';
+import { selectPin } from '../store/reducers/pin';
 import {
   preferencesReset,
   selectIsBiometricEnabled
 } from '../store/reducers/preferences';
+import {
+  biometricAuthenticationRequest,
+  getBiometryIconName
+} from '../store/utils/identification';
 import { isAndroid } from '../utils/device';
 
 const onRequestCloseHandler = () => undefined;
@@ -115,11 +114,9 @@ const IdentificationModal = () => {
   const onPinValidated = useCallback(
     (isValidated: boolean) => {
       if (isValidated) {
-        // eslint-disable-next-line functional/immutable-data
         showRetryText.current = false;
         onIdentificationSuccess();
       } else {
-        // eslint-disable-next-line functional/immutable-data
         showRetryText.current = true;
       }
     },

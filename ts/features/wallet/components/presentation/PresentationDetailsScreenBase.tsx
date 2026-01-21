@@ -11,8 +11,8 @@ import Animated, {
   useSharedValue
 } from 'react-native-reanimated';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { getHeaderPropsByCredentialType } from '../../utils/style';
 import { StoredCredential } from '../../utils/itwTypesUtils';
+import { getHeaderPropsByCredentialType } from '../../utils/style';
 
 export type CredentialCtaProps = Omit<ButtonSolidProps, 'fullWidth'>;
 
@@ -56,14 +56,14 @@ const PresentationDetailsScreenBase = ({
 
   const scrollHandler = useAnimatedScrollHandler(
     ({ contentOffset, layoutMeasurement, contentSize }) => {
-      // eslint-disable-next-line functional/immutable-data
+      // eslint-disable-next-line
       scrollTranslationY.value = contentOffset.y;
 
       const isEndReached =
         Math.floor(layoutMeasurement.height + contentOffset.y) >=
         Math.floor(contentSize.height);
 
-      // eslint-disable-next-line functional/immutable-data
+      // eslint-disable-next-line
       gradientOpacity.value = isEndReached ? 0 : 1;
     }
   );

@@ -97,7 +97,7 @@ QrCodeCameraScannerConfiguration): QrCodeCameraScanner => {
       // After a scan (even if not successful) the decoding is disabled for a while
       // to avoid multiple scans of the same barcode
       setIsResting(true);
-      // eslint-disable-next-line functional/immutable-data
+      // eslint-disable-next-line
       scannerReactivateTimeoutHandler.current = setTimeout(() => {
         setIsResting(false);
       }, QRCODE_SCANNER_REACTIVATION_TIME_MS);

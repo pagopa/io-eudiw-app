@@ -42,7 +42,7 @@ export const CardBackground = ({
   useEffect(() => {
     // Set loading ended only if we have an image and a size defined
     if (image && size.width > 0 && size.height > 0) {
-      // eslint-disable-next-line functional/immutable-data
+      // eslint-disable-next-line
       loadingOverlayOpacity.value = 0;
     }
   }, [image, loadingOverlayOpacity, size]);

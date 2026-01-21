@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-imports */
 import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   FLUSH,
   PAUSE,
@@ -9,18 +10,17 @@ import {
   REGISTER,
   REHYDRATE
 } from 'redux-persist';
-import { useDispatch, useSelector } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
-import reactotron from '../../ReactotronConfig';
-import rootSaga from '../saga';
 import walletReducer from '../features/wallet/store/index';
-import { AppDispatch, RootState } from './types';
-import { startupSlice } from './reducers/startup';
+import reactotron from '../config/reactotron';
+import rootSaga from '../saga';
+import { debugReducer } from './reducers/debug';
+import { deepLinkingReducer } from './reducers/deeplinking';
+import { identificationReducer } from './reducers/identification';
 import { pinReducer } from './reducers/pin';
 import { preferencesReducer } from './reducers/preferences';
-import { debugReducer } from './reducers/debug';
-import { identificationReducer } from './reducers/identification';
-import { deepLinkingReducer } from './reducers/deeplinking';
+import { startupSlice } from './reducers/startup';
+import { AppDispatch, RootState } from './types';
 
 // Create the saga middleware
 const sagaMiddleware = createSagaMiddleware();

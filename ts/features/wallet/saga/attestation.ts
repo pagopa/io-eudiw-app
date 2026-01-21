@@ -1,17 +1,17 @@
-import { call, put, select } from 'typed-redux-saga';
-import Config from 'react-native-config';
 import {
   createCryptoContextFor,
   WalletInstanceAttestation
 } from '@pagopa/io-react-native-wallet';
-import { regenerateCryptoKey } from '../../../utils/crypto';
-import { WIA_KEYTAG } from '../utils/crypto';
-import { getIntegrityContext } from '../utils/integrity';
-import { createWalletProviderFetch } from '../utils/fetch';
+import { call, put, select } from 'typed-redux-saga';
+import { getEnv } from '../../../../ts/config/env';
 import { selectSessionId } from '../../../store/reducers/preferences';
-import { selectInstanceKeyTag } from '../store/instance';
+import { regenerateCryptoKey } from '../../../utils/crypto';
 import { selectAttestation, setAttestation } from '../store/attestation';
+import { selectInstanceKeyTag } from '../store/instance';
 import { isWalletInstanceAttestationValid } from '../utils/attestation';
+import { WIA_KEYTAG } from '../utils/crypto';
+import { createWalletProviderFetch } from '../utils/fetch';
+import { getIntegrityContext } from '../utils/integrity';
 
 /**
  * Utility generator function to obtain a wallet attestation and set it in the store.
@@ -29,7 +29,8 @@ export function* getAttestation() {
     !isWalletInstanceAttestationValid(existingAttestation)
   ) {
     const sessionId = yield* select(selectSessionId);
-    const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;
+    const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
+      getEnv();
     const appFetch = createWalletProviderFetch(
       walletProviderBaseUrl,
       sessionId

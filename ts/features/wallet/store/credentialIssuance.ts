@@ -1,5 +1,6 @@
-/* eslint-disable functional/immutable-data */
+/* eslint-disable  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { preferencesReset } from '../../../store/reducers/preferences';
 import { RootState } from '../../../store/types';
 import {
   AsyncStatusValues,
@@ -8,7 +9,6 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import { preferencesReset } from '../../../store/reducers/preferences';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 

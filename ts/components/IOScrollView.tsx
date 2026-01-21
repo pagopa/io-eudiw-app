@@ -1,4 +1,4 @@
-/* eslint-disable functional/immutable-data */
+/* eslint-disable  */
 import {
   ButtonLink,
   ButtonOutline,
@@ -282,8 +282,8 @@ export const IOScrollView = ({
             paddingBottom: excludeEndContentMargin
               ? 0
               : actions
-              ? safeBottomAreaHeight
-              : bottomMargin + contentEndMargin,
+                ? safeBottomAreaHeight
+                : bottomMargin + contentEndMargin,
             paddingHorizontal: includeContentMargins
               ? IOVisualCostants.appMarginDefault
               : 0,

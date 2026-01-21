@@ -1,8 +1,7 @@
-/* eslint-disable functional/immutable-data */
+/* eslint-disable  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import _ from 'lodash';
-import { PersistConfig, persistReducer } from 'redux-persist';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PersistConfig, persistReducer } from 'redux-persist';
 
 import { RootState } from '../types';
 import { preferencesReset } from './preferences';

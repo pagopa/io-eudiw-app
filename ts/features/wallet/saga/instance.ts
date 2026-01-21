@@ -1,20 +1,20 @@
-import { call, put, race, select, take, takeLatest } from 'typed-redux-saga';
-import Config from 'react-native-config';
 import { WalletInstance } from '@pagopa/io-react-native-wallet';
 import { serializeError } from 'serialize-error';
-import {
-  generateIntegrityHardwareKeyTag,
-  getIntegrityContext
-} from '../utils/integrity';
+import { call, put, race, select, take, takeLatest } from 'typed-redux-saga';
+import { getEnv } from '../../../../ts/config/env';
 import { selectSessionId } from '../../../store/reducers/preferences';
 import { selectInstanceKeyTag, setInstanceKeyTag } from '../store/instance';
-import { createWalletProviderFetch } from '../utils/fetch';
 import {
   resetInstanceCreation,
   setInstanceCreationError,
   setInstanceCreationRequest,
   setInstanceCreationSuccess
 } from '../store/pidIssuance';
+import { createWalletProviderFetch } from '../utils/fetch';
+import {
+  generateIntegrityHardwareKeyTag,
+  getIntegrityContext
+} from '../utils/integrity';
 
 export function* watchInstanceSaga() {
   yield* takeLatest([setInstanceCreationRequest], function* (...args) {
@@ -35,7 +35,8 @@ export function* handleCreateInstance() {
     const instanceKeyTag = yield* select(selectInstanceKeyTag);
 
     if (!instanceKeyTag) {
-      const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;
+      const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
+        getEnv();
       const sessionId = yield* select(selectSessionId);
       const appFetch = createWalletProviderFetch(
         walletProviderBaseUrl,

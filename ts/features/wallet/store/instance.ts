@@ -1,9 +1,9 @@
-/* eslint-disable functional/immutable-data */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+/* eslint-disable  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
-import { RootState } from '../../../store/types';
 import { preferencesReset } from '../../../store/reducers/preferences';
+import { RootState } from '../../../store/types';
 import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the instance slice
