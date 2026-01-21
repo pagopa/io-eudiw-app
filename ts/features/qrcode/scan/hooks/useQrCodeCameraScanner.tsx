@@ -59,8 +59,7 @@ export const useQrCodeCameraScanner = ({
   onBarcodeError,
   isDisabled,
   isLoading = false
-}: // eslint-disable-next-line sonarjs/cognitive-complexity
-QrCodeCameraScannerConfiguration): QrCodeCameraScanner => {
+}: QrCodeCameraScannerConfiguration): QrCodeCameraScanner => {
   const device = useCameraDevice('back', {
     physicalDevices: ['wide-angle-camera']
   });
@@ -106,13 +105,7 @@ QrCodeCameraScannerConfiguration): QrCodeCameraScanner => {
         onBarcodeError();
       }
     },
-    [
-      isDisabled,
-      isResting,
-      isLoading,
-      onBarcodeSuccess,
-      onBarcodeError
-    ]
+    [isDisabled, isResting, isLoading, onBarcodeSuccess, onBarcodeError]
   );
 
   const codeScanner = useCodeScanner({
