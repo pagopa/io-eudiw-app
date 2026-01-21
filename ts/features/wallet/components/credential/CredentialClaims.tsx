@@ -4,11 +4,11 @@ import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 import {
-  claimScheme,
   DrivingPrivilegesType,
+  ParsedClaimsRecord,
   VerificationEvidenceType
 } from '../../utils/claims';
-import { ClaimDisplayFormat } from '../../utils/types';
+
 import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
 import { getSafeText } from '../../../../utils/string';
 
@@ -134,7 +134,7 @@ const DateClaimItem = ({
  * @param _claim - the claim value of unknown type. We are not interested in its value but it's needed for the exaustive type checking.
  * @param reversed - whether the claim label is displayed before the value or not
  */
-const UnknownClaimItem = ({
+export const UnknownClaimItem = ({
   label,
   reversed
 }: {
@@ -368,30 +368,29 @@ const CredentialClaim = ({
   isPreview,
   reversed = false
 }: {
-  claim: ClaimDisplayFormat;
+  claim: ParsedClaimsRecord[string];
   isPreview: boolean;
   reversed?: boolean;
 }) => {
-  const decoded = claimScheme.safeParse(claim);
   /**
    * It seems like there's no way to get the type in typescript after the safeParse method is called inside the if statement.
    * Thus type casting is required.
    */
-  if (decoded.success) {
-    switch (decoded.data.type) {
+  if (claim.parsed !== undefined) {
+    switch (claim.parsed.type) {
       case 'date':
         return (
           <DateClaimItem
             reversed={reversed}
             label={claim.label}
-            claim={decoded.data.value}
+            claim={claim.parsed.value}
           />
         );
       case 'expireDate':
         return (
           <DateClaimItem
             label={claim.label}
-            claim={decoded.data.value}
+            claim={claim.parsed.value}
             expires={!isPreview}
             reversed={reversed}
           />
@@ -399,7 +398,7 @@ const CredentialClaim = ({
       case 'drivingPrivileges':
         return (
           <>
-            {decoded.data.value.map((elem, index) => (
+            {claim.parsed.value.map((elem, index) => (
               <Fragment
                 key={`${index}_${claim.label}_${elem.vehicle_category_code}`}
               >
@@ -418,7 +417,7 @@ const CredentialClaim = ({
         return (
           <VerificationEvidenceClaimItem
             label={claim.label}
-            claim={decoded.data.value}
+            claim={claim.parsed.value}
             detailsButtonVisible={!isPreview}
             reversed={reversed}
           />
@@ -427,7 +426,7 @@ const CredentialClaim = ({
         return (
           <PlainTextClaimItem
             label={claim.label}
-            claim={decoded.data.value}
+            claim={claim.parsed.value}
             reversed={reversed}
           />
         );
@@ -435,7 +434,7 @@ const CredentialClaim = ({
         return (
           <StringArrayClaimItem
             label={claim.label}
-            claim={decoded.data.value}
+            claim={claim.parsed.value}
             reversed={reversed}
             detailsButtonVisible={!isPreview}
           />
@@ -444,9 +443,9 @@ const CredentialClaim = ({
         return (
           <ImageClaimItem
             label={claim.label}
-            uri={decoded.data.value}
-            width={decoded.data.width}
-            height={decoded.data.height}
+            uri={claim.parsed.value}
+            width={claim.parsed.width}
+            height={claim.parsed.height}
             reversed={reversed}
           />
         );

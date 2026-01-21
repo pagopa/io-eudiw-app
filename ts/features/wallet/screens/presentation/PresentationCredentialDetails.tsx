@@ -4,12 +4,13 @@ import { useDebugInfo } from '../../../../hooks/useDebugInfo';
 import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import { useAppSelector } from '../../../../store';
 import { selectCredential } from '../../store/credentials';
-import { StoredCredential } from '../../utils/types';
 
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import { PresentationDetailsScreenBase } from '../../components/presentation/PresentationDetailsScreenBase';
 import { PresentationDetailsHeader } from '../../components/presentation/PresentationDetailsHeader';
 import { PresentationDetailsFooter } from '../../components/presentation/PresentationDetailsFooter';
+import { StoredCredential } from '../../utils/itwTypesUtils';
+import { parseClaimsToRecord } from '../../utils/claims';
 import CredentialNotFound from './PresentationCredentialNotFound';
 
 export type PresentationCredentialDetailNavigationParams = {
@@ -48,12 +49,14 @@ const PresentationCredentialDetail = ({
 }: ItwPresentationCredentialDetailProps) => {
   useDebugInfo(credential);
 
+  const claims = parseClaimsToRecord(credential.parsedCredential);
+
   return (
     <PresentationDetailsScreenBase credential={credential}>
-      <PresentationDetailsHeader credential={credential} />
+      <PresentationDetailsHeader credential={credential} claims={claims} />
       <VSpacer size={24} />
       <ContentWrapper>
-        <CredentialPreviewClaimsList data={credential} isPreview={false} />
+        <CredentialPreviewClaimsList claims={claims} isPreview={false} />
         <PresentationDetailsFooter credential={credential} />
       </ContentWrapper>
     </PresentationDetailsScreenBase>

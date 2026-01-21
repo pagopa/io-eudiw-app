@@ -10,9 +10,9 @@ import Animated, {
   useAnimatedScrollHandler,
   useSharedValue
 } from 'react-native-reanimated';
-import { StoredCredential } from '../../utils/types';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { getHeaderPropsByCredentialType } from '../../utils/style';
+import { StoredCredential } from '../../utils/itwTypesUtils';
 
 export type CredentialCtaProps = Omit<ButtonSolidProps, 'fullWidth'>;
 
