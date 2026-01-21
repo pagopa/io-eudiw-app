@@ -10,7 +10,6 @@ import {
   useCodeScanner
 } from 'react-native-vision-camera';
 
-import { usePrevious } from '../../../../hooks/usePrevious';
 import { AnimatedCameraMarker } from '../components/AnimatedCameraMarker';
 import { OnBarcodeSuccess, OnBardCodeError } from '../screens/QrCodeScanScreen';
 
@@ -62,7 +61,6 @@ export const useQrCodeCameraScanner = ({
   isLoading = false
 }: // eslint-disable-next-line sonarjs/cognitive-complexity
 QrCodeCameraScannerConfiguration): QrCodeCameraScanner => {
-  const prevDisabled = usePrevious(isDisabled);
   const device = useCameraDevice('back', {
     physicalDevices: ['wide-angle-camera']
   });
@@ -86,11 +84,7 @@ QrCodeCameraScannerConfiguration): QrCodeCameraScanner => {
       // in which the latest frame would be scanned
       // multiple times due to races conditions during
       // the camera disactivation.
-      if (prevDisabled || isDisabled) {
-        return;
-      }
-
-      if (isResting || isLoading) {
+      if (isResting || isLoading || isDisabled) {
         // Barcode scanner is momentarily disabled, skip
         return;
       }
@@ -113,7 +107,6 @@ QrCodeCameraScannerConfiguration): QrCodeCameraScanner => {
       }
     },
     [
-      prevDisabled,
       isDisabled,
       isResting,
       isLoading,
