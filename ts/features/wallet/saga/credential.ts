@@ -43,7 +43,7 @@ import {
 import { createWalletProviderFetch } from '../utils/fetch';
 import { selectSessionId } from '../../../store/reducers/preferences';
 import { wellKnownCredential } from '../utils/credentials';
-import { StoredCredential } from '../utils/types';
+import { StoredCredential } from '../utils/itwTypesUtils';
 import { getAttestation } from './attestation';
 
 /**

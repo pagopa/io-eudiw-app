@@ -1,27 +1,48 @@
 import { IOSpacingScale } from '@pagopa/io-app-design-system';
-
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { StoredCredential } from '../../utils/types';
 import { getThemeColorByCredentialType } from '../../utils/style';
+import { FlipGestureDetector } from '../credential/ItwSkeumorphicCard/FlipGestureDetector';
+import { ItwSkeumorphicCard } from '../credential/ItwSkeumorphicCard/index';
+import { wellKnownCredential } from '../../utils/credentials';
 import { CredentialCard } from '../credential/CredentialCard';
+import { StoredCredential } from '../../utils/itwTypesUtils';
+import { ParsedClaimsRecord } from '../../utils/claims';
 
 type Props = {
   credential: StoredCredential;
+  claims: ParsedClaimsRecord;
 };
 
 /**
  * This component renders the credential card in the presentation screen.
  * If the credential supports the skeumorphic card, it also renders it with the flip button.
  */
-const PresentationCredentialCard = ({ credential }: Props) => {
+const PresentationCredentialCard = ({ credential, claims }: Props) => {
   const { backgroundColor } = getThemeColorByCredentialType(
     credential.credentialType
   );
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const disabilityCard =
+    credential.credentialType === wellKnownCredential.DISABILITY_CARD;
 
   return (
     <CardContainer backgroundColor={backgroundColor}>
-      <CredentialCard credentialType={credential.credentialType} />
+      {!disabilityCard ? (
+        <CredentialCard credentialType={credential.credentialType} />
+      ) : (
+        <FlipGestureDetector isFlipped={isFlipped} setIsFlipped={setIsFlipped}>
+          <ItwSkeumorphicCard
+            claims={claims}
+            credential={credential}
+            isFlipped={isFlipped}
+            status={'valid'}
+            valuesHidden={false}
+            onPress={() => setIsFlipped(!isFlipped)}
+          />
+        </FlipGestureDetector>
+      )}
     </CardContainer>
   );
 };
