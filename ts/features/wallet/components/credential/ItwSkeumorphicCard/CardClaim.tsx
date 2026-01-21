@@ -1,19 +1,22 @@
 import { WithTestID } from '@pagopa/io-app-design-system';
-
-import { memo, ReactElement, ReactNode, useMemo } from 'react';
+import { JSX, memo, ReactNode, useMemo } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import z from 'zod';
-import { Either, Prettify } from '../../../../../types/utils';
-import { ClaimDisplayFormat } from '../../../utils/types';
-import { SimpleDateFormat } from '../../../utils/itwClaimsUtils';
-import { claimScheme } from '../../../utils/claims';
-import { format } from '../../../utils/dates';
-import { ClaimImage } from './ClaimImage';
+import { format } from 'date-fns';
+
+import {
+  Either,
+  PercentPosition,
+  Prettify
+} from '../../../utils/itwTypesUtils';
+import {
+  ClaimScheme,
+  claimType,
+  ParsedClaimsRecord,
+  SimpleDateFormat
+} from '../../../utils/claims';
 import { ClaimLabel, ClaimLabelProps } from './ClaimLabel';
+import { ClaimImage } from './ClaimImage';
 
-export type PercentPosition = `${number}%`;
-
-// Defines the claim horizontal position using the left OR the right absolute position value
 type HorizontalClaimPosition = Either<
   { left: PercentPosition },
   { right: PercentPosition }
@@ -36,7 +39,7 @@ export type CardClaimProps = Prettify<
   {
     // A claim that will be used to render its component
     // Since we are passing this value by accessing the claims object by key, the value could be undefined
-    claim?: ClaimDisplayFormat;
+    claim?: ParsedClaimsRecord[string];
     // Absolute position expressed in percentages from top-left corner
     position?: ClaimPosition;
     // Claim dimensions
@@ -59,43 +62,57 @@ const CardClaim = ({
   ...labelProps
 }: WithTestID<CardClaimProps>) => {
   const claimContent = useMemo(() => {
-    const parsing = claimScheme.safeParse(claim);
+    if (!claim) {
+      return null;
+    }
 
-    if (parsing.success) {
-      const parsed = parsing.data;
-      switch (parsed.type) {
-        case 'string':
-          return <ClaimLabel {...labelProps}>{parsed.value}</ClaimLabel>;
-        case 'date':
-        case 'expireDate':
-          const formattedDate = format(parsed.value, dateFormat);
+    if (claim.parsed !== undefined) {
+      switch (claim.parsed.type) {
+        case claimType.date:
+        case claimType.expireDate: {
+          const formattedDate = format(
+            claim.parsed.value,
+            dateFormat === 'DD/MM/YY' ? 'dd/MM/yy' : 'dd/MM/yyyy'
+          );
           return <ClaimLabel {...labelProps}>{formattedDate}</ClaimLabel>;
-        case 'image':
+        }
+
+        case claimType.image:
           return (
             <ClaimImage
-              base64={parsed.value}
+              base64={claim.parsed.value}
               blur={labelProps.hidden ? 7 : 0}
             />
           );
-        case 'drivingPrivileges':
-          const privileges = parsed.value
+
+        case claimType.drivingPrivileges: {
+          const privileges = claim.parsed.value
             .map(p => p.vehicle_category_code)
             .join(' ');
           return <ClaimLabel {...labelProps}>{privileges}</ClaimLabel>;
-        case 'placeOfBirth':
+        }
+
+        case claimType.verificationEvidence:
           return (
-            <ClaimLabel {...labelProps}>{parsed.value.locality}</ClaimLabel>
+            <ClaimLabel {...labelProps}>
+              {claim.parsed.value.organization_name}
+            </ClaimLabel>
           );
+
+        case claimType.string:
+        case claimType.stringArray:
         default:
           return (
             <ClaimLabel {...labelProps}>
-              {JSON.stringify(parsed.value)}
+              {Array.isArray(claim.parsed.value)
+                ? claim.parsed.value.join(', ')
+                : String(claim.parsed.value)}
             </ClaimLabel>
           );
       }
+    } else {
+      return null;
     }
-
-    return null;
   }, [claim, labelProps, dateFormat]);
 
   if (!claimContent) {
@@ -113,60 +130,48 @@ const CardClaim = ({
   );
 };
 
-export type CardClaimRendererProps<T> = {
-  // A claim that will be used to render a component
-  // Since we are passing this value by accessing the claims object by key, the value could be undefined
-  claim?: ClaimDisplayFormat;
-  // Function that check that the proviced claim is of the correct type
-  parser: z.ZodType<T, z.ZodTypeDef, any>;
-  // Function that renders a component with the decoded provided claim
-  component: (decoded: T) => ReactElement | Iterable<ReactElement>;
-};
-
-/**
- * Allows to render a claim if it satisfies the provided `is` function
- * @returns The component from the props if value if correctly decoded, otherwise it returns null
- */
-const CardClaimRenderer = <T,>({
-  claim,
-  parser,
-  component
-}: CardClaimRendererProps<T>) => {
-  const parsing = parser.safeParse(claim);
-  if (parsing.success) {
-    return component(parsing.data);
-  }
-
-  return null;
-};
-
-// O.filter(is), O.fold(constNull, component)
-
-export type CardClaimContainerProps = WithTestID<{
-  position?: ClaimPosition;
-  dimensions?: ClaimDimensions;
-  children?: ReactNode;
-}>;
-
-/**
- * Component that allows to position a claim using "left" and "top" absolute values
- */
-const CardClaimContainer = ({
-  position,
-  dimensions,
-  children,
-  testID
-}: CardClaimContainerProps) => (
-  <View testID={testID} style={[styles.container, position, dimensions]}>
-    {children}
-  </View>
-);
-
 const styles = StyleSheet.create({
   container: {
     position: 'absolute'
   }
 });
+
+type CardClaimRendererProps<T extends ClaimScheme> = {
+  claim?: T;
+  type: T['type'];
+  component: (claim: T) => JSX.Element;
+};
+
+const CardClaimRenderer = <T extends ClaimScheme>({
+  claim,
+  type,
+  component
+}: CardClaimRendererProps<T>) => {
+  if (!claim || claim.type !== type) {
+    return null;
+  }
+
+  return component(claim);
+};
+
+export type CardClaimContainerProps = WithTestID<{
+  position?: ClaimPosition;
+  dimensions?: ClaimDimensions;
+  children?: ReactNode;
+  style?: ViewStyle;
+}>;
+
+const CardClaimContainer = ({
+  position,
+  dimensions,
+  children,
+  testID,
+  style
+}: CardClaimContainerProps) => (
+  <View testID={testID} style={[styles.container, position, dimensions, style]}>
+    {children}
+  </View>
+);
 
 const MemoizedCardClaim = memo(CardClaim) as typeof CardClaim;
 

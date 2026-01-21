@@ -4,12 +4,8 @@
       "mdl": "Patente di guida",
       "pid": "IT-Wallet ID",
       "hiid": "Health ID",
-      "fbk": "Badge digitale FBK",
       "disabilityCard": "Carta Europea della Disabilità",
       "unknown": "Credenziale Sconosciuta"
-    },
-    "details": {
-      "fbk": "You can use your FBK digital badge to enter different office locations, and access enterprise mobile and web-based services."
     },
     "status": {
       "expired": "Scaduta",
@@ -21,11 +17,11 @@
       "upgradePending": "Da aggiornare",
       "unknown": "Non disponibile"
     },
-    "pidStatusAlert" : {
-      "confirmIdentityBefore" : "Conferma la tua identità entro il ",
-      "confirmIdentity" : "Conferma la tua identità per continuare con i tuoi documenti"
+    "pidStatusAlert": {
+      "confirmIdentityBefore": "Conferma la tua identità entro il ",
+      "confirmIdentity": "Conferma la tua identità per continuare con i tuoi documenti"
     },
-    "digital" : "Versione Digitale"
+    "digital": "Versione Digitale"
   },
   "discovery": {
     "screen": {
@@ -365,10 +361,10 @@
     "badges": {
       "saved": "Saved"
     },
-        "screen": {
-          "emptyMessage": "La tua Patente di guida, la tua Tessera Sanitaria e altri documenti digitali appariranno qui!",
-          "cta": "Aggiungi un documento"
-        }
+    "screen": {
+      "emptyMessage": "La tua Patente di guida, la tua Tessera Sanitaria e altri documenti digitali appariranno qui!",
+      "cta": "Aggiungi un documento"
+    }
   },
   "credentialIssuance": {
     "badges": {
@@ -403,11 +399,11 @@
       "button": "I understand"
     }
   },
-  "issuance" : {
-    "emptyWallet" : {
-      "readyBanner" : {
-          "content": "È tutto pronto: aggiungi un documento al tuo Portafoglio di IO.",
-          "action": "Aggiungi documento"
+  "issuance": {
+    "emptyWallet": {
+      "readyBanner": {
+        "content": "È tutto pronto: aggiungi un documento al tuo Portafoglio di IO.",
+        "action": "Aggiungi documento"
       }
     },
     "credentialPreview": {
@@ -442,7 +438,7 @@
       "secondaryAction": "Non ora"
     }
   },
-  "generic" : {
+  "generic": {
     "alert": {
       "title": "Vuoi interrompere l'operazione?",
       "body": "Dovrai ripetere di nuovo tutti i passaggi",

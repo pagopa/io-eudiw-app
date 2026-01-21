@@ -4,7 +4,7 @@
 
 import { differenceInCalendarDays, isValid } from 'date-fns';
 import z from 'zod';
-import { ParsedCredential, StoredCredential } from './types';
+import { ParsedCredential, StoredCredential } from './itwTypesUtils';
 
 /**
  *

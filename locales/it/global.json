@@ -26,7 +26,20 @@
       "onboardingReset": "Reset onboarding"
     },
     "debug": "Enable debug mode",
-    "version": "Version"
+    "version": "Version",
+    "appearance": {
+      "typefaceStyle": {
+        "title": "Stile carattere",
+        "comfortable": {
+          "title": "Confortevole",
+          "description": "Progettato per una migliore leggibilità dei testi"
+        },
+        "standard": {
+          "title": "Standard",
+          "description": "Lo stile di sempre, con forme strette e geometriche"
+        }
+      }
+    }
   },
   "buttons": {
     "next": "Next",

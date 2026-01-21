@@ -13,8 +13,6 @@ import {
   ViewStyle
 } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { StoredCredential } from '../../../utils/types';
-import { ItwCredentialStatus } from '../../../utils/itwTypesUtils';
 import {
   getCredentialNameFromType,
   tagPropsByStatus,
@@ -26,9 +24,14 @@ import {
   ItwIridescentBorderVariant
 } from '../../ItwBrandedSkiaBorder';
 import { accessibilityLabelByStatus } from '../../../utils/itwAccessibilityUtils';
-import { FlippableCard } from './FlippableCard';
-import { CardData } from './CardData';
+import {
+  ItwCredentialStatus,
+  StoredCredential
+} from '../../../utils/itwTypesUtils';
+import { ParsedClaimsRecord } from '../../../utils/claims';
 import { CardBackground } from './CardBackground';
+import { CardData } from './CardData';
+import { FlippableCard } from './FlippableCard';
 
 export type ItwSkeumorphicCardProps = {
   credential: StoredCredential;
@@ -36,6 +39,7 @@ export type ItwSkeumorphicCardProps = {
   valuesHidden: boolean;
   isFlipped?: boolean;
   onPress?: () => void;
+  claims: ParsedClaimsRecord;
 };
 
 export const ItwSkeumorphicCard = ({
@@ -43,33 +47,36 @@ export const ItwSkeumorphicCard = ({
   status,
   isFlipped = false,
   onPress,
-  valuesHidden
+  valuesHidden,
+  claims
 }: ItwSkeumorphicCardProps) => {
   const FrontSide = useMemo(
     () => (
-      <CardSideBase status={status} isItw={true}>
+      <CardSideBase status={status}>
         <CardBackground
           credentialType={credential.credentialType}
           side="front"
         />
         <CardData
+          claims={claims}
           credential={credential}
           side="front"
           valuesHidden={valuesHidden}
         />
       </CardSideBase>
     ),
-    [credential, status, valuesHidden]
+    [credential, status, valuesHidden, claims]
   );
 
   const BackSide = useMemo(
     () => (
-      <CardSideBase status={status} isItw={true}>
+      <CardSideBase status={status}>
         <CardBackground
           credentialType={credential.credentialType}
           side="back"
         />
         <CardData
+          claims={claims}
           credential={credential}
           side="back"
           valuesHidden={valuesHidden}
@@ -149,10 +156,9 @@ const gradientVariantByStatus: Record<
 type CardSideBaseProps = {
   status: ItwCredentialStatus;
   children: ReactNode;
-  isItw: boolean;
 };
 
-const CardSideBase = ({ status, children, isItw }: CardSideBaseProps) => {
+const CardSideBase = ({ status, children }: CardSideBaseProps) => {
   const borderColorMap = useBorderColorByStatus();
 
   const [size, setSize] = useState<{ width: number; height: number }>({
@@ -192,25 +198,23 @@ const CardSideBase = ({ status, children, isItw }: CardSideBaseProps) => {
       <View style={[styles.faded, dynamicStyle]} />
 
       {/* Skia Canvas for border and light effect, only displayed if IT-Wallet enabled */}
-      {isItw && (
-        <Canvas
-          style={{
-            position: 'absolute',
-            width: size.width,
-            height: size.height
-          }}
-          testID="itWalletBrandBorderTestID"
-        >
-          {/* Animated gradient border */}
-          <ItwBrandedSkiaBorder
-            width={size.width}
-            height={size.height}
-            variant={gradientVariantByStatus[status]}
-            thickness={4}
-            cornerRadius={8}
-          />
-        </Canvas>
-      )}
+      <Canvas
+        style={{
+          position: 'absolute',
+          width: size.width,
+          height: size.height
+        }}
+        testID="itWalletBrandBorderTestID"
+      >
+        {/* Animated gradient border */}
+        <ItwBrandedSkiaBorder
+          width={size.width}
+          height={size.height}
+          variant={gradientVariantByStatus[status]}
+          thickness={4}
+          cornerRadius={8}
+        />
+      </Canvas>
     </View>
   );
 };
