@@ -120,6 +120,9 @@
           "cta": "Rimuovi documento dal Portafoglio"
         }
       },
+      "edc": {
+        "content": "Puoi usare la tua Carta Europea della Disabilità su IO per accedere ai servizi sul territorio italiano, negli stessi contesti d'uso del tuo documento fisico."
+      },
       "expired": {
         "content": "Il documento non è più valido. Se sei già in possesso del nuovo documento valido, puoi aggiornare la versione digitale nel Portafoglio",
         "action": "Aggiorna il documento"

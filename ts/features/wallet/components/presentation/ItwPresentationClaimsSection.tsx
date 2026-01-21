@@ -4,7 +4,7 @@ import {
   IconButton,
   useIOTheme
 } from '@pagopa/io-app-design-system';
-import { Fragment, useMemo } from 'react';
+import { Fragment, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import I18n from 'i18next';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
@@ -35,8 +35,6 @@ export const ItwPresentationClaimsSection = ({
     () => getCredentialStatus(credential),
     [credential]
   );
-
-  const claims = Object.entries(parsedClaims);
 
   const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
   const dispatch = useAppDispatch();
@@ -71,6 +69,24 @@ export const ItwPresentationClaimsSection = ({
     </View>
   );
 
+  const claims = Object.entries(parsedClaims);
+  const filteredClaims = useMemo(
+    () => claims.filter(([id]) => id !== WellKnownClaim.link_qr_code),
+    [claims]
+  );
+
+  const LinkQrCode = useCallback(() => {
+    const linkQrCodeClaim = claims.find(
+      ([id]) => id === WellKnownClaim.link_qr_code
+    )?.[1];
+
+    if (!linkQrCodeClaim) {
+      return null;
+    }
+
+    return <ItwQrCodeClaimImage claim={linkQrCodeClaim} />;
+  }, [claims]);
+
   return (
     <View>
       {
@@ -90,7 +106,8 @@ export const ItwPresentationClaimsSection = ({
           </>
         )
       }
-      {claims.map(([id, claim], index) => {
+      <LinkQrCode />
+      {filteredClaims.map(([id, claim], index) => {
         if (id === WellKnownClaim.link_qr_code) {
           // Since the `link_qr_code` claim  difficult to distinguish from a generic image claim, we need to manually
           // check for the claim and render it accordingly

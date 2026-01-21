@@ -13,13 +13,19 @@ import {
 } from '../../../utils/claims';
 import { StoredCredential } from '../../../utils/itwTypesUtils';
 import { format } from '../../../utils/dates';
-import { CardClaim, CardClaimContainer, CardClaimRenderer } from './CardClaim';
+import {
+  CardClaim,
+  CardClaimContainer,
+  CardClaimRenderer,
+  ClaimPosition
+} from './CardClaim';
 import { ClaimLabel } from './ClaimLabel';
-import { CardSide } from './types';
+import { CardMode, CardSide } from './types';
 
 type DataComponentProps = {
   claims: ParsedClaimsRecord;
   valuesHidden: boolean;
+  mode: CardMode;
 };
 
 const getClaim = (
@@ -231,7 +237,7 @@ const DcFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
   );
 };
 
-const DcBackData = ({ claims }: DataComponentProps) => {
+const DcBackData = ({ claims, mode }: DataComponentProps) => {
   const qrCodeClaim = getClaim(
     claims,
     'link_qr_code',
@@ -241,18 +247,24 @@ const DcBackData = ({ claims }: DataComponentProps) => {
   const qrCodeStringClaim =
     qrCodeClaim?.type === claimType.string ? qrCodeClaim : undefined;
 
+  const position: ClaimPosition =
+    mode === 'vertical'
+      ? {
+          right: '7%',
+          top: '11%'
+        }
+      : {
+          right: '6%',
+          top: '10%'
+        };
+
   return (
     <View testID="dcBackDataTestID" style={styles.container}>
       <CardClaimRenderer
         claim={qrCodeStringClaim}
         type={claimType.string}
         component={claim => (
-          <CardClaimContainer
-            position={{
-              right: `7%`,
-              top: `11%`
-            }}
-          >
+          <CardClaimContainer position={position}>
             <QrCodeImage value={claim.value} size={'28.5%'} />
           </CardClaimContainer>
         )}
@@ -278,6 +290,7 @@ const dataComponentMap: Record<
 type CardDataProps = {
   credential: StoredCredential;
   side: CardSide;
+  mode: CardMode;
   valuesHidden: boolean;
   claims: ParsedClaimsRecord;
 };
@@ -285,6 +298,7 @@ type CardDataProps = {
 const CardData = ({
   credential,
   side,
+  mode,
   valuesHidden,
   claims
 }: CardDataProps) => {
@@ -299,6 +313,7 @@ const CardData = ({
       key={`credential_data_${credential.credentialType}_${side}`}
       claims={claims}
       valuesHidden={valuesHidden}
+      mode={mode}
     />
   );
 };

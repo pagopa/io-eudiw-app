@@ -32,6 +32,7 @@ import { ParsedClaimsRecord } from '../../../utils/claims';
 import { CardBackground } from './CardBackground';
 import { CardData } from './CardData';
 import { FlippableCard } from './FlippableCard';
+import { CardMode } from './types';
 
 export type ItwSkeumorphicCardProps = {
   credential: StoredCredential;
@@ -40,6 +41,7 @@ export type ItwSkeumorphicCardProps = {
   isFlipped?: boolean;
   onPress?: () => void;
   claims: ParsedClaimsRecord;
+  mode: CardMode;
 };
 
 export const ItwSkeumorphicCard = ({
@@ -48,7 +50,8 @@ export const ItwSkeumorphicCard = ({
   isFlipped = false,
   onPress,
   valuesHidden,
-  claims
+  claims,
+  mode
 }: ItwSkeumorphicCardProps) => {
   const FrontSide = useMemo(
     () => (
@@ -61,11 +64,12 @@ export const ItwSkeumorphicCard = ({
           claims={claims}
           credential={credential}
           side="front"
+          mode={mode}
           valuesHidden={valuesHidden}
         />
       </CardSideBase>
     ),
-    [credential, status, valuesHidden, claims]
+    [credential, status, valuesHidden, claims, mode]
   );
 
   const BackSide = useMemo(
@@ -79,11 +83,12 @@ export const ItwSkeumorphicCard = ({
           claims={claims}
           credential={credential}
           side="back"
+          mode={mode}
           valuesHidden={valuesHidden}
         />
       </CardSideBase>
     ),
-    [credential, status, valuesHidden, claims]
+    [credential, status, valuesHidden, claims, mode]
   );
 
   const accessibilityProps = useMemo(

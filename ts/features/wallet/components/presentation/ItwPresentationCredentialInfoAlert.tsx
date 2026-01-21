@@ -42,6 +42,16 @@ const ItwPresentationCredentialInfoAlert = ({ credential }: Props) => {
     );
   }
 
+  if (credentialType === wellKnownCredential.DISABILITY_CARD) {
+    return (
+      <Alert
+        testID="itwMdlBannerTestID"
+        content={I18n.t('presentation.alerts.edc.content', { ns: 'wallet' })}
+        variant="info"
+      />
+    );
+  }
+
   return null;
 };
 

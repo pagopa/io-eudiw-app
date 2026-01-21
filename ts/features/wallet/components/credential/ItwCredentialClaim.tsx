@@ -244,11 +244,15 @@ const UnknownClaimItem = ({
 const ImageClaimItem = ({
   label,
   claim,
+  height,
+  width,
   hidden,
   reversed
 }: {
   label: string;
   claim: string;
+  width: number;
+  height: number;
   hidden?: boolean;
   reversed: boolean;
 }) =>
@@ -262,7 +266,7 @@ const ImageClaimItem = ({
           source={{ uri: claim }}
           style={{
             width: 200,
-            aspectRatio: 3 / 4
+            height: Math.ceil((200 * height) / width)
           }}
           resizeMode="contain"
           accessibilityIgnoresInvertColors
@@ -498,6 +502,8 @@ export const ItwCredentialClaim = ({
             claim={claim.parsed.value}
             hidden={hidden}
             reversed={reversed}
+            width={claim.parsed.width}
+            height={claim.parsed.height}
           />
         );
       case 'drivingPrivileges':
