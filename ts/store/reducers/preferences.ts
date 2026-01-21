@@ -5,6 +5,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import uuid from 'react-native-uuid';
 import { RootState } from '../types';
 
+export type TypefaceChoice = 'comfortable' | 'standard';
+
 /* State type definition for the preferences slice
  * sessionId - Randomly generated session id which identifies a wallet when creating a wallet instance. It gets resetted when the onboarding
  * gets resetted as well.
@@ -15,13 +17,15 @@ export type PreferencesState = {
   sessionId: string;
   isOnboardingComplete: boolean;
   isBiometricEnabled: boolean;
+  fontPreference: TypefaceChoice;
 };
 
 // Initial state for the preferences slice
 const initialState: PreferencesState = {
   sessionId: uuid.v4().toString(),
   isOnboardingComplete: false,
-  isBiometricEnabled: false
+  isBiometricEnabled: false,
+  fontPreference: 'comfortable'
 };
 
 /**
@@ -42,6 +46,10 @@ const preferencesSlice = createSlice({
     ) => {
       state.isBiometricEnabled = action.payload;
     },
+    // Font
+    preferencesFontSet: (state, action: PayloadAction<TypefaceChoice>) => {
+      state.fontPreference = action.payload;
+    },
     preferencesReset: () => initialState
   },
   extraReducers: builder => {
@@ -56,6 +64,7 @@ const preferencesSlice = createSlice({
 export const {
   preferencesSetIsOnboardingDone,
   preferencesSetIsBiometricEnabled,
+  preferencesFontSet,
   preferencesReset
 } = preferencesSlice.actions;
 
@@ -99,3 +108,6 @@ export const selectIsBiometricEnabled = (state: RootState) =>
  */
 export const selectSessionId = (state: RootState) =>
   state.preferences.sessionId;
+
+export const fontPreferenceSelector = (state: RootState): TypefaceChoice =>
+  state.preferences.fontPreference;

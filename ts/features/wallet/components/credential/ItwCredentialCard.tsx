@@ -11,6 +11,8 @@ import {
   validCredentialStatuses
 } from '../../utils/itwCredentialUtils';
 import { getCredentialNameByType } from '../../utils/credentials';
+import { useAppSelector } from '../../../../store';
+import { fontPreferenceSelector } from '../../../../store/reducers/preferences';
 import { CardBackground } from './CardBackground';
 import { DigitalVersionBadge } from './DigitalVersionBadge';
 
@@ -50,6 +52,7 @@ export const ItwCredentialCard = ({
   credentialStatus = 'valid',
   isMultiCredential
 }: ItwCredentialCard) => {
+  const typefacePreference = useAppSelector(fontPreferenceSelector);
   const status = useItwDisplayCredentialStatus(credentialStatus);
   const theme = useThemeColorByCredentialType(credentialType);
   const borderColorMap = useBorderColorByStatus();
@@ -99,7 +102,9 @@ export const ItwCredentialCard = ({
             size={16}
             lineHeight={20}
             font={
-              'TitilliumSansPro' /* TODO: Check if preferences are needed */
+              typefacePreference === 'comfortable'
+                ? 'Titillio'
+                : 'TitilliumSansPro'
             }
             weight="Semibold"
             maxFontSizeMultiplier={1.25}
