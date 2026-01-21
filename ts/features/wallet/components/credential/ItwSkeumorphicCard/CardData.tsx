@@ -194,7 +194,7 @@ const DcFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
   return (
     <View testID="dcFrontDataTestID" style={styles.container}>
       <CardClaim
-        claim={claims.portrait}
+        claim={getClaim(claims, 'portrait', 'DISABILITY_CARD')}
         position={{ left: '2.55%', bottom: '1.%' }}
         dimensions={{
           width: '24.7%',
@@ -203,27 +203,27 @@ const DcFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={claims.given_name}
+        claim={getClaim(claims, 'given_name', 'DISABILITY_CARD')}
         position={{ right: '3.5%', top: `${rows[0]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={claims.family_name}
+        claim={getClaim(claims, 'family_name', 'DISABILITY_CARD')}
         position={{ right: '3.5%', top: `${rows[1]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={claims.birth_date}
+        claim={getClaim(claims, 'birth_date', 'DISABILITY_CARD')}
         position={{ right: '3.5%', top: `${rows[2]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={claims.document_number}
+        claim={getClaim(claims, 'document_number', 'DISABILITY_CARD')}
         position={{ right: '3.5%', top: `${rows[3]}%` }}
         hidden={valuesHidden}
       />
       <CardClaim
-        claim={claims.expiry_date}
+        claim={getClaim(claims, 'expiry_date', 'DISABILITY_CARD')}
         position={{ right: '3.5%', top: `${rows[4]}%` }}
         hidden={valuesHidden}
       />
@@ -232,7 +232,11 @@ const DcFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
 };
 
 const DcBackData = ({ claims }: DataComponentProps) => {
-  const qrCodeClaim = claims.link_qr_code.parsed;
+  const qrCodeClaim = getClaim(
+    claims,
+    'link_qr_code',
+    'DISABILITY_CARD'
+  ).parsed;
 
   const qrCodeStringClaim =
     qrCodeClaim?.type === claimType.string ? qrCodeClaim : undefined;
