@@ -9,7 +9,6 @@ import { PropsWithChildren, useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { StoredCredential } from '../../utils/types';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredentialStatus';
 import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
@@ -19,17 +18,20 @@ import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import WALLET_ROUTES from '../../navigation/routes';
 import { useAppSelector } from '../../../../store';
 import { itwIsClaimValueHiddenSelector } from '../../store/credentials';
+import { StoredCredential } from '../../utils/itwTypesUtils';
+import { ParsedClaimsRecord } from '../../utils/claims';
 import { ItwPresentationCredentialCardFlipButton } from './ItwPresentationCredentialCardFlipButton';
 
 type Props = {
   credential: StoredCredential;
+  parsedClaims: ParsedClaimsRecord;
 };
 
 /**
  * This component renders the credential card in the presentation screen.
  * If the credential supports the skeumorphic card, it also renders it with the flip button and If L3 is enabled, it shows the badge.
  */
-const ItwPresentationCredentialCard = ({ credential }: Props) => {
+const ItwPresentationCredentialCard = ({ credential, parsedClaims }: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<WalletNavigatorParamsList>>();
   const [isFlipped, setIsFlipped] = useState(false);
@@ -45,6 +47,7 @@ const ItwPresentationCredentialCard = ({ credential }: Props) => {
   const handleCardPress = () => {
     navigation.navigate(WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_MODAL, {
       credential,
+      parsedClaims,
       status
     });
   };
@@ -60,6 +63,7 @@ const ItwPresentationCredentialCard = ({ credential }: Props) => {
         <FlipGestureDetector isFlipped={isFlipped} setIsFlipped={setIsFlipped}>
           <ItwSkeumorphicCard
             credential={credential}
+            claims={parsedClaims}
             isFlipped={isFlipped}
             status={status}
             valuesHidden={valuesHidden}

@@ -40,6 +40,16 @@ export const wellKnownCredentialConfigurationIDs: Record<
   DISABILITY_CARD: 'dc_sd_jwt_EuropeanDisabilityCard'
 };
 
+/**
+ * Map that stores for a subset of the various credentials supported their
+ * corresponding namespace for {@link ParsedCredential} extraction
+ */
+export const wellKnownCredentialNamespaces: Partial<
+  Record<CredentialsKeys, string>
+> = {
+  DRIVING_LICENSE: 'org.iso.18013.5.1'
+};
+
 export const getCredentialNameByType = (type?: string): string => {
   switch (type) {
     case wellKnownCredential.DRIVING_LICENSE:

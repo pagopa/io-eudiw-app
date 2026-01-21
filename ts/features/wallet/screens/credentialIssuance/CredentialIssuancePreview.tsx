@@ -21,6 +21,7 @@ import CredentialPreviewClaimsList from '../../components/credential/CredentialP
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { parseClaimsToRecord } from '../../utils/claims';
+import { WellKnownClaim } from '../../utils/itwClaimsUtils';
 
 export const CredentialPreview = () => {
   const credentialPostStatus = useAppSelector(
@@ -71,7 +72,9 @@ export const CredentialPreview = () => {
   }
 
   const credential = credentialPostStatus.success.data;
-  const parsedClaims = parseClaimsToRecord(credential.parsedCredential);
+  const parsedClaims = parseClaimsToRecord(credential.parsedCredential, {
+    exclude: [WellKnownClaim.unique_id, WellKnownClaim.content]
+  });
 
   return (
     <ForceScrollDownView

@@ -3,8 +3,8 @@ import { memo } from 'react';
 import { ImageSourcePropType, StyleSheet, View } from 'react-native';
 import { AnimatedImage } from '../../../../../components/AnimatedImage';
 import { wellKnownCredential } from '../../../utils/credentials';
-import { CardSide } from './types';
 import { StoredCredential } from '../../../utils/itwTypesUtils';
+import { CardSide } from './types';
 
 type CardBackgroundProps = {
   credentialType: StoredCredential['credentialType'];

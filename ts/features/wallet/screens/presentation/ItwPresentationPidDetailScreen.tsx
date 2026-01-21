@@ -6,13 +6,15 @@ import {
   itwCredentialsPidSelector,
   itwCredentialsPidStatusSelector
 } from '../../store/credentials';
-import { StoredCredential } from '../../utils/types';
 import { ItwPresentationDetailsScreenBase } from '../../components/presentation/ItwPresentationDetailsScreenBase';
 import { ItwPresentationPidDetailHeader } from '../../components/presentation/ItwPresentationPidDetailHeader';
 import { ItwPresentationPidDetail } from '../../components/presentation/ItwPresentationPidDetail';
 import { ItwPresentationPidDetailFooter } from '../../components/presentation/ItwPresentationPidDetailFooter';
 import { PoweredByItWalletText } from '../../components/PoweredByItWalletText';
-import { ItwJwtCredentialStatus } from '../../utils/itwTypesUtils';
+import {
+  ItwJwtCredentialStatus,
+  StoredCredential
+} from '../../utils/itwTypesUtils';
 import {
   ItwBrandedSkiaGradient,
   ItwSkiaBrandedGradientVariant

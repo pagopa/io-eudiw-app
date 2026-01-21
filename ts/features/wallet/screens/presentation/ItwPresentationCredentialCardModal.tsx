@@ -9,8 +9,10 @@ import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import I18n from 'i18next';
 import { StackScreenProps } from '@react-navigation/stack';
-import { StoredCredential } from '../../utils/types';
-import { ItwCredentialStatus } from '../../utils/itwTypesUtils';
+import {
+  ItwCredentialStatus,
+  StoredCredential
+} from '../../utils/itwTypesUtils';
 import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
 import { useMaxBrightness } from '../../../../utils/brightness';
@@ -26,9 +28,11 @@ import {
   itwIsClaimValueHiddenSelector,
   itwSetClaimValuesHidden
 } from '../../store/credentials';
+import { ParsedClaimsRecord } from '../../utils/claims';
 
 export type ItwPresentationCredentialCardModalNavigationParams = {
   credential: StoredCredential;
+  parsedClaims: ParsedClaimsRecord;
   status: ItwCredentialStatus;
 };
 
@@ -41,7 +45,7 @@ type Props = StackScreenProps<
  * Dispalys a full screen modal with the credential card.
  */
 const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
-  const { credential, status } = route.params;
+  const { credential, parsedClaims, status } = route.params;
   const safeAreaInsets = useSafeAreaInsets();
   const [isFlipped, setFlipped] = useState(false);
   const theme = useIOTheme();
@@ -96,6 +100,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
         >
           <ItwSkeumorphicCard
             credential={credential}
+            claims={parsedClaims}
             status={status}
             isFlipped={isFlipped}
             valuesHidden={valuesHidden}

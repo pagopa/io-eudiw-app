@@ -4,10 +4,10 @@ import { useNavigation } from '@react-navigation/native';
 import { Alert, IOButton, IOToast, VStack } from '@pagopa/io-app-design-system';
 import I18n from 'i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { StoredCredential } from '../../utils/types';
 import {
   ItwCredentialStatus,
-  ItwJwtCredentialStatus
+  ItwJwtCredentialStatus,
+  StoredCredential
 } from '../../utils/itwTypesUtils';
 import { useAppSelector } from '../../../../store';
 import { itwCredentialsPidStatusSelector } from '../../store/credentials';
@@ -32,7 +32,6 @@ type Props = {
 
 const excludedCredentialTypes = [
   wellKnownCredential.PID,
-  wellKnownCredential.FBK_BADGE,
   wellKnownCredential.HEALTHID
 ] satisfies Array<WellKnownCredentialTypes>;
 

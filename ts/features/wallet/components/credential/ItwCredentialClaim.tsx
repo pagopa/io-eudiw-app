@@ -5,8 +5,8 @@ import I18n from 'i18next';
 import z from 'zod';
 import { useTranslation } from 'react-i18next';
 import {
-  claimScheme,
   DrivingPrivilegesClaimType,
+  ParsedClaimsRecord,
   PlaceOfBirthClaimType,
   verificationEvidenceSchema
 } from '../../utils/claims';
@@ -15,7 +15,6 @@ import { getSafeText } from '../../../../utils/string';
 import { clipboardSetStringWithFeedback } from '../../../../utils/clipboard';
 import { ItwCredentialStatus } from '../../utils/itwTypesUtils';
 import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
-import { ClaimDisplayFormat } from '../../utils/types';
 import { format } from '../../utils/dates';
 
 /**
@@ -456,21 +455,19 @@ export const ItwCredentialClaim = ({
   credentialStatus,
   reversed = false
 }: {
-  claim: ClaimDisplayFormat;
+  claim: ParsedClaimsRecord[string];
   hidden?: boolean;
   isPreview?: boolean;
   credentialStatus?: ItwCredentialStatus;
   reversed?: boolean;
 }) => {
-  const decoded = claimScheme.safeParse(claim);
-
-  if (decoded.success) {
-    switch (decoded.data.type) {
+  if (claim.parsed) {
+    switch (claim.parsed.type) {
       case 'placeOfBirth':
         return (
           <PlaceOfBirthClaimItem
             label={claim.label}
-            claim={decoded.data}
+            claim={claim.parsed}
             hidden={hidden}
             reversed={reversed}
           />
@@ -479,7 +476,7 @@ export const ItwCredentialClaim = ({
         return (
           <DateClaimItem
             label={claim.label}
-            claim={decoded.data.value}
+            claim={claim.parsed.value}
             hidden={hidden}
             reversed={reversed}
           />
@@ -488,7 +485,7 @@ export const ItwCredentialClaim = ({
         return (
           <DateClaimItem
             label={claim.label}
-            claim={decoded.data.value}
+            claim={claim.parsed.value}
             hidden={hidden}
             status={!isPreview ? credentialStatus : undefined}
             reversed={reversed}
@@ -498,13 +495,13 @@ export const ItwCredentialClaim = ({
         return (
           <ImageClaimItem
             label={claim.label}
-            claim={decoded.data.value}
+            claim={claim.parsed.value}
             hidden={hidden}
             reversed={reversed}
           />
         );
       case 'drivingPrivileges':
-        return decoded.data.value.map((elem, index) => (
+        return claim.parsed.value.map((elem, index) => (
           <Fragment
             key={`${index}_${claim.label}_${elem.vehicle_category_code}`}
           >
@@ -522,7 +519,7 @@ export const ItwCredentialClaim = ({
         return (
           <BoolClaimItem
             label={claim.label}
-            claim={decoded.data.value}
+            claim={claim.parsed.value}
             hidden={hidden}
             reversed={reversed}
           />
@@ -531,7 +528,7 @@ export const ItwCredentialClaim = ({
         return (
           <PlainTextClaimItem
             label={claim.label}
-            claim={decoded.data.value.join(', ')}
+            claim={claim.parsed.value.join(', ')}
             hidden={hidden}
             reversed={reversed}
           />
@@ -542,7 +539,7 @@ export const ItwCredentialClaim = ({
         return (
           <PlainTextClaimItem
             label={claim.label}
-            claim={decoded.data.value}
+            claim={claim.parsed.value}
             isCopyable={!isPreview}
             hidden={hidden}
             reversed={reversed}
@@ -552,7 +549,7 @@ export const ItwCredentialClaim = ({
         return (
           <VerificationEvidenceClaimItem
             label={claim.label}
-            claim={decoded.data.value}
+            claim={claim.parsed.value}
             detailsButtonVisible={!isPreview}
             reversed={reversed}
           />
@@ -560,10 +557,6 @@ export const ItwCredentialClaim = ({
     }
   }
   return (
-    <UnknownClaimItem
-      label={claim.label}
-      _claim={decoded}
-      reversed={reversed}
-    />
+    <UnknownClaimItem label={claim.label} _claim={claim} reversed={reversed} />
   );
 };

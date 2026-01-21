@@ -1,7 +1,7 @@
 import { Divider } from '@pagopa/io-app-design-system';
 import { View } from 'react-native';
-import { ItwCredentialClaim } from './ItwCredentialClaim';
 import { ParsedClaimsRecord } from '../../utils/claims';
+import { ItwCredentialClaim } from './ItwCredentialClaim';
 
 type CredentialClaimsListProps = {
   claims: ParsedClaimsRecord;

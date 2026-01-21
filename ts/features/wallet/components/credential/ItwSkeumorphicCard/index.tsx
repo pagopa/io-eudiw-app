@@ -83,7 +83,7 @@ export const ItwSkeumorphicCard = ({
         />
       </CardSideBase>
     ),
-    [credential, status, valuesHidden]
+    [credential, status, valuesHidden, claims]
   );
 
   const accessibilityProps = useMemo(

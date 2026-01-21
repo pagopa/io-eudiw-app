@@ -16,7 +16,6 @@ export const claimType = {
   emptyString: 'emptyString',
   boolean: 'boolean',
   image: 'image',
-  pdf: 'application/pdf',
   stringArray: 'stringArray',
   placeOfBirth: 'placeOfBirth'
 } as const;

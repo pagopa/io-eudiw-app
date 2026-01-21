@@ -1,16 +1,20 @@
 import { Appearance, StyleSheet, View } from 'react-native';
-import { ClaimDisplayFormat } from '../../utils/types';
 import { QrCodeImage } from '../QrCodeImage';
+import { ParsedClaimsRecord } from '../../utils/claims';
 
 type ItwQrCodeClaimImageProps = {
-  claim: ClaimDisplayFormat;
+  claim: ParsedClaimsRecord[string];
 };
 
 /**
  * This component allows to render the content of a claim in form of a QR Code
  */
 export const ItwQrCodeClaimImage = ({ claim }: ItwQrCodeClaimImageProps) => {
-  if (claim.value === undefined || typeof claim.value !== 'string') {
+  if (
+    claim.parsed === undefined ||
+    claim.parsed.value === undefined ||
+    typeof claim.parsed.value !== 'string'
+  ) {
     return null;
   }
   const colorScheme = Appearance.getColorScheme();
@@ -18,7 +22,7 @@ export const ItwQrCodeClaimImage = ({ claim }: ItwQrCodeClaimImageProps) => {
   return (
     <View style={styles.qrCode}>
       <QrCodeImage
-        value={claim.value}
+        value={claim.parsed.value}
         size={230}
         inverted={colorScheme === 'dark'}
       />

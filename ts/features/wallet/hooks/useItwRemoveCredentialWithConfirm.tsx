@@ -3,10 +3,10 @@ import { Alert } from 'react-native';
 import I18n from 'i18next';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { StoredCredential } from '../utils/types';
 import { useAppDispatch } from '../../../store';
 import { RootStackParamList } from '../../../navigation/RootStacknavigator';
 import { removeCredential } from '../store/credentials';
+import { StoredCredential } from '../utils/itwTypesUtils';
 
 /**
  * Hook that shows a confirmation dialog and, if confirmed, removes a credential from the wallet

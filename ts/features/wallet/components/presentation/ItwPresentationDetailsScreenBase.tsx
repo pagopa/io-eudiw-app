@@ -8,12 +8,12 @@ import Animated, {
   useAnimatedScrollHandler,
   useSharedValue
 } from 'react-native-reanimated';
-import { StoredCredential } from '../../utils/types';
 import { useAppSelector } from '../../../../store';
 import { lifecycleIsValidSelector } from '../../store/lifecycle';
 import { useHeaderPropsByCredentialType } from '../../utils/itwStyleUtils';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { ButtonBlockProps } from '../../../../components/ui/utils/buttons';
+import { StoredCredential } from '../../utils/itwTypesUtils';
 
 export type CredentialCtaProps = ButtonBlockProps;
 

@@ -1,5 +1,5 @@
 import { WithTestID } from '@pagopa/io-app-design-system';
-import { JSX, memo, ReactNode, useMemo } from 'react';
+import { memo, ReactElement, ReactNode, useMemo } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { format } from 'date-fns';
 
@@ -70,10 +70,7 @@ const CardClaim = ({
       switch (claim.parsed.type) {
         case claimType.date:
         case claimType.expireDate: {
-          const formattedDate = format(
-            claim.parsed.value,
-            dateFormat === 'DD/MM/YY' ? 'dd/MM/yy' : 'dd/MM/yyyy'
-          );
+          const formattedDate = format(claim.parsed.value, dateFormat);
           return <ClaimLabel {...labelProps}>{formattedDate}</ClaimLabel>;
         }
 
@@ -136,13 +133,18 @@ const styles = StyleSheet.create({
   }
 });
 
-type CardClaimRendererProps<T extends ClaimScheme> = {
-  claim?: T;
-  type: T['type'];
-  component: (claim: T) => JSX.Element;
+type ClaimOfType<T extends ClaimScheme['type']> = Extract<
+  ClaimScheme,
+  { type: T }
+>;
+
+type CardClaimRendererProps<T extends ClaimScheme['type']> = {
+  claim?: ClaimScheme;
+  type: T;
+  component: (claim: ClaimOfType<T>) => ReactElement | Iterable<ReactElement>;
 };
 
-const CardClaimRenderer = <T extends ClaimScheme>({
+const CardClaimRenderer = <T extends keyof typeof claimType>({
   claim,
   type,
   component
@@ -151,24 +153,22 @@ const CardClaimRenderer = <T extends ClaimScheme>({
     return null;
   }
 
-  return component(claim);
+  return component(claim as ClaimOfType<T>);
 };
 
 export type CardClaimContainerProps = WithTestID<{
   position?: ClaimPosition;
   dimensions?: ClaimDimensions;
   children?: ReactNode;
-  style?: ViewStyle;
 }>;
 
 const CardClaimContainer = ({
   position,
   dimensions,
   children,
-  testID,
-  style
+  testID
 }: CardClaimContainerProps) => (
-  <View testID={testID} style={[styles.container, position, dimensions, style]}>
+  <View testID={testID} style={[styles.container, position, dimensions]}>
     {children}
   </View>
 );

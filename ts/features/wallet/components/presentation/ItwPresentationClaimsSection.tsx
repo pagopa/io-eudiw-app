@@ -7,9 +7,7 @@ import {
 import { Fragment, useMemo } from 'react';
 import { View } from 'react-native';
 import I18n from 'i18next';
-import { StoredCredential } from '../../utils/types';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
-import { parseClaims } from '../../utils/claims';
 import { WellKnownClaim } from '../../utils/itwClaimsUtils';
 import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
 import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
@@ -19,13 +17,17 @@ import {
   itwIsClaimValueHiddenSelector,
   itwSetClaimValuesHidden
 } from '../../store/credentials';
+import { StoredCredential } from '../../utils/itwTypesUtils';
+import { ParsedClaimsRecord } from '../../utils/claims';
 
 type ItwPresentationClaimsSectionProps = {
   credential: StoredCredential;
+  parsedClaims: ParsedClaimsRecord;
 };
 
 export const ItwPresentationClaimsSection = ({
-  credential
+  credential,
+  parsedClaims
 }: ItwPresentationClaimsSectionProps) => {
   const theme = useIOTheme();
 
@@ -34,9 +36,7 @@ export const ItwPresentationClaimsSection = ({
     [credential]
   );
 
-  const claims = parseClaims(credential.parsedCredential, {
-    exclude: [WellKnownClaim.unique_id, WellKnownClaim.content]
-  });
+  const claims = Object.entries(parsedClaims);
 
   const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
   const dispatch = useAppDispatch();
@@ -90,8 +90,8 @@ export const ItwPresentationClaimsSection = ({
           </>
         )
       }
-      {claims.map((claim, index) => {
-        if (claim.id === WellKnownClaim.link_qr_code) {
+      {claims.map(([id, claim], index) => {
+        if (id === WellKnownClaim.link_qr_code) {
           // Since the `link_qr_code` claim  difficult to distinguish from a generic image claim, we need to manually
           // check for the claim and render it accordingly
           return <ItwQrCodeClaimImage key={index} claim={claim} />;

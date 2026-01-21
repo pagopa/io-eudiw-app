@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react-native';
 import { CardData } from '../CardData';
 import { ItwStoredCredentialsMocks } from '../../../../utils/itwMocksUtils';
+import { parseClaimsToRecord } from '../../../../utils/claims';
 
 jest.mock('@shopify/react-native-skia', () => ({
   Skia: {
@@ -19,6 +20,9 @@ describe('CardData', () => {
     const component = render(
       <CardData
         credential={ItwStoredCredentialsMocks.mdl}
+        claims={parseClaimsToRecord(
+          ItwStoredCredentialsMocks.mdl.parsedCredential
+        )}
         side="front"
         valuesHidden={false}
       />
@@ -32,6 +36,9 @@ describe('CardData', () => {
     const component = render(
       <CardData
         credential={ItwStoredCredentialsMocks.mdl}
+        claims={parseClaimsToRecord(
+          ItwStoredCredentialsMocks.mdl.parsedCredential
+        )}
         side="back"
         valuesHidden={false}
       />
@@ -45,6 +52,9 @@ describe('CardData', () => {
     const component = render(
       <CardData
         credential={ItwStoredCredentialsMocks.dc}
+        claims={parseClaimsToRecord(
+          ItwStoredCredentialsMocks.dc.parsedCredential
+        )}
         side="front"
         valuesHidden={false}
       />
@@ -58,6 +68,9 @@ describe('CardData', () => {
     const component = render(
       <CardData
         credential={ItwStoredCredentialsMocks.dc}
+        claims={parseClaimsToRecord(
+          ItwStoredCredentialsMocks.dc.parsedCredential
+        )}
         side="back"
         valuesHidden={false}
       />

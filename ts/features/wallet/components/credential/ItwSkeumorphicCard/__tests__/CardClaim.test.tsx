@@ -1,19 +1,13 @@
 import { render } from '@testing-library/react-native';
 import { Text } from 'react-native';
-import z from 'zod';
 import { CardClaim, CardClaimRenderer } from '../CardClaim';
-import {
-  baseClaimSchemaExtracted,
-  DrivingPrivilegesClaimType,
-  drivingPrivilegesSchema
-} from '../../../../utils/claims';
 
 describe('CardClaim', () => {
   it('should return null if claim is not decoded correctly', () => {
     const { queryByTestId } = render(
       <CardClaim
         testID="claimTestID"
-        claim={{ label: 'test', value: undefined, id: 'Some id' }}
+        claim={{ label: 'test', parsed: undefined }}
       />
     );
 
@@ -24,7 +18,10 @@ describe('CardClaim', () => {
     const { queryByText, queryByTestId } = render(
       <CardClaim
         testID="claimTestID"
-        claim={{ label: 'test', value: 'Some string', id: 'Some id' }}
+        claim={{
+          label: 'test',
+          parsed: { type: 'string', value: 'Some string' }
+        }}
       />
     );
 
@@ -37,9 +34,9 @@ describe('CardClaimRenderer', () => {
   it('should correctly render a string claim', () => {
     const { queryByTestId, queryByText } = render(
       <CardClaimRenderer
-        claim={{ label: 'test', value: 'Some string', id: 'Some id' }}
-        parser={baseClaimSchemaExtracted.pipe(z.string())}
-        component={decoded => <Text testID="claimTestID">{decoded}</Text>}
+        claim={{ type: 'string', value: 'Some string' }}
+        type={'string'}
+        component={decoded => <Text testID="claimTestID">{decoded.value}</Text>}
       />
     );
 
@@ -51,28 +48,23 @@ describe('CardClaimRenderer', () => {
     const { queryByTestId, queryByText } = render(
       <CardClaimRenderer
         claim={{
-          label: 'test',
+          type: 'drivingPrivileges',
           value: [
             {
               vehicle_category_code: 'AM',
               issue_date: '1935-01-23',
-              expiry_date: '2035-02-16',
-              restrictions_conditions: ''
+              expiry_date: '2035-02-16'
             },
             {
               vehicle_category_code: 'B',
               issue_date: '1935-01-23',
-              expiry_date: '2035-02-16',
-              restrictions_conditions: ''
+              expiry_date: '2035-02-16'
             }
-          ],
-          id: 'Some id'
+          ]
         }}
-        parser={baseClaimSchemaExtracted.pipe(
-          drivingPrivilegesSchema.transform(({ value }) => value)
-        )}
-        component={(decoded: DrivingPrivilegesClaimType['value']) =>
-          decoded.map(p => (
+        type="drivingPrivileges"
+        component={decoded =>
+          decoded.value.map(p => (
             <Text
               key={p.vehicle_category_code}
               testID={`claimTestID_${p.vehicle_category_code}`}

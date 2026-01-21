@@ -5,7 +5,6 @@ import {
 } from '@pagopa/io-app-design-system';
 import { memo, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { StoredCredential } from '../../utils/types';
 import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
@@ -15,10 +14,13 @@ import {
   wellKnownCredential,
   WellKnownCredentialTypes
 } from '../../utils/credentials';
+import { StoredCredential } from '../../utils/itwTypesUtils';
+import { ParsedClaimsRecord } from '../../utils/claims';
 import { ItwPresentationCredentialCard } from './ItwPresentationCredentialCard';
 
 type ItwPresentationDetailsHeaderProps = {
   credential: StoredCredential;
+  parsedClaims: ParsedClaimsRecord;
 };
 
 /**
@@ -34,7 +36,8 @@ const credentialsWithSkeumorphicCard: ReadonlyArray<string> = [
  * If the credential needs to show the card, it will render the card, otherwise it will render the header with the title
  */
 const ItwPresentationDetailsHeader = ({
-  credential
+  credential,
+  parsedClaims
 }: ItwPresentationDetailsHeaderProps) => {
   const { isExperimental } = useIOExperimentalDesign();
   const itwFeaturesEnabled = useAppSelector(lifecycleIsValidSelector);
@@ -47,7 +50,12 @@ const ItwPresentationDetailsHeader = ({
 
   const headerContent = useMemo(() => {
     if (credentialsWithSkeumorphicCard.includes(credential.credentialType)) {
-      return <ItwPresentationCredentialCard credential={credential} />;
+      return (
+        <ItwPresentationCredentialCard
+          credential={credential}
+          parsedClaims={parsedClaims}
+        />
+      );
     }
 
     return (
@@ -67,7 +75,7 @@ const ItwPresentationDetailsHeader = ({
         </ContentWrapper>
       </View>
     );
-  }, [credential, backgroundColor, textColor, isExperimental]);
+  }, [credential, backgroundColor, textColor, isExperimental, parsedClaims]);
 
   return (
     <View>

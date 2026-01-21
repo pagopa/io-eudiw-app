@@ -2,8 +2,10 @@ import { memo } from 'react';
 import { Alert } from '@pagopa/io-app-design-system';
 import I18n from 'i18next';
 import { useAppSelector } from '../../../../store';
-import { StoredCredential } from '../../utils/types';
-import { ItwCredentialStatus } from '../../utils/itwTypesUtils';
+import {
+  ItwCredentialStatus,
+  StoredCredential
+} from '../../utils/itwTypesUtils';
 import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
 import { wellKnownCredential } from '../../utils/credentials';
 

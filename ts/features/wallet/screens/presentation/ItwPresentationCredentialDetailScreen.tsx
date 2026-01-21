@@ -12,7 +12,6 @@ import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
-import { StoredCredential } from '../../utils/types';
 import { useDebugInfo } from '../../../../hooks/useDebugInfo';
 import { selectCredential } from '../../store/credentials';
 import { lifecycleIsValidSelector } from '../../store/lifecycle';
@@ -47,6 +46,8 @@ import {
   setProximityStatusStopped
 } from '../../store/proximity';
 import { RootStackParamList } from '../../../../navigation/RootStacknavigator';
+import { StoredCredential } from '../../utils/itwTypesUtils';
+import { parseClaimsToRecord } from '../../utils/claims';
 
 export type ItwPresentationCredentialDetailNavigationParams = {
   credentialType: string;
@@ -188,6 +189,11 @@ export const ItwPresentationCredentialDetail = ({
     return undefined;
   }, [credential, QrCodeModal, dispatch]);
 
+  const parsedClaims = useMemo(
+    () => parseClaimsToRecord(credential.parsedCredential),
+    [credential.parsedCredential]
+  );
+
   if (status === 'unknown') {
     return <ItwPresentationCredentialUnknownStatus credential={credential} />;
   }
@@ -197,13 +203,19 @@ export const ItwPresentationCredentialDetail = ({
       credential={credential}
       ctaProps={ctaProps}
     >
-      <ItwPresentationDetailsHeader credential={credential} />
+      <ItwPresentationDetailsHeader
+        credential={credential}
+        parsedClaims={parsedClaims}
+      />
       <VSpacer size={24} />
       <ContentWrapper>
         <VStack space={24}>
           <ItwPresentationCredentialStatusAlert credential={credential} />
           <ItwPresentationCredentialInfoAlert credential={credential} />
-          <ItwPresentationClaimsSection credential={credential} />
+          <ItwPresentationClaimsSection
+            credential={credential}
+            parsedClaims={parsedClaims}
+          />
           <ItwPresentationDetailsFooter credential={credential} />
           <View style={{ alignItems: 'center' }}>
             <PoweredByItWalletText />
