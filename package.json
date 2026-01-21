@@ -12,7 +12,7 @@
     "lint:fix": "expo lint --fix",
     "locales": "i18next-resources-for-ts toc -i ./locales/it -o ./ts/i18n/types/resources.ts",
     "prepare": "husky",
-    "test": "jest --watchAll",
+    "test": "jest",
     "increment-version": "bash ./scripts/increment-version.sh"
   },
   "dependencies": {
