@@ -122,7 +122,7 @@ export const ItwPresentationCredentialDetail = ({
 }: ItwPresentationCredentialDetailProps) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-  const status = getCredentialStatus(credential) ?? 'valid';
+  const status = getCredentialStatus(credential);
 
   const { t } = useTranslation(['wallet']);
 
