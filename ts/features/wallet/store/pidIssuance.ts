@@ -8,10 +8,10 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import { StoredCredential } from '../utils/types';
 import { preferencesReset } from '../../../store/reducers/preferences';
 import { obtainPidThunk } from '../middleware/pid';
 import { createInstanceThunk } from '../middleware/instance';
+import { StoredCredential } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 import { RequestedCredential } from './credentialIssuance';
 

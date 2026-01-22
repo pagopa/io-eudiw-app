@@ -28,13 +28,13 @@ import {
 import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 import { selectSessionId } from '../../../store/reducers/preferences';
 import { createWalletProviderFetch } from '../utils/fetch';
-import { StoredCredential } from '../utils/types';
 import { createAppAsyncThunk } from '../../../middleware/thunk';
 import { takeLatestEffect } from '../../../middleware/listener/effects';
 import { selectPendingCredential } from '../store/pidIssuance';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
 import MAIN_ROUTES from '../../../navigation/main/routes';
 import WALLET_ROUTES from '../navigation/routes';
+import { StoredCredential } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 
 /**
@@ -178,7 +178,8 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
         keyTag: credentialKeyTag,
         format: format as 'vc+sd-jwt' | 'mso_mdoc',
         expiration: expiration.toISOString(),
-        issuedAt: issuedAt?.toISOString()
+        issuedAt: issuedAt?.toISOString(),
+        issuerConf
       };
     } catch (error) {
       const serialized = serializeError(error);

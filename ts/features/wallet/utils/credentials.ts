@@ -5,7 +5,6 @@ export type CredentialsKeys =
   | 'DRIVING_LICENSE'
   | 'PID'
   | 'HEALTHID'
-  | 'FBK_BADGE'
   | 'DISABILITY_CARD';
 
 /**
@@ -13,13 +12,19 @@ export type CredentialsKeys =
  * credential type. It is used to distinguish a credential from the other for
  * rendering and localization purposes.
  */
-export const wellKnownCredential: Record<CredentialsKeys, string> = {
+export const wellKnownCredential = {
   DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
   PID: 'urn:eu.europa.ec.eudi:pid:1',
   HEALTHID: 'eu.europa.ec.eudi.hiid.1',
-  FBK_BADGE: 'eu.europa.it.badge',
   DISABILITY_CARD: 'urn:eu.europa.ec.eudi:edc:1'
-};
+} as const satisfies Record<CredentialsKeys, string>;
+
+/**
+ * Type derived from the {@link wellKnownCredential} object
+ * representing the supported credential types
+ */
+export type WellKnownCredentialTypes =
+  (typeof wellKnownCredential)[keyof typeof wellKnownCredential];
 
 /**
  * Map which, for each wallet available credential, stores its corresponding ID
@@ -32,8 +37,17 @@ export const wellKnownCredentialConfigurationIDs: Record<
   DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
   PID: 'dc_sd_jwt_PersonIdentificationData',
   HEALTHID: 'eu.europa.ec.eudi.hiid.1',
-  FBK_BADGE: 'mso_mdoc_CompanyBadge',
   DISABILITY_CARD: 'dc_sd_jwt_EuropeanDisabilityCard'
+};
+
+/**
+ * Map that stores for a subset of the various credentials supported their
+ * corresponding namespace for {@link ParsedCredential} extraction
+ */
+export const wellKnownCredentialNamespaces: Partial<
+  Record<CredentialsKeys, string>
+> = {
+  DRIVING_LICENSE: 'org.iso.18013.5.1'
 };
 
 export const getCredentialNameByType = (type?: string): string => {
@@ -44,8 +58,6 @@ export const getCredentialNameByType = (type?: string): string => {
       return i18next.t(['wallet:credentials.names.pid']);
     case wellKnownCredential.HEALTHID:
       return i18next.t(['wallet:credentials.names.hiid']);
-    case wellKnownCredential.FBK_BADGE:
-      return i18next.t(['wallet:credentials.names.fbk']);
     case wellKnownCredential.DISABILITY_CARD:
       return i18next.t(['wallet:credentials.names.disabilityCard']);
     default:

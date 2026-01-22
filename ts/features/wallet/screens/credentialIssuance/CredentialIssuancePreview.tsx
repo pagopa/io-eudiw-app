@@ -20,6 +20,8 @@ import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWal
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { parseClaimsToRecord } from '../../utils/claims';
+import { WellKnownClaim } from '../../utils/itwClaimsUtils';
 
 export const CredentialPreview = () => {
   const credentialPostStatus = useAppSelector(
@@ -70,6 +72,9 @@ export const CredentialPreview = () => {
   }
 
   const credential = credentialPostStatus.success.data;
+  const parsedClaims = parseClaimsToRecord(credential.parsedCredential, {
+    exclude: [WellKnownClaim.unique_id, WellKnownClaim.content]
+  });
 
   return (
     <ForceScrollDownView
@@ -79,7 +84,7 @@ export const CredentialPreview = () => {
       <View style={styles.container}>
         <H2>{getCredentialNameByType(credential.credentialType)}</H2>
         <VSpacer size={24} />
-        <CredentialPreviewClaimsList data={credential} isPreview={true} />
+        <CredentialPreviewClaimsList claims={parsedClaims} isPreview={true} />
       </View>
       <FooterActions
         fixed={false}

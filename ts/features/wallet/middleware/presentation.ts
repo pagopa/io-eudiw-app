@@ -16,7 +16,6 @@ import {
   setPreDefinitionSuccess
 } from '../store/presentation';
 import { selectCredentials } from '../store/credentials';
-import { ParsedCredential } from '../utils/types';
 import { CredentialTypePresentationClaimsListDescriptor } from '../components/presentation/CredentialTypePresentationClaimsList';
 import {
   AppListenerWithAction,
@@ -28,6 +27,7 @@ import {
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
 import { takeLatestEffect } from '../../../middleware/listener/effects';
+import { ParsedCredential } from '../utils/itwTypesUtils';
 
 type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 

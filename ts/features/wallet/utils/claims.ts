@@ -1,6 +1,7 @@
 import * as z from 'zod';
-import { ClaimDisplayFormat, ParsedCredential } from './types';
+
 import { getClaimsFullLocale } from './locale';
+import { ParsedCredential } from './itwTypesUtils';
 
 /**
  * Constants to represent the type of the claim.
@@ -12,8 +13,11 @@ export const claimType = {
   drivingPrivileges: 'drivingPrivileges',
   verificationEvidence: 'verificationEvidence',
   string: 'string',
+  emptyString: 'emptyString',
+  boolean: 'boolean',
   image: 'image',
-  stringArray: 'stringArray'
+  stringArray: 'stringArray',
+  placeOfBirth: 'placeOfBirth'
 } as const;
 
 /**
@@ -21,14 +25,13 @@ export const claimType = {
  */
 const baseClaimSchema = z.object({
   id: z.string(),
-  label: z.string(),
   value: z.unknown()
 });
 
 /**
  * {@link baseClaimSchema} transformation extracting the value property from the schema to allow pipelining
  */
-const baseClaimSchemaExtracted = baseClaimSchema.transform(
+export const baseClaimSchemaExtracted = baseClaimSchema.transform(
   baseClaim => baseClaim.value
 );
 
@@ -36,8 +39,7 @@ const baseClaimSchemaExtracted = baseClaimSchema.transform(
  * Schema to validate a string that represents a date when the base claim label is not specified.
  */
 export const dateSchema = z
-  .string()
-  .date()
+  .union([z.string().date(), z.string().datetime()])
   .transform(str => ({
     value: new Date(str),
     type: claimType.date
@@ -50,6 +52,17 @@ export const stringSchema = z.string().transform(str => ({
   value: str,
   type: claimType.string
 }));
+
+/**
+ * Schema to validate an empty string
+ */
+export const emptyStringSchema = z
+  .string()
+  .refine(str => str === '')
+  .transform(str => ({
+    value: str,
+    type: claimType.emptyString
+  }));
 
 /**
  * Schema to validate an array of strings when the base claim label is not specified.
@@ -66,8 +79,8 @@ export const stringArraySchema = z
  * Schema to validate a boolean when the base claim label is not specified
  */
 export const booleanSchema = z.boolean().transform(bool => ({
-  value: bool ? 'Yes' : 'No',
-  type: claimType.string
+  value: bool,
+  type: claimType.boolean
 }));
 
 /**
@@ -92,12 +105,12 @@ export const verificationEvidenceSchema = z
     type: claimType.verificationEvidence
   }));
 
-export type VerificationEvidenceType = z.infer<
+export type VerificationEvidenceClaimType = z.infer<
   typeof verificationEvidenceSchema
 >;
 
 /**
- * schema to validate a dirving privileges claim of the MDL when the base claim label is not specified
+ * Schema to validate a dirving privileges claim of the MDL when the base claim label is not specified
  */
 export const drivingPrivilegesSchema = z
   .array(
@@ -112,7 +125,9 @@ export const drivingPrivilegesSchema = z
     type: claimType.drivingPrivileges
   }));
 
-export type DrivingPrivilegesType = z.infer<typeof drivingPrivilegesSchema>;
+export type DrivingPrivilegesClaimType = z.infer<
+  typeof drivingPrivilegesSchema
+>;
 
 /**
  * These bytes represent the possible kinds of SOF segments, which contain the image's proportions,
@@ -136,7 +151,6 @@ export const base64ImageSchema = z
         return split[split.length - 1];
       })
       .pipe(z.enum(['portrait', 'signature_usual_mark'])),
-    label: z.string(),
     value: z.string()
   })
   .transform(obj => obj.value)
@@ -205,7 +219,7 @@ export const base64ImageSchema = z
     };
   });
 
-export type Base64ImageScheme = z.infer<typeof base64ImageSchema>;
+export type Base64ImageClaimType = z.infer<typeof base64ImageSchema>;
 
 /**
  * Schema to validate claims that are known to be dates for which expiration should be checked
@@ -213,7 +227,6 @@ export type Base64ImageScheme = z.infer<typeof base64ImageSchema>;
 export const dateThatCanExpireSchema = z
   .object({
     id: z.enum(['expiry_date']),
-    label: z.string(),
     value: z.string()
   })
   .transform(obj => obj.value)
@@ -228,6 +241,20 @@ export const dateThatCanExpireSchema = z
   );
 
 /**
+ * Schema to validate claims representing places of birth
+ */
+export const placeofBirthSchema = z
+  .object({
+    country: z.string(),
+    locality: z.string()
+  })
+  .transform(claim => ({
+    value: claim,
+    type: claimType.placeOfBirth
+  }));
+export type PlaceOfBirthClaimType = z.infer<typeof placeofBirthSchema>;
+
+/**
  * Schema to validate a claim which is a union of the previous defined schemas.
  */
 export const claimScheme = z.union([
@@ -239,9 +266,11 @@ export const claimScheme = z.union([
       dateSchema,
       drivingPrivilegesSchema,
       verificationEvidenceSchema,
+      placeofBirthSchema,
       stringArraySchema,
       booleanSchema,
       numberSchema,
+      emptyStringSchema,
       stringSchema
     ])
   )
@@ -249,30 +278,51 @@ export const claimScheme = z.union([
 
 export type ClaimScheme = z.infer<typeof claimScheme>;
 
+export type ParsedClaimsRecord = Record<
+  string,
+  { label: string; parsed: ClaimScheme | undefined }
+>;
 /**
- * Parses the claims from the credential.
- * For each Record entry it maps the key and the attribute value to a label and a value.
- * The label is taken from the attribute name which is either a string or a record of locale and string.
- * If the type of the attribute name is string then when take it's value because locales have not been set.
- * If the type of the attribute name is record then we take the value of the locale that matches the current locale.
- * If there's no locale that matches the current locale then we take the attribute key as the name.
- * The value is taken from the attribute value.
- * @param parsedCredential - the parsed credential.
- * @returns the array of {@link ClaimDisplayFormat} of the credential contained in its configuration schema.
+ * Parses the credential claims and transforms them into an indexed record.
+ * For each entry in the credential, it maps the key and the attribute to a label and a processed value.
+ * * * The label is determined by the attribute name:
+ * - If the name is a string, it is used directly (locales not set).
+ * - If the name is a localization record, the translation matching the current locale is selected.
+ * - If no match is found for the locale, the attribute key is used as a fallback.
+ * * * The function also allows filtering specific claims through the `exclude` option.
+ * * @param parsedCredential - The source parsed credential.
+ * @param options - Configuration options, including a list of keys to exclude.
+ * @returns A {@link ParsedClaimsRecord} object containing the mapped and validated claims.
  */
-export const parseClaims = (
+export const parseClaimsToRecord = (
   parsedCredential: ParsedCredential,
   options: { exclude?: Array<string> } = {}
-): Array<ClaimDisplayFormat> => {
+): ParsedClaimsRecord => {
   const { exclude = [] } = options;
-  return Object.entries(parsedCredential)
-    .filter(([key]) => !exclude.includes(key))
-    .map(([key, attribute]) => {
-      const attributeName =
-        typeof attribute.name === 'string'
-          ? attribute.name
-          : attribute.name?.[getClaimsFullLocale()] || key;
+  return Object.fromEntries(
+    Object.entries(parsedCredential)
+      .filter(([key]) => !exclude.includes(key))
+      .map(([key, attribute]) => {
+        const attributeName =
+          typeof attribute.name === 'string'
+            ? attribute.name
+            : attribute.name?.[getClaimsFullLocale()] || key;
 
-      return { label: attributeName, value: attribute.value, id: key };
-    });
+        return [
+          key,
+          {
+            label: attributeName,
+            parsed: claimScheme.parse({ value: attribute.value, id: key })
+          }
+        ];
+      })
+  );
 };
+
+export type SimpleDateFormat =
+  (typeof SimpleDateFormat)[keyof typeof SimpleDateFormat];
+
+export const SimpleDateFormat = {
+  DDMMYYYY: 'DD/MM/YYYY',
+  DDMMYY: 'DD/MM/YY'
+} as const;

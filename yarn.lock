@@ -1798,6 +1798,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jest/diff-sequences@npm:30.0.1":
+  version: 30.0.1
+  resolution: "@jest/diff-sequences@npm:30.0.1"
+  checksum: 10/0ddb7c7ba92d6057a2ee51a9cfc2155b77cca707fe959167466ea02dcb0687018cc3c22b9622f25f3a417d6ad370e2d4dcfedf9f1410dc9c02954a7484423cc7
+  languageName: node
+  linkType: hard
+
 "@jest/environment@npm:^29.7.0":
   version: 29.7.0
   resolution: "@jest/environment@npm:29.7.0"
@@ -1840,6 +1847,13 @@ __metadata:
     jest-mock: "npm:^29.7.0"
     jest-util: "npm:^29.7.0"
   checksum: 10/9b394e04ffc46f91725ecfdff34c4e043eb7a16e1d78964094c9db3fde0b1c8803e45943a980e8c740d0a3d45661906de1416ca5891a538b0660481a3a828c27
+  languageName: node
+  linkType: hard
+
+"@jest/get-type@npm:30.1.0":
+  version: 30.1.0
+  resolution: "@jest/get-type@npm:30.1.0"
+  checksum: 10/e2a95fbb49ce2d15547db8af5602626caf9b05f62a5e583b4a2de9bd93a2bfe7175f9bbb2b8a5c3909ce261d467b6991d7265bb1d547cb60e7e97f571f361a70
   languageName: node
   linkType: hard
 
@@ -1889,6 +1903,15 @@ __metadata:
     node-notifier:
       optional: true
   checksum: 10/a17d1644b26dea14445cedd45567f4ba7834f980be2ef74447204e14238f121b50d8b858fde648083d2cd8f305f81ba434ba49e37a5f4237a6f2a61180cc73dc
+  languageName: node
+  linkType: hard
+
+"@jest/schemas@npm:30.0.5":
+  version: 30.0.5
+  resolution: "@jest/schemas@npm:30.0.5"
+  dependencies:
+    "@sinclair/typebox": "npm:^0.34.0"
+  checksum: 10/40df4db55d4aeed09d1c7e19caf23788309cea34490a1c5d584c913494195e698b9967e996afc27226cac6d76e7512fe73ae6b9584480695c60dd18a5459cdba
   languageName: node
   linkType: hard
 
@@ -2975,6 +2998,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sinclair/typebox@npm:^0.34.0":
+  version: 0.34.47
+  resolution: "@sinclair/typebox@npm:0.34.47"
+  checksum: 10/a7f279020ae45ce21636424ec6439f0e302c28196ed7d2cddf2f80899580cb454f07ce3a033a1aea7ecbcfe47cefd9801c7514bf3adaaecfd1b7d9c83ca3eb9f
+  languageName: node
+  linkType: hard
+
 "@sinonjs/commons@npm:^3.0.0":
   version: 3.0.1
   resolution: "@sinonjs/commons@npm:3.0.1"
@@ -3276,6 +3306,26 @@ __metadata:
   dependencies:
     "@swc/counter": "npm:^0.1.3"
   checksum: 10/f6741450224892d12df43e5ca7f3cc0287df644dcd672626eb0cc2a3a8e3e875f4b29eb11336f37c7240cf6e010ba59eb3a79f4fb8bee5cbd168dfc1326ff369
+  languageName: node
+  linkType: hard
+
+"@testing-library/react-native@npm:^13.3.3":
+  version: 13.3.3
+  resolution: "@testing-library/react-native@npm:13.3.3"
+  dependencies:
+    jest-matcher-utils: "npm:^30.0.5"
+    picocolors: "npm:^1.1.1"
+    pretty-format: "npm:^30.0.5"
+    redent: "npm:^3.0.0"
+  peerDependencies:
+    jest: ">=29.0.0"
+    react: ">=18.2.0"
+    react-native: ">=0.71"
+    react-test-renderer: ">=18.2.0"
+  peerDependenciesMeta:
+    jest:
+      optional: true
+  checksum: 10/06aaddabbba401f9f322607aba5db859e25aab0007366bab5f540199af3c6e479b4920acf95433153a3a3c557ab008374bb86de2c94c5489159ab8f0b9576a09
   languageName: node
   linkType: hard
 
@@ -4022,7 +4072,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ansi-styles@npm:^5.0.0":
+"ansi-styles@npm:^5.0.0, ansi-styles@npm:^5.2.0":
   version: 5.2.0
   resolution: "ansi-styles@npm:5.2.0"
   checksum: 10/d7f4e97ce0623aea6bc0d90dcd28881ee04cba06c570b97fd3391bd7a268eedfd9d5e2dd4fdcbdd82b8105df5faf6f24aaedc08eaf3da898e702db5948f63469
@@ -4516,7 +4566,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base-64@npm:^0.1.0":
+"base-64@npm:0.1.0, base-64@npm:^0.1.0":
   version: 0.1.0
   resolution: "base-64@npm:0.1.0"
   checksum: 10/5a42938f82372ab5392cbacc85a5a78115cbbd9dbef9f7540fa47d78763a3a8bd7d598475f0d92341f66285afd377509851a9bb5c67bbecb89686e9255d5b3eb
@@ -5855,10 +5905,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "date-fns@npm:4.1.0"
-  checksum: 10/d5f6e9de5bbc52310f786099e18609289ed5e30af60a71e0646784c8185ddd1d0eebcf7c96b7faaaefc4a8366f3a3a4244d099b6d0866ee2bec80d1361e64342
+"date-fns@npm:^1.29.0":
+  version: 1.30.1
+  resolution: "date-fns@npm:1.30.1"
+  checksum: 10/24c0937f4e5704f25627c9d1e92e1fe03cd6165d9f32334b7f923a737a57ef992c287cad0694356071e617fbbfa6bd10dec9192ea9035a3e6d0745b9d1594883
   languageName: node
   linkType: hard
 
@@ -7596,7 +7646,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^7.1.1, glob@npm:^7.1.3, glob@npm:^7.1.4":
+"glob@npm:^7.1.1, glob@npm:^7.1.3, glob@npm:^7.1.4, glob@npm:^7.1.6":
   version: 7.2.3
   resolution: "glob@npm:7.2.3"
   dependencies:
@@ -8166,6 +8216,7 @@ __metadata:
     "@react-navigation/stack": "npm:^7.6.11"
     "@reduxjs/toolkit": "npm:^2.11.1"
     "@shopify/react-native-skia": "npm:^2.4.14"
+    "@testing-library/react-native": "npm:^13.3.3"
     "@textlint/markdown-to-ast": "npm:^14.3.0"
     "@types/jest": "npm:^29.5.13"
     "@types/lodash": "npm:^4.17.13"
@@ -8175,7 +8226,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^5.9.1"
     babel-jest: "npm:^29.6.3"
     color: "npm:^5.0.3"
-    date-fns: "npm:^4.1.0"
+    date-fns: "npm:^1.29.0"
     eslint: "npm:^8.19.0"
     eslint-plugin-functional: "npm:^6.6.3"
     eslint-plugin-import: "npm:^2.31.0"
@@ -8193,6 +8244,7 @@ __metadata:
     react: "npm:19.1.0"
     react-i18next: "npm:^15.1.1"
     react-native: "npm:0.81.5"
+    react-native-blob-util: "npm:0.15.0"
     react-native-bootsplash: "npm:^6.3.11"
     react-native-config: "npm:^1.6.1"
     react-native-device-info: "npm:^15.0.1"
@@ -8207,7 +8259,9 @@ __metadata:
     react-native-qrcode-svg: "npm:^6.3.21"
     react-native-reanimated: "npm:^3.19.4"
     react-native-safe-area-context: "npm:^5.6.2"
+    react-native-screen-brightness: "npm:^2.0.0-alpha"
     react-native-screens: "npm:^4.18.0"
+    react-native-screenshot-prevent: "npm:^1.2.1"
     react-native-svg: "npm:^15.15.1"
     react-native-svg-transformer: "npm:^1.5.2"
     react-native-url-polyfill: "npm:^3.0.0"
@@ -8888,6 +8942,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jest-diff@npm:30.2.0":
+  version: 30.2.0
+  resolution: "jest-diff@npm:30.2.0"
+  dependencies:
+    "@jest/diff-sequences": "npm:30.0.1"
+    "@jest/get-type": "npm:30.1.0"
+    chalk: "npm:^4.1.2"
+    pretty-format: "npm:30.2.0"
+  checksum: 10/1fb9e4fb7dff81814b4f69eaa7db28e184d62306a3a8ea2447d02ca53d2cfa771e83ede513f67ec5239dffacfaac32ff2b49866d211e4c7516f51c1fc06ede42
+  languageName: node
+  linkType: hard
+
 "jest-diff@npm:^29.7.0":
   version: 29.7.0
   resolution: "jest-diff@npm:29.7.0"
@@ -8985,6 +9051,18 @@ __metadata:
     jest-get-type: "npm:^29.6.3"
     pretty-format: "npm:^29.7.0"
   checksum: 10/981904a494299cf1e3baed352f8a3bd8b50a8c13a662c509b6a53c31461f94ea3bfeffa9d5efcfeb248e384e318c87de7e3baa6af0f79674e987482aa189af40
+  languageName: node
+  linkType: hard
+
+"jest-matcher-utils@npm:^30.0.5":
+  version: 30.2.0
+  resolution: "jest-matcher-utils@npm:30.2.0"
+  dependencies:
+    "@jest/get-type": "npm:30.1.0"
+    chalk: "npm:^4.1.2"
+    jest-diff: "npm:30.2.0"
+    pretty-format: "npm:30.2.0"
+  checksum: 10/f3f1ecf68ca63c9d1d80a175637a8fc655edfd1ee83220f6e3f6bd464ecbe2f93148fdd440a5a5e5a2b0b2cc8ee84ddc3dcef58a6dbc66821c792f48d260c6d4
   languageName: node
   linkType: hard
 
@@ -11584,6 +11662,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pretty-format@npm:30.2.0, pretty-format@npm:^30.0.5":
+  version: 30.2.0
+  resolution: "pretty-format@npm:30.2.0"
+  dependencies:
+    "@jest/schemas": "npm:30.0.5"
+    ansi-styles: "npm:^5.2.0"
+    react-is: "npm:^18.3.1"
+  checksum: 10/725890d648e3400575eebc99a334a4cd1498e0d36746313913706bbeea20ada27e17c184a3cd45c50f705c16111afa829f3450233fc0fda5eed293c69757e926
+  languageName: node
+  linkType: hard
+
 "pretty-format@npm:^29.0.0, pretty-format@npm:^29.7.0":
   version: 29.7.0
   resolution: "pretty-format@npm:29.7.0"
@@ -11885,7 +11974,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^18.0.0":
+"react-is@npm:^18.0.0, react-is@npm:^18.3.1":
   version: 18.3.1
   resolution: "react-is@npm:18.3.1"
   checksum: 10/d5f60c87d285af24b1e1e7eaeb123ec256c3c8bdea7061ab3932e3e14685708221bf234ec50b21e10dd07f008f1b966a2730a0ce4ff67905b3872ff2042aec22
@@ -11896,6 +11985,16 @@ __metadata:
   version: 19.2.1
   resolution: "react-is@npm:19.2.1"
   checksum: 10/d2d0f2b55710c73af1ee5c17e438a274a52758522af9cb1f1f6df35b233a5eb158f4dc8e38e0c058b090bf7d432f27fc6c59dd016c811109260097cea5268461
+  languageName: node
+  linkType: hard
+
+"react-native-blob-util@npm:0.15.0":
+  version: 0.15.0
+  resolution: "react-native-blob-util@npm:0.15.0"
+  dependencies:
+    base-64: "npm:0.1.0"
+    glob: "npm:^7.1.6"
+  checksum: 10/8573b90e3e4ef0c83ca9fa6acfb32fc7b4553ec0fe88e5725b636b086e4fc8161943448667d01453db29342405cc3dbdbd3259603a0e55f7256959bb1424ef61
   languageName: node
   linkType: hard
 
@@ -12159,6 +12258,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-screen-brightness@npm:2.0.0-alpha":
+  version: 2.0.0-alpha
+  resolution: "react-native-screen-brightness@npm:2.0.0-alpha"
+  checksum: 10/d68a92eb90e6460a58e695644b215240adc6b73d8c0efd820a47077463817b8801fca82864bc135bbc3fd52d85deddfebc67a2a327af879e5595515790ab8f02
+  languageName: node
+  linkType: hard
+
+"react-native-screen-brightness@patch:react-native-screen-brightness@npm%3A2.0.0-alpha#./.yarn/patches/react-native-screen-brightness-npm-2.0.0-alpha-22c6aeb21e.patch::locator=ioeudiwapp%40workspace%3A.":
+  version: 2.0.0-alpha
+  resolution: "react-native-screen-brightness@patch:react-native-screen-brightness@npm%3A2.0.0-alpha#./.yarn/patches/react-native-screen-brightness-npm-2.0.0-alpha-22c6aeb21e.patch::version=2.0.0-alpha&hash=17739e&locator=ioeudiwapp%40workspace%3A."
+  checksum: 10/74b87e6331bac59dc61ada30847dd75093f95669060d732a082a67d8dcff62e6d20df09475666327194e27a1b4f8bece64971f6948d3d9ec9158a0992f6311ae
+  languageName: node
+  linkType: hard
+
 "react-native-screens@npm:^4.18.0":
   version: 4.19.0
   resolution: "react-native-screens@npm:4.19.0"
@@ -12169,6 +12282,26 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/0ac8b0a65b65dde7aee0402542ae4760b15382bff1dcdc44b695e69535539a794f5b25e14a389511956f3a513d2b6f405d077aed956199f0b9f57d9fc63974ca
+  languageName: node
+  linkType: hard
+
+"react-native-screenshot-prevent@npm:1.2.1":
+  version: 1.2.1
+  resolution: "react-native-screenshot-prevent@npm:1.2.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/07bb1b89911f9eaf08c977bf3c9e72bf27c711016fdf7fa4003bb5bd438251405d27a98cbc1689e0382ae38672ff68b66eadba1abf1f7ec6207ed35823a4e6f2
+  languageName: node
+  linkType: hard
+
+"react-native-screenshot-prevent@patch:react-native-screenshot-prevent@npm%3A1.2.1#./.yarn/patches/react-native-screenshot-prevent-npm-1.2.1-d115315590.patch::locator=ioeudiwapp%40workspace%3A.":
+  version: 1.2.1
+  resolution: "react-native-screenshot-prevent@patch:react-native-screenshot-prevent@npm%3A1.2.1#./.yarn/patches/react-native-screenshot-prevent-npm-1.2.1-d115315590.patch::version=1.2.1&hash=94a261&locator=ioeudiwapp%40workspace%3A."
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/bfdc70cbf392c655cc2d9d13d7adf8b423d89866716dd1d681afcabf18e9e4387e5f111a55f8049ade41413bef73dea33fc865000a5b5725c81ad3658eba477d
   languageName: node
   linkType: hard
 

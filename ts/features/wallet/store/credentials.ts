@@ -2,12 +2,12 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
-import { StoredCredential } from '../utils/types';
 import { RootState } from '../../../store/types';
 import { preferencesReset } from '../../../store/reducers/preferences';
 import { wellKnownCredential } from '../utils/credentials';
 import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
+import { StoredCredential } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the credentials slice.
@@ -18,11 +18,13 @@ import { resetLifecycle } from './lifecycle';
  */
 export type CredentialsState = {
   credentials: Array<StoredCredential>;
+  valuesHidden: boolean;
 };
 
 // Initial state for the credential slice
 const initialState: CredentialsState = {
-  credentials: []
+  credentials: [],
+  valuesHidden: false
 };
 
 /**
@@ -69,10 +71,14 @@ const credentialsSlice = createSlice({
         return {
           credentials: state.credentials.filter(
             c => c.credentialType !== credentialType
-          )
+          ),
+          valuesHidden: state.valuesHidden
         };
       }
       return state;
+    },
+    itwSetClaimValuesHidden: (state, action: PayloadAction<boolean>) => {
+      state.valuesHidden = action.payload;
     },
     resetCredentials: () => initialState
   },
@@ -112,6 +118,7 @@ export const {
   removeCredential,
   addCredentialWithIdentification,
   addPidWithIdentification,
+  itwSetClaimValuesHidden,
   resetCredentials
 } = credentialsSlice.actions;
 
@@ -165,3 +172,6 @@ export const selectWalletCards: (state: RootState) => Array<WalletCard> =
         credentialStatus: getCredentialStatus(cred)
       }))
   );
+
+export const itwIsClaimValueHiddenSelector = (state: RootState) =>
+  state.wallet.credentials.valuesHidden;

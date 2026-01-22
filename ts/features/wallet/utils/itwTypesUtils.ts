@@ -1,7 +1,4 @@
-import { Credential } from '@pagopa/io-react-native-wallet';
-
-// Digital credential status
-export type ItwJwtCredentialStatus = 'valid' | 'jwtExpired' | 'jwtExpiring';
+import { Credential, WalletInstance } from '@pagopa/io-react-native-wallet';
 
 /**
  * Alias for the IssuerConfiguration type
@@ -10,6 +7,34 @@ export type IssuerConfiguration = Awaited<
   ReturnType<Credential.Issuance.EvaluateIssuerTrust>
 >['issuerConf'];
 
+/**
+ * Alias for the ParsedStatusAssertion type
+ */
+export type ParsedStatusAssertion = Awaited<
+  ReturnType<Credential.Status.VerifyAndParseStatusAssertion>
+>['parsedStatusAssertion']['payload'];
+
+/**
+ * Alias for the WalletInstanceStatus type
+ */
+export type WalletInstanceStatus = Awaited<
+  ReturnType<typeof WalletInstance.getWalletInstanceStatus>
+>;
+
+export type StoredStatusAssertion =
+  | {
+      credentialStatus: 'valid';
+      statusAssertion: string;
+      parsedStatusAssertion: ParsedStatusAssertion;
+    }
+  | {
+      credentialStatus: 'invalid' | 'unknown';
+      // Error code that might contain more details on the invalid status, provided by the issuer
+      errorCode?: string;
+    };
+
+// Digital credential status
+export type ItwJwtCredentialStatus = 'valid' | 'jwtExpired' | 'jwtExpiring';
 // Combined status of a credential, that includes both the physical and the digital version
 export type ItwCredentialStatus =
   | 'unknown'
@@ -19,9 +44,52 @@ export type ItwCredentialStatus =
   | 'expired'
   | ItwJwtCredentialStatus;
 
+export type ItwAuthLevel = 'L2' | 'L3';
+
+export const enum CredentialFormat {
+  MDOC = 'mso_mdoc',
+  SD_JWT = 'dc+sd-jwt',
+  LEGACY_SD_JWT = 'vc+sd-jwt'
+}
+
+export type PercentPosition = `${number}%`;
 /**
- * Alias for the ParsedStatusAssertion type
+ * A TypeScript type alias called `Prettify`.
+ * It takes a type as its argument and returns a new type that has the same properties as the original type,
+ * but the properties are not intersected. This means that the new type is easier to read and understand.
  */
-export type ParsedStatusAssertion = Awaited<
-  ReturnType<Credential.Status.VerifyAndParseStatusAssertion>
->['parsedStatusAssertion']['payload'];
+export type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & object;
+
+/**
+ * Ensures that a type has all properties of T but none of the properties of U
+ */
+export type Only<T, U> = {
+  [P in keyof T]: T[P];
+} & {
+  [P in keyof U]?: never;
+};
+
+/**
+ * Creates a type that can be either T with none of the properties from U, or U with none of the properties from T
+ */
+export type Either<T, U> = Only<T, U> | Only<U, T>;
+
+export type ParsedCredential = Awaited<
+  ReturnType<typeof Credential.Issuance.verifyAndParseCredential>
+>['parsedCredential'];
+
+/**
+ * Type for a credential which is stored in the wallet.
+ */
+export type StoredCredential = {
+  parsedCredential: ParsedCredential;
+  credential: string;
+  keyTag: string;
+  credentialType: string;
+  format: 'vc+sd-jwt' | 'mso_mdoc' | 'dc+sd-jwt';
+  expiration: string;
+  issuedAt?: string;
+  issuerConf: IssuerConfiguration;
+};

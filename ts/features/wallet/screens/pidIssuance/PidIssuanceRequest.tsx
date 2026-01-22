@@ -19,13 +19,14 @@ import {
 } from '../../store/pidIssuance';
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
-import { StoredCredential } from '../../utils/types';
 import { addPidWithIdentification } from '../../store/credentials';
 import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { obtainPidThunk } from '../../middleware/pid';
+import { StoredCredential } from '../../utils/itwTypesUtils';
+import { parseClaimsToRecord } from '../../utils/claims';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -85,34 +86,42 @@ const PidIssuanceRequest = () => {
     handleDismiss: () => navigateToWallet()
   });
 
-  const PidPreview = ({ credential }: { credential: StoredCredential }) => (
-    <>
-      <ForceScrollDownView
-        contentContainerStyle={styles.scroll}
-        footerActions={{
-          actions: {
-            type: 'SingleButton',
-            primary: {
-              label: I18n.t('buttons.continue', {
-                ns: 'global'
-              }),
-              onPress: () => dispatch(addPidWithIdentification({ credential }))
+  const PidPreview = ({ credential }: { credential: StoredCredential }) => {
+    const parsedClaims = parseClaimsToRecord(credential.parsedCredential);
+
+    return (
+      <>
+        <ForceScrollDownView
+          contentContainerStyle={styles.scroll}
+          footerActions={{
+            actions: {
+              type: 'SingleButton',
+              primary: {
+                label: I18n.t('buttons.continue', {
+                  ns: 'global'
+                }),
+                onPress: () =>
+                  dispatch(addPidWithIdentification({ credential }))
+              }
             }
-          }
-        }}
-      >
-        <VStack style={styles.contentWrapper}>
-          <H2>{t('wallet:pidIssuance.preview.title')}</H2>
-          <VSpacer size={16} />
-          <Body>{t('wallet:pidIssuance.preview.subtitle')}</Body>
-          <VSpacer size={24} />
-          <View>
-            <CredentialPreviewClaimsList data={credential} isPreview={true} />
-          </View>
-        </VStack>
-      </ForceScrollDownView>
-    </>
-  );
+          }}
+        >
+          <VStack style={styles.contentWrapper}>
+            <H2>{t('wallet:pidIssuance.preview.title')}</H2>
+            <VSpacer size={16} />
+            <Body>{t('wallet:pidIssuance.preview.subtitle')}</Body>
+            <VSpacer size={24} />
+            <View>
+              <CredentialPreviewClaimsList
+                claims={parsedClaims}
+                isPreview={true}
+              />
+            </View>
+          </VStack>
+        </ForceScrollDownView>
+      </>
+    );
+  };
 
   return (
     <>

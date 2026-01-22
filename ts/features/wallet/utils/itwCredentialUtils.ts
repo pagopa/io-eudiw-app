@@ -2,13 +2,7 @@ import { IOColors, Tag, useIOTheme } from '@pagopa/io-app-design-system';
 import I18n from 'i18next';
 import { CredentialType } from './itwMocksUtils';
 import { ItwCredentialStatus } from './itwTypesUtils';
-
-// Credentials that can be actively requested and obtained by the user
-export const availableCredentials = [
-  CredentialType.DRIVING_LICENSE,
-  CredentialType.EUROPEAN_DISABILITY_CARD,
-  CredentialType.EUROPEAN_HEALTH_INSURANCE_CARD
-] as const;
+import { wellKnownCredential } from './credentials';
 
 // New credentials that can be actively requested and obtained by the user
 export const newCredentials = [
@@ -18,15 +12,6 @@ export const newCredentials = [
 ] as const;
 
 export type NewCredential = (typeof newCredentials)[number];
-
-// Credentials that will be available in the future
-export const upcomingCredentials = [] as ReadonlyArray<string>;
-
-export const isUpcomingCredential = (type: string): boolean =>
-  upcomingCredentials.includes(type);
-
-export const isNewCredential = (type: string): type is NewCredential =>
-  newCredentials.includes(type as NewCredential);
 
 export const useBorderColorByStatus: () => {
   [key in ItwCredentialStatus]: string;
@@ -80,3 +65,29 @@ export const validCredentialStatuses: Array<ItwCredentialStatus> = [
   'expiring',
   'jwtExpiring'
 ];
+
+export const itwGetCredentialNameByCredentialType = (): Record<
+  string,
+  string
+> => ({
+  [wellKnownCredential.DISABILITY_CARD]: I18n.t(
+    'credentials.names.disabilityCard',
+    {
+      ns: 'wallet'
+    }
+  ),
+  [wellKnownCredential.DRIVING_LICENSE]: I18n.t('credentials.names.mdl', {
+    ns: 'wallet'
+  }),
+  [wellKnownCredential.PID]: I18n.t('credentials.names.pid', {
+    ns: 'wallet'
+  })
+});
+
+export const getCredentialNameFromType = (
+  credentialType: string | undefined,
+  withDefault: string = ''
+): string =>
+  credentialType !== undefined
+    ? itwGetCredentialNameByCredentialType()[credentialType]
+    : withDefault;

@@ -20,6 +20,7 @@ import { WalletNavigatorParamsList } from '../features/wallet/navigation/WalletN
 import LoadingScreenContent from '../components/LoadingScreenContent';
 import { OperationResultScreenContent } from '../components/screens/OperationResultScreenContent';
 import { setUrl } from '../store/reducers/deeplinking';
+import { useStoredFontPreference } from '../context/DSTypeFaceContext';
 import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
 import ROOT_ROUTES from './routes';
 import MainStackNavigator, {
@@ -59,6 +60,8 @@ type Screens = {
  * It's based on the startup state and the onboarding completion state and renders the appropriate screen based on these states.
  */
 export const RootStackNavigator = () => {
+  useStoredFontPreference();
+
   const isStartupDone = useAppSelector(selectStartupState);
   const { themeType } = useIOThemeContext();
   const dispatch = useAppDispatch();

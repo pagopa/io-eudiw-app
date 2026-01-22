@@ -39,7 +39,6 @@ import {
 import { createWalletProviderFetch } from '../utils/fetch';
 import { selectSessionId } from '../../../store/reducers/preferences';
 import { wellKnownCredential } from '../utils/credentials';
-import { StoredCredential } from '../utils/types';
 import {
   AppListenerWithAction,
   AppStartListening
@@ -53,6 +52,7 @@ import {
   takeLatestEffect,
   raceEffect
 } from '../../../middleware/listener/effects';
+import { StoredCredential } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 
 /**
@@ -300,7 +300,8 @@ const obtainCredentialListener: AppListenerWithAction<
           keyTag: credentialKeyTag,
           format: format as 'vc+sd-jwt' | 'mso_mdoc',
           expiration: expiration.toISOString(),
-          issuedAt: issuedAt?.toISOString()
+          issuedAt: issuedAt?.toISOString(),
+          issuerConf
         }
       })
     );

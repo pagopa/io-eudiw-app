@@ -1,5 +1,4 @@
 import {
-  Body,
   FeatureInfo,
   FooterActions,
   ForceScrollDownView,
@@ -32,6 +31,7 @@ import CredentialTypePresentationClaimsList, {
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import IOMarkdown from '../../../../components/IOMarkdown';
 
 /**
  * Screen which shows the user the credentials and claims that will be shared with the credential issuer
@@ -149,7 +149,7 @@ const CredentialTrust = () => {
             credential: getCredentialNameByType(requestedCredential)
           })}
         </H2>
-        <Body> {t('wallet:credentialIssuance.trust.subtitle')}</Body>
+        <IOMarkdown content={t('wallet:credentialIssuance.trust.subtitle')} />
         <VSpacer size={8} />
         <CredentialTypePresentationClaimsList
           mandatoryDescriptor={requiredDisclosures}
@@ -163,6 +163,12 @@ const CredentialTrust = () => {
         <FeatureInfo
           iconName="trashcan"
           body={t('wallet:credentialIssuance.trust.disclaimer.retention')}
+        />
+        <VSpacer size={48} />
+        <IOMarkdown
+          content={t('wallet:credentialIssuance.trust.tos', {
+            privacyUrl: ''
+          })}
         />
       </View>
       <FooterActions

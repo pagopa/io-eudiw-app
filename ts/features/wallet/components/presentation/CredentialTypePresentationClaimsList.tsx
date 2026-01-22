@@ -11,9 +11,10 @@ import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { getCredentialNameByType } from '../../utils/credentials';
 import { getClaimsFullLocale } from '../../utils/locale';
-import { CredentialClaim } from '../credential/CredentialClaims';
-import { ParsedCredential } from '../../utils/types';
+import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
 import { ClaimsSelector } from '../../../../components/ClaimsSelector';
+import { ParsedCredential } from '../../utils/itwTypesUtils';
+import { claimScheme, ClaimScheme } from '../../utils/claims';
 
 /**
  * This is the type definition for the accepted fields that will be presented to the verifier app.
@@ -63,9 +64,9 @@ type CredentialTypePresentationClaimsListProps = {
 
 type AttributeDescriptor = {
   label: string;
-  value: unknown;
   id: string;
   path: Array<string>;
+  parsed: ClaimScheme | undefined;
 };
 
 type DescriptorTransform = (
@@ -94,13 +95,17 @@ const useTransformDescriptor: DescriptorTransform = descriptor =>
                   );
 
             const path = [credentialtype, namespace, attributeName];
+            const parsed = claimScheme.safeParse({
+              id: attributeName,
+              value: attribute.value
+            });
 
             /**
              * We transform each attribute's parsed value into an {@link AttributeDescriptor} ...
              */
             return {
               label: attributeLabel,
-              value: attribute.value,
+              parsed: parsed.success ? parsed.data : undefined,
               id: attributeName,
               path
             };
@@ -193,7 +198,7 @@ const CredentialTypePresentationClaimsList = ({
                           {index !== 0 && <Divider />}
                           <View style={styles.dataItem}>
                             <View style={styles.dataItemLeft}>
-                              <CredentialClaim
+                              <ItwCredentialClaim
                                 isPreview={true}
                                 claim={value}
                                 reversed={true}
@@ -231,7 +236,7 @@ const CredentialTypePresentationClaimsList = ({
                             {index !== 0 && <Divider />}
                             <View style={styles.dataItem}>
                               <View style={styles.dataItemLeft}>
-                                <CredentialClaim
+                                <ItwCredentialClaim
                                   isPreview={true}
                                   claim={value}
                                   reversed={true}

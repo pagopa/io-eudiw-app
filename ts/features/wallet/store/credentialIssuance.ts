@@ -8,8 +8,8 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import { StoredCredential } from '../utils/types';
 import { preferencesReset } from '../../../store/reducers/preferences';
+import { StoredCredential } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 
 export type RequestedCredential = string | undefined;
