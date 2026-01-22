@@ -34,8 +34,10 @@ const PresentationSuccess = () => {
           title: t('wallet:presentation.successWithRedirect.title'),
           subtitle: t('wallet:presentation.successWithRedirect.subtitle'),
           action: {
-            accessibilityLabel: t('global:buttons.continue'),
-            label: t('global:buttons.continue'),
+            accessibilityLabel: t(
+              'wallet:presentation.successWithRedirect.continue'
+            ),
+            label: t('wallet:presentation.successWithRedirect.continue'),
             onPress: () => {
               openWebUrl(redirectUri, () =>
                 toast.error(t('global:errors.generic'))
@@ -50,8 +52,8 @@ const PresentationSuccess = () => {
           title: t('wallet:presentation.success.title'),
           subtitle: t('wallet:presentation.success.subtitle'),
           action: {
-            accessibilityLabel: t('global:buttons.done'),
-            label: t('global:buttons.done'),
+            accessibilityLabel: t('global:buttons.close'),
+            label: t('global:buttons.close'),
             onPress: () => {
               navigateToWallet();
               dispatch(resetPresentation());

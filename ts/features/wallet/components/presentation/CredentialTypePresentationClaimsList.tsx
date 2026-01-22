@@ -11,7 +11,7 @@ import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { getCredentialNameByType } from '../../utils/credentials';
 import { getClaimsFullLocale } from '../../utils/locale';
-import { CredentialClaim } from '../credential/CredentialClaims';
+import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
 import { ClaimsSelector } from '../../../../components/ClaimsSelector';
 import { ParsedCredential } from '../../utils/itwTypesUtils';
 import { claimScheme, ClaimScheme } from '../../utils/claims';
@@ -198,7 +198,7 @@ const CredentialTypePresentationClaimsList = ({
                           {index !== 0 && <Divider />}
                           <View style={styles.dataItem}>
                             <View style={styles.dataItemLeft}>
-                              <CredentialClaim
+                              <ItwCredentialClaim
                                 isPreview={true}
                                 claim={value}
                                 reversed={true}
@@ -236,7 +236,7 @@ const CredentialTypePresentationClaimsList = ({
                             {index !== 0 && <Divider />}
                             <View style={styles.dataItem}>
                               <View style={styles.dataItemLeft}>
-                                <CredentialClaim
+                                <ItwCredentialClaim
                                   isPreview={true}
                                   claim={value}
                                   reversed={true}

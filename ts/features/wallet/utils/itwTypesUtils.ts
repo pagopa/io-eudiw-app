@@ -91,4 +91,5 @@ export type StoredCredential = {
   format: 'vc+sd-jwt' | 'mso_mdoc' | 'dc+sd-jwt';
   expiration: string;
   issuedAt?: string;
+  issuerConf: IssuerConfiguration;
 };

@@ -157,6 +157,13 @@ const CredentialTrust = () => {
           />
         </VStack>
         <VSpacer size={24} />
+        <H2>
+          {t('wallet:credentialIssuance.trust.title', {
+            credential: getCredentialNameByType(requestedCredential)
+          })}
+        </H2>
+        <IOMarkdown content={t('wallet:credentialIssuance.trust.subtitle')} />
+        <VSpacer size={8} />
         <CredentialTypePresentationClaimsList
           mandatoryDescriptor={requiredDisclosures}
         />

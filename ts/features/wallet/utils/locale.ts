@@ -1,5 +1,7 @@
 import i18next from 'i18next';
 
+export type Locales = 'it' | 'de' | 'en';
+
 /**
  * Enum for the claims locales.
  * This is used to get the correct locale for the claims.
@@ -26,3 +28,15 @@ export const localeToClaimsLocales = new Map<string, ClaimsLocales>([
 export const getClaimsFullLocale = (): ClaimsLocales =>
   localeToClaimsLocales.get(i18next.resolvedLanguage ?? ClaimsLocales.it) ??
   ClaimsLocales.it;
+
+/**
+ * Returns the primary component of a locale
+ *
+ * @see https://en.wikipedia.org/wiki/IETF_language_tag
+ */
+export function getLocalePrimary(
+  locale: string,
+  separator: string = '-'
+): string {
+  return locale.split(separator).filter(_ => _.length > 0)?.[0];
+}

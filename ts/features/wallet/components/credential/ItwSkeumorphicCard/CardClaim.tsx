@@ -1,5 +1,5 @@
 import { WithTestID } from '@pagopa/io-app-design-system';
-import { JSX, memo, ReactNode, useMemo } from 'react';
+import { memo, ReactElement, ReactNode, useMemo } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { format } from 'date-fns';
 
@@ -14,7 +14,6 @@ import {
   ParsedClaimsRecord,
   SimpleDateFormat
 } from '../../../utils/claims';
-import { UnknownClaimItem } from '../CredentialClaims';
 import { ClaimLabel, ClaimLabelProps } from './ClaimLabel';
 import { ClaimImage } from './ClaimImage';
 
@@ -23,6 +22,7 @@ type HorizontalClaimPosition = Either<
   { right: PercentPosition }
 >;
 
+// Defines the claim vertical position using the top OR the bottom absolute position value
 type VerticalClaimPosition = Either<
   { top: PercentPosition },
   { bottom: PercentPosition }
@@ -37,12 +37,22 @@ export type ClaimDimensions = Prettify<
 
 export type CardClaimProps = Prettify<
   {
+    // A claim that will be used to render its component
+    // Since we are passing this value by accessing the claims object by key, the value could be undefined
     claim?: ParsedClaimsRecord[string];
+    // Absolute position expressed in percentages from top-left corner
     position?: ClaimPosition;
+    // Claim dimensions
     dimensions?: ClaimDimensions;
+    // Optional format for dates contained in the claim component
     dateFormat?: SimpleDateFormat;
   } & ClaimLabelProps
 >;
+
+/**
+ * Default claim component, it decoded the provided value and renders the corresponding component
+ * @returns The corresponding component if a value is correctly decoded, otherwise null
+ */
 const CardClaim = ({
   claim,
   position,
@@ -60,10 +70,7 @@ const CardClaim = ({
       switch (claim.parsed.type) {
         case claimType.date:
         case claimType.expireDate: {
-          const formattedDate = format(
-            claim.parsed.value,
-            dateFormat === 'DD/MM/YY' ? 'dd/MM/yy' : 'dd/MM/yyyy'
-          );
+          const formattedDate = format(claim.parsed.value, dateFormat);
           return <ClaimLabel {...labelProps}>{formattedDate}</ClaimLabel>;
         }
 
@@ -101,7 +108,7 @@ const CardClaim = ({
           );
       }
     } else {
-      return <UnknownClaimItem label={claim.label} reversed={false} />;
+      return null;
     }
   }, [claim, labelProps, dateFormat]);
 
@@ -126,13 +133,18 @@ const styles = StyleSheet.create({
   }
 });
 
-type CardClaimRendererProps<T extends ClaimScheme> = {
-  claim?: T;
-  type: T['type'];
-  component: (claim: T) => JSX.Element;
+type ClaimOfType<T extends ClaimScheme['type']> = Extract<
+  ClaimScheme,
+  { type: T }
+>;
+
+type CardClaimRendererProps<T extends ClaimScheme['type']> = {
+  claim?: ClaimScheme;
+  type: T;
+  component: (claim: ClaimOfType<T>) => ReactElement | Iterable<ReactElement>;
 };
 
-const CardClaimRenderer = <T extends ClaimScheme>({
+const CardClaimRenderer = <T extends keyof typeof claimType>({
   claim,
   type,
   component
@@ -141,24 +153,22 @@ const CardClaimRenderer = <T extends ClaimScheme>({
     return null;
   }
 
-  return component(claim);
+  return component(claim as ClaimOfType<T>);
 };
 
 export type CardClaimContainerProps = WithTestID<{
   position?: ClaimPosition;
   dimensions?: ClaimDimensions;
   children?: ReactNode;
-  style?: ViewStyle;
 }>;
 
 const CardClaimContainer = ({
   position,
   dimensions,
   children,
-  testID,
-  style
+  testID
 }: CardClaimContainerProps) => (
-  <View testID={testID} style={[styles.container, position, dimensions, style]}>
+  <View testID={testID} style={[styles.container, position, dimensions]}>
     {children}
   </View>
 );
