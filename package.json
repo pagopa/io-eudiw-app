@@ -37,7 +37,7 @@
     "@testing-library/react-native": "^13.3.3",
     "@textlint/markdown-to-ast": "^14.3.0",
     "color": "^5.0.3",
-    "date-fns": "^4.1.0",
+    "date-fns": "^1.29.0",
     "eslint-plugin-jest": "^29.12.1",
     "expo": "~54.0.30",
     "expo-build-properties": "~1.0.10",
@@ -66,8 +66,8 @@
     "react-native-reanimated": "^3.19.4",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screen-brightness": "^2.0.0-alpha",
-    "react-native-screenshot-prevent": "^1.2.1",
     "react-native-screens": "~4.16.0",
+    "react-native-screenshot-prevent": "^1.2.1",
     "react-native-svg": "^15.15.1",
     "react-native-svg-transformer": "^1.5.2",
     "react-native-url-polyfill": "^3.0.0",
@@ -109,7 +109,19 @@
   "jest": {
     "preset": "jest-expo",
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|)"
+      "node_modules/(?!(react-native|@react-native|expo(-.*)?|react-native-gesture-handler|react-native-reanimated|react-native-linear-gradient|react-native-qrcode-svg|@react-navigation|@react-native-community|immer|@reduxjs/toolkit|@pagopa/io-app-design-system|@shopify/react-native-skia)/)"
+    ],
+    "setupFilesAfterEnv": [
+      "./jestSetup.js",
+      "./node_modules/react-native-gesture-handler/jestSetup.js",
+      "./node_modules/@shopify/react-native-skia/jestSetup.js"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
     ]
   }
 }
