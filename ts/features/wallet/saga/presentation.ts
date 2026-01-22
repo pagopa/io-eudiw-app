@@ -13,8 +13,7 @@ import {
   setPostDefinitionSuccess,
   setPreDefinitionError,
   setPreDefinitionRequest,
-  setPreDefinitionSuccess,
-  setRelyingPartyData
+  setPreDefinitionSuccess
 } from '../store/presentation';
 import { selectCredentials } from '../store/credentials';
 import {
@@ -102,8 +101,6 @@ function* handlePresentationPreDefinition(
       qrParameters.client_id
     );
 
-    yield* put(setRelyingPartyData(rpConf.federation_entity));
-
     const { requestObject } = yield* call(
       Credential.Presentation.verifyRequestObject,
       requestObjectEncodedJwt,
@@ -143,8 +140,8 @@ function* handlePresentationPreDefinition(
     );
 
     yield* put(
-      setPreDefinitionSuccess(
-        evaluateDcqlQuery
+      setPreDefinitionSuccess({
+        descriptor: evaluateDcqlQuery
           .map(query => {
             const sdJwtFoundCredential = sdJwtCredentials.find(
               cred => cred.credentialType === query.vct
@@ -162,8 +159,9 @@ function* handlePresentationPreDefinition(
               sdJwtFoundCredential.credentialType
             );
           })
-          .reduce((acc, curr) => ({ ...acc, ...curr }), {})
-      )
+          .reduce((acc, curr) => ({ ...acc, ...curr }), {}),
+        rpConfig: rpConf.federation_entity
+      })
     );
 
     /* Wait for the user to confirm the presentation with the claims or to cancel it

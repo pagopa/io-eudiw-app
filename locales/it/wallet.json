@@ -195,8 +195,8 @@
       "false": "The verifier is not authenticated"
     },
     "success": {
-      "title": "Done!",
-      "subtitle": "The verification has been successfully completed.",
+      "title": "Fatto!",
+      "subtitle": "La verifica è stata completata con successo.",
       "button": "Ok"
     },
     "failure": {
@@ -255,12 +255,12 @@
       "header": "Documents"
     },
     "trust": {
-      "title": "{{credential}}: Required Data",
-      "subtitle": "The data will be shared for the issuance of the digital version of the document.",
-      "requiredData": "Required data",
+      "title": "{{credential}}: Dati richiesti",
+      "subtitle": "Saranno mostrati a **{{relyingParty}}** per accedere ai servizi richiesti.",
+      "requiredData": "Dati richiesti",
       "disclaimer": {
-        "store": "Your data is secure and will only be processed for the purposes described in the Privacy Notice.",
-        "retention": "The data will only be shared for the time necessary to issue the digital version of the document."
+        "store": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
+        "retention": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento."
       },
       "dataSource": "Provided by {{source}}"
     },

@@ -18,7 +18,10 @@ import { resetLifecycle } from './lifecycle';
 /**
  * Type for the description which contains the requested claims during the presentation.
  */
-export type Descriptor = CredentialTypePresentationClaimsListDescriptor;
+export type Descriptor = {
+  descriptor: CredentialTypePresentationClaimsListDescriptor;
+  rpConfig?: FederationEntity;
+};
 
 /**
  * Response type for the authorization request which is the final step of the presentation flow.
@@ -30,7 +33,7 @@ export type AuthResponse = Awaited<
 /**
  * Type of the optional claims names selected by the user.
  */
-export type OptionalClaims = Descriptor[0]['optionalDisclosures']; // The optional claims selected by the user
+export type OptionalClaims = Descriptor['descriptor'][0]['optionalDisclosures']; // The optional claims selected by the user
 
 /* State type definition for the presentation slice
  * preDefinition - Async status for the prestation before receiving the descriptor
@@ -45,8 +48,7 @@ export type PresentationState = {
 // Initial state for the presentation slice
 const initialState: PresentationState = {
   preDefinition: setInitial(),
-  postDefinition: setInitial(),
-  relyingPartyData: null
+  postDefinition: setInitial()
 };
 
 /**
@@ -70,9 +72,6 @@ export const presentationSlice = createSlice({
     },
     setPreDefinitionSuccess: (state, action: PayloadAction<Descriptor>) => {
       state.preDefinition = setSuccess(action.payload);
-    },
-    setRelyingPartyData: (state, action: PayloadAction<FederationEntity>) => {
-      state.relyingPartyData = action.payload;
     },
     resetPreDefinition: state => {
       state.preDefinition = setInitial();
@@ -125,7 +124,6 @@ export const {
   setPostDefinitionError,
   setPostDefinitionSuccess,
   setPostDefinitionRequestWithAuth,
-  setRelyingPartyData,
   resetPresentation
 } = presentationSlice.actions;
 
@@ -171,11 +169,3 @@ export const selectPostDefinitionResult = (state: RootState) =>
   state.wallet.presentation.postDefinition.success.status === true
     ? state.wallet.presentation.postDefinition.success.data
     : undefined;
-
-/**
- * Selects the Relying Party data.
- * @param state - The root state
- * @returns the relying party data if present
- */
-export const selectRelyingPartyData = (state: RootState) =>
-  state.wallet.presentation.relyingPartyData;

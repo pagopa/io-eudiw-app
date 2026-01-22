@@ -3,16 +3,14 @@ import { Alert, View, StyleSheet } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
 import {
-  Body,
   FeatureInfo,
   FooterActions,
   ForceScrollDownView,
   H2,
-  HSpacer,
-  Icon,
   IOVisualCostants,
   VSpacer,
-  Alert as AlertDs
+  Alert as AlertDs,
+  VStack
 } from '@pagopa/io-app-design-system';
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { useNavigation } from '@react-navigation/native';
@@ -35,6 +33,12 @@ import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWal
 import { useDebugInfo } from '../../../../hooks/useDebugInfo';
 import { selectIsDebugModeEnabled } from '../../../../store/reducers/debug';
 import CredentialTypePresentationClaimsList from '../../components/presentation/CredentialTypePresentationClaimsList';
+import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import IOMarkdown from '../../../../components/IOMarkdown';
+import {
+  ISSUER_MOCK_NAME,
+  PRIVACY_POLICY_URL_MOCK
+} from '../../utils/itwMocksUtils';
 
 export type PresentationProximityPreviewProps = ProximityDisclosure;
 
@@ -161,19 +165,21 @@ const PresentationProximityPreview = ({ route }: Props) => {
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>
       <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
+        <ItwDataExchangeIcons
+          requesterLogoUri={require('../../assets/img/brand/IPZS.png')}
+        />
         <VSpacer size={24} />
-        <View style={styles.header}>
-          <Icon name={'device'} color={'grey-450'} size={24} />
-          <HSpacer size={8} />
-          <Icon name={'transactions'} color={'grey-450'} size={24} />
-          <HSpacer size={8} />
-          <Icon name={'device'} color={'grey-450'} size={24} />
-        </View>
-        <VSpacer size={24} />
-        <H2>{t('wallet:presentation.trust.title')}</H2>
-        <Body> {t('wallet:presentation.trust.subtitle')}</Body>
+        <VStack space={24}>
+          <H2>{t('wallet:presentation.trust.title')}</H2>
+          <IOMarkdown
+            content={t('wallet:presentation.trust.subtitle', {
+              relyingParty: ISSUER_MOCK_NAME
+            })}
+          />
+        </VStack>
         <VSpacer size={24} />
         {isDebug && <IsAuthenticatedAlert />}
+        <VSpacer size={24} />
         <CredentialTypePresentationClaimsList
           optionalSection={{
             optionalDescriptor: route.params.descriptor,
@@ -183,7 +189,7 @@ const PresentationProximityPreview = ({ route }: Props) => {
           showMandatoryHeader={false}
           showOptionalHeader={false}
         />
-        <VSpacer size={24} />
+        <VSpacer size={48} />
         <FeatureInfo
           iconName="fornitori"
           body={t('wallet:presentation.trust.disclaimer.0')}
@@ -193,7 +199,14 @@ const PresentationProximityPreview = ({ route }: Props) => {
           iconName="trashcan"
           body={t('wallet:presentation.trust.disclaimer.1')}
         />
+        <VSpacer size={48} />
+        <IOMarkdown
+          content={t('wallet:presentation.trust.tos', {
+            privacyUrl: PRIVACY_POLICY_URL_MOCK
+          })}
+        />
       </View>
+
       <FooterActions
         fixed={false}
         actions={{
@@ -220,10 +233,6 @@ const PresentationProximityPreview = ({ route }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
   scroll: {
     flexGrow: 1
   }

@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   Descriptor,
   selectPostDefinitionStatus,
-  selectRelyingPartyData,
+  selectPreDefinitionStatus,
   setPostDefinitionCancel,
   setPostDefinitionRequest
 } from '../../store/presentation';
@@ -49,8 +49,12 @@ const PresentationPostDefinition = ({ route }: Props) => {
   const { t } = useTranslation(['global', 'wallet']);
   const dispatch = useAppDispatch();
   const postDefinitionStatus = useAppSelector(selectPostDefinitionStatus);
-  const rpData = useAppSelector(selectRelyingPartyData);
   const { navigateToWallet } = useNavigateToWalletWithReset();
+  const preDef = useAppSelector(selectPreDefinitionStatus);
+
+  const rpConfig = preDef.success?.status
+    ? preDef.success.data?.rpConfig
+    : undefined;
 
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();
@@ -107,7 +111,7 @@ const PresentationPostDefinition = ({ route }: Props) => {
       <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
         <ItwDataExchangeIcons
           requesterLogoUri={
-            rpData?.logo_uri ? { uri: rpData.logo_uri } : undefined
+            rpConfig?.logo_uri ? { uri: rpConfig.logo_uri } : undefined
           }
         />
         <VSpacer size={24} />
@@ -115,13 +119,13 @@ const PresentationPostDefinition = ({ route }: Props) => {
           <H2>{t('wallet:presentation.trust.title')}</H2>
           <IOMarkdown
             content={t('wallet:presentation.trust.subtitle', {
-              relyingParty: rpData?.organization_name
+              relyingParty: rpConfig?.organization_name
             })}
           />
         </VStack>
         <VSpacer size={24} />
         <CredentialTypePresentationClaimsList
-          mandatoryDescriptor={requiredDisclosures}
+          mandatoryDescriptor={requiredDisclosures.descriptor}
         />
         <VSpacer size={48} />
         <FeatureInfo
@@ -136,7 +140,7 @@ const PresentationPostDefinition = ({ route }: Props) => {
         <VSpacer size={48} />
         <IOMarkdown
           content={t('wallet:presentation.trust.tos', {
-            privacyUrl: rpData?.policy_uri
+            privacyUrl: rpConfig?.policy_uri
           })}
         />
       </View>
