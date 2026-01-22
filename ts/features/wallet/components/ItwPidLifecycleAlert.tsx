@@ -71,7 +71,7 @@ export const ItwPidLifecycleAlert = ({
             `presentation.bottomSheets.pidInfo.alert.${nameSpace}.valid`,
             {
               date: pidCredential.issuedAt
-                ? format(pidCredential.issuedAt, 'dd-MM-yyyy')
+                ? format(pidCredential.issuedAt, 'DD-MM-YYYY')
                 : '-',
               ns: 'wallet'
             }
@@ -84,7 +84,7 @@ export const ItwPidLifecycleAlert = ({
             `presentation.bottomSheets.pidInfo.alert.${nameSpace}.expiring`,
             // TODO [SIW-3225]: date in bold
             {
-              date: format(pidCredential.expiration, 'dd-MM-yyyy'),
+              date: format(pidCredential.expiration, 'DD-MM-YYYY'),
               ns: 'wallet'
             }
           ),
