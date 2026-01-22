@@ -36,11 +36,11 @@ const PresentationFailure = () => {
   return (
     <OperationResultScreenContent
       pictogram="umbrella"
-      title={t('wallet:pidIssuance.failure.title')}
-      subtitle={t('wallet:pidIssuance.failure.subtitle')}
+      title={t('wallet:presentation.failure.title')}
+      subtitle={t('wallet:presentation.failure.subtitle')}
       action={{
-        accessibilityLabel: t('global:buttons.back'),
-        label: t('global:buttons.back'),
+        accessibilityLabel: t('wallet:presentation.failure.button'),
+        label: t('wallet:presentation.failure.button'),
         onPress
       }}
     />

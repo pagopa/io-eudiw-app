@@ -2,8 +2,9 @@
  * Utility functions for working with credential claims.
  */
 
-import { isValid } from 'date-fns';
-import { ParsedCredential } from './itwTypesUtils';
+import { differenceInCalendarDays, isValid } from 'date-fns';
+import z from 'zod';
+import { ParsedCredential, StoredCredential } from './itwTypesUtils';
 
 /**
  *
@@ -89,3 +90,111 @@ export const getCredentialExpireDate = (
   const date = new Date(expireDate.value as string);
   return isValid(date) ? date : undefined;
 };
+
+/**
+ * Returns the remaining days until the expiration a {@see ParsedCredential}
+ * @param credential the parsed credential claims
+ * @returns the number of days until the expiration date, undefined if no expire date is found
+ */
+export const getCredentialExpireDays = (
+  credential: ParsedCredential
+): number | undefined => {
+  const expireDate = getCredentialExpireDate(credential);
+
+  if (expireDate === undefined) {
+    return undefined;
+  }
+
+  return differenceInCalendarDays(expireDate, Date.now());
+};
+
+const FISCAL_CODE_REGEX =
+  /([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z])/g;
+
+/**
+ * Extract a fiscal code from any string.
+ * @param s - the input string
+ * @returns An option with the extracted fiscal code
+ */
+export const extractFiscalCode = (s: string) => {
+  const match = s.match(FISCAL_CODE_REGEX);
+  return match?.[0];
+};
+
+/**
+ *
+ *
+ * Claim extractors
+ *
+ *
+ */
+
+/**
+ * Function that extracts a claim from a credential.
+ * @param claimId - the claim id / name to extract
+ * @param decoder - optional decoder for the claim value, defaults to decoding a string
+ * @returns a function that extracts a claim from a credential
+ */
+export const extractClaim =
+  <T = string>(
+    claimId: string,
+    decoder: z.ZodType<T> = z.string() as unknown as z.ZodType<T>
+  ) =>
+  (credential: ParsedCredential): T =>
+    decoder.parse(credential[claimId]?.value);
+
+/**
+ * Returns the fiscal code from a credential (if applicable)
+ * @param credential - the credential
+ * @returns the fiscal code
+ */
+export const getFiscalCodeFromCredential = (
+  credential: StoredCredential | undefined
+) =>
+  credential?.parsedCredential
+    ? extractFiscalCode(
+        extractClaim(WellKnownClaim.tax_id_code)(credential?.parsedCredential)
+      )
+    : '';
+
+/**
+ * Returns the first name from a credential (if applicable)
+ * @param credential - the credential
+ * @returns the first name
+ */
+export const getFirstNameFromCredential = (
+  credential: StoredCredential | undefined
+) =>
+  credential?.parsedCredential
+    ? extractClaim(WellKnownClaim.given_name)(credential.parsedCredential)
+    : '';
+
+/**
+ * Returns the family name from a credential (if applicable)
+ * @param credential - the credential
+ * @returns the family name
+ */
+export const getFamilyNameFromCredential = (
+  credential: StoredCredential | undefined
+) =>
+  credential?.parsedCredential
+    ? extractClaim(WellKnownClaim.family_name)(credential.parsedCredential)
+    : '';
+
+/**
+ *
+ *
+ *
+ * CLAIMS LOCALE UTILS
+ *
+ *
+ *
+ */
+
+export const SimpleDateFormat = {
+  DDMMYYYY: 'DD/MM/YYYY',
+  DDMMYY: 'DD/MM/YY'
+} as const;
+
+export type SimpleDateFormat =
+  (typeof SimpleDateFormat)[keyof typeof SimpleDateFormat];

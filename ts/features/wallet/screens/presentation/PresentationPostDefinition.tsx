@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import {
-  Body,
   FeatureInfo,
   FooterActions,
   ForceScrollDownView,
@@ -27,6 +26,7 @@ import { useDisableGestureNavigation } from '../../../../hooks/useDisableGesture
 import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import CredentialTypePresentationClaimsList from '../../components/presentation/CredentialTypePresentationClaimsList';
+import IOMarkdown from '../../../../components/IOMarkdown';
 /**
  * Description which contains the requested of the credential to be presented.
  */
@@ -113,7 +113,7 @@ const PresentationPostDefinition = ({ route }: Props) => {
         </View>
         <VSpacer size={24} />
         <H2>{t('wallet:presentation.trust.title')}</H2>
-        <Body> {t('wallet:presentation.trust.subtitle')}</Body>
+        <IOMarkdown content={t('wallet:presentation.trust.subtitle')} />
         <VSpacer size={8} />
         <CredentialTypePresentationClaimsList
           mandatoryDescriptor={requiredDisclosures}
@@ -127,6 +127,12 @@ const PresentationPostDefinition = ({ route }: Props) => {
         <FeatureInfo
           iconName="trashcan"
           body={t('wallet:presentation.trust.disclaimer.1')}
+        />
+        <VSpacer size={48} />
+        <IOMarkdown
+          content={t('wallet:presentation.trust.tos', {
+            privacyUrl: ''
+          })}
         />
       </View>
       <FooterActions

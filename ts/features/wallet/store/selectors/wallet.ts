@@ -3,13 +3,21 @@
  */
 
 import { createSelector } from '@reduxjs/toolkit';
+import _ from 'lodash';
 import { RootState } from '../../../../store/types';
 import {
+  itwCredentialsPidSelector,
   itwCredentialsPidStatusSelector,
   selectCredentials
 } from '../credentials';
 import { lifecycleIsValidSelector } from '../lifecycle';
 import { wellKnownCredential } from '../../utils/credentials';
+import {
+  getFamilyNameFromCredential,
+  getFirstNameFromCredential,
+  getFiscalCodeFromCredential
+} from '../../utils/itwClaimsUtils';
+import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 
 /**
  * Returns the credentials object from the itw credentials state, excluding the PID credential.
@@ -66,3 +74,55 @@ export const itwShouldRenderWalletReadyBannerSelector = (state: RootState) =>
   // NOTE: Online status checks not yet implemented
   itwCredentialsPidStatusSelector(state) !== 'jwtExpired' &&
   itwIsWalletEmptySelector(state);
+
+/**
+ * Returns the fiscal code from the stored eID.
+ *
+ * @param state - The global state.
+ * @returns The fiscal code.
+ */
+export const selectFiscalCodeFromEid = createSelector(
+  itwCredentialsPidSelector,
+  pid => getFiscalCodeFromCredential(pid) ?? ''
+);
+
+/**
+ * Returns the name and surname from the stored eID.
+ *
+ * @param state - The global state.
+ * @returns The name and surname.
+ */
+export const selectNameSurnameFromEid = createSelector(
+  itwCredentialsPidSelector,
+  pid => {
+    const firstName = getFirstNameFromCredential(pid);
+    const familyName = getFamilyNameFromCredential(pid);
+    return `${_.capitalize(firstName)} ${_.capitalize(familyName)}`.trim();
+  }
+);
+
+/**
+ * Get the credential status and the error message corresponding to the status assertion error, if present.
+ * The message is dynamic and extracted from the issuer configuration.
+ *
+ * Note: the credential type is passed as second argument to reuse the same selector and cache per credential type.
+ *
+ * @param state - The global state.
+ * @param type - The credential type.
+ * @returns The credential status and the error message corresponding to the status assertion error, if present.
+ */
+export const itwCredentialStatusSelector = createSelector(
+  itwCredentialsSelector,
+  (_state: RootState, type: string) => type,
+  (credentials, type) => {
+    const credential = credentials.find(
+      ({ credentialType }) => credentialType === type
+    );
+    // This should never happen
+    if (credential === undefined) {
+      return { status: undefined, message: undefined };
+    }
+
+    return { status: getCredentialStatus(credential), message: undefined };
+  }
+);

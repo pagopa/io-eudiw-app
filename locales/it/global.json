@@ -1,6 +1,6 @@
 {
   "generics": {
-    "waiting": "Wait few seconds",
+    "waiting": "Aspetta qualche secondo",
     "success": "Success",
     "error": {
       "title": "C'è un problema sui nostri sistemi",
@@ -45,14 +45,14 @@
     "next": "Next",
     "skip": "Skip",
     "start": "Inizia",
-    "close": "Close",
+    "close": "Chiudi",
     "delete": "Delete",
-    "continue": "Continue",
+    "continue": "Continua",
     "activate": "Activate",
     "notNow": "Not now",
     "back": "Back",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
+    "cancel": "Cancella",
+    "confirm": "Conferma",
     "help": "Help",
     "done": "Done",
     "show": "Show"
@@ -96,7 +96,7 @@
     }
   },
   "errors": {
-    "generic": "An error occurred"
+    "generic": "Si è verificato un errore"
   },
   "cancelOperation": {
     "title": "Do you want to stop the operation?",
