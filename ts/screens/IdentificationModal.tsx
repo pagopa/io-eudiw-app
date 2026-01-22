@@ -36,8 +36,9 @@ import {
 } from '../store/reducers/preferences';
 import {
   biometricAuthenticationRequest,
-  getBiometryIconName
-} from '../store/utils/identification';
+  getBiometricDesignSystemType,
+  getBiometryDesignSystemIconName
+} from '../utils/biometric';
 import { isAndroid } from '../utils/device';
 
 const onRequestCloseHandler = () => undefined;
@@ -89,9 +90,12 @@ const IdentificationModal = () => {
           onIdentificationSuccess();
         },
         e => {
-          if (e.name === 'DeviceLocked') {
+          if (!e) {
+            return;
+          }
+          if (e === 'timeout') {
             Alert.alert(t('global:identification:error:deviceLocked'));
-          } else if (e.name === 'DeviceLockedPermanent') {
+          } else if (e === 'lockout') {
             Alert.alert(t('global:identification:error:deviceLockedPermanent'));
           }
         }
@@ -103,8 +107,9 @@ const IdentificationModal = () => {
     () =>
       biometricType
         ? {
-            biometricType,
-            biometricAccessibilityLabel: getBiometryIconName(biometricType),
+            biometricType: getBiometricDesignSystemType(biometricType),
+            biometricAccessibilityLabel:
+              getBiometryDesignSystemIconName(biometricType),
             onBiometricPress: () => onFingerprintRequest()
           }
         : {},

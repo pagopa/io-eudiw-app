@@ -1,5 +1,6 @@
 import * as SplashScreen from 'expo-splash-screen';
 import { Linking } from 'react-native';
+import { isPinOrFingerprintSet } from 'react-native-device-info';
 import {
   call,
   delay,
@@ -10,10 +11,7 @@ import {
   takeLatest
 } from 'typed-redux-saga';
 import { checkConfig } from '../config/env';
-import {
-  getBiometricState,
-  hasDeviceScreenLock
-} from '../features/onboarding/utils/biometric';
+import { getBiometricState } from '../features/onboarding/utils/biometric';
 import { walletSaga } from '../features/wallet/saga';
 import { resetLifecycle } from '../features/wallet/store/lifecycle';
 import initI18n from '../i18n/i18n';
@@ -136,7 +134,7 @@ function* startup() {
     yield* call(initI18n);
     yield* call(checkConfig);
     const biometricState = yield* call(getBiometricState);
-    const hasScreenLock = yield* call(hasDeviceScreenLock);
+    const hasScreenLock = yield* call(isPinOrFingerprintSet);
     yield* put(
       startupSetAttributes({
         biometricState,

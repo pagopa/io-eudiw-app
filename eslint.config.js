@@ -11,7 +11,7 @@ module.exports = defineConfig([
   },
   expoConfig,
   {
-    ignores: ['dist/*'],
+    ignores: ['dist/*', 'expo-env.d.ts'],
     plugins: {
       '@stylistic': stylistic,
       sonarjs,

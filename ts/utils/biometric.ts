@@ -1,7 +1,7 @@
 import { BiometricsValidType } from '@pagopa/io-app-design-system';
 import * as LocalAuthentication from 'expo-local-authentication';
 import i18next from 'i18next';
-import { isAndroid, isIos } from '../../../utils/device';
+import { isAndroid, isIos } from './device';
 
 /**
  * Simplified biometric state representation.
@@ -99,9 +99,7 @@ export const biometricAuthenticationRequest = async (
     const options: LocalAuthentication.LocalAuthenticationOptions = {
       disableDeviceFallback: true,
       promptMessage: isAndroid
-        ? i18next.t('identification.biometric.title', {
-            ns: 'global'
-          })
+        ? i18next.t('identification.biometric.title', { ns: 'global' })
         : i18next.t('identification.biometric.sensorDescription', {
             ns: 'global'
           }),

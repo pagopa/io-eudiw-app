@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import {
   ContentWrapper,
   FooterActions,
@@ -74,7 +73,7 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
        * the onboarding flow will continue in the respective biometric screen.
        */
       if (isOnboarding) {
-        if (biometricState === 'Available') {
+        if (biometricState === 'AVAILABLE') {
           navigation.navigate('ROOT_ONBOARDING_NAV', {
             screen: 'ONBOARDING_BIOMETRIC_AVAILABLE'
           });
@@ -86,7 +85,7 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
             });
             return;
           }
-          if (biometricState === 'NotEnrolled') {
+          if (biometricState === 'NOT_ENROLLED') {
             navigation.navigate('ROOT_ONBOARDING_NAV', {
               screen: 'ONBOARDING_BIOMETRIC_NOT_ENROLLED'
             });
