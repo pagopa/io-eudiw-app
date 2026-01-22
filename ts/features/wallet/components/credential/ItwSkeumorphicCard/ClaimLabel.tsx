@@ -5,6 +5,7 @@ import {
 } from '@pagopa/io-app-design-system';
 import { FunctionComponent, PropsWithChildren } from 'react';
 import { Text, TextStyle, useWindowDimensions } from 'react-native';
+import { HIDDEN_CLAIM_TEXT } from '../../../utils/constants';
 
 export type ClaimLabelProps = {
   fontSize?: number;
@@ -12,11 +13,6 @@ export type ClaimLabelProps = {
   textTransform?: TextStyle['textTransform'];
   hidden?: boolean;
 };
-
-/*
- * Defines the number of asterisks used to mask the value of claims in the credential details
- */
-export const HIDDEN_CLAIM_TEXT = '******';
 
 /**
  * Custom component to display text claim components on skeumorphic credential cards

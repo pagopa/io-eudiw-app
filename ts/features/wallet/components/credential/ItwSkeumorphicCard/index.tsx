@@ -2,7 +2,9 @@ import { IOColors, Tag, useScaleAnimation } from '@pagopa/io-app-design-system';
 import { ReactNode, useMemo, useState } from 'react';
 
 import { Canvas } from '@shopify/react-native-skia';
+import I18n from 'i18next';
 import {
+  AccessibilityProps,
   LayoutChangeEvent,
   Pressable,
   StyleProp,
@@ -12,6 +14,7 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import {
+  getCredentialNameFromType,
   tagPropsByStatus,
   useBorderColorByStatus,
   validCredentialStatuses
@@ -20,6 +23,7 @@ import {
   ItwBrandedSkiaBorder,
   ItwIridescentBorderVariant
 } from '../../ItwBrandedSkiaBorder';
+import { accessibilityLabelByStatus } from '../../../utils/itwAccessibilityUtils';
 import {
   ItwCredentialStatus,
   StoredCredential
@@ -28,6 +32,7 @@ import { ParsedClaimsRecord } from '../../../utils/claims';
 import { CardBackground } from './CardBackground';
 import { CardData } from './CardData';
 import { FlippableCard } from './FlippableCard';
+import { CardMode } from './types';
 
 export type ItwSkeumorphicCardProps = {
   credential: StoredCredential;
@@ -36,6 +41,7 @@ export type ItwSkeumorphicCardProps = {
   isFlipped?: boolean;
   onPress?: () => void;
   claims: ParsedClaimsRecord;
+  mode: CardMode;
 };
 
 export const ItwSkeumorphicCard = ({
@@ -44,7 +50,8 @@ export const ItwSkeumorphicCard = ({
   isFlipped = false,
   onPress,
   valuesHidden,
-  claims
+  claims,
+  mode
 }: ItwSkeumorphicCardProps) => {
   const FrontSide = useMemo(
     () => (
@@ -57,11 +64,12 @@ export const ItwSkeumorphicCard = ({
           claims={claims}
           credential={credential}
           side="front"
+          mode={mode}
           valuesHidden={valuesHidden}
         />
       </CardSideBase>
     ),
-    [credential, status, valuesHidden, claims]
+    [credential, status, valuesHidden, claims, mode]
   );
 
   const BackSide = useMemo(
@@ -75,11 +83,31 @@ export const ItwSkeumorphicCard = ({
           claims={claims}
           credential={credential}
           side="back"
+          mode={mode}
           valuesHidden={valuesHidden}
         />
       </CardSideBase>
     ),
-    [credential, status, valuesHidden, claims]
+    [credential, status, valuesHidden, claims, mode]
+  );
+
+  const accessibilityProps = useMemo(
+    () =>
+      ({
+        accessible: true,
+        accessibilityLabel: `${getCredentialNameFromType(
+          credential.credentialType
+        )}, ${I18n.t(
+          isFlipped
+            ? 'presentation.credentialDetails.card.back'
+            : 'presentation.credentialDetails.card.front',
+          {
+            ns: 'wallet'
+          }
+        )}`,
+        accessibilityValue: { text: accessibilityLabelByStatus[status] }
+      } as AccessibilityProps),
+    [credential.credentialType, isFlipped, status]
   );
 
   const card = (
@@ -97,7 +125,7 @@ export const ItwSkeumorphicCard = ({
     return (
       <Pressable
         onPress={onPress}
-        // {...accessibilityProps}
+        {...accessibilityProps}
         accessibilityRole="button"
         onPressIn={onPressIn}
         onPressOut={onPressOut}
@@ -108,8 +136,9 @@ export const ItwSkeumorphicCard = ({
   }
 
   return (
-    // {...accessibilityProps}
-    <View accessibilityRole="image">{card}</View>
+    <View {...accessibilityProps} accessibilityRole="image">
+      {card}
+    </View>
   );
 };
 

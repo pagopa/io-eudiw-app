@@ -4,13 +4,12 @@ import { ImageSourcePropType, StyleSheet, View } from 'react-native';
 import { AnimatedImage } from '../../../../../components/AnimatedImage';
 import { wellKnownCredential } from '../../../utils/credentials';
 import { StoredCredential } from '../../../utils/itwTypesUtils';
+import { CardSide } from './types';
 
 type CardBackgroundProps = {
   credentialType: StoredCredential['credentialType'];
   side: CardSide;
 };
-
-export type CardSide = 'front' | 'back';
 
 /**
  * Renders the background of a card based on its type and side
@@ -36,12 +35,12 @@ type CardAssets = Record<CardSide, ImageSourcePropType>;
  */
 const assetsMap: Record<string, CardAssets> = {
   [wellKnownCredential.DRIVING_LICENSE]: {
-    front: require('../../../assets/img/credentials/mdl_front.png'),
-    back: require('../../../assets/img/credentials/mdl_back.png')
+    front: require('../../../assets/img/credential/mdl_front.png'),
+    back: require('../../../assets/img/credential/mdl_back.png')
   },
   [wellKnownCredential.DISABILITY_CARD]: {
-    front: require('../../../assets/img/credentials/dc_front.png'),
-    back: require('../../../assets/img/credentials/dc_back.png')
+    front: require('../../../assets/img/credential/dc_front.png'),
+    back: require('../../../assets/img/credential/dc_back.png')
   }
 };
 

@@ -112,44 +112,130 @@
     }
   },
   "presentation": {
+    "alerts": {
+      "statusAction": "Cosa posso fare?",
+      "mdl": {
+        "content": "La tua Patente su IO ha lo stesso valore legale del documento fisico, solo sul territorio italiano.",
+        "invalid": {
+          "cta": "Rimuovi documento dal Portafoglio"
+        }
+      },
+      "edc": {
+        "content": "Puoi usare la tua Carta Europea della Disabilità su IO per accedere ai servizi sul territorio italiano, negli stessi contesti d'uso del tuo documento fisico."
+      },
+      "expired": {
+        "content": "Il documento non è più valido. Se sei già in possesso del nuovo documento valido, puoi aggiornare la versione digitale nel Portafoglio",
+        "action": "Aggiorna il documento"
+      },
+      "expiring": {
+        "content": "Mancano {{days}} giorni alla scadenza del documento."
+      },
+      "jwtVerification": {
+        "content": {
+          "jwtExpiring": "Verifica la versione digitale del tuo documento entro il {{date}} per continuare a usarlo senza limitazioni.",
+          "jwtExpired": "Verifica ora la versione digitale del tuo documento per continuare a usarlo senza limitazioni."
+        },
+        "action": "Inizia"
+      }
+    },
     "credentialNotFound": {
       "title": "Aggiungi il documento al Portafoglio",
       "subtitle": "Per usare i documenti su IO, prima aggiungili al Portafoglio. È facile e veloce."
     },
     "credentialDetails": {
-      "footer": {
-        "removal": {
-          "remove": "Remove from wallet",
-          "dialog": {
-            "title": "Do you want to remove the document from the wallet?",
-            "content": "If you change your mind, you can add it again later.",
-            "confirm": "Yes, remove"
-          }
+      "card": {
+        "front": "Fronte",
+        "back": "Retro",
+        "showFront": "Mostra fronte",
+        "showBack": "Mostra retro",
+        "hideValues": "Nascondi dati",
+        "showValues": "Mostra dati"
+      },
+      "personalDataTitle": "Dati personali",
+      "documentDataTitle": "Dati del documento",
+      "lastUpdated": "Dati aggiornati al {{lastUpdateTime}}",
+      "boolClaim": {
+        "true": "Sì",
+        "false": "No"
+      },
+      "hiddenClaim": "Nascosto",
+      "fiscalCode": {
+        "label": "Il tuo Codice Fiscale",
+        "action": "Premi per ingrandire e visualizzare il codice a barre a tutto schermo"
+      },
+      "status": {
+        "valid": "Valida",
+        "invalid": "Non valida",
+        "expired": "Scaduta",
+        "expiring": "In scadenza"
+      },
+      "actions": {
+        "removeFromWallet": "Rimuovi dal Portafoglio",
+        "requestAssistance": "Qualcosa non torna?",
+        "showClaimValues": "Mostra gli attributi del documento",
+        "hideClaimValues": "Nascondi gli attributi del documento",
+        "openIPatente": "Vai al saldo punti patente"
+      },
+      "dialogs": {
+        "remove": {
+          "title": "Vuoi rimuovere il documento dal Portafoglio?",
+          "content": "Se cambi idea, potrai riaggiungerlo in seguito.",
+          "confirm": "Sì, rimuovi"
         }
       },
+      "toast": {
+        "removed": "Fatto!"
+      },
+      "verificationExpired": {
+        "title": "Verifica la versione digitale del documento",
+        "content": "È un passaggio di sicurezza necessario per continuare ad usare la tua {{credentialName}} su IO.",
+        "primaryAction": "Inizia"
+      },
+      "mdl": {
+        "walletUpgradeBanner": {
+          "title": "Novità IT-Wallet",
+          "content": "Ottieni IT-Wallet per usare la tua Patente anche come documento d'identità!",
+          "action": "Ottieni IT-Wallet"
+        }
+      },
+      "newCredentialValidityAlert": {
+        "content": {
+          "education_degree": "I tuoi titoli accademici digitali hanno piena validità ufficiale.",
+          "education_enrollment": "Le tue iscrizioni accademiche digitali hanno piena validità ufficiale.",
+          "residency": "Il tuo attestato di residenza digitale ha piena validità ufficiale."
+        }
+      },
+      "discoverItWallet": "Scopri IT-Wallet",
       "partOf": "Parte di"
     },
     "loading": {
-      "title": "We are doing some security checks",
-      "subtitle": "Wait few seconds"
+      "title": "Stiamo facendo dei controlli di sicurezza",
+      "subtitle": "Attendi qualche secondo"
     },
     "trust": {
-      "title": "Allow your data to be read",
-      "subtitle": "They will be shared to access to services.",
-      "requiredClaims": "Required data",
-      "optionalClaims": "Optional data",
+      "title": "Dati richiesti",
+      "subtitle": "Saranno mostrati a **Comune di Soleluna** per accedere ai servizi richiesti",
+      "requiredClaims": "Dati necessari",
+      "optionalClaims": "Dati facoltativi",
       "disclaimer": {
-        "0": "Your data is safe and will be processed only for the purposes described in the Privacy Policy.",
-        "1": "The data will be shared only for the time necessary to issue the credential."
-      }
+        "0": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
+        "1": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento"
+      },
+      "tos": "Premendo **Continua** dichiari di aver letto e compreso l'[Informativa Privacy]({{privacyUrl}})."
     },
     "success": {
-      "title": "Done!",
-      "subtitle": "Continue on the partner site"
+      "title": "Fatto!",
+      "subtitle": "Ora puoi continuare a usare i servizi sul sito dell'ente."
     },
     "successWithRedirect": {
       "title": "Done!",
-      "subtitle": "You will be redirected to the partner site"
+      "subtitle": "Ora puoi continuare a usare i servizi sul sito dell'ente.",
+      "continue": "Continua sul sito dell'ente"
+    },
+    "failure": {
+      "title": "Un problema non permette di continuare",
+      "subtitle": "Si è verificato un errore tecnico che ha impedito l'accesso ai servizi dell'ente. Se il problema persiste, contetta l'assistenza.",
+      "button": "Ho capito"
     },
     "bottomSheets": {
       "pidInfo": {
@@ -173,8 +259,46 @@
             "action": "Rinnova ID"
           }
         }
+      },
+      "org.iso.18013.5.1.mDL": {
+        "expiring": {
+          "title": "Patente su IO: documento in scadenza",
+          "content": "Rinnova la tua Patente di guida presso gli uffici della Motorizzazione Civile o un ente abilitato del tuo territorio.\n\nÈ necessaria una visita medica con un medico autorizzato e provvedere al pagamento dei bollettini che ti saranno indicati.\n\n###### Quali documenti devo preparare?\n\nLa Patente di guida (in scadenza o scaduta), un documento di identità, il Codice Fiscale e una foto recente (formato tessera).",
+          "cta": "Scopri di più"
+        }
+      },
+      "urn:eu.europa.ec.eudi:edc:1": {
+        "expiring": {
+          "title": "Carta europea della disabilità su IO: documento in scadenza",
+          "content": "Puoi richiedere il rinnovo della tua Carta europea della disabilità (CED) contattando l'ente che l'ha emessa.\n\nVerifica le modalità e i documenti richiesti sul sito ufficiale dell'INPS, oppure contattando la tua ASL locale, poiché il rinnovo può variare in base al tipo di disabilità e alle normative del tuo territorio."
+        }
       }
-    }
+    },
+    "itWalletId": {
+      "description": "È il tuo pass digitale per dimostrare chi sei, accedere ai servizi online e ottenere nuovi documenti.",
+      "listItemHeader": "Dati del mio IT-Wallet ID",
+      "cta": {
+        "info": "Parte di IT-Wallet",
+        "revoke": "Disattiva IT-Wallet"
+      },
+      "dialog": {
+        "revoke": {
+          "title": "Vuoi davvero disattivare IT-Wallet?",
+          "message": "Eliminerai i documenti che hai aggiunto al Portafoglio.\nSe cambi idea, potrai riattivare IT-Wallet in futuro.",
+          "confirm": "Sì, disattiva",
+          "cancel": "No, torna indietro"
+        }
+      }
+    },
+    "ctas": {
+      "showQRCode": "Mostra QR Code di verifica"
+    },
+    "statusAssertionUnknown": {
+      "title": "Non siamo riusciti a caricare {{credentialName}}",
+      "content": "Chiudi e riapri l'app per riprovare.",
+      "primaryAction": "Ho capito"
+    },
+    "authSource" : "PagoPa S.p.A."
   },
   "proximity": {
     "showQr": {
@@ -207,22 +331,38 @@
       "close": "Close"
     }
   },
-  "claims": {
-    "providedBy": "Provided by {{credential}}",
+  "verifiableCredentials": {
     "generic": {
-      "notAvailable": "Claim not available",
-      "expiryDate": "Valid until",
-      "issueDate": "Valid from",
-      "category": "Category",
-      "valid": "VALID",
-      "expired": "EXPIRED"
+      "placeholders": {
+        "claimNotAvailable": "Attributo non riconosciuto",
+        "claimLabelNotAvailable": "Etichetta attributo non presente",
+        "organizationName": "Nome ente non disponibile"
+      }
     },
-    "mdl": {
-      "license": "License {{category}}",
-      "verificationEvidence": {
-        "organizationId": "Organization ID",
-        "organizationName": "Organization Name",
-        "countryCode": "Country Code"
+    "claims": {
+      "uniqueId": "ID univoco",
+      "givenName": "Nome",
+      "familyName": "Cognome",
+      "taxIdCode": "Codice Fiscale",
+      "birthdate": "Data di nascita",
+      "placeOfBirth": "Luogo di nascita",
+      "expirationDate": "Scadenza",
+      "securityLevel": "Livello di sicurezza",
+      "info": "Ulteriori info su questi dati",
+      "releasedBy": "Emissione versione digitale",
+      "releasedByPid": "Emissione IT-Wallet ID",
+      "attachments": "Allegati",
+      "authenticSource": "Origine dei dati",
+      "mdl": {
+        "category": "Patente {{category}}",
+        "issuedDate": "Valida dal",
+        "expirationDate": "Valida fino",
+        "restrictionConditions": "Codici",
+        "verificationEvidence": {
+          "organizationId": "ID Organizzazione",
+          "organizationName": "Nome Organizzazione",
+          "countryCode": "Codice Nazione"
+        }
       }
     }
   },
@@ -250,17 +390,18 @@
       }
     },
     "list": {
-      "title": "What would you like to add to the Wallet?",
-      "header": "Documents"
+      "title": "Cosa vorresti aggiungere al Portafoglio?",
+      "header": "Documenti"
     },
     "trust": {
-      "title": "{{credential}}: Required Data",
-      "subtitle": "The data will be shared for the issuance of the digital version of the document.",
-      "requiredData": "Required data",
+      "title": "{{credential}}: dati necessari",
+      "subtitle": "Saranno condivisi con **PagoPA S.p.A.** per il rilascio della versione digitale del documento.",
+      "requiredData": "Dati richiesti",
       "disclaimer": {
-        "store": "Your data is secure and will only be processed for the purposes described in the Privacy Notice.",
-        "retention": "The data will only be shared for the time necessary to issue the digital version of the document."
+        "store": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
+        "retention": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento"
       },
+      "tos": "Premendo **Continua** dichiari di aver letto e compreso l'[Informativa Privacy]({{privacyUrl}}).",
       "dataSource": "Provided by {{source}}"
     },
     "failure": {
@@ -275,6 +416,37 @@
         "content": "È tutto pronto: aggiungi un documento al tuo Portafoglio di IO.",
         "action": "Aggiungi documento"
       }
+    },
+    "credentialPreview": {
+      "loading": "Attendi ancora qualche secondo, senza uscire dall’app",
+      "title": "{{credential}}: ecco l'anteprima dei tuoi dati",
+      "bottomSheet": {
+        "about": {
+          "title": "Chi è?",
+          "subtitle": "È l’ente riconosciuto dallo Stato a fornirti la versione digitale dei tuoi documenti.\n\n Per sapere come tratta i tuoi dati consulta l’[Informativa Privacy]({{privacyUrl}}). "
+        },
+        "authSource": {
+          "title": "Chi è",
+          "subtitle": "È l’ente o la banca dati digitale che detiene i dati contenuti all'interno del tuo documento."
+        }
+      },
+      "actions": {
+        "primary": "Aggiungi al Portafoglio",
+        "secondary": "Annulla"
+      }
+    },
+    "credentialNotFound": {
+      "title": "Aggiungi il documento al Portafoglio",
+      "subtitle": "Per usare i documenti su IO, prima aggiungili al Portafoglio. È facile e veloce."
+    },
+    "walletInstanceNotActive": {
+      "itWallet": {
+        "title": "Ottieni IT-Wallet per continuare",
+        "body": "Per aggiungere nuovi documenti al tuo Portafoglio di IO ottieni IT-Wallet: ti basta avere con te la Carta di Identità Elettronica (CIE).",
+        "bodyBold": ""
+      },
+      "primaryAction": "Inizia",
+      "secondaryAction": "Non ora"
     }
   },
   "generic": {
@@ -283,6 +455,13 @@
       "body": "Dovrai ripetere di nuovo tutti i passaggi",
       "confirm": "Sì, interrompi",
       "cancel": "No, riprendi"
+    },
+    "featureUnavailable": {
+      "title": "In arrivo: questa funzione sarà disponibile a breve"
+    },
+    "error": {
+      "title": "C'è un problema sui nostri sistemi",
+      "body": "Riprova tra qualche minuto. Se si ripete, contatta l'assistenza."
     }
   }
 }
