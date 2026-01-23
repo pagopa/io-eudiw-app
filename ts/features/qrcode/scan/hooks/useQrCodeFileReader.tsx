@@ -23,6 +23,11 @@ const imageLibraryOptions: ImagePicker.ImagePickerOptions = {
   base64: true
 };
 
+/**
+ * Hook that handles the image picker and the barcode decoding from the selected image.
+ * @param onBarcodeError - Callback called when a barcode is not successfully decoded
+ * @param onBarcodeSuccess - Callback called when a barcode is successfully decoded
+ */
 const useQrCodeFileReader = ({
   onBarcodeError,
   onBarcodeSuccess
