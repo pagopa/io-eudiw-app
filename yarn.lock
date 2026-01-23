@@ -6614,6 +6614,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-camera@npm:~17.0.10":
+  version: 17.0.10
+  resolution: "expo-camera@npm:17.0.10"
+  dependencies:
+    invariant: "npm:^2.2.4"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+    react-native-web: "*"
+  peerDependenciesMeta:
+    react-native-web:
+      optional: true
+  checksum: 10/f46f3ebe48120d4cf4ea77c1de7f553e1fe76c108ad08de85f6e133575a58d57015fdfd2ecb508a0e87af1953f57c2c8a3bb436a633b3f4d974142cb9f030cf2
+  languageName: node
+  linkType: hard
+
 "expo-constants@npm:~18.0.12":
   version: 18.0.12
   resolution: "expo-constants@npm:18.0.12"
@@ -7769,6 +7786,7 @@ __metadata:
     eslint-plugin-sonarjs: "npm:^3.0.5"
     expo: "npm:~54.0.30"
     expo-build-properties: "npm:~1.0.10"
+    expo-camera: "npm:~17.0.10"
     expo-font: "npm:~14.0.10"
     expo-linking: "npm:~8.0.11"
     expo-screen-capture: "npm:~8.0.9"
@@ -7802,7 +7820,6 @@ __metadata:
     react-native-svg: "npm:^15.15.1"
     react-native-svg-transformer: "npm:^1.5.2"
     react-native-url-polyfill: "npm:^3.0.0"
-    react-native-vision-camera: "npm:^4.7.3"
     react-native-web: "npm:~0.21.0"
     react-redux: "npm:^9.2.0"
     reactotron-react-native: "npm:^5.1.12"
@@ -11558,26 +11575,6 @@ __metadata:
   version: 2.0.3
   resolution: "react-native-uuid@npm:2.0.3"
   checksum: 10/8e2422c5af99f9b7e6d36e62c0ff7173d9d3f886d55e3131238a426426f4ee9e1382b3335e93c5c0e96b54f914b6b6a68f9a1bf5768a50f68be5c15ec85d8ee6
-  languageName: node
-  linkType: hard
-
-"react-native-vision-camera@npm:^4.7.3":
-  version: 4.7.3
-  resolution: "react-native-vision-camera@npm:4.7.3"
-  peerDependencies:
-    "@shopify/react-native-skia": "*"
-    react: "*"
-    react-native: "*"
-    react-native-reanimated: "*"
-    react-native-worklets-core: "*"
-  peerDependenciesMeta:
-    "@shopify/react-native-skia":
-      optional: true
-    react-native-reanimated:
-      optional: true
-    react-native-worklets-core:
-      optional: true
-  checksum: 10/2487d3651cb07918820e1f255480e28fec77f936450570b531b429a1861fad573f6bfd4cdb15a78ea7adb471ee45d08e0006cdac81db4fe35949291f3e12d680
   languageName: node
   linkType: hard
 

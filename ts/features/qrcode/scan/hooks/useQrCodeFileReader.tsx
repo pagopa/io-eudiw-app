@@ -1,12 +1,12 @@
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Alert, Linking } from 'react-native';
 import {
   ImageLibraryOptions,
   ImagePickerResponse,
   launchImageLibrary
 } from 'react-native-image-picker';
-import { useState } from 'react';
-import { Alert, Linking } from 'react-native';
 import RNQRGenerator from 'rn-qr-generator';
-import { useTranslation } from 'react-i18next';
 import { OnBarcodeSuccess, OnBardCodeError } from '../screens/QrCodeScanScreen';
 
 type QrCodeFileReader = {
@@ -92,6 +92,7 @@ const useQrCodeFileReader = ({
     const base64 = response.assets[0].base64;
 
     try {
+      // This could be replaced by expo-camera but it currently doesn't work when provind the URI from the device filesystem
       const result = await RNQRGenerator.detect({ base64 });
       if (result.values.length === 0) {
         handleBarcodeError();
