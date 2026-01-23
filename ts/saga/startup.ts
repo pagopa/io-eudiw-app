@@ -1,4 +1,5 @@
-import BootSplash from 'react-native-bootsplash';
+import * as SplashScreen from 'expo-splash-screen';
+import { Linking } from 'react-native';
 import {
   call,
   delay,
@@ -8,28 +9,27 @@ import {
   take,
   takeLatest
 } from 'typed-redux-saga';
-import { Linking } from 'react-native';
+import { checkConfig } from '../config/env';
+import {
+  getBiometricState,
+  hasDeviceScreenLock
+} from '../features/onboarding/utils/biometric';
+import { walletSaga } from '../features/wallet/saga';
+import { resetLifecycle } from '../features/wallet/store/lifecycle';
 import initI18n from '../i18n/i18n';
+import { isNavigationReady } from '../navigation/utils';
+import { selectUrl } from '../store/reducers/deeplinking';
+import {
+  preferencesReset,
+  preferencesSetIsOnboardingDone,
+  selectisOnboardingComplete
+} from '../store/reducers/preferences';
 import {
   startupSetAttributes,
   startupSetError,
   startupSetLoading,
   startupSetStatus
 } from '../store/reducers/startup';
-import {
-  getBiometricState,
-  hasDeviceScreenLock
-} from '../features/onboarding/utils/biometric';
-import { checkConfig } from '../config/configSetup';
-import {
-  preferencesReset,
-  preferencesSetIsOnboardingDone,
-  selectisOnboardingComplete
-} from '../store/reducers/preferences';
-import { walletSaga } from '../features/wallet/saga';
-import { selectUrl } from '../store/reducers/deeplinking';
-import { isNavigationReady } from '../navigation/utils';
-import { resetLifecycle } from '../features/wallet/store/lifecycle';
 import {
   IdentificationResultTask,
   startSequentializedIdentificationProcess
@@ -39,7 +39,7 @@ import {
  * Helper function that is called when the wallet owner successfully identifies at application startup
  */
 function* onStartupIdentified() {
-  yield* call(BootSplash.hide, { fade: true });
+  yield* call(SplashScreen.hide, { fade: true });
   yield* fork(walletSaga);
   yield* call(waitForNavigationToBeReady);
   yield* put(startupSetStatus('DONE'));
@@ -86,10 +86,8 @@ function* startIdentification() {
 function* waitForNavigationToBeReady() {
   const warningWaitNavigatorTime = 2000;
   const navigatorPollingTime = 125;
-  // eslint-disable-next-line functional/no-let
   let isMainNavReady = yield* call(isNavigationReady);
 
-  // eslint-disable-next-line functional/no-let
   let timeoutLogged = false;
   const startTime = performance.now();
 
@@ -118,7 +116,7 @@ function* handlePendingDeepLink() {
  */
 function* startOnboarding() {
   yield* put(startupSetStatus('WAIT_ONBOARDING'));
-  yield* call(BootSplash.hide, { fade: true });
+  yield* call(SplashScreen.hide, { fade: true });
   yield* take(preferencesSetIsOnboardingDone);
   /* This clears the wallet state in order to ensure a clean state, specifically on iOS
    * where data stored in the keychain is not cleared on app uninstall.
@@ -153,7 +151,7 @@ function* startup() {
     }
   } catch {
     yield* put(startupSetError());
-    yield* call(BootSplash.hide, { fade: true });
+    yield* call(SplashScreen.hide, { fade: true });
   }
 }
 

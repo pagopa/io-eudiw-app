@@ -1,5 +1,0 @@
-// Config files that should not be linted
-.eslintrc.js
-jest.config.js
-metro.config.js
-babel.config.js

@@ -1,4 +1,3 @@
-/* eslint-disable functional/immutable-data */
 import { useCallback, useEffect, useRef } from 'react';
 import { AppState, AppStateStatus, Platform } from 'react-native';
 import ScreenBrightness from 'react-native-screen-brightness';
@@ -206,7 +205,6 @@ export function useMaxBrightness({
    * - Removing the AppState event listener
    */
   useEffect(() => {
-    // eslint-disable-next-line functional/no-let
     let appStateSubscription: any;
 
     const handleAppStateChange = async (nextAppState: AppStateStatus) => {

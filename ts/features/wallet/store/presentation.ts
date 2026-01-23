@@ -1,6 +1,8 @@
-/* eslint-disable functional/immutable-data */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+/* eslint-disable  */
 import { Credential } from '@pagopa/io-react-native-wallet';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { preferencesReset } from '../../../store/reducers/preferences';
+import { RootState } from '../../../store/types';
 import {
   AsyncStatusValues,
   setError,
@@ -8,10 +10,8 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import { RootState } from '../../../store/types';
-import { preferencesReset } from '../../../store/reducers/preferences';
-import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
 import { CredentialTypePresentationClaimsListDescriptor } from '../components/presentation/CredentialTypePresentationClaimsList';
+import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
 import { resetLifecycle } from './lifecycle';
 
 /**

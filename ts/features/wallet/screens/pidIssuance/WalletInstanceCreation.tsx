@@ -12,34 +12,34 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import I18n from 'i18next';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import Animated, {
   useAnimatedRef,
   useDerivedValue,
   useScrollViewOffset,
   useSharedValue
 } from 'react-native-reanimated';
+import { AnimatedImage } from '../../../../components/AnimatedImage';
 import Feature1Image from '../../assets/img/discovery/feature_1.svg';
 import Feature2Image from '../../assets/img/discovery/feature_2.svg';
 import Feature3Image from '../../assets/img/discovery/feature_3.svg';
 import Feature4Image from '../../assets/img/discovery/feature_4.svg';
 import Feature5Image from '../../assets/img/discovery/feature_5.svg';
-import { AnimatedImage } from '../../../../components/AnimatedImage.tsx';
 
-import { useAppDispatch, useAppSelector } from '../../../../store/index.ts';
+import IOMarkdown from '../../../../components/IOMarkdown/index';
+import { IOScrollViewWithReveal } from '../../../../components/IOScrollViewWithReveal';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useAppDispatch, useAppSelector } from '../../../../store/index';
+import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import {
   resetInstanceCreation,
   selectInstanceStatus,
   setInstanceCreationRequest
-} from '../../store/pidIssuance.ts';
-import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog.tsx';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel.tsx';
-import { IOScrollViewWithReveal } from '../../../../components/IOScrollViewWithReveal.tsx';
-import IOMarkdown from '../../../../components/IOMarkdown/index.tsx';
-import { generateItwIOMarkdownRules } from '../../utils/markdown.ts';
+} from '../../store/pidIssuance';
+import { generateItwIOMarkdownRules } from '../../utils/markdown';
 
 // Offset to avoid to scroll to the block without margins
 const scrollOffset: number = 12;
@@ -110,7 +110,7 @@ export const WalletInstanceCreation = () => {
       productHighlightsLayout.height * (1 - intersectionRatio);
 
     if (productHighlightsLayout.y > 0) {
-      // eslint-disable-next-line functional/immutable-data
+      
       hideAnchorLink.value =
         scrollPosition.value >= productHighlightsLayout.y - threshold;
     }
