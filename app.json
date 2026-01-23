@@ -103,6 +103,12 @@
           "iosPermissions": ["Bluetooth"]
         }
       ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to select QR code images."
+        }
+      ],
       "expo-build-properties",
       "./scripts/android-fix-bouncy-castle-dependency.js"
     ],

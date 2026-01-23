@@ -1,22 +1,12 @@
-import {
-  ImageLibraryOptions,
-  ImagePickerResponse,
-  launchImageLibrary
-} from 'react-native-image-picker';
-import { useState } from 'react';
+import * as ImagePicker from 'expo-image-picker';
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, Linking } from 'react-native';
 import RNQRGenerator from 'rn-qr-generator';
-import { useTranslation } from 'react-i18next';
 import { OnBarcodeSuccess, OnBardCodeError } from '../screens/QrCodeScanScreen';
 
 type QrCodeFileReader = {
-  /**
-   * Shows the image picker that lets the user select an image from the library
-   */
-  showImagePicker: () => void;
-  /**
-   * Indicates that the decoder is currently reading/decoding barcodes
-   */
+  showImagePicker: () => Promise<void>;
   isLoading: boolean;
 };
 
@@ -25,89 +15,90 @@ type QrCodeFileReaderConfiguration = {
   onBarcodeError: OnBardCodeError;
 };
 
-const imageLibraryOptions: ImageLibraryOptions = {
-  mediaType: 'photo',
-  includeBase64: true,
-  selectionLimit: 1
+const imageLibraryOptions: ImagePicker.ImagePickerOptions = {
+  mediaTypes: ['images'],
+  allowsEditing: false,
+  quality: 1,
+  allowsMultipleSelection: false,
+  base64: true
 };
 
-/**
- * Hook that handles the image picker and the barcode decoding from the selected image.
- * @param onBarcodeError - Callback called when a barcode is not successfully decoded
- * @param onBarcodeSuccess - Callback called when a barcode is successfully decoded
- */
 const useQrCodeFileReader = ({
   onBarcodeError,
   onBarcodeSuccess
 }: QrCodeFileReaderConfiguration): QrCodeFileReader => {
   const [isLoading, setIsLoading] = useState(false);
+  const [permissionStatus, requestPermission] =
+    ImagePicker.useMediaLibraryPermissions();
   const { t } = useTranslation(['qrcodeScan', 'global']);
 
-  const handleBarcodeSuccess = (barcodes: Array<string>) => {
-    setIsLoading(false);
-    onBarcodeSuccess(barcodes);
-  };
+  const showPermissionsAlert = useCallback(() => {
+    Alert.alert(
+      t('qrcodeScan:imagePicker.settingsAlert.title'),
+      t('qrcodeScan:imagePicker.settingsAlert.message'),
+      [
+        { text: t('global:buttons.cancel'), style: 'cancel' },
+        {
+          text: t('qrcodeScan:imagePicker.settingsAlert.buttonText.enable'),
+          onPress: Linking.openSettings
+        }
+      ],
+      { cancelable: false }
+    );
+  }, [t]);
 
-  const handleBarcodeError = () => {
-    setIsLoading(false);
-    onBarcodeError();
-  };
+  const processBase64 = useCallback(
+    async (base64: string) => {
+      try {
+        const response = await RNQRGenerator.detect({ base64 });
 
-  /**
-   * Handles the selected image from the image picker and pass the asset to the {@link qrCodeFromImageTask} task
-   */
-  const onImageSelected = async (response: ImagePickerResponse) => {
-    if (response.didCancel) {
-      setIsLoading(false);
-      return;
-    }
-
-    if (response.errorCode) {
-      Alert.alert(
-        t('qrcodeScan:imagePicker.settingsAlert.title'),
-        t('qrcodeScan:imagePicker.settingsAlert.message'),
-        [
-          {
-            text: t('global:buttons.cancel'),
-            style: 'cancel'
-          },
-          {
-            text: t('qrcodeScan:imagePicker.settingsAlert.buttonText.enable'),
-            onPress: Linking.openSettings
-          }
-        ],
-        { cancelable: false }
-      );
-      return;
-    }
-
-    setIsLoading(true);
-
-    // We check only for the first one because we are using selectionLimit: 1
-    if (!response.assets || !response.assets[0] || !response.assets[0].base64) {
-      handleBarcodeError();
-      return;
-    }
-
-    const base64 = response.assets[0].base64;
-
-    try {
-      const result = await RNQRGenerator.detect({ base64 });
-      if (result.values.length === 0) {
-        handleBarcodeError();
-      } else {
-        handleBarcodeSuccess(result.values);
+        if (response.values && response.values.length > 0) {
+          onBarcodeSuccess(response.values);
+        } else {
+          onBarcodeError();
+        }
+      } catch (error) {
+        onBarcodeError();
+      } finally {
+        setIsLoading(false);
       }
-    } catch {
-      handleBarcodeError();
+    },
+    [onBarcodeSuccess, onBarcodeError]
+  );
+
+  const showImagePicker = useCallback(async () => {
+    try {
+      const currentPermission =
+        permissionStatus?.status === ImagePicker.PermissionStatus.GRANTED
+          ? permissionStatus
+          : await requestPermission();
+
+      if (currentPermission.status !== ImagePicker.PermissionStatus.GRANTED) {
+        showPermissionsAlert();
+        return;
+      }
+
+      setIsLoading(true);
+      const result =
+        await ImagePicker.launchImageLibraryAsync(imageLibraryOptions);
+
+      if (result.canceled || !result.assets?.[0]?.base64) {
+        setIsLoading(false);
+        return;
+      }
+
+      await processBase64(result.assets[0].base64);
+    } catch (error) {
+      setIsLoading(false);
+      onBarcodeError();
     }
-  };
-
-  const showImagePicker = async () => {
-    setIsLoading(true);
-
-    void launchImageLibrary(imageLibraryOptions, onImageSelected);
-  };
+  }, [
+    permissionStatus,
+    requestPermission,
+    showPermissionsAlert,
+    processBase64,
+    onBarcodeError
+  ]);
 
   return {
     showImagePicker,
