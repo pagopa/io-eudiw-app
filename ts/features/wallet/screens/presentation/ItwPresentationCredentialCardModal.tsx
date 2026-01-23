@@ -14,7 +14,7 @@ import {
   StoredCredential
 } from '../../utils/itwTypesUtils';
 import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
-import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
+// import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
 import { useMaxBrightness } from '../../../../utils/brightness';
 import {
   ItwSkeumorphicCard,
@@ -52,7 +52,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
   const dispatch = useAppDispatch();
   const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
 
-  usePreventScreenCapture();
+  // usePreventScreenCapture();
   useMaxBrightness({ useSmoothTransition: true });
 
   useLayoutEffect(() => {
