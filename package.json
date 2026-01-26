@@ -15,6 +15,12 @@
     "test": "jest",
     "increment-version": "bash ./scripts/increment-version.sh"
   },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "eslint -c .eslintrc.js --fix"
+    ]
+  },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
     "@gorhom/bottom-sheet": "^5.2.8",
@@ -46,7 +52,6 @@
     "expo-screen-capture": "~8.0.9",
     "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~3.0.9",
-    "husky": "9.1.6",
     "i18next": "^23.16.5",
     "js-base64": "^3.7.7",
     "lodash": "^4.17.23",
@@ -90,9 +95,11 @@
     "eslint-plugin-functional": "^9.0.2",
     "eslint-plugin-react-native": "^5.0.0",
     "eslint-plugin-sonarjs": "^3.0.5",
+    "husky": "^9.1.7",
     "i18next-resources-for-ts": "^2.0.0",
     "jest": "~29.7.0",
     "jest-expo": "~54.0.16",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.8.1",
     "reactotron-react-native": "^5.1.12",
     "reactotron-redux": "^3.1.10",
