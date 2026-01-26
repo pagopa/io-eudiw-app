@@ -10,10 +10,9 @@ import {
   REGISTER,
   REHYDRATE
 } from 'redux-persist';
-import createSagaMiddleware from 'redux-saga';
-import walletReducer from '../features/wallet/store/index';
 import reactotron from '../config/reactotron';
-import rootSaga from '../saga';
+import walletReducer from '../features/wallet/store/index';
+import { listenerMiddleware } from '../middleware/listener';
 import { debugReducer } from './reducers/debug';
 import { deepLinkingReducer } from './reducers/deeplinking';
 import { identificationReducer } from './reducers/identification';
@@ -22,12 +21,8 @@ import { preferencesReducer } from './reducers/preferences';
 import { startupSlice } from './reducers/startup';
 import { AppDispatch, RootState } from './types';
 
-// Create the saga middleware
-const sagaMiddleware = createSagaMiddleware();
-
 /**
  * Redux store configuration.
- * Ignore all the action types dispatched by Redux Persist and add the saga middleware.
  */
 export const store = configureStore({
   reducer: {
@@ -44,17 +39,12 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER] // Ignore all the action types dispatched by Redux Persist
       }
-    }).concat(sagaMiddleware),
+    }).prepend(listenerMiddleware.middleware),
   enhancers: getDefaultEnhancers =>
     __DEV__
       ? getDefaultEnhancers().concat(reactotron.createEnhancer()) // Adding Reactotron enhancer in development
       : getDefaultEnhancers()
 });
-
-/**
- * Run the main saga.
- */
-sagaMiddleware.run(rootSaga);
 
 /**
  * Redux persistor configuration used in the root component with {@link PersistGate}.

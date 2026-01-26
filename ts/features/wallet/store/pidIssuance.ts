@@ -8,6 +8,8 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
+import { createInstanceThunk } from '../middleware/instance';
+import { obtainPidThunk } from '../middleware/pid';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { RequestedCredential } from './credentialIssuance';
 import { resetLifecycle } from './lifecycle';
@@ -37,32 +39,8 @@ const pidIssuanceStatusSlice = createSlice({
   name: 'pidIssuanceStatus',
   initialState,
   reducers: {
-    setInstanceCreationRequest: state => {
-      state.instanceCreation = setLoading();
-    },
-    setInstanceCreationError: (
-      state,
-      action: PayloadAction<{ error: unknown }>
-    ) => {
-      state.instanceCreation = setError(action.payload.error);
-    },
-    setInstanceCreationSuccess: state => {
-      state.instanceCreation = setSuccess();
-    },
     resetInstanceCreation: state => {
       state.instanceCreation = setInitial();
-    },
-    setPidIssuanceRequest: state => {
-      state.issuance = setLoading();
-    },
-    setPidIssuanceError: (state, action: PayloadAction<{ error: unknown }>) => {
-      state.issuance = setError(action.payload.error);
-    },
-    setPidIssuanceSuccess: (
-      state,
-      action: PayloadAction<{ credential: StoredCredential }>
-    ) => {
-      state.issuance = setSuccess(action.payload.credential);
     },
     resetPidIssuance: state => {
       state.issuance = setInitial();
@@ -75,6 +53,34 @@ const pidIssuanceStatusSlice = createSlice({
     }
   },
   extraReducers: builder => {
+    // Instance creation thunk
+    builder.addCase(createInstanceThunk.fulfilled, state => {
+      state.instanceCreation = setSuccess();
+    });
+    builder.addCase(createInstanceThunk.pending, state => {
+      state.instanceCreation = setLoading();
+    });
+    builder.addCase(createInstanceThunk.rejected, (state, action) => {
+      if (action.meta.aborted) {
+        state.instanceCreation = setInitial();
+      } else {
+        state.instanceCreation = setError(action.error);
+      }
+    });
+    // Pid issuance thunk
+    builder.addCase(obtainPidThunk.fulfilled, (state, action) => {
+      state.issuance = setSuccess(action.payload);
+    });
+    builder.addCase(obtainPidThunk.pending, state => {
+      state.issuance = setLoading();
+    });
+    builder.addCase(obtainPidThunk.rejected, (state, action) => {
+      if (action.meta.aborted) {
+        state.issuance = setInitial();
+      } else {
+        state.issuance = setError(action.error);
+      }
+    });
     // This happens when the whole app state is reset
     builder.addCase(preferencesReset, _ => initialState);
     // This happens when the wallet state is reset
@@ -85,17 +91,8 @@ const pidIssuanceStatusSlice = createSlice({
 /**
  * Exports the actions for the pidIssuance slice.
  */
-export const {
-  setInstanceCreationRequest,
-  setInstanceCreationError,
-  setInstanceCreationSuccess,
-  resetInstanceCreation,
-  setPidIssuanceRequest,
-  setPidIssuanceError,
-  setPidIssuanceSuccess,
-  setPendingCredential,
-  resetPidIssuance
-} = pidIssuanceStatusSlice.actions;
+export const { resetInstanceCreation, resetPidIssuance, setPendingCredential } =
+  pidIssuanceStatusSlice.actions;
 
 /**
  * Exports the reducer for the pidIssuance slice.
