@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Your JSON file paths
+# JSON file paths
 json_file="app.json"
 package_file="package.json"
 
