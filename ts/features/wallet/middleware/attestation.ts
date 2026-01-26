@@ -47,6 +47,10 @@ export const getAttestationThunk =
       await regenerateCryptoKey(WIA_KEYTAG);
       const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
 
+      /**
+       * Obtains a new Wallet Instance Attestation.
+       * WARNING: The integrity context must be the same used when creating the Wallet Instance with the same keytag.
+       */
       const attestation = await WalletInstanceAttestation.getAttestation({
         wiaCryptoContext,
         integrityContext,
@@ -54,6 +58,7 @@ export const getAttestationThunk =
         appFetch
       });
 
+      // TODO: WLEO-727 - rework to support multiple attestations issuance
       const walletAttestation = attestation[0].wallet_attestation;
 
       dispatch(setAttestation(walletAttestation));
