@@ -106,7 +106,7 @@ export const ItwSkeumorphicCard = ({
           }
         )}`,
         accessibilityValue: { text: accessibilityLabelByStatus[status] }
-      } as AccessibilityProps),
+      }) as AccessibilityProps,
     [credential.credentialType, isFlipped, status]
   );
 

@@ -4,12 +4,14 @@ const expoConfig = require('eslint-config-expo/flat');
 const stylistic = require('@stylistic/eslint-plugin');
 const sonarjs = require('eslint-plugin-sonarjs');
 const reactNative = require('eslint-plugin-react-native');
+const prettier = require('eslint-config-prettier/flat');
 
 module.exports = defineConfig([
   {
     ignores: ['.expo/*', 'eslint.config.js']
   },
   expoConfig,
+  prettier,
   {
     ignores: ['dist/*', 'expo-env.d.ts', 'tsconfig.json'],
     plugins: {
