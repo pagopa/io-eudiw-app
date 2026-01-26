@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { preferencesReset } from '../../../store/reducers/preferences';

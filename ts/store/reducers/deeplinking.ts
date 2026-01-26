@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../types';
 import { preferencesReset } from './preferences';

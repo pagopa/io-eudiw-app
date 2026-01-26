@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import { Credential } from '@pagopa/io-react-native-wallet';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { preferencesReset } from '../../../store/reducers/preferences';
