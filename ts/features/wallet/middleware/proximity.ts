@@ -202,7 +202,7 @@ const responseHandler = async (listenerApi: AppListener) => {
         // This is needed so that the listener racing with this can trigger
         await listenerApi.take(isAnyOf(setProximityStatusStopped));
       } else {
-        throw new Error('Identification failed');
+        await abortProximityFlow(listenerApi);
       }
     } else {
       await abortProximityFlow(listenerApi);
