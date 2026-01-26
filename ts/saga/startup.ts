@@ -16,7 +16,6 @@ import {
 } from '../features/onboarding/utils/biometric';
 import { walletSaga } from '../features/wallet/saga';
 import { resetLifecycle } from '../features/wallet/store/lifecycle';
-import initI18n from '../i18n/i18n';
 import { isNavigationReady } from '../navigation/utils';
 import { selectUrl } from '../store/reducers/deeplinking';
 import {
@@ -133,7 +132,6 @@ function* startOnboarding() {
  */
 function* startup() {
   try {
-    yield* call(initI18n);
     yield* call(checkConfig);
     const biometricState = yield* call(getBiometricState);
     const hasScreenLock = yield* call(hasDeviceScreenLock);
