@@ -21,7 +21,7 @@ import MAIN_ROUTES from '../../../../navigation/main/routes';
 import WALLET_ROUTES from '../../navigation/routes';
 import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
-import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
+// import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
 import {
   CredentialCtaProps,
   ItwPresentationDetailsScreenBase
@@ -127,7 +127,7 @@ export const ItwPresentationCredentialDetail = ({
   const { t } = useTranslation(['wallet']);
 
   useDebugInfo(credential);
-  usePreventScreenCapture();
+  // usePreventScreenCapture();
 
   const proximityStatus = useAppSelector(selectProximityStatus);
   const proximityDisclosureDescriptor = useAppSelector(

@@ -80,12 +80,12 @@ export const presentationSlice = createSlice({
       state,
       _: PayloadAction<Array<OptionalClaims>>
     ) => {
-      /* Payload is not used but taken from the saga
+      /* Payload is not used but taken from the listener
        * The payload is an array of strings containing the optional claims selected by the user
        */
       state.postDefinition = setLoading();
     },
-    // Empty action which will be intercepted by the saga and trigger the identification before finishing the presentation process
+    // Empty action which will be intercepted by the listener and trigger the identification before finishing the presentation process
     setPostDefinitionCancel: _ => {},
     setPostDefinitionError: (
       state,
@@ -96,7 +96,7 @@ export const presentationSlice = createSlice({
     setPostDefinitionSuccess: (state, action: PayloadAction<AuthResponse>) => {
       state.postDefinition = setSuccess(action.payload);
     },
-    // Empty action which will be intercepted by the saga and trigger the identification before finishing the presentation process
+    // Empty action which will be intercepted by the listener and trigger the identification before finishing the presentation process
     setPostDefinitionRequestWithAuth: _ => {},
     resetPresentation: state => {
       state.preDefinition = setInitial();

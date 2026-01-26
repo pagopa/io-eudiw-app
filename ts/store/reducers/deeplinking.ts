@@ -18,7 +18,7 @@ const initialState: DeepLinkingState = {
 
 /**
  * Redux slice for the deeplinking state. It allows to store pending deep links which couldn't be handled.
- * A saga will take care of handling the deep link when the app is ready.
+ * A listener will take care of handling the deep link when the app is ready.
  */
 const deeplinkingSlice = createSlice({
   name: 'deeplinking',
