@@ -16,20 +16,27 @@ type FlipsGestureDetectorProps = {
   setIsFlipped: (isFlipped: boolean) => void;
   children: ReactNode;
   direction?: keyof typeof directions;
+  onPress?: () => void;
 };
 
-/**
- * This component wraps the children in a GestureDetector that flips the card when the user flicks left or right.
- */
 export const FlipGestureDetector = ({
   isFlipped,
   setIsFlipped,
   children,
-  direction = 'leftright'
+  direction = 'leftright',
+  onPress
 }: FlipsGestureDetectorProps) => {
   const flipGesture = Gesture.Fling()
     .direction(directions[direction])
     .onEnd(() => runOnJS(setIsFlipped)(!isFlipped));
 
-  return <GestureDetector gesture={flipGesture}>{children}</GestureDetector>;
+  const tapGesture = Gesture.Tap().onEnd(() => {
+    if (onPress) {
+      runOnJS(onPress)();
+    }
+  });
+
+  const composed = Gesture.Simultaneous(flipGesture, tapGesture);
+
+  return <GestureDetector gesture={composed}>{children}</GestureDetector>;
 };

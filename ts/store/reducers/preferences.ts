@@ -1,8 +1,7 @@
-/* eslint-disable functional/immutable-data */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { persistReducer, type PersistConfig } from 'redux-persist';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import uuid from 'react-native-uuid';
+import { persistReducer, type PersistConfig } from 'redux-persist';
 import { RootState } from '../types';
 
 export type TypefaceChoice = 'comfortable' | 'standard';

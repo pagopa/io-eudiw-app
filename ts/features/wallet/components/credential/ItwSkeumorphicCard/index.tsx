@@ -1,4 +1,4 @@
-import { IOColors, Tag, useScaleAnimation } from '@pagopa/io-app-design-system';
+import { IOColors, Tag } from '@pagopa/io-app-design-system';
 import { ReactNode, useMemo, useState } from 'react';
 
 import { Canvas } from '@shopify/react-native-skia';
@@ -6,13 +6,13 @@ import I18n from 'i18next';
 import {
   AccessibilityProps,
   LayoutChangeEvent,
-  Pressable,
   StyleProp,
   StyleSheet,
   View,
   ViewStyle
 } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { ParsedClaimsRecord } from '../../../utils/claims';
+import { accessibilityLabelByStatus } from '../../../utils/itwAccessibilityUtils';
 import {
   getCredentialNameFromType,
   tagPropsByStatus,
@@ -20,15 +20,13 @@ import {
   validCredentialStatuses
 } from '../../../utils/itwCredentialUtils';
 import {
-  ItwBrandedSkiaBorder,
-  ItwIridescentBorderVariant
-} from '../../ItwBrandedSkiaBorder';
-import { accessibilityLabelByStatus } from '../../../utils/itwAccessibilityUtils';
-import {
   ItwCredentialStatus,
   StoredCredential
 } from '../../../utils/itwTypesUtils';
-import { ParsedClaimsRecord } from '../../../utils/claims';
+import {
+  ItwBrandedSkiaBorder,
+  ItwIridescentBorderVariant
+} from '../../ItwBrandedSkiaBorder';
 import { CardBackground } from './CardBackground';
 import { CardData } from './CardData';
 import { FlippableCard } from './FlippableCard';
@@ -39,7 +37,6 @@ export type ItwSkeumorphicCardProps = {
   status: ItwCredentialStatus;
   valuesHidden: boolean;
   isFlipped?: boolean;
-  onPress?: () => void;
   claims: ParsedClaimsRecord;
   mode: CardMode;
 };
@@ -48,7 +45,6 @@ export const ItwSkeumorphicCard = ({
   credential,
   status,
   isFlipped = false,
-  onPress,
   valuesHidden,
   claims,
   mode
@@ -106,7 +102,7 @@ export const ItwSkeumorphicCard = ({
           }
         )}`,
         accessibilityValue: { text: accessibilityLabelByStatus[status] }
-      } as AccessibilityProps),
+      }) as AccessibilityProps,
     [credential.credentialType, isFlipped, status]
   );
 
@@ -118,22 +114,6 @@ export const ItwSkeumorphicCard = ({
       isFlipped={isFlipped}
     />
   );
-
-  const { onPressIn, onPressOut, scaleAnimatedStyle } = useScaleAnimation();
-
-  if (onPress) {
-    return (
-      <Pressable
-        onPress={onPress}
-        {...accessibilityProps}
-        accessibilityRole="button"
-        onPressIn={onPressIn}
-        onPressOut={onPressOut}
-      >
-        <Animated.View style={scaleAnimatedStyle}>{card}</Animated.View>
-      </Pressable>
-    );
-  }
 
   return (
     <View {...accessibilityProps} accessibilityRole="image">
