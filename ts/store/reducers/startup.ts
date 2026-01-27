@@ -1,7 +1,6 @@
-/* eslint-disable functional/immutable-data */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../types';
 import { BiometricState } from '../../features/onboarding/utils/biometric';
+import { RootState } from '../types';
 import { preferencesReset } from './preferences';
 
 /* State type definition for the startup slice

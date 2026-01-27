@@ -4,31 +4,31 @@ import {
   useIOTheme,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import { useState, useLayoutEffect, memo, useCallback } from 'react';
+import { StackScreenProps } from '@react-navigation/stack';
+// import { usePreventScreenCapture } from 'expo-screen-capture';
+import I18n from 'i18next';
+import { memo, useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import I18n from 'i18next';
-import { StackScreenProps } from '@react-navigation/stack';
-import {
-  ItwCredentialStatus,
-  StoredCredential
-} from '../../utils/itwTypesUtils';
-import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
-// import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import { useMaxBrightness } from '../../../../utils/brightness';
 import {
   ItwSkeumorphicCard,
   SKEUMORPHIC_CARD_ASPECT_RATIO
 } from '../../components/credential/ItwSkeumorphicCard';
+import { FlipGestureDetector } from '../../components/credential/ItwSkeumorphicCard/FlipGestureDetector';
 import { ItwPresentationCredentialCardFlipButton } from '../../components/presentation/ItwPresentationCredentialCardFlipButton';
 import { ItwPresentationCredentialCardHideValuesButton } from '../../components/presentation/ItwPresentationCredentialCardHideValuesButton';
-import { FlipGestureDetector } from '../../components/credential/ItwSkeumorphicCard/FlipGestureDetector';
-import { useAppDispatch, useAppSelector } from '../../../../store';
+import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import {
   itwIsClaimValueHiddenSelector,
   itwSetClaimValuesHidden
 } from '../../store/credentials';
 import { ParsedClaimsRecord } from '../../utils/claims';
+import {
+  ItwCredentialStatus,
+  StoredCredential
+} from '../../utils/itwTypesUtils';
 
 export type ItwPresentationCredentialCardModalNavigationParams = {
   credential: StoredCredential;

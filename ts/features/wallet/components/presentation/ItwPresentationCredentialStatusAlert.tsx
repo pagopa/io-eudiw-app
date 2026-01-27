@@ -318,11 +318,11 @@ const getLocalizedMessageOrFallback = (
   message: IssuerDynamicErrorAlertProps['message']
 ) =>
   message
-    ? message[getClaimsFullLocale()] ??
+    ? (message[getClaimsFullLocale()] ??
       message[ClaimsLocales.it] ?? {
         title: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
         description: I18n.t('credentials.status.unknown', { ns: 'wallet' })
-      }
+      })
     : {
         title: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
         description: I18n.t('credentials.status.unknown', { ns: 'wallet' })

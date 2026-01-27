@@ -1,22 +1,27 @@
-import * as SecureStorage from '@pagopa/io-react-native-secure-storage';
+import * as SecureStore from 'expo-secure-store';
 import { type Storage } from 'redux-persist';
 
-/**
- * Creates a custom redux-persist persistor based on `io-react-native-secure-storage`.
- * It can be used to store sensitive data in a secure way.
- */
+const options: SecureStore.SecureStoreOptions = {
+  keychainAccessible: SecureStore.WHEN_UNLOCKED_THIS_DEVICE_ONLY
+};
+
+// expo-secure-storage doesn't allow semicolons in keys so we replace them with _
+const encodeKey = (key: string) => key.replace(/:/g, '_');
+
 export default function secureStoragePersistor(): Storage {
   return {
     getItem: async key => {
       try {
-        return await SecureStorage.get(key);
-      } catch (err) {
+        return await SecureStore.getItemAsync(encodeKey(key), options);
+      } catch {
         return undefined;
       }
     },
 
-    setItem: (key, value) => SecureStorage.put(key, value),
+    setItem: async (key, value) =>
+      SecureStore.setItemAsync(encodeKey(key), value, options),
 
-    removeItem: key => SecureStorage.remove(key)
+    removeItem: async key =>
+      SecureStore.deleteItemAsync(encodeKey(key), options)
   };
 }
