@@ -2,14 +2,6 @@
 
 This file describes the reason for the patches applied.
 
-### react-native-screenshot-prevent-npm-1.2.1-d115315590.patch
-
-Created on **24/11/2025**
-
-#### Reason:
-
-- Patch to make the library ready for react-native new architecture
-
 ### mdoc-x5chain-verification-disable-temp.patch
 
 Created on: **02/12/2025**

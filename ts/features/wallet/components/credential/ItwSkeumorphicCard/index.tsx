@@ -6,13 +6,15 @@ import I18n from 'i18next';
 import {
   AccessibilityProps,
   LayoutChangeEvent,
-  Pressable,
   StyleProp,
   StyleSheet,
   View,
   ViewStyle
 } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
+import { ParsedClaimsRecord } from '../../../utils/claims';
+import { accessibilityLabelByStatus } from '../../../utils/itwAccessibilityUtils';
 import {
   getCredentialNameFromType,
   tagPropsByStatus,
@@ -20,15 +22,13 @@ import {
   validCredentialStatuses
 } from '../../../utils/itwCredentialUtils';
 import {
-  ItwBrandedSkiaBorder,
-  ItwIridescentBorderVariant
-} from '../../ItwBrandedSkiaBorder';
-import { accessibilityLabelByStatus } from '../../../utils/itwAccessibilityUtils';
-import {
   ItwCredentialStatus,
   StoredCredential
 } from '../../../utils/itwTypesUtils';
-import { ParsedClaimsRecord } from '../../../utils/claims';
+import {
+  ItwBrandedSkiaBorder,
+  ItwIridescentBorderVariant
+} from '../../ItwBrandedSkiaBorder';
 import { CardBackground } from './CardBackground';
 import { CardData } from './CardData';
 import { FlippableCard } from './FlippableCard';
