@@ -1,4 +1,4 @@
-import { IOColors, Tag, useScaleAnimation } from '@pagopa/io-app-design-system';
+import { IOColors, Tag } from '@pagopa/io-app-design-system';
 import { ReactNode, useMemo, useState } from 'react';
 
 import { Canvas } from '@shopify/react-native-skia';
@@ -11,8 +11,6 @@ import {
   View,
   ViewStyle
 } from 'react-native';
-import { Pressable } from 'react-native-gesture-handler';
-import Animated from 'react-native-reanimated';
 import { ParsedClaimsRecord } from '../../../utils/claims';
 import { accessibilityLabelByStatus } from '../../../utils/itwAccessibilityUtils';
 import {
@@ -39,7 +37,6 @@ export type ItwSkeumorphicCardProps = {
   status: ItwCredentialStatus;
   valuesHidden: boolean;
   isFlipped?: boolean;
-  onPress?: () => void;
   claims: ParsedClaimsRecord;
   mode: CardMode;
 };
@@ -48,7 +45,6 @@ export const ItwSkeumorphicCard = ({
   credential,
   status,
   isFlipped = false,
-  onPress,
   valuesHidden,
   claims,
   mode
@@ -118,22 +114,6 @@ export const ItwSkeumorphicCard = ({
       isFlipped={isFlipped}
     />
   );
-
-  const { onPressIn, onPressOut, scaleAnimatedStyle } = useScaleAnimation();
-
-  if (onPress) {
-    return (
-      <Pressable
-        onPress={onPress}
-        {...accessibilityProps}
-        accessibilityRole="button"
-        onPressIn={onPressIn}
-        onPressOut={onPressOut}
-      >
-        <Animated.View style={scaleAnimatedStyle}>{card}</Animated.View>
-      </Pressable>
-    );
-  }
 
   return (
     <View {...accessibilityProps} accessibilityRole="image">
