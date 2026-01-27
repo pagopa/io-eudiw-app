@@ -93,7 +93,7 @@ const startOnboarding = async (listenerApi: AppListener) => {
 /**
  * Helper function to start the startup process. It takes the same parameters as a listener
  * as it interacts with the listener API.
- * The startup process consists of initializing i18n, checking biometric and screen lock status,
+ * The startup process consists of checking the env config, checking biometric and screen lock status,
  * and then deciding whether to start the onboarding or identification process based on the onboarding completion status which
  * is persisted in the preferences slice.
  * The root navigator mounts the appropriate navigator based on the startup status set by this listener.
@@ -105,7 +105,7 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
   listenerApi
 ) => {
   try {
-    // Initialize env, i18n and check for device capabilities
+    // Check env config and device capabilities
     const state = listenerApi.getState();
     checkConfig();
     const biometricState = await getBiometricState();
