@@ -24,7 +24,7 @@ export type StartupState = {
 const initialState: StartupState = {
   startUpStatus: 'NOT_STARTED',
   hasScreenLock: false,
-  biometricState: 'NotSupported'
+  biometricState: 'NOT_SUPPORTED'
 };
 
 /**
