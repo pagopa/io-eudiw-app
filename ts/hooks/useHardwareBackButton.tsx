@@ -1,6 +1,5 @@
-/* eslint-disable functional/immutable-data */
-import { BackHandler } from 'react-native';
 import { useEffect, useRef } from 'react';
+import { BackHandler } from 'react-native';
 
 export const useHardwareBackButton = (handler: () => boolean) => {
   useEffect(() => {

@@ -1,14 +1,14 @@
 import { Banner, Body, H2, VSpacer } from '@pagopa/io-app-design-system';
 import { ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IOScrollView } from '../../../components/IOScrollView';
 import { useHeaderSecondLevel } from '../../../hooks/useHeaderSecondLevel';
 import { useAppDispatch } from '../../../store';
 import {
   preferencesSetIsBiometricEnabled,
   preferencesSetIsOnboardingDone
 } from '../../../store/reducers/preferences';
-import { IOScrollView } from '../../../components/IOScrollView';
-import { mayUserActivateBiometric } from '../utils/biometric';
+import { confirmBiometricEnabling } from '../utils/biometric';
 
 type IOScrollViewActions = ComponentProps<typeof IOScrollView>['actions'];
 
@@ -31,9 +31,7 @@ const OnboardingBiometricAvailable = () => {
    */
   const onPressPrimary = async () => {
     try {
-      await mayUserActivateBiometric(
-        t('onboarding:biometric.popup.sensorDescription')
-      );
+      await confirmBiometricEnabling();
       dispatch(preferencesSetIsBiometricEnabled(true));
     } catch (err) {
       if (err === 'PERMISSION_DENIED') {
