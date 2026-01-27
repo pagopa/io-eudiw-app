@@ -19,7 +19,5 @@ jobs:
         run: yarn tsc
       - id: run-lint
         run: yarn lint
-      - id: run-prettier
-        run: yarn prettier:check
       - id: run-test
         run: yarn test

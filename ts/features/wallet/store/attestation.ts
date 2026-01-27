@@ -1,9 +1,8 @@
-/* eslint-disable functional/immutable-data */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
-import { RootState } from '../../../store/types';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
 import { preferencesReset } from '../../../store/reducers/preferences';
+import { RootState } from '../../../store/types';
 import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the attestation slice
