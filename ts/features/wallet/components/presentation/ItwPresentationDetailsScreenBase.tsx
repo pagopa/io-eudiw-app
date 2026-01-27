@@ -8,11 +8,11 @@ import Animated, {
   useAnimatedScrollHandler,
   useSharedValue
 } from 'react-native-reanimated';
+import { ButtonBlockProps } from '../../../../components/ui/utils/buttons';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { useAppSelector } from '../../../../store';
 import { lifecycleIsValidSelector } from '../../store/lifecycle';
 import { useHeaderPropsByCredentialType } from '../../utils/itwStyleUtils';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { ButtonBlockProps } from '../../../../components/ui/utils/buttons';
 import { StoredCredential } from '../../utils/itwTypesUtils';
 
 export type CredentialCtaProps = ButtonBlockProps;
@@ -56,7 +56,6 @@ const ItwPresentationDetailsScreenBase = ({
   });
 
   const scrollHandler = useAnimatedScrollHandler(({ contentOffset }) => {
-    // eslint-disable-next-line functional/immutable-data
     scrollTranslationY.value = contentOffset.y;
   });
 

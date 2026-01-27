@@ -1,34 +1,34 @@
+import { useIOThemeContext } from '@pagopa/io-app-design-system';
 import {
   LinkingOptions,
   NavigationContainer,
   NavigatorScreenParams
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useCallback, useEffect } from 'react';
-import { useIOThemeContext } from '@pagopa/io-app-design-system';
+import * as ExpoLinking from 'expo-linking';
 import i18next from 'i18next';
+import { useCallback, useEffect } from 'react';
 import { Linking } from 'react-native';
+import LoadingScreenContent from '../components/LoadingScreenContent';
+import { OperationResultScreenContent } from '../components/screens/OperationResultScreenContent';
+import { useStoredFontPreference } from '../context/DSTypeFaceContext';
 import OnboardingNavigator, {
   OnboardingNavigatorParamsList
 } from '../features/onboarding/navigation/OnboardingNavigator';
+import { WalletNavigatorParamsList } from '../features/wallet/navigation/WalletNavigator';
 import { useAppDispatch, useAppSelector } from '../store';
+import { setUrl } from '../store/reducers/deeplinking';
 import {
   selectStartupState,
   startupSetLoading
 } from '../store/reducers/startup';
-import { WalletNavigatorParamsList } from '../features/wallet/navigation/WalletNavigator';
-import LoadingScreenContent from '../components/LoadingScreenContent';
-import { OperationResultScreenContent } from '../components/screens/OperationResultScreenContent';
-import { setUrl } from '../store/reducers/deeplinking';
-import { useStoredFontPreference } from '../context/DSTypeFaceContext';
-import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
-import ROOT_ROUTES from './routes';
 import MainStackNavigator, {
   MainNavigatorParamsList
 } from './main/MainStackNavigator';
 import MAIN_ROUTES from './main/routes';
+import ROOT_ROUTES from './routes';
+import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
 import { navigationRef } from './utils';
-import { PRESENTATION_INTERNAL_LINKS } from './deepLinkSchemas';
 
 export type RootStackParamList = {
   // Main
@@ -111,7 +111,7 @@ export const RootStackNavigator = () => {
   }, [isStartupDone]);
 
   const linking: LinkingOptions<RootStackParamList> = {
-    prefixes: PRESENTATION_INTERNAL_LINKS,
+    prefixes: [ExpoLinking.createURL('/')],
     config: {
       screens: {
         ROOT_MAIN_NAV: {

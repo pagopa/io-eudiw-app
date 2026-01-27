@@ -1,32 +1,31 @@
-import BootSplash from 'react-native-bootsplash';
-import { Linking } from 'react-native';
 import { isAnyOf, UnknownAction } from '@reduxjs/toolkit';
-import initI18n from '../../i18n/i18n';
+import * as SplashScreen from 'expo-splash-screen';
+import { Linking } from 'react-native';
+import { checkConfig } from '../../config/env';
+import {
+  getBiometricState,
+  hasDeviceScreenLock
+} from '../../features/onboarding/utils/biometric';
+import { addWalletListeners } from '../../features/wallet/middleware';
+import { resetLifecycle } from '../../features/wallet/store/lifecycle';
+import { isNavigationReady } from '../../navigation/utils';
+import { selectUrl } from '../../store/reducers/deeplinking';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '../../store/reducers/identification';
+import {
+  preferencesSetIsOnboardingDone,
+  selectisOnboardingComplete
+} from '../../store/reducers/preferences';
 import {
   startupSetAttributes,
   startupSetError,
   startupSetStatus,
   StartupState
 } from '../../store/reducers/startup';
-import {
-  getBiometricState,
-  hasDeviceScreenLock
-} from '../../features/onboarding/utils/biometric';
-import { checkConfig } from '../../config/configSetup';
-import {
-  preferencesSetIsOnboardingDone,
-  selectisOnboardingComplete
-} from '../../store/reducers/preferences';
-import { selectUrl } from '../../store/reducers/deeplinking';
-import { isNavigationReady } from '../../navigation/utils';
-import { resetLifecycle } from '../../features/wallet/store/lifecycle';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../store/reducers/identification';
-import { addWalletListeners } from '../../features/wallet/middleware';
-import { AppListener, AppListenerWithAction, startAppListening } from '.';
+import { AppListener, AppListenerWithAction, startAppListening } from './index';
 
 /**
  * Utility function to wait for the navigation to be ready before dispatching a navigation event.
@@ -34,9 +33,7 @@ import { AppListener, AppListenerWithAction, startAppListening } from '.';
 const waitForNavigationToBeReady = async (listenerApi: AppListener) => {
   const warningWaitNavigatorTime = 2000;
   const navigatorPollingTime = 125;
-  // eslint-disable-next-line functional/no-let
   let isMainNavReady = isNavigationReady();
-  // eslint-disable-next-line functional/no-let
   let timeoutLogged = false;
   const startTime = Date.now();
   while (!isMainNavReady) {
@@ -96,7 +93,7 @@ const startOnboarding = async (listenerApi: AppListener) => {
 /**
  * Helper function to start the startup process. It takes the same parameters as a listener
  * as it interacts with the listener API.
- * The startup process consists of initializing i18n, checking biometric and screen lock status,
+ * The startup process consists of checking the env config, checking biometric and screen lock status,
  * and then deciding whether to start the onboarding or identification process based on the onboarding completion status which
  * is persisted in the preferences slice.
  * The root navigator mounts the appropriate navigator based on the startup status set by this listener.
@@ -108,9 +105,8 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
   listenerApi
 ) => {
   try {
-    // Initialize env, i18n and check for device capabilities
+    // Check env config and device capabilities
     const state = listenerApi.getState();
-    await initI18n();
     checkConfig();
     const biometricState = await getBiometricState();
     const hasScreenLock = await hasDeviceScreenLock();
@@ -127,7 +123,7 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
       ? 'WAIT_IDENTIFICATION'
       : 'WAIT_ONBOARDING';
     listenerApi.dispatch(startupSetStatus(status));
-    await BootSplash.hide({ fade: true });
+    SplashScreen.hide();
     if (isOnboardingCompleted) {
       await startIdentification(listenerApi);
     } else {
@@ -143,6 +139,6 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
     await handlePendingDeepLink(listenerApi);
   } catch {
     listenerApi.dispatch(startupSetError());
-    await BootSplash.hide({ fade: true });
+    SplashScreen.hide();
   }
 };

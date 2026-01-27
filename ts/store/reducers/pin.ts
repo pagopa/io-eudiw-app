@@ -1,9 +1,8 @@
-/* eslint-disable functional/immutable-data */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
-import { RootState } from '../types';
 import { PinString } from '../../features/onboarding/types/PinString';
 import secureStoragePersistor from '../persistors/secureStorage';
+import { RootState } from '../types';
 import { preferencesReset } from './preferences';
 
 /*
