@@ -6537,6 +6537,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-application@npm:~7.0.8":
+  version: 7.0.8
+  resolution: "expo-application@npm:7.0.8"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/f341a5374209a5ab39cb2366a62b9f53500a4fd555e3dbaa6cdfcceb38fc7891fe2eede85425584add4a13dcd579b7b30d7c6aa4d94c1324959ed6df2f10473b
+  languageName: node
+  linkType: hard
+
 "expo-asset@npm:~12.0.12":
   version: 12.0.12
   resolution: "expo-asset@npm:12.0.12"
@@ -7749,6 +7758,7 @@ __metadata:
     eslint-plugin-react-native: "npm:^5.0.0"
     eslint-plugin-sonarjs: "npm:^3.0.5"
     expo: "npm:~54.0.32"
+    expo-application: "npm:~7.0.8"
     expo-build-properties: "npm:~1.0.10"
     expo-font: "npm:~14.0.11"
     expo-linking: "npm:~8.0.11"
@@ -7769,7 +7779,6 @@ __metadata:
     react-dom: "npm:19.1.0"
     react-i18next: "npm:^15.1.1"
     react-native: "npm:0.81.5"
-    react-native-device-info: "npm:^15.0.1"
     react-native-easing-gradient: "npm:^1.1.1"
     react-native-gesture-handler: "npm:~2.30.0"
     react-native-get-random-values: "npm:^1.11.0"
@@ -11279,15 +11288,6 @@ __metadata:
   version: 19.2.3
   resolution: "react-is@npm:19.2.3"
   checksum: 10/547ac397308204742447b5e4cf556cf09aa97f4cc1c95c4a28e4b2e73a7efab03e59d7b89b4a01f67bf9bf0ca87348a7f0e88bc87c0af6be458aaac1dec5e132
-  languageName: node
-  linkType: hard
-
-"react-native-device-info@npm:^15.0.1":
-  version: 15.0.1
-  resolution: "react-native-device-info@npm:15.0.1"
-  peerDependencies:
-    react-native: "*"
-  checksum: 10/965cccc8b6453c2890a5ee72919189f4b29b076ff02a166ebe0743083db5e1c6b01a720f50e8d3c30af00f0ad204c8e6faaadd3ba57852763944f59fb711b789
   languageName: node
   linkType: hard
 
