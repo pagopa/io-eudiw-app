@@ -103,8 +103,15 @@
           "iosPermissions": ["Bluetooth"]
         }
       ],
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true
+        }
+      ],
       "expo-build-properties",
-      "./scripts/android-fix-bouncy-castle-dependency.js"
+      "./scripts/android-fix-bouncy-castle-dependency.js",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,

@@ -2231,16 +2231,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-secure-storage@npm:^0.2.0":
-  version: 0.2.1
-  resolution: "@pagopa/io-react-native-secure-storage@npm:0.2.1"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10/bfae9428e91775be433d5778e9c9f6a7611537831e7c823703d5f76ffab8c24268f864e55a28aa3cb7fbb33af895850812b1d3625a5f34580a67c1ec2db35f56
-  languageName: node
-  linkType: hard
-
 "@pagopa/io-react-native-wallet@npm:2.2.0":
   version: 2.2.0
   resolution: "@pagopa/io-react-native-wallet@npm:2.2.0"
@@ -6672,6 +6662,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-secure-store@npm:~15.0.8":
+  version: 15.0.8
+  resolution: "expo-secure-store@npm:15.0.8"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/822af991ed80b32cf0c37f6f37e8fac30c654492d4074e70fb123361fe6ce0297178b6c7e55108670c75485e5062a39cf089fd8aee415467c3e4a6749c69d65d
+  languageName: node
+  linkType: hard
+
 "expo-server@npm:^1.0.5":
   version: 1.0.5
   resolution: "expo-server@npm:1.0.5"
@@ -7711,7 +7710,6 @@ __metadata:
     "@pagopa/io-react-native-iso18013": "npm:^0.7.0"
     "@pagopa/io-react-native-jwt": "npm:2.1.0"
     "@pagopa/io-react-native-login-utils": "npm:^1.2.0"
-    "@pagopa/io-react-native-secure-storage": "npm:^0.2.0"
     "@pagopa/io-react-native-wallet": "npm:2.2.0"
     "@pagopa/react-native-nodelibs": "npm:^0.1.0"
     "@react-native-async-storage/async-storage": "npm:^2.2.0"
@@ -7742,6 +7740,7 @@ __metadata:
     expo-font: "npm:~14.0.11"
     expo-linking: "npm:~8.0.11"
     expo-screen-capture: "npm:~8.0.9"
+    expo-secure-store: "npm:~15.0.8"
     expo-splash-screen: "npm:~31.0.13"
     expo-status-bar: "npm:~3.0.9"
     husky: "npm:^9.1.7"
