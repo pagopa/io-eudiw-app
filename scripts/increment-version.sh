@@ -1,11 +1,8 @@
 #!/bin/bash
 
-# Your JSON file paths
+# JSON file paths
 json_file="app.json"
 package_file="package.json"
-
-# Define the expo_sdk_version variable
-expo_sdk_version="52"
 
 # Get the update type argument (major, minor, or patch)
 update_type="$1"
@@ -66,11 +63,11 @@ done
 # Create the new version string
 new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
 
-# Calculate the new versionCode dynamically
-new_version_code_dynamic="${expo_sdk_version}$(printf "%02d" "${version_parts[0]}")$(printf "%02d" "${version_parts[1]}")$(printf "%02d" "${version_parts[2]}")"
+# Calculate the new versionCode simply by incrementing the existing one by 1
+new_version_code=$((current_version_code + 1))
 
 # Update the version, buildNumber, and versionCode fields in the JSON file
-jq --arg new_version "$new_version" --arg new_version_code "$new_version_code_dynamic" '.expo.version = $new_version | .expo.ios.buildNumber = $new_version | .expo.android.versionCode = ($new_version_code | tonumber)' "$json_file" > tmp.json && mv tmp.json "$json_file"
+jq --arg new_version "$new_version" --arg new_version_code "$new_version_code" '.expo.version = $new_version | .expo.ios.buildNumber = $new_version | .expo.android.versionCode = ($new_version_code | tonumber)' "$json_file" > tmp.json && mv tmp.json "$json_file"
 
 # Update the version field in package.json
 jq --arg new_version "$new_version" '.version = $new_version' "$package_file" > tmp_package.json && mv tmp_package.json "$package_file"
@@ -79,5 +76,5 @@ jq --arg new_version "$new_version" '.version = $new_version' "$package_file" > 
 echo "version, buildNumber, versionCode and package.json updated"
 echo "app.json version: $new_version"
 echo "buildNumber: $new_version"
-echo "versionCode: $new_version_code_dynamic"
+echo "versionCode: $new_version_code"
 echo "package.json version: $new_version"

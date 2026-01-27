@@ -1,5 +1,8 @@
 const { withProjectBuildGradle } = require('@expo/config-plugins');
 
+/**
+ * This plugin fixes an issue cause by io-react-native-iso18013 library which causes a dependency resolution conflict with bouncy castle.
+ */
 const GRADLE_FIX = `
 allprojects {
     configurations.all {

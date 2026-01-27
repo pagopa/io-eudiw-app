@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import { useIOThemeContext } from '@pagopa/io-app-design-system';
 import {
   Canvas,

@@ -15,8 +15,7 @@ import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   selectPidIssuanceData,
-  selectPidIssuanceStatus,
-  setPidIssuanceRequest
+  selectPidIssuanceStatus
 } from '../../store/pidIssuance';
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
@@ -25,6 +24,7 @@ import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBac
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { obtainPidThunk } from '../../middleware/pid';
 import { StoredCredential } from '../../utils/itwTypesUtils';
 import { parseClaimsToRecord } from '../../utils/claims';
 
@@ -46,7 +46,10 @@ const PidIssuanceRequest = () => {
   useDisableGestureNavigation();
 
   useEffect(() => {
-    dispatch(setPidIssuanceRequest());
+    const promise = dispatch(obtainPidThunk());
+    return () => {
+      promise.abort();
+    };
   }, [dispatch]);
 
   useEffect(() => {
