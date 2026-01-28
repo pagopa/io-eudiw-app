@@ -1,6 +1,6 @@
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { ProximityDetails } from '../screens/proximity/ItwProximityPresentationDetails';
-import { ParsedCredential, StoredCredential } from './itwTypesUtils';
+import { StoredCredential } from './itwTypesUtils';
 import { assert, WellKnownClaim } from './itwClaimsUtils';
 import { parseClaims } from './claims';
 
