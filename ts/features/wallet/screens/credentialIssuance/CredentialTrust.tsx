@@ -3,13 +3,12 @@ import {
   FooterActions,
   ForceScrollDownView,
   H2,
-  HSpacer,
-  Icon,
   IOVisualCostants,
-  VSpacer
+  VSpacer,
+  VStack
 } from '@pagopa/io-app-design-system';
 import { useCallback, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '../../../../store';
@@ -25,13 +24,19 @@ import {
   selectRequestedCredentialType,
   setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
-import CredentialTypePresentationClaimsList, {
-  CredentialTypePresentationClaimsListDescriptor
-} from '../../components/presentation/CredentialTypePresentationClaimsList';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import IOMarkdown from '../../../../components/IOMarkdown';
+import {
+  ISSUER_MOCK_NAME,
+  PRIVACY_POLICY_URL_MOCK
+} from '../../utils/itwMocksUtils';
+import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import { WellKnownClaim } from '../../utils/itwClaimsUtils';
+import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
+import { ItwRequestedClaimsList } from '../../components/presentation/ItwRequiredClaimsList';
+import { parseClaims } from '../../utils/claims';
 
 /**
  * Screen which shows the user the credentials and claims that will be shared with the credential issuer
@@ -115,46 +120,38 @@ const CredentialTrust = () => {
     return null;
   }
 
-  // This is a mocked descriptor for the PID credential to show its claims in the PresentationClaimsList component
-  const requiredDisclosures: CredentialTypePresentationClaimsListDescriptor = {
-    [wellKnownCredential.PID]: {
-      [wellKnownCredential.PID]: Object.fromEntries(
-        Object.entries(pid!.parsedCredential)
-          .filter(([key]) => key !== 'iat')
-          .map(([key, value]) => [
-            key,
-            {
-              name: value.name,
-              value: value.value
-            }
-          ])
-      )
-    }
-  };
+  const claims = parseClaims(pid!.parsedCredential, {
+    exclude: [WellKnownClaim.unique_id, WellKnownClaim.link_qr_code]
+  });
+
+  const requiredClaims = claims.map(claim => ({
+    claim,
+    source: getCredentialNameFromType(pid.credentialType, '')
+  }));
 
   return (
     <ForceScrollDownView threshold={50}>
       <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
         <VSpacer size={24} />
-        <View style={styles.header}>
-          <Icon name={'device'} color={'grey-450'} size={24} />
-          <HSpacer size={8} />
-          <Icon name={'transactions'} color={'grey-450'} size={24} />
-          <HSpacer size={8} />
-          <Icon name={'institution'} color={'grey-450'} size={24} />
-        </View>
-        <VSpacer size={24} />
-        <H2>
-          {t('wallet:credentialIssuance.trust.title', {
-            credential: getCredentialNameByType(requestedCredential)
-          })}
-        </H2>
-        <IOMarkdown content={t('wallet:credentialIssuance.trust.subtitle')} />
-        <VSpacer size={8} />
-        <CredentialTypePresentationClaimsList
-          mandatoryDescriptor={requiredDisclosures}
+        <ItwDataExchangeIcons
+          requesterLogoUri={require('../../assets/img/brand/IPZS.png')}
         />
         <VSpacer size={24} />
+        <VStack space={24}>
+          <H2>
+            {t('wallet:credentialIssuance.trust.title', {
+              credential: getCredentialNameByType(requestedCredential)
+            })}
+          </H2>
+          <IOMarkdown
+            content={t('wallet:credentialIssuance.trust.subtitle', {
+              relyingParty: ISSUER_MOCK_NAME
+            })}
+          />
+        </VStack>
+        <VSpacer size={24} />
+        <ItwRequestedClaimsList items={requiredClaims} />
+        <VSpacer size={48} />
         <FeatureInfo
           iconName="fornitori"
           body={t('wallet:credentialIssuance.trust.disclaimer.store')}
@@ -166,8 +163,8 @@ const CredentialTrust = () => {
         />
         <VSpacer size={48} />
         <IOMarkdown
-          content={t('wallet:credentialIssuance.trust.tos', {
-            privacyUrl: ''
+          content={t('wallet:presentation.trust.tos', {
+            privacyUrl: PRIVACY_POLICY_URL_MOCK
           })}
         />
       </View>
@@ -191,12 +188,5 @@ const CredentialTrust = () => {
     </ForceScrollDownView>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  }
-});
 
 export default CredentialTrust;

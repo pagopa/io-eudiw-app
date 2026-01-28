@@ -1,7 +1,7 @@
 import * as z from 'zod';
-
 import { getClaimsFullLocale } from './locale';
 import { ParsedCredential } from './itwTypesUtils';
+import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
 
 /**
  * Constants to represent the type of the claim.
@@ -317,6 +317,41 @@ export const parseClaimsToRecord = (
         ];
       })
   );
+};
+
+/**
+ * Parses the claims from the credential, including nested claims.
+ * For each Record entry, it maps the key and the attribute value to a label and a value.
+ * If a claim's value is an array of objects, it recursively parses each object.
+ * The label is taken from the attribute name which is either a string or a record of locale and string.
+ * If the type of the attribute name is string then we take its value because locales have not been set.
+ * If the type of the attribute name is a record then we take the value of the locale that matches the current locale.
+ * If there's no locale that matches the current locale then we take the attribute key as the name.
+ * The value is taken from the attribute value.
+ * @param parsedCredential - the parsed credential.
+ * @param options.exclude - an array of keys to exclude from the claims. TODO [SIW-1383]: remove this dirty hack
+ * @returns the array of {@link ClaimDisplayFormat} of the credential contained in its configuration schema.
+ */
+export const parseClaims = (
+  parsedCredential: ParsedCredential,
+  options: { exclude?: Array<string> } = {}
+): Array<ClaimDisplayFormat> => {
+  const { exclude = [] } = options;
+
+  return Object.entries(parsedCredential)
+    .filter(([key]) => !exclude.includes(key))
+    .map(([key, attribute]) => {
+      const attributeName =
+        typeof attribute.name === 'string'
+          ? attribute.name
+          : attribute.name?.[getClaimsFullLocale()] || key;
+
+      return {
+        id: key,
+        label: attributeName,
+        value: attribute.value
+      };
+    });
 };
 
 export type SimpleDateFormat =
