@@ -3,7 +3,6 @@ import { serializeError } from 'serialize-error';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import {
   resetProximityQrCode,
-  selectProximityAcceptedFields,
   selectProximityDocumentRequest,
   setProximityQrCode,
   setProximityStatusAuthorizationComplete,
@@ -20,8 +19,8 @@ import { requestBlePermissions } from '../utils/permissions';
 import { store } from '../../../store';
 import { selectCredentials } from '../store/credentials';
 import {
-  getIsVerifierAuthenticated,
-  matchRequestToClaims,
+  generateAcceptedFields,
+  getProximityDetails,
   verifierCertificates
 } from '../utils/proximity';
 import {
@@ -155,18 +154,13 @@ const responseHandler = async (listenerApi: AppListener) => {
   const mdocCredentials = allCredentials.filter(
     credential => credential.format === 'mso_mdoc'
   );
-  const descriptor = await matchRequestToClaims(
-    documentRequest,
+
+  const descriptor = getProximityDetails(
+    documentRequest.request,
     mdocCredentials
   );
 
-  const isAuthenticated = getIsVerifierAuthenticated(documentRequest);
-  listenerApi.dispatch(
-    setProximityStatusAuthorizationStarted({
-      descriptor,
-      isAuthenticated
-    })
-  );
+  listenerApi.dispatch(setProximityStatusAuthorizationStarted(descriptor));
 
   const choice = await listenerApi.take(
     isAnyOf(
@@ -184,9 +178,8 @@ const responseHandler = async (listenerApi: AppListener) => {
       })
     );
 
-    const acceptedFields = selectProximityAcceptedFields(
-      listenerApi.getState()
-    );
+    // We accept all the requested fields
+    const acceptedFields = generateAcceptedFields(documentRequest.request);
 
     if (acceptedFields) {
       listenerApi.dispatch(

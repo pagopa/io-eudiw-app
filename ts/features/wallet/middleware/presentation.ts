@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {
   createCryptoContextFor,
   Credential
@@ -16,7 +17,6 @@ import {
   setPreDefinitionSuccess
 } from '../store/presentation';
 import { selectCredentials } from '../store/credentials';
-import { CredentialTypePresentationClaimsListDescriptor } from '../components/presentation/CredentialTypePresentationClaimsList';
 import {
   AppListenerWithAction,
   AppStartListening
@@ -27,11 +27,12 @@ import {
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
 import { takeLatestEffect } from '../../../middleware/listener/effects';
-import { ParsedCredential } from '../utils/itwTypesUtils';
+import {
+  enrichPresentationDetails,
+  getInvalidCredentials
+} from '../utils/itwClaimsUtils';
 
 type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
-
-type RequiredDisclosure = [string, string, unknown];
 
 /**
  * Listener for the credential presentation.
@@ -92,33 +93,29 @@ const presentationListener: AppListenerWithAction<
       requestObject.dcql_query as DcqlQuery
     );
 
-    const sdJwtCredentials = credentials.filter(
-      credential =>
-        credential.format === 'dc+sd-jwt' || credential.format === 'vc+sd-jwt'
+    // Check whether any of the requested credential is invalid
+    const invalidCredentials = getInvalidCredentials(
+      evaluateDcqlQuery,
+      credentials
+    );
+
+    if (invalidCredentials.length > 0) {
+      throw new Error(
+        `No credential found for the required VC type: ${invalidCredentials}`
+      );
+    }
+
+    // Add localization to the requested claims
+    const presentationDetails = enrichPresentationDetails(
+      evaluateDcqlQuery,
+      credentials
     );
 
     listenerApi.dispatch(
-      setPreDefinitionSuccess(
-        evaluateDcqlQuery
-          .map(query => {
-            const sdJwtFoundCredential = sdJwtCredentials.find(
-              cred => cred.credentialType === query.vct
-            );
-
-            if (!sdJwtFoundCredential) {
-              throw new Error(
-                `No credential found for the required VC type: ${query.vct}`
-              );
-            }
-
-            return transformDescriptorObject(
-              query.requiredDisclosures,
-              sdJwtFoundCredential.parsedCredential,
-              sdJwtFoundCredential.credentialType
-            );
-          })
-          .reduce((acc, curr) => ({ ...acc, ...curr }), {})
-      )
+      setPreDefinitionSuccess({
+        descriptor: presentationDetails,
+        rpConfig: rpConf.federation_entity
+      })
     );
 
     /* Wait for the user to confirm the presentation with the claims or to cancel it
@@ -189,40 +186,6 @@ const presentationListener: AppListenerWithAction<
     );
   }
 };
-
-/**
- * Transforms a list of required disclosures and a parsed credential into a formatted object.
- * This function maps each required disclosure to its corresponding parsed claim, normalizes
- * multilingual claim names, and groups them under the provided credential type.
- *
- * @param requiredDisclosures - An array of tuples containing the claim ID and claim name that must be disclosed.
- * @param parsedCredential - The parsed credential object containing claim data extracted from the credential.
- * @param credentialType - The type of credential under which the transformed claims should be nested.
- * @returns A {@link PIDObject} containing the structured claims mapped to the given credential type.
- */
-export function transformDescriptorObject(
-  requiredDisclosures: Array<RequiredDisclosure>,
-  parsedCredential: ParsedCredential,
-  credentialType: string
-): CredentialTypePresentationClaimsListDescriptor {
-  const claims = requiredDisclosures.reduce<
-    CredentialTypePresentationClaimsListDescriptor['string']
-  >((acc, [_, claimName]) => {
-    const parsed = parsedCredential[claimName];
-
-    return {
-      ...acc,
-      ['unused']: {
-        ...acc.unused,
-        [claimName]: parsed
-      }
-    };
-  }, {});
-
-  return {
-    [credentialType]: claims
-  };
-}
 
 export const addPresentationListeners = (
   startAppListening: AppStartListening

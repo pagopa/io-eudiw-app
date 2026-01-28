@@ -24,9 +24,6 @@ import {
   selectRequestedCredentialType,
   setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
-import CredentialTypePresentationClaimsList, {
-  CredentialTypePresentationClaimsListDescriptor
-} from '../../components/presentation/CredentialTypePresentationClaimsList';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
@@ -36,6 +33,10 @@ import {
   PRIVACY_POLICY_URL_MOCK
 } from '../../utils/itwMocksUtils';
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import { WellKnownClaim } from '../../utils/itwClaimsUtils';
+import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
+import { ItwRequestedClaimsList } from '../../components/presentation/ItwRequiredClaimsList';
+import { parseClaims } from '../../utils/claims';
 
 /**
  * Screen which shows the user the credentials and claims that will be shared with the credential issuer
@@ -119,22 +120,14 @@ const CredentialTrust = () => {
     return null;
   }
 
-  // This is a mocked descriptor for the PID credential to show its claims in the PresentationClaimsList component
-  const requiredDisclosures: CredentialTypePresentationClaimsListDescriptor = {
-    [wellKnownCredential.PID]: {
-      [wellKnownCredential.PID]: Object.fromEntries(
-        Object.entries(pid!.parsedCredential)
-          .filter(([key]) => key !== 'iat')
-          .map(([key, value]) => [
-            key,
-            {
-              name: value.name,
-              value: value.value
-            }
-          ])
-      )
-    }
-  };
+  const claims = parseClaims(pid!.parsedCredential, {
+    exclude: [WellKnownClaim.unique_id, WellKnownClaim.link_qr_code]
+  });
+
+  const requiredClaims = claims.map(claim => ({
+    claim,
+    source: getCredentialNameFromType(pid.credentialType, '')
+  }));
 
   return (
     <ForceScrollDownView threshold={50}>
@@ -157,16 +150,7 @@ const CredentialTrust = () => {
           />
         </VStack>
         <VSpacer size={24} />
-        <H2>
-          {t('wallet:credentialIssuance.trust.title', {
-            credential: getCredentialNameByType(requestedCredential)
-          })}
-        </H2>
-        <IOMarkdown content={t('wallet:credentialIssuance.trust.subtitle')} />
-        <VSpacer size={8} />
-        <CredentialTypePresentationClaimsList
-          mandatoryDescriptor={requiredDisclosures}
-        />
+        <ItwRequestedClaimsList items={requiredClaims} />
         <VSpacer size={48} />
         <FeatureInfo
           iconName="fornitori"

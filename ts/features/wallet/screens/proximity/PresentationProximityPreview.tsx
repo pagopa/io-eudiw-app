@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Alert, View, StyleSheet } from 'react-native';
+import { useEffect } from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
 import {
@@ -9,13 +9,10 @@ import {
   H2,
   IOVisualCostants,
   VSpacer,
-  Alert as AlertDs,
   VStack
 } from '@pagopa/io-app-design-system';
-import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { useNavigation } from '@react-navigation/native';
 import {
-  ProximityDisclosure,
   ProximityStatus,
   resetProximity,
   selectProximityDocumentRequest,
@@ -31,16 +28,18 @@ import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useDebugInfo } from '../../../../hooks/useDebugInfo';
-import { selectIsDebugModeEnabled } from '../../../../store/reducers/debug';
-import CredentialTypePresentationClaimsList from '../../components/presentation/CredentialTypePresentationClaimsList';
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import IOMarkdown from '../../../../components/IOMarkdown';
 import {
   ISSUER_MOCK_NAME,
   PRIVACY_POLICY_URL_MOCK
 } from '../../utils/itwMocksUtils';
+import {
+  ItwProximityPresentationDetails,
+  ProximityDetails
+} from './ItwProximityPresentationDetails';
 
-export type PresentationProximityPreviewProps = ProximityDisclosure;
+export type PresentationProximityPreviewProps = ProximityDetails;
 
 type Props = StackScreenProps<WalletNavigatorParamsList, 'PROXIMITY_PREVIEW'>;
 
@@ -49,41 +48,19 @@ type Props = StackScreenProps<WalletNavigatorParamsList, 'PROXIMITY_PREVIEW'>;
  * and handles presentation completion or cancellation
  */
 const PresentationProximityPreview = ({ route }: Props) => {
+  const proximityDetails = [...route.params];
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const { navigateToWallet } = useNavigateToWalletWithReset();
   const proximityStatus = useAppSelector(selectProximityStatus);
   const { t } = useTranslation(['global', 'wallet']);
-  const isDebug = useAppSelector(selectIsDebugModeEnabled);
-  const isAuthenticated = route.params.isAuthenticated;
+  // const isDebug = useAppSelector(selectIsDebugModeEnabled);
 
   const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
   const verifierRequest = useAppSelector(selectProximityDocumentRequest);
 
-  const baseCheckState = useMemo(() => {
-    const credentialsBool = Object.entries(route.params.descriptor).map(
-      ([credType, namespaces]) => {
-        const namespacesBool = Object.entries(namespaces).map(
-          ([namespace, attributes]) => {
-            const attributesBool = Object.fromEntries(
-              Object.keys(attributes).map(key => [key, true])
-            );
-            return [namespace, attributesBool];
-          }
-        );
-        return [credType, Object.fromEntries(namespacesBool)];
-      }
-    );
-    return Object.fromEntries(credentialsBool);
-  }, [route.params.descriptor]);
-
-  const [checkState, setCheckState] =
-    useState<ISO18013_5.AcceptedFields>(baseCheckState);
-
   useDebugInfo({
-    isAuthenticated,
-    proximityDisclosureDescriptorPreview: route.params.descriptor,
-    acceptedFields: checkState,
+    proximityDetails,
     verifierRequest,
     proximityStatusPreview: proximityStatus,
     proximityErrorDetailsPreview: proximityErrorDetails ?? 'No errors'
@@ -140,22 +117,22 @@ const PresentationProximityPreview = ({ route }: Props) => {
     ]);
   };
 
-  const IsAuthenticatedAlert = () => (
-    <>
-      {isAuthenticated ? (
-        <AlertDs
-          variant="success"
-          content={t('wallet:proximity.isAuthenticated.true')}
-        />
-      ) : (
-        <AlertDs
-          variant="warning"
-          content={t('wallet:proximity.isAuthenticated.false')}
-        />
-      )}
-      <VSpacer size={24} />
-    </>
-  );
+  // const IsAuthenticatedAlert = () => (
+  //   <>
+  //     {isAuthenticated ? (
+  //       <AlertDs
+  //         variant="success"
+  //         content={t('wallet:proximity.isAuthenticated.true')}
+  //       />
+  //     ) : (
+  //       <AlertDs
+  //         variant="warning"
+  //         content={t('wallet:proximity.isAuthenticated.false')}
+  //       />
+  //     )}
+  //     <VSpacer size={24} />
+  //   </>
+  // );
 
   useHeaderSecondLevel({
     title: '',
@@ -178,17 +155,9 @@ const PresentationProximityPreview = ({ route }: Props) => {
           />
         </VStack>
         <VSpacer size={24} />
-        {isDebug && <IsAuthenticatedAlert />}
+        {/* {isDebug && <IsAuthenticatedAlert />} */}
         <VSpacer size={24} />
-        <CredentialTypePresentationClaimsList
-          optionalSection={{
-            optionalDescriptor: route.params.descriptor,
-            optionalCheckState: checkState,
-            setOptionalCheckState: setCheckState
-          }}
-          showMandatoryHeader={false}
-          showOptionalHeader={false}
-        />
+        <ItwProximityPresentationDetails data={proximityDetails} />
         <VSpacer size={48} />
         <FeatureInfo
           iconName="fornitori"
@@ -214,7 +183,7 @@ const PresentationProximityPreview = ({ route }: Props) => {
           primary: {
             label: t('global:buttons.confirm'),
             onPress: () => {
-              dispatch(setProximityStatusAuthorizationSend(checkState));
+              dispatch(setProximityStatusAuthorizationSend());
             },
             loading:
               proximityStatus ===

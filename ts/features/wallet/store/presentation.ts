@@ -11,15 +11,15 @@ import {
 import { RootState } from '../../../store/types';
 import { preferencesReset } from '../../../store/reducers/preferences';
 import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
-import { CredentialTypePresentationClaimsListDescriptor } from '../components/presentation/CredentialTypePresentationClaimsList';
 import { FederationEntity } from '../types';
+import { EnrichedPresentationDetails } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 
 /**
  * Type for the description which contains the requested claims during the presentation.
  */
 export type Descriptor = {
-  descriptor: CredentialTypePresentationClaimsListDescriptor;
+  descriptor: EnrichedPresentationDetails;
   rpConfig?: FederationEntity;
 };
 
@@ -33,7 +33,7 @@ export type AuthResponse = Awaited<
 /**
  * Type of the optional claims names selected by the user.
  */
-export type OptionalClaims = Descriptor['descriptor'][0]['optionalDisclosures']; // The optional claims selected by the user
+export type OptionalClaims = Descriptor['descriptor']; // The optional claims selected by the user
 
 /* State type definition for the presentation slice
  * preDefinition - Async status for the prestation before receiving the descriptor
@@ -42,7 +42,7 @@ export type OptionalClaims = Descriptor['descriptor'][0]['optionalDisclosures'];
 export type PresentationState = {
   preDefinition: AsyncStatusValues<Descriptor>;
   postDefinition: AsyncStatusValues<AuthResponse>;
-  relyingPartyData?: FederationEntity | null;
+  relyingPartyData?: FederationEntity;
 };
 
 // Initial state for the presentation slice

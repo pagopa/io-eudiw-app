@@ -1,12 +1,16 @@
-import { useEffect } from 'react';
+import { ComponentProps, useEffect, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import {
+  ClaimsSelector,
   FeatureInfo,
   FooterActions,
   ForceScrollDownView,
   H2,
   IOVisualCostants,
+  ListItemCheckbox,
+  ListItemHeader,
+  useIOTheme,
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
@@ -25,9 +29,16 @@ import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
-import CredentialTypePresentationClaimsList from '../../components/presentation/CredentialTypePresentationClaimsList';
 import IOMarkdown from '../../../../components/IOMarkdown';
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import {
+  ClaimDisplayFormat,
+  groupCredentialsByPurpose
+} from '../../utils/itwRemotePresentationUtils';
+import { getClaimDisplayValue } from '../../utils/itwClaimsUtils';
+import { getSafeText } from '../../../../utils/string';
+import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
+import { EnrichedPresentationDetails } from '../../utils/itwTypesUtils';
 /**
  * Description which contains the requested of the credential to be presented.
  */
@@ -51,6 +62,7 @@ const PresentationPostDefinition = ({ route }: Props) => {
   const postDefinitionStatus = useAppSelector(selectPostDefinitionStatus);
   const { navigateToWallet } = useNavigateToWalletWithReset();
   const preDef = useAppSelector(selectPreDefinitionStatus);
+  const theme = useIOTheme();
 
   const rpConfig = preDef.success?.status
     ? preDef.success.data?.rpConfig
@@ -104,7 +116,71 @@ const PresentationPostDefinition = ({ route }: Props) => {
     goBack: cancelAlert
   });
 
-  const requiredDisclosures = route.params.descriptor;
+  /**
+   * Maps claims to the format required by the ClaimsSelector component.
+   */
+  const mapClaims = (
+    claims: Array<ClaimDisplayFormat>
+  ): ComponentProps<typeof ClaimsSelector>['items'] =>
+    claims.map(c => {
+      const displayResult = getClaimDisplayValue(c);
+
+      if (displayResult.type === 'image') {
+        return {
+          id: c.id,
+          value: displayResult.value, // This is always a string for images
+          description: c.label,
+          type: 'image'
+        };
+      }
+
+      const textValue = Array.isArray(displayResult.value)
+        ? displayResult.value.map(getSafeText).join(', ')
+        : getSafeText(displayResult.value);
+
+      return {
+        id: c.id,
+        value: textValue,
+        description: c.label
+      };
+    });
+
+  /**
+   * Renders the block of credentials requested during the presentation flow.
+   */
+  const RequestedCredentialsBlock = ({
+    credentials
+  }: {
+    credentials: EnrichedPresentationDetails;
+  }) => {
+    const visibleCredentials = credentials.filter(
+      c => c.claimsToDisplay.length > 0
+    );
+
+    return (
+      <VStack space={24}>
+        {visibleCredentials.map((c: EnrichedPresentationDetails[number]) => {
+          const credentialType = c.vct;
+          const title = getCredentialNameFromType(credentialType, '');
+
+          return (
+            <ClaimsSelector
+              key={c.id}
+              title={title}
+              items={mapClaims(c.claimsToDisplay)}
+              defaultExpanded
+              selectionEnabled={false}
+            />
+          );
+        })}
+      </VStack>
+    );
+  };
+
+  const { required, optional } = useMemo(
+    () => groupCredentialsByPurpose(route.params.descriptor.descriptor ?? []),
+    [route.params.descriptor]
+  );
 
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>
@@ -124,9 +200,42 @@ const PresentationPostDefinition = ({ route }: Props) => {
           />
         </VStack>
         <VSpacer size={24} />
-        <CredentialTypePresentationClaimsList
-          mandatoryDescriptor={requiredDisclosures.descriptor}
-        />
+        {required.map(({ purpose, credentials }) => (
+          <View key={`required:${purpose}`}>
+            <ListItemHeader
+              label={t('wallet:presentation.trust.requiredClaims')}
+              iconName="security"
+              iconColor={theme['icon-decorative']}
+              description={
+                purpose
+                  ? t('wallet:presentation.trust.purpose', {
+                      purpose
+                    })
+                  : undefined
+              }
+            />
+            <RequestedCredentialsBlock credentials={credentials} />
+          </View>
+        ))}
+        <VSpacer size={48} />
+        {optional.map(({ purpose, credentials }) => (
+          <View key={`optional:${purpose}`}>
+            <ListItemCheckbox
+              value={t('wallet:presentation.trust.optionalClaims')}
+              icon="security"
+              // onValueChange={() => sendCredentialsToMachine(credentials)}
+              description={
+                purpose
+                  ? t('wallet:presentation.trust.purpose', {
+                      purpose
+                    })
+                  : undefined
+              }
+            />
+            <RequestedCredentialsBlock credentials={credentials} />
+            <VSpacer size={16} />
+          </View>
+        ))}
         <VSpacer size={48} />
         <FeatureInfo
           iconName="fornitori"
