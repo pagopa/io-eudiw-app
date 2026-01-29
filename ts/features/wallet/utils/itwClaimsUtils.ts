@@ -10,7 +10,6 @@ import {
   ClaimDisplayResult,
   EnrichedPresentationDetails,
   isDefined,
-  ItwCredentialStatus,
   ParsedCredential,
   PresentationDetails,
   StoredCredential
@@ -20,6 +19,7 @@ import { wellKnownCredential } from './credentials';
 import { validCredentialStatuses } from './itwCredentialUtils';
 import { CredentialType } from './itwMocksUtils';
 import { claimScheme, parseClaims } from './claims';
+import { getCredentialStatus } from './itwCredentialStatusUtils';
 
 /**
  *
@@ -244,74 +244,6 @@ export const getInvalidCredentials = (
     // Gets the invalid credential's type
     .map(c => c.credentialType);
 
-const DEFAULT_EXPIRING_DAYS = 30;
-
-type GetCredentialStatusOptions = {
-  /**
-   * Number of days before expiration required to mark a credential as "EXPIRING".
-   * @default 30
-   */
-  expiringDays?: number;
-};
-
-/**
- * Get the overall status of the credential, taking into account the status assertion,
- * the physical document's expiration date and the JWT's expiration date.
- * Overlapping statuses are handled according to a specific order (see `IO-WALLET-DR-0018`).
- *
- * @param credential the stored credential
- * @param options see {@link GetCredentialStatusOptions}
- * @returns ItwCredentialStatus
- */
-export const getCredentialStatus = (
-  credential: StoredCredential,
-  options: GetCredentialStatusOptions = {}
-): ItwCredentialStatus => {
-  const { expiringDays = DEFAULT_EXPIRING_DAYS } = options;
-  const { parsedCredential, storedStatusAssertion: statusAssertion } =
-    credential;
-
-  if (statusAssertion?.credentialStatus === 'unknown') {
-    return 'unknown';
-  }
-
-  const now = Date.now();
-  const jwtExpireDays = differenceInCalendarDays(credential.expiration, now);
-
-  const expireDate = getCredentialExpireDate(parsedCredential);
-  const documentExpireDays =
-    expireDate != null ? differenceInCalendarDays(expireDate, now) : NaN;
-
-  const isIssuerAttestedExpired =
-    statusAssertion?.credentialStatus === 'invalid' &&
-    statusAssertion.errorCode === 'credential_expired';
-
-  if (isIssuerAttestedExpired || documentExpireDays <= 0) {
-    return 'expired';
-  }
-
-  if (statusAssertion?.credentialStatus === 'invalid') {
-    return 'invalid';
-  }
-
-  if (jwtExpireDays <= 0) {
-    return 'jwtExpired';
-  }
-
-  const isSameDayExpiring =
-    documentExpireDays === jwtExpireDays && documentExpireDays <= expiringDays;
-
-  if (jwtExpireDays <= expiringDays && !isSameDayExpiring) {
-    return 'jwtExpiring';
-  }
-
-  if (documentExpireDays <= expiringDays) {
-    return 'expiring';
-  }
-
-  return 'valid';
-};
-
 /**
  * Enrich the result of the presentation request evaluation with localized claim names for UI display.
  *
@@ -324,6 +256,7 @@ export const enrichPresentationDetails = (
   credentialsByType: Array<StoredCredential>
 ): EnrichedPresentationDetails =>
   presentationDetails.map(details => {
+    const { cryptoContext, ...restDetails } = details;
     const credentialType = details.vct;
     const credential =
       credentialType &&
@@ -333,7 +266,7 @@ export const enrichPresentationDetails = (
     // The raw credential is still used for the presentation. Currently this only happens for the Wallet Attestation.
     if (!credential) {
       return {
-        ...details,
+        ...restDetails,
         claimsToDisplay: [] // Hide from userv gq
       };
     }
@@ -343,7 +276,7 @@ export const enrichPresentationDetails = (
     });
 
     return {
-      ...details,
+      ...restDetails,
       // Only include claims that are part of the parsed credential
       // This ensures that technical claims like `iat` are not displayed to the user
       claimsToDisplay: details.requiredDisclosures

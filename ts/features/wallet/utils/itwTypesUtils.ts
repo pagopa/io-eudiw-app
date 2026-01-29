@@ -97,7 +97,9 @@ export type StoredCredential = {
 };
 
 export type EnrichedPresentationDetails = Array<
-  PresentationDetails[number] & { claimsToDisplay: Array<ClaimDisplayFormat> }
+  Omit<PresentationDetails[number], 'cryptoContext'> & {
+    claimsToDisplay: Array<ClaimDisplayFormat>;
+  } & { claimsToDisplay: Array<ClaimDisplayFormat> }
 >;
 
 /**

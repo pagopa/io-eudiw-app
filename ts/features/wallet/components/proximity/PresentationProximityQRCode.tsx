@@ -9,7 +9,6 @@ import { useAppSelector } from '../../../../store';
 import {
   ProximityStatus,
   selectProximityDisclosureDescriptor,
-  // selectProximityDisclosureIsAuthenticated,
   selectProximityQrCode,
   selectProximityStatus
 } from '../../store/proximity';
@@ -39,7 +38,7 @@ const PresentationProximityQRCode = ({
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_PREVIEW',
-        params: descriptor
+        params: { descriptor }
       });
     }
     // If we reach this state, it means that a connection has already been established but failed before

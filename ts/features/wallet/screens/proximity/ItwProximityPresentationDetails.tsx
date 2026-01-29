@@ -64,6 +64,7 @@ const mapClaims = (
 export type ProximityDetails = Array<{
   credentialType: string;
   claimsToDisplay: Array<ClaimDisplayFormat>;
+  isAuthenticated: boolean;
 }>;
 
 type ItwProximityPresentationDetailsProps = {

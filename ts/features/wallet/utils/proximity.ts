@@ -67,7 +67,8 @@ export const getProximityDetails = (
         credentialType: credential.credentialType,
         claimsToDisplay: parseClaims(parsedCredential, {
           exclude: [WellKnownClaim.unique_id]
-        })
+        }),
+        isAuthenticated
       };
     }
   );
