@@ -1,9 +1,9 @@
-import { useMemo, memo } from 'react';
 import { Badge, IOIcons, ModuleCredential } from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
+import { memo, useMemo } from 'react';
 import {
-  wellKnownCredential,
-  getCredentialNameByType
+  getCredentialNameByType,
+  wellKnownCredential
 } from '../../utils/credentials';
 
 type Props = {
@@ -19,11 +19,6 @@ const credentialIconByType: Record<string, IOIcons> = {
   [wellKnownCredential.PID]: 'fingerprint',
   [wellKnownCredential.HEALTHID]: 'healthCard',
   [wellKnownCredential.DISABILITY_CARD]: 'accessibility'
-};
-
-const activeBadge: Badge = {
-  variant: 'success',
-  text: i18next.t('credentialIssuance.badges.saved', { ns: 'wallet' })
 };
 
 /**
@@ -43,7 +38,10 @@ const OnboardingModuleCredential = ({
 }: Props) => {
   const badge = useMemo((): Badge | undefined => {
     if (isSaved) {
-      return activeBadge;
+      return {
+        variant: 'success',
+        text: i18next.t('credentialIssuance.badges.saved', { ns: 'wallet' })
+      };
     }
     return undefined;
   }, [isSaved]);
