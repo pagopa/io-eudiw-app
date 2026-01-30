@@ -121,7 +121,13 @@ export const RootStackNavigator = () => {
                 PRESENTATION_PRE_DEFINITION: {
                   // why can't typescript infer the type of deeply nested navigators?
                   path: '*', // match any path after PRESENTATION_PRE_DEFINITION
-                  alias: [''] // match empty path after PRESENTATION_PRE_DEFINITION
+                  alias: [''], // match empty path after PRESENTATION_PRE_DEFINITION,
+                  parse: {
+                    // This is needed because otherwise the URL encoded parameters are not properly decoded
+                    client_id: (value: string) => decodeURIComponent(value),
+                    request_uri: (value: string) => decodeURIComponent(value),
+                    state: (value: string) => value
+                  }
                 }
               }
             }
