@@ -375,22 +375,3 @@ export const getClaimDisplayValue = (
     };
   }
 };
-
-/**
- * Thrown when the verifier (RP) is not marked as trusted
- */
-export class UntrustedRpError extends Error {
-  constructor(message?: string) {
-    super(message);
-    this.name = this.constructor.name;
-  }
-}
-
-export function assert(
-  condition: unknown,
-  msg: string = 'Assertion failed'
-): asserts condition {
-  if (!condition) {
-    throw new Error(msg);
-  }
-}

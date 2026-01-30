@@ -361,3 +361,12 @@ export const SimpleDateFormat = {
   DDMMYYYY: 'DD/MM/YYYY',
   DDMMYY: 'DD/MM/YY'
 } as const;
+
+export function assert(
+  condition: unknown,
+  msg: string = 'Assertion failed'
+): asserts condition {
+  if (!condition) {
+    throw new Error(msg);
+  }
+}

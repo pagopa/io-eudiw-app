@@ -1,8 +1,8 @@
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { ProximityDetails } from '../screens/proximity/ItwProximityPresentationDetails';
 import { StoredCredential } from './itwTypesUtils';
-import { assert, WellKnownClaim } from './itwClaimsUtils';
-import { parseClaims } from './claims';
+import { WellKnownClaim } from './itwClaimsUtils';
+import { assert, parseClaims } from './claims';
 
 /**
  * Temporary helper function to convert from Base64URL to Base64
@@ -35,13 +35,6 @@ export const getProximityDetails = (
 
   return Object.entries(rest).map(
     ([docType, { isAuthenticated, ...namespaces }]) => {
-      // Show if the verifier is authenticated or not in the proximity details screen. Include isAuthenticated inside the ProximityDetails
-
-      // Stop the flow if the verifier (RP) is not trusted
-      // if (!isAuthenticated) {
-      //   throw new UntrustedRpError('Untrusted RP');
-      // }
-
       // Support multiple credentials type
       const credential = credentials.filter(
         c => c.credentialType === docType
