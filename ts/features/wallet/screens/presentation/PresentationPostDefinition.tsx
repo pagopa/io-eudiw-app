@@ -223,7 +223,6 @@ const PresentationPostDefinition = ({ route }: Props) => {
             <ListItemCheckbox
               value={t('wallet:presentation.trust.optionalClaims')}
               icon="security"
-              // onValueChange={() => sendCredentialsToMachine(credentials)}
               description={
                 purpose
                   ? t('wallet:presentation.trust.purpose', {
@@ -245,12 +244,6 @@ const PresentationPostDefinition = ({ route }: Props) => {
         <FeatureInfo
           iconName="trashcan"
           body={t('wallet:presentation.trust.disclaimer.1')}
-        />
-        <VSpacer size={48} />
-        <IOMarkdown
-          content={t('wallet:presentation.trust.tos', {
-            privacyUrl: rpConfig?.policy_uri
-          })}
         />
       </View>
       <FooterActions

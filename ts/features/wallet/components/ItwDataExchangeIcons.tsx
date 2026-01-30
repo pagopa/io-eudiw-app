@@ -3,7 +3,7 @@ import type { ImageURISource } from 'react-native';
 import { Avatar, HStack, Icon, useIOTheme } from '@pagopa/io-app-design-system';
 
 type Props = {
-  requesterLogoUri: ImageURISource | undefined;
+  requesterLogoUri?: ImageURISource | undefined;
 };
 
 /**
@@ -15,7 +15,11 @@ export const ItwDataExchangeIcons = memo(({ requesterLogoUri }: Props) => {
 
   return (
     <HStack space={8} style={{ alignItems: 'center' }}>
-      <Avatar size="small" logoUri={requesterLogoUri} />
+      {requesterLogoUri ? (
+        <Avatar size="small" logoUri={requesterLogoUri} />
+      ) : (
+        <Icon name="institution" color={theme['icon-default']} size={24} />
+      )}
       <Icon name="transactions" color={theme['icon-default']} size={24} />
       <Avatar
         size="small"

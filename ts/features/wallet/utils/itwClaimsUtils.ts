@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * Utility functions for working with credential claims.
  */
@@ -368,7 +367,6 @@ export const getClaimDisplayValue = (
         };
     }
   } catch (error) {
-    console.error('Error parsing claim:', error);
     return {
       type: 'text',
       value: i18next.t('features.itWallet.generic.placeholders.error')

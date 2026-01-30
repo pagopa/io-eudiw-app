@@ -31,10 +31,7 @@ import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWal
 import { useDebugInfo } from '../../../../hooks/useDebugInfo';
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import IOMarkdown from '../../../../components/IOMarkdown';
-import {
-  ISSUER_MOCK_NAME,
-  PRIVACY_POLICY_URL_MOCK
-} from '../../utils/itwMocksUtils';
+import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
 import { selectIsDebugModeEnabled } from '../../../../store/reducers/debug';
 import {
   ItwProximityPresentationDetails,
@@ -147,9 +144,7 @@ const PresentationProximityPreview = ({ route }: Props) => {
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>
       <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
-        <ItwDataExchangeIcons
-          requesterLogoUri={require('../../assets/img/brand/IPZS.png')}
-        />
+        <ItwDataExchangeIcons />
         <VSpacer size={24} />
         <VStack space={24}>
           <H2>{t('wallet:presentation.trust.title')}</H2>
@@ -171,12 +166,6 @@ const PresentationProximityPreview = ({ route }: Props) => {
         <FeatureInfo
           iconName="trashcan"
           body={t('wallet:presentation.trust.disclaimer.1')}
-        />
-        <VSpacer size={48} />
-        <IOMarkdown
-          content={t('wallet:presentation.trust.tos', {
-            privacyUrl: PRIVACY_POLICY_URL_MOCK
-          })}
         />
       </View>
 

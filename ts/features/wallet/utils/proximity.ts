@@ -1,8 +1,9 @@
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { ProximityDetails } from '../screens/proximity/ItwProximityPresentationDetails';
+import { assert } from '../../../utils/common';
 import { StoredCredential } from './itwTypesUtils';
 import { WellKnownClaim } from './itwClaimsUtils';
-import { assert, parseClaims } from './claims';
+import { parseClaims } from './claims';
 
 /**
  * Temporary helper function to convert from Base64URL to Base64

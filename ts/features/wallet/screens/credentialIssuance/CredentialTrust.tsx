@@ -28,10 +28,7 @@ import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWal
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import IOMarkdown from '../../../../components/IOMarkdown';
-import {
-  ISSUER_MOCK_NAME,
-  PRIVACY_POLICY_URL_MOCK
-} from '../../utils/itwMocksUtils';
+import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import { WellKnownClaim } from '../../utils/itwClaimsUtils';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
@@ -133,9 +130,7 @@ const CredentialTrust = () => {
     <ForceScrollDownView threshold={50}>
       <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
         <VSpacer size={24} />
-        <ItwDataExchangeIcons
-          requesterLogoUri={require('../../assets/img/brand/IPZS.png')}
-        />
+        <ItwDataExchangeIcons />
         <VSpacer size={24} />
         <VStack space={24}>
           <H2>
@@ -160,12 +155,6 @@ const CredentialTrust = () => {
         <FeatureInfo
           iconName="trashcan"
           body={t('wallet:credentialIssuance.trust.disclaimer.retention')}
-        />
-        <VSpacer size={48} />
-        <IOMarkdown
-          content={t('wallet:presentation.trust.tos', {
-            privacyUrl: PRIVACY_POLICY_URL_MOCK
-          })}
         />
       </View>
       <FooterActions
