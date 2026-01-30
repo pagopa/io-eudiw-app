@@ -1,6 +1,6 @@
 import { Badge, IOIcons, ModuleCredential } from '@pagopa/io-app-design-system';
-import i18next from 'i18next';
 import { memo, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   getCredentialNameByType,
   wellKnownCredential
@@ -36,15 +36,16 @@ const OnboardingModuleCredential = ({
   isSaved,
   isFetching
 }: Props) => {
+  const { t } = useTranslation('wallet');
   const badge = useMemo((): Badge | undefined => {
     if (isSaved) {
       return {
         variant: 'success',
-        text: i18next.t('credentialIssuance.badges.saved', { ns: 'wallet' })
+        text: t('credentialIssuance.badges.saved', { ns: 'wallet' })
       };
     }
     return undefined;
-  }, [isSaved]);
+  }, [isSaved, t]);
 
   const handleOnPress = () => {
     onPress(configId);
