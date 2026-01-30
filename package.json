@@ -92,6 +92,7 @@
     "eslint-config-expo": "~10.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-functional": "^9.0.2",
+    "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-react-native": "^5.0.0",
     "eslint-plugin-sonarjs": "^3.0.5",
     "husky": "^9.1.7",

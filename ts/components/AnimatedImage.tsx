@@ -24,7 +24,6 @@ export const AnimatedImage = ({
   const opacity = useSharedValue(0);
 
   const handleOnLoad = () => {
-    // eslint-disable-next-line
     opacity.value = 1;
   };
 

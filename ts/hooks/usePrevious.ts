@@ -8,7 +8,6 @@ export function usePrevious<T>(value: T) {
   const ref = useRef<T | null>(null);
 
   useEffect(() => {
-    // eslint-disable-next-line
     ref.current = value;
   }, [value]);
 
