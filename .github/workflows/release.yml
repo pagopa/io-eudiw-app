@@ -42,8 +42,6 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
           yarn increment-version ${{ github.event.inputs.releaseLevel }}
-      - name: Prebuild Expo Native Code
-        run: npx expo prebuild
       - id: commit-version-changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -91,6 +89,8 @@ jobs:
         uses: ruby/setup-ruby@401c19e14f474b54450cd3905bb8b86e2c8509cf #v1.204.0
         with:
           bundler-cache: true
+      - name: Prebuild Android
+        run: npx expo prebuild --platform android --clean
       - id: build-android
         name: Build and submit to Play Store
         run: |
@@ -173,6 +173,8 @@ jobs:
           ssh-add ~/.ssh/id_ed25519
         env:
           SSH_DEPLOY_KEY: ${{secrets.SSH_CERTS_DEPLOY_KEY}}
+      - name: Prebuild iOS
+        run: npx expo prebuild --platform ios --clean
       - id: build-ios
         name: Build and submit to App Store
         run: |
