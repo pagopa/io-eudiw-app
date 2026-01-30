@@ -5,7 +5,6 @@ import {
   NavigatorScreenParams
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import * as ExpoLinking from 'expo-linking';
 import i18next from 'i18next';
 import { useCallback, useEffect } from 'react';
 import { Linking } from 'react-native';
@@ -22,6 +21,7 @@ import {
   selectStartupState,
   startupSetLoading
 } from '../store/reducers/startup';
+import { PRESENTATION_INTERNAL_LINKS } from './deepLinkSchemas';
 import MainStackNavigator, {
   MainNavigatorParamsList
 } from './main/MainStackNavigator';
@@ -111,7 +111,7 @@ export const RootStackNavigator = () => {
   }, [isStartupDone]);
 
   const linking: LinkingOptions<RootStackParamList> = {
-    prefixes: [ExpoLinking.createURL('/')],
+    prefixes: PRESENTATION_INTERNAL_LINKS,
     config: {
       screens: {
         ROOT_MAIN_NAV: {
