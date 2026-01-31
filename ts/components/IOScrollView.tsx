@@ -69,7 +69,7 @@ type IOSCrollViewHeaderScrollValues = ComponentProps<
   typeof HeaderSecondLevel
 >['scrollValues'];
 
-type IOScrollViewType = WithTestID<
+type IOScrollView = WithTestID<
   PropsWithChildren<{
     headerConfig?: ComponentProps<typeof HeaderSecondLevel>;
     actions?: IOScrollViewActions;
@@ -156,7 +156,7 @@ export const IOScrollView = ({
   refreshControlProps,
   contentContainerStyle,
   testID
-}: IOScrollViewType) => {
+}: IOScrollView) => {
   const theme = useIOTheme();
 
   /* Navigation */
