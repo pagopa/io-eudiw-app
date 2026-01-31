@@ -2159,9 +2159,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-app-design-system@npm:5.11.13-0":
-  version: 5.11.13-0
-  resolution: "@pagopa/io-app-design-system@npm:5.11.13-0"
+"@pagopa/io-app-design-system@npm:5.12.1":
+  version: 5.12.1
+  resolution: "@pagopa/io-app-design-system@npm:5.12.1"
   dependencies:
     auto-changelog: "npm:^2.4.0"
     lodash: "npm:^4.17.21"
@@ -2169,7 +2169,7 @@ __metadata:
     react-native-gesture-handler: "npm:^2.25.0"
     react-native-haptic-feedback: "npm:^2.3.3"
     react-native-linear-gradient: "npm:^2.8.3"
-    react-native-reanimated: "npm:3.17.5"
+    react-native-reanimated: "npm:3.19.5"
     react-native-safe-area-context: "npm:^5.4.1"
     react-native-svg: "npm:^15.12.0"
   peerDependencies:
@@ -2182,7 +2182,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-safe-area-context: "*"
     react-native-svg: "*"
-  checksum: 10/673a37d10a2d178e9005eb53d22bfcd28307ad7961e5082fe7bb536f59393a78269cb68327e73bef7e267ef120afe2fb7a2926648410a4d37fc2e93d0e10e5ec
+  checksum: 10/8440f83d65130a365085bc0112f0537560e257c65049632e532f7865d71f2b58519867d24f3565aa4488509dfb12029440ff003c803f5e3be20ad22e23c4abd2
   languageName: node
   linkType: hard
 
@@ -7677,7 +7677,7 @@ __metadata:
   dependencies:
     "@expo/vector-icons": "npm:^15.0.3"
     "@gorhom/bottom-sheet": "npm:^5.2.8"
-    "@pagopa/io-app-design-system": "npm:5.11.13-0"
+    "@pagopa/io-app-design-system": "npm:5.12.1"
     "@pagopa/io-react-native-crypto": "npm:^1.2.3"
     "@pagopa/io-react-native-iso18013": "npm:^0.7.0"
     "@pagopa/io-react-native-jwt": "npm:2.1.0"
@@ -11375,31 +11375,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:3.17.5":
-  version: 3.17.5
-  resolution: "react-native-reanimated@npm:3.17.5"
-  dependencies:
-    "@babel/plugin-transform-arrow-functions": "npm:^7.0.0-0"
-    "@babel/plugin-transform-class-properties": "npm:^7.0.0-0"
-    "@babel/plugin-transform-classes": "npm:^7.0.0-0"
-    "@babel/plugin-transform-nullish-coalescing-operator": "npm:^7.0.0-0"
-    "@babel/plugin-transform-optional-chaining": "npm:^7.0.0-0"
-    "@babel/plugin-transform-shorthand-properties": "npm:^7.0.0-0"
-    "@babel/plugin-transform-template-literals": "npm:^7.0.0-0"
-    "@babel/plugin-transform-unicode-regex": "npm:^7.0.0-0"
-    "@babel/preset-typescript": "npm:^7.16.7"
-    convert-source-map: "npm:^2.0.0"
-    invariant: "npm:^2.2.4"
-    react-native-is-edge-to-edge: "npm:1.1.7"
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-    react: "*"
-    react-native: "*"
-  checksum: 10/63501d8ac0cb2039e60ac93bc779e946af267bb55f95cf53ed538bcf9bfca030fa5d84d5c9343dcbc4d8df0d5e9d7c58ca5647d43b17f8399dec11d812da11fc
-  languageName: node
-  linkType: hard
-
-"react-native-reanimated@npm:^3.19.4":
+"react-native-reanimated@npm:3.19.5, react-native-reanimated@npm:^3.19.4":
   version: 3.19.5
   resolution: "react-native-reanimated@npm:3.19.5"
   dependencies:
