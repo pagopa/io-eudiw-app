@@ -120,8 +120,7 @@ export const RootStackNavigator = () => {
               screens: {
                 PRESENTATION_PRE_DEFINITION: {
                   // why can't typescript infer the type of deeply nested navigators?
-                  path: '*', // match any path after PRESENTATION_PRE_DEFINITION
-                  alias: [''], // match empty path after PRESENTATION_PRE_DEFINITION,
+                  path: '', // match any path after PRESENTATION_PRE_DEFINITION
                   parse: {
                     // This is needed because otherwise the URL encoded parameters are not properly decoded
                     client_id: (value: string) => decodeURIComponent(value),
@@ -139,6 +138,7 @@ export const RootStackNavigator = () => {
       /**
        * If the app was opened by a deep link, get the initial URL and set it in the store.
        * We know for sure that this can't be handled because the navigation which can handle it isn't mounted yet.
+       * Filter out expo-development-client as this causes a false navigation deep link when using expo.
        */
       const url = await Linking.getInitialURL();
       if (url) {

@@ -127,7 +127,6 @@
           "iosPermissions": ["Bluetooth"]
         }
       ],
-      "expo-build-properties",
       "./scripts/android-fix-bouncy-castle-dependency.js"
     ],
     "experiments": {
