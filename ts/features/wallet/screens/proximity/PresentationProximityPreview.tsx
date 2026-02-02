@@ -40,6 +40,7 @@ import {
 
 export type PresentationProximityPreviewProps = {
   descriptor: ProximityDetails;
+  isAuthenticated: boolean;
 };
 
 type Props = StackScreenProps<WalletNavigatorParamsList, 'PROXIMITY_PREVIEW'>;
@@ -50,7 +51,7 @@ type Props = StackScreenProps<WalletNavigatorParamsList, 'PROXIMITY_PREVIEW'>;
  */
 const PresentationProximityPreview = ({ route }: Props) => {
   const proximityDetails = route.params.descriptor;
-  const isAuthenticated = route.params.descriptor[0].isAuthenticated;
+  const isAuthenticated = route.params.isAuthenticated;
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const { navigateToWallet } = useNavigateToWalletWithReset();
@@ -62,6 +63,7 @@ const PresentationProximityPreview = ({ route }: Props) => {
   const verifierRequest = useAppSelector(selectProximityDocumentRequest);
 
   useDebugInfo({
+    isAuthenticated,
     proximityDetails,
     verifierRequest,
     proximityStatusPreview: proximityStatus,

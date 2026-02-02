@@ -1,5 +1,5 @@
 /* eslint-disable functional/immutable-data */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { RootState } from '../../../store/types';
 import { preferencesReset } from '../../../store/reducers/preferences';
@@ -34,7 +34,6 @@ export type ProximityDisclosure = {
     string,
     Record<string, Record<string, ParsedCredential[string]>>
   >;
-  isAuthenticated: boolean;
 };
 
 /* State type definition for the proximity slice
@@ -187,6 +186,16 @@ export const selectProximityDocumentRequest = (state: RootState) =>
  */
 export const selectProximityDisclosureDescriptor = (state: RootState) =>
   state.wallet.proximity.proximityDisclosureDescriptor;
+
+/**
+ * Selects the verifier authentication flags
+ * @param state - The root state
+ * @returns The verifier authentication flags
+ */
+export const selectProximityDisclosureIsAuthenticated = createSelector(
+  (state: RootState) => state.wallet.proximity.proximityDisclosureDescriptor,
+  descriptor => descriptor?.[0]?.isAuthenticated || false
+);
 
 /**
  * Selects the error details

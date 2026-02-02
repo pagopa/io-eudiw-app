@@ -17,6 +17,7 @@ import {
   ProximityStatus,
   resetProximity,
   selectProximityDisclosureDescriptor,
+  selectProximityDisclosureIsAuthenticated,
   selectProximityErrorDetails,
   selectProximityQrCode,
   selectProximityStatus,
@@ -38,6 +39,9 @@ const ProximityQrCode = () => {
   const proximityStatus = useAppSelector(selectProximityStatus);
   const descriptor = useAppSelector(selectProximityDisclosureDescriptor);
   const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
+  const isAuthenticated = useAppSelector(
+    selectProximityDisclosureIsAuthenticated
+  );
 
   useDebugInfo({
     proximityDisclosureDescriptorQR: descriptor,
@@ -67,7 +71,7 @@ const ProximityQrCode = () => {
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_PREVIEW',
-        params: { descriptor }
+        params: { descriptor, isAuthenticated }
       });
       // If we reach this state, it means that a connection has already been established but failed before
       // reaching the preview screen: the bottom spinner of the modal has been activated,

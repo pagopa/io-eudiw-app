@@ -4,6 +4,8 @@ import {
   ForceScrollDownView,
   H2,
   IOVisualCostants,
+  ListItemHeader,
+  useIOTheme,
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
@@ -49,6 +51,7 @@ const CredentialTrust = () => {
   const requestedCredential = useAppSelector(selectRequestedCredentialType);
   const navigation = useNavigation();
   const { navigateToWallet } = useNavigateToWalletWithReset();
+  const theme = useIOTheme();
 
   const navigateToErrorScreen = useCallback(
     () =>
@@ -145,6 +148,11 @@ const CredentialTrust = () => {
           />
         </VStack>
         <VSpacer size={24} />
+        <ListItemHeader
+          label={t('wallet:credentialIssuance.trust.requiredData')}
+          iconName="security"
+          iconColor={theme['icon-default']}
+        />
         <ItwRequestedClaimsList items={requiredClaims} />
         <VSpacer size={48} />
         <FeatureInfo
