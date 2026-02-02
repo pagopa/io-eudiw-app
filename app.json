@@ -63,6 +63,9 @@
             },
             {
               "scheme": "mdoc-openid4vp"
+            },
+            {
+              "scheme": "iowallet"
             }
           ],
           "category": ["BROWSABLE", "DEFAULT"]
@@ -127,7 +130,8 @@
           "iosPermissions": ["Bluetooth"]
         }
       ],
-      "./scripts/android-fix-bouncy-castle-dependency.js"
+      "./scripts/android-fix-bouncy-castle-dependency.js",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
