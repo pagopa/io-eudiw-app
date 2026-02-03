@@ -3,7 +3,7 @@
  */
 
 import { differenceInCalendarDays, isValid } from 'date-fns';
-import z from 'zod';
+import * as z from 'zod';
 import { ParsedCredential, StoredCredential } from './itwTypesUtils';
 
 /**
@@ -191,10 +191,10 @@ export const getFamilyNameFromCredential = (
  *
  */
 
-export const SimpleDateFormat = {
+const SIMPLE_DATE_FORMAT = {
   DDMMYYYY: 'DD/MM/YYYY',
   DDMMYY: 'DD/MM/YY'
 } as const;
 
 export type SimpleDateFormat =
-  (typeof SimpleDateFormat)[keyof typeof SimpleDateFormat];
+  (typeof SIMPLE_DATE_FORMAT)[keyof typeof SIMPLE_DATE_FORMAT];

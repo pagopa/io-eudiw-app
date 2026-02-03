@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, memo } from 'react';
+import { memo, ReactElement, useEffect } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Animated, {
   interpolate,
@@ -30,7 +30,6 @@ const FlippableCard = ({
   const isFlipped = useSharedValue(_isFlipped);
 
   useEffect(() => {
-    // eslint-disable-next-line functional/immutable-data
     isFlipped.value = _isFlipped;
   }, [isFlipped, _isFlipped]);
 

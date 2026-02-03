@@ -1,5 +1,5 @@
 import { BiometricsValidType } from '@pagopa/io-app-design-system';
-import i18next from 'i18next';
+import { t } from 'i18next';
 import { Platform } from 'react-native';
 import FingerprintScanner, {
   AuthenticateAndroid,
@@ -18,11 +18,11 @@ export const getBiometryIconName = (
   switch (biometryPrintableSimpleType) {
     case 'BIOMETRICS':
     case 'TOUCH_ID':
-      return i18next.t('identification.unlockCode.accessibility.fingerprint', {
+      return t('identification.unlockCode.accessibility.fingerprint', {
         ns: 'global'
       });
     case 'FACE_ID':
-      return i18next.t('identification.unlockCode.accessibility.faceId', {
+      return t('identification.unlockCode.accessibility.faceId', {
         ns: 'global'
       });
   }
@@ -41,19 +41,19 @@ export const biometricAuthenticationRequest = (
   FingerprintScanner.authenticate(
     Platform.select({
       ios: {
-        description: i18next.t('identification.biometric.sensorDescription', {
+        description: t('identification.biometric.sensorDescription', {
           ns: 'global'
         }),
         fallbackEnabled: false
       } as AuthenticateIOS,
       default: {
-        title: i18next.t('identification.biometric.title', {
+        title: t('identification.biometric.title', {
           ns: 'global'
         }),
-        escription: i18next.t('identification.biometric.sensorDescription', {
+        escription: t('identification.biometric.sensorDescription', {
           ns: 'global'
         }),
-        cancelButton: i18next.t('buttons.cancel', { ns: 'global' })
+        cancelButton: t('buttons.cancel', { ns: 'global' })
       } as AuthenticateAndroid
     })
   )

@@ -1,12 +1,12 @@
-import i18next from 'i18next';
+import * as i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import itGlobal from '../../locales/it/global.json';
 import itOnboarding from '../../locales/it/onboarding.json';
-import itWallet from '../../locales/it/wallet.json';
 import itQrCodeScan from '../../locales/it/qrcodeScan.json';
+import itWallet from '../../locales/it/wallet.json';
 
 const initI18n = async () =>
-  await i18next.use(initReactI18next).init({
+  await i18n.use(initReactI18next).init({
     compatibilityJSON: 'v3', // We don't need pluralization
     fallbackLng: 'it',
     defaultNS: 'global',

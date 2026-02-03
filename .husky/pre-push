@@ -10,10 +10,7 @@ yarn tsc
 
 # Run lintier
 echo "🧹 runnning linter..."  
-yarn eslint . -c .eslintrc.js --ext .ts,.tsx --fix
-# Run prettifier
-echo "🧼 runnning prettier..."
-yarn prettier --write "ts/**/*.(ts|tsx)"
+yarn lint:fix
 
 # If we have any modified files don't push
 if [ -n "$(git status --porcelain)" ]; then

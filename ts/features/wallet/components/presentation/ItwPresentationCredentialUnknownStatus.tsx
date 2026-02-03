@@ -1,8 +1,8 @@
-import I18n from 'i18next';
 import { useNavigation } from '@react-navigation/native';
+import { t } from 'i18next';
 import { OperationResultScreenContent } from '../../../../components/screens/OperationResultScreenContent';
-import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { StoredCredential } from '../../utils/itwTypesUtils';
 
 type Props = {
@@ -27,15 +27,15 @@ export const ItwPresentationCredentialUnknownStatus = ({
   return (
     <OperationResultScreenContent
       pictogram="updateOS"
-      title={I18n.t('presentation.statusAssertionUnknown.title', {
+      title={t('presentation.statusAssertionUnknown.title', {
         ns: 'wallet',
         credentialName
       })}
-      subtitle={I18n.t('presentation.statusAssertionUnknown.content', {
+      subtitle={t('presentation.statusAssertionUnknown.content', {
         ns: 'wallet'
       })}
       action={{
-        label: I18n.t('presentation.statusAssertionUnknown.primaryAction', {
+        label: t('presentation.statusAssertionUnknown.primaryAction', {
           ns: 'wallet'
         }),
         onPress: () => navigation.goBack()

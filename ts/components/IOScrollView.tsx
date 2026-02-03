@@ -1,4 +1,3 @@
-/* eslint-disable functional/immutable-data */
 import {
   ButtonLink,
   ButtonOutline,
@@ -71,7 +70,7 @@ type IOSCrollViewHeaderScrollValues = ComponentProps<
   typeof HeaderSecondLevel
 >['scrollValues'];
 
-type IOScrollView = WithTestID<
+type IOScrollViewProps = WithTestID<
   PropsWithChildren<{
     headerConfig?: ComponentProps<typeof HeaderSecondLevel>;
     actions?: IOScrollViewActions;
@@ -158,7 +157,7 @@ export const IOScrollView = ({
   refreshControlProps,
   contentContainerStyle,
   testID
-}: IOScrollView) => {
+}: IOScrollViewProps) => {
   const theme = useIOTheme();
 
   /* Navigation */
@@ -282,8 +281,8 @@ export const IOScrollView = ({
             paddingBottom: excludeEndContentMargin
               ? 0
               : actions
-              ? safeBottomAreaHeight
-              : bottomMargin + contentEndMargin,
+                ? safeBottomAreaHeight
+                : bottomMargin + contentEndMargin,
             paddingHorizontal: includeContentMargins
               ? IOVisualCostants.appMarginDefault
               : 0,

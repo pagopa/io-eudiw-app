@@ -1,13 +1,13 @@
 import { IOColors, VSpacer } from '@pagopa/io-app-design-system';
+import { forwardRef, useCallback, useRef } from 'react';
 import {
   Animated,
-  ScrollView,
-  View,
-  StyleSheet,
   GestureResponderEvent,
-  useWindowDimensions
+  ScrollView,
+  StyleSheet,
+  useWindowDimensions,
+  View
 } from 'react-native';
-import { forwardRef, useCallback, useRef } from 'react';
 import { useInteractiveElementDefaultColorName } from '../hooks/theme';
 import { LandingCardComponent } from './LandingCardComponent';
 
@@ -70,10 +70,8 @@ const CarouselDots = (props: CarouselDotsProps) => {
       accessibilityElementsHidden={false}
       style={styles.indicatorContainer}
       onTouchEnd={(_: GestureResponderEvent) => {
-        // eslint-disable-next-line functional/immutable-data
         dotTouchCount.current++;
         if (dotTouchCount.current === 3) {
-          // eslint-disable-next-line functional/immutable-data
           dotTouchCount.current = 0;
           dotEasterEggCallback?.();
         }

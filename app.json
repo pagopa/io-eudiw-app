@@ -1,4 +1,137 @@
 {
-  "name": "IoEudiwApp",
-  "displayName": "IoEudiwApp"
+  "expo": {
+    "name": "ioeudiw",
+    "slug": "ioeudiw",
+    "version": "2.2.1",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "it.pagopa.app.io.poc.eudiw",
+      "buildNumber": "0",
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "haip",
+              "openid4vp",
+              "eudi-openid4vp",
+              "mdoc-openid4vp"
+            ]
+          }
+        ],
+        "NSFaceIDUsageDescription": "This app uses the fingerprint sensor for authentication.",
+        "NSCameraUsageDescription": "This app uses the camera to scan QR codes.",
+        "NSPhotoLibraryUsageDescription": "This app requires access to your photo library to select QR codes images.",
+        "NSBluetoothAlwaysUsageDescription": "This app uses Bluetooth to connect to external devices.",
+        "NSBluetoothPeripheralUsageDescription": "This app uses Bluetooth to connect to external devices.",
+        "NSBluetoothScanUsageDescription": "This app uses Bluetooth to connect to external devices.",
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to improve user experience."
+      }
+    },
+    "android": {
+      "package": "it.pagopa.io.app.poc.eudiw",
+      "versionCode": 47,
+      "permissions": [
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT",
+        "android.permission.CAMERA",
+        "android.permission.BLUETOOTH_SCAN",
+        "android.permission.BLUETOOTH_CONNECT",
+        "android.permission.BLUETOOTH_ADVERTISE",
+        "android.permission.BLUETOOTH",
+        "android.permission.BLUETOOTH_ADMIN",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "haip"
+            },
+            {
+              "scheme": "openid4vp"
+            },
+            {
+              "scheme": "eudi-openid4vp"
+            },
+            {
+              "scheme": "mdoc-openid4vp"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 26
+          }
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0b3ee3",
+          "image": "./assets/images/splash-icon.png"
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Titillio-Black.otf",
+            "./assets/fonts/Titillio-BlackItalic.otf",
+            "./assets/fonts/Titillio-Bold.otf",
+            "./assets/fonts/Titillio-BoldItalic.otf",
+            "./assets/fonts/Titillio-Extrablack.otf",
+            "./assets/fonts/Titillio-ExtrablackItalic.otf",
+            "./assets/fonts/Titillio-Extrabold.otf",
+            "./assets/fonts/Titillio-ExtraboldItalic.otf",
+            "./assets/fonts/Titillio-Light.otf",
+            "./assets/fonts/Titillio-LightItalic.otf",
+            "./assets/fonts/Titillio-Regular.otf",
+            "./assets/fonts/Titillio-RegularItalic.otf",
+            "./assets/fonts/Titillio-Semibold.otf",
+            "./assets/fonts/Titillio-SemiboldItalic.otf",
+            "./assets/fonts/Titillio-Thin.otf",
+            "./assets/fonts/Titillio-ThinItalic.otf",
+            "./assets/fonts/TitilliumSansPro-Black.otf",
+            "./assets/fonts/TitilliumSansPro-BlackItalic.otf",
+            "./assets/fonts/TitilliumSansPro-Bold.otf",
+            "./assets/fonts/TitilliumSansPro-BoldItalic.otf",
+            "./assets/fonts/TitilliumSansPro-Italic.otf",
+            "./assets/fonts/TitilliumSansPro-Light.otf",
+            "./assets/fonts/TitilliumSansPro-LightItalic.otf",
+            "./assets/fonts/TitilliumSansPro-Regular.otf",
+            "./assets/fonts/TitilliumSansPro-Semibold.otf",
+            "./assets/fonts/TitilliumSansPro-SemiboldItalic.otf",
+            "./assets/fonts/TitilliumSansPro-Thin.otf",
+            "./assets/fonts/TitilliumSansPro-ThinItalic.otf",
+            "./assets/fonts/FiraCode-Medium.ttf"
+          ]
+        }
+      ],
+      [
+        "react-native-permissions",
+        {
+          "iosPermissions": ["Bluetooth"]
+        }
+      ],
+      "./scripts/android-fix-bouncy-castle-dependency.js"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
 }

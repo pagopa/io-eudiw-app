@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-imports */
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, isAnyOf } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   FLUSH,
   PAUSE,
@@ -9,17 +10,17 @@ import {
   REGISTER,
   REHYDRATE
 } from 'redux-persist';
-import { useDispatch, useSelector } from 'react-redux';
-import reactotron from '../../ReactotronConfig';
+import reactotron from '../config/reactotron';
 import walletReducer from '../features/wallet/store/index';
-import { listenerMiddleware } from '../middleware/listener';
-import { AppDispatch, RootState } from './types';
-import { startupSlice } from './reducers/startup';
-import { pinReducer } from './reducers/pin';
-import { preferencesReducer } from './reducers/preferences';
+import { listenerMiddleware, startAppListening } from '../middleware/listener';
+import { startupListener } from '../middleware/listener/startup';
 import { debugReducer } from './reducers/debug';
-import { identificationReducer } from './reducers/identification';
 import { deepLinkingReducer } from './reducers/deeplinking';
+import { identificationReducer } from './reducers/identification';
+import { pinReducer } from './reducers/pin';
+import { preferencesReducer, preferencesReset } from './reducers/preferences';
+import { startupSetLoading, startupSlice } from './reducers/startup';
+import { AppDispatch, RootState } from './types';
 
 /**
  * Redux store configuration.
@@ -44,6 +45,14 @@ export const store = configureStore({
     __DEV__
       ? getDefaultEnhancers().concat(reactotron.createEnhancer()) // Adding Reactotron enhancer in development
       : getDefaultEnhancers()
+});
+
+/**
+ * Start global listeners.
+ */
+startAppListening({
+  matcher: isAnyOf(startupSetLoading, preferencesReset),
+  effect: startupListener
 });
 
 /**

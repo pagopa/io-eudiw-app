@@ -1,12 +1,11 @@
-/* eslint-disable functional/immutable-data */
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';
-import { RootState } from '../../../store/types';
 import { preferencesReset } from '../../../store/reducers/preferences';
+import { RootState } from '../../../store/types';
+import { ItwJwtCredentialStatus, WalletCard } from '../types';
 import { wellKnownCredential } from '../utils/credentials';
 import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
-import { ItwJwtCredentialStatus, WalletCard } from '../types';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 
@@ -159,7 +158,7 @@ export const itwCredentialsPidExpirationSelector = createSelector(
 
 /**
  * Selects all the credentials beside the PID and transforms them
- * into {@link ItwCredentialCard}
+ * into {@link ItwCredentialCardProps}
  */
 export const selectWalletCards: (state: RootState) => Array<WalletCard> =
   createSelector(selectCredentials, credentials =>

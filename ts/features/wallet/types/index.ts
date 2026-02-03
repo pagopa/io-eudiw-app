@@ -1,5 +1,5 @@
 import { Prettify } from '../../../types/utils';
-import { ItwCredentialCard } from '../components/credential/ItwCredentialCard';
+import { ItwCredentialCardProps } from '../components/credential/ItwCredentialCard';
 
 // Digital credential status
 export type ItwJwtCredentialStatus = 'valid' | 'jwtExpired' | 'jwtExpiring';
@@ -31,7 +31,7 @@ type WalletCardBase = {
 export type WalletCardItw = Prettify<
   {
     type: 'itw';
-  } & ItwCredentialCard
+  } & ItwCredentialCardProps
 >;
 
 // This card type renders a loading skeleton, used as a placeholder for other cards

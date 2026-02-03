@@ -1,14 +1,14 @@
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch, useAppSelector } from '../../../../store';
 import { OperationResultScreenContent } from '../../../../components/screens/OperationResultScreenContent';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   resetInstanceCreation,
-  resetPidIssuance,
-  selectPidIssuanceError
+  resetPidIssuance
 } from '../../store/pidIssuance';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
-import { useDebugInfo } from '../../../../hooks/useDebugInfo';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { selectPidIssuanceError } from '../../store/selectors/pidIssuance';
 
 /**
  * Filure screen of the pid issuance flow.

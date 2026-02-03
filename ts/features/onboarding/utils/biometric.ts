@@ -1,10 +1,10 @@
+import { isPinOrFingerprintSet } from 'react-native-device-info';
 import FingerprintScanner, {
   AuthenticateIOS,
   Biometrics,
-  FingerprintScannerError,
-  Errors
+  Errors,
+  FingerprintScannerError
 } from 'react-native-fingerprint-scanner';
-import { isPinOrFingerprintSet } from 'react-native-device-info';
 
 /**
  * Retrieve biometric settings from the base system. This function wraps the basic
@@ -66,13 +66,13 @@ export const isBiometricsValidType = (
 //   FingerprintScanner.authenticate(
 //     Platform.select({
 //       ios: {
-//         description: I18n.t('identification.biometric.popup.sensorDescription'),
+//         description: t('identification.biometric.popup.sensorDescription'),
 //         fallbackEnabled: false
 //       } as AuthenticateIOS,
 //       default: {
-//         title: I18n.t('identification.biometric.popup.title'),
-//         description: I18n.t('identification.biometric.popup.sensorDescription'),
-//         cancelButton: I18n.t('global.buttons.cancel')
+//         title: t('identification.biometric.popup.title'),
+//         description: t('identification.biometric.popup.sensorDescription'),
+//         cancelButton: t('global.buttons.cancel')
 //       } as AuthenticateAndroid
 //     })
 //   )

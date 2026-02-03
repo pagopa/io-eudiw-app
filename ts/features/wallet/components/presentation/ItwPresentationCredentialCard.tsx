@@ -5,21 +5,21 @@ import {
   VStack
 } from '@pagopa/io-app-design-system';
 
-import { PropsWithChildren, useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
+import { PropsWithChildren, useCallback, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useAppSelector } from '../../../../store';
 import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredentialStatus';
-import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
-import { FlipGestureDetector } from '../credential/ItwSkeumorphicCard/FlipGestureDetector';
-import { ItwSkeumorphicCard } from '../credential/ItwSkeumorphicCard';
 import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import WALLET_ROUTES from '../../navigation/routes';
-import { useAppSelector } from '../../../../store';
 import { itwIsClaimValueHiddenSelector } from '../../store/credentials';
-import { StoredCredential } from '../../utils/itwTypesUtils';
 import { ParsedClaimsRecord } from '../../utils/claims';
+import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
+import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
+import { StoredCredential } from '../../utils/itwTypesUtils';
+import { ItwSkeumorphicCard } from '../credential/ItwSkeumorphicCard';
+import { FlipGestureDetector } from '../credential/ItwSkeumorphicCard/FlipGestureDetector';
 import { ItwPresentationCredentialCardFlipButton } from './ItwPresentationCredentialCardFlipButton';
 
 type Props = {
@@ -60,7 +60,11 @@ const ItwPresentationCredentialCard = ({ credential, parsedClaims }: Props) => {
   return (
     <VStack space={8}>
       <CardContainer backgroundColor={backgroundColor}>
-        <FlipGestureDetector isFlipped={isFlipped} setIsFlipped={setIsFlipped}>
+        <FlipGestureDetector
+          isFlipped={isFlipped}
+          setIsFlipped={setIsFlipped}
+          onPress={handleCardPress}
+        >
           <ItwSkeumorphicCard
             credential={credential}
             claims={parsedClaims}
@@ -68,7 +72,6 @@ const ItwPresentationCredentialCard = ({ credential, parsedClaims }: Props) => {
             isFlipped={isFlipped}
             status={status}
             valuesHidden={valuesHidden}
-            onPress={handleCardPress}
           />
         </FlipGestureDetector>
       </CardContainer>

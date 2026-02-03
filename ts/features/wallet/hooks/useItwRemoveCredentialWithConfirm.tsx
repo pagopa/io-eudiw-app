@@ -1,10 +1,10 @@
 import { useIOToast } from '@pagopa/io-app-design-system';
-import { Alert } from 'react-native';
-import I18n from 'i18next';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useAppDispatch } from '../../../store';
+import { Alert } from 'react-native';
+import { t } from 'i18next';
 import { RootStackParamList } from '../../../navigation/RootStacknavigator';
+import { useAppDispatch } from '../../../store';
 import { removeCredential } from '../store/credentials';
 import { StoredCredential } from '../utils/itwTypesUtils';
 
@@ -21,7 +21,7 @@ export const useItwRemoveCredentialWithConfirm = (
   const handleRemoveCredential = () => {
     dispatch(removeCredential(credential));
     toast.success(
-      I18n.t('presentation.credentialDetails.toast.removed', { ns: 'wallet' })
+      t('presentation.credentialDetails.toast.removed', { ns: 'wallet' })
     );
 
     navigation.pop();
@@ -29,24 +29,21 @@ export const useItwRemoveCredentialWithConfirm = (
 
   const confirmAndRemoveCredential = () =>
     Alert.alert(
-      I18n.t('presentation.credentialDetails.dialogs.remove.title', {
+      t('presentation.credentialDetails.dialogs.remove.title', {
         ns: 'wallet'
       }),
-      I18n.t('presentation.credentialDetails.dialogs.remove.content', {
+      t('presentation.credentialDetails.dialogs.remove.content', {
         ns: 'wallet'
       }),
       [
         {
-          text: I18n.t('buttons.cancel', { ns: 'global' }),
+          text: t('buttons.cancel', { ns: 'global' }),
           style: 'cancel'
         },
         {
-          text: I18n.t(
-            'presentation.credentialDetails.dialogs.remove.confirm',
-            {
-              ns: 'wallet'
-            }
-          ),
+          text: t('presentation.credentialDetails.dialogs.remove.confirm', {
+            ns: 'wallet'
+          }),
           style: 'destructive',
           onPress: handleRemoveCredential
         }

@@ -1,6 +1,6 @@
-import { ListenerEffect, Action } from '@reduxjs/toolkit';
+import { Action, ListenerEffect } from '@reduxjs/toolkit';
 import { AppDispatch, RootState } from '../../store/types';
-import { AppListener } from '.';
+import { AppListener } from './types';
 
 /**
  * A wrapper for Redux Toolkit listeners that implements a takeLatest behavior.

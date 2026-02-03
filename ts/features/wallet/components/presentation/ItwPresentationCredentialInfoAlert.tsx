@@ -1,13 +1,13 @@
-import { memo } from 'react';
 import { Alert } from '@pagopa/io-app-design-system';
-import I18n from 'i18next';
+import { memo } from 'react';
+import { t } from 'i18next';
 import { useAppSelector } from '../../../../store';
+import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
+import { wellKnownCredential } from '../../utils/credentials';
 import {
   ItwCredentialStatus,
   StoredCredential
 } from '../../utils/itwTypesUtils';
-import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
-import { wellKnownCredential } from '../../utils/credentials';
 
 type Props = {
   credential: StoredCredential;
@@ -36,7 +36,7 @@ const ItwPresentationCredentialInfoAlert = ({ credential }: Props) => {
     return (
       <Alert
         testID="itwMdlBannerTestID"
-        content={I18n.t('presentation.alerts.mdl.content', { ns: 'wallet' })}
+        content={t('presentation.alerts.mdl.content', { ns: 'wallet' })}
         variant="info"
       />
     );
@@ -46,7 +46,7 @@ const ItwPresentationCredentialInfoAlert = ({ credential }: Props) => {
     return (
       <Alert
         testID="itwMdlBannerTestID"
-        content={I18n.t('presentation.alerts.edc.content', { ns: 'wallet' })}
+        content={t('presentation.alerts.edc.content', { ns: 'wallet' })}
         variant="info"
       />
     );

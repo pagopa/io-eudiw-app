@@ -72,5 +72,3 @@ export const LoadingScreenContent = (props: LoadingScreenContentProps) => {
     </SafeAreaView>
   );
 };
-
-export default LoadingScreenContent;

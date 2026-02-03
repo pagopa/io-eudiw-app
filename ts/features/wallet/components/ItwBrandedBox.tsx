@@ -1,4 +1,3 @@
-/* eslint-disable functional/immutable-data */
 import { useIOThemeContext } from '@pagopa/io-app-design-system';
 import {
   Canvas,
@@ -24,8 +23,8 @@ import {
   useSharedValue
 } from 'react-native-reanimated';
 import { useItWalletTheme } from '../utils/theme';
-import { ItwSkiaBrandedGradientVariant } from './ItwBrandedSkiaGradient';
 import { ItwBrandedSkiaBorder } from './ItwBrandedSkiaBorder';
+import { ItwSkiaBrandedGradientVariant } from './ItwBrandedSkiaGradient';
 
 type ItwIridescentBorderProps = {
   variant?: ItwSkiaBrandedGradientVariant;
@@ -163,6 +162,7 @@ export const ItwBrandedBox = ({
 
       {/* Skia Canvas for border and light effect */}
       <Canvas
+        pointerEvents="none"
         style={{
           position: 'absolute',
           height: size.height,
