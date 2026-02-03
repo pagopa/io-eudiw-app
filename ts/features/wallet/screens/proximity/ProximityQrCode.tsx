@@ -38,10 +38,10 @@ const ProximityQrCode = () => {
   const qrCode = useAppSelector(selectProximityQrCode);
   const proximityStatus = useAppSelector(selectProximityStatus);
   const descriptor = useAppSelector(selectProximityDisclosureDescriptor);
-  const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
   const isAuthenticated = useAppSelector(
     selectProximityDisclosureIsAuthenticated
   );
+  const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
 
   useDebugInfo({
     proximityDisclosureDescriptorQR: descriptor,

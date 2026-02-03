@@ -3,7 +3,6 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { RootState } from '../../../store/types';
 import { preferencesReset } from '../../../store/reducers/preferences';
-import { ParsedCredential } from '../utils/itwTypesUtils';
 import { ProximityDetails } from '../screens/proximity/ItwProximityPresentationDetails';
 import { resetLifecycle } from './lifecycle';
 
@@ -30,10 +29,8 @@ export enum ProximityStatus {
  * a proximity presentation on screen and create the {@link AcceptedFields}
  */
 export type ProximityDisclosure = {
-  descriptor: Record<
-    string,
-    Record<string, Record<string, ParsedCredential[string]>>
-  >;
+  descriptor: ProximityDetails;
+  isAuthenticated: boolean;
 };
 
 /* State type definition for the proximity slice
@@ -45,7 +42,7 @@ export type ProximityState = {
   qrCode?: string;
   status: ProximityStatus;
   documentRequest?: ISO18013_5.VerifierRequest;
-  proximityDisclosureDescriptor?: ProximityDetails;
+  proximityDisclosureDescriptor?: ProximityDisclosure;
   errorDetails?: string;
 };
 
@@ -104,7 +101,7 @@ export const proximitySlice = createSlice({
     },
     setProximityStatusAuthorizationStarted: (
       state,
-      action: PayloadAction<ProximityDetails>
+      action: PayloadAction<ProximityDisclosure>
     ) => {
       state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED;
       state.proximityDisclosureDescriptor = action.payload;
@@ -185,7 +182,7 @@ export const selectProximityDocumentRequest = (state: RootState) =>
  * @returns A {@link ProximityDisclosureDescriptor}
  */
 export const selectProximityDisclosureDescriptor = (state: RootState) =>
-  state.wallet.proximity.proximityDisclosureDescriptor;
+  state.wallet.proximity.proximityDisclosureDescriptor?.descriptor;
 
 /**
  * Selects the verifier authentication flags
@@ -194,7 +191,7 @@ export const selectProximityDisclosureDescriptor = (state: RootState) =>
  */
 export const selectProximityDisclosureIsAuthenticated = createSelector(
   (state: RootState) => state.wallet.proximity.proximityDisclosureDescriptor,
-  descriptor => descriptor?.[0]?.isAuthenticated || false
+  descriptor => descriptor?.isAuthenticated || false
 );
 
 /**

@@ -76,7 +76,6 @@ export enum WellKnownClaim {
    * Claim that contains the driving privilege within the new nested structure
    */
   driving_privileges = 'driving_privileges',
-
   /**
    * Claim that contains signature usual mark
    */
@@ -201,7 +200,13 @@ export const getFamilyNameFromCredential = (
     : '';
 
 /**
+ *
+ *
+ *
  * CLAIMS LOCALE UTILS
+ *
+ *
+ *
  */
 
 export const SimpleDateFormat = {

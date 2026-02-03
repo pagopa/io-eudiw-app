@@ -20,6 +20,7 @@ import { store } from '../../../store';
 import { selectCredentials } from '../store/credentials';
 import {
   generateAcceptedFields,
+  getIsVerifierAuthenticated,
   getProximityDetails,
   verifierCertificates
 } from '../utils/proximity';
@@ -160,7 +161,13 @@ const responseHandler = async (listenerApi: AppListener) => {
     mdocCredentials
   );
 
-  listenerApi.dispatch(setProximityStatusAuthorizationStarted(descriptor));
+  const isAuthenticated = getIsVerifierAuthenticated(documentRequest);
+  listenerApi.dispatch(
+    setProximityStatusAuthorizationStarted({
+      descriptor,
+      isAuthenticated
+    })
+  );
 
   const choice = await listenerApi.take(
     isAnyOf(

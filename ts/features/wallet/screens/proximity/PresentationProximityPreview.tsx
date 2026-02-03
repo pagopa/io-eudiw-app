@@ -14,6 +14,7 @@ import {
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import {
+  ProximityDisclosure,
   ProximityStatus,
   resetProximity,
   selectProximityDocumentRequest,
@@ -33,15 +34,9 @@ import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import IOMarkdown from '../../../../components/IOMarkdown';
 import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
 import { selectIsDebugModeEnabled } from '../../../../store/reducers/debug';
-import {
-  ItwProximityPresentationDetails,
-  ProximityDetails
-} from './ItwProximityPresentationDetails';
+import { ItwProximityPresentationDetails } from './ItwProximityPresentationDetails';
 
-export type PresentationProximityPreviewProps = {
-  descriptor: ProximityDetails;
-  isAuthenticated: boolean;
-};
+export type PresentationProximityPreviewProps = ProximityDisclosure;
 
 type Props = StackScreenProps<WalletNavigatorParamsList, 'PROXIMITY_PREVIEW'>;
 
@@ -51,13 +46,13 @@ type Props = StackScreenProps<WalletNavigatorParamsList, 'PROXIMITY_PREVIEW'>;
  */
 const PresentationProximityPreview = ({ route }: Props) => {
   const proximityDetails = route.params.descriptor;
-  const isAuthenticated = route.params.isAuthenticated;
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const { navigateToWallet } = useNavigateToWalletWithReset();
   const proximityStatus = useAppSelector(selectProximityStatus);
   const { t } = useTranslation(['global', 'wallet']);
   const isDebug = useAppSelector(selectIsDebugModeEnabled);
+  const isAuthenticated = route.params.isAuthenticated;
 
   const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
   const verifierRequest = useAppSelector(selectProximityDocumentRequest);
@@ -170,7 +165,6 @@ const PresentationProximityPreview = ({ route }: Props) => {
           body={t('wallet:presentation.trust.disclaimer.1')}
         />
       </View>
-
       <FooterActions
         fixed={false}
         actions={{
