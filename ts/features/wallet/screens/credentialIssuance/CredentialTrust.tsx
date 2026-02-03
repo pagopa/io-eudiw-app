@@ -143,7 +143,7 @@ const CredentialTrust = () => {
           </H2>
           <IOMarkdown
             content={t('wallet:credentialIssuance.trust.subtitle', {
-              relyingParty: ISSUER_MOCK_NAME
+              organization: ISSUER_MOCK_NAME
             })}
           />
         </VStack>

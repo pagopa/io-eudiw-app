@@ -399,7 +399,7 @@
     },
     "trust": {
       "title": "{{credential}}: Dati richiesti",
-      "subtitle": "Saranno mostrati a **{{relyingParty}}** per accedere ai servizi richiesti.",
+      "subtitle": "Saranno condivisi con **{{organization}}** per il rilascio della versione digitale del documento.",
       "requiredData": "Dati richiesti",
       "disclaimer": {
         "store": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
