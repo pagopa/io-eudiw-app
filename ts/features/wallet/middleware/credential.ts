@@ -15,7 +15,7 @@ import {
 } from '@pagopa/io-react-native-wallet/lib/typescript/credential/issuance';
 import { Out } from '@pagopa/io-react-native-wallet/lib/typescript/utils/misc';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
-import i18next from 'i18next';
+import { t } from 'i18next';
 import uuid from 'react-native-uuid';
 import { getEnv } from '../../../../ts/config/env';
 import {
@@ -341,7 +341,7 @@ export const addCredentialWithAuthListener: AppListenerWithAction<
     listenerApi.dispatch(addCredential(action.payload));
     listenerApi.dispatch(resetCredentialIssuance());
     navigateWithReset('MAIN_TAB_NAV');
-    IOToast.success(i18next.t('buttons.done', { ns: 'global' }));
+    IOToast.success(t('buttons.done', { ns: 'global' }));
   } else {
     return;
   }

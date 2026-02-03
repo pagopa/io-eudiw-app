@@ -5,10 +5,10 @@ import {
   NavigatorScreenParams
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import i18next from 'i18next';
+import { t } from 'i18next';
 import { useCallback, useEffect } from 'react';
 import { Linking } from 'react-native';
-import LoadingScreenContent from '../components/LoadingScreenContent';
+import { LoadingScreenContent } from '../components/LoadingScreenContent';
 import { OperationResultScreenContent } from '../components/screens/OperationResultScreenContent';
 import { useStoredFontPreference } from '../context/DSTypeFaceContext';
 import OnboardingNavigator, {
@@ -67,7 +67,7 @@ export const RootStackNavigator = () => {
   const dispatch = useAppDispatch();
 
   const Loading = () => (
-    <LoadingScreenContent contentTitle={i18next.t('generics.waiting')} />
+    <LoadingScreenContent contentTitle={t('generics.waiting')} />
   );
 
   const GenericError = () => {

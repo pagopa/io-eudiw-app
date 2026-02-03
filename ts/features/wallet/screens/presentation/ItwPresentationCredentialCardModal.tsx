@@ -6,10 +6,10 @@ import {
 } from '@pagopa/io-app-design-system';
 import { StackScreenProps } from '@react-navigation/stack';
 // import { usePreventScreenCapture } from 'expo-screen-capture';
-import I18n from 'i18next';
 import { memo, useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { t } from 'i18next';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import { useMaxBrightness } from '../../../../utils/brightness';
 import {
@@ -63,7 +63,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
           type="singleAction"
           firstAction={{
             icon: 'closeLarge',
-            accessibilityLabel: I18n.t('buttons.close', { ns: 'global' }),
+            accessibilityLabel: t('buttons.close', { ns: 'global' }),
             onPress: () => navigation.goBack()
           }}
         />

@@ -6,19 +6,19 @@ import {
 } from '@pagopa/io-app-design-system';
 import { Fragment, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
-import I18n from 'i18next';
-import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
-import { WellKnownClaim } from '../../utils/itwClaimsUtils';
-import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
-import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
-import { ItwQrCodeClaimImage } from '../credential/ItwQrCodeClaimImage';
+import { t } from 'i18next';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   itwIsClaimValueHiddenSelector,
   itwSetClaimValuesHidden
 } from '../../store/credentials';
-import { StoredCredential } from '../../utils/itwTypesUtils';
 import { ParsedClaimsRecord } from '../../utils/claims';
+import { WellKnownClaim } from '../../utils/itwClaimsUtils';
+import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
+import { StoredCredential } from '../../utils/itwTypesUtils';
+import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
+import { ItwQrCodeClaimImage } from '../credential/ItwQrCodeClaimImage';
+import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
 
 type ItwPresentationClaimsSectionProps = {
   credential: StoredCredential;
@@ -46,7 +46,7 @@ export const ItwPresentationClaimsSection = ({
   const renderHideValuesToggle = () => (
     <View
       accessible={true}
-      accessibilityLabel={I18n.t(
+      accessibilityLabel={t(
         'presentation.credentialDetails.actions.hideClaimValues',
         {
           ns: 'wallet'
@@ -59,7 +59,7 @@ export const ItwPresentationClaimsSection = ({
         testID="toggle-claim-visibility"
         icon={valuesHidden ? 'eyeHide' : 'eyeShow'}
         onPress={handleToggleClaimVisibility}
-        accessibilityLabel={I18n.t(
+        accessibilityLabel={t(
           'presentation.credentialDetails.actions.hideClaimValues',
           {
             ns: 'wallet'
@@ -97,7 +97,7 @@ export const ItwPresentationClaimsSection = ({
               style={{ flexDirection: 'row', justifyContent: 'space-between' }}
             >
               <H6 color={theme['textHeading-tertiary']}>
-                {I18n.t('presentation.credentialDetails.documentDataTitle', {
+                {t('presentation.credentialDetails.documentDataTitle', {
                   ns: 'wallet'
                 })}
               </H6>

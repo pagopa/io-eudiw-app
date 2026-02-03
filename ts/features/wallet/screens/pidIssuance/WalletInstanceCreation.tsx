@@ -13,7 +13,6 @@ import {
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
-import I18n from 'i18next';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
@@ -22,6 +21,7 @@ import Animated, {
   useScrollViewOffset,
   useSharedValue
 } from 'react-native-reanimated';
+import { t } from 'i18next';
 import { AnimatedImage } from '../../../../components/AnimatedImage';
 import IOMarkdown from '../../../../components/IOMarkdown';
 import { IOScrollViewWithReveal } from '../../../../components/IOScrollViewWithReveal';
@@ -59,16 +59,16 @@ export const WalletInstanceCreation = () => {
 
   const dismissalDialog = useItwDismissalDialog({
     customLabels: {
-      title: I18n.t('discovery.screen.itw.dismissalDialog.title', {
+      title: t('discovery.screen.itw.dismissalDialog.title', {
         ns: 'wallet'
       }),
-      body: I18n.t('discovery.screen.itw.dismissalDialog.body', {
+      body: t('discovery.screen.itw.dismissalDialog.body', {
         ns: 'wallet'
       }),
-      confirmLabel: I18n.t('discovery.screen.itw.dismissalDialog.confirm', {
+      confirmLabel: t('discovery.screen.itw.dismissalDialog.confirm', {
         ns: 'wallet'
       }),
-      cancelLabel: I18n.t('discovery.screen.itw.dismissalDialog.cancel', {
+      cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel', {
         ns: 'wallet'
       })
     },
@@ -143,13 +143,13 @@ export const WalletInstanceCreation = () => {
       actions={{
         primary: {
           loading,
-          label: I18n.t('discovery.screen.itw.actions.primary', {
+          label: t('discovery.screen.itw.actions.primary', {
             ns: 'wallet'
           }),
           onPress
         },
         anchor: {
-          label: I18n.t('discovery.screen.itw.actions.anchor', {
+          label: t('discovery.screen.itw.actions.anchor', {
             ns: 'wallet'
           }),
           onPress: handleScrollToHighlights
@@ -163,7 +163,7 @@ export const WalletInstanceCreation = () => {
       <VSpacer size={24} />
       <ContentWrapper>
         <H2>
-          {I18n.t('discovery.screen.itw.title', {
+          {t('discovery.screen.itw.title', {
             ns: 'wallet'
           })}
         </H2>
@@ -171,31 +171,31 @@ export const WalletInstanceCreation = () => {
         <VStack space={16}>
           <FeatureBlock
             image={<Feature1Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.1', {
+            content={t('discovery.screen.itw.features.1', {
               ns: 'wallet'
             })}
           />
           <FeatureBlock
             image={<Feature2Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.2', {
+            content={t('discovery.screen.itw.features.2', {
               ns: 'wallet'
             })}
           />
           <FeatureBlock
             image={<Feature3Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.3', {
+            content={t('discovery.screen.itw.features.3', {
               ns: 'wallet'
             })}
           />
           <FeatureBlock
             image={<Feature4Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.4', {
+            content={t('discovery.screen.itw.features.4', {
               ns: 'wallet'
             })}
           />
           <FeatureBlock
             image={<Feature5Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.5', {
+            content={t('discovery.screen.itw.features.5', {
               ns: 'wallet'
             })}
           />
@@ -214,40 +214,40 @@ export const WalletInstanceCreation = () => {
         <ContentWrapper>
           <Divider />
           <DetailBlock
-            title={I18n.t('discovery.screen.itw.details.1.title', {
+            title={t('discovery.screen.itw.details.1.title', {
               ns: 'wallet'
             })}
-            content={I18n.t('discovery.screen.itw.details.1.content', {
+            content={t('discovery.screen.itw.details.1.content', {
               ns: 'wallet'
             })}
             icon="security"
           />
           <Divider />
           <DetailBlock
-            title={I18n.t('discovery.screen.itw.details.2.title', {
+            title={t('discovery.screen.itw.details.2.title', {
               ns: 'wallet'
             })}
-            content={I18n.t('discovery.screen.itw.details.2.content', {
+            content={t('discovery.screen.itw.details.2.content', {
               ns: 'wallet'
             })}
             icon="fiscalCodeIndividual"
           />
           <Divider />
           <DetailBlock
-            title={I18n.t('discovery.screen.itw.details.3.title', {
+            title={t('discovery.screen.itw.details.3.title', {
               ns: 'wallet'
             })}
-            content={I18n.t('discovery.screen.itw.details.3.content', {
+            content={t('discovery.screen.itw.details.3.content', {
               ns: 'wallet'
             })}
             icon="navQrWallet"
           />
           <Divider />
           <DetailBlock
-            title={I18n.t('discovery.screen.itw.details.4.title', {
+            title={t('discovery.screen.itw.details.4.title', {
               ns: 'wallet'
             })}
-            content={I18n.t('discovery.screen.itw.details.4.content', {
+            content={t('discovery.screen.itw.details.4.content', {
               ns: 'wallet'
             })}
             icon="euStars"
@@ -255,7 +255,7 @@ export const WalletInstanceCreation = () => {
 
           <VSpacer size={24} />
           <IOMarkdown
-            content={I18n.t('discovery.screen.itw.tos', { ns: 'wallet' })}
+            content={t('discovery.screen.itw.tos', { ns: 'wallet' })}
             rules={generateItwIOMarkdownRules({
               linkCallback: () => null,
               paragraphSize: 'small'
