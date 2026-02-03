@@ -17,8 +17,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "prettier --write",
-      "expo lint"
+      "expo lint:fix"
     ]
   },
   "dependencies": {
