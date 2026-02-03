@@ -20,7 +20,7 @@ import { CredentialTypePresentationClaimsListDescriptor } from '../components/pr
 import {
   AppListenerWithAction,
   AppStartListening
-} from '../../../middleware/listener';
+} from '../../../middleware/listener/types';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,

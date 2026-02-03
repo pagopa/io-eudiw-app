@@ -19,13 +19,13 @@ import i18next from 'i18next';
 import uuid from 'react-native-uuid';
 import { getEnv } from '../../../../ts/config/env';
 import {
-  AppListenerWithAction,
-  AppStartListening
-} from '../../../middleware/listener';
-import {
   raceEffect,
   takeLatestEffect
 } from '../../../middleware/listener/effects';
+import {
+  AppListenerWithAction,
+  AppStartListening
+} from '../../../middleware/listener/types';
 import { navigateWithReset } from '../../../navigation/utils';
 import {
   setIdentificationIdentified,

@@ -14,7 +14,7 @@ import { getEnv } from '../../../config/env';
 import {
   AppListenerWithAction,
   AppStartListening
-} from '../../../middleware/listener';
+} from '../../../middleware/listener/types';
 import { takeLatestEffect } from '../../../middleware/listener/effects';
 import { createAppAsyncThunk } from '../../../middleware/thunk';
 import MAIN_ROUTES from '../../../navigation/main/routes';
@@ -30,7 +30,7 @@ import WALLET_ROUTES from '../navigation/routes';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
 import { addCredential, addPidWithIdentification } from '../store/credentials';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
-import { selectPendingCredential } from '../store/pidIssuance';
+import { selectPendingCredential } from '../store/selectors/pidIssuance';
 import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 import { DPOP_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';

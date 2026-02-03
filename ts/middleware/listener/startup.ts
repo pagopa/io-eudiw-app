@@ -25,7 +25,8 @@ import {
   startupSetStatus,
   StartupState
 } from '../../store/reducers/startup';
-import { AppListener, AppListenerWithAction, startAppListening } from './index';
+import { AppListener, AppListenerWithAction } from './types';
+import { startAppListening } from './index';
 
 /**
  * Utility function to wait for the navigation to be ready before dispatching a navigation event.

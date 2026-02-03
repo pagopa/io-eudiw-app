@@ -36,10 +36,8 @@ import Feature4Image from '../../assets/img/discovery/feature_4.svg';
 import Feature5Image from '../../assets/img/discovery/feature_5.svg';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { createInstanceThunk } from '../../middleware/instance';
-import {
-  resetInstanceCreation,
-  selectInstanceStatus
-} from '../../store/pidIssuance';
+import { resetInstanceCreation } from '../../store/pidIssuance';
+import { selectInstanceStatus } from '../../store/selectors/pidIssuance';
 import { generateItwIOMarkdownRules } from '../../utils/markdown';
 
 // Offset to avoid to scroll to the block without margins
