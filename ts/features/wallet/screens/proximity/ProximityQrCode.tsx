@@ -86,7 +86,7 @@ const ProximityQrCode = () => {
         params: { fatal: true }
       });
     }
-  }, [proximityStatus, navigation, descriptor]);
+  }, [proximityStatus, navigation, descriptor, isAuthenticated]);
 
   return (
     <ContentWrapper>
