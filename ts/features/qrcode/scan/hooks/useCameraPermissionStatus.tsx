@@ -1,9 +1,10 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { PermissionStatus, useCameraPermissions } from 'expo-camera';
+import { PermissionStatus, useCameraPermissions, Camera } from 'expo-camera';
 import { useCallback, useEffect, useState } from 'react';
 import { AppState, Linking } from 'react-native';
 import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
+import { isAndroid } from '../../../../utils/device';
 
 /**
  * Hook to handle camera permission status with platform specific behavior
@@ -34,13 +35,10 @@ export const useCameraPermissionStatus = () => {
    * Checks permission requirements on mount/focus.
    */
   useEffect(() => {
-    if (!isFocused || !isNavigationTransitionEnded) {
-      return;
-    }
-
-    // Optional chain handles the null check implicitly
-    if (permission?.status === PermissionStatus.UNDETERMINED) {
-      void requestPermission();
+    if (isAndroid && permission?.status === PermissionStatus.DENIED) {
+      if (isFocused && isNavigationTransitionEnded) {
+        void requestPermission();
+      }
     }
   }, [
     permission?.status,
@@ -53,19 +51,26 @@ export const useCameraPermissionStatus = () => {
    * Setup listener for app state changes.
    */
   useEffect(() => {
-    // Optional chain here as well
-    if (permission?.status !== PermissionStatus.GRANTED) {
-      const subscription = AppState.addEventListener(
+    if (permission?.status === PermissionStatus.DENIED) {
+      const unsubscribe = AppState.addEventListener(
         'change',
         async nextAppState => {
           if (nextAppState === 'active') {
-            await requestPermission();
+            // Fetch the latest permission status and if the permission is granted and it was previsouly denied, request it again to update the permission state
+            const status = await Camera.getCameraPermissionsAsync();
+            if (
+              status.granted &&
+              permission?.status !== PermissionStatus.GRANTED
+            ) {
+              await requestPermission();
+            }
           }
         }
       );
-      return () => subscription.remove();
+
+      return () => unsubscribe.remove();
     }
-    return undefined;
+    return () => null;
   }, [permission?.status, requestPermission]);
 
   /**
