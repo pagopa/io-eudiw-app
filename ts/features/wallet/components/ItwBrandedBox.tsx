@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import { useIOThemeContext } from '@pagopa/io-app-design-system';
 import {
   Canvas,
@@ -163,6 +162,7 @@ export const ItwBrandedBox = ({
 
       {/* Skia Canvas for border and light effect */}
       <Canvas
+        pointerEvents="none"
         style={{
           position: 'absolute',
           height: size.height,

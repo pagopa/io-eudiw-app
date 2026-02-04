@@ -2,16 +2,9 @@
   "expo": {
     "name": "ioeudiw",
     "slug": "ioeudiw",
-    "version": "2.1.1",
+    "version": "2.2.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": [
-      "haip",
-      "openid4vp",
-      "eudi-openid4vp",
-      "mdoc-openid4vp",
-      "https"
-    ],
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -19,6 +12,16 @@
       "bundleIdentifier": "it.pagopa.app.io.poc.eudiw",
       "buildNumber": "0",
       "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "haip",
+              "openid4vp",
+              "eudi-openid4vp",
+              "mdoc-openid4vp"
+            ]
+          }
+        ],
         "NSFaceIDUsageDescription": "This app uses the fingerprint sensor for authentication.",
         "NSCameraUsageDescription": "This app uses the camera to scan QR codes.",
         "NSPhotoLibraryUsageDescription": "This app requires access to your photo library to select QR codes images.",
@@ -30,7 +33,7 @@
     },
     "android": {
       "package": "it.pagopa.io.app.poc.eudiw",
-      "versionCode": 45,
+      "versionCode": 47,
       "permissions": [
         "android.permission.USE_BIOMETRIC",
         "android.permission.USE_FINGERPRINT",
@@ -43,7 +46,28 @@
         "android.permission.ACCESS_FINE_LOCATION"
       ],
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "haip"
+            },
+            {
+              "scheme": "openid4vp"
+            },
+            {
+              "scheme": "eudi-openid4vp"
+            },
+            {
+              "scheme": "mdoc-openid4vp"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     },
     "plugins": [
       [
@@ -103,7 +127,6 @@
           "iosPermissions": ["Bluetooth"]
         }
       ],
-      "expo-build-properties",
       "./scripts/android-fix-bouncy-castle-dependency.js"
     ],
     "experiments": {

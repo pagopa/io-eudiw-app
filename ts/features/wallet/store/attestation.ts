@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import secureStoragePersistor from '../../../store/persistors/secureStorage';

@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import {
   Rect,
   LinearGradient as SkiaLinearGradient,

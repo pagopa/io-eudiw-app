@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { PinString } from '../../features/onboarding/types/PinString';

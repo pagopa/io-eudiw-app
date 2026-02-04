@@ -23,21 +23,22 @@ import Animated, {
   useSharedValue
 } from 'react-native-reanimated';
 import { AnimatedImage } from '../../../../components/AnimatedImage';
+import IOMarkdown from '../../../../components/IOMarkdown';
+import { IOScrollViewWithReveal } from '../../../../components/IOScrollViewWithReveal';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import Feature1Image from '../../assets/img/discovery/feature_1.svg';
 import Feature2Image from '../../assets/img/discovery/feature_2.svg';
 import Feature3Image from '../../assets/img/discovery/feature_3.svg';
 import Feature4Image from '../../assets/img/discovery/feature_4.svg';
 import Feature5Image from '../../assets/img/discovery/feature_5.svg';
-
-import IOMarkdown from '../../../../components/IOMarkdown/index';
-import { IOScrollViewWithReveal } from '../../../../components/IOScrollViewWithReveal';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { useAppDispatch, useAppSelector } from '../../../../store/index';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
+import { createInstanceThunk } from '../../middleware/instance';
 import {
   resetInstanceCreation,
-  selectInstanceStatus,
-  setInstanceCreationRequest
+  selectInstanceStatus
 } from '../../store/pidIssuance';
 import { generateItwIOMarkdownRules } from '../../utils/markdown';
 
@@ -45,6 +46,8 @@ import { generateItwIOMarkdownRules } from '../../utils/markdown';
 const scrollOffset: number = 12;
 // Percentage of the visible block after which the anchor link is hidden
 const intersectionRatio: number = 0.3;
+
+type CreateInstancePromise = ReturnType<ReturnType<typeof createInstanceThunk>>;
 
 /**
  * This is the component that shows the information about the activation of the wallet and creates the wallet instance.
@@ -54,11 +57,35 @@ export const WalletInstanceCreation = () => {
   const { error, success, loading } = useAppSelector(selectInstanceStatus);
   const dispatch = useAppDispatch();
 
+  const thunkRef = useRef<CreateInstancePromise | null>(null);
+
+  const dismissalDialog = useItwDismissalDialog({
+    customLabels: {
+      title: I18n.t('discovery.screen.itw.dismissalDialog.title', {
+        ns: 'wallet'
+      }),
+      body: I18n.t('discovery.screen.itw.dismissalDialog.body', {
+        ns: 'wallet'
+      }),
+      confirmLabel: I18n.t('discovery.screen.itw.dismissalDialog.confirm', {
+        ns: 'wallet'
+      }),
+      cancelLabel: I18n.t('discovery.screen.itw.dismissalDialog.cancel', {
+        ns: 'wallet'
+      })
+    },
+    handleDismiss: () => {
+      thunkRef.current?.abort();
+      navigation.goBack();
+    }
+  });
+
+  useHardwareBackButtonToDismiss(() => dismissalDialog.show());
+  useDisableGestureNavigation();
+
   useHeaderSecondLevel({
     title: '',
-    goBack: () => {
-      dismissalDialog.show();
-    }
+    goBack: () => dismissalDialog.show()
   });
 
   useEffect(() => {
@@ -78,23 +105,6 @@ export const WalletInstanceCreation = () => {
     }
   }, [error, navigation]);
 
-  const dismissalDialog = useItwDismissalDialog({
-    customLabels: {
-      title: I18n.t('discovery.screen.itw.dismissalDialog.title', {
-        ns: 'wallet'
-      }),
-      body: I18n.t('discovery.screen.itw.dismissalDialog.body', {
-        ns: 'wallet'
-      }),
-      confirmLabel: I18n.t('discovery.screen.itw.dismissalDialog.confirm', {
-        ns: 'wallet'
-      }),
-      cancelLabel: I18n.t('discovery.screen.itw.dismissalDialog.cancel', {
-        ns: 'wallet'
-      })
-    }
-  });
-
   const [productHighlightsLayout, setProductHighlightsLayout] = useState({
     y: 0,
     height: 0
@@ -110,7 +120,6 @@ export const WalletInstanceCreation = () => {
       productHighlightsLayout.height * (1 - intersectionRatio);
 
     if (productHighlightsLayout.y > 0) {
-      
       hideAnchorLink.value =
         scrollPosition.value >= productHighlightsLayout.y - threshold;
     }
@@ -123,6 +132,11 @@ export const WalletInstanceCreation = () => {
     });
   }, [animatedRef, productHighlightsLayout]);
 
+  const onPress = async () => {
+    const promise = dispatch(createInstanceThunk());
+    thunkRef.current = promise;
+  };
+
   return (
     <IOScrollViewWithReveal
       testID="itwDiscoveryInfoComponentTestID"
@@ -134,7 +148,7 @@ export const WalletInstanceCreation = () => {
           label: I18n.t('discovery.screen.itw.actions.primary', {
             ns: 'wallet'
           }),
-          onPress: () => dispatch(setInstanceCreationRequest())
+          onPress
         },
         anchor: {
           label: I18n.t('discovery.screen.itw.actions.anchor', {
