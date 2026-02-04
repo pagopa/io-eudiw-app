@@ -13,6 +13,7 @@ on:
           - major
           - minor
           - patch
+          - build
 
 jobs:
   run-static-checks:
@@ -42,6 +43,11 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
           yarn increment-version ${{ github.event.inputs.releaseLevel }}
+      - id: get-current-version
+        run: |
+          NEW_APP_VERSION=$(node -p -e "require('./package.json').version")
+          echo "Current app version: $NEW_APP_VERSION"
+          echo "NEW_APP_VERSION=$NEW_APP_VERSION" >> $GITHUB_OUTPUT
       - id: commit-version-changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
