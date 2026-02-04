@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # You may use http://rbenv.org/ or https://rvm.io/ to install and use this version
-ruby ">= 3.3.8"
+ruby ">= 3.3.6"
 
 #Fastlane 
 gem "fastlane", "~> 2.223.1"

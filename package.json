@@ -17,8 +17,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "prettier --write",
-      "expo lint"
+      "expo lint --fix"
     ]
   },
   "dependencies": {
@@ -48,10 +47,10 @@
     "expo-build-properties": "~1.0.10",
     "expo-font": "~14.0.11",
     "expo-linking": "~8.0.11",
+    "expo-local-authentication": "~17.0.8",
     "expo-screen-capture": "~8.0.9",
     "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~3.0.9",
-    "expo-web-browser": "~15.0.10",
     "i18next": "^23.16.5",
     "js-base64": "^3.7.7",
     "lodash": "^4.17.23",
@@ -61,7 +60,6 @@
     "react-native": "0.81.5",
     "react-native-device-info": "^15.0.1",
     "react-native-easing-gradient": "^1.1.1",
-    "react-native-fingerprint-scanner": "git+https://github.com/hieuvp/react-native-fingerprint-scanner.git#9cecc0db326471c571553ea85f7c016fee2f803d",
     "react-native-gesture-handler": "~2.30.0",
     "react-native-get-random-values": "^1.11.0",
     "react-native-haptic-feedback": "^2.3.3",
@@ -84,7 +82,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@stylistic/eslint-plugin": "^5.6.1",
     "@types/jest": "29.5.14",
     "@types/lodash": "^4.17.21",
     "@types/react": "~19.1.0",
