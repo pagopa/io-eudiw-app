@@ -5,11 +5,10 @@ import {
   useScaleAnimation
 } from '@pagopa/io-app-design-system';
 import { format } from 'date-fns';
-import { ComponentProps } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Animated from 'react-native-reanimated';
 import I18n from 'i18next';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { ComponentProps } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 import BackgroundImageValid from '../assets/img/brand/itw_deck_status.svg';
 import BackgroundImageExpired from '../assets/img/brand/itw_deck_status_expired.svg';
 import ItWalletIdLogoImage from '../assets/img/brand/itw_id_logo.svg';
@@ -64,23 +63,21 @@ export const ItwWalletIdStatus = ({
     jwtExpired: 'error'
   };
 
-  const tapGesture = Gesture.Tap()
-    .onBegin(onPressIn as () => void)
-    .onFinalize(onPressOut as () => void)
-    .onEnd(onPress as () => void);
-
   return (
-    <GestureDetector gesture={tapGesture}>
-      <Animated.View
-        testID={'itwWalletIdStatusTestID'}
-        accessible={true}
-        accessibilityRole={'button'}
-        style={[styles.container, scaleAnimatedStyle]}
-      >
+    <Pressable
+      testID={'itwWalletIdStatusTestID'}
+      onPress={onPress}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      accessible={true}
+      accessibilityRole="button"
+    >
+      <Animated.View style={[styles.container, scaleAnimatedStyle]}>
         {/* Branded Box with animated border and light effect */}
         <ItwBrandedBox variant={borderVariantByPidStatus[pidStatus]}>
           {/* Background Image  */}
           <BackgroundImage
+            pointerEvents="none"
             style={[
               styles.backgroundImage,
               pidStatus === 'valid'
@@ -128,7 +125,7 @@ export const ItwWalletIdStatus = ({
           )}
         </ItwBrandedBox>
       </Animated.View>
-    </GestureDetector>
+    </Pressable>
   );
 };
 
