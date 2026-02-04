@@ -62,7 +62,10 @@
               "scheme": "mdoc-openid4vp"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -121,7 +124,9 @@
       [
         "react-native-permissions",
         {
-          "iosPermissions": ["Bluetooth"]
+          "iosPermissions": [
+            "Bluetooth"
+          ]
         }
       ],
       [
@@ -130,7 +135,8 @@
           "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
         }
       ],
-      "./scripts/android-fix-bouncy-castle-dependency.js"
+      "./scripts/android-fix-bouncy-castle-dependency.js",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
