@@ -138,7 +138,7 @@ const obtainCredentialListener: AppListenerWithAction<
   ReturnType<typeof setCredentialIssuancePreAuthRequest>
 > = async (_, listenerApi) => {
   try {
-    // On Android check if there is a browser to open the authentication session and then war
+    // On Android check if there is a browser to open the authentication session and then warm it up
     if (isAndroid) {
       const { browserPackages } =
         await WebBrowser.getCustomTabsSupportingBrowsersAsync();

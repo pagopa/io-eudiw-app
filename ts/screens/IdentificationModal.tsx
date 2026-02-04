@@ -34,10 +34,6 @@ import {
   preferencesReset,
   selectIsBiometricEnabled
 } from '../store/reducers/preferences';
-import {
-  biometricAuthenticationRequest,
-  getBiometryIconName
-} from '../store/utils/identification';
 import { isAndroid } from '../utils/device';
 import {
   biometricAuthenticationRequest,
