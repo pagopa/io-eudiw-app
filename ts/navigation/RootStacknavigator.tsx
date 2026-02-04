@@ -5,7 +5,6 @@ import {
   NavigatorScreenParams
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import * as ExpoLinking from 'expo-linking';
 import i18next from 'i18next';
 import { useCallback, useEffect } from 'react';
 import { Linking } from 'react-native';
@@ -22,6 +21,7 @@ import {
   selectStartupState,
   startupSetLoading
 } from '../store/reducers/startup';
+import { PRESENTATION_INTERNAL_LINKS } from './deepLinkSchemas';
 import MainStackNavigator, {
   MainNavigatorParamsList
 } from './main/MainStackNavigator';
@@ -120,8 +120,13 @@ export const RootStackNavigator = () => {
               screens: {
                 PRESENTATION_PRE_DEFINITION: {
                   // why can't typescript infer the type of deeply nested navigators?
-                  path: '*', // match any path after PRESENTATION_PRE_DEFINITION
-                  alias: [''] // match empty path after PRESENTATION_PRE_DEFINITION
+                  path: '', // match any path after PRESENTATION_PRE_DEFINITION
+                  parse: {
+                    // This is needed because otherwise the URL encoded parameters are not properly decoded
+                    client_id: (value: string) => decodeURIComponent(value),
+                    request_uri: (value: string) => decodeURIComponent(value),
+                    state: (value: string) => value
+                  }
                 }
               }
             }

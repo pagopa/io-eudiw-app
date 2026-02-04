@@ -36,7 +36,7 @@ export const FlipGestureDetector = ({
     }
   });
 
-  const composed = Gesture.Simultaneous(flipGesture, tapGesture);
+  const composed = Gesture.Exclusive(flipGesture, tapGesture);
 
   return <GestureDetector gesture={composed}>{children}</GestureDetector>;
 };
