@@ -51,6 +51,7 @@
     "expo-screen-capture": "~8.0.9",
     "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~3.0.9",
+    "expo-web-browser": "~15.0.10",
     "i18next": "^23.16.5",
     "js-base64": "^3.7.7",
     "lodash": "^4.17.23",
