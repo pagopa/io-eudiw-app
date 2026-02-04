@@ -35,6 +35,11 @@ import {
   selectIsBiometricEnabled
 } from '../store/reducers/preferences';
 import { isAndroid } from '../utils/device';
+import {
+  biometricAuthenticationRequest,
+  getBiometricDesignSystemType,
+  getBiometryDesignSystemIconName
+} from '../utils/biometric';
 
 const onRequestCloseHandler = () => undefined;
 
