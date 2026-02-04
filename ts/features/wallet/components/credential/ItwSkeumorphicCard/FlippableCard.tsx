@@ -30,7 +30,6 @@ const FlippableCard = ({
   const isFlipped = useSharedValue(_isFlipped);
 
   useEffect(() => {
-    // eslint-disable-next-line
     isFlipped.value = _isFlipped;
   }, [isFlipped, _isFlipped]);
 
