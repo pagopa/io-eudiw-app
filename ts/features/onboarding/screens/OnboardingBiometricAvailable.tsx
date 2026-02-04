@@ -8,7 +8,7 @@ import {
   preferencesSetIsBiometricEnabled,
   preferencesSetIsOnboardingDone
 } from '../../../store/reducers/preferences';
-import { confirmBiometricEnabling } from '../utils/biometric';
+import { confirmBiometricEnabling } from '../../../utils/biometric';
 
 type IOScrollViewActions = ComponentProps<typeof IOScrollView>['actions'];
 

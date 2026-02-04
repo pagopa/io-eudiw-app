@@ -3,7 +3,6 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import * as SplashScreen from 'expo-splash-screen';
 import { Linking } from 'react-native';
 import { checkConfig } from '../../config/env';
-import { getBiometricState } from '../../features/onboarding/utils/biometric';
 import { addWalletListeners } from '../../features/wallet/middleware';
 import { resetLifecycle } from '../../features/wallet/store/lifecycle';
 import { isNavigationReady } from '../../navigation/utils';
@@ -23,6 +22,7 @@ import {
   startupSetStatus,
   StartupState
 } from '../../store/reducers/startup';
+import { getBiometricState } from '../../utils/biometric';
 import { AppListener, AppListenerWithAction, startAppListening } from './index';
 
 /**
