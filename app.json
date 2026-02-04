@@ -60,6 +60,9 @@
             },
             {
               "scheme": "mdoc-openid4vp"
+            },
+            {
+              "scheme": "iowallet"
             }
           ],
           "category": ["BROWSABLE", "DEFAULT"]
