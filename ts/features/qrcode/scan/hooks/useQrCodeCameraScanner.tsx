@@ -90,6 +90,7 @@ export const useQrCodeCameraScanner = ({
       // After a scan (even if not successful) the decoding is disabled for a while
       // to avoid multiple scans of the same barcode
       setIsResting(true);
+
       scannerReactivateTimeoutHandler.current = setTimeout(() => {
         setIsResting(false);
       }, QRCODE_SCANNER_REACTIVATION_TIME_MS);
