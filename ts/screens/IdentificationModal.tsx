@@ -153,16 +153,16 @@ const IdentificationModal = () => {
     [isValidatingTask, onPinResetHandler]
   );
 
-  const NumberPad = memo(() =>
-    pin ? (
+  const NumberPad = memo(() => {
+    return pin ? (
       <IdentificationNumberPad
         pin={pin}
         pinValidation={onPinValidated}
         numberPadVariant={numberPadVariant}
         biometricsConfig={biometricsConfig}
       />
-    ) : null
-  );
+    ) : null;
+  });
 
   // If the authentication process is not started, we don't show the modal.
   // We need to put this before the biometric request,

@@ -1,7 +1,7 @@
 import { isAnyOf, UnknownAction } from '@reduxjs/toolkit';
-import * as LocalAuthentication from 'expo-local-authentication';
 import * as SplashScreen from 'expo-splash-screen';
 import { Linking } from 'react-native';
+import { isPinOrFingerprintSet } from 'react-native-device-info';
 import { checkConfig } from '../../config/env';
 import { addWalletListeners } from '../../features/wallet/middleware';
 import { resetLifecycle } from '../../features/wallet/store/lifecycle';
@@ -107,7 +107,7 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
     const state = listenerApi.getState();
     checkConfig();
     const biometricState = await getBiometricState();
-    const hasScreenLock = await LocalAuthentication.isEnrolledAsync();
+    const hasScreenLock = await isPinOrFingerprintSet();
     listenerApi.dispatch(
       startupSetAttributes({
         biometricState,
