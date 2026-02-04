@@ -1,21 +1,25 @@
-// https://docs.expo.dev/guides/using-eslint/
-const { defineConfig, globalIgnores } = require('eslint/config');
+const { defineConfig } = require('eslint/config');
 const expoConfig = require('eslint-config-expo/flat');
-const stylistic = require('@stylistic/eslint-plugin');
 const sonarjs = require('eslint-plugin-sonarjs');
 const reactNative = require('eslint-plugin-react-native');
-const prettier = require('eslint-config-prettier/flat');
+const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
 
 module.exports = defineConfig([
   {
-    ignores: ['.expo/*', 'eslint.config.js']
+    ignores: [
+      '.expo/*',
+      '.vscode/*',
+      'dist/*',
+      'node_modules/*',
+      'expo-env.d.ts',
+      'tsconfig.json',
+      'eslint.config.js'
+    ]
   },
-  expoConfig,
-  prettier,
+  ...expoConfig,
   {
-    ignores: ['dist/*', 'expo-env.d.ts', 'tsconfig.json'],
+    files: ['**/*.ts', '**/*.tsx'],
     plugins: {
-      '@stylistic': stylistic,
       sonarjs,
       'react-native': reactNative
     },
@@ -27,13 +31,8 @@ module.exports = defineConfig([
         }
       }
     },
-    files: ['**/*.ts', '**/*.tsx'],
     rules: {
-      'object-curly-spacing': 'off',
-      '@stylistic/object-curly-spacing': ['error', 'always'],
-      'comma-dangle': ['error', 'never'],
-      'no-case-declarations': 'off',
-      'no-inner-declarations': 'off',
+      // General
       'prefer-const': 'error',
       curly: 'error',
       'spaced-comment': ['error', 'always', { block: { balanced: true } }],
@@ -52,67 +51,41 @@ module.exports = defineConfig([
       'no-bitwise': 'error',
       'no-void': 'off',
       'no-duplicate-imports': 'error',
-      quotes: 'off',
       eqeqeq: ['error', 'smart'],
       'max-classes-per-file': ['error', 1],
       'guard-for-in': 'error',
       complexity: 'error',
-      'arrow-body-style': 'error',
       'import/order': 'error',
+
+      // Typescript
       '@typescript-eslint/no-unused-vars': 'off',
-      // Enable if we want to enforce the return type for all the functions
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-inferrable-types': 'off',
-      '@typescript-eslint/array-type': [
-        'error',
-        {
-          default: 'generic'
-        }
-      ],
+      '@typescript-eslint/array-type': ['error', { default: 'generic' }],
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/consistent-type-assertions': 'error',
       '@typescript-eslint/dot-notation': 'error',
-      '@stylistic/member-delimiter-style': [
-        'error',
-        {
-          multiline: {
-            delimiter: 'semi',
-            requireLast: true
-          },
-          singleline: {
-            delimiter: 'semi',
-            requireLast: false
-          }
-        }
-      ],
       '@typescript-eslint/no-floating-promises': 'error',
-      'no-unused-expressions': 'off',
       '@typescript-eslint/no-unused-expressions': ['error'],
       '@typescript-eslint/prefer-function-type': 'error',
       '@typescript-eslint/restrict-plus-operands': 'error',
-      semi: 'off',
-      '@stylistic/semi': ['error'],
       '@typescript-eslint/unified-signatures': 'error',
+
+      // React
       'react/prop-types': 'off',
       'react/display-name': 'off',
       'react/jsx-key': 'error',
       'react/jsx-no-bind': ['error', { allowArrowFunctions: true }],
-      'react/no-unstable-nested-components': [
-        'off',
-        {
-          allowAsProps: true
-        }
-      ],
-      'react/no-direct-mutation-state': 'off',
-      'react/require-render-return': 'off',
+      'react-native/no-unused-styles': 'error',
+      'react-native/no-color-literals': 'error',
+      'react-native/no-single-element-style-arrays': 'warn',
+
+      // SonarJS
       'sonarjs/no-small-switch': 'off',
       'sonarjs/no-duplicate-string': 'off',
       'sonarjs/no-nested-template-literals': 'warn',
-      'react-native/no-unused-styles': 'error',
-      'react-native/split-platform-components': 'off',
-      'react-native/no-inline-styles': 'off',
-      'react-native/no-color-literals': 'error',
-      'react-native/no-single-element-style-arrays': 'warn',
+
+      // Restricted Imports
       'no-restricted-imports': [
         'error',
         {
@@ -131,5 +104,8 @@ module.exports = defineConfig([
         }
       ]
     }
-  }
+  },
+
+  // Prettier must be last
+  eslintPluginPrettierRecommended
 ]);
