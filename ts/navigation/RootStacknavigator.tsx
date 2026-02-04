@@ -21,6 +21,7 @@ import {
   selectStartupState,
   startupSetLoading
 } from '../store/reducers/startup';
+import { PRESENTATION_INTERNAL_LINKS } from './deepLinkSchemas';
 import MainStackNavigator, {
   MainNavigatorParamsList
 } from './main/MainStackNavigator';
@@ -28,7 +29,6 @@ import MAIN_ROUTES from './main/routes';
 import ROOT_ROUTES from './routes';
 import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
 import { navigationRef } from './utils';
-import { PRESENTATION_INTERNAL_LINKS } from './deepLinkSchemas';
 
 export type RootStackParamList = {
   // Main
