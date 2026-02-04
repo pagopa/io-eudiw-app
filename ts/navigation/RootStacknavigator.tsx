@@ -111,7 +111,7 @@ export const RootStackNavigator = () => {
   }, [isStartupDone]);
 
   const linking: LinkingOptions<RootStackParamList> = {
-    prefixes: [ExpoLinking.createURL('/')],
+    prefixes: PRESENTATION_INTERNAL_LINKS,
     config: {
       screens: {
         ROOT_MAIN_NAV: {
