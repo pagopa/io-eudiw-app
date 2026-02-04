@@ -1,7 +1,6 @@
-/* eslint-disable  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BiometricState } from '../../features/onboarding/utils/biometric';
 import { RootState } from '../types';
+import { BiometricState } from '../../utils/biometric';
 import { preferencesReset } from './preferences';
 
 /* State type definition for the startup slice
@@ -25,7 +24,7 @@ export type StartupState = {
 const initialState: StartupState = {
   startUpStatus: 'NOT_STARTED',
   hasScreenLock: false,
-  biometricState: 'NotSupported'
+  biometricState: 'NOT_SUPPORTED'
 };
 
 /**

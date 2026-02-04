@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { preferencesReset } from '../../../store/reducers/preferences';
@@ -7,7 +6,7 @@ import { ParsedCredential } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 
 /**
- * The application-internal statuses used to control the proximity saga
+ * The application-internal statuses used to control the proximity listener
  * These are not direct mappings of the {@link Proximity.Events}
  */
 export enum ProximityStatus {
@@ -169,9 +168,9 @@ export const selectProximityQrCode = (state: RootState) =>
   state.wallet.proximity.qrCode;
 
 /**
- * Selects the saga status
+ * Selects the proximity status
  * @param state - The root state
- * @returns The saga status
+ * @returns The proximity status
  */
 export const selectProximityStatus = (state: RootState) =>
   state.wallet.proximity.status;
