@@ -7715,7 +7715,6 @@ __metadata:
     react-native: "npm:0.81.5"
     react-native-device-info: "npm:^15.0.1"
     react-native-easing-gradient: "npm:^1.1.1"
-    react-native-fingerprint-scanner: "git+https://github.com/hieuvp/react-native-fingerprint-scanner.git#9cecc0db326471c571553ea85f7c016fee2f803d"
     react-native-gesture-handler: "npm:~2.30.0"
     react-native-get-random-values: "npm:^1.11.0"
     react-native-haptic-feedback: "npm:^2.3.3"
@@ -11228,15 +11227,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/70a27503402a9a9e9103bc913ea34226e5a95b2000704c63d46dc6e6138ed9d6dbb19650846263dc3a3bb9e999ff1823f581956d6325faf9b0d9386102822600
-  languageName: node
-  linkType: hard
-
-"react-native-fingerprint-scanner@git+https://github.com/hieuvp/react-native-fingerprint-scanner.git#9cecc0db326471c571553ea85f7c016fee2f803d":
-  version: 6.0.0
-  resolution: "react-native-fingerprint-scanner@https://github.com/hieuvp/react-native-fingerprint-scanner.git#commit=9cecc0db326471c571553ea85f7c016fee2f803d"
-  peerDependencies:
-    react-native: ">=0.60 <1.0.0"
-  checksum: 10/9481e5493e7c797b327dce3933a955335ae616249e909a3b626d1661ad7ddffa287cbb3b2a4cde530fa05c0dd474e586236943b3c0d4104a5b0abead58940905
   languageName: node
   linkType: hard
 

@@ -3,6 +3,10 @@ import { useEffect, useState } from 'react';
 import { useAppSelector } from '../store';
 import { selectIsBiometricEnabled } from '../store/reducers/preferences';
 
+/**
+ * Hook to get the biometric type if it's enabled.
+ * @returns the biometric type and the biometric enabled status.
+ */
 export const useBiometricType = () => {
   const isBiometricEnabled = useAppSelector(selectIsBiometricEnabled);
   const [biometricType, setBiometricType] = useState<
