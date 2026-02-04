@@ -92,7 +92,7 @@ const useQrCodeFileReader = ({
     const base64 = response.assets[0].base64;
 
     try {
-      // This could be replaced by expo-camera but it currently doesn't work when provind the URI from the device filesystem
+      // This could be replaced by expo-camera but it currently doesn't work when providing the URI from the device filesystem
       const result = await RNQRGenerator.detect({ base64 });
       if (result.values.length === 0) {
         handleBarcodeError();

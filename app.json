@@ -23,7 +23,6 @@
           }
         ],
         "NSFaceIDUsageDescription": "This app uses the fingerprint sensor for authentication.",
-        "NSCameraUsageDescription": "This app uses the camera to scan QR codes.",
         "NSPhotoLibraryUsageDescription": "This app requires access to your photo library to select QR codes images.",
         "NSBluetoothAlwaysUsageDescription": "This app uses Bluetooth to connect to external devices.",
         "NSBluetoothPeripheralUsageDescription": "This app uses Bluetooth to connect to external devices.",
@@ -37,7 +36,6 @@
       "permissions": [
         "android.permission.USE_BIOMETRIC",
         "android.permission.USE_FINGERPRINT",
-        "android.permission.CAMERA",
         "android.permission.BLUETOOTH_SCAN",
         "android.permission.BLUETOOTH_CONNECT",
         "android.permission.BLUETOOTH_ADVERTISE",
@@ -125,6 +123,13 @@
         "react-native-permissions",
         {
           "iosPermissions": ["Bluetooth"]
+        }
+      ],
+       [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "recordAudioAndroid": false
         }
       ],
       "./scripts/android-fix-bouncy-castle-dependency.js"
