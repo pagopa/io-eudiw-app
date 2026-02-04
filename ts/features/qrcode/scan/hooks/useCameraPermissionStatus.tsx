@@ -5,6 +5,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { AppState, Linking } from 'react-native';
 import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
 
+/**
+ * Hook to handle camera permission status with platform specific behavior
+ */
 export const useCameraPermissionStatus = () => {
   const navigation =
     useNavigation<
@@ -20,6 +23,9 @@ export const useCameraPermissionStatus = () => {
   const [isNavigationTransitionEnded, setIsNavigationTransitionEnded] =
     useState(false);
 
+  /**
+   * Opens the system settings to allow user to change the camera permission
+   */
   const openCameraSettings = useCallback(() => {
     void Linking.openSettings();
   }, []);
@@ -62,6 +68,10 @@ export const useCameraPermissionStatus = () => {
     return undefined;
   }, [permission?.status, requestPermission]);
 
+  /**
+   * Listener for navigation transition end to detect if the user has navigated
+   * to the barcode screen and we can request the camera permission.
+   */
   useEffect(() => {
     const unsubscribe = navigation.addListener('transitionEnd', () => {
       setIsNavigationTransitionEnded(true);
