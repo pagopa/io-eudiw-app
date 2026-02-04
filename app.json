@@ -34,8 +34,6 @@
       "package": "it.pagopa.io.app.poc.eudiw",
       "versionCode": 47,
       "permissions": [
-        "android.permission.USE_BIOMETRIC",
-        "android.permission.USE_FINGERPRINT",
         "android.permission.CAMERA",
         "android.permission.BLUETOOTH_SCAN",
         "android.permission.BLUETOOTH_CONNECT",
