@@ -1,5 +1,5 @@
-import Config from 'react-native-config';
 import { URL as PolyfillURL } from 'react-native-url-polyfill';
+import { getEnv } from '../../../../ts/config/env';
 
 interface AuthHeaders {
   'x-user-id'?: string;
@@ -35,7 +35,8 @@ const getAuthHeadersForWalletProvider = (
   sessionId: string
 ): AuthHeaders => {
   const urlTarget = new PolyfillURL(url);
-  const urlWp = new PolyfillURL(Config.WALLET_PROVIDER_BASE_URL);
+  const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL } = getEnv();
+  const urlWp = new PolyfillURL(EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL);
   if (urlTarget.origin === urlWp.origin) {
     return {
       'x-user-id': sessionId

@@ -1,14 +1,14 @@
-import Config from 'react-native-config';
 import { WalletInstance } from '@pagopa/io-react-native-wallet';
 import { serializeError } from 'serialize-error';
+import { getEnv } from '../../../config/env';
+import { createAppAsyncThunk } from '../../../middleware/thunk';
+import { selectSessionId } from '../../../store/reducers/preferences';
+import { selectInstanceKeyTag, setInstanceKeyTag } from '../store/instance';
+import { createWalletProviderFetch } from '../utils/fetch';
 import {
   generateIntegrityHardwareKeyTag,
   getIntegrityContext
 } from '../utils/integrity';
-import { selectSessionId } from '../../../store/reducers/preferences';
-import { selectInstanceKeyTag, setInstanceKeyTag } from '../store/instance';
-import { createWalletProviderFetch } from '../utils/fetch';
-import { createAppAsyncThunk } from '../../../middleware/thunk';
 
 export const createInstanceThunk = createAppAsyncThunk<void, void>(
   'pidIssuanceStatus/createInstance',
@@ -18,7 +18,8 @@ export const createInstanceThunk = createAppAsyncThunk<void, void>(
       const instanceKeyTag = selectInstanceKeyTag(state);
 
       if (!instanceKeyTag) {
-        const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;
+        const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
+          getEnv();
         const sessionId = selectSessionId(state);
         const appFetch = createWalletProviderFetch(
           walletProviderBaseUrl,

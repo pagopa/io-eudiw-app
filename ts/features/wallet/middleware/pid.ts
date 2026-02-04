@@ -1,3 +1,4 @@
+import { generate } from '@pagopa/io-react-native-crypto';
 import {
   openAuthenticationSession,
   supportsInAppBrowser
@@ -6,34 +7,33 @@ import {
   createCryptoContextFor,
   Credential
 } from '@pagopa/io-react-native-wallet';
-import Config from 'react-native-config';
-import uuid from 'react-native-uuid';
-import { generate } from '@pagopa/io-react-native-crypto';
-import { serializeError } from 'serialize-error';
 import { isAnyOf } from '@reduxjs/toolkit';
-import { regenerateCryptoKey } from '../../../utils/crypto';
-import { DPOP_KEYTAG } from '../utils/crypto';
-import { Lifecycle, setLifecycle } from '../store/lifecycle';
+import uuid from 'react-native-uuid';
+import { serializeError } from 'serialize-error';
+import { getEnv } from '../../../config/env';
+import {
+  AppListenerWithAction,
+  AppStartListening
+} from '../../../middleware/listener';
+import { takeLatestEffect } from '../../../middleware/listener/effects';
+import { createAppAsyncThunk } from '../../../middleware/thunk';
+import MAIN_ROUTES from '../../../navigation/main/routes';
 import { navigate, navigateWithReset } from '../../../navigation/utils';
-import { addCredential, addPidWithIdentification } from '../store/credentials';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '../../../store/reducers/identification';
-import {
-  AppListenerWithAction,
-  AppStartListening
-} from '../../../middleware/listener';
-import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 import { selectSessionId } from '../../../store/reducers/preferences';
-import { createWalletProviderFetch } from '../utils/fetch';
-import { createAppAsyncThunk } from '../../../middleware/thunk';
-import { takeLatestEffect } from '../../../middleware/listener/effects';
-import { selectPendingCredential } from '../store/pidIssuance';
-import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
-import MAIN_ROUTES from '../../../navigation/main/routes';
+import { regenerateCryptoKey } from '../../../utils/crypto';
 import WALLET_ROUTES from '../navigation/routes';
+import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
+import { addCredential, addPidWithIdentification } from '../store/credentials';
+import { Lifecycle, setLifecycle } from '../store/lifecycle';
+import { selectPendingCredential } from '../store/pidIssuance';
+import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
+import { DPOP_KEYTAG } from '../utils/crypto';
+import { createWalletProviderFetch } from '../utils/fetch';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 
@@ -45,7 +45,11 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
   'pidIssuanceStatus/obtainPid',
   async (_, { getState, dispatch, rejectWithValue }) => {
     try {
-      const { PID_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri } = Config;
+      const {
+        EXPO_PUBLIC_PID_PROVIDER_BASE_URL,
+        EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri,
+        EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl
+      } = getEnv();
       const state = getState();
 
       const walletInstanceAttestation = await dispatch(getAttestationThunk());
@@ -53,14 +57,13 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
       const wiaCryptoContext = createCryptoContextFor('WIA_KEYTAG');
 
       // Start the issuance flow
-      const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;
       const sessionId = selectSessionId(state);
       const appFetch = createWalletProviderFetch(
         walletProviderBaseUrl,
         sessionId
       );
 
-      const issuerUrl = PID_PROVIDER_BASE_URL;
+      const issuerUrl = EXPO_PUBLIC_PID_PROVIDER_BASE_URL;
       const credentialConfigId = wellKnownCredentialConfigurationIDs.PID;
 
       // Evaluate issuer trust

@@ -1,31 +1,39 @@
-import {
-  createCryptoContextFor,
-  Credential
-} from '@pagopa/io-react-native-wallet';
-import Config from 'react-native-config';
-import uuid from 'react-native-uuid';
-import { generate } from '@pagopa/io-react-native-crypto';
 import { IOToast } from '@pagopa/io-app-design-system';
-import i18next from 'i18next';
+import { generate } from '@pagopa/io-react-native-crypto';
+import { CryptoContext } from '@pagopa/io-react-native-jwt';
 import {
   openAuthenticationSession,
   supportsInAppBrowser
 } from '@pagopa/io-react-native-login-utils';
-import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+import {
+  createCryptoContextFor,
+  Credential
+} from '@pagopa/io-react-native-wallet';
 import {
   EvaluateIssuerTrust,
   StartUserAuthorization
 } from '@pagopa/io-react-native-wallet/lib/typescript/credential/issuance';
 import { Out } from '@pagopa/io-react-native-wallet/lib/typescript/utils/misc';
-import { CryptoContext } from '@pagopa/io-react-native-jwt';
-import { regenerateCryptoKey } from '../../../utils/crypto';
-import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
+import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+import i18next from 'i18next';
+import uuid from 'react-native-uuid';
+import { getEnv } from '../../../../ts/config/env';
+import {
+  AppListenerWithAction,
+  AppStartListening
+} from '../../../middleware/listener';
+import {
+  raceEffect,
+  takeLatestEffect
+} from '../../../middleware/listener/effects';
 import { navigateWithReset } from '../../../navigation/utils';
 import {
-  addCredential,
-  addCredentialWithIdentification,
-  selectCredential
-} from '../store/credentials';
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '../../../store/reducers/identification';
+import { selectSessionId } from '../../../store/reducers/preferences';
+import { regenerateCryptoKey } from '../../../utils/crypto';
 import {
   resetCredentialIssuance,
   selectRequestedCredential,
@@ -36,22 +44,14 @@ import {
   setCredentialIssuancePreAuthRequest,
   setCredentialIssuancePreAuthSuccess
 } from '../store/credentialIssuance';
-import { createWalletProviderFetch } from '../utils/fetch';
-import { selectSessionId } from '../../../store/reducers/preferences';
+import {
+  addCredential,
+  addCredentialWithIdentification,
+  selectCredential
+} from '../store/credentials';
 import { wellKnownCredential } from '../utils/credentials';
-import {
-  AppListenerWithAction,
-  AppStartListening
-} from '../../../middleware/listener';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../../store/reducers/identification';
-import {
-  takeLatestEffect,
-  raceEffect
-} from '../../../middleware/listener/effects';
+import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
+import { createWalletProviderFetch } from '../utils/fetch';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 
@@ -138,7 +138,11 @@ const obtainCredentialListener: AppListenerWithAction<
   ReturnType<typeof setCredentialIssuancePreAuthRequest>
 > = async (_, listenerApi) => {
   try {
-    const { EAA_PROVIDER_BASE_URL, PID_REDIRECT_URI: redirectUri } = Config;
+    const {
+      EXPO_PUBLIC_EAA_PROVIDER_BASE_URL,
+      EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri,
+      EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl
+    } = getEnv();
 
     /**
      * Check the passed credential type and throw an error if it's not found.
@@ -160,7 +164,6 @@ const obtainCredentialListener: AppListenerWithAction<
     await generate(credentialKeyTag);
     const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
 
-    const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;
     const sessionId = selectSessionId(state);
     const pid = selectCredential(wellKnownCredential.PID)(state);
     const appFetch = createWalletProviderFetch(
@@ -170,15 +173,14 @@ const obtainCredentialListener: AppListenerWithAction<
 
     // Start the issuance flow
     const startFlow: Credential.Issuance.StartFlow = () => ({
-      issuerUrl: EAA_PROVIDER_BASE_URL,
+      issuerUrl: EXPO_PUBLIC_EAA_PROVIDER_BASE_URL,
       credentialId: credentialConfigId
     });
     const { issuerUrl } = startFlow();
 
     // Evaluate issuer trust
-    const { issuerConf } = await Credential.Issuance.evaluateIssuerTrust(
-      issuerUrl
-    );
+    const { issuerConf } =
+      await Credential.Issuance.evaluateIssuerTrust(issuerUrl);
 
     // Start user authorization
     const { issuerRequestUri, clientId, codeVerifier } =

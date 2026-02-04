@@ -20,7 +20,7 @@ jobs:
 
   bump-app-version:
     needs: run-static-checks
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     environment: prod
     outputs:
       newAppVersion: ${{ steps.get-current-version.outputs.NEW_APP_VERSION }}
@@ -41,42 +41,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          if [[ ${{ github.event.inputs.releaseLevel }} == "major" ]]; then
-            echo "Bumping the major version"
-            yarn version major
-          elif [[ ${{ github.event.inputs.releaseLevel }} == "minor" ]]; then
-            echo "Bumping the minor version"
-            yarn version minor
-          elif [[ ${{ github.event.inputs.releaseLevel }} == "patch" ]]; then
-            echo "Bumping the patch version"
-            yarn version patch
-          else
-            echo "Unknown release level: ${{ github.event.inputs.releaseLevel }}"
-            exit 1
-          fi
-      - id: get-current-version
-        run: |
-          NEW_APP_VERSION=$(node -p -e "require('./package.json').version")
-          echo "Current app version: $NEW_APP_VERSION"
-          echo "NEW_APP_VERSION=$NEW_APP_VERSION" >> $GITHUB_OUTPUT
-      - id: setup-ruby
-        uses: ruby/setup-ruby@401c19e14f474b54450cd3905bb8b86e2c8509cf
-        with:
-          bundler-cache: true
-      - id: bump-android-version
-        run: |
-          cd android
-          bundle exec fastlane bump_version
-        env:
-          RUBYOPT: '-rostruct'
-          NEW_APP_VERSION: ${{ steps.get-current-version.outputs.NEW_APP_VERSION }}
-      - id: bump-ios-version
-        run: |
-          cd ios
-          bundle exec fastlane bump_version
-        env:
-          RUBYOPT: '-rostruct'
-          NEW_APP_VERSION: ${{ steps.get-current-version.outputs.NEW_APP_VERSION }}
+          yarn increment-version ${{ github.event.inputs.releaseLevel }}
       - id: commit-version-changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -124,11 +89,13 @@ jobs:
         uses: ruby/setup-ruby@401c19e14f474b54450cd3905bb8b86e2c8509cf #v1.204.0
         with:
           bundler-cache: true
+      - name: Prebuild Android
+        run: npx expo prebuild --platform android --clean
       - id: build-android
         name: Build and submit to Play Store
         run: |
           ./scripts/android-release.sh ./android/app
-          cd android
+          cd fastlane/android
           bundle exec fastlane alpha_playstore
         shell: bash
         env:
@@ -144,7 +111,7 @@ jobs:
       - id: download-universal-apk-from-store
         continue-on-error: true
         run: |
-          cd android
+          cd fastlane/android
           VERSION_CODE=$(sed -n 's/.*versionCode \(.*\)/\1/p' "app/build.gradle")
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
           bundle exec fastlane download_apk
@@ -206,11 +173,13 @@ jobs:
           ssh-add ~/.ssh/id_ed25519
         env:
           SSH_DEPLOY_KEY: ${{secrets.SSH_CERTS_DEPLOY_KEY}}
+      - name: Prebuild iOS
+        run: npx expo prebuild --platform ios --clean
       - id: build-ios
         name: Build and submit to App Store
         run: |
           ./scripts/ios-release.sh
-          cd ios
+          cd fastlane/ios
           bundle exec fastlane beta_testflight
         env:
           LC_ALL: en_US.UTF-8

@@ -47,7 +47,6 @@ const useSineWaveAnimation = ({
 
   useEffect(() => {
     if (enabled) {
-      // eslint-disable-next-line functional/immutable-data
       translate.value = withRepeat(
         withSequence(
           withTiming(-span, {
@@ -63,7 +62,6 @@ const useSineWaveAnimation = ({
         true
       );
     } else {
-      // eslint-disable-next-line functional/immutable-data
       translate.value = withTiming(0, {
         duration: duration / 2,
         easing: Easing.inOut(Easing.cubic)

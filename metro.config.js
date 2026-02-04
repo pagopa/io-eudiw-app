@@ -1,28 +1,24 @@
-const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
-const defaultConfig = getDefaultConfig(__dirname);
-const {assetExts, sourceExts} = defaultConfig.resolver;
+const { getDefaultConfig } = require('expo/metro-config');
 
-/**
- * Metro configuration
- * https://reactnative.dev/docs/metro
- *
- * @type {import('@react-native/metro-config').MetroConfig}
- */
-const config = {
-  transformer: {
-    babelTransformerPath: require.resolve('react-native-svg-transformer') // Required by react-native-svg in order to import .svg as React components
-  },
-  resolver: {
-    assetExts: assetExts.filter(ext => ext !== 'svg'),
-    sourceExts: [...sourceExts, 'svg'],
-    extraNodeModules: require('@pagopa/react-native-nodelibs')
-  }
-};
+module.exports = (() => {
+  const config = getDefaultConfig(__dirname);
 
-const {
-  wrapWithReanimatedMetroConfig
-} = require('react-native-reanimated/metro-config');
+  const { transformer, resolver } = config;
 
-module.exports = wrapWithReanimatedMetroConfig(
-  mergeConfig(getDefaultConfig(__dirname), config)
-);
+  config.transformer = {
+    ...transformer,
+    babelTransformerPath: require.resolve('react-native-svg-transformer/expo')
+  };
+  config.resolver = {
+    ...resolver,
+    assetExts: resolver.assetExts.filter(ext => ext !== 'svg'),
+    sourceExts: [...resolver.sourceExts, 'svg']
+  };
+
+  // required by @pagopa/react-native-nodelibs
+  config.resolver.extraNodeModules = {
+    ...config.resolver.extraNodeModules,
+    ...require('@pagopa/react-native-nodelibs')
+  };
+  return config;
+})();

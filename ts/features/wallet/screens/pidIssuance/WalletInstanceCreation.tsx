@@ -12,35 +12,35 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import I18n from 'i18next';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import Animated, {
   useAnimatedRef,
   useDerivedValue,
   useScrollViewOffset,
   useSharedValue
 } from 'react-native-reanimated';
+import { AnimatedImage } from '../../../../components/AnimatedImage';
+import IOMarkdown from '../../../../components/IOMarkdown';
+import { IOScrollViewWithReveal } from '../../../../components/IOScrollViewWithReveal';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import Feature1Image from '../../assets/img/discovery/feature_1.svg';
 import Feature2Image from '../../assets/img/discovery/feature_2.svg';
 import Feature3Image from '../../assets/img/discovery/feature_3.svg';
 import Feature4Image from '../../assets/img/discovery/feature_4.svg';
 import Feature5Image from '../../assets/img/discovery/feature_5.svg';
-import { useAppDispatch, useAppSelector } from '../../../../store';
+import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
+import { createInstanceThunk } from '../../middleware/instance';
 import {
   resetInstanceCreation,
   selectInstanceStatus
 } from '../../store/pidIssuance';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
-import { IOScrollViewWithReveal } from '../../../../components/IOScrollViewWithReveal';
-import { AnimatedImage } from '../../../../components/AnimatedImage';
 import { generateItwIOMarkdownRules } from '../../utils/markdown';
-import IOMarkdown from '../../../../components/IOMarkdown';
-import { createInstanceThunk } from '../../middleware/instance';
-import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 
 // Offset to avoid to scroll to the block without margins
 const scrollOffset: number = 12;
@@ -120,7 +120,6 @@ export const WalletInstanceCreation = () => {
       productHighlightsLayout.height * (1 - intersectionRatio);
 
     if (productHighlightsLayout.y > 0) {
-      // eslint-disable-next-line functional/immutable-data
       hideAnchorLink.value =
         scrollPosition.value >= productHighlightsLayout.y - threshold;
     }
@@ -135,7 +134,6 @@ export const WalletInstanceCreation = () => {
 
   const onPress = async () => {
     const promise = dispatch(createInstanceThunk());
-    // eslint-disable-next-line functional/immutable-data
     thunkRef.current = promise;
   };
 
