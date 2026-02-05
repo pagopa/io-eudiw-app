@@ -51,31 +51,30 @@ export const useCameraPermissionStatus = () => {
     isNavigationTransitionEnded
   ]);
 
-  /**
-   * Setup listener for app state changes.
-   */
   useEffect(() => {
-    if (permission?.status === PermissionStatus.DENIED) {
-      const unsubscribe = AppState.addEventListener(
-        'change',
-        async nextAppState => {
-          if (nextAppState === 'active') {
-            // Fetch the latest permission status and if the permission is granted and it was previsouly denied, request it again to update the permission state
-            const status = await Camera.getCameraPermissionsAsync();
-            if (
-              status.granted &&
-              permission?.status !== PermissionStatus.GRANTED
-            ) {
-              await requestPermission();
-            }
+    const subscription = AppState.addEventListener(
+      'change',
+      async nextAppState => {
+        if (nextAppState === 'active' && isFocused) {
+          // Get the latest permission status when coming back from settings
+          const status = await Camera.getCameraPermissionsAsync();
+          const isGranted = status.status === PermissionStatus.GRANTED;
+          // If on Android "Ask every time" is selected, then the permission is set to DENIED and canAskAgain is false
+          const isAskEveryTime =
+            status.status === PermissionStatus.DENIED && !status.canAskAgain;
+
+          if (isGranted || isAskEveryTime) {
+            // Refresh permission status
+            await requestPermission();
           }
         }
-      );
+      }
+    );
 
-      return () => unsubscribe.remove();
-    }
-    return () => null;
-  }, [permission?.status, requestPermission]);
+    return () => {
+      subscription.remove();
+    };
+  }, [isFocused, requestPermission]);
 
   /**
    * Listener for navigation transition end to detect if the user has navigated
