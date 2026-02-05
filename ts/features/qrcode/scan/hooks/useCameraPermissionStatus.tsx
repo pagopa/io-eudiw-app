@@ -52,7 +52,8 @@ export const useCameraPermissionStatus = () => {
     permission?.status,
     requestPermission,
     isFocused,
-    isNavigationTransitionEnded
+    isNavigationTransitionEnded,
+    permission?.canAskAgain
   ]);
 
   useEffect(() => {
