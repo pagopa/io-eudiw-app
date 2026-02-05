@@ -22,7 +22,6 @@
             ]
           }
         ],
-        "NSFaceIDUsageDescription": "This app uses the fingerprint sensor for authentication.",
         "NSCameraUsageDescription": "This app uses the camera to scan QR codes.",
         "NSPhotoLibraryUsageDescription": "This app requires access to your photo library to select QR codes images.",
         "NSBluetoothAlwaysUsageDescription": "This app uses Bluetooth to connect to external devices.",
@@ -35,8 +34,6 @@
       "package": "it.pagopa.io.app.poc.eudiw",
       "versionCode": 47,
       "permissions": [
-        "android.permission.USE_BIOMETRIC",
-        "android.permission.USE_FINGERPRINT",
         "android.permission.CAMERA",
         "android.permission.BLUETOOTH_SCAN",
         "android.permission.BLUETOOTH_CONNECT",
@@ -125,6 +122,12 @@
         "react-native-permissions",
         {
           "iosPermissions": ["Bluetooth"]
+        }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
         }
       ],
       "./scripts/android-fix-bouncy-castle-dependency.js"
