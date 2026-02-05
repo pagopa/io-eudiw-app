@@ -35,10 +35,14 @@ export const useCameraPermissionStatus = () => {
    * Checks permission requirements on mount/focus.
    */
   useEffect(() => {
-    if (isAndroid && permission?.status === PermissionStatus.DENIED) {
-      if (isFocused && isNavigationTransitionEnded) {
-        void requestPermission();
-      }
+    // Only auto-request if the status is UNDETERMINED (fresh install)
+    if (
+      isAndroid &&
+      permission?.status === PermissionStatus.UNDETERMINED &&
+      isFocused &&
+      isNavigationTransitionEnded
+    ) {
+      void requestPermission();
     }
   }, [
     permission?.status,
