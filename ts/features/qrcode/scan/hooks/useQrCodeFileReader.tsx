@@ -6,7 +6,13 @@ import RNQRGenerator from 'rn-qr-generator';
 import { OnBarcodeSuccess, OnBardCodeError } from '../screens/QrCodeScanScreen';
 
 type QrCodeFileReader = {
+  /**
+   * Shows the image picker that lets the user select an image from the library
+   */
   showImagePicker: () => Promise<void>;
+  /**
+   * Indicates that the decoder is currently reading/decoding barcodes
+   */
   isLoading: boolean;
 };
 
