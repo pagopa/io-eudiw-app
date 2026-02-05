@@ -1,6 +1,19 @@
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
-import { serializeError } from 'serialize-error';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+import { serializeError } from 'serialize-error';
+import {
+  AppListener,
+  AppListenerWithAction,
+  AppStartListening
+} from '../../../middleware/listener';
+import { takeLatestEffect } from '../../../middleware/listener/effects';
+import { store } from '../../../store';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '../../../store/reducers/identification';
+import { selectCredentials } from '../store/credentials';
 import {
   resetProximityQrCode,
   selectProximityAcceptedFields,
@@ -17,24 +30,11 @@ import {
   setProximityStatusStopped
 } from '../store/proximity';
 import { requestBlePermissions } from '../utils/permissions';
-import { store } from '../../../store';
-import { selectCredentials } from '../store/credentials';
 import {
   getIsVerifierAuthenticated,
   matchRequestToClaims,
   verifierCertificates
 } from '../utils/proximity';
-import {
-  AppListener,
-  AppListenerWithAction,
-  AppStartListening
-} from '../../../middleware/listener';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../../store/reducers/identification';
-import { takeLatestEffect } from '../../../middleware/listener/effects';
 
 const {
   ErrorCode,

@@ -1,13 +1,13 @@
-import { memo } from 'react';
 import { Alert } from '@pagopa/io-app-design-system';
 import I18n from 'i18next';
+import { memo } from 'react';
 import { useAppSelector } from '../../../../store';
+import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
+import { wellKnownCredential } from '../../utils/credentials';
 import {
   ItwCredentialStatus,
   StoredCredential
 } from '../../utils/itwTypesUtils';
-import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
-import { wellKnownCredential } from '../../utils/credentials';
 
 type Props = {
   credential: StoredCredential;

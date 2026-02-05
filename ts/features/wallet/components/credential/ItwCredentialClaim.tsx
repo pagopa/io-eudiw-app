@@ -1,9 +1,12 @@
 import { Divider, ListItemInfo } from '@pagopa/io-app-design-system';
-import { Fragment, useMemo } from 'react';
-import { Image } from 'react-native';
 import I18n from 'i18next';
-import z from 'zod';
+import { Fragment, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Image } from 'react-native';
+import z from 'zod';
+import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
+import { clipboardSetStringWithFeedback } from '../../../../utils/clipboard';
+import { getSafeText } from '../../../../utils/string';
 import {
   DrivingPrivilegesClaimType,
   ParsedClaimsRecord,
@@ -11,11 +14,8 @@ import {
   verificationEvidenceSchema
 } from '../../utils/claims';
 import { HIDDEN_CLAIM_TEXT } from '../../utils/constants';
-import { getSafeText } from '../../../../utils/string';
-import { clipboardSetStringWithFeedback } from '../../../../utils/clipboard';
-import { ItwCredentialStatus } from '../../utils/itwTypesUtils';
-import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
 import { format } from '../../utils/dates';
+import { ItwCredentialStatus } from '../../utils/itwTypesUtils';
 
 /**
  * Helper function to get the accessibility text for hidden claims.

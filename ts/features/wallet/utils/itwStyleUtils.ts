@@ -1,9 +1,9 @@
-import { StatusBarStyle } from 'react-native';
 import { useMemo } from 'react';
+import { StatusBarStyle } from 'react-native';
 import { HeaderSecondLevelHookProps } from '../../../hooks/useHeaderSecondLevel';
 import { getLuminance } from '../../../utils/color';
-import { useItWalletTheme } from './theme';
 import { getCredentialNameByType, wellKnownCredential } from './credentials';
+import { useItWalletTheme } from './theme';
 
 export type CredentialTheme = {
   backgroundColor: string;

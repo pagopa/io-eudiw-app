@@ -1,5 +1,5 @@
-import I18n from 'i18next';
 import { useNavigation } from '@react-navigation/native';
+import I18n from 'i18next';
 import { OperationResultScreenContent } from '../../../components/screens/OperationResultScreenContent';
 
 /**

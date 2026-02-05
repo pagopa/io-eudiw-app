@@ -1,10 +1,10 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useCallback, useEffect, useState } from 'react';
 import { AppState, Linking } from 'react-native';
 import { Camera, CameraPermissionStatus } from 'react-native-vision-camera';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { isAndroid } from '../../../../utils/device';
 import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
+import { isAndroid } from '../../../../utils/device';
 
 /**
  * Hook to handle camera permission status with platform specific behavior

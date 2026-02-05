@@ -6,10 +6,10 @@ import {
 } from '@pagopa/io-app-design-system';
 import I18n from 'i18next';
 import { StyleSheet, View } from 'react-native';
-import ITWalletIDImage from '../../assets/img/brand/itw_id_logo.svg';
-import { useItWalletTheme } from '../../utils/theme';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
 import { getLuminance } from '../../../../utils/color';
+import ITWalletIDImage from '../../assets/img/brand/itw_id_logo.svg';
+import { useItWalletTheme } from '../../utils/theme';
 
 export const ItwPresentationPidDetailHeader = () => {
   const theme = useItWalletTheme();

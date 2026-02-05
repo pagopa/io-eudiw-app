@@ -1,10 +1,10 @@
 import { useIOToast } from '@pagopa/io-app-design-system';
-import { Alert } from 'react-native';
-import I18n from 'i18next';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useAppDispatch } from '../../../store';
+import I18n from 'i18next';
+import { Alert } from 'react-native';
 import { RootStackParamList } from '../../../navigation/RootStacknavigator';
+import { useAppDispatch } from '../../../store';
 import { removeCredential } from '../store/credentials';
 import { StoredCredential } from '../utils/itwTypesUtils';
 

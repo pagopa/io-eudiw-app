@@ -1,18 +1,18 @@
-import { useEffect } from 'react';
-import I18n from 'i18next';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import I18n from 'i18next';
+import { useEffect } from 'react';
+import { OperationResultScreenContent } from '../../../components/screens/OperationResultScreenContent';
 import { useDisableGestureNavigation } from '../../../hooks/useDisableGestureNavigation';
 import { useHardwareBackButton } from '../../../hooks/useHardwareBackButton';
-import { OperationResultScreenContent } from '../../../components/screens/OperationResultScreenContent';
-import { useAppDispatch, useAppSelector } from '../../../store';
-import { useCredentialIssuanceNavigationListeners } from '../hooks/useCredentialIssuanceNavigationListeners';
-import { lifecycleIsValidSelector } from '../store/lifecycle';
-import { setPendingCredential } from '../store/pidIssuance';
 import { MainNavigatorParamsList } from '../../../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../../../navigation/main/routes';
+import { useAppDispatch, useAppSelector } from '../../../store';
+import { useCredentialIssuanceNavigationListeners } from '../hooks/useCredentialIssuanceNavigationListeners';
 import WALLET_ROUTES from '../navigation/routes';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
+import { lifecycleIsValidSelector } from '../store/lifecycle';
+import { setPendingCredential } from '../store/pidIssuance';
 
 const ItwCredentialNotFound = ({
   credentialType

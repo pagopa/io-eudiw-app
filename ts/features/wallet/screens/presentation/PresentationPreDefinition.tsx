@@ -1,20 +1,20 @@
-import { useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import { StackScreenProps } from '@react-navigation/stack';
 import { Body } from '@pagopa/io-app-design-system';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useNavigation } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import LoadingScreenContent from '../../../../components/LoadingScreenContent';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { useAppDispatch, useAppSelector } from '../../../../store';
+import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
+import { selectCredential } from '../../store/credentials';
 import {
   selectPreDefinitionStatus,
   selectPreDefitionResult,
   setPreDefinitionRequest
 } from '../../store/presentation';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
-import { selectCredential } from '../../store/credentials';
 import { wellKnownCredential } from '../../utils/credentials';
 
 export type PresentationPreDefinitionParams = {

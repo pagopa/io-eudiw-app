@@ -55,8 +55,15 @@ module.exports = defineConfig([
       'max-classes-per-file': ['error', 1],
       'guard-for-in': 'error',
       complexity: 'error',
-      'import/order': 'error',
-
+      'import/order': [
+        'error',
+        {
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true
+          }
+        }
+      ],
       // Typescript
       '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',

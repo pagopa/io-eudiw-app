@@ -12,6 +12,7 @@ import {
   vec
 } from '@shopify/react-native-skia';
 import Color from 'color';
+import I18n from 'i18next';
 import { memo, useState } from 'react';
 import {
   LayoutChangeEvent,
@@ -20,10 +21,9 @@ import {
   Text,
   View
 } from 'react-native';
-import I18n from 'i18next';
-import { CardColorScheme } from '../../types';
 import { useAppSelector } from '../../../../store';
 import { fontPreferenceSelector } from '../../../../store/reducers/preferences';
+import { CardColorScheme } from '../../types';
 
 type DigitalVersionBadgeProps = {
   credentialType: string;

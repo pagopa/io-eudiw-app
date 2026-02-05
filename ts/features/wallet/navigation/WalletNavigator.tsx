@@ -1,29 +1,13 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import CredentialFailure from '../screens/credentialIssuance/CredentialFailure';
+import { CredentialPreview } from '../screens/credentialIssuance/CredentialIssuancePreview';
+import CredentialsList from '../screens/credentialIssuance/CredentialsList';
+import CredentialTrust from '../screens/credentialIssuance/CredentialTrust';
+import { IdentificationMethod } from '../screens/pidIssuance/IdentificationMethod';
 import PidIssuanceFailure from '../screens/pidIssuance/PidIssuanceFailure';
 import PidIssuancRequest from '../screens/pidIssuance/PidIssuanceRequest';
 import PidIssuanceSuccess from '../screens/pidIssuance/PidIssuanceSuccess';
-import PresentationPreDefinition, {
-  PresentationPreDefinitionParams
-} from '../screens/presentation/PresentationPreDefinition';
-import PresentationFailure from '../screens/presentation/PresentationFailure';
-import PresentationPostDefinition, {
-  PresentationPostDefinitionParams
-} from '../screens/presentation/PresentationPostDefinition';
-import PresentationSuccess from '../screens/presentation/PresentationSuccess';
-import CredentialTrust from '../screens/credentialIssuance/CredentialTrust';
-import { CredentialPreview } from '../screens/credentialIssuance/CredentialIssuancePreview';
-import CredentialFailure from '../screens/credentialIssuance/CredentialFailure';
-import CredentialsList from '../screens/credentialIssuance/CredentialsList';
-import PresentationProximityPreview, {
-  PresentationProximityPreviewProps
-} from '../screens/proximity/PresentationProximityPreview';
-import PresentationProximityFailure, {
-  PresentationProximityFailureProps
-} from '../screens/proximity/PresentationProximityFailure';
-import PresentationProximitySuccess from '../screens/proximity/PresentationProximitySuccess';
 import { WalletInstanceCreation } from '../screens/pidIssuance/WalletInstanceCreation';
-import { IdentificationMethod } from '../screens/pidIssuance/IdentificationMethod';
-import { ItwPresentationPidDetailScreen } from '../screens/presentation/ItwPresentationPidDetailScreen';
 import {
   ItwPresentationCredentialCardModal,
   ItwPresentationCredentialCardModalNavigationParams
@@ -32,6 +16,22 @@ import {
   ItwPresentationCredentialDetailNavigationParams,
   ItwPresentationCredentialDetailScreen
 } from '../screens/presentation/ItwPresentationCredentialDetailScreen';
+import { ItwPresentationPidDetailScreen } from '../screens/presentation/ItwPresentationPidDetailScreen';
+import PresentationFailure from '../screens/presentation/PresentationFailure';
+import PresentationPostDefinition, {
+  PresentationPostDefinitionParams
+} from '../screens/presentation/PresentationPostDefinition';
+import PresentationPreDefinition, {
+  PresentationPreDefinitionParams
+} from '../screens/presentation/PresentationPreDefinition';
+import PresentationSuccess from '../screens/presentation/PresentationSuccess';
+import PresentationProximityFailure, {
+  PresentationProximityFailureProps
+} from '../screens/proximity/PresentationProximityFailure';
+import PresentationProximityPreview, {
+  PresentationProximityPreviewProps
+} from '../screens/proximity/PresentationProximityPreview';
+import PresentationProximitySuccess from '../screens/proximity/PresentationProximitySuccess';
 import WALLET_ROUTES from './routes';
 
 /**

@@ -1,8 +1,8 @@
 import { IOColors, Tag, useIOTheme } from '@pagopa/io-app-design-system';
 import I18n from 'i18next';
+import { wellKnownCredential } from './credentials';
 import { CredentialType } from './itwMocksUtils';
 import { ItwCredentialStatus } from './itwTypesUtils';
-import { wellKnownCredential } from './credentials';
 
 // New credentials that can be actively requested and obtained by the user
 export const newCredentials = [

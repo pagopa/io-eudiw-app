@@ -1,6 +1,3 @@
-import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
 import {
   Body,
   ForceScrollDownView,
@@ -9,24 +6,27 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import { StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import I18n from 'i18next';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import LoadingScreenContent from '../../../../components/LoadingScreenContent';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch, useAppSelector } from '../../../../store';
+import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
+import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
+import { obtainPidThunk } from '../../middleware/pid';
+import { addPidWithIdentification } from '../../store/credentials';
 import {
   selectPidIssuanceData,
   selectPidIssuanceStatus
 } from '../../store/pidIssuance';
-import LoadingScreenContent from '../../../../components/LoadingScreenContent';
-import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
-import { addPidWithIdentification } from '../../store/credentials';
-import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
-import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
-import { obtainPidThunk } from '../../middleware/pid';
-import { StoredCredential } from '../../utils/itwTypesUtils';
 import { parseClaimsToRecord } from '../../utils/claims';
+import { StoredCredential } from '../../utils/itwTypesUtils';
 
 /**
  * Screen which starts and handles the PID issuance flow.

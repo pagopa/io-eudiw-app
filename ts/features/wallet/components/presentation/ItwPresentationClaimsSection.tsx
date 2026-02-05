@@ -4,21 +4,21 @@ import {
   IconButton,
   useIOTheme
 } from '@pagopa/io-app-design-system';
+import I18n from 'i18next';
 import { Fragment, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
-import I18n from 'i18next';
-import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
-import { WellKnownClaim } from '../../utils/itwClaimsUtils';
-import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
-import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
-import { ItwQrCodeClaimImage } from '../credential/ItwQrCodeClaimImage';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   itwIsClaimValueHiddenSelector,
   itwSetClaimValuesHidden
 } from '../../store/credentials';
-import { StoredCredential } from '../../utils/itwTypesUtils';
 import { ParsedClaimsRecord } from '../../utils/claims';
+import { WellKnownClaim } from '../../utils/itwClaimsUtils';
+import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
+import { StoredCredential } from '../../utils/itwTypesUtils';
+import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
+import { ItwQrCodeClaimImage } from '../credential/ItwQrCodeClaimImage';
+import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
 
 type ItwPresentationClaimsSectionProps = {
   credential: StoredCredential;

@@ -5,9 +5,9 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import { View } from 'react-native';
-import I18n from 'i18next';
 import { useNavigation } from '@react-navigation/native';
+import I18n from 'i18next';
+import { View } from 'react-native';
 import { IOScrollViewWithLargeHeader } from '../../../../components/IOScrollViewWithLargeHeader';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 

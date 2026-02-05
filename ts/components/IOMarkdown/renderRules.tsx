@@ -37,6 +37,7 @@ import {
   TxtStrNode,
   TxtStrongNode
 } from '@textlint/ast-node-types';
+import I18n from 'i18next';
 import {
   ExoticComponent,
   Fragment,
@@ -45,9 +46,8 @@ import {
   useState
 } from 'react';
 import { Dimensions, Image, Pressable, Text, View } from 'react-native';
-import I18n from 'i18next';
-import { openWebUrl } from '../../utils/url';
 import { isAndroid } from '../../utils/device';
+import { openWebUrl } from '../../utils/url';
 import {
   extractAllLinksFromRootNode,
   isParagraphNodeInHierarchy,

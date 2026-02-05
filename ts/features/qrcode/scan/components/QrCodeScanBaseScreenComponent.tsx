@@ -5,21 +5,21 @@ import {
   TabNavigation
 } from '@pagopa/io-app-design-system';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AppState, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   SafeAreaView,
   useSafeAreaInsets
 } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
-import { useQrCodeCameraScanner } from '../hooks/useQrCodeCameraScanner';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
+import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
 import { isAndroid } from '../../../../utils/device';
-import { OnBarcodeSuccess, OnBardCodeError } from '../screens/QrCodeScanScreen';
 import { useCameraPermissionStatus } from '../hooks/useCameraPermissionStatus';
+import { useQrCodeCameraScanner } from '../hooks/useQrCodeCameraScanner';
+import { OnBarcodeSuccess, OnBardCodeError } from '../screens/QrCodeScanScreen';
 import { CameraPermissionView } from './CameraPermissionView';
 
 type Props = {

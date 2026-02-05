@@ -2,17 +2,17 @@ import { HStack, Icon, IOText, Tag } from '@pagopa/io-app-design-system';
 import Color from 'color';
 import { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { CardColorScheme, ItwCredentialStatus } from '../../types';
+import { useAppSelector } from '../../../../store';
+import { fontPreferenceSelector } from '../../../../store/reducers/preferences';
 import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredentialStatus';
-import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
+import { CardColorScheme, ItwCredentialStatus } from '../../types';
+import { getCredentialNameByType } from '../../utils/credentials';
 import {
   tagPropsByStatus,
   useBorderColorByStatus,
   validCredentialStatuses
 } from '../../utils/itwCredentialUtils';
-import { getCredentialNameByType } from '../../utils/credentials';
-import { useAppSelector } from '../../../../store';
-import { fontPreferenceSelector } from '../../../../store/reducers/preferences';
+import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
 import { CardBackground } from './CardBackground';
 import { DigitalVersionBadge } from './DigitalVersionBadge';
 

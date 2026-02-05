@@ -1,11 +1,11 @@
 import { Banner } from '@pagopa/io-app-design-system';
-import { View } from 'react-native';
-import I18n from 'i18next';
 import { useNavigation } from '@react-navigation/native';
-import { useAppSelector } from '../../../store';
-import { itwShouldRenderWalletReadyBannerSelector } from '../store/selectors/wallet';
-import WALLET_ROUTES from '../navigation/routes';
+import I18n from 'i18next';
+import { View } from 'react-native';
 import MAIN_ROUTES from '../../../navigation/main/routes';
+import { useAppSelector } from '../../../store';
+import WALLET_ROUTES from '../navigation/routes';
+import { itwShouldRenderWalletReadyBannerSelector } from '../store/selectors/wallet';
 
 export const ItwWalletReadyBanner = () => {
   const navigation = useNavigation();

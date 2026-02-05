@@ -6,9 +6,9 @@ import {
   ListenerEffectAPI,
   isAnyOf
 } from '@reduxjs/toolkit';
-import { AppDispatch, RootState } from '../../store/types';
-import { startupSetLoading } from '../../store/reducers/startup';
 import { preferencesReset } from '../../store/reducers/preferences';
+import { startupSetLoading } from '../../store/reducers/startup';
+import { AppDispatch, RootState } from '../../store/types';
 import { startupListener } from './startup';
 
 /**

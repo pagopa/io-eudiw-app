@@ -5,10 +5,10 @@ import { Alert } from 'react-native';
 import ReactNativeHapticFeedback, {
   HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
-import { useQrCodeFileReader } from '../hooks/useQrCodeFileReader';
-import { QrCodeScanBaseScreenComponent } from '../components/QrCodeScanBaseScreenComponent';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { QrCodeScanBaseScreenComponent } from '../components/QrCodeScanBaseScreenComponent';
+import { useQrCodeFileReader } from '../hooks/useQrCodeFileReader';
 import { presentationLinkToUrl } from '../utils/parsing';
 
 /**

@@ -1,6 +1,6 @@
-import { GestureResponderEvent, StyleSheet, View } from 'react-native';
 import { BodySmall, WithTestID } from '@pagopa/io-app-design-system';
 import { useTranslation } from 'react-i18next';
+import { GestureResponderEvent, StyleSheet, View } from 'react-native';
 import { getAppVersion } from '../utils/device';
 
 export type AppVersion = WithTestID<{

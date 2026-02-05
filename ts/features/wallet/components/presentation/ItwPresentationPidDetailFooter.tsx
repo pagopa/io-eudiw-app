@@ -1,11 +1,11 @@
 import { ListItemAction, useIOToast } from '@pagopa/io-app-design-system';
+import { useNavigation } from '@react-navigation/native';
 import I18n from 'i18next';
 import { memo } from 'react';
 import { Alert, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch } from '../../../../store';
 import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
 import { resetLifecycle } from '../../store/lifecycle';
-import { useAppDispatch } from '../../../../store';
 
 const ItwPresentationPidDetailFooter = () => {
   const requestAssistanceLabel = I18n.t(

@@ -1,22 +1,22 @@
 import { Alert } from '@pagopa/io-app-design-system';
-import { format } from 'date-fns';
-import { ComponentProps, useMemo } from 'react';
-import { View } from 'react-native';
-import I18n from 'i18next';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import {
-  ItwJwtCredentialStatus,
-  StoredCredential
-} from '../utils/itwTypesUtils';
+import { format } from 'date-fns';
+import I18n from 'i18next';
+import { ComponentProps, useMemo } from 'react';
+import { View } from 'react-native';
+import { MainNavigatorParamsList } from '../../../navigation/main/MainStackNavigator';
+import MAIN_ROUTES from '../../../navigation/main/routes';
 import { useAppSelector } from '../../../store';
+import WALLET_ROUTES from '../navigation/routes';
 import {
   itwCredentialsPidSelector,
   itwCredentialsPidStatusSelector
 } from '../store/credentials';
-import WALLET_ROUTES from '../navigation/routes';
-import MAIN_ROUTES from '../../../navigation/main/routes';
-import { MainNavigatorParamsList } from '../../../navigation/main/MainStackNavigator';
+import {
+  ItwJwtCredentialStatus,
+  StoredCredential
+} from '../utils/itwTypesUtils';
 
 const defaultLifecycleStatus: Array<ItwJwtCredentialStatus> = [
   'valid',

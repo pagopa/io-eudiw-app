@@ -5,11 +5,11 @@ import {
   IOText,
   IconButton
 } from '@pagopa/io-app-design-system';
-import { StyleSheet, View } from 'react-native';
 import { useMemo, useState } from 'react';
-import { truncateObjectStrings } from '../../utils/debug';
+import { StyleSheet, View } from 'react-native';
 import { Prettify } from '../../types/utils';
 import { clipboardSetStringWithFeedback } from '../../utils/clipboard';
+import { truncateObjectStrings } from '../../utils/debug';
 import { withDebugEnabled } from './withDebugEnabled';
 
 type ExpandableProps =
