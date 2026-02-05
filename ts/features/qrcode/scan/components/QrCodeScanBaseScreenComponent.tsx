@@ -85,6 +85,8 @@ const QrCodeScanBaseScreenComponent = ({
     isLoading
   });
 
+  const shouldDisplayTorchButton = cameraPermissionStatus === 'granted';
+
   const cameraView = useMemo(() => {
     if (cameraPermissionStatus === 'granted') {
       return cameraComponent;
@@ -170,9 +172,9 @@ const QrCodeScanBaseScreenComponent = ({
       headerShown: true,
       headerTransparent: true,
       headerLeft: () => customGoBack,
-      headerRight: () => torchButton
+      headerRight: () => (shouldDisplayTorchButton ? torchButton : null)
     });
-  }, [customGoBack, navigation, torchButton]);
+  }, [customGoBack, navigation, shouldDisplayTorchButton, torchButton]);
 
   return (
     <View style={[styles.screen, { paddingBottom: insets.bottom }]}>
