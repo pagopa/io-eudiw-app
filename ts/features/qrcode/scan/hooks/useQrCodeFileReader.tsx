@@ -18,9 +18,7 @@ type QrCodeFileReaderConfiguration = {
 const imageLibraryOptions: ImagePicker.ImagePickerOptions = {
   mediaTypes: ['images'],
   allowsEditing: false,
-  quality: 1,
-  allowsMultipleSelection: false,
-  base64: true
+  allowsMultipleSelection: false
 };
 
 /**
@@ -52,23 +50,18 @@ const useQrCodeFileReader = ({
     );
   }, [t]);
 
-  const processBase64 = useCallback(
-    async (base64: string) => {
-      try {
-        const response = await RNQRGenerator.detect({ base64 });
+  const processImage = useCallback(
+    async (uri: string) => {
+      const response = await RNQRGenerator.detect({ uri });
 
-        if (response.values && response.values.length > 0) {
-          onBarcodeSuccess(response.values);
-        } else {
-          onBarcodeError();
-        }
-      } catch (error) {
-        onBarcodeError();
-      } finally {
-        setIsLoading(false);
+      if (response.values?.length) {
+        onBarcodeSuccess(response.values);
+        return;
       }
+
+      throw new Error('NO_BARCODE_FOUND');
     },
-    [onBarcodeSuccess, onBarcodeError]
+    [onBarcodeSuccess]
   );
 
   const showImagePicker = useCallback(async () => {
@@ -87,21 +80,22 @@ const useQrCodeFileReader = ({
       const result =
         await ImagePicker.launchImageLibraryAsync(imageLibraryOptions);
 
-      if (result.canceled || !result.assets?.[0]?.base64) {
+      if (result.canceled || !result.assets?.[0]?.uri) {
         setIsLoading(false);
         return;
       }
 
-      await processBase64(result.assets[0].base64);
+      await processImage(result.assets[0].uri);
     } catch (error) {
-      setIsLoading(false);
       onBarcodeError();
+    } finally {
+      setIsLoading(false);
     }
   }, [
     permissionStatus,
     requestPermission,
     showPermissionsAlert,
-    processBase64,
+    processImage,
     onBarcodeError
   ]);
 

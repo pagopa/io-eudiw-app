@@ -7754,7 +7754,7 @@ __metadata:
     reactotron-react-native: "npm:^5.1.12"
     reactotron-redux: "npm:^3.1.10"
     redux-persist: "npm:^6.0.0"
-    rn-qr-generator: "npm:^1.4.5"
+    rn-qr-generator: "npm:^2.0.0"
     serialize-error: "npm:^12.0.0"
     typescript: "npm:~5.9.2"
     zod: "npm:^3.23.8"
@@ -12114,12 +12114,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rn-qr-generator@npm:^1.4.5":
-  version: 1.4.5
-  resolution: "rn-qr-generator@npm:1.4.5"
+"rn-qr-generator@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "rn-qr-generator@npm:2.0.0"
   peerDependencies:
-    react-native: ">=0.55"
-  checksum: 10/c8ca4e1ff516661a091939e319b61c3d39dd73c4336dbd507da70d3b52f33688fe11135019ffdbbd9be3014701be88f7f3493fcdf842cef95a853e0c16d9f939
+    react: "*"
+    react-native: ">=0.71.0"
+  checksum: 10/fd23ca4a5ea630886bbc1d341393f6e221d65a1587a0b74930312a1e925788e04c92b151c8620673b1be23e633d948e0358dc33e2e4502c8f6b0568fd07114ad
   languageName: node
   linkType: hard
 
