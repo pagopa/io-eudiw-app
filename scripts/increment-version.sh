@@ -25,7 +25,7 @@ if [ ! -f "$package_file" ]; then
 fi
 
 # Display a starting message
-echo "Starting the update process..."
+echo "Bumping $update_type version"
 
 # Extract the current version, buildNumber, and versionCode from the JSON file
 current_version=$(jq -r '.expo.version' "$json_file")
@@ -94,8 +94,8 @@ jq --arg new_version "$new_version" \
 jq --arg new_version "$new_version" '.version = $new_version' "$package_file" > tmp_package.json && mv tmp_package.json "$package_file"
 
 # Display a success message
-echo "version, buildNumber, versionCode and package.json updated"
+echo "Bumped version from $current_version to $new_version"
 echo "app.json version: $new_version"
-echo "buildNumber: $new_build_number"
-echo "versionCode: $new_version_code"
 echo "package.json version: $new_version"
+echo "buildNumber (iOS): $new_build_number"
+echo "versionCode (Android): $new_version_code"
