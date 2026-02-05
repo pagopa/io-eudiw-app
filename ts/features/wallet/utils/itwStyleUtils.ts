@@ -35,11 +35,6 @@ export const useThemeColorByCredentialType = (
             : '#744C63',
           textColor: withL3Design ? '#032D5C' : '#652035'
         };
-      case wellKnownCredential.HEALTHID:
-        return {
-          backgroundColor: '#B3DCF9',
-          textColor: '#032D5C'
-        };
       case wellKnownCredential.DISABILITY_CARD:
         return {
           backgroundColor: '#315B76',

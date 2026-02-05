@@ -31,8 +31,7 @@ type Props = {
 };
 
 const excludedCredentialTypes = [
-  wellKnownCredential.PID,
-  wellKnownCredential.HEALTHID
+  wellKnownCredential.PID
 ] satisfies Array<WellKnownCredentialTypes>;
 
 type ExcludedCredentialTypes = (typeof excludedCredentialTypes)[number];
