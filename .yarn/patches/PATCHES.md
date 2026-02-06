@@ -2,14 +2,6 @@
 
 This file describes the reason for the patches applied.
 
-### react-native-screen-brightness-npm-2.0.0-alpha-22c6aeb21e.patch
-
-Created on **16/08/2021**
-
-#### Reason:
-
-- implementation 'androidx.core:core:1.+' not compatible with the new gradle settings used by react-native 0.64.2
-
 ### mdoc-x5chain-verification-disable-temp.patch
 
 Created on: **02/12/2025**

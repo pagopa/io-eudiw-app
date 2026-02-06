@@ -58,6 +58,9 @@
             },
             {
               "scheme": "mdoc-openid4vp"
+            },
+            {
+              "scheme": "iowallet"
             }
           ],
           "category": ["BROWSABLE", "DEFAULT"]
@@ -136,9 +139,21 @@
         }
       ],
       [
-        "expo-image-picker",
+        "expo-secure-store",
         {
+          "configureAndroidBackup": true
+        }
+      ],
+      [
+        "expo-image-picker",
+        { 
           "photosPermission": "The app accesses your photos to scan QR codes."
+        }
+      ],
+      [
+        "expo-web-browser",
+        {
+          "experimentalLauncherActivity": true
         }
       ],
       "./scripts/android-fix-bouncy-castle-dependency.js"

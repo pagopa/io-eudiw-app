@@ -2210,26 +2210,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-login-utils@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@pagopa/io-react-native-login-utils@npm:1.2.0"
-  peerDependencies:
-    react: ">=19.1.0"
-    react-native: ">=0.81"
-  checksum: 10/750a490aba2ae14a1d994c655bc8a028853e7163b2b4d7db47920c38c32e9f33d2727a204a3c94c004beb13d9bd58e98135aee9683f776d8f0f8862a70d43ae6
-  languageName: node
-  linkType: hard
-
-"@pagopa/io-react-native-secure-storage@npm:^0.2.0":
-  version: 0.2.1
-  resolution: "@pagopa/io-react-native-secure-storage@npm:0.2.1"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10/bfae9428e91775be433d5778e9c9f6a7611537831e7c823703d5f76ffab8c24268f864e55a28aa3cb7fbb33af895850812b1d3625a5f34580a67c1ec2db35f56
-  languageName: node
-  linkType: hard
-
 "@pagopa/io-react-native-wallet@npm:2.2.0":
   version: 2.2.0
   resolution: "@pagopa/io-react-native-wallet@npm:2.2.0"
@@ -6509,6 +6489,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-brightness@npm:~14.0.8":
+  version: 14.0.8
+  resolution: "expo-brightness@npm:14.0.8"
+  peerDependencies:
+    expo: "*"
+    react-native: "*"
+  checksum: 10/b6bab1a24276bcf1e45a85489d8227c8039ef607554e6e20a3d6748b1c97af790f51e17a8ad992bd93261e7a571741b83aad114965a66054b5d8264b88bbfa96
+  languageName: node
+  linkType: hard
+
 "expo-build-properties@npm:~1.0.10":
   version: 1.0.10
   resolution: "expo-build-properties@npm:1.0.10"
@@ -6689,6 +6679,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-secure-store@npm:~15.0.8":
+  version: 15.0.8
+  resolution: "expo-secure-store@npm:15.0.8"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/822af991ed80b32cf0c37f6f37e8fac30c654492d4074e70fb123361fe6ce0297178b6c7e55108670c75485e5062a39cf089fd8aee415467c3e4a6749c69d65d
+  languageName: node
+  linkType: hard
+
 "expo-server@npm:^1.0.5":
   version: 1.0.5
   resolution: "expo-server@npm:1.0.5"
@@ -6716,6 +6715,16 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/c598dc8089b962c97e50cfd2dde876391cfd675d756700c5439b0522678bced99d70f04a2128f80d6b84ba7676929afdc3165dfaf14ea771ac1e82104f30768d
+  languageName: node
+  linkType: hard
+
+"expo-web-browser@npm:~15.0.10":
+  version: 15.0.10
+  resolution: "expo-web-browser@npm:15.0.10"
+  peerDependencies:
+    expo: "*"
+    react-native: "*"
+  checksum: 10/1496e68370d8b78ba8218408668a88919ea5668fcfd4e1470541be75a8a97647d9018460284ad64ce6873931bc82e301b261e37d7e0e71f019d94b6d8737b1ee
   languageName: node
   linkType: hard
 
@@ -7696,8 +7705,6 @@ __metadata:
     "@pagopa/io-react-native-crypto": "npm:^1.2.3"
     "@pagopa/io-react-native-iso18013": "npm:^0.7.0"
     "@pagopa/io-react-native-jwt": "npm:2.1.0"
-    "@pagopa/io-react-native-login-utils": "npm:^1.2.0"
-    "@pagopa/io-react-native-secure-storage": "npm:^0.2.0"
     "@pagopa/io-react-native-wallet": "npm:2.2.0"
     "@pagopa/react-native-nodelibs": "npm:^0.1.0"
     "@react-native-async-storage/async-storage": "npm:^2.2.0"
@@ -7723,6 +7730,7 @@ __metadata:
     eslint-plugin-react-native: "npm:^5.0.0"
     eslint-plugin-sonarjs: "npm:^3.0.5"
     expo: "npm:~54.0.32"
+    expo-brightness: "npm:~14.0.8"
     expo-build-properties: "npm:~1.0.10"
     expo-camera: "npm:~17.0.10"
     expo-clipboard: "npm:~8.0.8"
@@ -7731,8 +7739,10 @@ __metadata:
     expo-linking: "npm:~8.0.11"
     expo-local-authentication: "npm:~17.0.8"
     expo-screen-capture: "npm:~8.0.9"
+    expo-secure-store: "npm:~15.0.8"
     expo-splash-screen: "npm:~31.0.13"
     expo-status-bar: "npm:~3.0.9"
+    expo-web-browser: "npm:~15.0.10"
     husky: "npm:^9.1.7"
     i18next: "npm:^23.16.5"
     i18next-resources-for-ts: "npm:^2.0.0"
@@ -7756,7 +7766,6 @@ __metadata:
     react-native-qrcode-svg: "npm:^6.3.21"
     react-native-reanimated: "npm:^3.19.4"
     react-native-safe-area-context: "npm:~5.6.0"
-    react-native-screen-brightness: "npm:^2.0.0-alpha"
     react-native-screens: "npm:~4.16.0"
     react-native-svg: "npm:15.12.1"
     react-native-svg-transformer: "npm:^1.5.2"
@@ -11425,20 +11434,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/880d87ee60119321b366eef2c151ecefe14f5bc0d39cf5cfbfb167684e571d3dae2600ee19b9bc8521f5726eb285abecaa7aafb1a3b213529dafbac24703d302
-  languageName: node
-  linkType: hard
-
-"react-native-screen-brightness@npm:2.0.0-alpha":
-  version: 2.0.0-alpha
-  resolution: "react-native-screen-brightness@npm:2.0.0-alpha"
-  checksum: 10/d68a92eb90e6460a58e695644b215240adc6b73d8c0efd820a47077463817b8801fca82864bc135bbc3fd52d85deddfebc67a2a327af879e5595515790ab8f02
-  languageName: node
-  linkType: hard
-
-"react-native-screen-brightness@patch:react-native-screen-brightness@npm%3A2.0.0-alpha#./.yarn/patches/react-native-screen-brightness-npm-2.0.0-alpha-22c6aeb21e.patch::locator=io-eudiw-app%40workspace%3A.":
-  version: 2.0.0-alpha
-  resolution: "react-native-screen-brightness@patch:react-native-screen-brightness@npm%3A2.0.0-alpha#./.yarn/patches/react-native-screen-brightness-npm-2.0.0-alpha-22c6aeb21e.patch::version=2.0.0-alpha&hash=17739e&locator=io-eudiw-app%40workspace%3A."
-  checksum: 10/74b87e6331bac59dc61ada30847dd75093f95669060d732a082a67d8dcff62e6d20df09475666327194e27a1b4f8bece64971f6948d3d9ec9158a0992f6311ae
   languageName: node
   linkType: hard
 
