@@ -5,7 +5,7 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import { StackScreenProps } from '@react-navigation/stack';
-// import { usePreventScreenCapture } from 'expo-screen-capture';
+import { usePreventScreenCapture } from 'expo-screen-capture';
 import I18n from 'i18next';
 import { memo, useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -52,7 +52,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
   const dispatch = useAppDispatch();
   const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
 
-  // usePreventScreenCapture();
+  usePreventScreenCapture();
   useMaxBrightness({ useSmoothTransition: true });
 
   useLayoutEffect(() => {
