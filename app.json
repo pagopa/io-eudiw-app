@@ -139,15 +139,21 @@
         }
       ],
       [
-        "expo-web-browser",
+        "expo-secure-store",
         {
-          "experimentalLauncherActivity": true
+          "configureAndroidBackup": true
         }
       ],
       [
         "expo-image-picker",
-        {
+        { 
           "photosPermission": "The app accesses your photos to scan QR codes."
+        }
+      ],
+      [
+        "expo-web-browser",
+        {
+          "experimentalLauncherActivity": true
         }
       ],
       "./scripts/android-fix-bouncy-castle-dependency.js"

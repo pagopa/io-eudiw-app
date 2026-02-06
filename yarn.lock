@@ -2356,23 +2356,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-clipboard/clipboard@npm:^1.16.3":
-  version: 1.16.3
-  resolution: "@react-native-clipboard/clipboard@npm:1.16.3"
-  peerDependencies:
-    react: ">= 16.9.0"
-    react-native: ">= 0.61.5"
-    react-native-macos: ">= 0.61.0"
-    react-native-windows: ">= 0.61.0"
-  peerDependenciesMeta:
-    react-native-macos:
-      optional: true
-    react-native-windows:
-      optional: true
-  checksum: 10/87608bee52757af514b4717c42cde330dd61f46d1348dd59b4f478a27d351060c8b433375166d486d3e80d3db41dfcd17be401679cced3951c69857727ecbc96
-  languageName: node
-  linkType: hard
-
 "@react-native/assets-registry@npm:0.81.5":
   version: 0.81.5
   resolution: "@react-native/assets-registry@npm:0.81.5"
@@ -6516,6 +6499,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-brightness@npm:~14.0.8":
+  version: 14.0.8
+  resolution: "expo-brightness@npm:14.0.8"
+  peerDependencies:
+    expo: "*"
+    react-native: "*"
+  checksum: 10/b6bab1a24276bcf1e45a85489d8227c8039ef607554e6e20a3d6748b1c97af790f51e17a8ad992bd93261e7a571741b83aad114965a66054b5d8264b88bbfa96
+  languageName: node
+  linkType: hard
+
 "expo-build-properties@npm:~1.0.10":
   version: 1.0.10
   resolution: "expo-build-properties@npm:1.0.10"
@@ -6542,6 +6535,17 @@ __metadata:
     react-native-web:
       optional: true
   checksum: 10/f46f3ebe48120d4cf4ea77c1de7f553e1fe76c108ad08de85f6e133575a58d57015fdfd2ecb508a0e87af1953f57c2c8a3bb436a633b3f4d974142cb9f030cf2
+  languageName: node
+  linkType: hard
+
+"expo-clipboard@npm:~8.0.8":
+  version: 8.0.8
+  resolution: "expo-clipboard@npm:8.0.8"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: 10/f51f5043c2bc7c6f4a7805607fa984952e674c401bd4f7c98a7569a49ceaa244f6e68fe3d18012fed0a0f5a35ac9395dcfc99ff3b2e3366ee083632d38b44d86
   languageName: node
   linkType: hard
 
@@ -6682,6 +6686,15 @@ __metadata:
     expo: "*"
     react: "*"
   checksum: 10/9fe81a54102e3984dec1619ba6b34f1fbe9ebe0895f067bde0d2224e40d1d011223c3da5e87c83f61dc9f2d65c98b5e692ffbb7bb4f73f0072cb2b11efff1701
+  languageName: node
+  linkType: hard
+
+"expo-secure-store@npm:~15.0.8":
+  version: 15.0.8
+  resolution: "expo-secure-store@npm:15.0.8"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/822af991ed80b32cf0c37f6f37e8fac30c654492d4074e70fb123361fe6ce0297178b6c7e55108670c75485e5062a39cf089fd8aee415467c3e4a6749c69d65d
   languageName: node
   linkType: hard
 
@@ -7706,7 +7719,6 @@ __metadata:
     "@pagopa/io-react-native-wallet": "npm:2.2.0"
     "@pagopa/react-native-nodelibs": "npm:^0.1.0"
     "@react-native-async-storage/async-storage": "npm:^2.2.0"
-    "@react-native-clipboard/clipboard": "npm:^1.16.3"
     "@react-navigation/bottom-tabs": "npm:^7.4.0"
     "@react-navigation/elements": "npm:^2.6.3"
     "@react-navigation/native": "npm:^7.1.8"
@@ -7729,13 +7741,16 @@ __metadata:
     eslint-plugin-react-native: "npm:^5.0.0"
     eslint-plugin-sonarjs: "npm:^3.0.5"
     expo: "npm:~54.0.32"
+    expo-brightness: "npm:~14.0.8"
     expo-build-properties: "npm:~1.0.10"
     expo-camera: "npm:~17.0.10"
+    expo-clipboard: "npm:~8.0.8"
     expo-font: "npm:~14.0.11"
     expo-image-picker: "npm:~17.0.10"
     expo-linking: "npm:~8.0.11"
     expo-local-authentication: "npm:~17.0.8"
     expo-screen-capture: "npm:~8.0.9"
+    expo-secure-store: "npm:~15.0.8"
     expo-splash-screen: "npm:~31.0.13"
     expo-status-bar: "npm:~3.0.9"
     expo-web-browser: "npm:~15.0.10"
@@ -7762,7 +7777,6 @@ __metadata:
     react-native-qrcode-svg: "npm:^6.3.21"
     react-native-reanimated: "npm:^3.19.4"
     react-native-safe-area-context: "npm:~5.6.0"
-    react-native-screen-brightness: "npm:^2.0.0-alpha"
     react-native-screens: "npm:~4.16.0"
     react-native-svg: "npm:15.12.1"
     react-native-svg-transformer: "npm:^1.5.2"
@@ -11431,20 +11445,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/880d87ee60119321b366eef2c151ecefe14f5bc0d39cf5cfbfb167684e571d3dae2600ee19b9bc8521f5726eb285abecaa7aafb1a3b213529dafbac24703d302
-  languageName: node
-  linkType: hard
-
-"react-native-screen-brightness@npm:2.0.0-alpha":
-  version: 2.0.0-alpha
-  resolution: "react-native-screen-brightness@npm:2.0.0-alpha"
-  checksum: 10/d68a92eb90e6460a58e695644b215240adc6b73d8c0efd820a47077463817b8801fca82864bc135bbc3fd52d85deddfebc67a2a327af879e5595515790ab8f02
-  languageName: node
-  linkType: hard
-
-"react-native-screen-brightness@patch:react-native-screen-brightness@npm%3A2.0.0-alpha#./.yarn/patches/react-native-screen-brightness-npm-2.0.0-alpha-22c6aeb21e.patch::locator=io-eudiw-app%40workspace%3A.":
-  version: 2.0.0-alpha
-  resolution: "react-native-screen-brightness@patch:react-native-screen-brightness@npm%3A2.0.0-alpha#./.yarn/patches/react-native-screen-brightness-npm-2.0.0-alpha-22c6aeb21e.patch::version=2.0.0-alpha&hash=17739e&locator=io-eudiw-app%40workspace%3A."
-  checksum: 10/74b87e6331bac59dc61ada30847dd75093f95669060d732a082a67d8dcff62e6d20df09475666327194e27a1b4f8bece64971f6948d3d9ec9158a0992f6311ae
   languageName: node
   linkType: hard
 
