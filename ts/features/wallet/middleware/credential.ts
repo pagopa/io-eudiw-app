@@ -113,7 +113,8 @@ const getCredentialAuthCode = async (params: {
       authUrl,
       baseRedirectUri,
       {
-        preferEphemeralSession: true
+        preferEphemeralSession: true,
+        createTask: false
       }
     );
 

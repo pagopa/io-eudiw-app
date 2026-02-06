@@ -123,7 +123,8 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
         authUrl,
         baseRedirectUri,
         {
-          preferEphemeralSession: true
+          preferEphemeralSession: true,
+          createTask: false
         }
       );
 
