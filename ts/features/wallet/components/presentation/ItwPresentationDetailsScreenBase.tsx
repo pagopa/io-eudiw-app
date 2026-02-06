@@ -1,11 +1,6 @@
-import {
-  FooterActions,
-  useFooterActionsMeasurements
-} from '@pagopa/io-app-design-system';
-import { Fragment, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import Animated, {
   useAnimatedRef,
-  useAnimatedScrollHandler,
   useSharedValue
 } from 'react-native-reanimated';
 import { ButtonBlockProps } from '../../../../components/ui/utils/buttons';
@@ -14,6 +9,10 @@ import { useAppSelector } from '../../../../store';
 import { lifecycleIsValidSelector } from '../../store/lifecycle';
 import { useHeaderPropsByCredentialType } from '../../utils/itwStyleUtils';
 import { StoredCredential } from '../../utils/itwTypesUtils';
+import {
+  IOScrollView,
+  IOScrollViewActions
+} from '@/ts/components/IOScrollView';
 
 export type CredentialCtaProps = ButtonBlockProps;
 
@@ -34,9 +33,6 @@ const ItwPresentationDetailsScreenBase = ({
   const itwFeaturesEnabled = useAppSelector(lifecycleIsValidSelector);
   const scrollTranslationY = useSharedValue(0);
 
-  const { footerActionsMeasurements, handleFooterActionsMeasurements } =
-    useFooterActionsMeasurements();
-
   const headerProps = useHeaderPropsByCredentialType(
     credential.credentialType,
     itwFeaturesEnabled
@@ -55,35 +51,18 @@ const ItwPresentationDetailsScreenBase = ({
     ...headerProps
   });
 
-  const scrollHandler = useAnimatedScrollHandler(({ contentOffset }) => {
-    scrollTranslationY.value = contentOffset.y;
-  });
+  const actions: IOScrollViewActions | undefined = ctaProps
+    ? { type: 'SingleButton', primary: ctaProps }
+    : undefined;
 
   return (
-    <Fragment>
-      <Animated.ScrollView
-        ref={animatedScrollViewRef}
-        contentContainerStyle={{
-          paddingBottom: footerActionsMeasurements.safeBottomAreaHeight || 24
-        }}
-        onScroll={scrollHandler}
-        scrollEventThrottle={8}
-        snapToOffsets={[0, scrollTriggerOffsetValue]}
-        snapToEnd={false}
-        decelerationRate="normal"
-      >
-        {children}
-      </Animated.ScrollView>
-      {ctaProps && (
-        <FooterActions
-          onMeasure={handleFooterActionsMeasurements}
-          actions={{
-            type: 'SingleButton',
-            primary: ctaProps
-          }}
-        />
-      )}
-    </Fragment>
+    <IOScrollView
+      animatedRef={animatedScrollViewRef}
+      includeContentMargins={false}
+      actions={actions}
+    >
+      {children}
+    </IOScrollView>
   );
 };
 
