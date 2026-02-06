@@ -5,7 +5,6 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import { StackScreenProps } from '@react-navigation/stack';
-import { usePreventScreenCapture } from 'expo-screen-capture';
 import I18n from 'i18next';
 import { memo, useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -29,6 +28,7 @@ import {
   ItwCredentialStatus,
   StoredCredential
 } from '../../utils/itwTypesUtils';
+import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
 
 export type ItwPresentationCredentialCardModalNavigationParams = {
   credential: StoredCredential;
