@@ -136,8 +136,14 @@
         }
       ],
       [
-        "expo-image-picker",
+        "expo-secure-store",
         {
+          "configureAndroidBackup": true
+        }
+      ],
+      [
+        "expo-image-picker",
+        { 
           "photosPermission": "The app accesses your photos to scan QR codes."
         }
       ],
