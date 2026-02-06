@@ -120,8 +120,8 @@ const PlainTextClaimItem = ({
     ? getHiddenClaimAccessibilityText()
     : safeValue;
 
-  const handleLongPress = () => {
-    clipboardSetStringWithFeedback(safeValue);
+  const handleLongPress = async () => {
+    await clipboardSetStringWithFeedback(safeValue);
   };
 
   return (
