@@ -121,7 +121,10 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
       const baseRedirectUri = `${new URL(redirectUri).protocol}//`;
       const authRedirectUrl = await WebBrowser.openAuthSessionAsync(
         authUrl,
-        baseRedirectUri
+        baseRedirectUri,
+        {
+          preferEphemeralSession: true
+        }
       );
 
       if (authRedirectUrl.type !== 'success' || !authRedirectUrl.url) {
