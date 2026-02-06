@@ -56,6 +56,10 @@ export const useCameraPermissionStatus = () => {
     permission?.canAskAgain
   ]);
 
+  /**
+   * Setup listener for app state changes to detect if camera permissions were granted
+   * through system settings after the user returns to the app.
+   */
   useEffect(() => {
     const subscription = AppState.addEventListener(
       'change',
