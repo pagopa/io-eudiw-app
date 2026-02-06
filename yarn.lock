@@ -6548,6 +6548,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-camera@npm:~17.0.10":
+  version: 17.0.10
+  resolution: "expo-camera@npm:17.0.10"
+  dependencies:
+    invariant: "npm:^2.2.4"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+    react-native-web: "*"
+  peerDependenciesMeta:
+    react-native-web:
+      optional: true
+  checksum: 10/f46f3ebe48120d4cf4ea77c1de7f553e1fe76c108ad08de85f6e133575a58d57015fdfd2ecb508a0e87af1953f57c2c8a3bb436a633b3f4d974142cb9f030cf2
+  languageName: node
+  linkType: hard
+
 "expo-constants@npm:~18.0.12":
   version: 18.0.12
   resolution: "expo-constants@npm:18.0.12"
@@ -6594,6 +6611,26 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/80acffecdbd49a2ba1d7ecd8727f355bf47c39873d92f5959ff3bf7fd1de3e6ac10ebe2a77b8238287c3f2b7d033df40b562505fec370f82d9444400e19d7518
+  languageName: node
+  linkType: hard
+
+"expo-image-loader@npm:~6.0.0":
+  version: 6.0.0
+  resolution: "expo-image-loader@npm:6.0.0"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/896b4df1208ec071888acac0a8673ee4a67afcc8e06061de26fd189feed3369959ab9254314d51f303bcfc8f6289fd04ca9bec616007333d3dcb2e6d0618a2fe
+  languageName: node
+  linkType: hard
+
+"expo-image-picker@npm:~17.0.10":
+  version: 17.0.10
+  resolution: "expo-image-picker@npm:17.0.10"
+  dependencies:
+    expo-image-loader: "npm:~6.0.0"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/a40f954efa869c6c522a9f7e038b17e8f48abae8774e7479a4304e1013b123aa2da7a82b9be7785e5424b82394f1b85563556ed01fb824adcfd1fec65aa962b0
   languageName: node
   linkType: hard
 
@@ -7705,7 +7742,9 @@ __metadata:
     expo: "npm:~54.0.32"
     expo-brightness: "npm:~14.0.8"
     expo-build-properties: "npm:~1.0.10"
+    expo-camera: "npm:~17.0.10"
     expo-font: "npm:~14.0.11"
+    expo-image-picker: "npm:~17.0.10"
     expo-linking: "npm:~8.0.11"
     expo-local-authentication: "npm:~17.0.8"
     expo-screen-capture: "npm:~8.0.9"
@@ -7729,7 +7768,6 @@ __metadata:
     react-native-gesture-handler: "npm:~2.30.0"
     react-native-get-random-values: "npm:^1.11.0"
     react-native-haptic-feedback: "npm:^2.3.3"
-    react-native-image-picker: "npm:^8.2.1"
     react-native-linear-gradient: "npm:^2.8.3"
     react-native-permissions: "npm:^5.4.4"
     react-native-qrcode-svg: "npm:^6.3.21"
@@ -7739,12 +7777,11 @@ __metadata:
     react-native-svg: "npm:15.12.1"
     react-native-svg-transformer: "npm:^1.5.2"
     react-native-url-polyfill: "npm:^3.0.0"
-    react-native-vision-camera: "npm:^4.7.3"
     react-redux: "npm:^9.2.0"
     reactotron-react-native: "npm:^5.1.12"
     reactotron-redux: "npm:^3.1.10"
     redux-persist: "npm:^6.0.0"
-    rn-qr-generator: "npm:^1.4.5"
+    rn-qr-generator: "npm:^2.0.0"
     serialize-error: "npm:^12.0.0"
     typescript: "npm:~5.9.2"
     zod: "npm:^3.23.8"
@@ -11290,16 +11327,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-image-picker@npm:^8.2.1":
-  version: 8.2.1
-  resolution: "react-native-image-picker@npm:8.2.1"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10/d726950f2ab025462f5fbb788b2331672fc5bca1ac44899892736448ed3ee2d3ea49db9d6fee3bcbba4b4e064efeb646924e1cbd8522a23edd28c960f1db66aa
-  languageName: node
-  linkType: hard
-
 "react-native-is-edge-to-edge@npm:1.1.7":
   version: 1.1.7
   resolution: "react-native-is-edge-to-edge@npm:1.1.7"
@@ -11500,26 +11527,6 @@ __metadata:
   version: 2.0.3
   resolution: "react-native-uuid@npm:2.0.3"
   checksum: 10/8e2422c5af99f9b7e6d36e62c0ff7173d9d3f886d55e3131238a426426f4ee9e1382b3335e93c5c0e96b54f914b6b6a68f9a1bf5768a50f68be5c15ec85d8ee6
-  languageName: node
-  linkType: hard
-
-"react-native-vision-camera@npm:^4.7.3":
-  version: 4.7.3
-  resolution: "react-native-vision-camera@npm:4.7.3"
-  peerDependencies:
-    "@shopify/react-native-skia": "*"
-    react: "*"
-    react-native: "*"
-    react-native-reanimated: "*"
-    react-native-worklets-core: "*"
-  peerDependenciesMeta:
-    "@shopify/react-native-skia":
-      optional: true
-    react-native-reanimated:
-      optional: true
-    react-native-worklets-core:
-      optional: true
-  checksum: 10/2487d3651cb07918820e1f255480e28fec77f936450570b531b429a1861fad573f6bfd4cdb15a78ea7adb471ee45d08e0006cdac81db4fe35949291f3e12d680
   languageName: node
   linkType: hard
 
@@ -12100,12 +12107,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rn-qr-generator@npm:^1.4.5":
-  version: 1.4.5
-  resolution: "rn-qr-generator@npm:1.4.5"
+"rn-qr-generator@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "rn-qr-generator@npm:2.0.0"
   peerDependencies:
-    react-native: ">=0.55"
-  checksum: 10/c8ca4e1ff516661a091939e319b61c3d39dd73c4336dbd507da70d3b52f33688fe11135019ffdbbd9be3014701be88f7f3493fcdf842cef95a853e0c16d9f939
+    react: "*"
+    react-native: ">=0.71.0"
+  checksum: 10/fd23ca4a5ea630886bbc1d341393f6e221d65a1587a0b74930312a1e925788e04c92b151c8620673b1be23e633d948e0358dc33e2e4502c8f6b0568fd07114ad
   languageName: node
   linkType: hard
 
