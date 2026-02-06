@@ -2,10 +2,6 @@ import { IOToast } from '@pagopa/io-app-design-system';
 import { generate } from '@pagopa/io-react-native-crypto';
 import { CryptoContext } from '@pagopa/io-react-native-jwt';
 import {
-  openAuthenticationSession,
-  supportsInAppBrowser
-} from '@pagopa/io-react-native-login-utils';
-import {
   createCryptoContextFor,
   Credential
 } from '@pagopa/io-react-native-wallet';
@@ -15,6 +11,7 @@ import {
 } from '@pagopa/io-react-native-wallet/lib/typescript/credential/issuance';
 import { Out } from '@pagopa/io-react-native-wallet/lib/typescript/utils/misc';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+import * as WebBrowser from 'expo-web-browser';
 import i18next from 'i18next';
 import uuid from 'react-native-uuid';
 import { getEnv } from '../../../../ts/config/env';
@@ -34,6 +31,7 @@ import {
 } from '../../../store/reducers/identification';
 import { selectSessionId } from '../../../store/reducers/preferences';
 import { regenerateCryptoKey } from '../../../utils/crypto';
+import { isAndroid } from '../../../utils/device';
 import {
   resetCredentialIssuance,
   selectRequestedCredential,
@@ -110,17 +108,23 @@ const getCredentialAuthCode = async (params: {
 
     return code;
   } else {
-    const baseRedirectUri = new URL(redirectUri).protocol.replace(':', '');
-
-    // Open the authorization URL in the custom tab
-    const authRedirectUrl = await openAuthenticationSession(
+    const baseRedirectUri = `${new URL(redirectUri).protocol}//`;
+    const authRedirectUrl = await WebBrowser.openAuthSessionAsync(
       authUrl,
-      baseRedirectUri
+      baseRedirectUri,
+      {
+        preferEphemeralSession: true,
+        createTask: false
+      }
     );
+
+    if (authRedirectUrl.type !== 'success' || !authRedirectUrl.url) {
+      throw new Error('Authorization flow was not completed successfully.');
+    }
 
     const { code } =
       await Credential.Issuance.completeUserAuthorizationWithQueryMode(
-        authRedirectUrl
+        authRedirectUrl.url
       );
 
     return code;
@@ -138,6 +142,16 @@ const obtainCredentialListener: AppListenerWithAction<
   ReturnType<typeof setCredentialIssuancePreAuthRequest>
 > = async (_, listenerApi) => {
   try {
+    // On Android check if there is a browser to open the authentication session and then warm it up
+    if (isAndroid) {
+      const { browserPackages } =
+        await WebBrowser.getCustomTabsSupportingBrowsersAsync();
+      if (browserPackages.length === 0) {
+        throw new Error('No browser found to open the authentication session');
+      }
+      await WebBrowser.warmUpAsync();
+    }
+
     const {
       EXPO_PUBLIC_EAA_PROVIDER_BASE_URL,
       EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri,
@@ -225,11 +239,6 @@ const obtainCredentialListener: AppListenerWithAction<
       clientId,
       issuerConf
     );
-
-    const supportsCustomTabs = await supportsInAppBrowser();
-    if (!supportsCustomTabs) {
-      throw new Error('Custom tabs are not supported');
-    }
 
     const credentialCode = await getCredentialAuthCode({
       credentialType,
