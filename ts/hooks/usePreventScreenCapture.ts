@@ -39,7 +39,9 @@ export function usePreventScreenCapture(key?: string) {
   const tag = useMemo(() => key || uuidv4().toString(), [key]);
   const isDebugEnabled = useAppSelector(selectIsDebugModeEnabled);
 
-  const timeoutRef = useRef<number>(undefined);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined
+  );
 
   useFocusEffect(
     useCallback(() => {
