@@ -8,6 +8,10 @@ const options: SecureStore.SecureStoreOptions = {
 // expo-secure-storage doesn't allow semicolons in keys so we replace them with _
 const encodeKey = (key: string) => key.replace(/:/g, '_');
 
+/**
+ * Creates a custom redux-persist persistor based on `expo-secure-store`.
+ * It can be used to store sensitive data in a secure way.
+ */
 export default function secureStoragePersistor(): Storage {
   return {
     getItem: async key => {
