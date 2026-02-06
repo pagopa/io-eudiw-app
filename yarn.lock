@@ -2210,16 +2210,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-secure-storage@npm:^0.2.0":
-  version: 0.2.1
-  resolution: "@pagopa/io-react-native-secure-storage@npm:0.2.1"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10/bfae9428e91775be433d5778e9c9f6a7611537831e7c823703d5f76ffab8c24268f864e55a28aa3cb7fbb33af895850812b1d3625a5f34580a67c1ec2db35f56
-  languageName: node
-  linkType: hard
-
 "@pagopa/io-react-native-wallet@npm:2.2.0":
   version: 2.2.0
   resolution: "@pagopa/io-react-native-wallet@npm:2.2.0"
@@ -7715,7 +7705,6 @@ __metadata:
     "@pagopa/io-react-native-crypto": "npm:^1.2.3"
     "@pagopa/io-react-native-iso18013": "npm:^0.7.0"
     "@pagopa/io-react-native-jwt": "npm:2.1.0"
-    "@pagopa/io-react-native-secure-storage": "npm:^0.2.0"
     "@pagopa/io-react-native-wallet": "npm:2.2.0"
     "@pagopa/react-native-nodelibs": "npm:^0.1.0"
     "@react-native-async-storage/async-storage": "npm:^2.2.0"
