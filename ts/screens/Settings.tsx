@@ -8,26 +8,26 @@ import {
   useIOToast,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import { ComponentProps, useCallback } from 'react';
-import { FlatList, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import I18n from 'i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useHeaderSecondLevel } from '../hooks/useHeaderSecondLevel';
+import I18n from 'i18next';
+import { ComponentProps, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList, View } from 'react-native';
+import AppVersion from '../components/AppVersion';
 import { IOScrollViewWithLargeHeader } from '../components/IOScrollViewWithLargeHeader';
-import { useAppDispatch, useAppSelector } from '../store';
+import { FONT_PERSISTENCE_KEY } from '../context/DSTypeFaceContext';
 import { resetLifecycle } from '../features/wallet/store/lifecycle';
+import { useHeaderSecondLevel } from '../hooks/useHeaderSecondLevel';
+import { useAppDispatch, useAppSelector } from '../store';
+import {
+  selectIsDebugModeEnabled,
+  setDebugModeEnabled
+} from '../store/reducers/debug';
 import {
   preferencesFontSet,
   preferencesReset,
   TypefaceChoice
 } from '../store/reducers/preferences';
-import {
-  selectIsDebugModeEnabled,
-  setDebugModeEnabled
-} from '../store/reducers/debug';
-import AppVersion from '../components/AppVersion';
-import { FONT_PERSISTENCE_KEY } from '../context/DSTypeFaceContext';
 
 type TestButtonsListItem = Pick<
   ComponentProps<typeof IOButton>,
@@ -100,8 +100,8 @@ const Settings = () => {
       ? 'comfortable'
       : 'standard';
 
-    const handleTypefaceChange = (choice: TypefaceChoice) => {
-      AsyncStorage.setItem(FONT_PERSISTENCE_KEY, choice).finally(() => {
+    const handleTypefaceChange = async (choice: TypefaceChoice) => {
+      await AsyncStorage.setItem(FONT_PERSISTENCE_KEY, choice).finally(() => {
         dispatch(preferencesFontSet(choice));
         setNewTypefaceEnabled(choice === 'comfortable');
       });

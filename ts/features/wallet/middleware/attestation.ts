@@ -1,17 +1,17 @@
-import Config from 'react-native-config';
 import {
   createCryptoContextFor,
   WalletInstanceAttestation
 } from '@pagopa/io-react-native-wallet';
+import { getEnv } from '../../../config/env';
 import { selectSessionId } from '../../../store/reducers/preferences';
 import { AppThunk } from '../../../store/types';
+import { regenerateCryptoKey } from '../../../utils/crypto';
 import { selectAttestation, setAttestation } from '../store/attestation';
 import { selectInstanceKeyTag } from '../store/instance';
 import { isWalletInstanceAttestationValid } from '../utils/attestation';
+import { WIA_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
 import { getIntegrityContext } from '../utils/integrity';
-import { WIA_KEYTAG } from '../utils/crypto';
-import { regenerateCryptoKey } from '../../../utils/crypto';
 
 /**
  * Thunk to obtain the wallet instance attestation.
@@ -36,7 +36,8 @@ export const getAttestationThunk =
       !isWalletInstanceAttestationValid(existingAttestation)
     ) {
       const sessionId = selectSessionId(state);
-      const walletProviderBaseUrl = Config.WALLET_PROVIDER_BASE_URL;
+      const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
+        getEnv();
       const appFetch = createWalletProviderFetch(
         walletProviderBaseUrl,
         sessionId

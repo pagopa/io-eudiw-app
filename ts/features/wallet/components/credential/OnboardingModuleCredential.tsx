@@ -1,9 +1,9 @@
-import { useMemo, memo } from 'react';
 import { Badge, IOIcons, ModuleCredential } from '@pagopa/io-app-design-system';
-import i18next from 'i18next';
+import { memo, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-  wellKnownCredential,
-  getCredentialNameByType
+  getCredentialNameByType,
+  wellKnownCredential
 } from '../../utils/credentials';
 
 type Props = {
@@ -21,11 +21,6 @@ const credentialIconByType: Record<string, IOIcons> = {
   [wellKnownCredential.DISABILITY_CARD]: 'accessibility'
 };
 
-const activeBadge: Badge = {
-  variant: 'success',
-  text: i18next.t('credentialIssuance.badges.saved', { ns: 'wallet' })
-};
-
 /**
  * Module credential component which represent a credential in the credential list when requiring a new credential.
  * @param type - the type of the credential
@@ -41,12 +36,16 @@ const OnboardingModuleCredential = ({
   isSaved,
   isFetching
 }: Props) => {
+  const { t } = useTranslation('wallet');
   const badge = useMemo((): Badge | undefined => {
     if (isSaved) {
-      return activeBadge;
+      return {
+        variant: 'success',
+        text: t('credentialIssuance.badges.saved', { ns: 'wallet' })
+      };
     }
     return undefined;
-  }, [isSaved]);
+  }, [isSaved, t]);
 
   const handleOnPress = () => {
     onPress(configId);

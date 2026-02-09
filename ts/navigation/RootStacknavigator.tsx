@@ -1,34 +1,34 @@
+import { useIOThemeContext } from '@pagopa/io-app-design-system';
 import {
   LinkingOptions,
   NavigationContainer,
   NavigatorScreenParams
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useCallback, useEffect } from 'react';
-import { useIOThemeContext } from '@pagopa/io-app-design-system';
 import i18next from 'i18next';
+import { useCallback, useEffect } from 'react';
 import { Linking } from 'react-native';
+import LoadingScreenContent from '../components/LoadingScreenContent';
+import { OperationResultScreenContent } from '../components/screens/OperationResultScreenContent';
+import { useStoredFontPreference } from '../context/DSTypeFaceContext';
 import OnboardingNavigator, {
   OnboardingNavigatorParamsList
 } from '../features/onboarding/navigation/OnboardingNavigator';
+import { WalletNavigatorParamsList } from '../features/wallet/navigation/WalletNavigator';
 import { useAppDispatch, useAppSelector } from '../store';
+import { setUrl } from '../store/reducers/deeplinking';
 import {
   selectStartupState,
   startupSetLoading
 } from '../store/reducers/startup';
-import { WalletNavigatorParamsList } from '../features/wallet/navigation/WalletNavigator';
-import LoadingScreenContent from '../components/LoadingScreenContent';
-import { OperationResultScreenContent } from '../components/screens/OperationResultScreenContent';
-import { setUrl } from '../store/reducers/deeplinking';
-import { useStoredFontPreference } from '../context/DSTypeFaceContext';
-import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
-import ROOT_ROUTES from './routes';
+import { PRESENTATION_INTERNAL_LINKS } from './deepLinkSchemas';
 import MainStackNavigator, {
   MainNavigatorParamsList
 } from './main/MainStackNavigator';
 import MAIN_ROUTES from './main/routes';
+import ROOT_ROUTES from './routes';
+import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
 import { navigationRef } from './utils';
-import { PRESENTATION_INTERNAL_LINKS } from './deepLinkSchemas';
 
 export type RootStackParamList = {
   // Main
@@ -120,8 +120,13 @@ export const RootStackNavigator = () => {
               screens: {
                 PRESENTATION_PRE_DEFINITION: {
                   // why can't typescript infer the type of deeply nested navigators?
-                  path: '*', // match any path after PRESENTATION_PRE_DEFINITION
-                  alias: [''] // match empty path after PRESENTATION_PRE_DEFINITION
+                  path: '', // match any path after PRESENTATION_PRE_DEFINITION
+                  parse: {
+                    // This is needed because otherwise the URL encoded parameters are not properly decoded
+                    client_id: (value: string) => decodeURIComponent(value),
+                    request_uri: (value: string) => decodeURIComponent(value),
+                    state: (value: string) => value
+                  }
                 }
               }
             }

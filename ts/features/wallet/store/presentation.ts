@@ -1,6 +1,7 @@
-/* eslint-disable functional/immutable-data */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Credential } from '@pagopa/io-react-native-wallet';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { preferencesReset } from '../../../store/reducers/preferences';
+import { RootState } from '../../../store/types';
 import {
   AsyncStatusValues,
   setError,
@@ -8,12 +9,10 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import { RootState } from '../../../store/types';
-import { preferencesReset } from '../../../store/reducers/preferences';
 import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
-import { FederationEntity } from '../types';
-import { EnrichedPresentationDetails } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
+import { EnrichedPresentationDetails } from '../utils/itwTypesUtils';
+import { FederationEntity } from '../types';
 
 /**
  * Type for the description which contains the requested claims during the presentation.

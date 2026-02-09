@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-imports */
 import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   FLUSH,
   PAUSE,
@@ -9,17 +10,16 @@ import {
   REGISTER,
   REHYDRATE
 } from 'redux-persist';
-import { useDispatch, useSelector } from 'react-redux';
-import reactotron from '../../ReactotronConfig';
+import reactotron from '../config/reactotron';
 import walletReducer from '../features/wallet/store/index';
 import { listenerMiddleware } from '../middleware/listener';
-import { AppDispatch, RootState } from './types';
-import { startupSlice } from './reducers/startup';
+import { debugReducer } from './reducers/debug';
+import { deepLinkingReducer } from './reducers/deeplinking';
+import { identificationReducer } from './reducers/identification';
 import { pinReducer } from './reducers/pin';
 import { preferencesReducer } from './reducers/preferences';
-import { debugReducer } from './reducers/debug';
-import { identificationReducer } from './reducers/identification';
-import { deepLinkingReducer } from './reducers/deeplinking';
+import { startupSlice } from './reducers/startup';
+import { AppDispatch, RootState } from './types';
 
 /**
  * Redux store configuration.
