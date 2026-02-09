@@ -209,7 +209,7 @@ export const getFamilyNameFromCredential = (
  *
  */
 
-export const SimpleDateFormat = {
+const SIMPLE_DATE_FORMAT = {
   DDMMYYYY: 'DD/MM/YYYY',
   DDMMYY: 'DD/MM/YY'
 } as const;
@@ -378,3 +378,5 @@ export const getClaimDisplayValue = (
     };
   }
 };
+export type SimpleDateFormat =
+  (typeof SIMPLE_DATE_FORMAT)[keyof typeof SIMPLE_DATE_FORMAT];

@@ -20,7 +20,7 @@ import { selectCredentials } from '../store/credentials';
 import {
   AppListenerWithAction,
   AppStartListening
-} from '../../../middleware/listener';
+} from '../../../middleware/listener/types';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,

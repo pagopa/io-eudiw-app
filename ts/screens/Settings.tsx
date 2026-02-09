@@ -9,16 +9,14 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import I18n from 'i18next';
 import { ComponentProps, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, View } from 'react-native';
-import AppVersion from '../components/AppVersion';
+import { AppVersion } from '../components/AppVersion';
 import { IOScrollViewWithLargeHeader } from '../components/IOScrollViewWithLargeHeader';
 import { FONT_PERSISTENCE_KEY } from '../context/DSTypeFaceContext';
 import { resetLifecycle } from '../features/wallet/store/lifecycle';
 import { useHeaderSecondLevel } from '../hooks/useHeaderSecondLevel';
-import { useAppDispatch, useAppSelector } from '../store';
 import {
   selectIsDebugModeEnabled,
   setDebugModeEnabled
@@ -28,6 +26,7 @@ import {
   preferencesReset,
   TypefaceChoice
 } from '../store/reducers/preferences';
+import { useAppDispatch, useAppSelector } from '../store';
 
 type TestButtonsListItem = Pick<
   ComponentProps<typeof IOButton>,
@@ -76,20 +75,20 @@ const Settings = () => {
     const typefaceOptions = [
       {
         id: 'comfortable' as TypefaceChoice,
-        value: I18n.t('settings.appearance.typefaceStyle.comfortable.title', {
+        value: t('settings.appearance.typefaceStyle.comfortable.title', {
           ns: 'global'
         }),
-        description: I18n.t(
+        description: t(
           'settings.appearance.typefaceStyle.comfortable.description',
           { ns: 'global' }
         )
       },
       {
         id: 'standard' as TypefaceChoice,
-        value: I18n.t('settings.appearance.typefaceStyle.standard.title', {
+        value: t('settings.appearance.typefaceStyle.standard.title', {
           ns: 'global'
         }),
-        description: I18n.t(
+        description: t(
           'settings.appearance.typefaceStyle.standard.description',
           { ns: 'global' }
         )
@@ -111,7 +110,7 @@ const Settings = () => {
       <View>
         <ListItemHeader
           iconName="typeface"
-          label={I18n.t('settings.appearance.typefaceStyle.title', {
+          label={t('settings.appearance.typefaceStyle.title', {
             ns: 'global'
           })}
         />
@@ -123,7 +122,7 @@ const Settings = () => {
         />
       </View>
     );
-  }, [dispatch, newTypefaceEnabled, setNewTypefaceEnabled]);
+  }, [dispatch, newTypefaceEnabled, setNewTypefaceEnabled, t]);
 
   useHeaderSecondLevel({
     title: ''

@@ -1,12 +1,11 @@
 import { Banner } from '@pagopa/io-app-design-system';
-import { View } from 'react-native';
-import I18n from 'i18next';
 import { useNavigation } from '@react-navigation/native';
-import { useAppSelector } from '../../../store';
-import { itwShouldRenderWalletReadyBannerSelector } from '../store/selectors/wallet';
-import WALLET_ROUTES from '../navigation/routes';
+import { View } from 'react-native';
+import { t } from 'i18next';
 import MAIN_ROUTES from '../../../navigation/main/routes';
-
+import { useAppSelector } from '../../../store';
+import WALLET_ROUTES from '../navigation/routes';
+import { itwShouldRenderWalletReadyBannerSelector } from '../store/selectors/wallet';
 export const ItwWalletReadyBanner = () => {
   const navigation = useNavigation();
   const shouldRender = useAppSelector(itwShouldRenderWalletReadyBannerSelector);
@@ -25,10 +24,10 @@ export const ItwWalletReadyBanner = () => {
     <View style={{ marginHorizontal: -8 }}>
       <Banner
         title={undefined}
-        content={I18n.t('issuance.emptyWallet.readyBanner.content', {
+        content={t('issuance.emptyWallet.readyBanner.content', {
           ns: 'wallet'
         })}
-        action={I18n.t('issuance.emptyWallet.readyBanner.action', {
+        action={t('issuance.emptyWallet.readyBanner.action', {
           ns: 'wallet'
         })}
         color="turquoise"
