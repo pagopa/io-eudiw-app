@@ -9,6 +9,7 @@ import I18n from 'i18next';
 import { memo, useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import { useMaxBrightness } from '../../../../utils/brightness';
 import {
@@ -28,7 +29,6 @@ import {
   ItwCredentialStatus,
   StoredCredential
 } from '../../utils/itwTypesUtils';
-import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
 
 export type ItwPresentationCredentialCardModalNavigationParams = {
   credential: StoredCredential;
