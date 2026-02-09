@@ -30,8 +30,7 @@ import {
   enrichPresentationDetails,
   getInvalidCredentials
 } from '../utils/itwClaimsUtils';
-
-type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
+import { DcqlQuery } from '../utils/itwTypesUtils';
 
 /**
  * Listener for the credential presentation.
