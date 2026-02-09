@@ -35,6 +35,10 @@ export enum WellKnownClaim {
    */
   link_qr_code = 'link_qr_code',
   /**
+   * Claim used to display the attachments of a credential (currently used for the European Health Insurance Card)
+   */
+  content = 'content',
+  /**
    * Claim that contains the fiscal code, used for checks based on the user's identity.
    */
   tax_id_code = 'tax_id_code',
