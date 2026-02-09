@@ -9,7 +9,6 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { t } from 'i18next';
 import { ComponentProps, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, View } from 'react-native';
