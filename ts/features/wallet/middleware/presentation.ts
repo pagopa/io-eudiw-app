@@ -7,6 +7,7 @@ import { CryptoContext } from '@pagopa/io-react-native-jwt';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import {
   resetPresentation,
+  selectOptionalCredentials,
   setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionRequest,
@@ -73,6 +74,10 @@ const presentationListener: AppListenerWithAction<
     );
 
     const credentials = selectCredentials(listenerApi.getState());
+    const optionalCredentials = selectOptionalCredentials(
+      listenerApi.getState()
+    );
+    const optionalCredentialsSet = new Set(optionalCredentials || []);
 
     /**
      * Array of tuples containg the credential keytag and its raw value
@@ -133,14 +138,19 @@ const presentationListener: AppListenerWithAction<
         isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
       );
       if (setIdentificationIdentified.match(resAction[0])) {
-        const credentialsToPresent = evaluateDcqlQuery.map(
-          ({ requiredDisclosures, ...rest }) => ({
+        // Get required credentials and optional credentials that have been selected by the user
+        const credentialsToPresent = evaluateDcqlQuery
+          .filter(
+            c =>
+              c.purposes.some(({ required }) => required) ||
+              optionalCredentialsSet.has(c.id)
+          )
+          .map(({ requiredDisclosures, ...rest }) => ({
             ...rest,
             requestedClaims: requiredDisclosures.map(
               ([, claimName]) => claimName
             )
-          })
-        );
+          }));
 
         const remotePresentations =
           await Credential.Presentation.prepareRemotePresentations(

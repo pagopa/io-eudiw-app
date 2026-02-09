@@ -21,6 +21,7 @@ import {
   Descriptor,
   selectPostDefinitionStatus,
   selectPreDefinitionStatus,
+  setOptionalCredentials,
   setPostDefinitionCancel,
   setPostDefinitionRequest
 } from '../../store/presentation';
@@ -182,6 +183,12 @@ const PresentationPostDefinition = ({ route }: Props) => {
     [route.params.descriptor]
   );
 
+  const sendCredentialsToMachine = (
+    credentials: EnrichedPresentationDetails
+  ) => {
+    dispatch(setOptionalCredentials(credentials.map(c => c.id)));
+  };
+
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>
       <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
@@ -223,6 +230,7 @@ const PresentationPostDefinition = ({ route }: Props) => {
             <ListItemCheckbox
               value={t('wallet:presentation.trust.optionalClaims')}
               icon="security"
+              onValueChange={() => sendCredentialsToMachine(credentials)}
               description={
                 purpose
                   ? t('wallet:presentation.trust.purpose', {

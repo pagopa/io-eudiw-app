@@ -50,9 +50,7 @@ export const groupCredentialsByPurpose = (
   for (const item of presentationDetails) {
     for (const purpose of item.purposes) {
       const target = purpose.required ? required : optional;
-      // eslint-disable-next-line functional/immutable-data
       target[purpose.description ?? ''] ??= [];
-      // eslint-disable-next-line functional/immutable-data
       target[purpose.description ?? ''].push(item);
     }
   }
