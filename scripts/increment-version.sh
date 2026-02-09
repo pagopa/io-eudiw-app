@@ -61,15 +61,6 @@ case "$update_type" in
     ;;
 esac
 
-# Ensure that the new version components are within the range 0-99
-for i in "${!version_parts[@]}"; do
-  if ((version_parts[i] < 0)); then
-    version_parts[i]=0
-  elif ((version_parts[i] > 99)); then
-    version_parts[i]=99
-  fi
-done
-
 # Create the new version string
 new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}.${version_parts[3]}"
 
