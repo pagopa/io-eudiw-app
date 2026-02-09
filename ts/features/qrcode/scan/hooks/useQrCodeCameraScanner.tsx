@@ -3,22 +3,16 @@ import { IOColors, LoadingSpinner } from '@pagopa/io-app-design-system';
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
-import {
-  Camera,
-  Code,
-  useCameraDevice,
-  useCodeScanner
-} from 'react-native-vision-camera';
 
+import { BarcodeScanningResult, CameraView } from 'expo-camera';
 import { AnimatedCameraMarker } from '../components/AnimatedCameraMarker';
-import { OnBarcodeSuccess, OnBardCodeError } from '../screens/QrCodeScanScreen';
+import { OnBarcodeSuccess } from '../screens/QrCodeScanScreen';
 
 /**
  * {@link useQrCodeCameraScanner} configuration
  */
 export type QrCodeCameraScannerConfiguration = {
   onBarcodeSuccess: OnBarcodeSuccess;
-  onBarcodeError: OnBardCodeError;
   isDisabled?: boolean;
   isLoading?: boolean;
 };
@@ -29,13 +23,9 @@ export type QrCodeCameraScanner = {
    */
   cameraComponent: ReactNode;
   /**
-   * Returns true if the device has a torch
-   */
-  hasTorch: boolean;
-  /**
    * Returns true if the torch is on
    */
-  isTorchOn: boolean;
+  enableTorch: boolean;
   /**
    * Toggles the torch states between "on" and "off"
    */
@@ -56,17 +46,11 @@ const QRCODE_SCANNER_REACTIVATION_TIME_MS = 5000;
  */
 export const useQrCodeCameraScanner = ({
   onBarcodeSuccess,
-  onBarcodeError,
   isDisabled,
   isLoading = false
 }: QrCodeCameraScannerConfiguration): QrCodeCameraScanner => {
-  const device = useCameraDevice('back', {
-    physicalDevices: ['wide-angle-camera']
-  });
-
   // Checks that the device has a torch
-  const hasTorch = !!device?.hasTorch;
-  const [isTorchOn, setTorchOn] = useState<boolean>(false);
+  const [enableTorch, setEnableTorch] = useState<boolean>(false);
 
   // This handles the resting state of the scanner after a scan
   // It is necessary to avoid multiple scans of the same barcode
@@ -77,8 +61,8 @@ export const useQrCodeCameraScanner = ({
   /**
    * Handles the scanned barcodes and calls the callbacks for the results
    */
-  const handleScannedBarcodes = useCallback(
-    (codes: Array<Code>) => {
+  const onBarcodeScanned = useCallback(
+    (scanningResult: BarcodeScanningResult) => {
       // This will fix a bug on lower-end devices
       // in which the latest frame would be scanned
       // multiple times due to races conditions during
@@ -95,23 +79,10 @@ export const useQrCodeCameraScanner = ({
         setIsResting(false);
       }, QRCODE_SCANNER_REACTIVATION_TIME_MS);
 
-      const stringResult = codes
-        .map(item => item.value)
-        .filter((value): value is string => value !== undefined); // Typescript can't infer the filter type outside the arrow function
-
-      if (stringResult.length > 0) {
-        onBarcodeSuccess(stringResult);
-      } else {
-        onBarcodeError();
-      }
+      onBarcodeSuccess(scanningResult.data);
     },
-    [isDisabled, isResting, isLoading, onBarcodeSuccess, onBarcodeError]
+    [isDisabled, isResting, isLoading, onBarcodeSuccess]
   );
-
-  const codeScanner = useCodeScanner({
-    codeTypes: ['qr'],
-    onCodeScanned: handleScannedBarcodes
-  });
 
   /**
    * Hook that clears the timeout handler on unmount
@@ -130,16 +101,15 @@ export const useQrCodeCameraScanner = ({
    */
   const cameraComponent = (
     <View style={styles.cameraContainer} testID="BarcodeScannerCameraTestID">
-      {device && (
-        <Camera
-          style={styles.camera}
-          device={device}
-          audio={false}
-          codeScanner={codeScanner}
-          isActive={!isDisabled}
-          torch={isTorchOn ? 'on' : 'off'}
-        />
-      )}
+      <CameraView
+        barcodeScannerSettings={{
+          barcodeTypes: ['qr']
+        }}
+        style={styles.camera}
+        active={!isDisabled}
+        enableTorch={enableTorch}
+        onBarcodeScanned={onBarcodeScanned}
+      />
       {!isLoading ? (
         <View style={styles.markerContainer}>
           <AnimatedCameraMarker isAnimated={!isResting && !isDisabled} />
@@ -152,12 +122,11 @@ export const useQrCodeCameraScanner = ({
     </View>
   );
 
-  const toggleTorch = () => setTorchOn(prev => !prev);
+  const toggleTorch = () => setEnableTorch(prev => !prev);
 
   return {
     cameraComponent,
-    hasTorch,
-    isTorchOn,
+    enableTorch,
     toggleTorch
   };
 };
