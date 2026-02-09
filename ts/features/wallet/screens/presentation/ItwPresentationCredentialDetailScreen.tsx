@@ -6,11 +6,11 @@ import {
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
-// import { usePreventScreenCapture } from 'expo-screen-capture';
 import { t } from 'i18next';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
 import { OperationResultScreenContent } from '../../../../components/screens/OperationResultScreenContent';
 import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
 import { useDebugInfo } from '../../../../hooks/useDebugInfo';
@@ -127,7 +127,7 @@ export const ItwPresentationCredentialDetail = ({
   const { t } = useTranslation(['wallet']);
 
   useDebugInfo(credential);
-  // usePreventScreenCapture();
+  usePreventScreenCapture();
 
   const proximityStatus = useAppSelector(selectProximityStatus);
   const proximityDisclosureDescriptor = useAppSelector(

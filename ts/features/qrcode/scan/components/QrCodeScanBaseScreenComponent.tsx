@@ -5,26 +5,25 @@ import {
   TabNavigation
 } from '@pagopa/io-app-design-system';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AppState, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   SafeAreaView,
   useSafeAreaInsets
 } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
-import { useQrCodeCameraScanner } from '../hooks/useQrCodeCameraScanner';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
+import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
 import { isAndroid } from '../../../../utils/device';
-import { OnBarcodeSuccess, OnBardCodeError } from '../screens/QrCodeScanScreen';
 import { useCameraPermissionStatus } from '../hooks/useCameraPermissionStatus';
+import { useQrCodeCameraScanner } from '../hooks/useQrCodeCameraScanner';
+import { OnBarcodeSuccess } from '../screens/QrCodeScanScreen';
 import { CameraPermissionView } from './CameraPermissionView';
 
 type Props = {
   onBarcodeSuccess: OnBarcodeSuccess;
-  onBarcodeError: OnBardCodeError;
   onFileInputPressed: () => void;
   isLoading?: boolean;
   isDisabled?: boolean;
@@ -45,7 +44,6 @@ type NavigationProps = StackNavigationProp<
  * @returns
  */
 const QrCodeScanBaseScreenComponent = ({
-  onBarcodeError,
   onBarcodeSuccess,
   onFileInputPressed,
   // onManualInputPressed,
@@ -78,19 +76,16 @@ const QrCodeScanBaseScreenComponent = ({
     };
   }, []);
 
-  const {
-    cameraPermissionStatus,
-    requestCameraPermission,
-    openCameraSettings
-  } = useCameraPermissionStatus();
+  const { cameraPermissionStatus, requestPermission, openCameraSettings } =
+    useCameraPermissionStatus();
 
-  const { cameraComponent, hasTorch, isTorchOn, toggleTorch } =
-    useQrCodeCameraScanner({
-      onBarcodeSuccess,
-      onBarcodeError,
-      isDisabled: isAppInBackground || !isFocused || isDisabled,
-      isLoading
-    });
+  const { cameraComponent, enableTorch, toggleTorch } = useQrCodeCameraScanner({
+    onBarcodeSuccess,
+    isDisabled: isAppInBackground || !isFocused || isDisabled,
+    isLoading
+  });
+
+  const shouldDisplayTorchButton = cameraPermissionStatus === 'granted';
 
   const cameraView = useMemo(() => {
     if (cameraPermissionStatus === 'granted') {
@@ -123,7 +118,7 @@ const QrCodeScanBaseScreenComponent = ({
           label: t('qrcodeScan:permissions.undefined.action'),
           accessibilityLabel: t('qrcodeScan:permissions.undefined.action'),
           onPress: async () => {
-            await requestCameraPermission();
+            await requestPermission();
           }
         }}
       />
@@ -132,16 +127,13 @@ const QrCodeScanBaseScreenComponent = ({
     cameraPermissionStatus,
     t,
     cameraComponent,
-    requestCameraPermission,
+    requestPermission,
     openCameraSettings
   ]);
 
   const handleTorchToggle = useCallback(() => {
     toggleTorch();
   }, [toggleTorch]);
-
-  const shouldDisplayTorchButton =
-    cameraPermissionStatus === 'granted' && hasTorch;
 
   const customGoBack = useMemo(
     () => (
@@ -161,14 +153,14 @@ const QrCodeScanBaseScreenComponent = ({
     () => (
       <View style={styles.torch}>
         <IconButton
-          icon={isTorchOn ? 'lightFilled' : 'light'}
+          icon={enableTorch ? 'lightFilled' : 'light'}
           accessibilityLabel={t('qrcodeScan:flash')}
           onPress={handleTorchToggle}
           color="contrast"
         />
       </View>
     ),
-    [handleTorchToggle, isTorchOn, t]
+    [enableTorch, handleTorchToggle, t]
   );
 
   /**
@@ -180,7 +172,7 @@ const QrCodeScanBaseScreenComponent = ({
       headerShown: true,
       headerTransparent: true,
       headerLeft: () => customGoBack,
-      headerRight: () => (shouldDisplayTorchButton ? torchButton : <></>)
+      headerRight: () => (shouldDisplayTorchButton ? torchButton : null)
     });
   }, [customGoBack, navigation, shouldDisplayTorchButton, torchButton]);
 

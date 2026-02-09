@@ -22,8 +22,6 @@
             ]
           }
         ],
-        "NSFaceIDUsageDescription": "This app uses the fingerprint sensor for authentication.",
-        "NSCameraUsageDescription": "This app uses the camera to scan QR codes.",
         "NSPhotoLibraryUsageDescription": "This app requires access to your photo library to select QR codes images.",
         "NSBluetoothAlwaysUsageDescription": "This app uses Bluetooth to connect to external devices.",
         "NSBluetoothPeripheralUsageDescription": "This app uses Bluetooth to connect to external devices.",
@@ -35,9 +33,6 @@
       "package": "it.pagopa.io.app.poc.eudiw",
       "versionCode": 47,
       "permissions": [
-        "android.permission.USE_BIOMETRIC",
-        "android.permission.USE_FINGERPRINT",
-        "android.permission.CAMERA",
         "android.permission.BLUETOOTH_SCAN",
         "android.permission.BLUETOOTH_CONNECT",
         "android.permission.BLUETOOTH_ADVERTISE",
@@ -63,6 +58,9 @@
             },
             {
               "scheme": "mdoc-openid4vp"
+            },
+            {
+              "scheme": "iowallet"
             }
           ],
           "category": ["BROWSABLE", "DEFAULT"]
@@ -125,6 +123,37 @@
         "react-native-permissions",
         {
           "iosPermissions": ["Bluetooth"]
+        }
+      ],
+       [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "recordAudioAndroid": false
+        }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
+        }
+      ],
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true
+        }
+      ],
+      [
+        "expo-image-picker",
+        { 
+          "photosPermission": "The app accesses your photos to scan QR codes."
+        }
+      ],
+      [
+        "expo-web-browser",
+        {
+          "experimentalLauncherActivity": true
         }
       ],
       "./scripts/android-fix-bouncy-castle-dependency.js"

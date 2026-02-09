@@ -19,8 +19,8 @@ import { deepLinkingReducer } from './reducers/deeplinking';
 import { identificationReducer } from './reducers/identification';
 import { pinReducer } from './reducers/pin';
 import { preferencesReducer, preferencesReset } from './reducers/preferences';
-import { startupSetLoading, startupSlice } from './reducers/startup';
 import { AppDispatch, RootState } from './types';
+import { startupSetLoading, startupSlice } from './reducers/startup';
 
 /**
  * Redux store configuration.

@@ -1,11 +1,8 @@
 import { isAnyOf, UnknownAction } from '@reduxjs/toolkit';
 import * as SplashScreen from 'expo-splash-screen';
 import { Linking } from 'react-native';
+import { isPinOrFingerprintSet } from 'react-native-device-info';
 import { checkConfig } from '../../config/env';
-import {
-  getBiometricState,
-  hasDeviceScreenLock
-} from '../../features/onboarding/utils/biometric';
 import { addWalletListeners } from '../../features/wallet/middleware';
 import { resetLifecycle } from '../../features/wallet/store/lifecycle';
 import { isNavigationReady } from '../../navigation/utils';
@@ -25,8 +22,9 @@ import {
   startupSetStatus,
   StartupState
 } from '../../store/reducers/startup';
+import { getBiometricState } from '../../utils/biometric';
 import { AppListener, AppListenerWithAction } from './types';
-import { startAppListening } from './index';
+import { startAppListening } from '.';
 
 /**
  * Utility function to wait for the navigation to be ready before dispatching a navigation event.
@@ -110,7 +108,7 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
     const state = listenerApi.getState();
     checkConfig();
     const biometricState = await getBiometricState();
-    const hasScreenLock = await hasDeviceScreenLock();
+    const hasScreenLock = await isPinOrFingerprintSet();
     listenerApi.dispatch(
       startupSetAttributes({
         biometricState,

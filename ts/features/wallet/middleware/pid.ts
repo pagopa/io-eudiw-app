@@ -1,20 +1,13 @@
 import { generate } from '@pagopa/io-react-native-crypto';
 import {
-  openAuthenticationSession,
-  supportsInAppBrowser
-} from '@pagopa/io-react-native-login-utils';
-import {
   createCryptoContextFor,
   Credential
 } from '@pagopa/io-react-native-wallet';
 import { isAnyOf } from '@reduxjs/toolkit';
+import * as WebBrowser from 'expo-web-browser';
 import uuid from 'react-native-uuid';
 import { serializeError } from 'serialize-error';
 import { getEnv } from '../../../config/env';
-import {
-  AppListenerWithAction,
-  AppStartListening
-} from '../../../middleware/listener/types';
 import { takeLatestEffect } from '../../../middleware/listener/effects';
 import { createAppAsyncThunk } from '../../../middleware/thunk';
 import MAIN_ROUTES from '../../../navigation/main/routes';
@@ -26,16 +19,21 @@ import {
 } from '../../../store/reducers/identification';
 import { selectSessionId } from '../../../store/reducers/preferences';
 import { regenerateCryptoKey } from '../../../utils/crypto';
+import { isAndroid } from '../../../utils/device';
 import WALLET_ROUTES from '../navigation/routes';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
 import { addCredential, addPidWithIdentification } from '../store/credentials';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
-import { selectPendingCredential } from '../store/selectors/pidIssuance';
 import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 import { DPOP_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
 import { StoredCredential } from '../utils/itwTypesUtils';
+import { selectPendingCredential } from '../store/selectors/pidIssuance';
 import { getAttestationThunk } from './attestation';
+import {
+  AppListenerWithAction,
+  AppStartListening
+} from '@/ts/middleware/listener/types';
 
 /**
  * Thunk to obtain the PID credential.
@@ -108,20 +106,35 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
         issuerConf
       );
 
-      const supportsCustomTabs = await supportsInAppBrowser();
-      if (!supportsCustomTabs) {
-        throw new Error('Custom tabs are not supported');
+      // On Android check if there is a browser to open the authentication session and then warm it up
+      if (isAndroid) {
+        const { browserPackages } =
+          await WebBrowser.getCustomTabsSupportingBrowsersAsync();
+        if (browserPackages.length === 0) {
+          throw new Error(
+            'No browser found to open the authentication session'
+          );
+        }
+        await WebBrowser.warmUpAsync();
       }
 
-      const baseRedirectUri = new URL(redirectUri).protocol.replace(':', '');
-      const authRedirectUrl = await openAuthenticationSession(
+      const baseRedirectUri = `${new URL(redirectUri).protocol}//`;
+      const authRedirectUrl = await WebBrowser.openAuthSessionAsync(
         authUrl,
-        baseRedirectUri
+        baseRedirectUri,
+        {
+          preferEphemeralSession: true,
+          createTask: false
+        }
       );
+
+      if (authRedirectUrl.type !== 'success' || !authRedirectUrl.url) {
+        throw new Error('Authorization flow was not completed successfully.');
+      }
 
       const { code } =
         await Credential.Issuance.completeUserAuthorizationWithQueryMode(
-          authRedirectUrl
+          authRedirectUrl.url
         );
 
       // Create credential crypto context
