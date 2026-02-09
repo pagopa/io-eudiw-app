@@ -69,8 +69,10 @@ export const DebugPrettyPrint = withDebugEnabled(
               icon={'copy'}
               accessibilityLabel="copy"
               iconSize={20}
-              onPress={() =>
-                clipboardSetStringWithFeedback(JSON.stringify(data, null, 2))
+              onPress={async () =>
+                await clipboardSetStringWithFeedback(
+                  JSON.stringify(data, null, 2)
+                )
               }
               color="contrast"
             />

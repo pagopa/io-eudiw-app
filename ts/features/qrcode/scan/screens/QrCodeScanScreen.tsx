@@ -14,7 +14,7 @@ import { presentationLinkToUrl } from '../utils/parsing';
 /**
  * Types for callback in case of success or error
  */
-export type OnBarcodeSuccess = (barcodes: Array<string>) => void;
+export type OnBarcodeSuccess = (barcode: Array<string> | string) => void;
 
 export type OnBardCodeError = () => void;
 
@@ -64,11 +64,13 @@ const QrCodeScanScreen = () => {
     }
   };
 
-  const handleBarcodeSuccess: OnBarcodeSuccess = (barcodes: Array<string>) => {
-    if (barcodes.length > 1) {
+  const handleBarcodeSuccess: OnBarcodeSuccess = barcode => {
+    const codes = Array.isArray(barcode) ? barcode : [barcode];
+
+    if (codes.length > 1) {
       handleMultipleResults();
     } else {
-      handleSingleResult(barcodes[0]);
+      handleSingleResult(codes[0]);
     }
   };
 
@@ -83,7 +85,6 @@ const QrCodeScanScreen = () => {
     <>
       <QrCodeScanBaseScreenComponent
         onBarcodeSuccess={handleBarcodeSuccess}
-        onBarcodeError={handleBarcodeError}
         isLoading={isLoading}
         isDisabled={isLoading}
         onFileInputPressed={showImagePicker}
