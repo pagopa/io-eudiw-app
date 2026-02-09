@@ -1,7 +1,7 @@
 import { Banner } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
-import { View } from 'react-native';
 import { t } from 'i18next';
+import { View } from 'react-native';
 import MAIN_ROUTES from '../../../navigation/main/routes';
 import { useAppSelector } from '../../../store';
 import WALLET_ROUTES from '../navigation/routes';

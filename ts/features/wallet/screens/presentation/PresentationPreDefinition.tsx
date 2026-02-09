@@ -1,7 +1,7 @@
 import { Body } from '@pagopa/io-app-design-system';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { LoadingScreenContent } from '../../../../components/LoadingScreenContent';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import { selectCredential } from '../../store/credentials';

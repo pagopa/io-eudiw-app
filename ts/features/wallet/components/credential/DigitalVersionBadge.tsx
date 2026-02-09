@@ -12,7 +12,7 @@ import {
   vec
 } from '@shopify/react-native-skia';
 import Color from 'color';
-import I18n from 'i18next';
+import I18n, { t } from 'i18next';
 import { memo, useState } from 'react';
 import {
   LayoutChangeEvent,
@@ -21,7 +21,6 @@ import {
   Text,
   View
 } from 'react-native';
-import { t } from 'i18next';
 import { useAppSelector } from '../../../../store';
 import { fontPreferenceSelector } from '../../../../store/reducers/preferences';
 import { CardColorScheme } from '../../types';

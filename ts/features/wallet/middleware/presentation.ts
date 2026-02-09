@@ -5,10 +5,6 @@ import {
 } from '@pagopa/io-react-native-wallet';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import { serializeError } from 'serialize-error';
-import {
-  AppListenerWithAction,
-  AppStartListening
-} from '../../../middleware/listener';
 import { takeLatestEffect } from '../../../middleware/listener/effects';
 import {
   setIdentificationIdentified,
@@ -27,19 +23,11 @@ import {
   setPreDefinitionRequest,
   setPreDefinitionSuccess
 } from '../store/presentation';
-import { selectCredentials } from '../store/credentials';
-import { CredentialTypePresentationClaimsListDescriptor } from '../components/presentation/CredentialTypePresentationClaimsList';
+import { ParsedCredential } from '../utils/itwTypesUtils';
 import {
   AppListenerWithAction,
   AppStartListening
-} from '../../../middleware/listener/types';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../../store/reducers/identification';
-import { takeLatestEffect } from '../../../middleware/listener/effects';
-import { ParsedCredential } from '../utils/itwTypesUtils';
+} from '@/ts/middleware/listener/types';
 
 type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 

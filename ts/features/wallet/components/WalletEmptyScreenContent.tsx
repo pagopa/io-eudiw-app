@@ -1,8 +1,8 @@
 import { Body, IOButton, IOVisualCostants } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { StyleSheet, View } from 'react-native';
 import { t } from 'i18next';
+import { StyleSheet, View } from 'react-native';
 import { MainNavigatorParamsList } from '../../../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../../../navigation/main/routes';
 import ItwDeckImage from '../assets/img/brand/itw_deck_wallet.svg';

@@ -1,10 +1,10 @@
 import { Divider, ListItemHeader } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useMemo, useState } from 'react';
-import { View } from 'react-native';
-import { Fragment } from 'react/jsx-runtime';
 import { t } from 'i18next';
+import { useMemo, useState } from 'react';
+import { Fragment } from 'react/jsx-runtime';
+import { View } from 'react-native';
 import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
 import { parseClaimsToRecord } from '../../utils/claims';
 import { WellKnownClaim } from '../../utils/itwClaimsUtils';

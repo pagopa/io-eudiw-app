@@ -1,8 +1,8 @@
 import { useIOToast } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Alert } from 'react-native';
 import { t } from 'i18next';
+import { Alert } from 'react-native';
 import { RootStackParamList } from '../../../navigation/RootStacknavigator';
 import { useAppDispatch } from '../../../store';
 import { removeCredential } from '../store/credentials';

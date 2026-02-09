@@ -4,10 +4,9 @@ import {
   IconButton,
   useIOTheme
 } from '@pagopa/io-app-design-system';
-import I18n from 'i18next';
+import I18n, { t } from 'i18next';
 import { Fragment, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
-import { t } from 'i18next';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   itwIsClaimValueHiddenSelector,
