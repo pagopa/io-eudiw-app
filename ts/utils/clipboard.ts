@@ -1,7 +1,6 @@
 import { IOToast } from '@pagopa/io-app-design-system';
 import * as Clipboard from 'expo-clipboard';
-
-import I18n from 'i18next';
+import { t } from 'i18next';
 
 /**
  * Copy a text to the device clipboard and give a feedback.
@@ -9,5 +8,5 @@ import I18n from 'i18next';
 export const clipboardSetStringWithFeedback = async (text: string) => {
   await Clipboard.setStringAsync(text);
 
-  IOToast.success(I18n.t('clipboard.copyFeedback'));
+  IOToast.success(t('clipboard.copyFeedback', { ns: 'global' }));
 };

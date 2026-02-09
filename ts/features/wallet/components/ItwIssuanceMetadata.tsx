@@ -1,5 +1,5 @@
 import { Divider, ListItemInfo } from '@pagopa/io-app-design-system';
-import I18n from 'i18next';
+import { t } from 'i18next';
 import { useMemo } from 'react';
 import { useItwInfoBottomSheet } from '../hooks/useItwInfoBottomSheet';
 import { wellKnownCredential } from '../utils/credentials';
@@ -85,7 +85,7 @@ export const ItwIssuanceMetadata = ({
   /* TODO: [WLEO-846] In case of introduction of the credential catalogue
            it will be necessary to obtain the auth source from it.
   */
-  const authSource = I18n.t('presentation.authSource', { ns: 'wallet' });
+  const authSource = t('presentation.authSource', { ns: 'wallet' });
 
   const releasedByKey =
     credential.credentialType === wellKnownCredential.PID
@@ -95,13 +95,10 @@ export const ItwIssuanceMetadata = ({
   const releaserNameBottomSheet: ItwMetadataIssuanceListItemProps['bottomSheet'] =
     useMemo(
       () => ({
-        contentTitle: I18n.t(
-          'issuance.credentialPreview.bottomSheet.about.title',
-          {
-            ns: 'wallet'
-          }
-        ),
-        contentBody: I18n.t(
+        contentTitle: t('issuance.credentialPreview.bottomSheet.about.title', {
+          ns: 'wallet'
+        }),
+        contentBody: t(
           'issuance.credentialPreview.bottomSheet.about.subtitle',
           {
             ns: 'wallet',
@@ -116,11 +113,11 @@ export const ItwIssuanceMetadata = ({
   const authSourceBottomSheet: ItwMetadataIssuanceListItemProps['bottomSheet'] =
     useMemo(
       () => ({
-        contentTitle: I18n.t(
+        contentTitle: t(
           'issuance.credentialPreview.bottomSheet.authSource.title',
           { ns: 'wallet' }
         ),
-        contentBody: I18n.t(
+        contentBody: t(
           'issuance.credentialPreview.bottomSheet.authSource.subtitle',
           {
             ns: 'wallet'
@@ -135,7 +132,7 @@ export const ItwIssuanceMetadata = ({
     <>
       {authSource && (
         <ItwMetadataIssuanceListItem
-          label={I18n.t('verifiableCredentials.claims.authenticSource', {
+          label={t('verifiableCredentials.claims.authenticSource', {
             ns: 'wallet'
           })}
           value={authSource}
@@ -146,7 +143,7 @@ export const ItwIssuanceMetadata = ({
       {authSource && releaserName && <Divider />}
       {releaserName && (
         <ItwMetadataIssuanceListItem
-          label={I18n.t(`verifiableCredentials.claims.${releasedByKey}`, {
+          label={t(`verifiableCredentials.claims.${releasedByKey}`, {
             ns: 'wallet'
           })}
           value={releaserName}

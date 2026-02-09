@@ -8,10 +8,6 @@ import * as WebBrowser from 'expo-web-browser';
 import uuid from 'react-native-uuid';
 import { serializeError } from 'serialize-error';
 import { getEnv } from '../../../config/env';
-import {
-  AppListenerWithAction,
-  AppStartListening
-} from '../../../middleware/listener';
 import { takeLatestEffect } from '../../../middleware/listener/effects';
 import { createAppAsyncThunk } from '../../../middleware/thunk';
 import MAIN_ROUTES from '../../../navigation/main/routes';
@@ -28,12 +24,16 @@ import WALLET_ROUTES from '../navigation/routes';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
 import { addCredential, addPidWithIdentification } from '../store/credentials';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
-import { selectPendingCredential } from '../store/pidIssuance';
 import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 import { DPOP_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
 import { StoredCredential } from '../utils/itwTypesUtils';
+import { selectPendingCredential } from '../store/selectors/pidIssuance';
 import { getAttestationThunk } from './attestation';
+import {
+  AppListenerWithAction,
+  AppStartListening
+} from '@/ts/middleware/listener/types';
 
 /**
  * Thunk to obtain the PID credential.

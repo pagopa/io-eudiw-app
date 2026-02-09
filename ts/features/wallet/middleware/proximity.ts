@@ -1,6 +1,18 @@
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
-import { serializeError } from 'serialize-error';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+import { serializeError } from 'serialize-error';
+import { takeLatestEffect } from '../../../middleware/listener/effects';
+import {
+  AppListener,
+  AppListenerWithAction,
+  AppStartListening
+} from '../../../middleware/listener/types';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '../../../store/reducers/identification';
+import { selectCredentials } from '../store/credentials';
 import {
   resetProximityQrCode,
   selectProximityAcceptedFields,
@@ -17,24 +29,11 @@ import {
   setProximityStatusStopped
 } from '../store/proximity';
 import { requestBlePermissions } from '../utils/permissions';
-import { store } from '../../../store';
-import { selectCredentials } from '../store/credentials';
 import {
   getIsVerifierAuthenticated,
   matchRequestToClaims,
   verifierCertificates
 } from '../utils/proximity';
-import {
-  AppListener,
-  AppListenerWithAction,
-  AppStartListening
-} from '../../../middleware/listener';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../../store/reducers/identification';
-import { takeLatestEffect } from '../../../middleware/listener/effects';
 
 const {
   ErrorCode,
@@ -72,13 +71,13 @@ const proximityListener: AppListenerWithAction<
     addListener('onDeviceConnecting', () => {});
 
     addListener('onDeviceConnected', () => {
-      store.dispatch(setProximityStatusConnected());
+      listenerApi.dispatch(setProximityStatusConnected());
     });
 
     addListener('onDocumentRequestReceived', payload => {
       // A new request has been received
       if (!payload || !payload.data) {
-        store.dispatch(
+        listenerApi.dispatch(
           setProximityStatusError('Bad document request received')
         );
         return;
@@ -87,15 +86,15 @@ const proximityListener: AppListenerWithAction<
       // Parse and verify the received request with the exposed function
       const parsedJson = JSON.parse(payload.data);
       const parsedRequest = parseVerifierRequest(parsedJson);
-      store.dispatch(setProximityStatusReceivedDocument(parsedRequest));
+      listenerApi.dispatch(setProximityStatusReceivedDocument(parsedRequest));
     });
 
     addListener('onDeviceDisconnected', () => {
-      store.dispatch(setProximityStatusStopped());
+      listenerApi.dispatch(setProximityStatusStopped());
     });
 
     addListener('onError', payload => {
-      store.dispatch(
+      listenerApi.dispatch(
         setProximityStatusError(payload?.error ?? 'Unknown internal error')
       );
     });

@@ -5,7 +5,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Body } from '@pagopa/io-app-design-system';
 import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import LoadingScreenContent from '../../../../components/LoadingScreenContent';
+import { LoadingScreenContent } from '../../../../components/LoadingScreenContent';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   selectPreDefinitionStatus,

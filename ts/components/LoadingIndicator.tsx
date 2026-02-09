@@ -3,10 +3,10 @@ import {
   LoadingSpinner,
   WithTestID
 } from '@pagopa/io-app-design-system';
-import i18next from 'i18next';
+import { t } from 'i18next';
 import { useInteractiveElementDefaultColor } from '../hooks/theme';
 
-export type LoadingIndicator = WithTestID<
+type LoadingIndicatorProps = WithTestID<
   Exclude<
     React.ComponentProps<typeof LoadingSpinner>,
     'size' | 'color' | 'duration'
@@ -17,14 +17,14 @@ export type LoadingIndicator = WithTestID<
  * Loading indicator component which renders a loading spinner with 48 size.
  */
 export const LoadingIndicator = ({
-  accessibilityHint = i18next.t('accessibility.activityIndicator.hint', {
+  accessibilityHint = t('accessibility.activityIndicator.hint', {
     ns: 'global'
   }),
-  accessibilityLabel = i18next.t('accessibility.activityIndicator.label', {
+  accessibilityLabel = t('accessibility.activityIndicator.label', {
     ns: 'global'
   }),
   testID = 'LoadingIndicator'
-}: LoadingIndicator) => {
+}: LoadingIndicatorProps) => {
   const blueColor = useInteractiveElementDefaultColor();
 
   return (
