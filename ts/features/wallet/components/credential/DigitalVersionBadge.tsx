@@ -21,6 +21,7 @@ import {
   Text,
   View
 } from 'react-native';
+import { t } from 'i18next';
 import { useAppSelector } from '../../../../store';
 import { fontPreferenceSelector } from '../../../../store/reducers/preferences';
 import { CardColorScheme } from '../../types';
@@ -163,7 +164,7 @@ const DigitalVersionBadge = ({
             )
           }}
         >
-          {`${I18n.t('credentials.digital', { ns: 'wallet' })}`}
+          {`${t('credentials.digital', { ns: 'wallet' })}`}
         </Text>
       </View>
     </View>

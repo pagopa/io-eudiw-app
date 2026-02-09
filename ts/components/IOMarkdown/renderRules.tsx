@@ -37,7 +37,7 @@ import {
   TxtStrNode,
   TxtStrongNode
 } from '@textlint/ast-node-types';
-import I18n from 'i18next';
+import { t } from 'i18next';
 import {
   ExoticComponent,
   Fragment,
@@ -150,7 +150,7 @@ export const generateAccesibilityLinkViewsIfNeeded = (
 
 export const handleOpenLink = (url: string) => {
   openWebUrl(url, () => {
-    IOToast.error(I18n.t('global.jserror.title'));
+    IOToast.error(t('generics.error.title', { ns: 'global' }));
   });
 };
 

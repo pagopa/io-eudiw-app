@@ -1,6 +1,6 @@
 import { BiometricsValidType } from '@pagopa/io-app-design-system';
 import * as LocalAuthentication from 'expo-local-authentication';
-import i18next from 'i18next';
+import { t } from 'i18next';
 import { isAndroid, isIos } from './device';
 
 /**
@@ -32,7 +32,7 @@ export const getBiometricState = async (): Promise<BiometricState> => {
 export const confirmBiometricEnabling = async () => {
   try {
     if (isIos) {
-      const promptMessage = i18next.t('biometric.popup.sensorDescription', {
+      const promptMessage = t('biometric.popup.sensorDescription', {
         ns: 'onboarding'
       });
       const res = await LocalAuthentication.authenticateAsync({
@@ -58,12 +58,12 @@ export const getBiometryDesignSystemIconName = (
 ) => {
   switch (biometricType) {
     case LocalAuthentication.AuthenticationType.FINGERPRINT:
-      return i18next.t('identification.unlockCode.accessibility.fingerprint', {
+      return t('identification.unlockCode.accessibility.fingerprint', {
         ns: 'global'
       });
     case LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION:
     case LocalAuthentication.AuthenticationType.IRIS:
-      return i18next.t('identification.unlockCode.accessibility.faceId', {
+      return t('identification.unlockCode.accessibility.faceId', {
         ns: 'global'
       });
   }
@@ -99,19 +99,16 @@ export const biometricAuthenticationRequest = async (
     const options: LocalAuthentication.LocalAuthenticationOptions = {
       disableDeviceFallback: true,
       promptMessage: isAndroid
-        ? i18next.t('identification.biometric.title', { ns: 'global' })
-        : i18next.t('identification.biometric.sensorDescription', {
+        ? t('identification.biometric.title', { ns: 'global' })
+        : t('identification.biometric.sensorDescription', {
             ns: 'global'
           }),
       ...(isAndroid
         ? {
-            cancelLabel: i18next.t('buttons.cancel', { ns: 'global' }),
-            promptDescription: i18next.t(
-              'identification.biometric.sensorDescription',
-              {
-                ns: 'global'
-              }
-            )
+            cancelLabel: t('buttons.cancel', { ns: 'global' }),
+            promptDescription: t('identification.biometric.sensorDescription', {
+              ns: 'global'
+            })
           }
         : {})
     };

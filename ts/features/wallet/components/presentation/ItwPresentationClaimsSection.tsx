@@ -7,6 +7,7 @@ import {
 import I18n from 'i18next';
 import { Fragment, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
+import { t } from 'i18next';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   itwIsClaimValueHiddenSelector,
@@ -46,7 +47,7 @@ export const ItwPresentationClaimsSection = ({
   const renderHideValuesToggle = () => (
     <View
       accessible={true}
-      accessibilityLabel={I18n.t(
+      accessibilityLabel={t(
         'presentation.credentialDetails.actions.hideClaimValues',
         {
           ns: 'wallet'
@@ -59,7 +60,7 @@ export const ItwPresentationClaimsSection = ({
         testID="toggle-claim-visibility"
         icon={valuesHidden ? 'eyeHide' : 'eyeShow'}
         onPress={handleToggleClaimVisibility}
-        accessibilityLabel={I18n.t(
+        accessibilityLabel={t(
           'presentation.credentialDetails.actions.hideClaimValues',
           {
             ns: 'wallet'
@@ -97,7 +98,7 @@ export const ItwPresentationClaimsSection = ({
               style={{ flexDirection: 'row', justifyContent: 'space-between' }}
             >
               <H6 color={theme['textHeading-tertiary']}>
-                {I18n.t('presentation.credentialDetails.documentDataTitle', {
+                {t('presentation.credentialDetails.documentDataTitle', {
                   ns: 'wallet'
                 })}
               </H6>

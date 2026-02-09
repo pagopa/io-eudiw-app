@@ -1,11 +1,7 @@
-import { BodySmall, WithTestID } from '@pagopa/io-app-design-system';
+import { BodySmall } from '@pagopa/io-app-design-system';
 import { useTranslation } from 'react-i18next';
-import { GestureResponderEvent, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { getAppVersion } from '../utils/device';
-
-export type AppVersion = WithTestID<{
-  onPress: (event: GestureResponderEvent) => void;
-}>;
 
 const styles = StyleSheet.create({
   versionButton: {
@@ -19,7 +15,7 @@ const styles = StyleSheet.create({
 /**
  * This component renders a text with the current app version, to be shown in the settings screen.
  */
-const AppVersion = () => {
+export const AppVersion = () => {
   const appVersion = getAppVersion();
   const { t } = useTranslation('global');
   const appVersionText = `${t('settings.version')} ${appVersion}`;
@@ -32,5 +28,3 @@ const AppVersion = () => {
     </View>
   );
 };
-
-export default AppVersion;

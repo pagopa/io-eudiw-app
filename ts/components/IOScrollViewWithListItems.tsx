@@ -11,7 +11,7 @@ import {
 import { View } from 'react-native';
 import { IOScrollView, IOScrollViewActions } from './IOScrollView';
 
-export type IOScrollViewWithListItems = {
+type IOScrollViewWithListItemsProps = {
   title?: string;
   subtitle?: string | Array<BodyProps>;
   renderItems: Array<ListItemInfo>;
@@ -49,7 +49,7 @@ export const IOScrollViewWithListItems = ({
   actions,
   renderItems,
   listItemHeaderLabel
-}: IOScrollViewWithListItems) => (
+}: IOScrollViewWithListItemsProps) => (
   <IOScrollView actions={actions}>
     <H2>{title}</H2>
     {subtitle && (

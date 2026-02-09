@@ -158,7 +158,7 @@ export const itwCredentialsPidExpirationSelector = createSelector(
 
 /**
  * Selects all the credentials beside the PID and transforms them
- * into {@link ItwCredentialCard}
+ * into {@link ItwCredentialCardProps}
  */
 export const selectWalletCards: (state: RootState) => Array<WalletCard> =
   createSelector(selectCredentials, credentials =>

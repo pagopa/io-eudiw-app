@@ -6,9 +6,9 @@ import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWal
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   resetInstanceCreation,
-  resetPidIssuance,
-  selectPidIssuanceError
+  resetPidIssuance
 } from '../../store/pidIssuance';
+import { selectPidIssuanceError } from '../../store/selectors/pidIssuance';
 
 /**
  * Filure screen of the pid issuance flow.

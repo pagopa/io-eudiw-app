@@ -1,5 +1,5 @@
 import { IOColors, Tag, useIOTheme } from '@pagopa/io-app-design-system';
-import I18n from 'i18next';
+import { t } from 'i18next';
 import { wellKnownCredential } from './credentials';
 import { CredentialType } from './itwMocksUtils';
 import { ItwCredentialStatus } from './itwTypesUtils';
@@ -32,28 +32,28 @@ export const useBorderColorByStatus: () => {
 export const tagPropsByStatus: { [key in ItwCredentialStatus]?: Tag } = {
   invalid: {
     variant: 'error',
-    text: I18n.t('credentials.status.invalid', { ns: 'wallet' })
+    text: t('credentials.status.invalid', { ns: 'wallet' })
   },
   expired: {
     variant: 'error',
-    text: I18n.t('credentials.status.expired', { ns: 'wallet' })
+    text: t('credentials.status.expired', { ns: 'wallet' })
   },
   jwtExpired: {
     variant: 'error',
-    text: I18n.t('credentials.status.verificationExpired', { ns: 'wallet' })
+    text: t('credentials.status.verificationExpired', { ns: 'wallet' })
   },
   expiring: {
     variant: 'warning',
-    text: I18n.t('credentials.status.expiring', { ns: 'wallet' })
+    text: t('credentials.status.expiring', { ns: 'wallet' })
   },
   jwtExpiring: {
     variant: 'warning',
-    text: I18n.t('credentials.status.verificationExpiring', { ns: 'wallet' })
+    text: t('credentials.status.verificationExpiring', { ns: 'wallet' })
   },
   unknown: {
     variant: 'custom',
     icon: { name: 'infoFilled', color: 'grey-450' },
-    text: I18n.t('credentials.status.unknown', { ns: 'wallet' })
+    text: t('credentials.status.unknown', { ns: 'wallet' })
   }
 };
 
@@ -70,16 +70,13 @@ export const itwGetCredentialNameByCredentialType = (): Record<
   string,
   string
 > => ({
-  [wellKnownCredential.DISABILITY_CARD]: I18n.t(
-    'credentials.names.disabilityCard',
-    {
-      ns: 'wallet'
-    }
-  ),
-  [wellKnownCredential.DRIVING_LICENSE]: I18n.t('credentials.names.mdl', {
+  [wellKnownCredential.DISABILITY_CARD]: t('credentials.names.disabilityCard', {
     ns: 'wallet'
   }),
-  [wellKnownCredential.PID]: I18n.t('credentials.names.pid', {
+  [wellKnownCredential.DRIVING_LICENSE]: t('credentials.names.mdl', {
+    ns: 'wallet'
+  }),
+  [wellKnownCredential.PID]: t('credentials.names.pid', {
     ns: 'wallet'
   })
 });

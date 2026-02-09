@@ -12,13 +12,9 @@ import {
 import { Out } from '@pagopa/io-react-native-wallet/lib/typescript/utils/misc';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import * as WebBrowser from 'expo-web-browser';
-import i18next from 'i18next';
+import { t } from 'i18next';
 import uuid from 'react-native-uuid';
 import { getEnv } from '../../../../ts/config/env';
-import {
-  AppListenerWithAction,
-  AppStartListening
-} from '../../../middleware/listener';
 import {
   raceEffect,
   takeLatestEffect
@@ -52,6 +48,10 @@ import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
+import {
+  AppListenerWithAction,
+  AppStartListening
+} from '@/ts/middleware/listener/types';
 
 /**
  * Helper to obtain the authorization code based on the credential type.
@@ -350,7 +350,7 @@ export const addCredentialWithAuthListener: AppListenerWithAction<
     listenerApi.dispatch(addCredential(action.payload));
     listenerApi.dispatch(resetCredentialIssuance());
     navigateWithReset('MAIN_TAB_NAV');
-    IOToast.success(i18next.t('buttons.done', { ns: 'global' }));
+    IOToast.success(t('buttons.done', { ns: 'global' }));
   } else {
     return;
   }

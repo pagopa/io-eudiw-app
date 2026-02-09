@@ -16,7 +16,7 @@ import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
 import { CardBackground } from './CardBackground';
 import { DigitalVersionBadge } from './DigitalVersionBadge';
 
-export type ItwCredentialCard = {
+export type ItwCredentialCardProps = {
   /**
    * Type of the credential, which is used to determine the
    * visual representation and styling of the card.
@@ -51,7 +51,7 @@ export const ItwCredentialCard = ({
   credentialType,
   credentialStatus = 'valid',
   isMultiCredential
-}: ItwCredentialCard) => {
+}: ItwCredentialCardProps) => {
   const typefacePreference = useAppSelector(fontPreferenceSelector);
   const status = useItwDisplayCredentialStatus(credentialStatus);
   const theme = useThemeColorByCredentialType(credentialType);

@@ -1,10 +1,10 @@
 import { Divider, ListItemHeader } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import I18n from 'i18next';
 import { useMemo, useState } from 'react';
-import { Fragment } from 'react/jsx-runtime';
 import { View } from 'react-native';
+import { Fragment } from 'react/jsx-runtime';
+import { t } from 'i18next';
 import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
 import { parseClaimsToRecord } from '../../utils/claims';
 import { WellKnownClaim } from '../../utils/itwClaimsUtils';
@@ -22,7 +22,7 @@ export const ItwPresentationPidDetail = ({ credential }: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
 
-  const listItemHeaderLabel = I18n.t('presentation.itWalletId.listItemHeader', {
+  const listItemHeaderLabel = t('presentation.itWalletId.listItemHeader', {
     ns: 'wallet'
   });
 

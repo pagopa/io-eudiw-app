@@ -3,9 +3,9 @@ import MAIN_ROUTES from '../../../../navigation/main/routes';
 import WALLET_ROUTES from '../../navigation/routes';
 import { withWalletCardBaseComponent } from '../WalletCardBaseComponent';
 import { WalletCardPressableBase } from '../WalletCardPressableBase';
-import { ItwCredentialCard } from './ItwCredentialCard';
+import { ItwCredentialCard, ItwCredentialCardProps } from './ItwCredentialCard';
 
-export type ItwCredentialWalletCardProps = ItwCredentialCard & {
+export type ItwCredentialWalletCardProps = ItwCredentialCardProps & {
   isPreview?: false; // Cards in wallet cannot be in preview mode
 };
 

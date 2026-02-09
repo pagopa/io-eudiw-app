@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import I18n from 'i18next';
 import { useEffect } from 'react';
+import { t } from 'i18next';
 import { OperationResultScreenContent } from '../../../components/screens/OperationResultScreenContent';
 import { useDisableGestureNavigation } from '../../../hooks/useDisableGestureNavigation';
 import { useHardwareBackButton } from '../../../hooks/useHardwareBackButton';
@@ -57,19 +57,19 @@ const ItwCredentialNotFound = ({
   return (
     <OperationResultScreenContent
       pictogram="cie"
-      title={I18n.t('issuance.credentialNotFound.title', { ns: 'wallet' })}
-      subtitle={I18n.t('issuance.credentialNotFound.subtitle', {
+      title={t('issuance.credentialNotFound.title', { ns: 'wallet' })}
+      subtitle={t('issuance.credentialNotFound.subtitle', {
         ns: 'wallet'
       })}
       isHeaderVisible={false}
       action={{
-        label: I18n.t('buttons.continue', { ns: 'global' }),
-        accessibilityLabel: I18n.t('buttons.continue', { ns: 'global' }),
+        label: t('buttons.continue', { ns: 'global' }),
+        accessibilityLabel: t('buttons.continue', { ns: 'global' }),
         onPress: navigateToCredential
       }}
       secondaryAction={{
-        label: I18n.t('buttons.cancel', { ns: 'global' }),
-        accessibilityLabel: I18n.t('buttons.cancel', { ns: 'global' }),
+        label: t('buttons.cancel', { ns: 'global' }),
+        accessibilityLabel: t('buttons.cancel', { ns: 'global' }),
         onPress: handleClose
       }}
     />

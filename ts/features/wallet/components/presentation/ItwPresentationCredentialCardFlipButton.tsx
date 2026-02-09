@@ -1,7 +1,7 @@
 import { IOButton } from '@pagopa/io-app-design-system';
-import I18n from 'i18next';
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { t } from 'i18next';
 
 type ItwPresentationCredentialCardFlipButtonProps = {
   isFlipped: boolean;
@@ -20,7 +20,7 @@ const ItwPresentationCredentialCardFlipButton = ({
   <View
     style={fullScreen ? styles.fullWidthButton : styles.button}
     accessible={true}
-    accessibilityLabel={I18n.t('presentation.credentialDetails.card.showBack', {
+    accessibilityLabel={t('presentation.credentialDetails.card.showBack', {
       ns: 'wallet'
     })}
     accessibilityRole="switch"
@@ -28,7 +28,7 @@ const ItwPresentationCredentialCardFlipButton = ({
   >
     <IOButton
       variant={fullScreen ? 'solid' : 'link'}
-      label={I18n.t(
+      label={t(
         `presentation.credentialDetails.card.${
           isFlipped ? 'showFront' : 'showBack'
         }`,

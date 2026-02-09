@@ -318,11 +318,3 @@ export const parseClaimsToRecord = (
       })
   );
 };
-
-export type SimpleDateFormat =
-  (typeof SimpleDateFormat)[keyof typeof SimpleDateFormat];
-
-export const SimpleDateFormat = {
-  DDMMYYYY: 'DD/MM/YYYY',
-  DDMMYY: 'DD/MM/YY'
-} as const;

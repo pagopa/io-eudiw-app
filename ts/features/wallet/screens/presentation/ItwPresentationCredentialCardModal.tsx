@@ -5,13 +5,10 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import { StackScreenProps } from '@react-navigation/stack';
-import I18n from 'i18next';
+import { t } from 'i18next';
 import { memo, useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
-import { useAppDispatch, useAppSelector } from '../../../../store';
-import { useMaxBrightness } from '../../../../utils/brightness';
 import {
   ItwSkeumorphicCard,
   SKEUMORPHIC_CARD_ASPECT_RATIO
@@ -29,6 +26,9 @@ import {
   ItwCredentialStatus,
   StoredCredential
 } from '../../utils/itwTypesUtils';
+import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
+import { useAppDispatch, useAppSelector } from '@/ts/store';
+import { useMaxBrightness } from '@/ts/utils/brightness';
 
 export type ItwPresentationCredentialCardModalNavigationParams = {
   credential: StoredCredential;
@@ -63,7 +63,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
           type="singleAction"
           firstAction={{
             icon: 'closeLarge',
-            accessibilityLabel: I18n.t('buttons.close', { ns: 'global' }),
+            accessibilityLabel: t('buttons.close', { ns: 'global' }),
             onPress: () => navigation.goBack()
           }}
         />

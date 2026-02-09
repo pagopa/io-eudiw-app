@@ -1,6 +1,6 @@
 import { useIOToast } from '@pagopa/io-app-design-system';
-import I18n from 'i18next';
 import { useCallback } from 'react';
+import { t } from 'i18next';
 
 /**
  * A hook that wraps a function to show a "feature not available" toast
@@ -13,7 +13,7 @@ export const useNotAvailableToastGuard = () => {
   const toast = useIOToast();
 
   const guardFn = useCallback(() => {
-    toast.info(I18n.t('generic.featureUnavailable.title', { ns: 'wallet' }));
+    toast.info(t('generic.featureUnavailable.title', { ns: 'wallet' }));
   }, [toast]);
 
   return () => guardFn();

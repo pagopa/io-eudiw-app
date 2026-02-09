@@ -4,8 +4,8 @@ import {
   IOAppMargin,
   VStack
 } from '@pagopa/io-app-design-system';
-import I18n from 'i18next';
 import { StyleSheet, View } from 'react-native';
+import { t } from 'i18next';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
 import { getLuminance } from '../../../../utils/color';
 import ITWalletIDImage from '../../assets/img/brand/itw_id_logo.svg';
@@ -34,7 +34,7 @@ export const ItwPresentationPidDetailHeader = () => {
           <VStack space={8} style={styles.content}>
             <ITWalletIDImage width={140} height={34} />
             <Body>
-              {I18n.t('presentation.itWalletId.description', { ns: 'wallet' })}
+              {t('presentation.itWalletId.description', { ns: 'wallet' })}
             </Body>
           </VStack>
         </ContentWrapper>

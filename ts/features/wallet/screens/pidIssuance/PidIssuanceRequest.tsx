@@ -7,11 +7,10 @@ import {
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
-import I18n from 'i18next';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import LoadingScreenContent from '../../../../components/LoadingScreenContent';
+import { LoadingScreenContent } from '../../../../components/LoadingScreenContent';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
@@ -24,7 +23,7 @@ import { addPidWithIdentification } from '../../store/credentials';
 import {
   selectPidIssuanceData,
   selectPidIssuanceStatus
-} from '../../store/pidIssuance';
+} from '../../store/selectors/pidIssuance';
 import { parseClaimsToRecord } from '../../utils/claims';
 import { StoredCredential } from '../../utils/itwTypesUtils';
 
@@ -70,16 +69,16 @@ const PidIssuanceRequest = () => {
 
   const dismissalDialog = useItwDismissalDialog({
     customLabels: {
-      title: I18n.t('discovery.screen.itw.dismissalDialog.title', {
+      title: t('discovery.screen.itw.dismissalDialog.title', {
         ns: 'wallet'
       }),
-      body: I18n.t('discovery.screen.itw.dismissalDialog.body', {
+      body: t('discovery.screen.itw.dismissalDialog.body', {
         ns: 'wallet'
       }),
-      confirmLabel: I18n.t('discovery.screen.itw.dismissalDialog.confirm', {
+      confirmLabel: t('discovery.screen.itw.dismissalDialog.confirm', {
         ns: 'wallet'
       }),
-      cancelLabel: I18n.t('discovery.screen.itw.dismissalDialog.cancel', {
+      cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel', {
         ns: 'wallet'
       })
     },
@@ -97,7 +96,7 @@ const PidIssuanceRequest = () => {
             actions: {
               type: 'SingleButton',
               primary: {
-                label: I18n.t('buttons.continue', {
+                label: t('buttons.continue', {
                   ns: 'global'
                 }),
                 onPress: () =>

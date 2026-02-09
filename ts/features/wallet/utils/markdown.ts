@@ -1,7 +1,6 @@
 import { IOToast } from '@pagopa/io-app-design-system';
 import { TxtLinkNode, TxtParagraphNode } from '@textlint/ast-node-types';
-import I18n from 'i18next';
-
+import { t } from 'i18next';
 import {
   linkNodeToReactNative,
   paragraphNodeToReactNative,
@@ -37,7 +36,7 @@ export const generateItwIOMarkdownRules = ({
         size: paragraphSize,
         onPress: () => {
           openWebUrl(link.url, () =>
-            IOToast.error(I18n.t('errors.generic', { ns: 'global' }))
+            IOToast.error(t('errors.generic', { ns: 'global' }))
           );
           linkCallback();
         }

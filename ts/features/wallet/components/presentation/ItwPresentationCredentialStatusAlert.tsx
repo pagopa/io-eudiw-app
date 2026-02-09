@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 import { Alert, IOButton, IOToast, VStack } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';

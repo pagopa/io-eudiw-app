@@ -1,8 +1,8 @@
 import { Body, IOButton, IOVisualCostants } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import I18n from 'i18next';
 import { StyleSheet, View } from 'react-native';
+import { t } from 'i18next';
 import { MainNavigatorParamsList } from '../../../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../../../navigation/main/routes';
 import ItwDeckImage from '../assets/img/brand/itw_deck_wallet.svg';
@@ -26,12 +26,12 @@ const WalletEmptyScreenContent = () => {
     >
       <ItwDeckImage width={140} height={80} />
       <Body color="grey-650" weight="Regular" style={styles.text}>
-        {I18n.t('home.screen.emptyMessage', { ns: 'wallet' })}
+        {t('home.screen.emptyMessage', { ns: 'wallet' })}
       </Body>
       <IOButton
         fullWidth
         variant="solid"
-        label={I18n.t('home.screen.cta', { ns: 'wallet' })}
+        label={t('home.screen.cta', { ns: 'wallet' })}
         onPress={handleAddToWalletButtonPress}
       />
       <PoweredByItWalletText />

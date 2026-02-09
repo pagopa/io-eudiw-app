@@ -6,9 +6,9 @@ import { StyleSheet, View, ViewStyle } from 'react-native';
 import {
   ClaimScheme,
   claimType,
-  ParsedClaimsRecord,
-  SimpleDateFormat
+  ParsedClaimsRecord
 } from '../../../utils/claims';
+import { SimpleDateFormat } from '../../../utils/itwClaimsUtils';
 import {
   Either,
   PercentPosition,
