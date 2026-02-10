@@ -1,12 +1,12 @@
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback, useMemo, useRef } from 'react';
 import {
   preventScreenCaptureAsync,
   allowScreenCaptureAsync
 } from 'expo-screen-capture';
+import { useCallback, useMemo, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { selectIsDebugModeEnabled } from '../store/reducers/debug';
 import { useAppSelector } from '../store';
+import { selectIsDebugModeEnabled } from '../store/reducers/debug';
 
 const activeTags: Set<string> = new Set();
 

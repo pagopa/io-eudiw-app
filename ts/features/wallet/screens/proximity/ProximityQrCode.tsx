@@ -1,7 +1,3 @@
-import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
-import { View } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
 import {
   Body,
   ContentWrapper,
@@ -11,6 +7,14 @@ import {
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
+import { LoadingIndicator } from '../../../../components/LoadingIndicator';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
@@ -23,10 +27,6 @@ import {
   selectProximityStatus,
   setProximityStatusStopped
 } from '../../store/proximity';
-import { LoadingIndicator } from '../../../../components/LoadingIndicator';
-import { useDebugInfo } from '../../../../hooks/useDebugInfo';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 
 /**
  * Shows the QR code for the proximity presentation.

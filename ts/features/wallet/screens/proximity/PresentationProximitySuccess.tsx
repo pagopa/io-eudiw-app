@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { OperationResultScreenContent } from '../../../../components/screens/OperationResultScreenContent';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
@@ -9,7 +10,6 @@ import {
   selectProximityErrorDetails,
   selectProximityStatus
 } from '../../store/proximity';
-import { useDebugInfo } from '../../../../hooks/useDebugInfo';
 
 const PresentationProximitySuccess = () => {
   const { t } = useTranslation('wallet');

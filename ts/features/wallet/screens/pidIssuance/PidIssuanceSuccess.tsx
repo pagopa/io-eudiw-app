@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { OperationResultScreenContent } from '../../../../components/screens/OperationResultScreenContent';
-import { resetPidIssuance } from '../../store/pidIssuance';
-import { useAppDispatch } from '../../../../store';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch } from '../../../../store';
+import { resetPidIssuance } from '../../store/pidIssuance';
 
 /**
  * Success screen for the PID issuance flow.

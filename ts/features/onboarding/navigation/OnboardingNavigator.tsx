@@ -1,13 +1,13 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { OnboardingCarousel } from '../screens/OnboardingCarousel';
-import OnboardingStart from '../screens/OnboardingStart';
 import {
   PinCreation,
   PinCreationProps
 } from '../../../screens/pin/PinCreation';
 import OnboardingBiometricAvailable from '../screens/OnboardingBiometricAvailable';
-import OnboardingBiometricNotEnrolled from '../screens/OnboardingBiometricNotEnrolled';
 import OnboardingBiometricNoScreenLock from '../screens/OnboardingBiometricNoScreenLock';
+import OnboardingBiometricNotEnrolled from '../screens/OnboardingBiometricNotEnrolled';
+import { OnboardingCarousel } from '../screens/OnboardingCarousel';
+import OnboardingStart from '../screens/OnboardingStart';
 import ONBOARDING_ROUTES from './routes';
 
 /**

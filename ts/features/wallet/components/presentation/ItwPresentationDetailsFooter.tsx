@@ -1,7 +1,7 @@
 import { ListItemAction } from '@pagopa/io-app-design-system';
+import { t } from 'i18next';
 import { memo } from 'react';
 import { View } from 'react-native';
-import { t } from 'i18next';
 import { useItwRemoveCredentialWithConfirm } from '../../hooks/useItwRemoveCredentialWithConfirm';
 import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
 import { StoredCredential } from '../../utils/itwTypesUtils';
