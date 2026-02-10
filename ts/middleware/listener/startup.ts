@@ -23,7 +23,8 @@ import {
   StartupState
 } from '../../store/reducers/startup';
 import { getBiometricState } from '../../utils/biometric';
-import { AppListener, AppListenerWithAction, startAppListening } from './index';
+import { AppListener, AppListenerWithAction } from './types';
+import { startAppListening } from '.';
 
 /**
  * Utility function to wait for the navigation to be ready before dispatching a navigation event.

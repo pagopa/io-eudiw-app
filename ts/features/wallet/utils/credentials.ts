@@ -1,4 +1,4 @@
-import i18next from 'i18next';
+import { t } from 'i18next';
 import { ItwCredentialStatus, ItwJwtCredentialStatus } from '../types';
 
 export type CredentialsKeys = 'DRIVING_LICENSE' | 'PID' | 'DISABILITY_CARD';
@@ -47,13 +47,13 @@ export const wellKnownCredentialNamespaces: Partial<
 export const getCredentialNameByType = (type?: string): string => {
   switch (type) {
     case wellKnownCredential.DRIVING_LICENSE:
-      return i18next.t(['wallet:credentials.names.mdl']);
+      return t(['wallet:credentials.names.mdl']);
     case wellKnownCredential.PID:
-      return i18next.t(['wallet:credentials.names.pid']);
+      return t(['wallet:credentials.names.pid']);
     case wellKnownCredential.DISABILITY_CARD:
-      return i18next.t(['wallet:credentials.names.disabilityCard']);
+      return t(['wallet:credentials.names.disabilityCard']);
     default:
-      return i18next.t(['wallet:credentials.names.unknown']);
+      return t(['wallet:credentials.names.unknown']);
   }
 };
 

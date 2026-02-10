@@ -20,10 +20,10 @@ import {
   Text,
   View
 } from 'react-native';
-import I18n from 'i18next';
-import { CardColorScheme } from '../../types';
+import { t } from 'i18next';
 import { useAppSelector } from '../../../../store';
 import { fontPreferenceSelector } from '../../../../store/reducers/preferences';
+import { CardColorScheme } from '../../types';
 
 type DigitalVersionBadgeProps = {
   credentialType: string;
@@ -159,7 +159,7 @@ const DigitalVersionBadge = ({
             )
           }}
         >
-          {`${I18n.t('credentials.digital', { ns: 'wallet' })}`}
+          {`${t('credentials.digital', { ns: 'wallet' })}`}
         </Text>
       </View>
     </View>

@@ -1,8 +1,8 @@
-import { ColorValue, View } from 'react-native';
 import { AnimatedIcon, IONavIcons } from '@pagopa/io-app-design-system';
 import { memo } from 'react';
+import { ColorValue, View } from 'react-native';
 
-type TabIconComponent = {
+type TabIconComponentProps = {
   focused: boolean;
   iconName: IONavIcons;
   iconNameFocused: IONavIcons;
@@ -17,7 +17,7 @@ type TabIconComponent = {
  * @param color - The color of the icon
  */
 export const TabIconComponent = memo(
-  ({ focused, iconName, iconNameFocused, color }: TabIconComponent) => (
+  ({ focused, iconName, iconNameFocused, color }: TabIconComponentProps) => (
     // accessibilityLabel={""} in order to read the font icon, without modify the library element
     <View accessibilityLabel={''}>
       <AnimatedIcon

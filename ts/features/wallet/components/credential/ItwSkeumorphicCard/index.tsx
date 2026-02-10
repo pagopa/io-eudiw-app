@@ -2,7 +2,7 @@ import { IOColors, Tag } from '@pagopa/io-app-design-system';
 import { ReactNode, useMemo, useState } from 'react';
 
 import { Canvas } from '@shopify/react-native-skia';
-import I18n from 'i18next';
+import { t } from 'i18next';
 import {
   AccessibilityProps,
   LayoutChangeEvent,
@@ -93,7 +93,7 @@ export const ItwSkeumorphicCard = ({
         accessible: true,
         accessibilityLabel: `${getCredentialNameFromType(
           credential.credentialType
-        )}, ${I18n.t(
+        )}, ${t(
           isFlipped
             ? 'presentation.credentialDetails.card.back'
             : 'presentation.credentialDetails.card.front',
