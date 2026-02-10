@@ -48,10 +48,6 @@ const getColorPropsByScheme = (
       foreground: '#01527F',
       background: '#E8EEF4'
     },
-    'eu.europa.ec.eudi.hiid.1': {
-      foreground: '#032D5C',
-      background: '#ABD8F2'
-    },
     education_degree: {
       foreground: '#403C36',
       background: ['#ECECEC', '#F2F1CE']
