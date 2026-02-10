@@ -1,4 +1,8 @@
 import { Body } from '@pagopa/io-app-design-system';
+import { useNavigation } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LoadingScreenContent } from '../../../../components/LoadingScreenContent';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
@@ -11,6 +15,7 @@ import {
   setPreDefinitionRequest
 } from '../../store/presentation';
 import { wellKnownCredential } from '../../utils/credentials';
+import { useHeaderSecondLevel } from '@/ts/hooks/useHeaderSecondLevel';
 
 export type PresentationPreDefinitionParams = {
   client_id: string;

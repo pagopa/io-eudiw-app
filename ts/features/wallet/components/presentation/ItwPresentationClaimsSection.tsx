@@ -4,7 +4,7 @@ import {
   IconButton,
   useIOTheme
 } from '@pagopa/io-app-design-system';
-import I18n, { t } from 'i18next';
+import { t } from 'i18next';
 import { Fragment, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../../../../store';

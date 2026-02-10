@@ -17,6 +17,7 @@ import { IOScrollViewWithLargeHeader } from '../components/IOScrollViewWithLarge
 import { FONT_PERSISTENCE_KEY } from '../context/DSTypeFaceContext';
 import { resetLifecycle } from '../features/wallet/store/lifecycle';
 import { useHeaderSecondLevel } from '../hooks/useHeaderSecondLevel';
+import { useAppDispatch, useAppSelector } from '../store';
 import {
   selectIsDebugModeEnabled,
   setDebugModeEnabled
@@ -26,7 +27,6 @@ import {
   preferencesReset,
   TypefaceChoice
 } from '../store/reducers/preferences';
-import { useAppDispatch, useAppSelector } from '../store';
 
 type TestButtonsListItem = Pick<
   ComponentProps<typeof IOButton>,
