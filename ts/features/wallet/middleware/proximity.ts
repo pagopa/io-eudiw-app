@@ -1,6 +1,7 @@
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import { serializeError } from 'serialize-error';
+import { EmitterSubscription } from 'react-native';
 import { takeLatestEffect } from '../../../middleware/listener/effects';
 import {
   AppListener,
@@ -47,7 +48,18 @@ const {
   start
 } = ISO18013_5;
 
-const removeProximityListeners = async (listenerApi: AppListener) => {
+const removeProximityListeners = async (
+  listeners: Array<EmitterSubscription>
+) => {
+  return () => listeners.forEach(listener => listener.remove());
+};
+
+/**
+ * Listener that handles the state of a proximity presentation
+ */
+const proximityListener: AppListenerWithAction<
+  ReturnType<typeof setProximityStatusStarted>
+> = async (_, listenerApi) => {
   const listeners = [
     addListener('onDeviceConnecting', () => {}),
     addListener('onDeviceConnected', () => {
@@ -77,15 +89,6 @@ const removeProximityListeners = async (listenerApi: AppListener) => {
     })
   ];
 
-  return () => listeners.forEach(listener => listener.remove());
-};
-
-/**
- * Listener that handles the state of a proximity presentation
- */
-const proximityListener: AppListenerWithAction<
-  ReturnType<typeof setProximityStatusStarted>
-> = async (_, listenerApi) => {
   try {
     // First thing, we request BLE permissions and we setup the proximity handler
     const permissions = await requestBlePermissions();
@@ -122,6 +125,8 @@ const proximityListener: AppListenerWithAction<
       // cancel branch
       cancelHandler(listenerApi)
     ]);
+
+    await removeProximityListeners(listeners);
   } catch (error) {
     // Ignore if the task was aborted
     if (error instanceof TaskAbortError) {
@@ -129,9 +134,7 @@ const proximityListener: AppListenerWithAction<
     }
     listenerApi.dispatch(setProximityStatusError(`${serializeError(error)}`));
     await closeFlow(listenerApi); // We can ignore this error in this particular case as we don't even know if the flow started successfully.
-    await removeProximityListeners(listenerApi);
-  } finally {
-    await removeProximityListeners(listenerApi);
+    await removeProximityListeners(listeners);
   }
 };
 
