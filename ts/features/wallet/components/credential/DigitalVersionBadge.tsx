@@ -12,7 +12,7 @@ import {
   vec
 } from '@shopify/react-native-skia';
 import Color from 'color';
-import I18n, { t } from 'i18next';
+import { t } from 'i18next';
 import { memo, useState } from 'react';
 import {
   LayoutChangeEvent,

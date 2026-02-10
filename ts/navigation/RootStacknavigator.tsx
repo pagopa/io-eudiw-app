@@ -15,12 +15,12 @@ import OnboardingNavigator, {
   OnboardingNavigatorParamsList
 } from '../features/onboarding/navigation/OnboardingNavigator';
 import { WalletNavigatorParamsList } from '../features/wallet/navigation/WalletNavigator';
-import { useAppDispatch, useAppSelector } from '../store';
 import { setUrl } from '../store/reducers/deeplinking';
 import {
   selectStartupState,
   startupSetLoading
 } from '../store/reducers/startup';
+import { useAppDispatch, useAppSelector } from '../store';
 import { PRESENTATION_INTERNAL_LINKS } from './deepLinkSchemas';
 import MainStackNavigator, {
   MainNavigatorParamsList
