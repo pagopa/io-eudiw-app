@@ -1,6 +1,6 @@
 import { Alert } from '@pagopa/io-app-design-system';
-import { memo } from 'react';
 import { t } from 'i18next';
+import { memo } from 'react';
 import { useAppSelector } from '../../../../store';
 import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
 import { wellKnownCredential } from '../../utils/credentials';

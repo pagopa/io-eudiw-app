@@ -5,9 +5,9 @@ import {
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useHeaderSecondLevel } from '../../../hooks/useHeaderSecondLevel';
 

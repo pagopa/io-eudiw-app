@@ -7,8 +7,8 @@ import {
 } from '@pagopa/io-app-design-system';
 import _ from 'lodash';
 import { Pressable, StyleSheet } from 'react-native';
-import { selectDebugData } from '../../store/reducers/debug';
 import { useAppSelector } from '../../store';
+import { selectDebugData } from '../../store/reducers/debug';
 
 type DebugDataIndicatorProps = {
   onPress: () => void;

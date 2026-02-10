@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useEffect } from 'react';
+import { MainNavigatorParamsList } from '../../../navigation/main/MainStackNavigator';
 import { useAppSelector } from '../../../store';
 import { selectCredentialIssuancePreAuthStatus } from '../store/credentialIssuance';
 import { lifecycleIsOperationalSelector } from '../store/lifecycle';
-import { MainNavigatorParamsList } from '../../../navigation/main/MainStackNavigator';
 
 /**
  * Hook that listens through the {@link useEffect} hook for credential issuance

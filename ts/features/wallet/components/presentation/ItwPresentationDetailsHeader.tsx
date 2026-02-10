@@ -5,17 +5,17 @@ import {
 } from '@pagopa/io-app-design-system';
 import { memo, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
-import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
 import { useAppSelector } from '../../../../store';
 import { lifecycleIsValidSelector } from '../../store/lifecycle';
+import { ParsedClaimsRecord } from '../../utils/claims';
 import {
   wellKnownCredential,
   WellKnownCredentialTypes
 } from '../../utils/credentials';
+import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
+import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
 import { StoredCredential } from '../../utils/itwTypesUtils';
-import { ParsedClaimsRecord } from '../../utils/claims';
 import { ItwPresentationCredentialCard } from './ItwPresentationCredentialCard';
 
 type ItwPresentationDetailsHeaderProps = {
