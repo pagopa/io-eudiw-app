@@ -18,12 +18,6 @@ export const getThemeColorByCredentialType = (
         textColor: '#652035',
         statusBarStyle: 'light-content'
       };
-    case wellKnownCredential.HEALTHID:
-      return {
-        backgroundColor: '#295699',
-        textColor: '#652035',
-        statusBarStyle: 'light-content'
-      };
     case wellKnownCredential.PID:
     default:
       return {

@@ -19,7 +19,6 @@ export type CredentialL3Key = keyof typeof ItwStoredCredentialsMocks.L3;
  * Credential types mocks.
  */
 export enum CredentialType {
-  EUROPEAN_HEALTH_INSURANCE_CARD = 'EuropeanHealthInsuranceCard',
   EUROPEAN_DISABILITY_CARD = 'EuropeanDisabilityCard',
   DRIVING_LICENSE = 'mDL',
   PID = 'PersonIdentificationData',
