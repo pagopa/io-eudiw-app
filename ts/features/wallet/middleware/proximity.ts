@@ -47,6 +47,39 @@ const {
   start
 } = ISO18013_5;
 
+const removeProximityListeners = async (listenerApi: AppListener) => {
+  const listeners = [
+    addListener('onDeviceConnecting', () => {}),
+    addListener('onDeviceConnected', () => {
+      listenerApi.dispatch(setProximityStatusConnected());
+    }),
+    addListener('onDocumentRequestReceived', payload => {
+      // A new request has been received
+      if (!payload || !payload.data) {
+        listenerApi.dispatch(
+          setProximityStatusError('Bad document request received')
+        );
+        return;
+      }
+
+      // Parse and verify the received request with the exposed function
+      const parsedJson = JSON.parse(payload.data);
+      const parsedRequest = parseVerifierRequest(parsedJson);
+      listenerApi.dispatch(setProximityStatusReceivedDocument(parsedRequest));
+    }),
+    addListener('onDeviceDisconnected', () => {
+      listenerApi.dispatch(setProximityStatusStopped());
+    }),
+    addListener('onError', payload => {
+      listenerApi.dispatch(
+        setProximityStatusError(payload?.error ?? 'Unknown internal error')
+      );
+    })
+  ];
+
+  return () => listeners.forEach(listener => listener.remove());
+};
+
 /**
  * Listener that handles the state of a proximity presentation
  */
@@ -66,37 +99,6 @@ const proximityListener: AppListenerWithAction<
     const certificates = verifierCertificates.map(cert => cert.certificate);
     await start({
       certificates: [certificates]
-    });
-
-    addListener('onDeviceConnecting', () => {});
-
-    addListener('onDeviceConnected', () => {
-      listenerApi.dispatch(setProximityStatusConnected());
-    });
-
-    addListener('onDocumentRequestReceived', payload => {
-      // A new request has been received
-      if (!payload || !payload.data) {
-        listenerApi.dispatch(
-          setProximityStatusError('Bad document request received')
-        );
-        return;
-      }
-
-      // Parse and verify the received request with the exposed function
-      const parsedJson = JSON.parse(payload.data);
-      const parsedRequest = parseVerifierRequest(parsedJson);
-      listenerApi.dispatch(setProximityStatusReceivedDocument(parsedRequest));
-    });
-
-    addListener('onDeviceDisconnected', () => {
-      listenerApi.dispatch(setProximityStatusStopped());
-    });
-
-    addListener('onError', payload => {
-      listenerApi.dispatch(
-        setProximityStatusError(payload?.error ?? 'Unknown internal error')
-      );
     });
 
     // Set QR Code
@@ -127,6 +129,9 @@ const proximityListener: AppListenerWithAction<
     }
     listenerApi.dispatch(setProximityStatusError(`${serializeError(error)}`));
     await closeFlow(listenerApi); // We can ignore this error in this particular case as we don't even know if the flow started successfully.
+    await removeProximityListeners(listenerApi);
+  } finally {
+    await removeProximityListeners(listenerApi);
   }
 };
 
