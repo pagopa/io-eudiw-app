@@ -71,18 +71,13 @@
   },
   "identification": {
     "title": {
-      "validation": "Authorise the operation.",
-      "access": "Hi!"
+      "validation": "Conferma l'operazione inserendo il tuo codice di sblocco",
+      "access": "Ciao!"
     },
     "forgot": {
-      "title": "Did you forget the the unlock code?",
-      "confirmTitle": "Did you forget the unlock code?",
-      "confirmMsg": "To be able to choose a new unlock code you will need to log in again.",
-      "confirmMsgWithTask": "To be able to choose a new unlock code you will need to cancel the current procedure and log in again."
-    },
-    "error": {
-      "deviceLocked": "Authentication was not successful, the device currently in a lockout of 30 seconds",
-      "DeviceLockedPermanent": "Authentication was not successful, device must be unlocked via password"
+      "title": "Hai dimenticato il codice di sblocco?",
+      "confirmMsg": "Per poter scegliere un nuovo codice di sblocco dovrai accedere nuovamente.",
+      "confirmMsgWithTask": "Per poter scegliere un nuovo codice di sblocco dovrai annullare l'operazione corrente e accedere nuovamente."
     },
     "unlockCode": {
       "accessibility": {
