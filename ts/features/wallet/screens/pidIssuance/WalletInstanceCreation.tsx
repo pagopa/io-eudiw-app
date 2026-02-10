@@ -13,6 +13,7 @@ import {
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
+import { t } from 'i18next';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
@@ -21,7 +22,6 @@ import Animated, {
   useScrollViewOffset,
   useSharedValue
 } from 'react-native-reanimated';
-import { t } from 'i18next';
 import { AnimatedImage } from '../../../../components/AnimatedImage';
 import IOMarkdown from '../../../../components/IOMarkdown';
 import { IOScrollViewWithReveal } from '../../../../components/IOScrollViewWithReveal';
@@ -35,9 +35,9 @@ import Feature4Image from '../../assets/img/discovery/feature_4.svg';
 import Feature5Image from '../../assets/img/discovery/feature_5.svg';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { createInstanceThunk } from '../../middleware/instance';
-import { generateItwIOMarkdownRules } from '../../utils/markdown';
-import { selectInstanceStatus } from '../../store/selectors/pidIssuance';
 import { resetInstanceCreation } from '../../store/pidIssuance';
+import { selectInstanceStatus } from '../../store/selectors/pidIssuance';
+import { generateItwIOMarkdownRules } from '../../utils/markdown';
 import { useAppDispatch, useAppSelector } from '@/ts/store';
 
 // Offset to avoid to scroll to the block without margins

@@ -1,12 +1,12 @@
-import { View, StyleSheet } from 'react-native';
 import {
   H4,
   IconButton,
   IOColors,
   IOVisualCostants
 } from '@pagopa/io-app-design-system';
-import { useTranslation } from 'react-i18next';
 import { createRef, isValidElement } from 'react';
+import { useTranslation } from 'react-i18next';
+import { View, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   bottomSheetHeader: {

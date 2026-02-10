@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useEffect } from 'react';
 import { t } from 'i18next';
+import { useEffect } from 'react';
 import { OperationResultScreenContent } from '../../../components/screens/OperationResultScreenContent';
 import { useDisableGestureNavigation } from '../../../hooks/useDisableGestureNavigation';
 import { useHardwareBackButton } from '../../../hooks/useHardwareBackButton';

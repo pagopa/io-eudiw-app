@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import { Alert } from 'react-native';
 import { t } from 'i18next';
+import { Alert } from 'react-native';
 import { useHardwareBackButton } from '../../../hooks/useHardwareBackButton';
 
 type ItwDismissalDialogProps = {

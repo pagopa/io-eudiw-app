@@ -1,17 +1,17 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { PersistPartial } from 'redux-persist/es/persistReducer';
-import { lifecycleReducer, LifecycleState } from './lifecycle';
 import { attestationReducer, AttestationState } from './attestation';
-import { instanceReducer, InstanceState } from './instance';
-import {
-  pidIssuanceStatusReducer,
-  PidIssuanceStatusState
-} from './pidIssuance';
-import { credentialsReducer, CredentialsState } from './credentials';
 import {
   credentialIssuanceStatusReducer,
   CredentialIssuanceStatusState
 } from './credentialIssuance';
+import { credentialsReducer, CredentialsState } from './credentials';
+import { instanceReducer, InstanceState } from './instance';
+import { lifecycleReducer, LifecycleState } from './lifecycle';
+import {
+  pidIssuanceStatusReducer,
+  PidIssuanceStatusState
+} from './pidIssuance';
 import { PresentationState, presentationReducer } from './presentation';
 import { proximityReducer, ProximityState } from './proximity';
 

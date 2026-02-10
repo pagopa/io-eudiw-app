@@ -1,7 +1,7 @@
 import { IOButton } from '@pagopa/io-app-design-system';
+import { t } from 'i18next';
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { t } from 'i18next';
 
 type ItwPresentationCredentialCardFlipButtonProps = {
   isFlipped: boolean;

@@ -5,12 +5,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { RootState } from '../../../../store/types';
-import {
-  itwCredentialsPidSelector,
-  itwCredentialsPidStatusSelector,
-  selectCredentials
-} from '../credentials';
-import { lifecycleIsValidSelector } from '../lifecycle';
 import { wellKnownCredential } from '../../utils/credentials';
 import {
   getFamilyNameFromCredential,
@@ -18,6 +12,12 @@ import {
   getFiscalCodeFromCredential
 } from '../../utils/itwClaimsUtils';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
+import {
+  itwCredentialsPidSelector,
+  itwCredentialsPidStatusSelector,
+  selectCredentials
+} from '../credentials';
+import { lifecycleIsValidSelector } from '../lifecycle';
 
 /**
  * Returns the credentials object from the itw credentials state, excluding the PID credential.

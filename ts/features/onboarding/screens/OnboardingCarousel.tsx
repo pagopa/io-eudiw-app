@@ -1,10 +1,3 @@
-import { ComponentProps, useCallback, useMemo, useRef, useState } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  useWindowDimensions,
-  View
-} from 'react-native';
 import {
   FooterActions,
   IOButton,
@@ -12,12 +5,19 @@ import {
   IOVisualCostants
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ComponentProps, useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  ScrollView,
+  StyleSheet,
+  useWindowDimensions,
+  View
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Carousel } from '../../../components/Carousel';
+import FocusAwareStatusBar from '../../../components/FocusAwareStatusBar';
 import { LandingCardComponent } from '../../../components/LandingCardComponent';
 import { useAppBackgroundAccentColorName } from '../../../hooks/theme';
-import FocusAwareStatusBar from '../../../components/FocusAwareStatusBar';
 
 const TEXT_COLOR = 'white';
 
