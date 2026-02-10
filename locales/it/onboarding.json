@@ -25,7 +25,7 @@
     },
     "policy": {
       "title": "Come scegliere il codice?",
-      "description": "Il codice di sblocco è composto da 6 cifre e ti servirà per accedere a IO e autorizzare alcune operazioni in app.",
+      "description": "Il codice di sblocco è composto da 6 cifre e ti servirà per accedere a IO e autorizzare alcune operazioni in app."
     },
     "errors": {
       "invalid": {
