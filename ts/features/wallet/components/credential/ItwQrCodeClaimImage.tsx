@@ -1,6 +1,6 @@
 import { Appearance, StyleSheet, View } from 'react-native';
-import { QrCodeImage } from '../QrCodeImage';
 import { ParsedClaimsRecord } from '../../utils/claims';
+import { QrCodeImage } from '../QrCodeImage';
 
 type ItwQrCodeClaimImageProps = {
   claim: ParsedClaimsRecord[string];

@@ -1,6 +1,5 @@
 import { memo } from 'react';
 import { View } from 'react-native';
-import { IOMarkdownRenderRules } from './types';
 import {
   convertReferenceLinksToInline,
   getRenderMarkdown,
@@ -8,6 +7,7 @@ import {
   sanitizeMarkdownForImages
 } from './markdownRenderer';
 import { DEFAULT_RULES } from './renderRules';
+import { IOMarkdownRenderRules } from './types';
 
 type UnsafeProps = Omit<IOMarkdownProps, 'onError'>;
 

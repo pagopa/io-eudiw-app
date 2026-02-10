@@ -1,8 +1,8 @@
 import { ListItemAction, useIOToast } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
+import { t } from 'i18next';
 import { memo } from 'react';
 import { Alert, View } from 'react-native';
-import { t } from 'i18next';
 import { useAppDispatch } from '../../../../store';
 import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
 import { resetLifecycle } from '../../store/lifecycle';

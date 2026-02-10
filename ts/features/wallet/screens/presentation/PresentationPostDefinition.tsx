@@ -1,6 +1,3 @@
-import { useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
 import {
   FeatureInfo,
   FooterActions,
@@ -11,22 +8,25 @@ import {
   IOVisualCostants,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import { Alert, StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Alert, StyleSheet, View } from 'react-native';
+import IOMarkdown from '../../../../components/IOMarkdown';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch, useAppSelector } from '../../../../store';
+import CredentialTypePresentationClaimsList from '../../components/presentation/CredentialTypePresentationClaimsList';
+import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import {
   Descriptor,
   selectPostDefinitionStatus,
   setPostDefinitionCancel,
   setPostDefinitionRequest
 } from '../../store/presentation';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
-import CredentialTypePresentationClaimsList from '../../components/presentation/CredentialTypePresentationClaimsList';
-import IOMarkdown from '../../../../components/IOMarkdown';
 /**
  * Description which contains the requested of the credential to be presented.
  */

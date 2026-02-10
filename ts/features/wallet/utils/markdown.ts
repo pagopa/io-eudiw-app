@@ -1,6 +1,5 @@
 import { IOToast } from '@pagopa/io-app-design-system';
 import { TxtLinkNode, TxtParagraphNode } from '@textlint/ast-node-types';
-
 import { t } from 'i18next';
 import {
   linkNodeToReactNative,

@@ -1,8 +1,7 @@
 import { IOColors, Tag } from '@pagopa/io-app-design-system';
-import { ReactNode, useMemo, useState } from 'react';
-
 import { Canvas } from '@shopify/react-native-skia';
 import { t } from 'i18next';
+import { ReactNode, useMemo, useState } from 'react';
 import {
   AccessibilityProps,
   LayoutChangeEvent,

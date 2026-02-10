@@ -1,17 +1,17 @@
-import { useTranslation } from 'react-i18next';
 import { useIOToast } from '@pagopa/io-app-design-system';
+import { useTranslation } from 'react-i18next';
 import {
   OperationResultScreenContent,
   OperationResultScreenContentProps
 } from '../../../../components/screens/OperationResultScreenContent';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch, useAppSelector } from '../../../../store';
+import { openWebUrl } from '../../../../utils/url';
 import {
   resetPresentation,
   selectPostDefinitionResult
 } from '../../store/presentation';
-import { useDebugInfo } from '../../../../hooks/useDebugInfo';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
-import { openWebUrl } from '../../../../utils/url';
 
 /**
  * Screen to be shown when the presentation of the credential is successful.

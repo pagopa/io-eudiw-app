@@ -3,30 +3,30 @@ import {
   ListItemHeader,
   VStack
 } from '@pagopa/io-app-design-system';
-import { useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch, useAppSelector } from '../../../../store';
+import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
 import { IOScrollViewWithLargeHeader } from '../../../../components/IOScrollViewWithLargeHeader';
-import {
-  CredentialsKeys,
-  wellKnownCredential,
-  wellKnownCredentialConfigurationIDs
-} from '../../utils/credentials';
-import { OnboardingModuleCredential } from '../../components/credential/OnboardingModuleCredential';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { selectCredentials } from '../../store/credentials';
+import MAIN_ROUTES from '../../../../navigation/main/routes';
+import { useAppDispatch, useAppSelector } from '../../../../store';
+import { OnboardingModuleCredential } from '../../components/credential/OnboardingModuleCredential';
+import { useCredentialIssuanceNavigationListeners } from '../../hooks/useCredentialIssuanceNavigationListeners';
+import WALLET_ROUTES from '../../navigation/routes';
 import {
   resetCredentialIssuance,
   selectRequestedCredential,
   setCredentialIssuancePreAuthRequest
 } from '../../store/credentialIssuance';
+import { selectCredentials } from '../../store/credentials';
 import { lifecycleIsOperationalSelector } from '../../store/lifecycle';
 import { setPendingCredential } from '../../store/pidIssuance';
-import MAIN_ROUTES from '../../../../navigation/main/routes';
-import WALLET_ROUTES from '../../navigation/routes';
-import { useCredentialIssuanceNavigationListeners } from '../../hooks/useCredentialIssuanceNavigationListeners';
+import {
+  CredentialsKeys,
+  wellKnownCredential,
+  wellKnownCredentialConfigurationIDs
+} from '../../utils/credentials';
 
 /**
  * The list of the obtainable credentias.

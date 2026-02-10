@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
 import {
   AnimatedCheckbox,
   Divider,
@@ -8,13 +6,15 @@ import {
   ListItemHeader
 } from '@pagopa/io-app-design-system';
 import _ from 'lodash';
+import { Dispatch, SetStateAction, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import { ClaimsSelector } from '../../../../components/ClaimsSelector';
+import { claimScheme, ClaimScheme } from '../../utils/claims';
 import { getCredentialNameByType } from '../../utils/credentials';
+import { ParsedCredential } from '../../utils/itwTypesUtils';
 import { getClaimsFullLocale } from '../../utils/locale';
 import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
-import { ClaimsSelector } from '../../../../components/ClaimsSelector';
-import { ParsedCredential } from '../../utils/itwTypesUtils';
-import { claimScheme, ClaimScheme } from '../../utils/claims';
 
 /**
  * This is the type definition for the accepted fields that will be presented to the verifier app.

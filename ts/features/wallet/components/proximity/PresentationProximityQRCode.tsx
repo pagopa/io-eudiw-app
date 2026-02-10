@@ -1,9 +1,9 @@
-import { useEffect, memo } from 'react';
-import { View } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
-import { useTranslation } from 'react-i18next';
 import { Body, H6, VSpacer, VStack } from '@pagopa/io-app-design-system';
 import { NavigationProp, NavigationState } from '@react-navigation/native';
+import { useEffect, memo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
 import { LoadingIndicator } from '../../../../components/LoadingIndicator';
 import { useAppSelector } from '../../../../store';
 import {
