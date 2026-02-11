@@ -1,20 +1,20 @@
-import { ComponentProps, memo } from 'react';
-import { View } from 'react-native';
 import {
   ClaimsSelector,
   ListItemHeader,
   VStack,
   useIOTheme
 } from '@pagopa/io-app-design-system';
-import { useTranslation } from 'react-i18next';
 import { addPadding } from '@pagopa/io-react-native-jwt';
-import { ClaimDisplayFormat } from '../../utils/itwRemotePresentationUtils';
+import { ComponentProps, memo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
 import { getSafeText } from '../../../../utils/string';
-import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import {
   getClaimDisplayValue,
   WellKnownClaim
 } from '../../utils/itwClaimsUtils';
+import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
+import { ClaimDisplayFormat } from '../../utils/itwRemotePresentationUtils';
 
 /**
  * Maps claims to the format required by the ClaimsSelector component.

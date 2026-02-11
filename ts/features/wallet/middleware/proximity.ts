@@ -1,7 +1,7 @@
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
-import { serializeError } from 'serialize-error';
 import { EmitterSubscription } from 'react-native';
+import { serializeError } from 'serialize-error';
 import { takeLatestEffect } from '../../../middleware/listener/effects';
 import {
   AppListener,
