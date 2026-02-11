@@ -223,8 +223,6 @@ const credentialTypesByVct: { [vct: string]: CredentialType } = {
   [wellKnownCredential.PID]: CredentialType.PID,
   [wellKnownCredential.DRIVING_LICENSE]: CredentialType.DRIVING_LICENSE,
   [wellKnownCredential.DISABILITY_CARD]: CredentialType.EUROPEAN_DISABILITY_CARD
-  // The following mappings are currently not used as the related credentials are not yet supported in the wallet, but they will be needed in the future when those credentials will be added
-  // [wellKnownCredential.HEALTHID]: CredentialType.EUROPEAN_HEALTH_INSURANCE_CARd
 };
 
 /**
