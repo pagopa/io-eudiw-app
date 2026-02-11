@@ -12,6 +12,7 @@ import {
   vec
 } from '@shopify/react-native-skia';
 import Color from 'color';
+import { t } from 'i18next';
 import { memo, useState } from 'react';
 import {
   LayoutChangeEvent,
@@ -20,7 +21,6 @@ import {
   Text,
   View
 } from 'react-native';
-import { t } from 'i18next';
 import { useAppSelector } from '../../../../store';
 import { fontPreferenceSelector } from '../../../../store/reducers/preferences';
 import { CardColorScheme } from '../../types';
@@ -47,10 +47,6 @@ const getColorPropsByScheme = (
     'urn:eu.europa.ec.eudi:edc:1': {
       foreground: '#01527F',
       background: '#E8EEF4'
-    },
-    'eu.europa.ec.eudi.hiid.1': {
-      foreground: '#032D5C',
-      background: '#ABD8F2'
     },
     education_degree: {
       foreground: '#403C36',

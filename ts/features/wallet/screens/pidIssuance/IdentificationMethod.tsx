@@ -6,8 +6,8 @@ import {
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
-import { View } from 'react-native';
 import { t } from 'i18next';
+import { View } from 'react-native';
 import { IOScrollViewWithLargeHeader } from '../../../../components/IOScrollViewWithLargeHeader';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 

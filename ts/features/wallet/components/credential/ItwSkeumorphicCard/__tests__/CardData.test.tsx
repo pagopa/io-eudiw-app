@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react-native';
-import { CardData } from '../CardData';
-import { ItwStoredCredentialsMocks } from '../../../../utils/itwMocksUtils';
 import { parseClaimsToRecord } from '../../../../utils/claims';
+import { ItwStoredCredentialsMocks } from '../../../../utils/itwMocksUtils';
+import { CardData } from '../CardData';
 
 jest.mock('@shopify/react-native-skia', () => ({
   Skia: {

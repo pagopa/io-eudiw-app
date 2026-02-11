@@ -4,8 +4,8 @@ import {
   IOAppMargin,
   VStack
 } from '@pagopa/io-app-design-system';
-import { StyleSheet, View } from 'react-native';
 import { t } from 'i18next';
+import { StyleSheet, View } from 'react-native';
 import FocusAwareStatusBar from '../../../../components/FocusAwareStatusBar';
 import { getLuminance } from '../../../../utils/color';
 import ITWalletIDImage from '../../assets/img/brand/itw_id_logo.svg';

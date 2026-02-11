@@ -1,8 +1,8 @@
 import { format as dateFnsFormat } from 'date-fns';
-import I18n from 'i18next';
 import dfns_de from 'date-fns/locale/de';
 import dfns_en from 'date-fns/locale/en';
 import dfns_it from 'date-fns/locale/it';
+import I18n from 'i18next';
 import { getLocalePrimary, Locales } from './locale';
 
 type DateFnsLocale = typeof import('date-fns/locale/it');

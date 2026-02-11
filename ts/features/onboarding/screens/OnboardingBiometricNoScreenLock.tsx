@@ -1,10 +1,10 @@
 import { ListItemInfo } from '@pagopa/io-app-design-system';
 import { useMemo } from 'react';
-import { Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { Platform } from 'react-native';
+import { IOScrollViewWithListItems } from '../../../components/IOScrollViewWithListItems';
 import { useHeaderSecondLevel } from '../../../hooks/useHeaderSecondLevel';
 import { useAppDispatch } from '../../../store';
-import { IOScrollViewWithListItems } from '../../../components/IOScrollViewWithListItems';
 import { preferencesSetIsOnboardingDone } from '../../../store/reducers/preferences';
 
 /**

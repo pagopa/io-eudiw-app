@@ -1,6 +1,3 @@
-import { ComponentProps, useEffect, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
 import {
   ClaimsSelector,
   FeatureInfo,
@@ -14,9 +11,14 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import { Alert, StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { useAppDispatch, useAppSelector } from '../../../../store';
+import { ComponentProps, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Alert, StyleSheet, View } from 'react-native';
+import { getSafeText } from '../../../../utils/string';
+import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import {
   Descriptor,
   selectPostDefinitionStatus,
@@ -25,21 +27,19 @@ import {
   setPostDefinitionCancel,
   setPostDefinitionRequest
 } from '../../store/presentation';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
-import IOMarkdown from '../../../../components/IOMarkdown';
-import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import { getClaimDisplayValue } from '../../utils/itwClaimsUtils';
+import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import {
   ClaimDisplayFormat,
   groupCredentialsByPurpose
 } from '../../utils/itwRemotePresentationUtils';
-import { getClaimDisplayValue } from '../../utils/itwClaimsUtils';
-import { getSafeText } from '../../../../utils/string';
-import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { EnrichedPresentationDetails } from '../../utils/itwTypesUtils';
+import IOMarkdown from '@/ts/components/IOMarkdown';
+import { useDisableGestureNavigation } from '@/ts/hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '@/ts/hooks/useHardwareBackButton';
+import { useHeaderSecondLevel } from '@/ts/hooks/useHeaderSecondLevel';
+import { useNavigateToWalletWithReset } from '@/ts/hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '@/ts/store';
 /**
  * Description which contains the requested of the credential to be presented.
  */

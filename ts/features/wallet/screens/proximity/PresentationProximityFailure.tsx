@@ -1,16 +1,16 @@
-import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
+import { useTranslation } from 'react-i18next';
 import { OperationResultScreenContent } from '../../../../components/screens/OperationResultScreenContent';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch, useAppSelector } from '../../../../store';
+import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import {
   resetProximity,
   selectProximityDocumentRequest,
   selectProximityErrorDetails,
   selectProximityStatus
 } from '../../store/proximity';
-import { useDebugInfo } from '../../../../hooks/useDebugInfo';
-import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 
 export type PresentationProximityFailureProps = {
   fatal: boolean;

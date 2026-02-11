@@ -1,6 +1,6 @@
 import { useIOToast } from '@pagopa/io-app-design-system';
-import { useCallback } from 'react';
 import { t } from 'i18next';
+import { useCallback } from 'react';
 
 /**
  * A hook that wraps a function to show a "feature not available" toast

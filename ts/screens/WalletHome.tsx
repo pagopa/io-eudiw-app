@@ -2,13 +2,13 @@ import {
   HeaderActionProps,
   HeaderFirstLevel
 } from '@pagopa/io-app-design-system';
-import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useMemo } from 'react';
-import { WalletCardsContainer } from '../features/wallet/components/WalletCardsContainer';
+import { useTranslation } from 'react-i18next';
 import { IOScrollView } from '../components/IOScrollView';
-import MAIN_ROUTES from '../navigation/main/routes';
+import { WalletCardsContainer } from '../features/wallet/components/WalletCardsContainer';
 import WALLET_ROUTES from '../features/wallet/navigation/routes';
+import MAIN_ROUTES from '../navigation/main/routes';
 
 /**
  * Wallet home to be rendered as the first page in the tab navigator.

@@ -104,6 +104,5 @@ const credentialCardBackgrounds: {
 } = {
   [wellKnownCredential.PID]: require('../../assets/img/cards/pid.png'),
   [wellKnownCredential.DRIVING_LICENSE]: require('../../assets/img/cards/mdl.png'),
-  [wellKnownCredential.HEALTHID]: require('../../assets/img/cards/healthID.png'),
   [wellKnownCredential.DISABILITY_CARD]: require('../../assets/img/cards/disabilityCard.png')
 };
