@@ -355,19 +355,24 @@ export const getClaimDisplayValue = (
       case 'verificationEvidence':
         return {
           type: 'text',
-          value: t('features.itWallet.generic.placeholders.evidenceAvailable')
+          value: parsed.value.organization_name
         };
 
       default:
         return {
           type: 'text',
-          value: t('features.itWallet.generic.placeholders.claimNotAvailable')
+          value: t(
+            'verifiableCredentials.generic.placeholders.claimNotAvailable',
+            { ns: 'wallet' }
+          )
         };
     }
   } catch (error) {
     return {
       type: 'text',
-      value: t('features.itWallet.generic.placeholders.error')
+      value: t('verifiableCredentials.generic.placeholders.claimNotAvailable', {
+        ns: 'wallet'
+      })
     };
   }
 };
