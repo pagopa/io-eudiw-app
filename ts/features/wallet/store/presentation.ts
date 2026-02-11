@@ -10,8 +10,8 @@ import {
   setSuccess
 } from '../../../store/utils/asyncStatus';
 import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
-import { EnrichedPresentationDetails } from '../utils/itwTypesUtils';
 import { FederationEntity } from '../types';
+import { EnrichedPresentationDetails } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 
 /**
