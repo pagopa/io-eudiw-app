@@ -18,6 +18,8 @@ import { useDisableGestureNavigation } from '../../../../hooks/useDisableGesture
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch, useAppSelector } from '../../../../store';
+import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import { ItwRequestedClaimsList } from '../../components/presentation/ItwRequiredClaimsList';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import {
   resetCredentialIssuance,
@@ -26,16 +28,14 @@ import {
   setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
 import { selectCredential } from '../../store/credentials';
+import { parseClaims } from '../../utils/claims';
 import {
   getCredentialNameByType,
   wellKnownCredential
 } from '../../utils/credentials';
-import { ItwRequestedClaimsList } from '../../components/presentation/ItwRequiredClaimsList';
-import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
-import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
-import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { WellKnownClaim } from '../../utils/itwClaimsUtils';
-import { parseClaims } from '../../utils/claims';
+import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
+import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
 
 /**
  * Screen which shows the user the credentials and claims that will be shared with the credential issuer

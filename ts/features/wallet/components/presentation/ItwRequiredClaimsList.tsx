@@ -7,11 +7,11 @@ import {
   useIOTheme,
   HStack
 } from '@pagopa/io-app-design-system';
-import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import { getSafeText, isStringNullyOrEmpty } from '../../../../utils/string';
 import { getClaimDisplayValue } from '../../utils/itwClaimsUtils';
 import { ClaimDisplayFormat } from '../../utils/itwRemotePresentationUtils';
-import { getSafeText, isStringNullyOrEmpty } from '../../../../utils/string';
 import { DisclosureClaim } from '../../utils/itwTypesUtils';
 
 type ItwRequiredClaimsListProps = {
