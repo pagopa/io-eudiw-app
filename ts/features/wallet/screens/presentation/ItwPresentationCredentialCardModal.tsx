@@ -63,7 +63,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
           type="singleAction"
           firstAction={{
             icon: 'closeLarge',
-            accessibilityLabel: t('global.buttons.close'),
+            accessibilityLabel: t('buttons.close', { ns: 'global' }),
             onPress: () => navigation.goBack()
           }}
         />
