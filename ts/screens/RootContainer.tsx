@@ -1,8 +1,8 @@
-import { StatusBar } from 'react-native';
 import { IOColors } from '@pagopa/io-app-design-system';
+import { StatusBar } from 'react-native';
+import DebugInfoOverlay from '../components/debug/DebugInfoOverlay';
 import { RootStackNavigator } from '../navigation/RootStacknavigator';
 import { useAppSelector } from '../store';
-import DebugInfoOverlay from '../components/debug/DebugInfoOverlay';
 import { selectIsDebugModeEnabled } from '../store/reducers/debug';
 
 /**

@@ -6,14 +6,14 @@ import {
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
-import I18n from 'i18next';
+import { t } from 'i18next';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
 import { OperationResultScreenContent } from '../../../../components/screens/OperationResultScreenContent';
 import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
 import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
 import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../../../../navigation/main/routes';
 import { RootStackParamList } from '../../../../navigation/RootStacknavigator';
@@ -75,24 +75,24 @@ export const ItwPresentationCredentialDetailScreen = ({ route }: Props) => {
 
     return (
       <OperationResultScreenContent
-        title={I18n.t(`${ns}.itWallet.title`, { ns: 'wallet' })}
+        title={t(`${ns}.itWallet.title`, { ns: 'wallet' })}
         subtitle={[
-          { text: I18n.t(`${ns}.itWallet.body`, { ns: 'wallet' }) },
+          { text: t(`${ns}.itWallet.body`, { ns: 'wallet' }) },
           {
-            text: I18n.t(`${ns}.itWallet.bodyBold`, { ns: 'wallet' }),
+            text: t(`${ns}.itWallet.bodyBold`, { ns: 'wallet' }),
             weight: 'Semibold'
           }
         ]}
         pictogram="itWallet"
         action={{
-          label: I18n.t(`${ns}.primaryAction`, { ns: 'wallet' }),
+          label: t(`${ns}.primaryAction`, { ns: 'wallet' }),
           onPress: () =>
             navigation.replace(MAIN_ROUTES.WALLET_NAV, {
               screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
             })
         }}
         secondaryAction={{
-          label: I18n.t(`${ns}.secondaryAction`, { ns: 'wallet' }),
+          label: t(`${ns}.secondaryAction`, { ns: 'wallet' }),
           onPress: () => navigation.popToTop()
         }}
       />
@@ -175,7 +175,7 @@ export const ItwPresentationCredentialDetail = ({
 
     if (credentialType === wellKnownCredential.DRIVING_LICENSE) {
       return {
-        label: I18n.t('presentation.ctas.showQRCode', { ns: 'wallet' }),
+        label: t('presentation.ctas.showQRCode', { ns: 'wallet' }),
         icon: 'qrCode',
         iconPosition: 'end',
         loading: false,
@@ -187,7 +187,7 @@ export const ItwPresentationCredentialDetail = ({
     }
 
     return undefined;
-  }, [credential, QrCodeModal, dispatch]);
+  }, [credential.credentialType, t, dispatch, QrCodeModal]);
 
   const parsedClaims = useMemo(
     () => parseClaimsToRecord(credential.parsedCredential),

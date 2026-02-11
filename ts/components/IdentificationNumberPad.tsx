@@ -5,10 +5,10 @@ import {
   NumberPad,
   VSpacer
 } from '@pagopa/io-app-design-system';
+import { NumberButton } from '@pagopa/io-app-design-system/lib/typescript/components/numberpad/NumberButton';
+import { t } from 'i18next';
 import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import i18next from 'i18next';
-import { NumberButton } from '@pagopa/io-app-design-system/lib/typescript/components/numberpad/NumberButton';
 import { isDevEnv } from '../utils/env';
 
 const PIN_LENGTH = 6;
@@ -117,7 +117,7 @@ export const IdentificationNumberPad = (
       <VSpacer size={48} />
       <View>
         <NumberPad
-          deleteAccessibilityLabel={i18next.t('buttons.delete', {
+          deleteAccessibilityLabel={t('buttons.delete', {
             ns: 'global'
           })}
           onDeletePress={onDeletePress}

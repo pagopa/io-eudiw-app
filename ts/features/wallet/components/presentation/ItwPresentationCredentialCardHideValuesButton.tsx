@@ -1,7 +1,7 @@
 import { IOButton } from '@pagopa/io-app-design-system';
+import { t } from 'i18next';
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import I18n from 'i18next';
 
 type ItwPresentationCredentialCardHideValuesButtonProps = {
   valuesHidden: boolean;
@@ -18,18 +18,15 @@ const ItwPresentationCredentialCardHideValuesButton = ({
   <View
     style={styles.button}
     accessible={true}
-    accessibilityLabel={I18n.t(
-      'presentation.credentialDetails.card.showValues',
-      {
-        ns: 'wallet'
-      }
-    )}
+    accessibilityLabel={t('presentation.credentialDetails.card.showValues', {
+      ns: 'wallet'
+    })}
     accessibilityRole="switch"
     accessibilityState={{ checked: !valuesHidden }}
   >
     <IOButton
       variant="link"
-      label={I18n.t(
+      label={t(
         `presentation.credentialDetails.card.${
           valuesHidden ? 'showValues' : 'hideValues'
         }`,

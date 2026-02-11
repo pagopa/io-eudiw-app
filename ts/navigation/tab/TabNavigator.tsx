@@ -1,11 +1,11 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { IOColors, makeFontStyleObject } from '@pagopa/io-app-design-system';
-import { useTranslation } from 'react-i18next';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { TabIconComponent } from '../../components/TabIconComponent';
+import { setProximityStatusStarted } from '../../features/wallet/store/proximity';
 import WalletHome from '../../screens/WalletHome';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { setProximityStatusStarted } from '../../features/wallet/store/proximity';
 import { fontPreferenceSelector } from '../../store/reducers/preferences';
 import TAB_ROUTES from './routes';
 

@@ -3,22 +3,22 @@ import { Canvas } from '@shopify/react-native-skia';
 import { useWindowDimensions } from 'react-native';
 import { useAppSelector } from '../../../../store';
 import {
+  ItwBrandedSkiaGradient,
+  ItwSkiaBrandedGradientVariant
+} from '../../components/ItwBrandedSkiaGradient';
+import { PoweredByItWalletText } from '../../components/PoweredByItWalletText';
+import { ItwPresentationDetailsScreenBase } from '../../components/presentation/ItwPresentationDetailsScreenBase';
+import { ItwPresentationPidDetail } from '../../components/presentation/ItwPresentationPidDetail';
+import { ItwPresentationPidDetailFooter } from '../../components/presentation/ItwPresentationPidDetailFooter';
+import { ItwPresentationPidDetailHeader } from '../../components/presentation/ItwPresentationPidDetailHeader';
+import {
   itwCredentialsPidSelector,
   itwCredentialsPidStatusSelector
 } from '../../store/credentials';
-import { ItwPresentationDetailsScreenBase } from '../../components/presentation/ItwPresentationDetailsScreenBase';
-import { ItwPresentationPidDetailHeader } from '../../components/presentation/ItwPresentationPidDetailHeader';
-import { ItwPresentationPidDetail } from '../../components/presentation/ItwPresentationPidDetail';
-import { ItwPresentationPidDetailFooter } from '../../components/presentation/ItwPresentationPidDetailFooter';
-import { PoweredByItWalletText } from '../../components/PoweredByItWalletText';
 import {
   ItwJwtCredentialStatus,
   StoredCredential
 } from '../../utils/itwTypesUtils';
-import {
-  ItwBrandedSkiaGradient,
-  ItwSkiaBrandedGradientVariant
-} from '../../components/ItwBrandedSkiaGradient';
 
 export const ItwPresentationPidDetailScreen = () => {
   const pidOption = useAppSelector(itwCredentialsPidSelector);

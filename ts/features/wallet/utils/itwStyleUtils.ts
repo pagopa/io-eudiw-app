@@ -1,9 +1,9 @@
-import { StatusBarStyle } from 'react-native';
 import { useMemo } from 'react';
+import { StatusBarStyle } from 'react-native';
 import { HeaderSecondLevelHookProps } from '../../../hooks/useHeaderSecondLevel';
 import { getLuminance } from '../../../utils/color';
-import { useItWalletTheme } from './theme';
 import { getCredentialNameByType, wellKnownCredential } from './credentials';
+import { useItWalletTheme } from './theme';
 
 export type CredentialTheme = {
   backgroundColor: string;
@@ -34,11 +34,6 @@ export const useThemeColorByCredentialType = (
             ? theme['header-background']
             : '#744C63',
           textColor: withL3Design ? '#032D5C' : '#652035'
-        };
-      case wellKnownCredential.HEALTHID:
-        return {
-          backgroundColor: '#B3DCF9',
-          textColor: '#032D5C'
         };
       case wellKnownCredential.DISABILITY_CARD:
         return {

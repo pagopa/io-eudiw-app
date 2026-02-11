@@ -1,6 +1,3 @@
-import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
 import {
   Body,
   ForceScrollDownView,
@@ -9,24 +6,26 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
+import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import I18n from 'i18next';
+import { LoadingScreenContent } from '../../../../components/LoadingScreenContent';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch, useAppSelector } from '../../../../store';
+import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
+import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
+import { obtainPidThunk } from '../../middleware/pid';
+import { addPidWithIdentification } from '../../store/credentials';
 import {
   selectPidIssuanceData,
   selectPidIssuanceStatus
-} from '../../store/pidIssuance';
-import LoadingScreenContent from '../../../../components/LoadingScreenContent';
-import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
-import { addPidWithIdentification } from '../../store/credentials';
-import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
-import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
-import { obtainPidThunk } from '../../middleware/pid';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+} from '../../store/selectors/pidIssuance';
 import { parseClaimsToRecord } from '../../utils/claims';
+import { StoredCredential } from '../../utils/itwTypesUtils';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -70,16 +69,16 @@ const PidIssuanceRequest = () => {
 
   const dismissalDialog = useItwDismissalDialog({
     customLabels: {
-      title: I18n.t('discovery.screen.itw.dismissalDialog.title', {
+      title: t('discovery.screen.itw.dismissalDialog.title', {
         ns: 'wallet'
       }),
-      body: I18n.t('discovery.screen.itw.dismissalDialog.body', {
+      body: t('discovery.screen.itw.dismissalDialog.body', {
         ns: 'wallet'
       }),
-      confirmLabel: I18n.t('discovery.screen.itw.dismissalDialog.confirm', {
+      confirmLabel: t('discovery.screen.itw.dismissalDialog.confirm', {
         ns: 'wallet'
       }),
-      cancelLabel: I18n.t('discovery.screen.itw.dismissalDialog.cancel', {
+      cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel', {
         ns: 'wallet'
       })
     },
@@ -97,7 +96,7 @@ const PidIssuanceRequest = () => {
             actions: {
               type: 'SingleButton',
               primary: {
-                label: I18n.t('buttons.continue', {
+                label: t('buttons.continue', {
                   ns: 'global'
                 }),
                 onPress: () =>

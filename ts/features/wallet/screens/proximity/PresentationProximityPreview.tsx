@@ -1,7 +1,3 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Alert, View, StyleSheet } from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { useTranslation } from 'react-i18next';
 import {
   Body,
   FeatureInfo,
@@ -16,6 +12,19 @@ import {
 } from '@pagopa/io-app-design-system';
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { useNavigation } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Alert, View, StyleSheet } from 'react-native';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../../../store';
+import { selectIsDebugModeEnabled } from '../../../../store/reducers/debug';
+import CredentialTypePresentationClaimsList from '../../components/presentation/CredentialTypePresentationClaimsList';
+import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import {
   ProximityDisclosure,
   ProximityStatus,
@@ -26,15 +35,6 @@ import {
   setProximityStatusAuthorizationRejected,
   setProximityStatusAuthorizationSend
 } from '../../store/proximity';
-import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { useAppDispatch, useAppSelector } from '../../../../store';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
-import { useDebugInfo } from '../../../../hooks/useDebugInfo';
-import { selectIsDebugModeEnabled } from '../../../../store/reducers/debug';
-import CredentialTypePresentationClaimsList from '../../components/presentation/CredentialTypePresentationClaimsList';
 
 export type PresentationProximityPreviewProps = ProximityDisclosure;
 

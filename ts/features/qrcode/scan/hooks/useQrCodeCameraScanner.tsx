@@ -1,10 +1,10 @@
 import { IOColors, LoadingSpinner } from '@pagopa/io-app-design-system';
 
+import { BarcodeScanningResult, CameraView } from 'expo-camera';
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
-import { BarcodeScanningResult, CameraView } from 'expo-camera';
 import { AnimatedCameraMarker } from '../components/AnimatedCameraMarker';
 import { OnBarcodeSuccess } from '../screens/QrCodeScanScreen';
 

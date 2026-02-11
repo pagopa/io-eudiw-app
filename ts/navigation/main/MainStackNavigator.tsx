@@ -1,12 +1,12 @@
-import { createStackNavigator } from '@react-navigation/stack';
 import { NavigatorScreenParams } from '@react-navigation/native';
-import { TabNavigator } from '../tab/TabNavigator';
+import { createStackNavigator } from '@react-navigation/stack';
+import QrCodeScanScreen from '../../features/qrcode/scan/screens/QrCodeScanScreen';
 import WalletNavigator, {
   WalletNavigatorParamsList
 } from '../../features/wallet/navigation/WalletNavigator';
-import Settings from '../../screens/Settings';
-import QrCodeScanScreen from '../../features/qrcode/scan/screens/QrCodeScanScreen';
 import ProximityQrCode from '../../features/wallet/screens/proximity/ProximityQrCode';
+import Settings from '../../screens/Settings';
+import { TabNavigator } from '../tab/TabNavigator';
 import MAIN_ROUTES from './routes';
 /**
  * Screen parameters for the main navigator.

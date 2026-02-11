@@ -1,5 +1,5 @@
-import { selectIsDebugModeEnabled } from '../../store/reducers/debug';
 import { useAppSelector } from '../../store';
+import { selectIsDebugModeEnabled } from '../../store/reducers/debug';
 
 /**
  * This HOC allows to render the wrapped component only if the debug mode is enabled, otherwise returns null (nothing)
