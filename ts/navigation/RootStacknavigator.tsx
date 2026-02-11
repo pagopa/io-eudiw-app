@@ -138,7 +138,6 @@ export const RootStackNavigator = () => {
       /**
        * If the app was opened by a deep link, get the initial URL and set it in the store.
        * We know for sure that this can't be handled because the navigation which can handle it isn't mounted yet.
-       * Filter out expo-development-client as this causes a false navigation deep link when using expo.
        */
       const url = await Linking.getInitialURL();
       if (url) {
