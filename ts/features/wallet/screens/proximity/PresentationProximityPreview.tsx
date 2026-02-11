@@ -1,7 +1,3 @@
-import { useEffect } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { useTranslation } from 'react-i18next';
 import {
   FeatureInfo,
   FooterActions,
@@ -13,6 +9,21 @@ import {
   Alert as AlertDs
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { View, StyleSheet, Alert } from 'react-native';
+
+import IOMarkdown from '../../../../components/IOMarkdown';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../../../store';
+import { selectIsDebugModeEnabled } from '../../../../store/reducers/debug';
+import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import {
   ProximityDisclosure,
   ProximityStatus,
@@ -23,17 +34,7 @@ import {
   setProximityStatusAuthorizationRejected,
   setProximityStatusAuthorizationSend
 } from '../../store/proximity';
-import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { useAppDispatch, useAppSelector } from '../../../../store';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
-import { useDebugInfo } from '../../../../hooks/useDebugInfo';
-import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
-import IOMarkdown from '../../../../components/IOMarkdown';
 import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
-import { selectIsDebugModeEnabled } from '../../../../store/reducers/debug';
 import { ItwProximityPresentationDetails } from './ItwProximityPresentationDetails';
 
 export type PresentationProximityPreviewProps = ProximityDisclosure;

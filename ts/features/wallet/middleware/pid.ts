@@ -24,11 +24,11 @@ import WALLET_ROUTES from '../navigation/routes';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
 import { addCredential, addPidWithIdentification } from '../store/credentials';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
+import { selectPendingCredential } from '../store/selectors/pidIssuance';
 import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 import { DPOP_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
 import { StoredCredential } from '../utils/itwTypesUtils';
-import { selectPendingCredential } from '../store/selectors/pidIssuance';
 import { getAttestationThunk } from './attestation';
 import {
   AppListenerWithAction,

@@ -1,18 +1,18 @@
 import { ElementType, Fragment, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
-  CredentialsKeys,
-  wellKnownCredential,
-  wellKnownCredentialNamespaces
-} from '../../../utils/credentials';
-import { QrCodeImage } from '../../QrCodeImage';
-import {
   claimType,
   DrivingPrivilegesClaimType,
   ParsedClaimsRecord
 } from '../../../utils/claims';
-import { StoredCredential } from '../../../utils/itwTypesUtils';
+import {
+  CredentialsKeys,
+  wellKnownCredential,
+  wellKnownCredentialNamespaces
+} from '../../../utils/credentials';
 import { format } from '../../../utils/dates';
+import { StoredCredential } from '../../../utils/itwTypesUtils';
+import { QrCodeImage } from '../../QrCodeImage';
 import {
   CardClaim,
   CardClaimContainer,

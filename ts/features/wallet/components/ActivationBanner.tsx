@@ -1,6 +1,6 @@
-import { GestureResponderEvent } from 'react-native';
 import { Banner, VSpacer } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
+import { GestureResponderEvent } from 'react-native';
 /**
  * Common props for the component which are always required.
  */

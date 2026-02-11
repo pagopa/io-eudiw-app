@@ -1,10 +1,10 @@
 import { generate, getPublicKey, sign } from '@pagopa/io-react-native-crypto';
-import uuid from 'react-native-uuid';
 import {
   fixBase64EncodingOnKey,
   type IntegrityContext
 } from '@pagopa/io-react-native-wallet';
 import { encode } from 'js-base64';
+import uuid from 'react-native-uuid';
 
 /**
  * Type returned by the getHardwareSignatureWithAuthData function of {@link IntegrityContext}.

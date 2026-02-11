@@ -1,14 +1,14 @@
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch, useAppSelector } from '../../../../store';
 import { OperationResultScreenContent } from '../../../../components/screens/OperationResultScreenContent';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
 import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthError,
   selectCredentialIssuancePreAuthError
 } from '../../store/credentialIssuance';
-import { useDebugInfo } from '../../../../hooks/useDebugInfo';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Filure screen of the credential issuance flow.

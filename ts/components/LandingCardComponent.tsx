@@ -3,12 +3,6 @@
  */
 
 import {
-  View,
-  ScrollView,
-  useWindowDimensions,
-  StyleSheet
-} from 'react-native';
-import {
   Body,
   H3,
   IOColors,
@@ -18,6 +12,12 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import { forwardRef } from 'react';
+import {
+  View,
+  ScrollView,
+  useWindowDimensions,
+  StyleSheet
+} from 'react-native';
 
 type Props = {
   id: number;

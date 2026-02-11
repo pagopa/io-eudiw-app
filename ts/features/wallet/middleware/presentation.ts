@@ -1,10 +1,18 @@
+import { CryptoContext } from '@pagopa/io-react-native-jwt';
 import {
   createCryptoContextFor,
   Credential
 } from '@pagopa/io-react-native-wallet';
-import { serializeError } from 'serialize-error';
-import { CryptoContext } from '@pagopa/io-react-native-jwt';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+import { serializeError } from 'serialize-error';
+import { takeLatestEffect } from '../../../middleware/listener/effects';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '../../../store/reducers/identification';
+import { CredentialTypePresentationClaimsListDescriptor } from '../components/presentation/CredentialTypePresentationClaimsList';
+import { selectCredentials } from '../store/credentials';
 import {
   resetPresentation,
   selectOptionalCredentials,
@@ -16,21 +24,14 @@ import {
   setPreDefinitionRequest,
   setPreDefinitionSuccess
 } from '../store/presentation';
-import { selectCredentials } from '../store/credentials';
-import {
-  AppListenerWithAction,
-  AppStartListening
-} from '../../../middleware/listener/types';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../../store/reducers/identification';
-import { takeLatestEffect } from '../../../middleware/listener/effects';
 import {
   enrichPresentationDetails,
   getInvalidCredentials
 } from '../utils/itwClaimsUtils';
+import {
+  AppListenerWithAction,
+  AppStartListening
+} from '@/ts/middleware/listener/types';
 
 type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 

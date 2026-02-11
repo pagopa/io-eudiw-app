@@ -1,10 +1,10 @@
 import { VSpacer } from '@pagopa/io-app-design-system';
 import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
-import { useIOBottomSheetModal } from '../../../hooks/useBottomSheet';
 import IOMarkdown from '../../../components/IOMarkdown';
+import { useIOBottomSheetModal } from '../../../hooks/useBottomSheet';
 
 /**
  * Bottom sheet which contains the PIN policy for the app.

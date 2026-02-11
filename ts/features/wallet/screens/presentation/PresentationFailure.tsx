@@ -1,15 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch, useAppSelector } from '../../../../store';
 import { OperationResultScreenContent } from '../../../../components/screens/OperationResultScreenContent';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
 import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import {
   resetPresentation,
   selectPostDefinitionStatus,
   selectPreDefinitionStatus
 } from '../../store/presentation';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Filure screen of the presentation flow.

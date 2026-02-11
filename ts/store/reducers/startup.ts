@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../types';
 import { BiometricState } from '../../utils/biometric';
+import { RootState } from '../types';
 import { preferencesReset } from './preferences';
 
 /* State type definition for the startup slice

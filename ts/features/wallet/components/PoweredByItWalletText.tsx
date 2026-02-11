@@ -1,6 +1,6 @@
 import { BodySmall } from '@pagopa/io-app-design-system';
-import { StyleSheet, View } from 'react-native';
 import { t } from 'i18next';
+import { StyleSheet, View } from 'react-native';
 import ITWalletLogoImage from '../assets/img/brand/itw_logo.svg';
 
 export const PoweredByItWalletText = () => (
