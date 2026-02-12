@@ -40,6 +40,7 @@
         "android.permission.BLUETOOTH_ADMIN",
         "android.permission.ACCESS_FINE_LOCATION"
       ],
+      "blockedPermissions": ["android.permission.READ_EXTERNAL_STORAGE"], 
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "intentFilters": [
@@ -152,7 +153,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "The app accesses your photos to scan QR codes."
+          "photosPermission": "The app accesses your photos to scan QR codes.",
+          "microphonePermission": false
         }
       ],
       [
