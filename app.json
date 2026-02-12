@@ -5,7 +5,7 @@
     "version": "2.5.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "userInterfaceStyle": "automatic",
+  "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": false,
@@ -40,6 +40,9 @@
         "android.permission.BLUETOOTH_ADMIN",
         "android.permission.ACCESS_FINE_LOCATION"
       ],
+      // This blocked permission is required because Google Play Store has a policy that requires apps to justify it however our app doesn't need it.
+      // This will be fixed in SDK 55.
+      "blockedPermissions": ["android.permission.READ_EXTERNAL_STORAGE"], 
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "intentFilters": [
@@ -152,7 +155,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "The app accesses your photos to scan QR codes."
+          "photosPermission": "The app accesses your photos to scan QR codes.",
+          "microphonePermission": false
         }
       ],
       [
