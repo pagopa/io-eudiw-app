@@ -5,7 +5,6 @@ import {
   Credential
 } from '@pagopa/io-react-native-wallet';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
-import * as WebBrowser from 'expo-web-browser';
 import { t } from 'i18next';
 import uuid from 'react-native-uuid';
 import { getEnv } from '../../../../ts/config/env';
@@ -21,7 +20,6 @@ import {
 } from '../../../store/reducers/identification';
 import { selectSessionId } from '../../../store/reducers/preferences';
 import { regenerateCryptoKey } from '../../../utils/crypto';
-import { isAndroid } from '../../../utils/device';
 import {
   resetCredentialIssuance,
   selectRequestedCredential,
@@ -40,13 +38,16 @@ import {
 import { wellKnownCredential } from '../utils/credentials';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
+import {
+  enrichPresentationDetails,
+  getInvalidCredentials
+} from '../utils/itwClaimsUtils';
+import { DcqlQuery } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 import {
   AppListenerWithAction,
   AppStartListening
 } from '@/ts/middleware/listener/types';
-import { enrichPresentationDetails, getInvalidCredentials } from '../utils/itwClaimsUtils';
-import { DcqlQuery } from '../utils/itwTypesUtils';
 
 /**
  * Function which handles the issuance of a credential.
@@ -59,16 +60,6 @@ const obtainCredentialListener: AppListenerWithAction<
   ReturnType<typeof setCredentialIssuancePreAuthRequest>
 > = async (_, listenerApi) => {
   try {
-    // On Android check if there is a browser to open the authentication session and then warm it up
-    if (isAndroid) {
-      const { browserPackages } =
-        await WebBrowser.getCustomTabsSupportingBrowsersAsync();
-      if (browserPackages.length === 0) {
-        throw new Error('No browser found to open the authentication session');
-      }
-      await WebBrowser.warmUpAsync();
-    }
-
     const {
       EXPO_PUBLIC_EAA_PROVIDER_BASE_URL,
       EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri,
@@ -143,7 +134,7 @@ const obtainCredentialListener: AppListenerWithAction<
     }
 
     if (!pid || !pid.credential || !pid.keyTag) {
-      throw new Error('PID required for disability card issuance but missing.');
+      throw new Error('PID required for EAA issuance but missing.');
     }
 
     const requestObject =

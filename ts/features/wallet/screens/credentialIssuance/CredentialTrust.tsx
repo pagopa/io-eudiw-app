@@ -28,9 +28,7 @@ import {
   selectRequestedCredentialType,
   setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
-import {
-  getCredentialNameByType,
-} from '../../utils/credentials';
+import { getCredentialNameByType } from '../../utils/credentials';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
 
