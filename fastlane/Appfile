@@ -1,0 +1,10 @@
+# Android
+json_key_file("/tmp/json-key.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+package_name("it.pagopa.io.app.poc.eudiw") # e.g. com.krausefx.app
+
+# iOS
+app_identifier("it.pagopa.app.io.poc.eudiw") # The bundle identifier of your app
+team_id("M2X5YQ4BJ7") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile

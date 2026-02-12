@@ -183,7 +183,7 @@ const PresentationPostDefinition = ({ route }: Props) => {
     [route.params.descriptor]
   );
 
-  const sendCredentialsToMachine = (
+  const sendOptionalCredentials = (
     credentials: EnrichedPresentationDetails
   ) => {
     dispatch(setOptionalCredentials(credentials.map(c => c.id)));
@@ -230,7 +230,9 @@ const PresentationPostDefinition = ({ route }: Props) => {
             <ListItemCheckbox
               value={t('wallet:presentation.trust.optionalClaims')}
               icon="security"
-              onValueChange={() => sendCredentialsToMachine(credentials)}
+              onValueChange={value => {
+                sendOptionalCredentials(value ? credentials : []);
+              }}
               description={
                 purpose
                   ? t('wallet:presentation.trust.purpose', {

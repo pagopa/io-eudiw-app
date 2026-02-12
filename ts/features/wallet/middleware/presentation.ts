@@ -74,10 +74,6 @@ const presentationListener: AppListenerWithAction<
     );
 
     const credentials = selectCredentials(listenerApi.getState());
-    const optionalCredentials = selectOptionalCredentials(
-      listenerApi.getState()
-    );
-    const optionalCredentialsSet = new Set(optionalCredentials || []);
 
     /**
      * Array of tuples containg the credential keytag and its raw value
@@ -129,6 +125,9 @@ const presentationListener: AppListenerWithAction<
     const choice = await listenerApi.take(
       isAnyOf(setPostDefinitionRequest, setPostDefinitionCancel)
     );
+    const optionalCredentials = selectOptionalCredentials(
+      listenerApi.getState()
+    );
 
     if (setPostDefinitionRequest.match(choice[0])) {
       listenerApi.dispatch(
@@ -138,12 +137,11 @@ const presentationListener: AppListenerWithAction<
         isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
       );
       if (setIdentificationIdentified.match(resAction[0])) {
-        // Get required credentials and optional credentials that have been selected by the user
         const credentialsToPresent = evaluateDcqlQuery
           .filter(
             c =>
               c.purposes.some(({ required }) => required) ||
-              optionalCredentialsSet.has(c.id)
+              optionalCredentials?.includes(c.id)
           )
           .map(({ requiredDisclosures, ...rest }) => ({
             ...rest,

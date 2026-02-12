@@ -13,8 +13,6 @@ import { ParsedStatusAssertion, StoredCredential } from './itwTypesUtils';
 
 export const ISSUER_MOCK_NAME = 'PagoPA S.p.A.';
 
-export const PRIVACY_POLICY_URL_MOCK = 'https://ioapp.it/informativa-privacy';
-
 export type CredentialL3Key = keyof typeof ItwStoredCredentialsMocks.L3;
 
 /**

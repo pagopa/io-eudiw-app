@@ -85,29 +85,31 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
         }
       ]}
     >
-      <View
-        style={[
-          styles.cardContainer,
-          {
-            top: -safeAreaInsets.top
-          }
-        ]}
+      <FlipGestureDetector
+        isFlipped={isFlipped}
+        setIsFlipped={setFlipped}
+        direction={'updown'}
       >
-        <FlipGestureDetector
-          isFlipped={isFlipped}
-          setIsFlipped={setFlipped}
-          direction={'updown'}
+        <View
+          style={[
+            styles.cardContainer,
+            {
+              top: -safeAreaInsets.top
+            }
+          ]}
         >
-          <ItwSkeumorphicCard
-            credential={credential}
-            claims={parsedClaims}
-            mode="landscape"
-            status={status}
-            isFlipped={isFlipped}
-            valuesHidden={valuesHidden}
-          />
-        </FlipGestureDetector>
-      </View>
+          <View style={styles.rotationContainer}>
+            <ItwSkeumorphicCard
+              credential={credential}
+              claims={parsedClaims}
+              mode="landscape"
+              status={status}
+              isFlipped={isFlipped}
+              valuesHidden={valuesHidden}
+            />
+          </View>
+        </View>
+      </FlipGestureDetector>
       <ItwPresentationCredentialCardFlipButton
         isFlipped={isFlipped}
         handleOnPress={() => setFlipped(_ => !_)}
@@ -130,7 +132,6 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     transform: [
-      { rotate: '90deg' }, // Rotates the card to landscape
       { scale: SKEUMORPHIC_CARD_ASPECT_RATIO } // Scales the card to fit the screen
     ],
     position: 'absolute',
@@ -139,6 +140,11 @@ const styles = StyleSheet.create({
     bottom: IOVisualCostants.headerHeight,
     left: 0,
     right: 0
+  },
+  rotationContainer: {
+    transform: [
+      { rotate: '90deg' } // Rotates the card to landscape
+    ]
   }
 });
 

@@ -1,10 +1,11 @@
 {
   "name": "io-eudiw-app",
   "main": "App.tsx",
-  "version": "2.2.1",
+  "version": "2.3.0.0",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
+    "prebuild": "expo prebuild",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
@@ -23,7 +24,7 @@
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
     "@gorhom/bottom-sheet": "^5.2.8",
-    "@pagopa/io-app-design-system": "5.11.13-0",
+    "@pagopa/io-app-design-system": "5.12.1",
     "@pagopa/io-react-native-crypto": "^1.2.3",
     "@pagopa/io-react-native-iso18013": "^0.7.0",
     "@pagopa/io-react-native-jwt": "2.1.0",
