@@ -35,9 +35,16 @@ current_version_code=$(jq -r '.expo.android.versionCode' "$json_file")
 # Split the version into major, minor, and patch components
 IFS='.' read -r -a version_parts <<< "$current_version"
 
-if [ "${#version_parts[@]}" -lt 4 ]; then
-    version_parts[3]=0
-fi
+# Ensure version_parts has at least 3 components
+for i in {0..2}; do
+  if [ -z "${version_parts[$i]}" ]; then
+    version_parts[$i]=0
+  fi
+done
+
+# Initialize or get the 4th number (build) for package.json
+# We use the current ios buildNumber as the reference for the 4th digit
+current_pkg_build=$current_build_number
 
 # Update the appropriate version component
 case "$update_type" in
@@ -45,24 +52,27 @@ case "$update_type" in
     ((version_parts[0]++))
      version_parts[1]=0
      version_parts[2]=0
-     version_parts[3]=0
+     current_pkg_build=0
     ;;
   "minor")
     ((version_parts[1]++))
      version_parts[2]=0
-     version_parts[3]=0
+     current_pkg_build=0
     ;;
   "patch")
     ((version_parts[2]++))
-    version_parts[3]=0
+     current_pkg_build=0
     ;;
   "build")
-    ((version_parts[3]++))
+    ((current_pkg_build++))
     ;;
 esac
 
-# Create the new version string
-new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}.${version_parts[3]}"
+# Create the new version string for app.json (Strictly 3 numbers)
+new_version_app="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
+
+# Create the new version string for package.json (4 numbers)
+new_version_pkg="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}.${current_pkg_build}"
 
 # Calculate the new versionCode simply by incrementing the existing one by 1
 new_version_code=$((current_version_code + 1))
@@ -75,18 +85,18 @@ else
 fi
 
 # Update the version, buildNumber, and versionCode fields in the JSON file
-jq --arg new_version "$new_version" \
+jq --arg new_version "$new_version_app" \
    --arg new_version_code "$new_version_code" \
    --arg new_build_number "$new_build_number" \
    '.expo.version = $new_version | .expo.ios.buildNumber = $new_build_number | .expo.android.versionCode = ($new_version_code | tonumber)' \
    "$json_file" > tmp.json && mv tmp.json "$json_file"
 
-# Update the version field in package.json
-jq --arg new_version "$new_version" '.version = $new_version' "$package_file" > tmp_package.json && mv tmp_package.json "$package_file"
+# Update the version field in package.json (using the 4-digit version)
+jq --arg new_version "$new_version_pkg" '.version = $new_version' "$package_file" > tmp_package.json && mv tmp_package.json "$package_file"
 
 # Display a success message
-echo "Bumped version from $current_version to $new_version"
-echo "app.json version: $new_version"
-echo "package.json version: $new_version"
+echo "Bumped version successfully"
+echo "app.json version: $new_version_app"
+echo "package.json version: $new_version_pkg"
 echo "buildNumber (iOS): $new_build_number"
 echo "versionCode (Android): $new_version_code"
