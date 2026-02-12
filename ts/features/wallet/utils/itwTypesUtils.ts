@@ -1,4 +1,5 @@
 import { Credential, WalletInstance } from '@pagopa/io-react-native-wallet';
+import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
 
 /**
  * Alias for the IssuerConfiguration type
@@ -92,4 +93,37 @@ export type StoredCredential = {
   expiration: string;
   issuedAt?: string;
   issuerConf: IssuerConfiguration;
+  storedStatusAssertion?: StoredStatusAssertion;
 };
+
+export type EnrichedPresentationDetails = Array<
+  Omit<PresentationDetails[number], 'cryptoContext'> & {
+    claimsToDisplay: Array<ClaimDisplayFormat>;
+  }
+>;
+
+/**
+ * Type for disclosable claims.
+ */
+export type DisclosureClaim = {
+  claim: ClaimDisplayFormat;
+  source: string;
+};
+
+/**
+ * A type guard that filters out undefined and null from a type T
+ */
+export function isDefined<T, O extends NonNullable<T>>(v: T): v is O {
+  return v !== null && v !== undefined;
+}
+
+/**
+ * Type representing the parsed DCQL query with the presentation details
+ */
+export type PresentationDetails = Awaited<
+  ReturnType<Credential.Presentation.EvaluateDcqlQuery>
+>;
+
+export type ClaimDisplayResult =
+  | { type: 'image'; value: string }
+  | { type: 'text'; value: string | Array<string> };
