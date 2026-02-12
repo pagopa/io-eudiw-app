@@ -161,7 +161,8 @@
           "experimentalLauncherActivity": true
         }
       ],
-      "./scripts/android-fix-bouncy-castle-dependency.js"
+      "./scripts/android-fix-bouncy-castle-dependency.js",
+      "./scripts/android-signing.js"
     ],
     "experiments": {
       "typedRoutes": true,
