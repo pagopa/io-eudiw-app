@@ -100,6 +100,7 @@ jobs:
       - id: build-android
         name: Build and submit to Play Store
         run: |
+          ./scripts/android-release.sh ./android/app
           cd fastlane
           bundle exec fastlane android alpha_playstore
         shell: bash
@@ -183,6 +184,7 @@ jobs:
       - id: build-ios
         name: Build and submit to App Store
         run: |
+          ./scripts/ios-release.sh
           cd fastlane
           bundle exec fastlane ios beta_testflight
         env:
