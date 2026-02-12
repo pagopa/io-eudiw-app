@@ -1,7 +1,7 @@
 import { ListItemAction } from '@pagopa/io-app-design-system';
+import { t } from 'i18next';
 import { memo } from 'react';
 import { View } from 'react-native';
-import I18n from 'i18next';
 import { useItwRemoveCredentialWithConfirm } from '../../hooks/useItwRemoveCredentialWithConfirm';
 import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
 import { StoredCredential } from '../../utils/itwTypesUtils';
@@ -22,13 +22,10 @@ const ItwPresentationDetailsFooter = ({
         testID="requestAssistanceActionTestID"
         variant="primary"
         icon="message"
-        label={I18n.t(
-          'presentation.credentialDetails.actions.requestAssistance',
-          {
-            ns: 'wallet'
-          }
-        )}
-        accessibilityLabel={I18n.t(
+        label={t('presentation.credentialDetails.actions.requestAssistance', {
+          ns: 'wallet'
+        })}
+        accessibilityLabel={t(
           'presentation.credentialDetails.actions.requestAssistance',
           {
             ns: 'wallet'
@@ -40,13 +37,10 @@ const ItwPresentationDetailsFooter = ({
         testID="removeCredentialActionTestID"
         variant="danger"
         icon="trashcan"
-        label={I18n.t(
-          'presentation.credentialDetails.actions.removeFromWallet',
-          {
-            ns: 'wallet'
-          }
-        )}
-        accessibilityLabel={I18n.t(
+        label={t('presentation.credentialDetails.actions.removeFromWallet', {
+          ns: 'wallet'
+        })}
+        accessibilityLabel={t(
           'presentation.credentialDetails.actions.removeFromWallet',
           {
             ns: 'wallet'

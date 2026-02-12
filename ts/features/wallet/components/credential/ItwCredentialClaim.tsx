@@ -1,9 +1,12 @@
 import { Divider, ListItemInfo } from '@pagopa/io-app-design-system';
+import { t } from 'i18next';
 import { Fragment, useMemo } from 'react';
-import { Image } from 'react-native';
-import I18n from 'i18next';
-import z from 'zod';
 import { useTranslation } from 'react-i18next';
+import { Image } from 'react-native';
+import * as z from 'zod';
+import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
+import { clipboardSetStringWithFeedback } from '../../../../utils/clipboard';
+import { getSafeText } from '../../../../utils/string';
 import {
   DrivingPrivilegesClaimType,
   ParsedClaimsRecord,
@@ -11,18 +14,15 @@ import {
   verificationEvidenceSchema
 } from '../../utils/claims';
 import { HIDDEN_CLAIM_TEXT } from '../../utils/constants';
-import { getSafeText } from '../../../../utils/string';
-import { clipboardSetStringWithFeedback } from '../../../../utils/clipboard';
-import { ItwCredentialStatus } from '../../utils/itwTypesUtils';
-import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
 import { format } from '../../utils/dates';
+import { ItwCredentialStatus } from '../../utils/itwTypesUtils';
 
 /**
  * Helper function to get the accessibility text for hidden claims.
  * @returns the localized accessibility text for hidden claims
  */
 const getHiddenClaimAccessibilityText = () =>
-  I18n.t('presentation.credentialDetails.hiddenClaim', { ns: 'wallet' });
+  t('presentation.credentialDetails.hiddenClaim', { ns: 'wallet' });
 
 /**
  * Component which renders a place of birth type claim.
@@ -74,10 +74,9 @@ const BoolClaimItem = ({
   hidden?: boolean;
   reversed: boolean;
 }) => {
-  const realValue = I18n.t(
-    `presentation.credentialDetails.boolClaim.${claim}`,
-    { ns: 'wallet' }
-  );
+  const realValue = t(`presentation.credentialDetails.boolClaim.${claim}`, {
+    ns: 'wallet'
+  });
   const displayValue = hidden ? HIDDEN_CLAIM_TEXT : realValue;
   const accessibilityStateText = hidden
     ? getHiddenClaimAccessibilityText()
@@ -120,8 +119,8 @@ const PlainTextClaimItem = ({
     ? getHiddenClaimAccessibilityText()
     : safeValue;
 
-  const handleLongPress = () => {
-    clipboardSetStringWithFeedback(safeValue);
+  const handleLongPress = async () => {
+    await clipboardSetStringWithFeedback(safeValue);
   };
 
   return (
@@ -176,7 +175,7 @@ const DateClaimItem = ({
           type: 'badge',
           componentProps: {
             variant: 'success',
-            text: I18n.t(`${ns}.valid`, { ns: 'wallet' })
+            text: t(`${ns}.valid`, { ns: 'wallet' })
           }
         };
       case 'expired':
@@ -184,7 +183,7 @@ const DateClaimItem = ({
           type: 'badge',
           componentProps: {
             variant: 'error',
-            text: I18n.t(`${ns}.expired`, { ns: 'wallet' })
+            text: t(`${ns}.expired`, { ns: 'wallet' })
           }
         };
       case 'invalid':
@@ -192,7 +191,7 @@ const DateClaimItem = ({
           type: 'badge',
           componentProps: {
             variant: 'error',
-            text: I18n.t(`${ns}.invalid`, { ns: 'wallet' })
+            text: t(`${ns}.invalid`, { ns: 'wallet' })
           }
         };
       default:
@@ -227,10 +226,9 @@ const UnknownClaimItem = ({
 }) => (
   <PlainTextClaimItem
     label={label}
-    claim={I18n.t(
-      'verifiableCredentials.generic.placeholders.claimNotAvailable',
-      { ns: 'wallet' }
-    )}
+    claim={t('verifiableCredentials.generic.placeholders.claimNotAvailable', {
+      ns: 'wallet'
+    })}
     reversed={reversed}
   />
 );
@@ -301,18 +299,18 @@ const DrivingPrivilegesClaimItem = ({
   reversed: boolean;
 }) => {
   const privilegeBottomSheet = useIOBottomSheetModal({
-    title: I18n.t('verifiableCredentials.claims.mdl.category', {
+    title: t('verifiableCredentials.claims.mdl.category', {
       ns: 'wallet',
       category: claim.vehicle_category_code
     }),
     component: (
       <>
         <ListItemInfo
-          label={I18n.t('verifiableCredentials.claims.mdl.issuedDate', {
+          label={t('verifiableCredentials.claims.mdl.issuedDate', {
             ns: 'wallet'
           })}
           value={format(claim.issue_date, 'DD/MM/YYYY')}
-          accessibilityLabel={`${I18n.t(
+          accessibilityLabel={`${t(
             'verifiableCredentials.claims.mdl.issuedDate',
             {
               ns: 'wallet'
@@ -322,11 +320,11 @@ const DrivingPrivilegesClaimItem = ({
         />
         <Divider />
         <ListItemInfo
-          label={I18n.t('verifiableCredentials.claims.mdl.expirationDate', {
+          label={t('verifiableCredentials.claims.mdl.expirationDate', {
             ns: 'wallet'
           })}
           value={format(claim.expiry_date, 'DD/MM/YYYY')}
-          accessibilityLabel={`${I18n.t(
+          accessibilityLabel={`${t(
             'verifiableCredentials.claims.mdl.expirationDate',
             {
               ns: 'wallet'
@@ -349,9 +347,9 @@ const DrivingPrivilegesClaimItem = ({
       ? {
           type: 'buttonLink',
           componentProps: {
-            label: I18n.t('buttons.show', { ns: 'global' }),
+            label: t('buttons.show', { ns: 'global' }),
             onPress: () => privilegeBottomSheet.present(),
-            accessibilityLabel: I18n.t('buttons.show', { ns: 'global' })
+            accessibilityLabel: t('buttons.show', { ns: 'global' })
           }
         }
       : undefined;
@@ -397,21 +395,25 @@ export const VerificationEvidenceClaimItem = ({
       <>
         <ListItemInfo
           label={t(
-            'wallet:verifiableCredentials.claims.mdl.verificationEvidence.organizationId'
+            'verifiableCredentials.claims.mdl.verificationEvidence.organizationId',
+            { ns: 'wallet' }
           )}
           value={organization_id}
           accessibilityLabel={`${t(
-            'wallet:verifiableCredentials.claims.mdl.verificationEvidence.organizationId'
+            'verifiableCredentials.claims.mdl.verificationEvidence.organizationId',
+            { ns: 'wallet' }
           )} ${organization_id}`}
         />
         <Divider />
         <ListItemInfo
           label={t(
-            'wallet:verifiableCredentials.claims.mdl.verificationEvidence.countryCode'
+            'verifiableCredentials.claims.mdl.verificationEvidence.countryCode',
+            { ns: 'wallet' }
           )}
           value={country_code}
           accessibilityLabel={`${t(
-            'wallet:verifiableCredentials.claims.mdl.verificationEvidence.countryCode'
+            'verifiableCredentials.claims.mdl.verificationEvidence.countryCode',
+            { ns: 'wallet' }
           )} ${country_code}`}
         />
       </>

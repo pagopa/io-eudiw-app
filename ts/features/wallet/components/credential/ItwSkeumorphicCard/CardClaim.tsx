@@ -1,21 +1,21 @@
 import { WithTestID } from '@pagopa/io-app-design-system';
+import { format } from 'date-fns';
 import { memo, ReactElement, ReactNode, useMemo } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import { format } from 'date-fns';
 
+import {
+  ClaimScheme,
+  claimType,
+  ParsedClaimsRecord
+} from '../../../utils/claims';
+import { SimpleDateFormat } from '../../../utils/itwClaimsUtils';
 import {
   Either,
   PercentPosition,
   Prettify
 } from '../../../utils/itwTypesUtils';
-import {
-  ClaimScheme,
-  claimType,
-  ParsedClaimsRecord,
-  SimpleDateFormat
-} from '../../../utils/claims';
-import { ClaimLabel, ClaimLabelProps } from './ClaimLabel';
 import { ClaimImage } from './ClaimImage';
+import { ClaimLabel, ClaimLabelProps } from './ClaimLabel';
 
 type HorizontalClaimPosition = Either<
   { left: PercentPosition },

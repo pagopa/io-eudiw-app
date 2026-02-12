@@ -1,38 +1,38 @@
+/* eslint-disable import/no-named-as-default-member */
+import { Alert, IOButton, IOToast, VStack } from '@pagopa/io-app-design-system';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import I18n from 'i18next';
 import { memo, useCallback } from 'react';
 import { View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Alert, IOButton, IOToast, VStack } from '@pagopa/io-app-design-system';
-import I18n from 'i18next';
-import { StackNavigationProp } from '@react-navigation/stack';
-import {
-  ItwCredentialStatus,
-  ItwJwtCredentialStatus,
-  StoredCredential
-} from '../../utils/itwTypesUtils';
-import { useAppSelector } from '../../../../store';
-import { itwCredentialsPidStatusSelector } from '../../store/credentials';
-import { ItwPidLifecycleAlert } from '../ItwPidLifecycleAlert';
 import IOMarkdown from '../../../../components/IOMarkdown';
 import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
 import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
-import { format } from '../../utils/dates';
-import { getCredentialExpireDays } from '../../utils/itwClaimsUtils';
+import { useAppSelector } from '../../../../store';
 import { openWebUrl } from '../../../../utils/url';
 import { useItwRemoveCredentialWithConfirm } from '../../hooks/useItwRemoveCredentialWithConfirm';
-import { ClaimsLocales, getClaimsFullLocale } from '../../utils/locale';
+import { itwCredentialsPidStatusSelector } from '../../store/credentials';
 import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
 import {
   wellKnownCredential,
   WellKnownCredentialTypes
 } from '../../utils/credentials';
+import { format } from '../../utils/dates';
+import { getCredentialExpireDays } from '../../utils/itwClaimsUtils';
+import {
+  ItwCredentialStatus,
+  ItwJwtCredentialStatus,
+  StoredCredential
+} from '../../utils/itwTypesUtils';
+import { ClaimsLocales, getClaimsFullLocale } from '../../utils/locale';
+import { ItwPidLifecycleAlert } from '../ItwPidLifecycleAlert';
 
 type Props = {
   credential: StoredCredential;
 };
 
 const excludedCredentialTypes = [
-  wellKnownCredential.PID,
-  wellKnownCredential.HEALTHID
+  wellKnownCredential.PID
 ] satisfies Array<WellKnownCredentialTypes>;
 
 type ExcludedCredentialTypes = (typeof excludedCredentialTypes)[number];
@@ -318,11 +318,11 @@ const getLocalizedMessageOrFallback = (
   message: IssuerDynamicErrorAlertProps['message']
 ) =>
   message
-    ? message[getClaimsFullLocale()] ??
+    ? (message[getClaimsFullLocale()] ??
       message[ClaimsLocales.it] ?? {
         title: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
         description: I18n.t('credentials.status.unknown', { ns: 'wallet' })
-      }
+      })
     : {
         title: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
         description: I18n.t('credentials.status.unknown', { ns: 'wallet' })

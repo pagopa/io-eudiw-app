@@ -1,18 +1,18 @@
-import { useEffect } from 'react';
-import I18n from 'i18next';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { t } from 'i18next';
+import { useEffect } from 'react';
+import { OperationResultScreenContent } from '../../../components/screens/OperationResultScreenContent';
 import { useDisableGestureNavigation } from '../../../hooks/useDisableGestureNavigation';
 import { useHardwareBackButton } from '../../../hooks/useHardwareBackButton';
-import { OperationResultScreenContent } from '../../../components/screens/OperationResultScreenContent';
-import { useAppDispatch, useAppSelector } from '../../../store';
-import { useCredentialIssuanceNavigationListeners } from '../hooks/useCredentialIssuanceNavigationListeners';
-import { lifecycleIsValidSelector } from '../store/lifecycle';
-import { setPendingCredential } from '../store/pidIssuance';
 import { MainNavigatorParamsList } from '../../../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../../../navigation/main/routes';
+import { useAppDispatch, useAppSelector } from '../../../store';
+import { useCredentialIssuanceNavigationListeners } from '../hooks/useCredentialIssuanceNavigationListeners';
 import WALLET_ROUTES from '../navigation/routes';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
+import { lifecycleIsValidSelector } from '../store/lifecycle';
+import { setPendingCredential } from '../store/pidIssuance';
 
 const ItwCredentialNotFound = ({
   credentialType
@@ -57,19 +57,19 @@ const ItwCredentialNotFound = ({
   return (
     <OperationResultScreenContent
       pictogram="cie"
-      title={I18n.t('issuance.credentialNotFound.title', { ns: 'wallet' })}
-      subtitle={I18n.t('issuance.credentialNotFound.subtitle', {
+      title={t('issuance.credentialNotFound.title', { ns: 'wallet' })}
+      subtitle={t('issuance.credentialNotFound.subtitle', {
         ns: 'wallet'
       })}
       isHeaderVisible={false}
       action={{
-        label: I18n.t('buttons.continue', { ns: 'global' }),
-        accessibilityLabel: I18n.t('buttons.continue', { ns: 'global' }),
+        label: t('buttons.continue', { ns: 'global' }),
+        accessibilityLabel: t('buttons.continue', { ns: 'global' }),
         onPress: navigateToCredential
       }}
       secondaryAction={{
-        label: I18n.t('buttons.cancel', { ns: 'global' }),
-        accessibilityLabel: I18n.t('buttons.cancel', { ns: 'global' }),
+        label: t('buttons.cancel', { ns: 'global' }),
+        accessibilityLabel: t('buttons.cancel', { ns: 'global' }),
         onPress: handleClose
       }}
     />

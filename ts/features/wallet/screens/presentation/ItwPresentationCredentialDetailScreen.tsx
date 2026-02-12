@@ -5,37 +5,36 @@ import {
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
-import I18n from 'i18next';
-import { useEffect, useMemo } from 'react';
-import { View } from 'react-native';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { t } from 'i18next';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch, useAppSelector } from '../../../../store';
-import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
-import { useDebugInfo } from '../../../../hooks/useDebugInfo';
-import { selectCredential } from '../../store/credentials';
-import { lifecycleIsValidSelector } from '../../store/lifecycle';
+import { View } from 'react-native';
 import { OperationResultScreenContent } from '../../../../components/screens/OperationResultScreenContent';
+import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
+import { useDebugInfo } from '../../../../hooks/useDebugInfo';
+import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
 import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../../../../navigation/main/routes';
-import WALLET_ROUTES from '../../navigation/routes';
+import { RootStackParamList } from '../../../../navigation/RootStacknavigator';
+import { useAppDispatch, useAppSelector } from '../../../../store';
 import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
-import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
-// import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
+import { PoweredByItWalletText } from '../../components/PoweredByItWalletText';
+import { ItwPresentationClaimsSection } from '../../components/presentation/ItwPresentationClaimsSection';
+import { ItwPresentationCredentialInfoAlert } from '../../components/presentation/ItwPresentationCredentialInfoAlert';
+import { ItwPresentationCredentialStatusAlert } from '../../components/presentation/ItwPresentationCredentialStatusAlert';
+import { ItwPresentationCredentialUnknownStatus } from '../../components/presentation/ItwPresentationCredentialUnknownStatus';
+import { ItwPresentationDetailsFooter } from '../../components/presentation/ItwPresentationDetailsFooter';
+import { ItwPresentationDetailsHeader } from '../../components/presentation/ItwPresentationDetailsHeader';
 import {
   CredentialCtaProps,
   ItwPresentationDetailsScreenBase
 } from '../../components/presentation/ItwPresentationDetailsScreenBase';
-import { ItwPresentationCredentialUnknownStatus } from '../../components/presentation/ItwPresentationCredentialUnknownStatus';
-import { ItwPresentationDetailsHeader } from '../../components/presentation/ItwPresentationDetailsHeader';
-import { PoweredByItWalletText } from '../../components/PoweredByItWalletText';
-import { ItwPresentationCredentialStatusAlert } from '../../components/presentation/ItwPresentationCredentialStatusAlert';
-import { ItwPresentationCredentialInfoAlert } from '../../components/presentation/ItwPresentationCredentialInfoAlert';
-import { ItwPresentationClaimsSection } from '../../components/presentation/ItwPresentationClaimsSection';
-import { ItwPresentationDetailsFooter } from '../../components/presentation/ItwPresentationDetailsFooter';
-import { wellKnownCredential } from '../../utils/credentials';
-import { useIOBottomSheetModal } from '../../../../hooks/useBottomSheet';
 import { PresentationProximityQrCode } from '../../components/proximity/PresentationProximityQRCode';
+import WALLET_ROUTES from '../../navigation/routes';
+import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
+import { selectCredential } from '../../store/credentials';
+import { lifecycleIsValidSelector } from '../../store/lifecycle';
 import {
   ProximityStatus,
   resetProximity,
@@ -45,9 +44,10 @@ import {
   setProximityStatusStarted,
   setProximityStatusStopped
 } from '../../store/proximity';
-import { RootStackParamList } from '../../../../navigation/RootStacknavigator';
-import { StoredCredential } from '../../utils/itwTypesUtils';
 import { parseClaimsToRecord } from '../../utils/claims';
+import { wellKnownCredential } from '../../utils/credentials';
+import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
+import { StoredCredential } from '../../utils/itwTypesUtils';
 
 export type ItwPresentationCredentialDetailNavigationParams = {
   credentialType: string;
@@ -75,24 +75,24 @@ export const ItwPresentationCredentialDetailScreen = ({ route }: Props) => {
 
     return (
       <OperationResultScreenContent
-        title={I18n.t(`${ns}.itWallet.title`, { ns: 'wallet' })}
+        title={t(`${ns}.itWallet.title`, { ns: 'wallet' })}
         subtitle={[
-          { text: I18n.t(`${ns}.itWallet.body`, { ns: 'wallet' }) },
+          { text: t(`${ns}.itWallet.body`, { ns: 'wallet' }) },
           {
-            text: I18n.t(`${ns}.itWallet.bodyBold`, { ns: 'wallet' }),
+            text: t(`${ns}.itWallet.bodyBold`, { ns: 'wallet' }),
             weight: 'Semibold'
           }
         ]}
         pictogram="itWallet"
         action={{
-          label: I18n.t(`${ns}.primaryAction`, { ns: 'wallet' }),
+          label: t(`${ns}.primaryAction`, { ns: 'wallet' }),
           onPress: () =>
             navigation.replace(MAIN_ROUTES.WALLET_NAV, {
               screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
             })
         }}
         secondaryAction={{
-          label: I18n.t(`${ns}.secondaryAction`, { ns: 'wallet' }),
+          label: t(`${ns}.secondaryAction`, { ns: 'wallet' }),
           onPress: () => navigation.popToTop()
         }}
       />
@@ -127,7 +127,7 @@ export const ItwPresentationCredentialDetail = ({
   const { t } = useTranslation(['wallet']);
 
   useDebugInfo(credential);
-  // usePreventScreenCapture();
+  usePreventScreenCapture();
 
   const proximityStatus = useAppSelector(selectProximityStatus);
   const proximityDisclosureDescriptor = useAppSelector(
@@ -175,7 +175,7 @@ export const ItwPresentationCredentialDetail = ({
 
     if (credentialType === wellKnownCredential.DRIVING_LICENSE) {
       return {
-        label: I18n.t('presentation.ctas.showQRCode', { ns: 'wallet' }),
+        label: t('presentation.ctas.showQRCode', { ns: 'wallet' }),
         icon: 'qrCode',
         iconPosition: 'end',
         loading: false,
@@ -187,7 +187,7 @@ export const ItwPresentationCredentialDetail = ({
     }
 
     return undefined;
-  }, [credential, QrCodeModal, dispatch]);
+  }, [credential.credentialType, t, dispatch, QrCodeModal]);
 
   const parsedClaims = useMemo(
     () => parseClaimsToRecord(credential.parsedCredential),

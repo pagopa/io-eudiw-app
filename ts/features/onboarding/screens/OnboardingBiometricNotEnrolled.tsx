@@ -1,8 +1,8 @@
 import { ListItemInfo } from '@pagopa/io-app-design-system';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHeaderSecondLevel } from '../../../hooks/useHeaderSecondLevel';
 import { IOScrollViewWithListItems } from '../../../components/IOScrollViewWithListItems';
+import { useHeaderSecondLevel } from '../../../hooks/useHeaderSecondLevel';
 import { useAppDispatch } from '../../../store';
 import { preferencesSetIsOnboardingDone } from '../../../store/reducers/preferences';
 

@@ -1,6 +1,5 @@
-/* eslint-disable functional/immutable-data */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../../../store/types';
+import { preferencesReset } from '../../../store/reducers/preferences';
 import {
   AsyncStatusValues,
   setError,
@@ -8,12 +7,11 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import { preferencesReset } from '../../../store/reducers/preferences';
-import { obtainPidThunk } from '../middleware/pid';
 import { createInstanceThunk } from '../middleware/instance';
+import { obtainPidThunk } from '../middleware/pid';
 import { StoredCredential } from '../utils/itwTypesUtils';
-import { resetLifecycle } from './lifecycle';
 import { RequestedCredential } from './credentialIssuance';
+import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the pidIssuance slice
  * issuanceCreation - Async status for the instance creation
@@ -99,45 +97,3 @@ export const { resetInstanceCreation, resetPidIssuance, setPendingCredential } =
  * Exports the reducer for the pidIssuance slice.
  */
 export const { reducer: pidIssuanceStatusReducer } = pidIssuanceStatusSlice;
-
-/**
- * Selects the instanceCreation async status.
- * @param state - The root state
- * @returns The instanceCreation async status
- */
-export const selectInstanceStatus = (state: RootState) =>
-  state.wallet.pidIssuanceStatus.instanceCreation;
-
-/**
- * Selects the issuance async status.
- * @param state - The root state
- * @returns The issuance async status
- */
-export const selectPidIssuanceStatus = (state: RootState) =>
-  state.wallet.pidIssuanceStatus.issuance;
-
-/**
- * Selects the issuance data if the status is success.
- * @param state - The root state
- * @returns The issuance data if the status is success, otherwise undefined
- */
-export const selectPidIssuanceData = (state: RootState) =>
-  state.wallet.pidIssuanceStatus.issuance.success.status === true
-    ? state.wallet.pidIssuanceStatus.issuance.success.data
-    : undefined;
-
-/**
- * Selects the error occurred during the issuance flow.
- * @param state - The root state
- * @returns The error occurred during the issuance flow
- */
-export const selectPidIssuanceError = (state: RootState) =>
-  state.wallet.pidIssuanceStatus.issuance.error.error;
-
-/**
- * Selects the pending credential to issue after the Wallet Pid has been obtained
- * @param state - The root state
- * @returns The credential to issue after the wallet is operational
- */
-export const selectPendingCredential = (state: RootState) =>
-  state.wallet.pidIssuanceStatus.pendingCredential;

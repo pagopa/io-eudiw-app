@@ -4,31 +4,31 @@ import {
   useIOTheme,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import { useState, useLayoutEffect, memo, useCallback } from 'react';
+import { StackScreenProps } from '@react-navigation/stack';
+import { t } from 'i18next';
+import { memo, useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import I18n from 'i18next';
-import { StackScreenProps } from '@react-navigation/stack';
-import {
-  ItwCredentialStatus,
-  StoredCredential
-} from '../../utils/itwTypesUtils';
-import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
-// import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
-import { useMaxBrightness } from '../../../../utils/brightness';
+import { usePreventScreenCapture } from '../../../../hooks/usePreventScreenCapture';
 import {
   ItwSkeumorphicCard,
   SKEUMORPHIC_CARD_ASPECT_RATIO
 } from '../../components/credential/ItwSkeumorphicCard';
+import { FlipGestureDetector } from '../../components/credential/ItwSkeumorphicCard/FlipGestureDetector';
 import { ItwPresentationCredentialCardFlipButton } from '../../components/presentation/ItwPresentationCredentialCardFlipButton';
 import { ItwPresentationCredentialCardHideValuesButton } from '../../components/presentation/ItwPresentationCredentialCardHideValuesButton';
-import { FlipGestureDetector } from '../../components/credential/ItwSkeumorphicCard/FlipGestureDetector';
-import { useAppDispatch, useAppSelector } from '../../../../store';
+import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import {
   itwIsClaimValueHiddenSelector,
   itwSetClaimValuesHidden
 } from '../../store/credentials';
 import { ParsedClaimsRecord } from '../../utils/claims';
+import {
+  ItwCredentialStatus,
+  StoredCredential
+} from '../../utils/itwTypesUtils';
+import { useAppDispatch, useAppSelector } from '@/ts/store';
+import { useMaxBrightness } from '@/ts/utils/brightness';
 
 export type ItwPresentationCredentialCardModalNavigationParams = {
   credential: StoredCredential;
@@ -52,7 +52,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
   const dispatch = useAppDispatch();
   const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
 
-  // usePreventScreenCapture();
+  usePreventScreenCapture();
   useMaxBrightness({ useSmoothTransition: true });
 
   useLayoutEffect(() => {
@@ -63,7 +63,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
           type="singleAction"
           firstAction={{
             icon: 'closeLarge',
-            accessibilityLabel: I18n.t('buttons.close', { ns: 'global' }),
+            accessibilityLabel: t('buttons.close', { ns: 'global' }),
             onPress: () => navigation.goBack()
           }}
         />
@@ -85,29 +85,31 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
         }
       ]}
     >
-      <View
-        style={[
-          styles.cardContainer,
-          {
-            top: -safeAreaInsets.top
-          }
-        ]}
+      <FlipGestureDetector
+        isFlipped={isFlipped}
+        setIsFlipped={setFlipped}
+        direction={'updown'}
       >
-        <FlipGestureDetector
-          isFlipped={isFlipped}
-          setIsFlipped={setFlipped}
-          direction={'updown'}
+        <View
+          style={[
+            styles.cardContainer,
+            {
+              top: -safeAreaInsets.top
+            }
+          ]}
         >
-          <ItwSkeumorphicCard
-            credential={credential}
-            claims={parsedClaims}
-            mode="landscape"
-            status={status}
-            isFlipped={isFlipped}
-            valuesHidden={valuesHidden}
-          />
-        </FlipGestureDetector>
-      </View>
+          <View style={styles.rotationContainer}>
+            <ItwSkeumorphicCard
+              credential={credential}
+              claims={parsedClaims}
+              mode="landscape"
+              status={status}
+              isFlipped={isFlipped}
+              valuesHidden={valuesHidden}
+            />
+          </View>
+        </View>
+      </FlipGestureDetector>
       <ItwPresentationCredentialCardFlipButton
         isFlipped={isFlipped}
         handleOnPress={() => setFlipped(_ => !_)}
@@ -130,7 +132,6 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     transform: [
-      { rotate: '90deg' }, // Rotates the card to landscape
       { scale: SKEUMORPHIC_CARD_ASPECT_RATIO } // Scales the card to fit the screen
     ],
     position: 'absolute',
@@ -139,6 +140,11 @@ const styles = StyleSheet.create({
     bottom: IOVisualCostants.headerHeight,
     left: 0,
     right: 0
+  },
+  rotationContainer: {
+    transform: [
+      { rotate: '90deg' } // Rotates the card to landscape
+    ]
   }
 });
 

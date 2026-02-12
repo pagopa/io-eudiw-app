@@ -1,17 +1,17 @@
 import { Divider, ListItemHeader } from '@pagopa/io-app-design-system';
-import { View } from 'react-native';
-import { Fragment } from 'react/jsx-runtime';
-import { useMemo, useState } from 'react';
-import I18n from 'i18next';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { WellKnownClaim } from '../../utils/itwClaimsUtils';
-import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
+import { t } from 'i18next';
+import { useMemo, useState } from 'react';
+import { Fragment } from 'react/jsx-runtime';
+import { View } from 'react-native';
 import { MainNavigatorParamsList } from '../../../../navigation/main/MainStackNavigator';
-import { ItwPidLifecycleAlert } from '../ItwPidLifecycleAlert';
-import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
-import { StoredCredential } from '../../utils/itwTypesUtils';
 import { parseClaimsToRecord } from '../../utils/claims';
+import { WellKnownClaim } from '../../utils/itwClaimsUtils';
+import { StoredCredential } from '../../utils/itwTypesUtils';
+import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
+import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
+import { ItwPidLifecycleAlert } from '../ItwPidLifecycleAlert';
 
 type Props = {
   credential: StoredCredential;
@@ -22,7 +22,7 @@ export const ItwPresentationPidDetail = ({ credential }: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
 
-  const listItemHeaderLabel = I18n.t('presentation.itWalletId.listItemHeader', {
+  const listItemHeaderLabel = t('presentation.itWalletId.listItemHeader', {
     ns: 'wallet'
   });
 

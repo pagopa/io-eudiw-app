@@ -1,6 +1,3 @@
-import { ComponentProps, useEffect, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
 import {
   ClaimsSelector,
   FeatureInfo,
@@ -14,30 +11,34 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import { Alert, StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
+import { ComponentProps, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Alert, StyleSheet, View } from 'react-native';
+import IOMarkdown from '../../../../components/IOMarkdown';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch, useAppSelector } from '../../../../store';
+import { getSafeText } from '../../../../utils/string';
+import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import {
   Descriptor,
   selectPostDefinitionStatus,
   selectPreDefinitionStatus,
+  setOptionalCredentials,
   setPostDefinitionCancel,
   setPostDefinitionRequest
 } from '../../store/presentation';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
-import IOMarkdown from '../../../../components/IOMarkdown';
-import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import { getClaimDisplayValue } from '../../utils/itwClaimsUtils';
+import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import {
   ClaimDisplayFormat,
   groupCredentialsByPurpose
 } from '../../utils/itwRemotePresentationUtils';
-import { getClaimDisplayValue } from '../../utils/itwClaimsUtils';
-import { getSafeText } from '../../../../utils/string';
-import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { EnrichedPresentationDetails } from '../../utils/itwTypesUtils';
 /**
  * Description which contains the requested of the credential to be presented.
@@ -182,6 +183,12 @@ const PresentationPostDefinition = ({ route }: Props) => {
     [route.params.descriptor]
   );
 
+  const sendOptionalCredentials = (
+    credentials: EnrichedPresentationDetails
+  ) => {
+    dispatch(setOptionalCredentials(credentials.map(c => c.id)));
+  };
+
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>
       <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
@@ -223,6 +230,9 @@ const PresentationPostDefinition = ({ route }: Props) => {
             <ListItemCheckbox
               value={t('wallet:presentation.trust.optionalClaims')}
               icon="security"
+              onValueChange={value => {
+                sendOptionalCredentials(value ? credentials : []);
+              }}
               description={
                 purpose
                   ? t('wallet:presentation.trust.purpose', {

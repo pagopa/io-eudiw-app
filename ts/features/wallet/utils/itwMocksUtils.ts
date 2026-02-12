@@ -1,5 +1,4 @@
 import dc from '../__mocks__/dc.json';
-import pid from '../__mocks__/pid.json';
 import dcL3 from '../__mocks__/L3/dcL3.json';
 import edL3 from '../__mocks__/L3/edL3.json';
 import eeL3 from '../__mocks__/L3/eeL3.json';
@@ -7,13 +6,12 @@ import mdlL3 from '../__mocks__/L3/mdlL3.json';
 import resL3 from '../__mocks__/L3/resL3.json';
 import tsL3 from '../__mocks__/L3/tsL3.json';
 import mdl from '../__mocks__/mdl.json';
+import pid from '../__mocks__/pid.json';
 import statusAssertion from '../__mocks__/statusAssertion.json';
 import ts from '../__mocks__/ts.json';
 import { ParsedStatusAssertion, StoredCredential } from './itwTypesUtils';
 
 export const ISSUER_MOCK_NAME = 'PagoPA S.p.A.';
-
-export const PRIVACY_POLICY_URL_MOCK = 'https://ioapp.it/informativa-privacy';
 
 export type CredentialL3Key = keyof typeof ItwStoredCredentialsMocks.L3;
 
@@ -21,7 +19,6 @@ export type CredentialL3Key = keyof typeof ItwStoredCredentialsMocks.L3;
  * Credential types mocks.
  */
 export enum CredentialType {
-  EUROPEAN_HEALTH_INSURANCE_CARD = 'EuropeanHealthInsuranceCard',
   EUROPEAN_DISABILITY_CARD = 'EuropeanDisabilityCard',
   DRIVING_LICENSE = 'mDL',
   PID = 'PersonIdentificationData',

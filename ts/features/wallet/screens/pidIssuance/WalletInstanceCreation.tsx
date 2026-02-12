@@ -12,35 +12,33 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
+import { useNavigation } from '@react-navigation/native';
+import { t } from 'i18next';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import I18n from 'i18next';
 import Animated, {
   useAnimatedRef,
   useDerivedValue,
   useScrollViewOffset,
   useSharedValue
 } from 'react-native-reanimated';
+import { AnimatedImage } from '../../../../components/AnimatedImage';
+import IOMarkdown from '../../../../components/IOMarkdown';
+import { IOScrollViewWithReveal } from '../../../../components/IOScrollViewWithReveal';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import Feature1Image from '../../assets/img/discovery/feature_1.svg';
 import Feature2Image from '../../assets/img/discovery/feature_2.svg';
 import Feature3Image from '../../assets/img/discovery/feature_3.svg';
 import Feature4Image from '../../assets/img/discovery/feature_4.svg';
 import Feature5Image from '../../assets/img/discovery/feature_5.svg';
-import { useAppDispatch, useAppSelector } from '../../../../store';
-import {
-  resetInstanceCreation,
-  selectInstanceStatus
-} from '../../store/pidIssuance';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
-import { IOScrollViewWithReveal } from '../../../../components/IOScrollViewWithReveal';
-import { AnimatedImage } from '../../../../components/AnimatedImage';
-import { generateItwIOMarkdownRules } from '../../utils/markdown';
-import IOMarkdown from '../../../../components/IOMarkdown';
 import { createInstanceThunk } from '../../middleware/instance';
-import { useHardwareBackButtonToDismiss } from '../../../../hooks/useHardwareBackButton';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { resetInstanceCreation } from '../../store/pidIssuance';
+import { selectInstanceStatus } from '../../store/selectors/pidIssuance';
+import { generateItwIOMarkdownRules } from '../../utils/markdown';
+import { useAppDispatch, useAppSelector } from '@/ts/store';
 
 // Offset to avoid to scroll to the block without margins
 const scrollOffset: number = 12;
@@ -61,16 +59,16 @@ export const WalletInstanceCreation = () => {
 
   const dismissalDialog = useItwDismissalDialog({
     customLabels: {
-      title: I18n.t('discovery.screen.itw.dismissalDialog.title', {
+      title: t('discovery.screen.itw.dismissalDialog.title', {
         ns: 'wallet'
       }),
-      body: I18n.t('discovery.screen.itw.dismissalDialog.body', {
+      body: t('discovery.screen.itw.dismissalDialog.body', {
         ns: 'wallet'
       }),
-      confirmLabel: I18n.t('discovery.screen.itw.dismissalDialog.confirm', {
+      confirmLabel: t('discovery.screen.itw.dismissalDialog.confirm', {
         ns: 'wallet'
       }),
-      cancelLabel: I18n.t('discovery.screen.itw.dismissalDialog.cancel', {
+      cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel', {
         ns: 'wallet'
       })
     },
@@ -120,7 +118,6 @@ export const WalletInstanceCreation = () => {
       productHighlightsLayout.height * (1 - intersectionRatio);
 
     if (productHighlightsLayout.y > 0) {
-      // eslint-disable-next-line functional/immutable-data
       hideAnchorLink.value =
         scrollPosition.value >= productHighlightsLayout.y - threshold;
     }
@@ -135,7 +132,6 @@ export const WalletInstanceCreation = () => {
 
   const onPress = async () => {
     const promise = dispatch(createInstanceThunk());
-    // eslint-disable-next-line functional/immutable-data
     thunkRef.current = promise;
   };
 
@@ -147,13 +143,13 @@ export const WalletInstanceCreation = () => {
       actions={{
         primary: {
           loading,
-          label: I18n.t('discovery.screen.itw.actions.primary', {
+          label: t('discovery.screen.itw.actions.primary', {
             ns: 'wallet'
           }),
           onPress
         },
         anchor: {
-          label: I18n.t('discovery.screen.itw.actions.anchor', {
+          label: t('discovery.screen.itw.actions.anchor', {
             ns: 'wallet'
           }),
           onPress: handleScrollToHighlights
@@ -167,7 +163,7 @@ export const WalletInstanceCreation = () => {
       <VSpacer size={24} />
       <ContentWrapper>
         <H2>
-          {I18n.t('discovery.screen.itw.title', {
+          {t('discovery.screen.itw.title', {
             ns: 'wallet'
           })}
         </H2>
@@ -175,31 +171,31 @@ export const WalletInstanceCreation = () => {
         <VStack space={16}>
           <FeatureBlock
             image={<Feature1Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.1', {
+            content={t('discovery.screen.itw.features.1', {
               ns: 'wallet'
             })}
           />
           <FeatureBlock
             image={<Feature2Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.2', {
+            content={t('discovery.screen.itw.features.2', {
               ns: 'wallet'
             })}
           />
           <FeatureBlock
             image={<Feature3Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.3', {
+            content={t('discovery.screen.itw.features.3', {
               ns: 'wallet'
             })}
           />
           <FeatureBlock
             image={<Feature4Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.4', {
+            content={t('discovery.screen.itw.features.4', {
               ns: 'wallet'
             })}
           />
           <FeatureBlock
             image={<Feature5Image width={48} height={48} />}
-            content={I18n.t('discovery.screen.itw.features.5', {
+            content={t('discovery.screen.itw.features.5', {
               ns: 'wallet'
             })}
           />
@@ -218,40 +214,40 @@ export const WalletInstanceCreation = () => {
         <ContentWrapper>
           <Divider />
           <DetailBlock
-            title={I18n.t('discovery.screen.itw.details.1.title', {
+            title={t('discovery.screen.itw.details.1.title', {
               ns: 'wallet'
             })}
-            content={I18n.t('discovery.screen.itw.details.1.content', {
+            content={t('discovery.screen.itw.details.1.content', {
               ns: 'wallet'
             })}
             icon="security"
           />
           <Divider />
           <DetailBlock
-            title={I18n.t('discovery.screen.itw.details.2.title', {
+            title={t('discovery.screen.itw.details.2.title', {
               ns: 'wallet'
             })}
-            content={I18n.t('discovery.screen.itw.details.2.content', {
+            content={t('discovery.screen.itw.details.2.content', {
               ns: 'wallet'
             })}
             icon="fiscalCodeIndividual"
           />
           <Divider />
           <DetailBlock
-            title={I18n.t('discovery.screen.itw.details.3.title', {
+            title={t('discovery.screen.itw.details.3.title', {
               ns: 'wallet'
             })}
-            content={I18n.t('discovery.screen.itw.details.3.content', {
+            content={t('discovery.screen.itw.details.3.content', {
               ns: 'wallet'
             })}
             icon="navQrWallet"
           />
           <Divider />
           <DetailBlock
-            title={I18n.t('discovery.screen.itw.details.4.title', {
+            title={t('discovery.screen.itw.details.4.title', {
               ns: 'wallet'
             })}
-            content={I18n.t('discovery.screen.itw.details.4.content', {
+            content={t('discovery.screen.itw.details.4.content', {
               ns: 'wallet'
             })}
             icon="euStars"
@@ -259,7 +255,7 @@ export const WalletInstanceCreation = () => {
 
           <VSpacer size={24} />
           <IOMarkdown
-            content={I18n.t('discovery.screen.itw.tos', { ns: 'wallet' })}
+            content={t('discovery.screen.itw.tos', { ns: 'wallet' })}
             rules={generateItwIOMarkdownRules({
               linkCallback: () => null,
               paragraphSize: 'small'

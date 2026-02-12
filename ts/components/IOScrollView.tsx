@@ -1,9 +1,7 @@
-/* eslint-disable functional/immutable-data */
 import {
-  ButtonLink,
-  ButtonOutline,
-  ButtonSolid,
   HeaderSecondLevel,
+  IOButton,
+  IOButtonLinkSpecificProps,
   IOColors,
   IOSpacer,
   IOSpacingScale,
@@ -43,35 +41,35 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WithTestID } from '../types/utils';
+import { ButtonBlockProps } from './ui/utils/buttons';
+
+type ButtonLinkProps = Omit<IOButtonLinkSpecificProps, 'color' | 'variant'>;
 
 export type IOScrollViewActions =
   | {
       type: 'SingleButton';
-      primary: Omit<ComponentProps<typeof ButtonSolid>, 'fullWidth'>;
+      primary: ButtonBlockProps;
       secondary?: never;
       tertiary?: never;
     }
   | {
       type: 'TwoButtons';
-      primary: Omit<ComponentProps<typeof ButtonSolid>, 'fullWidth'>;
-      secondary: Omit<ComponentProps<typeof ButtonLink>, 'color'>;
+      primary: ButtonBlockProps;
+      secondary: ButtonLinkProps;
       tertiary?: never;
     }
   | {
       type: 'ThreeButtons';
-      primary: Omit<ComponentProps<typeof ButtonSolid>, 'fullWidth'>;
-      secondary: Omit<
-        ComponentProps<typeof ButtonOutline>,
-        'fullWidth' | 'color'
-      >;
-      tertiary: Omit<ComponentProps<typeof ButtonLink>, 'color'>;
+      primary: ButtonBlockProps;
+      secondary: ButtonBlockProps;
+      tertiary: ButtonLinkProps;
     };
 
 type IOSCrollViewHeaderScrollValues = ComponentProps<
   typeof HeaderSecondLevel
 >['scrollValues'];
 
-type IOScrollView = WithTestID<
+type IOScrollViewProps = WithTestID<
   PropsWithChildren<{
     headerConfig?: ComponentProps<typeof HeaderSecondLevel>;
     actions?: IOScrollViewActions;
@@ -158,7 +156,7 @@ export const IOScrollView = ({
   refreshControlProps,
   contentContainerStyle,
   testID
-}: IOScrollView) => {
+}: IOScrollViewProps) => {
   const theme = useIOTheme();
 
   /* Navigation */
@@ -282,8 +280,8 @@ export const IOScrollView = ({
             paddingBottom: excludeEndContentMargin
               ? 0
               : actions
-              ? safeBottomAreaHeight
-              : bottomMargin + contentEndMargin,
+                ? safeBottomAreaHeight
+                : bottomMargin + contentEndMargin,
             paddingHorizontal: includeContentMargins
               ? IOVisualCostants.appMarginDefault
               : 0,
@@ -373,7 +371,9 @@ const renderActionButtons = (
 
   return (
     <>
-      {primaryAction && <ButtonSolid fullWidth {...primaryAction} />}
+      {primaryAction && (
+        <IOButton variant="solid" fullWidth {...primaryAction} />
+      )}
 
       {type === 'TwoButtons' && (
         <View
@@ -383,17 +383,19 @@ const renderActionButtons = (
           }}
         >
           <VSpacer size={spaceBetweenActionAndLink} />
-          <ButtonLink
-            color="primary"
-            {...(secondaryAction as ComponentProps<typeof ButtonLink>)}
-          />
+          <IOButton color="primary" variant="link" {...secondaryAction} />
         </View>
       )}
 
       {type === 'ThreeButtons' && (
         <Fragment>
           <VSpacer size={spaceBetweenActions} />
-          <ButtonOutline fullWidth color="primary" {...secondaryAction} />
+          <IOButton
+            variant="outline"
+            fullWidth
+            color="primary"
+            {...secondaryAction}
+          />
 
           <View
             style={{
@@ -402,7 +404,7 @@ const renderActionButtons = (
             }}
           >
             <VSpacer size={spaceBetweenActionAndLink} />
-            <ButtonLink color="primary" {...tertiaryAction} />
+            <IOButton variant="link" color="primary" {...tertiaryAction} />
           </View>
         </Fragment>
       )}

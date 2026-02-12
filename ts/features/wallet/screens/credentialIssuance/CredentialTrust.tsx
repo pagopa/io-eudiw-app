@@ -9,13 +9,18 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import { Fragment, useCallback, useEffect } from 'react';
-import { View } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch, useAppSelector } from '../../../../store';
-import { getCredentialNameByType } from '../../utils/credentials';
+import { Fragment, useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
+import IOMarkdown from '../../../../components/IOMarkdown';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../../../store';
+import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import { ItwRequestedClaimsList } from '../../components/presentation/ItwRequiredClaimsList';
+import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus,
@@ -23,14 +28,11 @@ import {
   selectRequestedCredentialType,
   setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
-import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import IOMarkdown from '../../../../components/IOMarkdown';
-import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
-import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import {
+  getCredentialNameByType,
+} from '../../utils/credentials';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
-import { ItwRequestedClaimsList } from '../../components/presentation/ItwRequiredClaimsList';
+import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
 
 /**
  * Screen which shows the user the credentials and claims that will be shared with the credential issuer
@@ -62,6 +64,10 @@ const CredentialTrust = () => {
     dispatch(resetCredentialIssuance());
     navigateToWallet();
   }, [dispatch, navigateToWallet]);
+
+  const onContinue = useCallback(() => {
+    dispatch(setCredentialIssuancePostAuthRequest());
+  }, [dispatch]);
 
   const dismissalDialog = useItwDismissalDialog({
     handleDismiss: cancel,
@@ -172,7 +178,7 @@ const CredentialTrust = () => {
           type: 'TwoButtons',
           primary: {
             label: t('global:buttons.continue'),
-            onPress: () => dispatch(setCredentialIssuancePostAuthRequest()),
+            onPress: onContinue,
             loading
           },
           secondary: {

@@ -42,7 +42,6 @@ export const CardBackground = ({
   useEffect(() => {
     // Set loading ended only if we have an image and a size defined
     if (image && size.width > 0 && size.height > 0) {
-      // eslint-disable-next-line functional/immutable-data
       loadingOverlayOpacity.value = 0;
     }
   }, [image, loadingOverlayOpacity, size]);
@@ -105,6 +104,5 @@ const credentialCardBackgrounds: {
 } = {
   [wellKnownCredential.PID]: require('../../assets/img/cards/pid.png'),
   [wellKnownCredential.DRIVING_LICENSE]: require('../../assets/img/cards/mdl.png'),
-  [wellKnownCredential.HEALTHID]: require('../../assets/img/cards/healthID.png'),
   [wellKnownCredential.DISABILITY_CARD]: require('../../assets/img/cards/disabilityCard.png')
 };

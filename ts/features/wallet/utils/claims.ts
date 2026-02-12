@@ -1,7 +1,7 @@
 import * as z from 'zod';
-import { getClaimsFullLocale } from './locale';
-import { ParsedCredential } from './itwTypesUtils';
 import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
+import { ParsedCredential } from './itwTypesUtils';
+import { getClaimsFullLocale } from './locale';
 
 /**
  * Constants to represent the type of the claim.
@@ -353,11 +353,3 @@ export const parseClaims = (
       };
     });
 };
-
-export type SimpleDateFormat =
-  (typeof SimpleDateFormat)[keyof typeof SimpleDateFormat];
-
-export const SimpleDateFormat = {
-  DDMMYYYY: 'DD/MM/YYYY',
-  DDMMYY: 'DD/MM/YY'
-} as const;

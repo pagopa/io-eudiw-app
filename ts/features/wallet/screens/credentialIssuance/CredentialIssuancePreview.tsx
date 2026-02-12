@@ -5,22 +5,22 @@ import {
   IOVisualCostants,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import { StyleSheet, View } from 'react-native';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
+import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch, useAppSelector } from '../../../../store';
+import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
+import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus
 } from '../../store/credentialIssuance';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { getCredentialNameByType } from '../../utils/credentials';
 import { addCredentialWithIdentification } from '../../store/credentials';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
-import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
-import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { parseClaimsToRecord } from '../../utils/claims';
+import { getCredentialNameByType } from '../../utils/credentials';
 import { WellKnownClaim } from '../../utils/itwClaimsUtils';
 
 export const CredentialPreview = () => {

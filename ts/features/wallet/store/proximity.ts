@@ -1,8 +1,7 @@
-/* eslint-disable functional/immutable-data */
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
-import { RootState } from '../../../store/types';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { preferencesReset } from '../../../store/reducers/preferences';
+import { RootState } from '../../../store/types';
 import { ProximityDetails } from '../screens/proximity/ItwProximityPresentationDetails';
 import { resetLifecycle } from './lifecycle';
 

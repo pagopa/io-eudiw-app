@@ -1,12 +1,20 @@
+import { CryptoContext } from '@pagopa/io-react-native-jwt';
 import {
   createCryptoContextFor,
   Credential
 } from '@pagopa/io-react-native-wallet';
-import { serializeError } from 'serialize-error';
-import { CryptoContext } from '@pagopa/io-react-native-jwt';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+import { serializeError } from 'serialize-error';
+import { takeLatestEffect } from '../../../middleware/listener/effects';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '../../../store/reducers/identification';
+import { selectCredentials } from '../store/credentials';
 import {
   resetPresentation,
+  selectOptionalCredentials,
   setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionRequest,
@@ -15,22 +23,16 @@ import {
   setPreDefinitionRequest,
   setPreDefinitionSuccess
 } from '../store/presentation';
-import { selectCredentials } from '../store/credentials';
-import {
-  AppListenerWithAction,
-  AppStartListening
-} from '../../../middleware/listener';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../../store/reducers/identification';
-import { takeLatestEffect } from '../../../middleware/listener/effects';
 import {
   enrichPresentationDetails,
   getInvalidCredentials
 } from '../utils/itwClaimsUtils';
-import { DcqlQuery } from '../utils/itwTypesUtils';
+import {
+  AppListenerWithAction,
+  AppStartListening
+} from '@/ts/middleware/listener/types';
+
+type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 
 /**
  * Listener for the credential presentation.
@@ -123,6 +125,9 @@ const presentationListener: AppListenerWithAction<
     const choice = await listenerApi.take(
       isAnyOf(setPostDefinitionRequest, setPostDefinitionCancel)
     );
+    const optionalCredentials = selectOptionalCredentials(
+      listenerApi.getState()
+    );
 
     if (setPostDefinitionRequest.match(choice[0])) {
       listenerApi.dispatch(
@@ -132,14 +137,18 @@ const presentationListener: AppListenerWithAction<
         isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
       );
       if (setIdentificationIdentified.match(resAction[0])) {
-        const credentialsToPresent = evaluateDcqlQuery.map(
-          ({ requiredDisclosures, ...rest }) => ({
+        const credentialsToPresent = evaluateDcqlQuery
+          .filter(
+            c =>
+              c.purposes.some(({ required }) => required) ||
+              optionalCredentials?.includes(c.id)
+          )
+          .map(({ requiredDisclosures, ...rest }) => ({
             ...rest,
             requestedClaims: requiredDisclosures.map(
               ([, claimName]) => claimName
             )
-          })
-        );
+          }));
 
         const remotePresentations =
           await Credential.Presentation.prepareRemotePresentations(

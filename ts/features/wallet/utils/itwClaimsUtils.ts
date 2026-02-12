@@ -3,8 +3,14 @@
  */
 
 import { differenceInCalendarDays, isValid } from 'date-fns';
-import z from 'zod';
-import i18next from 'i18next';
+import { t } from 'i18next';
+import * as z from 'zod';
+import { claimScheme, parseClaims } from './claims';
+import { wellKnownCredential } from './credentials';
+import { getCredentialStatus } from './itwCredentialStatusUtils';
+import { validCredentialStatuses } from './itwCredentialUtils';
+import { CredentialType } from './itwMocksUtils';
+import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
 import {
   ClaimDisplayResult,
   EnrichedPresentationDetails,
@@ -13,12 +19,6 @@ import {
   PresentationDetails,
   StoredCredential
 } from './itwTypesUtils';
-import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
-import { wellKnownCredential } from './credentials';
-import { validCredentialStatuses } from './itwCredentialUtils';
-import { CredentialType } from './itwMocksUtils';
-import { claimScheme, parseClaims } from './claims';
-import { getCredentialStatus } from './itwCredentialStatusUtils';
 
 /**
  *
@@ -209,7 +209,7 @@ export const getFamilyNameFromCredential = (
  *
  */
 
-export const SimpleDateFormat = {
+const SIMPLE_DATE_FORMAT = {
   DDMMYYYY: 'DD/MM/YYYY',
   DDMMYY: 'DD/MM/YY'
 } as const;
@@ -222,9 +222,7 @@ export const SimpleDateFormat = {
 const credentialTypesByVct: { [vct: string]: CredentialType } = {
   [wellKnownCredential.PID]: CredentialType.PID,
   [wellKnownCredential.DRIVING_LICENSE]: CredentialType.DRIVING_LICENSE,
-  [wellKnownCredential.DISABILITY_CARD]:
-    CredentialType.EUROPEAN_DISABILITY_CARD,
-  [wellKnownCredential.HEALTHID]: CredentialType.EUROPEAN_HEALTH_INSURANCE_CARD
+  [wellKnownCredential.DISABILITY_CARD]: CredentialType.EUROPEAN_DISABILITY_CARD
 };
 
 /**
@@ -322,10 +320,9 @@ export const getClaimDisplayValue = (
       case 'boolean':
         return {
           type: 'text',
-          value: i18next.t(
-            `presentation.credentialDetails.boolClaim.${parsed.value}`,
-            { ns: 'wallet' }
-          )
+          value: t(`presentation.credentialDetails.boolClaim.${parsed.value}`, {
+            ns: 'wallet'
+          })
         };
 
       case 'stringArray':
@@ -358,23 +355,26 @@ export const getClaimDisplayValue = (
       case 'verificationEvidence':
         return {
           type: 'text',
-          value: i18next.t(
-            'features.itWallet.generic.placeholders.evidenceAvailable'
-          )
+          value: parsed.value.organization_name
         };
 
       default:
         return {
           type: 'text',
-          value: i18next.t(
-            'features.itWallet.generic.placeholders.claimNotAvailable'
+          value: t(
+            'verifiableCredentials.generic.placeholders.claimNotAvailable',
+            { ns: 'wallet' }
           )
         };
     }
   } catch (error) {
     return {
       type: 'text',
-      value: i18next.t('features.itWallet.generic.placeholders.error')
+      value: t('verifiableCredentials.generic.placeholders.claimNotAvailable', {
+        ns: 'wallet'
+      })
     };
   }
 };
+export type SimpleDateFormat =
+  (typeof SIMPLE_DATE_FORMAT)[keyof typeof SIMPLE_DATE_FORMAT];
