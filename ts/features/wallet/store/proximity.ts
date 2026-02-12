@@ -2,7 +2,7 @@ import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { preferencesReset } from '../../../store/reducers/preferences';
 import { RootState } from '../../../store/types';
-import { ParsedCredential } from '../utils/itwTypesUtils';
+import { ProximityDetails } from '../screens/proximity/ItwProximityPresentationDetails';
 import { resetLifecycle } from './lifecycle';
 
 /**
@@ -28,10 +28,7 @@ export enum ProximityStatus {
  * a proximity presentation on screen and create the {@link AcceptedFields}
  */
 export type ProximityDisclosure = {
-  descriptor: Record<
-    string,
-    Record<string, Record<string, ParsedCredential[string]>>
-  >;
+  descriptor: ProximityDetails;
   isAuthenticated: boolean;
 };
 
@@ -45,7 +42,6 @@ export type ProximityState = {
   status: ProximityStatus;
   documentRequest?: ISO18013_5.VerifierRequest;
   proximityDisclosureDescriptor?: ProximityDisclosure;
-  proximityAcceptedFields?: ISO18013_5.AcceptedFields;
   errorDetails?: string;
 };
 
@@ -109,12 +105,8 @@ export const proximitySlice = createSlice({
       state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED;
       state.proximityDisclosureDescriptor = action.payload;
     },
-    setProximityStatusAuthorizationSend: (
-      state,
-      action: PayloadAction<ISO18013_5.AcceptedFields>
-    ) => {
+    setProximityStatusAuthorizationSend: state => {
       state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_SEND;
-      state.proximityAcceptedFields = action.payload;
     },
     setProximityStatusAuthorizationRejected: state => {
       state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_REJECTED;
@@ -200,14 +192,6 @@ export const selectProximityDisclosureIsAuthenticated = createSelector(
   (state: RootState) => state.wallet.proximity.proximityDisclosureDescriptor,
   descriptor => descriptor?.isAuthenticated || false
 );
-
-/**
- * Selects the {@link AcceptedFields} the user chose to share
- * @param state - The root state
- * @returns The {@link AcceptedFields} the user chose to share
- */
-export const selectProximityAcceptedFields = (state: RootState) =>
-  state.wallet.proximity.proximityAcceptedFields;
 
 /**
  * Selects the error details

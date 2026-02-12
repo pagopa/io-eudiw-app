@@ -1,5 +1,9 @@
-import { ISO18013_5, CBOR } from '@pagopa/io-react-native-iso18013';
-import { ParsedCredential, StoredCredential } from './itwTypesUtils';
+import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
+import { assert } from '../../../utils/common';
+import { ProximityDetails } from '../screens/proximity/ItwProximityPresentationDetails';
+import { parseClaims } from './claims';
+import { WellKnownClaim } from './itwClaimsUtils';
+import { StoredCredential } from './itwTypesUtils';
 
 /**
  * Temporary helper function to convert from Base64URL to Base64
@@ -14,184 +18,81 @@ export function b64utob64(b64u: string) {
   );
 }
 
-type StoredCredentialWithIssuerSigned = StoredCredential & {
-  issuerSigned: CBOR.IssuerSigned;
-};
-
 /**
- * Helper function to generate the attributes for the {@link matchRequestToClaims} method.
- * For a given Verifier Request namespace-required attributes, this method looks for matches
- * and creates an object where to each namespace corresponds an object containing the
- * attribute's value and display info as found in the {@link StoredCredentialWithIssuerSigned}
- */
-const getAttributesExtractor =
-  (credential: StoredCredentialWithIssuerSigned) =>
-  (
-    accumulated: Record<string, ParsedCredential[string]>,
-    attribute: string
-  ) => {
-    // Retrieves the value for this attribute from the credential, using a key built from the credential type and the attribute name, in the form credential_type:attribute_name.
-    const value =
-      credential.parsedCredential[
-        `${credential.credentialType.substring(
-          0,
-          credential.credentialType.lastIndexOf('.')
-        )}:${attribute}`
-      ];
-    // If the credential contains the attribute, add it to the accumulator, otherwise go to the next attribute
-    return value ? { ...accumulated, [attribute]: value } : accumulated;
-  };
-
-/**
- * Helper function to generate the namespaces for the {@link matchRequestToClaims} method.
- * For a given credential and Verifier required namespaces, this method looks for matches
- * and creates an object where to each namespace corresponds an object mapping the attributes to 
- * their value and display info as found in the {@link StoredCredentialWithIssuerSigned}
-
- * containing the attribute value and display info as found in the {@link StoredCredentialWithIssuerSigned}
- 
- * @param credential a {@link StoredCredentialWithIssuerSigned} containing the claims values and display info
- * @returns an object where to each namespace corresponds an object mapping the attributes to 
- *          their value and display info as found in the {@link StoredCredentialWithIssuerSigned}
- */
-const getNameSpaceExtractor =
-  (credential: StoredCredentialWithIssuerSigned) =>
-  /**
-   * @param namespace : A Verifier Request namespace
-   * @param attributes : The Verifier requested namespace attributes
-   */
-  (
-    accumulated: Record<string, Record<string, ParsedCredential[string]>>,
-    [namespace, attributes]: [string, boolean | Record<string, boolean>]
-  ) => {
-    // Check first if the credential contains the required namespace
-    const namespaces = credential.issuerSigned.nameSpaces;
-    if (!(namespace in namespaces)) {
-      return accumulated;
-    }
-    // Then check if attributes is an object and not a simple boolean
-    if (typeof attributes !== 'object') {
-      return accumulated;
-    }
-    // If found and not a boolean, combine the attributes required for the specific namespace
-    // by the Verifier Request with claim values and display info from the credentials,
-    // if matches are found
-    const foundAttributes = Object.keys(attributes).reduce<
-      Record<string, ParsedCredential[string]>
-    >(getAttributesExtractor(credential), {});
-    return Object.keys(foundAttributes).length !== 0
-      ? // If attributes have been found add the namespace new entry containing attribute
-        // values and display data to the accumulator
-        {
-          ...accumulated,
-          [namespace]: foundAttributes
-        }
-      : // If no attribute has been found go to the next namespace
-        accumulated;
-  };
-
-/**
- * Helper function for the {@link matchRequestToClaims} method.
- * This function filters the isAuthenticated field of the Verifier required namespace object
- * and then generates an object where to each namespace corresponds an object mapping the attributes to
- * their value and display info as found in the {@link StoredCredentialWithIssuerSigned}
+ * Get the Presentation details based on the request from the Verifier.
  *
- * @param value An object contining required namespaces and isAuthenticated info for a credential type of a {@link VerifierRequest}
- * @param credential a {@link StoredCredentialWithIssuerSigned} containing the claims values and display info
- * @returns an object where to each namespace corresponds an object mapping the attributes to
- *          their value and display info as found in the {@link StoredCredentialWithIssuerSigned}
+ * @param request The request from the Verifier, specifying which document types and claims are required
+ * @param credentialsByType The credentials object by doc type
+ * @returns The Presentation details
  */
-const extractNamespaces = (
-  namespacesAndIsAuthenticated: ISO18013_5.VerifierRequest['request'][string],
-  credential: StoredCredentialWithIssuerSigned
-) =>
-  Object.entries(namespacesAndIsAuthenticated)
-    // Filter the isAuthenticated key, which is not a namespace
-    .filter(([key, _]) => key !== 'isAuthenticated')
-    // Combine the namespaces and attributes required by the Verifier Request with
-    // claim values and display info from the credentials, if matches are found
-    .reduce<Record<string, Record<string, ParsedCredential[string]>>>(
-      getNameSpaceExtractor(credential),
-      {}
-    );
+const WIA_DOC_TYPE = 'org.iso.18013.5.1.IT.WalletAttestation';
 
-/**
- * This method matches every required attribute contained in a {@link VerifierRequest} to its
- * corresponding entry in one of the decoded credentials and generates an object which, for
- * every matched attribute, corresponds the claim value and display info found inside the credential,
- * keeping the original
- * {
- *  credentialType : {
- *    namespace : {
- *      attributes...
- *    }
- *  }
- * }
- * structure.
- * @param request A {@link VerifierRequest} request field
- * @param decodedCredentials An array of {@link StoredCredentialWithIssuerSigned} mDoc credentials
- * @returns see description
- */
-const mapVerifierRequestToClaimInfo = (
+export const getProximityDetails = (
   request: ISO18013_5.VerifierRequest['request'],
-  decodedCredentials: Array<StoredCredentialWithIssuerSigned>
-) =>
-  Object.entries(request).reduce<
-    Record<string, Record<string, Record<string, ParsedCredential[string]>>>
-  >((accumulated, [credentialType, value]) => {
-    // Search for a credential of the same credential type specified in the Verifier Request
-    const credential = decodedCredentials.find(
-      cred => cred.credentialType === credentialType
-    );
-    // If no matching credential has been found go to the next Verifier required credential
-    if (!credential) {
-      return accumulated;
+  credentials: Array<StoredCredential>
+): ProximityDetails => {
+  // Exclude the WIA document type from the request
+  const { [WIA_DOC_TYPE]: _, ...rest } = request;
+
+  return Object.entries(rest).map(
+    ([docType, { isAuthenticated, ...namespaces }]) => {
+      // Support multiple credentials type
+      const credential = credentials.filter(
+        c => c.credentialType === docType
+      )[0];
+
+      assert(credential, `Credential not found for docType: ${docType}`);
+      // Extract required fields from the verifier request.
+      // Each field is formatted as "namespace:field" to match the structure
+      // of parsedCredential, which uses colon-separated keys.
+      const requiredFields = Object.entries(namespaces).flatMap(
+        ([namespace, fields]) =>
+          Object.keys(fields).map(field => `${namespace}:${field}`)
+      );
+      const required = new Set(requiredFields);
+
+      const parsedCredential = Object.fromEntries(
+        Object.keys(credential.parsedCredential)
+          .filter(k => required.has(k))
+          .map(k => [k, credential.parsedCredential[k]])
+      );
+
+      return {
+        credentialType: credential.credentialType,
+        claimsToDisplay: parseClaims(parsedCredential, {
+          exclude: [WellKnownClaim.unique_id]
+        }),
+        isAuthenticated
+      };
     }
-    const foundNamespaces = extractNamespaces(value, credential);
-    return Object.keys(foundNamespaces).length !== 0
-      ? // If namespaces have been found add a new entry to the accumulator
-        {
-          ...accumulated,
-          [credentialType]: foundNamespaces
-        }
-      : // Otherwise, if no namespace has been found or no attributes in any namespace have been found go to the next Verifier required credential
-        accumulated;
-  }, {});
-
-/**
- * This helper function takes a {@link VerifierRequest}, looks for
- * the presence of the required claims in the mDoc credentials and, if
- * found adds the {@link ParsedCredential} entry for the attribute to
- * an object following the same path structure of the original credential
- * @param verifierRequest The authentication request sent by the verifier
- * @param credentialsMdoc The mdoc credentials contained in the wallet
- * @returns An object that is a record of credential types to an object
- * which has the same structure of a decoded mDoc credential's namespaces
- * except for the fact that the namespace attribute keys are mapped to
- * the value corresponding to the same attribute key inside of the
- * {@link ParsedCredential} object.
- */
-export const matchRequestToClaims = async (
-  verifierRequest: ISO18013_5.VerifierRequest,
-  credentialsMdoc: Array<StoredCredential>
-) => {
-  const decodedCredentials: Array<StoredCredentialWithIssuerSigned> =
-    await Promise.all(
-      credentialsMdoc.map(async credential => {
-        const decoded = b64utob64(credential.credential);
-        const decodedIssuerSigned = await CBOR.decodeIssuerSigned(decoded);
-        return {
-          ...credential,
-          issuerSigned: decodedIssuerSigned
-        };
-      })
-    );
-
-  return mapVerifierRequestToClaimInfo(
-    verifierRequest.request,
-    decodedCredentials
   );
 };
+
+interface NestedBooleanMap {
+  [key: string]: boolean | NestedBooleanMap;
+}
+
+const acceptAllFields = <T extends NestedBooleanMap>(input: T): T =>
+  Object.entries(input).reduce((acc, [key, value]) => {
+    if (typeof value === 'boolean') {
+      return { ...acc, [key]: true };
+    } else if (typeof value === 'object' && value !== null) {
+      return { ...acc, [key]: acceptAllFields(value) };
+    } else {
+      return { ...acc, [key]: value };
+    }
+  }, {} as T);
+
+export const generateAcceptedFields = (
+  request: ISO18013_5.VerifierRequest['request']
+): ISO18013_5.AcceptedFields =>
+  Object.entries(request).reduce(
+    (acc, [docType, { isAuthenticated, ...namespaces }]) => ({
+      ...acc,
+      [docType]: acceptAllFields(namespaces)
+    }),
+    {}
+  );
 
 /**
  * Returns true if all the `isAuthenticated` flags in the Verifier Request are set to true, false otherwise.

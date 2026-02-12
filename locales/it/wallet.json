@@ -216,6 +216,7 @@
       "subtitle": "Saranno mostrati a **Comune di Soleluna** per accedere ai servizi richiesti",
       "requiredClaims": "Dati necessari",
       "optionalClaims": "Dati facoltativi",
+      "purpose": "Finalità: {{purpose}}",
       "disclaimer": {
         "0": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
         "1": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento"
@@ -227,7 +228,7 @@
       "subtitle": "Ora puoi continuare a usare i servizi sul sito dell'ente."
     },
     "successWithRedirect": {
-      "title": "Done!",
+      "title": "Fatto!",
       "subtitle": "Ora puoi continuare a usare i servizi sul sito dell'ente.",
       "continue": "Continua sul sito dell'ente"
     },
@@ -304,6 +305,9 @@
       "title": "Show QR",
       "body": "Display the QR code to verify the validity of the documents in your Wallet."
     },
+    "trust": {
+     "subtitle": "Saranno mostrati a **{{relyingParty}}** per completare la verifica dei documenti richiesti."
+    },
     "connected": {
       "body": "Verification in progress. Please wait a few seconds..."
     },
@@ -317,8 +321,8 @@
       "false": "The verifier is not authenticated"
     },
     "success": {
-      "title": "Done!",
-      "subtitle": "The verification has been successfully completed.",
+      "title": "Fatto!",
+      "subtitle": "La verifica è stata completata con successo.",
       "button": "Ok"
     },
     "failure": {
@@ -393,15 +397,15 @@
       "header": "Documenti"
     },
     "trust": {
-      "title": "{{credential}}: dati necessari",
-      "subtitle": "Saranno condivisi con **PagoPA S.p.A.** per il rilascio della versione digitale del documento.",
+      "title": "{{credential}}: Dati richiesti",
+      "subtitle": "Saranno condivisi con **{{organization}}** per il rilascio della versione digitale del documento.",
       "requiredData": "Dati richiesti",
       "disclaimer": {
         "store": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
-        "retention": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento"
+        "retention": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento."
       },
       "tos": "Premendo **Continua** dichiari di aver letto e compreso l'[Informativa Privacy]({{privacyUrl}}).",
-      "dataSource": "Provided by {{source}}"
+      "dataSource": "Forniti da {{source}}"
     },
     "failure": {
       "title": "An unexpected error occurred",
