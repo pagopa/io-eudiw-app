@@ -100,8 +100,9 @@ jobs:
       - id: build-android
         name: Build and submit to Play Store
         run: |
+          ./scripts/android-release.sh ./android/app
           cd fastlane
-          bundle exec fastlane alpha_playstore
+          bundle exec fastlane android alpha_playstore
         shell: bash
         env:
           RUBYOPT: '-rostruct'
@@ -119,7 +120,7 @@ jobs:
           cd fastlane/android
           VERSION_CODE=$(sed -n 's/.*versionCode \(.*\)/\1/p' "app/build.gradle")
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
-          bundle exec fastlane download_apk
+          bundle exec fastlane android download_apk
         env:
           RUBYOPT: '-rostruct'
           ENCODED_IOAPP_JSON_KEY_FILE: ${{secrets.ENCODED_IOAPP_JSON_KEY_FILE}}
@@ -183,8 +184,9 @@ jobs:
       - id: build-ios
         name: Build and submit to App Store
         run: |
+          ./scripts/ios-release.sh
           cd fastlane
-          bundle exec fastlane beta_testflight
+          bundle exec fastlane ios beta_testflight
         env:
           LC_ALL: en_US.UTF-8
           LANG: en_US.UTF-8
