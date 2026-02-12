@@ -3,19 +3,10 @@ const { withAppBuildGradle } = require('@expo/config-plugins');
 
 module.exports = function withAndroidSigning(config) {
   return withAppBuildGradle(config, config => {
-    let contents = config.modResults.contents;
+    const buildGradle = config.modResults.contents;
 
-    // Ensure signingConfigs.release exists
-    if (
-      !contents.includes('signingConfigs') ||
-      !contents.includes('release {')
-    ) {
-      console.warn('Could not find signingConfigs block');
-    }
-
-    // Inject release signing config if missing
-    if (!contents.includes('IO_APP_RELEASE_STORE_FILE')) {
-      const signingConfigBlock = `
+    // We inject this specific block into the existing signingConfigs
+    const signingConfigBlock = `
         release {
             if (System.getenv('IO_APP_RELEASE_STORE_FILE')) {
                 storeFile file(System.getenv('IO_APP_RELEASE_STORE_FILE'))
@@ -25,19 +16,28 @@ module.exports = function withAndroidSigning(config) {
             }
         }`;
 
-      contents = contents.replace(
-        /signingConfigs\s*\{/,
-        match => `${match}${signingConfigBlock}`
+    // Regex to find 'signingConfigs {' and inject our block right after it
+    const pattern = /signingConfigs\s*\{/;
+
+    if (!buildGradle.match(pattern)) {
+      console.warn('Could not find signingConfigs block in build.gradle');
+    } else {
+      // Inject the release config inside the existing signingConfigs block
+      config.modResults.contents = buildGradle.replace(
+        pattern,
+        `signingConfigs {${signingConfigBlock}`
       );
     }
 
-    // Replace release signingConfig debug with release in the buildTypes block
-    contents = contents.replace(
-      /(buildTypes\s*\{[\s\S]*?release\s*\{[\s\S]*?)signingConfig\s+signingConfigs\.debug/,
-      `$1signingConfig signingConfigs.release`
-    );
+    // We look for buildTypes -> release and ensure it uses signingConfigs.release
+    const releaseBuildTypePattern = /buildTypes\s*\{\s*release\s*\{/;
 
-    config.modResults.contents = contents;
+    if (config.modResults.contents.match(releaseBuildTypePattern)) {
+      config.modResults.contents = config.modResults.contents.replace(
+        releaseBuildTypePattern,
+        `buildTypes {\n        release {\n            signingConfig signingConfigs.release`
+      );
+    }
 
     return config;
   });
