@@ -132,6 +132,7 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PRESENTATION.SUCCESS}
         component={PresentationSuccess}
+        options={{ headerShown: false }}
       />
     </Stack.Group>
     <Stack.Group>
@@ -161,6 +162,7 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PROXIMITY.SUCCESS}
         component={PresentationProximitySuccess}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={WALLET_ROUTES.PROXIMITY.FAILURE}
