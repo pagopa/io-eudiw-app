@@ -2,7 +2,7 @@
   "expo": {
     "name": "ioeudiw",
     "slug": "ioeudiw",
-    "version": "2.2.1",
+    "version": "2.3.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
@@ -10,7 +10,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "it.pagopa.app.io.poc.eudiw",
-      "buildNumber": "1",
+      "buildNumber": "0",
       "infoPlist": {
         "CFBundleURLTypes": [
           {
@@ -31,7 +31,7 @@
     },
     "android": {
       "package": "it.pagopa.io.app.poc.eudiw",
-      "versionCode": 48,
+      "versionCode": 49,
       "permissions": [
         "android.permission.BLUETOOTH_SCAN",
         "android.permission.BLUETOOTH_CONNECT",
