@@ -40,8 +40,6 @@
         "android.permission.BLUETOOTH_ADMIN",
         "android.permission.ACCESS_FINE_LOCATION"
       ],
-      // This blocked permission is required because Google Play Store has a policy that requires apps to justify it however our app doesn't need it.
-      // This will be fixed in SDK 55.
       "blockedPermissions": ["android.permission.READ_EXTERNAL_STORAGE"], 
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
