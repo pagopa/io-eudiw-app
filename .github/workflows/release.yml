@@ -117,9 +117,10 @@ jobs:
       - id: download-universal-apk-from-store
         continue-on-error: true
         run: |
-          cd fastlane
+          cd android
           VERSION_CODE=$(sed -n 's/.*versionCode \(.*\)/\1/p' "app/build.gradle")
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
+          cd .. && cd fastlane
           bundle exec fastlane android download_apk
         env:
           RUBYOPT: '-rostruct'
@@ -130,7 +131,7 @@ jobs:
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
           name: ioeudiw-universal.apk
-          path: fastlane/ioeudiw-universal.apk
+          path: android/ioeudiw-universal.apk
       - id: upload-aab
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
