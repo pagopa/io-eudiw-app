@@ -130,7 +130,7 @@ jobs:
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
           name: ioeudiw-universal.apk
-          path: android/ioeudiw-universal.apk
+          path: fastlane/ioeudiw-universal.apk
       - id: upload-aab
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
@@ -142,7 +142,7 @@ jobs:
         run: |
           gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} \
             android/app/build/outputs/bundle/release/app-release.aab#android-app-release.aab \
-            android/ioeudiw-universal.apk#ioeudiw-universal.apk
+            fastlane/ioeudiw-universal.apk#ioeudiw-universal.apk
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
