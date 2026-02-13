@@ -89,16 +89,7 @@ const IdentificationModal = () => {
         () => {
           onIdentificationSuccess();
         },
-        e => {
-          if (!e) {
-            return;
-          }
-          if (e === 'timeout') {
-            Alert.alert(t('global:identification:error:deviceLocked'));
-          } else if (e === 'lockout') {
-            Alert.alert(t('global:identification:error:deviceLockedPermanent'));
-          }
-        }
+        _ => void 0
       ),
     [onIdentificationSuccess]
   );
@@ -131,7 +122,7 @@ const IdentificationModal = () => {
   const confirmResetAlert = useCallback(
     () =>
       Alert.alert(
-        t('identification.forgot.confirmTitle'),
+        t('identification.forgot.title'),
         t(
           isValidatingTask
             ? 'identification.forgot.confirmMsgWithTask'
