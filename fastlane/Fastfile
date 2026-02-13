@@ -43,7 +43,7 @@ platform :android do
     version_code = ENV['VERSION_CODE'].to_i
     download_universal_apk_from_google_play(
       package_name: "it.pagopa.io.app.poc.eudiw",
-      destination: "io-eudiw-app-universal.apk",
+      destination: "ioeudiw-universal.apk",
       version_code: version_code
     )
   end
@@ -94,7 +94,8 @@ platform :ios do
       clean: true,
       export_method: "app-store",
       workspace: "ios/ioeudiw.xcworkspace",
-      include_symbols: false
+      include_symbols: false,
+      output_name: "ioeudiw.ipa"
     )
 
     # upload to App store
