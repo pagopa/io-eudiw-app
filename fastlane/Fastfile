@@ -95,7 +95,8 @@ platform :ios do
       export_method: "app-store",
       workspace: "ios/ioeudiw.xcworkspace",
       include_symbols: false,
-      output_name: "ioeudiw.ipa"
+      output_name: "ioeudiw.ipa",
+      output_directory: "./ios"
     )
 
     # upload to App store
