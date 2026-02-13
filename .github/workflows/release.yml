@@ -143,7 +143,7 @@ jobs:
         run: |
           gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} \
             android/app/build/outputs/bundle/release/app-release.aab#android-app-release.aab \
-            fastlane/ioeudiw-universal.apk#ioeudiw-universal.apk
+            android/ioeudiw-universal.apk#ioeudiw-universal.apk
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
