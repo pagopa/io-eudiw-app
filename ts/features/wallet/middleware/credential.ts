@@ -1,17 +1,10 @@
 import { IOToast } from '@pagopa/io-app-design-system';
 import { generate } from '@pagopa/io-react-native-crypto';
-import { CryptoContext } from '@pagopa/io-react-native-jwt';
 import {
   createCryptoContextFor,
   Credential
 } from '@pagopa/io-react-native-wallet';
-import {
-  EvaluateIssuerTrust,
-  StartUserAuthorization
-} from '@pagopa/io-react-native-wallet/lib/typescript/credential/issuance';
-import { Out } from '@pagopa/io-react-native-wallet/lib/typescript/utils/misc';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
-import * as WebBrowser from 'expo-web-browser';
 import { t } from 'i18next';
 import uuid from 'react-native-uuid';
 import { getEnv } from '../../../../ts/config/env';
@@ -27,7 +20,6 @@ import {
 } from '../../../store/reducers/identification';
 import { selectSessionId } from '../../../store/reducers/preferences';
 import { regenerateCryptoKey } from '../../../utils/crypto';
-import { isAndroid } from '../../../utils/device';
 import {
   resetCredentialIssuance,
   selectRequestedCredential,
@@ -46,90 +38,16 @@ import {
 import { wellKnownCredential } from '../utils/credentials';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
-import { StoredCredential } from '../utils/itwTypesUtils';
+import {
+  enrichPresentationDetails,
+  getInvalidCredentials
+} from '../utils/itwClaimsUtils';
+import { DcqlQuery } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 import {
   AppListenerWithAction,
   AppStartListening
 } from '@/ts/middleware/listener/types';
-
-/**
- * Helper to obtain the authorization code based on the credential type.
- * Handles the distinction between API-based issuance (Disability Card)
- * and browser-based issuance (all the other credentials).
- */
-const getCredentialAuthCode = async (params: {
-  credentialType: string;
-  pid: StoredCredential | undefined;
-  issuerRequestUri: string;
-  clientId: Out<StartUserAuthorization>['clientId'];
-  issuerConf: Out<EvaluateIssuerTrust>['issuerConf'];
-  appFetch: GlobalFetch['fetch'];
-  wiaCryptoContext: CryptoContext;
-  redirectUri: string;
-  authUrl: string;
-}) => {
-  const {
-    credentialType,
-    pid,
-    issuerRequestUri,
-    clientId,
-    issuerConf,
-    appFetch,
-    wiaCryptoContext,
-    redirectUri,
-    authUrl
-  } = params;
-
-  if (credentialType === wellKnownCredential.DISABILITY_CARD) {
-    if (!pid || !pid.credential || !pid.keyTag) {
-      throw new Error('PID required for disability card issuance but missing.');
-    }
-
-    const requestObject =
-      await Credential.Issuance.getRequestedCredentialToBePresented(
-        issuerRequestUri,
-        clientId,
-        issuerConf,
-        appFetch
-      );
-
-    const { code } =
-      await Credential.Issuance.completeUserAuthorizationWithFormPostJwtMode(
-        requestObject,
-        pid.credential,
-        issuerConf,
-        {
-          wiaCryptoContext,
-          pidCryptoContext: createCryptoContextFor(pid.keyTag),
-          appFetch
-        }
-      );
-
-    return code;
-  } else {
-    const baseRedirectUri = `${new URL(redirectUri).protocol}//`;
-    const authRedirectUrl = await WebBrowser.openAuthSessionAsync(
-      authUrl,
-      baseRedirectUri,
-      {
-        preferEphemeralSession: true,
-        createTask: false
-      }
-    );
-
-    if (authRedirectUrl.type !== 'success' || !authRedirectUrl.url) {
-      throw new Error('Authorization flow was not completed successfully.');
-    }
-
-    const { code } =
-      await Credential.Issuance.completeUserAuthorizationWithQueryMode(
-        authRedirectUrl.url
-      );
-
-    return code;
-  }
-};
 
 /**
  * Function which handles the issuance of a credential.
@@ -142,16 +60,6 @@ const obtainCredentialListener: AppListenerWithAction<
   ReturnType<typeof setCredentialIssuancePreAuthRequest>
 > = async (_, listenerApi) => {
   try {
-    // On Android check if there is a browser to open the authentication session and then warm it up
-    if (isAndroid) {
-      const { browserPackages } =
-        await WebBrowser.getCustomTabsSupportingBrowsersAsync();
-      if (browserPackages.length === 0) {
-        throw new Error('No browser found to open the authentication session');
-      }
-      await WebBrowser.warmUpAsync();
-    }
-
     const {
       EXPO_PUBLIC_EAA_PROVIDER_BASE_URL,
       EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri,
@@ -225,32 +133,56 @@ const obtainCredentialListener: AppListenerWithAction<
       );
     }
 
+    if (!pid || !pid.credential || !pid.keyTag) {
+      throw new Error('PID required for EAA issuance but missing.');
+    }
+
+    const requestObject =
+      await Credential.Issuance.getRequestedCredentialToBePresented(
+        issuerRequestUri,
+        clientId,
+        issuerConf,
+        appFetch
+      );
+
+    const evaluateDcqlQuery = Credential.Presentation.evaluateDcqlQuery(
+      [[createCryptoContextFor(pid.keyTag), pid.credential]],
+      requestObject.dcql_query as DcqlQuery
+    );
+
+    // Check whether any of the requested credential is invalid
+    const invalidCredentials = getInvalidCredentials(evaluateDcqlQuery, [pid]);
+
+    if (invalidCredentials.length > 0) {
+      throw new Error(
+        `No credential found for the required VC type: ${invalidCredentials}`
+      );
+    }
+
+    // Add localization to the requested claims
+    const presentationDetails = enrichPresentationDetails(evaluateDcqlQuery, [
+      pid
+    ]);
+
     listenerApi.dispatch(
       setCredentialIssuancePreAuthSuccess({
-        result: true,
+        result: presentationDetails,
         credentialType
       })
     );
     await listenerApi.take(isAnyOf(setCredentialIssuancePostAuthRequest));
 
-    // Obtain the Authorization URL
-    const { authUrl } = await Credential.Issuance.buildAuthorizationUrl(
-      issuerRequestUri,
-      clientId,
-      issuerConf
-    );
-
-    const credentialCode = await getCredentialAuthCode({
-      credentialType,
-      pid,
-      issuerRequestUri,
-      clientId,
-      issuerConf,
-      appFetch,
-      wiaCryptoContext,
-      redirectUri,
-      authUrl
-    });
+    const { code } =
+      await Credential.Issuance.completeUserAuthorizationWithFormPostJwtMode(
+        requestObject,
+        pid.credential,
+        issuerConf,
+        {
+          wiaCryptoContext,
+          pidCryptoContext: createCryptoContextFor(pid.keyTag),
+          appFetch
+        }
+      );
 
     // Generate the DPoP context which will be used for the whole issuance flow
     await regenerateCryptoKey(DPOP_KEYTAG);
@@ -258,7 +190,7 @@ const obtainCredentialListener: AppListenerWithAction<
 
     const { accessToken } = await Credential.Issuance.authorizeAccess(
       issuerConf,
-      credentialCode,
+      code,
       clientId,
       redirectUri,
       codeVerifier,
