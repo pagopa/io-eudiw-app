@@ -2,7 +2,7 @@
   "expo": {
     "name": "ioeudiw",
     "slug": "ioeudiw",
-    "version": "2.5.0",
+    "version": "2.5.4",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
@@ -31,7 +31,7 @@
     },
     "android": {
       "package": "it.pagopa.io.app.poc.eudiw",
-      "versionCode": 51,
+      "versionCode": 55,
       "permissions": [
         "android.permission.BLUETOOTH_SCAN",
         "android.permission.BLUETOOTH_CONNECT",
@@ -39,6 +39,10 @@
         "android.permission.BLUETOOTH",
         "android.permission.BLUETOOTH_ADMIN",
         "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "blockedPermissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
       ],
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -152,7 +156,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "The app accesses your photos to scan QR codes."
+          "photosPermission": "The app accesses your photos to scan QR codes.",
+          "microphonePermission": false
         }
       ],
       [
@@ -161,7 +166,8 @@
           "experimentalLauncherActivity": true
         }
       ],
-      "./scripts/android-fix-bouncy-castle-dependency.js"
+      "./scripts/android-fix-bouncy-castle-dependency.js",
+      "./scripts/android-signing.js"
     ],
     "experiments": {
       "typedRoutes": true,
