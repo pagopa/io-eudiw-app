@@ -43,7 +43,7 @@ platform :android do
     version_code = ENV['VERSION_CODE'].to_i
     download_universal_apk_from_google_play(
       package_name: "it.pagopa.io.app.poc.eudiw",
-      destination: "ioeudiw-universal.apk",
+      destination: "android/ioeudiw-universal.apk",
       version_code: version_code
     )
   end
