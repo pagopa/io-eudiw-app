@@ -9,14 +9,18 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import { CredentialTypePresentationClaimsListDescriptor } from '../components/presentation/CredentialTypePresentationClaimsList';
 import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
+import { FederationEntity } from '../types';
+import { EnrichedPresentationDetails } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 
 /**
  * Type for the description which contains the requested claims during the presentation.
  */
-export type Descriptor = CredentialTypePresentationClaimsListDescriptor;
+export type Descriptor = {
+  descriptor: EnrichedPresentationDetails;
+  rpConfig?: FederationEntity;
+};
 
 /**
  * Response type for the authorization request which is the final step of the presentation flow.
@@ -28,7 +32,7 @@ export type AuthResponse = Awaited<
 /**
  * Type of the optional claims names selected by the user.
  */
-export type OptionalClaims = Descriptor[0]['optionalDisclosures']; // The optional claims selected by the user
+export type OptionalClaims = Descriptor['descriptor']; // The optional claims selected by the user
 
 /* State type definition for the presentation slice
  * preDefinition - Async status for the prestation before receiving the descriptor
@@ -37,12 +41,15 @@ export type OptionalClaims = Descriptor[0]['optionalDisclosures']; // The option
 export type PresentationState = {
   preDefinition: AsyncStatusValues<Descriptor>;
   postDefinition: AsyncStatusValues<AuthResponse>;
+  relyingPartyData?: FederationEntity;
+  optionalCredentials?: Array<string>;
 };
 
 // Initial state for the presentation slice
 const initialState: PresentationState = {
   preDefinition: setInitial(),
-  postDefinition: setInitial()
+  postDefinition: setInitial(),
+  optionalCredentials: []
 };
 
 /**
@@ -92,9 +99,13 @@ export const presentationSlice = createSlice({
     },
     // Empty action which will be intercepted by the listener and trigger the identification before finishing the presentation process
     setPostDefinitionRequestWithAuth: _ => {},
+    setOptionalCredentials: (state, action: PayloadAction<Array<string>>) => {
+      state.optionalCredentials = [...new Set(action.payload)];
+    },
     resetPresentation: state => {
       state.preDefinition = setInitial();
       state.postDefinition = setInitial();
+      state.optionalCredentials = [];
     }
   },
   extraReducers: builder => {
@@ -118,6 +129,7 @@ export const {
   setPostDefinitionError,
   setPostDefinitionSuccess,
   setPostDefinitionRequestWithAuth,
+  setOptionalCredentials,
   resetPresentation
 } = presentationSlice.actions;
 
@@ -163,3 +175,11 @@ export const selectPostDefinitionResult = (state: RootState) =>
   state.wallet.presentation.postDefinition.success.status === true
     ? state.wallet.presentation.postDefinition.success.data
     : undefined;
+
+/**
+ * Selects the optional credentials selected by the user for the presentation process.
+ * @param state - The root state
+ * @returns an array of strings containing the names of the optional credentials selected by the user
+ */
+export const selectOptionalCredentials = (state: RootState) =>
+  state.wallet.presentation.optionalCredentials;

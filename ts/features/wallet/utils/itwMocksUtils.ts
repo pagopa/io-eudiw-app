@@ -11,7 +11,7 @@ import statusAssertion from '../__mocks__/statusAssertion.json';
 import ts from '../__mocks__/ts.json';
 import { ParsedStatusAssertion, StoredCredential } from './itwTypesUtils';
 
-export const ISSUER_MOCK_NAME = 'Istituto Poligrafico e Zecca dello Stato';
+export const ISSUER_MOCK_NAME = 'PagoPA S.p.A.';
 
 export type CredentialL3Key = keyof typeof ItwStoredCredentialsMocks.L3;
 

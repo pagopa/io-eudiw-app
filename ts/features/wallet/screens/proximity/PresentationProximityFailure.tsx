@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from '../../../../store';
 import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
 import {
   resetProximity,
-  selectProximityAcceptedFields,
   selectProximityDocumentRequest,
   selectProximityErrorDetails,
   selectProximityStatus
@@ -27,11 +26,9 @@ const PresentationProximityFailure = ({ route }: Props) => {
 
   const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
   const verifierRequest = useAppSelector(selectProximityDocumentRequest);
-  const acceptedFields = useAppSelector(selectProximityAcceptedFields);
 
   useDebugInfo({
     verifierRequest,
-    acceptedFields,
     proximityStatusEnd: proximityStatus,
     proximityErrorDetailsEnd: proximityErrorDetails
   });

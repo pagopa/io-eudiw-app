@@ -79,7 +79,6 @@ const Stack = createStackNavigator<WalletNavigatorParamsList>();
 const WalletNavigator = () => (
   <Stack.Navigator
     initialRouteName={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
-    screenOptions={{ headerShown: false }}
   >
     <Stack.Group>
       <Stack.Screen
@@ -93,6 +92,7 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PID_ISSUANCE.FAILURE}
         component={PidIssuanceFailure}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={WALLET_ROUTES.PID_ISSUANCE.REQUEST}
@@ -123,6 +123,7 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PRESENTATION.FAILURE}
         component={PresentationFailure}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={WALLET_ROUTES.PRESENTATION.POST_DEFINITION}
@@ -131,6 +132,7 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PRESENTATION.SUCCESS}
         component={PresentationSuccess}
+        options={{ headerShown: false }}
       />
     </Stack.Group>
     <Stack.Group>
@@ -149,6 +151,7 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE}
         component={CredentialFailure}
+        options={{ headerShown: false }}
       />
     </Stack.Group>
     <Stack.Group>
@@ -159,10 +162,12 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PROXIMITY.SUCCESS}
         component={PresentationProximitySuccess}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={WALLET_ROUTES.PROXIMITY.FAILURE}
         component={PresentationProximityFailure}
+        options={{ headerShown: false }}
       />
     </Stack.Group>
   </Stack.Navigator>

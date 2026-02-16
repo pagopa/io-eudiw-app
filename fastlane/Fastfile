@@ -9,8 +9,6 @@
 # If you want to automatically update fastlane if a new version is available:
 # update_fastlane
 
-default_platform :android
-
 platform :android do
   desc "Build the App in release mode"
   lane :build_release do
@@ -18,17 +16,6 @@ platform :android do
       task: "bundle",
       build_type: "Release",
       project_dir: "android/"
-    )
-  end
-
-  desc "Bump app version"
-  lane :bump_version do |options|
-     android_set_version_name(
-      version_name: "#{ENV['NEW_APP_VERSION']}",
-      gradle_file: "android/app/build.gradle"
-    )
-    android_set_version_code(
-      gradle_file: "android/app/build.gradle"
     )
   end
 
@@ -56,8 +43,67 @@ platform :android do
     version_code = ENV['VERSION_CODE'].to_i
     download_universal_apk_from_google_play(
       package_name: "it.pagopa.io.app.poc.eudiw",
-      destination: "io-eudiw-app-universal.apk",
+      destination: "./android/ioeudiw-universal.apk",
       version_code: version_code
+    )
+  end
+end
+
+platform :ios do
+  desc 'Fetch certificates and provisioning profiles'
+  lane :certificates do
+    match(type: 'appstore')
+  end
+  
+  desc "Submit a new beta build to TestFlight"
+  lane :beta_testflight do |options|
+
+    ENV['ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD'] = 'false'
+
+    # Setup the CI environment
+    setup_ci()
+
+    # use the App Store API Key to authenticate
+    api_key = app_store_connect_api_key(
+      key_id: "#{ENV['APP_STORE_API_KEY_ID']}",
+      issuer_id: "#{ENV['APP_STORE_API_KEY_ISSUER_ID']}",
+      key_filepath: "./fastlane/AuthKey_#{ENV['APP_STORE_API_KEY_ID']}.p8",
+      duration: 1200,
+    )
+
+    sync_code_signing(type: "appstore", app_identifier:"it.pagopa.app.io.poc.eudiw", api_key: api_key)
+
+    # Install pods
+    cocoapods(podfile: "ios/Podfile")
+
+    # Temporary disables automatic code signing to avoid issues during build
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "ios/ioeudiw.xcodeproj",
+      team_id: "M2X5YQ4BJ7",
+      profile_name: "match AppStore it.pagopa.app.io.poc.eudiw",
+      targets: ["ioeudiw"],
+      build_configurations: ["Release"],
+      code_sign_identity: "iPhone Distribution",
+      sdk: "iphoneos*",
+    )
+
+    # build the app
+    gym(
+      scheme: "ioeudiw",
+      clean: true,
+      export_method: "app-store",
+      workspace: "ios/ioeudiw.xcworkspace",
+      include_symbols: false,
+      output_name: "ioeudiw.ipa",
+      output_directory: "./ios"
+    )
+
+    # upload to App store
+    pilot(
+      api_key: api_key,
+      # max wait for App Store Connect processing (30 min)
+      wait_processing_timeout_duration: 1800
     )
   end
 end
