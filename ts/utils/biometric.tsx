@@ -1,6 +1,11 @@
-import { BiometricsValidType } from '@pagopa/io-app-design-system';
+import { BiometricsValidType, Body } from '@pagopa/io-app-design-system';
+import { TxtParagraphNode } from '@textlint/ast-node-types';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { t } from 'i18next';
+import { View } from 'react-native';
+import IOMarkdown from '../components/IOMarkdown';
+import { getTxtNodeKey } from '../components/IOMarkdown/renderRules';
+import { Renderer } from '../components/IOMarkdown/types';
 import { isAndroid, isIos } from './device';
 
 /**
@@ -121,5 +126,69 @@ export const biometricAuthenticationRequest = async (
     }
   } catch (error) {
     onError();
+  }
+};
+
+export const IdentificationInstructionsComponent = (props: {
+  biometricType: LocalAuthentication.AuthenticationType | undefined;
+  isBiometricIdentificationFailed: boolean;
+}) => {
+  const { biometricType, isBiometricIdentificationFailed } = props;
+
+  const generatePragraphRule = () => ({
+    Paragraph(paragraph: TxtParagraphNode, render: Renderer) {
+      return (
+        <Body
+          key={getTxtNodeKey(paragraph)}
+          color="white"
+          style={{ textAlign: 'center' }}
+        >
+          {paragraph.children.map(render)}
+        </Body>
+      );
+    }
+  });
+
+  const instructionComponent = (
+    <View accessible style={{ flexDirection: 'row' }}>
+      <IOMarkdown
+        content={t('identification.instructions.useUnlockCode', {
+          ns: 'global'
+        })}
+        rules={generatePragraphRule()}
+      />
+    </View>
+  );
+
+  if (isBiometricIdentificationFailed) {
+    return instructionComponent;
+  }
+
+  switch (biometricType) {
+    case LocalAuthentication.AuthenticationType.FINGERPRINT:
+      return (
+        <View accessible style={{ flexDirection: 'row' }}>
+          <IOMarkdown
+            content={t(
+              'identification.instructions.useFingerPrintOrUnlockCode'
+            )}
+            rules={generatePragraphRule()}
+          />
+        </View>
+      );
+    case LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION:
+    case LocalAuthentication.AuthenticationType.IRIS:
+      return (
+        <View accessible style={{ flexDirection: 'row' }}>
+          <IOMarkdown
+            content={t('identification.instructions.useFaceIdOrUnlockCode', {
+              ns: 'global'
+            })}
+            rules={generatePragraphRule()}
+          />
+        </View>
+      );
+    default:
+      return instructionComponent;
   }
 };

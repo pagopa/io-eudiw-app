@@ -70,8 +70,13 @@
     "copyFeedback": "Copied to clipboard"
   },
   "identification": {
+    "instructions": {
+      "useFingerPrintOrUnlockCode": "usa l'**impronta** o inserisci il **codice di sblocco**",
+      "useFaceIdOrUnlockCode": "usa il **volto** o inserisci il **codice di sblocco**",
+      "useUnlockCode": "inserisci il **codice di sblocco**",
+    },
     "title": {
-      "validation": "Conferma l'operazione inserendo il tuo codice di sblocco",
+      "validation": "Autorizza operazione",
       "access": "Ciao!"
     },
     "forgot": {
