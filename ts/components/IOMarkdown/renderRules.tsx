@@ -105,7 +105,7 @@ function getNodeNestingLevel<T extends AnyTxtNode | undefined>(
  * @param txtNode any Txt node
  * @returns a string to be used as component key inside of map loops.
  */
-function getTxtNodeKey(txtNode: AnyTxtNode): string {
+export function getTxtNodeKey(txtNode: AnyTxtNode): string {
   const encoded = Buffer.from(
     `${txtNode.raw.substring(0, 10) + JSON.stringify(txtNode.loc.start)}`
   ).toString('base64');
