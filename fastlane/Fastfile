@@ -103,7 +103,8 @@ platform :ios do
     pilot(
       api_key: api_key,
       # max wait for App Store Connect processing (30 min)
-      wait_processing_timeout_duration: 1800
+      wait_processing_timeout_duration: 1800,
+      groups: ["External"],
     )
   end
 end
