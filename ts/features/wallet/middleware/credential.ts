@@ -38,10 +38,8 @@ import {
 import { wellKnownCredential } from '../utils/credentials';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
-import {
-  enrichPresentationDetails,
-  getInvalidCredentials
-} from '../utils/itwClaimsUtils';
+import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
+import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { DcqlQuery } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 import {
