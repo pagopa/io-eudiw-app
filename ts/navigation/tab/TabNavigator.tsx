@@ -13,7 +13,7 @@ import TAB_ROUTES from './routes';
  * Screen parameters for the tab navigator.
  * New screens should be added here along with their parameters.
  */
-export type TabNavigatorParamsList = {
+type TabNavigatorParamsList = {
   [TAB_ROUTES.WALLET]: undefined;
   [TAB_ROUTES.SCAN_QR]: undefined;
   [TAB_ROUTES.SHOW_QR]: undefined;

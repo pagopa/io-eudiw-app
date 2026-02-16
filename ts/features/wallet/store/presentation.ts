@@ -25,20 +25,20 @@ export type Descriptor = {
 /**
  * Response type for the authorization request which is the final step of the presentation flow.
  */
-export type AuthResponse = Awaited<
+type AuthResponse = Awaited<
   ReturnType<typeof Credential.Presentation.sendAuthorizationResponse>
 >;
 
 /**
  * Type of the optional claims names selected by the user.
  */
-export type OptionalClaims = Descriptor['descriptor']; // The optional claims selected by the user
+type OptionalClaims = Descriptor['descriptor']; // The optional claims selected by the user
 
 /* State type definition for the presentation slice
  * preDefinition - Async status for the prestation before receiving the descriptor
  * postDefinition - Async status for the presentation afetr receiving the descriptor
  */
-export type PresentationState = {
+type PresentationState = {
   preDefinition: AsyncStatusValues<Descriptor>;
   postDefinition: AsyncStatusValues<AuthResponse>;
   relyingPartyData?: FederationEntity;
@@ -55,7 +55,7 @@ const initialState: PresentationState = {
 /**
  * Redux slice for the presetation state. It holds the status of flows related to the presentation process.
  */
-export const presentationSlice = createSlice({
+const presentationSlice = createSlice({
   name: 'presentationSlice',
   initialState,
   reducers: {
@@ -73,9 +73,6 @@ export const presentationSlice = createSlice({
     },
     setPreDefinitionSuccess: (state, action: PayloadAction<Descriptor>) => {
       state.preDefinition = setSuccess(action.payload);
-    },
-    resetPreDefinition: state => {
-      state.preDefinition = setInitial();
     },
     setPostDefinitionRequest: (
       state,
@@ -97,8 +94,6 @@ export const presentationSlice = createSlice({
     setPostDefinitionSuccess: (state, action: PayloadAction<AuthResponse>) => {
       state.postDefinition = setSuccess(action.payload);
     },
-    // Empty action which will be intercepted by the listener and trigger the identification before finishing the presentation process
-    setPostDefinitionRequestWithAuth: _ => {},
     setOptionalCredentials: (state, action: PayloadAction<Array<string>>) => {
       state.optionalCredentials = [...new Set(action.payload)];
     },
@@ -123,12 +118,10 @@ export const {
   setPreDefinitionRequest,
   setPreDefinitionError,
   setPreDefinitionSuccess,
-  resetPreDefinition,
   setPostDefinitionRequest,
   setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionSuccess,
-  setPostDefinitionRequestWithAuth,
   setOptionalCredentials,
   resetPresentation
 } = presentationSlice.actions;

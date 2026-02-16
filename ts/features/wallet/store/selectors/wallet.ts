@@ -6,14 +6,8 @@ import { createSelector } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { RootState } from '../../../../store/types';
 import { wellKnownCredential } from '../../utils/credentials';
-import {
-  getFamilyNameFromCredential,
-  getFirstNameFromCredential,
-  getFiscalCodeFromCredential
-} from '../../utils/itwClaimsUtils';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import {
-  itwCredentialsPidSelector,
   itwCredentialsPidStatusSelector,
   selectCredentials
 } from '../credentials';
@@ -26,12 +20,10 @@ import { lifecycleIsValidSelector } from '../lifecycle';
  * @param state - The global state.
  * @returns The credentials object.
  */
-export const itwCredentialsSelector = createSelector(
-  selectCredentials,
-  credentials =>
-    credentials.filter(
-      credential => credential.credentialType !== wellKnownCredential.PID
-    )
+const itwCredentialsSelector = createSelector(selectCredentials, credentials =>
+  credentials.filter(
+    credential => credential.credentialType !== wellKnownCredential.PID
+  )
 );
 
 /**
@@ -54,7 +46,7 @@ const itwCredentialsSizeSelector = createSelector(
  * @param state - The global state.
  * @returns Whether the wallet is empty.
  */
-export const itwIsWalletEmptySelector = createSelector(
+const itwIsWalletEmptySelector = createSelector(
   itwCredentialsSizeSelector,
   size => size === 0
 );
@@ -74,32 +66,6 @@ export const itwShouldRenderWalletReadyBannerSelector = (state: RootState) =>
   // NOTE: Online status checks not yet implemented
   itwCredentialsPidStatusSelector(state) !== 'jwtExpired' &&
   itwIsWalletEmptySelector(state);
-
-/**
- * Returns the fiscal code from the stored eID.
- *
- * @param state - The global state.
- * @returns The fiscal code.
- */
-export const selectFiscalCodeFromEid = createSelector(
-  itwCredentialsPidSelector,
-  pid => getFiscalCodeFromCredential(pid) ?? ''
-);
-
-/**
- * Returns the name and surname from the stored eID.
- *
- * @param state - The global state.
- * @returns The name and surname.
- */
-export const selectNameSurnameFromEid = createSelector(
-  itwCredentialsPidSelector,
-  pid => {
-    const firstName = getFirstNameFromCredential(pid);
-    const familyName = getFamilyNameFromCredential(pid);
-    return `${_.capitalize(firstName)} ${_.capitalize(familyName)}`.trim();
-  }
-);
 
 /**
  * Get the credential status and the error message corresponding to the status assertion error, if present.

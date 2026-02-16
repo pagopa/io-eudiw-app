@@ -3,14 +3,14 @@ import {
   fixBase64EncodingOnKey,
   type IntegrityContext
 } from '@pagopa/io-react-native-wallet';
+import * as Crypto from 'expo-crypto';
 import { encode } from 'js-base64';
-import uuid from 'react-native-uuid';
 
 /**
  * Type returned by the getHardwareSignatureWithAuthData function of {@link IntegrityContext}.
  * It contains the signature and the authenticator data.
  */
-export type HardwareSignatureWithAuthData = {
+type HardwareSignatureWithAuthData = {
   signature: string;
   authenticatorData: string;
 };
@@ -40,7 +40,7 @@ const getHardwareSignatureWithAuthData = async (
  * @returns a promise that resolves with the key tag as string or rejects with an error.
  */
 const generateIntegrityHardwareKeyTag = async () => {
-  const keyTag = uuid.v4().toString();
+  const keyTag = Crypto.randomUUID().toString();
   await generate(keyTag);
   return keyTag;
 };

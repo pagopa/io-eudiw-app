@@ -37,7 +37,7 @@ export type ProximityDisclosure = {
  * error - Cotains the error object if any error occurs during the proximity process
  * state - The state of the proximity process
  */
-export type ProximityState = {
+type ProximityState = {
   qrCode?: string;
   status: ProximityStatus;
   documentRequest?: ISO18013_5.VerifierRequest;
@@ -57,7 +57,7 @@ const initialState: ProximityState = {
 /**
  * Redux slice for the proximity state. It holds the status of flows related to the proximity process.
  */
-export const proximitySlice = createSlice({
+const proximitySlice = createSlice({
   name: 'proximitySlice',
   initialState,
   reducers: {

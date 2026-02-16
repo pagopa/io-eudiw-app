@@ -34,16 +34,8 @@ export type WalletCardItw = Prettify<
   } & ItwCredentialCardProps
 >;
 
-// This card type renders a loading skeleton, used as a placeholder for other cards
-export type WalletCardPlaceholder = {
-  type: 'placeholder';
-};
-
 // Base WalletCard type, which includes all card types
 export type WalletCard = WalletCardBase & WalletCardItw;
-
-// Used to map the card to the specific component that will render the card.
-export type WalletCardType = WalletCard['type'];
 
 export type CardColorScheme = 'default' | 'faded' | 'greyscale';
 

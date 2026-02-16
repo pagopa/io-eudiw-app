@@ -6,7 +6,7 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated';
 
-export type AnimatedImageProps = React.ComponentProps<typeof Image>;
+type AnimatedImageProps = React.ComponentProps<typeof Image>;
 
 /**
  * AnimatedImage component renders an image with a fade-in animation

@@ -39,16 +39,12 @@ type ExcludedCredentialTypes = (typeof excludedCredentialTypes)[number];
 
 const LICENSE_RENEWAL_URL = 'https://www.mit.gov.it/rinnovo-patente';
 
-type CredentialAlertEvents = 'tap_banner' | 'open_bottom_sheet' | 'press_cta';
-
-export type TrackCredentialAlert = (action: CredentialAlertEvents) => void;
-
 type CredentialStatusAlertProps = {
   credential: StoredCredential;
   status?: ItwCredentialStatus;
 };
 
-export enum CredentialAlertType {
+enum CredentialAlertType {
   PID_LIFECYCLE = 'PID_LIFECYCLE',
   JWT_VERIFICATION = 'JWT_VERIFICATION',
   DOCUMENT_EXPIRING = 'DOCUMENT_EXPIRING',
@@ -67,7 +63,7 @@ const useAlertPressHandler = (bottomSheet: { present: () => void }) => () => {
 };
 
 // Helper function that calculates which alert type should be shown.
-export const deriveCredentialAlertType = (
+const deriveCredentialAlertType = (
   props: CredentialAlertProps
 ): CredentialAlertType | undefined => {
   const { eidStatus, credentialStatus, message } = props;

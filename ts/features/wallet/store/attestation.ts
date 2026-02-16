@@ -8,7 +8,7 @@ import { resetLifecycle } from './lifecycle';
 /* State type definition for the attestation slice
  * attestation - The wallet instance attestation
  */
-export type AttestationState = {
+type AttestationState = {
   attestation: string | undefined;
 };
 
@@ -26,8 +26,7 @@ const attestationSlice = createSlice({
   reducers: {
     setAttestation: (state, action: PayloadAction<string>) => {
       state.attestation = action.payload;
-    },
-    resetAttestation: () => initialState
+    }
   },
   extraReducers: builder => {
     // This happens when the whole app state is reset
@@ -57,7 +56,7 @@ export const attestationReducer = persistReducer(
 /**
  * Exports the actions for the attestation slice.
  */
-export const { setAttestation, resetAttestation } = attestationSlice.actions;
+export const { setAttestation } = attestationSlice.actions;
 
 /**
  * Select the wallet instance attestation.

@@ -10,7 +10,7 @@ const envSchema = z.object({
   EXPO_PUBLIC_PID_REDIRECT_URI: z.string()
 });
 
-export type Env = z.infer<typeof envSchema>;
+type Env = z.infer<typeof envSchema>;
 
 const rawEnv = {
   EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL:

@@ -221,7 +221,7 @@ export const insertNewLinesIfNeededOnMatch = (
   );
 };
 
-export const isTxtParentNode = (node: TxtNode): node is TxtParentNode =>
+const isTxtParentNode = (node: TxtNode): node is TxtParentNode =>
   node.type === 'Paragraph' ||
   node.type === 'Header' ||
   node.type === 'BlockQuote' ||
@@ -234,11 +234,10 @@ export const isTxtParentNode = (node: TxtNode): node is TxtParentNode =>
   node.type === 'Strong' ||
   node.type === 'Delete' ||
   node.type === 'Link';
-export const isTxtLinkNode = (node: TxtNode): node is TxtLinkNode =>
+const isTxtLinkNode = (node: TxtNode): node is TxtLinkNode =>
   node.type === 'Link';
-export const isTxtStrNode = (node: TxtNode): node is TxtStrNode =>
-  node.type === 'Str';
-export const isTxtParagraphNode = (node: TxtNode): node is TxtParagraphNode =>
+const isTxtStrNode = (node: TxtNode): node is TxtStrNode => node.type === 'Str';
+const isTxtParagraphNode = (node: TxtNode): node is TxtParagraphNode =>
   node.type === 'Paragraph';
 
 export type LinkData = {
@@ -257,7 +256,7 @@ export const extractAllLinksFromRootNode = (
   return allLinkData;
 };
 
-export const extractAllLinksFromNodeWithChildren = (
+const extractAllLinksFromNodeWithChildren = (
   nodeWithChildren: Readonly<TxtParentNode>,
   allLinks: Array<LinkData>
 ) => {
@@ -277,7 +276,7 @@ export const extractAllLinksFromNodeWithChildren = (
   });
 };
 
-export const extractLinkDataFromRootNode = (
+const extractLinkDataFromRootNode = (
   inputNode: Readonly<TxtParentNode>,
   links: Array<string>
 ): void =>

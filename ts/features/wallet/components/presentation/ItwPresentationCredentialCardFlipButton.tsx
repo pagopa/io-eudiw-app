@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export const MemoizedItwPresentationCredentialCardFlipButton = memo(
+const MemoizedItwPresentationCredentialCardFlipButton = memo(
   ItwPresentationCredentialCardFlipButton
 );
 

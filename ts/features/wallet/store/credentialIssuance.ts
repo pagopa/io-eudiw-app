@@ -23,7 +23,7 @@ type ObtainCredentialPreAuthResult = EnrichedPresentationDetails | undefined;
  * issuanceCreation - Async status for the instance creation
  * issuance - Async status for the CREDENTIAL issuance
  */
-export type CredentialIssuanceStatusState = {
+type CredentialIssuanceStatusState = {
   requestedCredential: RequestedCredential;
   requestedCredentialType: RequestedCredentialType;
   statusPreAuth: AsyncStatusValues<ObtainCredentialPreAuthResult>;
@@ -42,7 +42,7 @@ const initialState: CredentialIssuanceStatusState = {
  * Redux slice for the credentialIssuance state. It holds the status of flows related to the CREDENTIAL issuance
  * allowing to handle the UI accordingly with a request, loading and success/error states along with their data, if necessary.
  */
-export const credentialIssuanceStatusSlice = createSlice({
+const credentialIssuanceStatusSlice = createSlice({
   name: 'credentialIssuanceStatus',
   initialState,
   reducers: {

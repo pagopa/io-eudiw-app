@@ -1,17 +1,7 @@
 import { IOColors, Tag, useIOTheme } from '@pagopa/io-app-design-system';
 import { t } from 'i18next';
 import { wellKnownCredential } from './credentials';
-import { CredentialType } from './itwMocksUtils';
 import { ItwCredentialStatus } from './itwTypesUtils';
-
-// New credentials that can be actively requested and obtained by the user
-export const newCredentials = [
-  CredentialType.EDUCATION_DEGREE,
-  CredentialType.EDUCATION_ENROLLMENT,
-  CredentialType.RESIDENCY
-] as const;
-
-export type NewCredential = (typeof newCredentials)[number];
 
 export const useBorderColorByStatus: () => {
   [key in ItwCredentialStatus]: string;
@@ -66,10 +56,7 @@ export const validCredentialStatuses: Array<ItwCredentialStatus> = [
   'jwtExpiring'
 ];
 
-export const itwGetCredentialNameByCredentialType = (): Record<
-  string,
-  string
-> => ({
+const itwGetCredentialNameByCredentialType = (): Record<string, string> => ({
   [wellKnownCredential.DISABILITY_CARD]: t('credentials.names.disabilityCard', {
     ns: 'wallet'
   }),

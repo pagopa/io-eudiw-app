@@ -4,7 +4,6 @@
 
 import { differenceInCalendarDays, isValid } from 'date-fns';
 import { t } from 'i18next';
-import * as z from 'zod';
 import { claimScheme, parseClaims } from './claims';
 import { wellKnownCredential } from './credentials';
 import { getCredentialStatus } from './itwCredentialStatusUtils';
@@ -125,79 +124,6 @@ export const getCredentialExpireDays = (
 
   return differenceInCalendarDays(expireDate, Date.now());
 };
-
-const FISCAL_CODE_REGEX =
-  /([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z])/g;
-
-/**
- * Extract a fiscal code from any string.
- * @param s - the input string
- * @returns An option with the extracted fiscal code
- */
-export const extractFiscalCode = (s: string) => {
-  const match = s.match(FISCAL_CODE_REGEX);
-  return match?.[0];
-};
-
-/**
- *
- *
- * Claim extractors
- *
- *
- */
-
-/**
- * Function that extracts a claim from a credential.
- * @param claimId - the claim id / name to extract
- * @param decoder - optional decoder for the claim value, defaults to decoding a string
- * @returns a function that extracts a claim from a credential
- */
-export const extractClaim =
-  <T = string>(
-    claimId: string,
-    decoder: z.ZodType<T> = z.string() as unknown as z.ZodType<T>
-  ) =>
-  (credential: ParsedCredential): T =>
-    decoder.parse(credential[claimId]?.value);
-
-/**
- * Returns the fiscal code from a credential (if applicable)
- * @param credential - the credential
- * @returns the fiscal code
- */
-export const getFiscalCodeFromCredential = (
-  credential: StoredCredential | undefined
-) =>
-  credential?.parsedCredential
-    ? extractFiscalCode(
-        extractClaim(WellKnownClaim.tax_id_code)(credential?.parsedCredential)
-      )
-    : '';
-
-/**
- * Returns the first name from a credential (if applicable)
- * @param credential - the credential
- * @returns the first name
- */
-export const getFirstNameFromCredential = (
-  credential: StoredCredential | undefined
-) =>
-  credential?.parsedCredential
-    ? extractClaim(WellKnownClaim.given_name)(credential.parsedCredential)
-    : '';
-
-/**
- * Returns the family name from a credential (if applicable)
- * @param credential - the credential
- * @returns the family name
- */
-export const getFamilyNameFromCredential = (
-  credential: StoredCredential | undefined
-) =>
-  credential?.parsedCredential
-    ? extractClaim(WellKnownClaim.family_name)(credential.parsedCredential)
-    : '';
 
 /**
  *

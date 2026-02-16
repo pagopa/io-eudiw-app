@@ -9,7 +9,7 @@ import Animated, {
 
 const DEFAULT_DURATION = 500;
 
-export type FlippableCardProps = {
+type FlippableCardProps = {
   FrontComponent: ReactElement;
   BackComponent: ReactElement;
   duration?: number;

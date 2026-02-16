@@ -21,7 +21,7 @@ import {
 import { ReactNode, ComponentProps } from 'react';
 
 export type Renderer = (txtNode: AnyTxtNodeWithSpacer) => ReactNode;
-export type RuleRenderer<P, F extends Renderer | void = void> = (
+type RuleRenderer<P, F extends Renderer | void = void> = (
   param: P,
   renderer: F,
   screenReaderEnabled: boolean

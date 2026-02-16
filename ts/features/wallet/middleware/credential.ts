@@ -5,8 +5,8 @@ import {
   Credential
 } from '@pagopa/io-react-native-wallet';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+import * as Crypto from 'expo-crypto';
 import { t } from 'i18next';
-import uuid from 'react-native-uuid';
 import { getEnv } from '../../../../ts/config/env';
 import {
   raceEffect,
@@ -82,7 +82,7 @@ const obtainCredentialListener: AppListenerWithAction<
     const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
 
     // Create credential crypto context
-    const credentialKeyTag = uuid.v4().toString();
+    const credentialKeyTag = Crypto.randomUUID().toString();
     await generate(credentialKeyTag);
     const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
 
@@ -269,7 +269,7 @@ const obtainCredentialListener: AppListenerWithAction<
  * It dispatches the action which shows the pin validation modal and awaits for the result.
  * If the pin is correct, the credential is stored, the issuance state is resetted and the user is navigated to the main screen.
  */
-export const addCredentialWithAuthListener: AppListenerWithAction<
+const addCredentialWithAuthListener: AppListenerWithAction<
   ReturnType<typeof addCredentialWithIdentification>
 > = async (action, listenerApi) => {
   listenerApi.dispatch(

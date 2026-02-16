@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export const MemoizedItwPresentationCredentialCardHideValuesButton = memo(
+const MemoizedItwPresentationCredentialCardHideValuesButton = memo(
   ItwPresentationCredentialCardHideValuesButton
 );
 

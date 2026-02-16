@@ -1,4 +1,4 @@
-import { Credential, WalletInstance } from '@pagopa/io-react-native-wallet';
+import { Credential } from '@pagopa/io-react-native-wallet';
 import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
 
 /**
@@ -11,16 +11,9 @@ export type IssuerConfiguration = Awaited<
 /**
  * Alias for the ParsedStatusAssertion type
  */
-export type ParsedStatusAssertion = Awaited<
+type ParsedStatusAssertion = Awaited<
   ReturnType<Credential.Status.VerifyAndParseStatusAssertion>
 >['parsedStatusAssertion']['payload'];
-
-/**
- * Alias for the WalletInstanceStatus type
- */
-export type WalletInstanceStatus = Awaited<
-  ReturnType<typeof WalletInstance.getWalletInstanceStatus>
->;
 
 /**
  * Alias for a DcqlQuery
@@ -50,14 +43,6 @@ export type ItwCredentialStatus =
   | 'expiring'
   | 'expired'
   | ItwJwtCredentialStatus;
-
-export type ItwAuthLevel = 'L2' | 'L3';
-
-export const enum CredentialFormat {
-  MDOC = 'mso_mdoc',
-  SD_JWT = 'dc+sd-jwt',
-  LEGACY_SD_JWT = 'vc+sd-jwt'
-}
 
 export type PercentPosition = `${number}%`;
 /**

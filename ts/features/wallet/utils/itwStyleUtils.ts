@@ -5,7 +5,7 @@ import { getLuminance } from '../../../utils/color';
 import { getCredentialNameByType, wellKnownCredential } from './credentials';
 import { useItWalletTheme } from './theme';
 
-export type CredentialTheme = {
+type CredentialTheme = {
   backgroundColor: string;
   textColor: string;
   statusBarStyle: StatusBarStyle;
