@@ -8,6 +8,10 @@ jest.mock('react-native-haptic-feedback', () => ({
   trigger: jest.fn()
 }));
 
+jest.mock('expo-crypto', () => ({
+  randomUUID: jest.fn(() => 'mocked-uuid-1234')
+}));
+
 /*
  * Turbo modules mocks.
  */
