@@ -76,7 +76,7 @@
       "useUnlockCode": "inserisci il **codice di sblocco**"
     },
     "title": {
-      "validation": "Autorizza operazione",
+      "validation": "Autorizza l'operazione",
       "access": "Ciao!"
     },
     "forgot": {
