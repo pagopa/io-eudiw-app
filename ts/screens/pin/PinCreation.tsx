@@ -37,7 +37,7 @@ export type PinCreationProps = {
   isOnboarding?: boolean;
 };
 
-export type PinCreationScreenProps = StackScreenProps<
+type PinCreationScreenProps = StackScreenProps<
   OnboardingNavigatorParamsList,
   'ONBOARDING_PIN_CREATION'
 >;

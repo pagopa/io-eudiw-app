@@ -7,13 +7,10 @@ import resL3 from '../__mocks__/L3/resL3.json';
 import tsL3 from '../__mocks__/L3/tsL3.json';
 import mdl from '../__mocks__/mdl.json';
 import pid from '../__mocks__/pid.json';
-import statusAssertion from '../__mocks__/statusAssertion.json';
 import ts from '../__mocks__/ts.json';
-import { ParsedStatusAssertion, StoredCredential } from './itwTypesUtils';
+import { StoredCredential } from './itwTypesUtils';
 
 export const ISSUER_MOCK_NAME = 'PagoPA S.p.A.';
-
-export type CredentialL3Key = keyof typeof ItwStoredCredentialsMocks.L3;
 
 /**
  * Credential types mocks.
@@ -40,8 +37,4 @@ export const ItwStoredCredentialsMocks = {
     ee: eeL3 as unknown as StoredCredential,
     res: resL3 as unknown as StoredCredential
   }
-};
-
-export const ItwStatusAssertionMocks = {
-  mdl: statusAssertion as ParsedStatusAssertion
 };

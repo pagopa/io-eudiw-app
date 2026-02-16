@@ -3,7 +3,7 @@ import { IOColors, useIOTheme } from '@pagopa/io-app-design-system';
 /**
  * Hook to get the app background color theme.
  */
-export const useAppBackgroundAccentColor = (): IOColors => {
+const useAppBackgroundAccentColor = (): IOColors => {
   const theme = useIOTheme();
   return theme['appBackground-accent'];
 };

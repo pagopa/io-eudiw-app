@@ -3,7 +3,7 @@ import { memo, useMemo } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import QRCode, { QRCodeProps } from 'react-native-qrcode-svg';
 
-export type QrCodeImageProps = {
+type QrCodeImageProps = {
   // Value to decode and present using a QR Code
   // If undefined, a placeholder is shown
   value?: string;
