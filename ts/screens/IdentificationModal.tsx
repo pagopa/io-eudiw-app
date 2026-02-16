@@ -8,7 +8,7 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import { t } from 'i18next';
-import { memo, useCallback, useMemo, useRef } from 'react';
+import { memo, useCallback, useMemo, useRef, useState } from 'react';
 import {
   Alert,
   ColorSchemeName,
@@ -37,7 +37,8 @@ import {
 import {
   biometricAuthenticationRequest,
   getBiometricDesignSystemType,
-  getBiometryDesignSystemIconName
+  getBiometryDesignSystemIconName,
+  IdentificationInstructionsComponent
 } from '../utils/biometric';
 import { isAndroid } from '../utils/device';
 
@@ -60,6 +61,7 @@ const IdentificationModal = () => {
   const { status, isValidatingTask } = useAppSelector(
     selectIdentificationStatus
   );
+  const [isBiometricLocked, setIsBiometricLocked] = useState(false);
   const blueColor = useAppBackgroundAccentColorName();
   const { top } = useSafeAreaInsets();
   const isBiometricEnabled = useAppSelector(selectIsBiometricEnabled);
@@ -93,10 +95,8 @@ const IdentificationModal = () => {
           if (!e) {
             return;
           }
-          if (e === 'timeout') {
-            Alert.alert(t('global:identification:error:deviceLocked'));
-          } else if (e === 'lockout') {
-            Alert.alert(t('global:identification:error:deviceLockedPermanent'));
+          if (e === 'lockout') {
+            setIsBiometricLocked(true);
           }
         }
       ),
@@ -131,7 +131,7 @@ const IdentificationModal = () => {
   const confirmResetAlert = useCallback(
     () =>
       Alert.alert(
-        t('identification.forgot.confirmTitle'),
+        t('identification.forgot.title'),
         t(
           isValidatingTask
             ? 'identification.forgot.confirmMsgWithTask'
@@ -225,6 +225,12 @@ const IdentificationModal = () => {
                 <H2 color={'white'} style={{ textAlign: 'center' }}>
                   {titleLabel}
                 </H2>
+                <VSpacer size={8} />
+
+                <IdentificationInstructionsComponent
+                  biometricType={biometricType}
+                  isBiometricIdentificationFailed={isBiometricLocked}
+                />
               </View>
             </View>
             <VSpacer size={32} />
