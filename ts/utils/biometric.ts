@@ -32,8 +32,8 @@ export const getBiometricState = async (): Promise<BiometricState> => {
 export const confirmBiometricEnabling = async () => {
   try {
     if (isIos) {
-      const promptMessage = t('biometric.popup.sensorDescription', {
-        ns: 'onboarding'
+      const promptMessage = t('identification.biometric.sensorDescription', {
+        ns: 'global'
       });
       const res = await LocalAuthentication.authenticateAsync({
         promptMessage,

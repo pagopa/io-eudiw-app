@@ -86,8 +86,8 @@
       }
     },
     "biometric": {
-      "title": "Biometric identification",
-      "sensorDescription": "Login quickly"
+      "title": "Identificazione richiesta",
+      "sensorDescription": "Accedi velocemente"
     }
   },
   "errors": {

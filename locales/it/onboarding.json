@@ -81,9 +81,6 @@
       "title": "Attiva il riconoscimento biometrico",
       "settings": "Puoi modificare la tua scelta in ogni momento da Impostazioni > Sicurezza",
       "body": "Potrai usare il tuo volto o impronta digitale al posto del codice di sblocco. Ti permetterà di accedere all’app e autorizzare operazioni e pagamenti in modo più rapido e sicuro."
-    },
-    "popup": {
-      "sensorDescription": "Accedi velocemente"
     }
   }
 }
