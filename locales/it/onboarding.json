@@ -45,7 +45,7 @@
   "biometric": {
     "title": "Attiva il riconoscimento biometrico",
     "notEnrolled": {
-      "description": "Per farlo, devi prima configurarlo nelle impostazioni di sistema del tuo dispositivo.",
+      "description": "Potrai usare il tuo volto o impronta digitale al posto del codice di sblocco. Ti permetterà di accedere all’app e autorizzare operazioni e pagamenti in modo più rapido e sicuro. \n \nPer farlo, devi prima configurarlo nelle impostazioni di sistema del tuo dispositivo.",
       "list": {
         "header": "Come fare",
         "firstItem": {
