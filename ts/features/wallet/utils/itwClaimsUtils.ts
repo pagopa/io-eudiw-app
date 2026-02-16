@@ -5,10 +5,6 @@
 import { differenceInCalendarDays, isValid } from 'date-fns';
 import { t } from 'i18next';
 import { claimScheme, parseClaims } from './claims';
-import { wellKnownCredential } from './credentials';
-import { getCredentialStatus } from './itwCredentialStatusUtils';
-import { validCredentialStatuses } from './itwCredentialUtils';
-import { CredentialType } from './itwMocksUtils';
 import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
 import {
   ClaimDisplayResult,
@@ -139,38 +135,6 @@ const SIMPLE_DATE_FORMAT = {
   DDMMYYYY: 'DD/MM/YYYY',
   DDMMYY: 'DD/MM/YY'
 } as const;
-
-/**
- * Maps a vct name to the corresponding credential type, used in UI contexts
- * Note: although this list is unlikely to change, you should ensure to have
- * a fallback when dealing with this list to prevent unwanted behaviours
- */
-const credentialTypesByVct: { [vct: string]: CredentialType } = {
-  [wellKnownCredential.PID]: CredentialType.PID,
-  [wellKnownCredential.DRIVING_LICENSE]: CredentialType.DRIVING_LICENSE,
-  [wellKnownCredential.DISABILITY_CARD]: CredentialType.EUROPEAN_DISABILITY_CARD
-};
-
-/**
- * Return a list of credential types that have an invalid status.
- */
-export const getInvalidCredentials = (
-  presentationDetails: PresentationDetails,
-  credentialsByType: Array<StoredCredential>
-) =>
-  presentationDetails
-    // Retries the type from the VCT map
-    .map(({ vct }) => (vct ? credentialTypesByVct[vct] : undefined))
-    // Removes undefined
-    .filter(isDefined)
-    // Retrieve the credential using the type from the previous step
-    .map(type => credentialsByType.find(c => c.credentialType === type))
-    // Removes undefined
-    .filter(isDefined)
-    // Removes credential with valid statuses
-    .filter(c => !validCredentialStatuses.includes(getCredentialStatus(c)))
-    // Gets the invalid credential's type
-    .map(c => c.credentialType);
 
 /**
  * Enrich the result of the presentation request evaluation with localized claim names for UI display.
