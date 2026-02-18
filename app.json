@@ -28,9 +28,7 @@
         "NSLocationWhenInUseUsageDescription": "This app uses your location to improve user experience."
       },
      "icon": {
-       "light": "./assets/images/icons/ios/liquid-glass/Icon-iOS-Default-1024x1024@1x.png",
-       "dark": "./assets/images/icons/ios/liquid-glass/Icon-iOS-Dark-1024x1024@1x.png",
-       "tinted": "./assets/images/icons/ios/liquid-glass/Icon-iOS-TintedDark-1024x1024@1x.png"
+       "light": "./assets/images/icons/ios-default.png"
      }
     },
     "android": {
@@ -77,8 +75,8 @@
         }
       ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icons/android/Android-adaptive-icon-Light.png",
-        "monochromeImage": "./assets/images/icons/android/Android-adaptive-icon-Dark.png"
+        "foregroundImage": "./assets/images/icons/android-light.png",
+        "monochromeImage": "./assets/images/icons/android-dark.png"
       }
     },
     "plugins": [
