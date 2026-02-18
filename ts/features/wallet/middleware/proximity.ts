@@ -125,8 +125,6 @@ const proximityListener: AppListenerWithAction<
       // cancel branch
       cancelHandler(listenerApi)
     ]);
-
-    await removeProximityListeners(listeners);
   } catch (error) {
     // Ignore if the task was aborted
     if (error instanceof TaskAbortError) {
@@ -134,6 +132,7 @@ const proximityListener: AppListenerWithAction<
     }
     listenerApi.dispatch(setProximityStatusError(`${serializeError(error)}`));
     await closeFlow(listenerApi); // We can ignore this error in this particular case as we don't even know if the flow started successfully.
+  } finally {
     await removeProximityListeners(listeners);
   }
 };
