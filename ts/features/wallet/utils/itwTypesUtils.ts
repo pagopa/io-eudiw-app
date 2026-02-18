@@ -22,6 +22,12 @@ export type WalletInstanceStatus = Awaited<
   ReturnType<typeof WalletInstance.getWalletInstanceStatus>
 >;
 
+/**
+ * Alias for a DcqlQuery
+ */
+export type DcqlQuery =
+  Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
+
 export type StoredStatusAssertion =
   | {
       credentialStatus: 'valid';

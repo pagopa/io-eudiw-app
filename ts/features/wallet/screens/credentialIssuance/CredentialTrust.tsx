@@ -10,7 +10,7 @@ import {
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
-import { useCallback, useEffect } from 'react';
+import { Fragment, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import IOMarkdown from '../../../../components/IOMarkdown';
@@ -24,16 +24,11 @@ import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus,
+  selectCredentialIssuancePreAuthStatus,
   selectRequestedCredentialType,
   setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
-import { selectCredential } from '../../store/credentials';
-import { parseClaims } from '../../utils/claims';
-import {
-  getCredentialNameByType,
-  wellKnownCredential
-} from '../../utils/credentials';
-import { WellKnownClaim } from '../../utils/itwClaimsUtils';
+import { getCredentialNameByType } from '../../utils/credentials';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
 
@@ -43,7 +38,9 @@ import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
  */
 const CredentialTrust = () => {
   const dispatch = useAppDispatch();
-  const pid = useAppSelector(selectCredential(wellKnownCredential.PID));
+  const { success: preAuthSuccess } = useAppSelector(
+    selectCredentialIssuancePreAuthStatus
+  );
   const { t } = useTranslation(['global', 'wallet']);
   const { loading, error, success } = useAppSelector(
     selectCredentialIssuancePostAuthStatus
@@ -118,20 +115,15 @@ const CredentialTrust = () => {
     }
   });
 
-  // This should never happen, however we need to handle because pid might be undefined
-  if (!pid) {
-    navigateToErrorScreen();
-    return null;
-  }
-
-  const claims = parseClaims(pid!.parsedCredential, {
-    exclude: [WellKnownClaim.unique_id, WellKnownClaim.link_qr_code]
-  });
-
-  const requiredClaims = claims.map(claim => ({
-    claim,
-    source: getCredentialNameFromType(pid.credentialType, '')
-  }));
+  const presentationDetails = preAuthSuccess.status
+    ? preAuthSuccess.data
+    : undefined;
+  const requiredClaimsByCredential = presentationDetails?.map(detail =>
+    detail.claimsToDisplay.map(claim => ({
+      claim,
+      source: getCredentialNameFromType(detail.vct, '')
+    }))
+  );
 
   return (
     <ForceScrollDownView threshold={50}>
@@ -157,7 +149,16 @@ const CredentialTrust = () => {
           iconName="security"
           iconColor={theme['icon-default']}
         />
-        <ItwRequestedClaimsList items={requiredClaims} />
+        {requiredClaimsByCredential?.map((requiredClaims, index) => (
+          <Fragment
+            key={`${requiredClaims[0].source ?? 'GENERIC_CREDENTIAL'}_${index}`}
+          >
+            <ItwRequestedClaimsList items={requiredClaims} />
+            {index < requiredClaimsByCredential.length - 1 && (
+              <VSpacer size={24} />
+            )}
+          </Fragment>
+        ))}
         <VSpacer size={48} />
         <FeatureInfo
           iconName="fornitori"

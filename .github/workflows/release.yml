@@ -117,9 +117,10 @@ jobs:
       - id: download-universal-apk-from-store
         continue-on-error: true
         run: |
-          cd fastlane/android
+          cd android
           VERSION_CODE=$(sed -n 's/.*versionCode \(.*\)/\1/p' "app/build.gradle")
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
+          cd .. && cd fastlane
           bundle exec fastlane android download_apk
         env:
           RUBYOPT: '-rostruct'
@@ -129,8 +130,8 @@ jobs:
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
-          name: io-eudiw-app-universal.apk
-          path: android/io-eudiw-app-universal.apk
+          name: ioeudiw-universal.apk
+          path: android/ioeudiw-universal.apk
       - id: upload-aab
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
@@ -142,7 +143,7 @@ jobs:
         run: |
           gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} \
             android/app/build/outputs/bundle/release/app-release.aab#android-app-release.aab \
-            android/io-eudiw-app-universal.apk#io-eudiw-app-universal.apk
+            android/ioeudiw-universal.apk#ioeudiw-universal.apk
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -202,17 +203,17 @@ jobs:
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.0.3
         with:
-          name: IoEudiwApp.app.dSYM.zip
-          path: ios/IoEudiwApp.app.dSYM.zip
+          name: ioeudiw.app.dSYM.zip
+          path: ios/ioeudiw.app.dSYM.zip
       - id: upload-ipa
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
-          name: IoEudiwApp.ipa
-          path: ios/IoEudiwApp.ipa
+          name: ioeudiw.ipa
+          path: ios/ioeudiw.ipa
       - id: upload-ipa-release
         continue-on-error: true
         run: |
-          gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} ios/IoEudiwApp.ipa#IoEudiwApp.ipa
+          gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} ios/ioeudiw.ipa#ioeudiw.ipa
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

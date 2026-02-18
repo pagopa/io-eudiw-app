@@ -23,14 +23,6 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Build the App in release mode
 
-### android bump_version
-
-```sh
-[bundle exec] fastlane android bump_version
-```
-
-Bump app version
-
 ### android alpha_playstore
 
 ```sh
@@ -46,6 +38,27 @@ Build the App in release mode and deploy in alpha track on the Google Play Store
 ```
 
 Download universal APK file from Google Play
+
+----
+
+
+## iOS
+
+### ios certificates
+
+```sh
+[bundle exec] fastlane ios certificates
+```
+
+Fetch certificates and provisioning profiles
+
+### ios beta_testflight
+
+```sh
+[bundle exec] fastlane ios beta_testflight
+```
+
+Submit a new beta build to TestFlight
 
 ----
 
