@@ -3,35 +3,34 @@ import {
   FooterActions,
   ForceScrollDownView,
   H2,
-  HSpacer,
-  Icon,
   IOVisualCostants,
-  VSpacer
+  ListItemHeader,
+  useIOTheme,
+  VSpacer,
+  VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
-import { useCallback, useEffect } from 'react';
+import { Fragment, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import IOMarkdown from '../../../../components/IOMarkdown';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch, useAppSelector } from '../../../../store';
-import CredentialTypePresentationClaimsList, {
-  CredentialTypePresentationClaimsListDescriptor
-} from '../../components/presentation/CredentialTypePresentationClaimsList';
+import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import { ItwRequestedClaimsList } from '../../components/presentation/ItwRequiredClaimsList';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus,
+  selectCredentialIssuancePreAuthStatus,
   selectRequestedCredentialType,
   setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
-import { selectCredential } from '../../store/credentials';
-import {
-  getCredentialNameByType,
-  wellKnownCredential
-} from '../../utils/credentials';
+import { getCredentialNameByType } from '../../utils/credentials';
+import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
+import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
 
 /**
  * Screen which shows the user the credentials and claims that will be shared with the credential issuer
@@ -39,7 +38,9 @@ import {
  */
 const CredentialTrust = () => {
   const dispatch = useAppDispatch();
-  const pid = useAppSelector(selectCredential(wellKnownCredential.PID));
+  const { success: preAuthSuccess } = useAppSelector(
+    selectCredentialIssuancePreAuthStatus
+  );
   const { t } = useTranslation(['global', 'wallet']);
   const { loading, error, success } = useAppSelector(
     selectCredentialIssuancePostAuthStatus
@@ -47,6 +48,7 @@ const CredentialTrust = () => {
   const requestedCredential = useAppSelector(selectRequestedCredentialType);
   const navigation = useNavigation();
   const { navigateToWallet } = useNavigateToWalletWithReset();
+  const theme = useIOTheme();
 
   const navigateToErrorScreen = useCallback(
     () =>
@@ -113,52 +115,51 @@ const CredentialTrust = () => {
     }
   });
 
-  // This should never happen, however we need to handle because pid might be undefined
-  if (!pid) {
-    navigateToErrorScreen();
-    return null;
-  }
-
-  // This is a mocked descriptor for the PID credential to show its claims in the PresentationClaimsList component
-  const requiredDisclosures: CredentialTypePresentationClaimsListDescriptor = {
-    [wellKnownCredential.PID]: {
-      [wellKnownCredential.PID]: Object.fromEntries(
-        Object.entries(pid!.parsedCredential)
-          .filter(([key]) => key !== 'iat')
-          .map(([key, value]) => [
-            key,
-            {
-              name: value.name,
-              value: value.value
-            }
-          ])
-      )
-    }
-  };
+  const presentationDetails = preAuthSuccess.status
+    ? preAuthSuccess.data
+    : undefined;
+  const requiredClaimsByCredential = presentationDetails?.map(detail =>
+    detail.claimsToDisplay.map(claim => ({
+      claim,
+      source: getCredentialNameFromType(detail.vct, '')
+    }))
+  );
 
   return (
     <ForceScrollDownView threshold={50}>
       <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
         <VSpacer size={24} />
-        <View style={styles.header}>
-          <Icon name={'device'} color={'grey-450'} size={24} />
-          <HSpacer size={8} />
-          <Icon name={'transactions'} color={'grey-450'} size={24} />
-          <HSpacer size={8} />
-          <Icon name={'institution'} color={'grey-450'} size={24} />
-        </View>
+        <ItwDataExchangeIcons />
         <VSpacer size={24} />
-        <H2>
-          {t('wallet:credentialIssuance.trust.title', {
-            credential: getCredentialNameByType(requestedCredential)
-          })}
-        </H2>
-        <IOMarkdown content={t('wallet:credentialIssuance.trust.subtitle')} />
-        <VSpacer size={8} />
-        <CredentialTypePresentationClaimsList
-          mandatoryDescriptor={requiredDisclosures}
+        <VStack space={24}>
+          <H2>
+            {t('wallet:credentialIssuance.trust.title', {
+              credential: getCredentialNameByType(requestedCredential)
+            })}
+          </H2>
+          <IOMarkdown
+            content={t('wallet:credentialIssuance.trust.subtitle', {
+              organization: ISSUER_MOCK_NAME
+            })}
+          />
+        </VStack>
+        <VSpacer size={24} />
+        <ListItemHeader
+          label={t('wallet:credentialIssuance.trust.requiredData')}
+          iconName="security"
+          iconColor={theme['icon-default']}
         />
-        <VSpacer size={24} />
+        {requiredClaimsByCredential?.map((requiredClaims, index) => (
+          <Fragment
+            key={`${requiredClaims[0].source ?? 'GENERIC_CREDENTIAL'}_${index}`}
+          >
+            <ItwRequestedClaimsList items={requiredClaims} />
+            {index < requiredClaimsByCredential.length - 1 && (
+              <VSpacer size={24} />
+            )}
+          </Fragment>
+        ))}
+        <VSpacer size={48} />
         <FeatureInfo
           iconName="fornitori"
           body={t('wallet:credentialIssuance.trust.disclaimer.store')}
@@ -167,12 +168,6 @@ const CredentialTrust = () => {
         <FeatureInfo
           iconName="trashcan"
           body={t('wallet:credentialIssuance.trust.disclaimer.retention')}
-        />
-        <VSpacer size={48} />
-        <IOMarkdown
-          content={t('wallet:credentialIssuance.trust.tos', {
-            privacyUrl: ''
-          })}
         />
       </View>
       <FooterActions
@@ -195,12 +190,5 @@ const CredentialTrust = () => {
     </ForceScrollDownView>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  }
-});
 
 export default CredentialTrust;

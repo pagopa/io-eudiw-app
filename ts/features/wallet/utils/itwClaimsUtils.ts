@@ -3,8 +3,22 @@
  */
 
 import { differenceInCalendarDays, isValid } from 'date-fns';
+import { t } from 'i18next';
 import * as z from 'zod';
-import { ParsedCredential, StoredCredential } from './itwTypesUtils';
+import { claimScheme, parseClaims } from './claims';
+import { wellKnownCredential } from './credentials';
+import { getCredentialStatus } from './itwCredentialStatusUtils';
+import { validCredentialStatuses } from './itwCredentialUtils';
+import { CredentialType } from './itwMocksUtils';
+import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
+import {
+  ClaimDisplayResult,
+  EnrichedPresentationDetails,
+  isDefined,
+  ParsedCredential,
+  PresentationDetails,
+  StoredCredential
+} from './itwTypesUtils';
 
 /**
  *
@@ -61,7 +75,11 @@ export enum WellKnownClaim {
   /**
    * Claim that contains the driving privilege within the new nested structure
    */
-  driving_privileges = 'driving_privileges'
+  driving_privileges = 'driving_privileges',
+  /**
+   * Claim that contains signature usual mark
+   */
+  signature_usual_mark = 'signature_usual_mark'
 }
 
 /**
@@ -196,5 +214,167 @@ const SIMPLE_DATE_FORMAT = {
   DDMMYY: 'DD/MM/YY'
 } as const;
 
+/**
+ * Maps a vct name to the corresponding credential type, used in UI contexts
+ * Note: although this list is unlikely to change, you should ensure to have
+ * a fallback when dealing with this list to prevent unwanted behaviours
+ */
+const credentialTypesByVct: { [vct: string]: CredentialType } = {
+  [wellKnownCredential.PID]: CredentialType.PID,
+  [wellKnownCredential.DRIVING_LICENSE]: CredentialType.DRIVING_LICENSE,
+  [wellKnownCredential.DISABILITY_CARD]: CredentialType.EUROPEAN_DISABILITY_CARD
+};
+
+/**
+ * Return a list of credential types that have an invalid status.
+ */
+export const getInvalidCredentials = (
+  presentationDetails: PresentationDetails,
+  credentialsByType: Array<StoredCredential>
+) =>
+  presentationDetails
+    // Retries the type from the VCT map
+    .map(({ vct }) => (vct ? credentialTypesByVct[vct] : undefined))
+    // Removes undefined
+    .filter(isDefined)
+    // Retrieve the credential using the type from the previous step
+    .map(type => credentialsByType.find(c => c.credentialType === type))
+    // Removes undefined
+    .filter(isDefined)
+    // Removes credential with valid statuses
+    .filter(c => !validCredentialStatuses.includes(getCredentialStatus(c)))
+    // Gets the invalid credential's type
+    .map(c => c.credentialType);
+
+/**
+ * Enrich the result of the presentation request evaluation with localized claim names for UI display.
+ *
+ * @param presentationDetails The presentation details with the credentials to present
+ * @param credentialsByType A credentials map to extract the localized claim names
+ * @returns The enriched presentation details
+ */
+export const enrichPresentationDetails = (
+  presentationDetails: PresentationDetails,
+  credentialsByType: Array<StoredCredential>
+): EnrichedPresentationDetails =>
+  presentationDetails.map(details => {
+    const { cryptoContext, ...restDetails } = details;
+    const credentialType = details.vct;
+    const credential =
+      credentialType &&
+      credentialsByType.find(c => c.credentialType === credentialType);
+
+    // When the credential is not found, it is not available as a `StoredCredential`, so we hide it from the user.
+    // The raw credential is still used for the presentation. Currently this only happens for the Wallet Attestation.
+    if (!credential) {
+      return {
+        ...restDetails,
+        claimsToDisplay: [] // Hide from userv gq
+      };
+    }
+
+    const parsedClaims = parseClaims(credential.parsedCredential, {
+      exclude: [WellKnownClaim.unique_id]
+    });
+
+    return {
+      ...restDetails,
+      // Only include claims that are part of the parsed credential
+      // This ensures that technical claims like `iat` are not displayed to the user
+      claimsToDisplay: details.requiredDisclosures
+        .map(([, claimName]) => parsedClaims.find(({ id }) => id === claimName))
+        .filter(isDefined)
+    };
+  });
+
+/**
+ * Get the display value of a claim, handling both flat and nested formats.
+ */
+
+export const getClaimDisplayValue = (
+  claim: ClaimDisplayFormat
+): ClaimDisplayResult => {
+  try {
+    const parsed = claimScheme.parse(claim);
+
+    switch (parsed.type) {
+      case 'placeOfBirth':
+        return {
+          type: 'text',
+          value: `${parsed.value.country} ${parsed.value.locality}`.trim()
+        };
+
+      case 'date':
+      case 'expireDate':
+        return {
+          type: 'text',
+          value: parsed.value.toLocaleDateString()
+        };
+
+      case 'image':
+        return {
+          type: 'image',
+          value: parsed.value
+        };
+
+      case 'boolean':
+        return {
+          type: 'text',
+          value: t(`presentation.credentialDetails.boolClaim.${parsed.value}`, {
+            ns: 'wallet'
+          })
+        };
+
+      case 'stringArray':
+        return {
+          type: 'text',
+          value: parsed.value.join(', ')
+        };
+
+      case 'drivingPrivileges':
+        const categories = parsed.value
+          .map(v => v.vehicle_category_code)
+          .join(', ');
+        return {
+          type: 'text',
+          value: categories
+        };
+
+      case 'string':
+        return {
+          type: 'text',
+          value: parsed.value
+        };
+
+      case 'emptyString':
+        return {
+          type: 'text',
+          value: ''
+        };
+
+      case 'verificationEvidence':
+        return {
+          type: 'text',
+          value: parsed.value.organization_name
+        };
+
+      default:
+        return {
+          type: 'text',
+          value: t(
+            'verifiableCredentials.generic.placeholders.claimNotAvailable',
+            { ns: 'wallet' }
+          )
+        };
+    }
+  } catch (error) {
+    return {
+      type: 'text',
+      value: t('verifiableCredentials.generic.placeholders.claimNotAvailable', {
+        ns: 'wallet'
+      })
+    };
+  }
+};
 export type SimpleDateFormat =
   (typeof SIMPLE_DATE_FORMAT)[keyof typeof SIMPLE_DATE_FORMAT];

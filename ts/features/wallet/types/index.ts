@@ -46,3 +46,11 @@ export type WalletCard = WalletCardBase & WalletCardItw;
 export type WalletCardType = WalletCard['type'];
 
 export type CardColorScheme = 'default' | 'faded' | 'greyscale';
+
+export interface FederationEntity {
+  organization_name?: string;
+  homepage_uri?: string;
+  policy_uri?: string;
+  logo_uri?: string;
+  contacts?: Array<string>;
+}

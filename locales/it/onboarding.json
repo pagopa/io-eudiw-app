@@ -18,69 +18,69 @@
     "subtitle": "Store your documents securely."
   },
   "pin": {
-    "title": "Create an unlock code",
-    "subTitle": "This is the 6-digit code to access and authorize certain operations in the app.",
+    "title": "Crea un codice di sblocco",
+    "subTitle": "È il codice a 6 cifre per accedere a IO e autorizzare alcune operazioni in app.",
     "confirmation": {
-      "title": "Confirm unlock code"
+      "title": "Conferma il codice di sblocco"
     },
     "policy": {
-      "title": "How to choose the code?",
-      "description": "The unlock code is made up of 6 digits and will be used to access and authorize certain operations in the app. \n\n Choose a code that is hard to guess and does not contain: \n - a single repeated number (e.g. 000000); \n - a sequence of ordered numbers (e.g. 123456 or 654321)."
+      "title": "Come scegliere il codice?",
+      "description": "Il codice di sblocco è composto da 6 cifre e ti servirà per accedere a IO e autorizzare alcune operazioni in app.",
+      "bulletListTitle": "Scegli un codice difficile da indovinare e che non contenga:",
+      "firstItem": "un unico numero ripetuto (es. 000000)",
+      "secondItem": "elenco di numeri ordinati (es. 123456 o 654321)"
     },
     "errors": {
       "invalid": {
-        "title": "Too easy!",
-        "description": "Choose a code that is hard to guess, which does not contain a single repeated number (e.g. 000000) or a sequence of ordered numbers (e.g. 123456 or 654321).",
-        "cta": "Choose another code"
+        "title": "Troppo facile!",
+        "description": "Scegli un codice difficile da indovinare, che non contenga un unico numero ripetuto (es. 000000)o un elenco di numeri ordinati (es. 123456 o 654321).",
+        "cta": "Scegli un altro codice"
       },
       "match": {
-        "title": "The code you enter is different than the first one",
-        "cta": "Try again"
+        "title": "Il codice non coincide",
+        "cta": "Riprova"
       }
     }
   },
   "biometric": {
-    "title": "Enable biometric recognition",
+    "title": "Attiva il riconoscimento biometrico",
     "notEnrolled": {
-      "description": "You can use your face or fingerprint instead of the unlock code. This will allow you to access the app and authorize operations more quickly and securely. \n \n To do this, you first need to configure it in your device's system settings.",
+      "description": "Potrai usare il tuo volto o impronta digitale al posto del codice di sblocco. Ti permetterà di accedere all’app e autorizzare operazioni e pagamenti in modo più rapido e sicuro. \n \nPer farlo, devi prima configurarlo nelle impostazioni di sistema del tuo dispositivo.",
       "list": {
-        "header": "How to do it",
+        "header": "Come fare",
         "firstItem": {
           "label": "Step 1",
-          "value": "Go to your device's settings"
+          "value": "Vai alle impostazioni del tuo dispositivo"
         },
         "secondItem": {
           "label": "Step 2",
-          "value": "Configure the face or fingerpint"
+          "value": "Configura il volto o l’impronta"
         },
         "thirdItem": {
           "label": "Step 3",
-          "value": "Enable it in Wallet under Profile > Security"
+          "value": "Attivalo su IO in Impostazioni > Sicurezza"
         }
       }
     },
     "noLockScreen": {
-      "title": "Protect your device",
-      "subtitle": "Wallet sends you communications that concern you personally. Make sure that only you can access the application by setting a code or pattern to unlock the device.",
+      "title": "Proteggi il tuo dispositivo",
+      "subtitle": "IO ti invia comunicazioni che ti riguardano personalmente. Assicurati che solo tu possa accedere all’app impostando un codice o un segno per sbloccare il dispositivo.",
       "list": {
-        "header": "How to do it",
+        "header": "Come fare",
         "firstItem": {
           "label": "Step 1",
-          "value": "Go to your device's settings"
+          "value": "Vai alle impostazioni del tuo dispositivo"
         },
         "secondItem": {
           "label": "Step 2",
-          "value": "Set a code or sign to unlock the device"
+          "value": "Imposta un codice o un segno per sbloccare il dispositivo"
         }
       }
     },
     "available": {
-      "title": "Enable biometric recognition",
-      "settings": "You can always change your choice in Profile > Security",
-      "body": "You can use your face or fingerprint instead of the unlock code. This will allow you to access the app and authorize operations more quickly and securely."
-    },
-    "popup": {
-      "sensorDescription": "Login quickly"
+      "title": "Attiva il riconoscimento biometrico",
+      "settings": "Puoi modificare la tua scelta in ogni momento da Impostazioni > Sicurezza",
+      "body": "Potrai usare il tuo volto o impronta digitale al posto del codice di sblocco. Ti permetterà di accedere all’app e autorizzare operazioni e pagamenti in modo più rapido e sicuro."
     }
   }
 }

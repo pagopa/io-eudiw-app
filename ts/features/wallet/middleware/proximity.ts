@@ -15,7 +15,6 @@ import {
 import { selectCredentials } from '../store/credentials';
 import {
   resetProximityQrCode,
-  selectProximityAcceptedFields,
   selectProximityDocumentRequest,
   setProximityQrCode,
   setProximityStatusAuthorizationComplete,
@@ -30,8 +29,9 @@ import {
 } from '../store/proximity';
 import { requestBlePermissions } from '../utils/permissions';
 import {
+  generateAcceptedFields,
   getIsVerifierAuthenticated,
-  matchRequestToClaims,
+  getProximityDetails,
   verifierCertificates
 } from '../utils/proximity';
 
@@ -154,8 +154,9 @@ const responseHandler = async (listenerApi: AppListener) => {
   const mdocCredentials = allCredentials.filter(
     credential => credential.format === 'mso_mdoc'
   );
-  const descriptor = await matchRequestToClaims(
-    documentRequest,
+
+  const descriptor = getProximityDetails(
+    documentRequest.request,
     mdocCredentials
   );
 
@@ -183,9 +184,8 @@ const responseHandler = async (listenerApi: AppListener) => {
       })
     );
 
-    const acceptedFields = selectProximityAcceptedFields(
-      listenerApi.getState()
-    );
+    // We accept all the requested fields
+    const acceptedFields = generateAcceptedFields(documentRequest.request);
 
     if (acceptedFields) {
       listenerApi.dispatch(

@@ -8,33 +8,16 @@ import {
   setLoading,
   setSuccess
 } from '../../../store/utils/asyncStatus';
-import { StoredCredential } from '../utils/itwTypesUtils';
+import {
+  EnrichedPresentationDetails,
+  StoredCredential
+} from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 
 export type RequestedCredential = string | undefined;
 type RequestedCredentialType = string | undefined;
 
-type ObtainCredentialPreAuthResult = boolean;
-// {
-// This is commented because currently the getRequestedCredentialToBePresented function is not available for a generic credential
-// requestObject: Awaited<
-//   ReturnType<typeof Credential.Issuance.getRequestedCredentialToBePresented>
-// >;
-// codeVerifier: Awaited<
-//   ReturnType<typeof Credential.Issuance.startUserAuthorization>
-// >['codeVerifier'];
-// credentialDefinition: Awaited<
-//   ReturnType<typeof Credential.Issuance.startUserAuthorization>
-// >['credentialDefinition'];
-// clientId: Awaited<
-//   ReturnType<typeof Credential.Issuance.startUserAuthorization>
-// >['clientId'];
-// issuerConf: Awaited<
-//   ReturnType<typeof Credential.Issuance.getIssuerConfig>
-// >['issuerConf'];
-// redirectUri: string;
-// credentialType: string;
-// };
+type ObtainCredentialPreAuthResult = EnrichedPresentationDetails | undefined;
 
 /* State type definition for the credentialIssuance slice
  * issuanceCreation - Async status for the instance creation
