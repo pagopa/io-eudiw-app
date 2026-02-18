@@ -4,7 +4,6 @@
     "slug": "ioeudiw",
     "version": "2.6.2",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -27,7 +26,10 @@
         "NSBluetoothPeripheralUsageDescription": "This app uses Bluetooth to connect to external devices.",
         "NSBluetoothScanUsageDescription": "This app uses Bluetooth to connect to external devices.",
         "NSLocationWhenInUseUsageDescription": "This app uses your location to improve user experience."
-      }
+      },
+     "icon": {
+       "light": "./assets/images/icons/ios-default.png"
+     }
     },
     "android": {
       "package": "it.pagopa.io.app.poc.eudiw",
@@ -71,7 +73,11 @@
             "DEFAULT"
           ]
         }
-      ]
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icons/android-light.png",
+        "monochromeImage": "./assets/images/icons/android-dark.png"
+      }
     },
     "plugins": [
       [
@@ -86,7 +92,8 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#0b3ee3",
-          "image": "./assets/images/splash-icon.png"
+          "image": "./assets/images/icons/splash-screen-icon.png",
+          "imageWidth": 250
         }
       ],
       [
