@@ -8,9 +8,9 @@ import {
   VStack,
   Alert as AlertDs
 } from '@pagopa/io-app-design-system';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, StyleSheet, Alert } from 'react-native';
 
@@ -66,31 +66,33 @@ const PresentationProximityPreview = ({ route }: Props) => {
     proximityErrorDetailsPreview: proximityErrorDetails ?? 'No errors'
   });
 
-  useEffect(() => {
-    // Handle navigation based on the proximity presentation result
-    if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_STOPPED) {
-      navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PROXIMITY_SUCCESS'
-      });
-    } else if (
-      proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED ||
-      proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR
-    ) {
-      navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PROXIMITY_FAILURE',
-        params: {
-          fatal: true
-        }
-      });
-    } else if (
-      proximityStatus === ProximityStatus.PRXOMIMITY_STATUS_ERROR_AUTHORIZED
-    ) {
-      navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PROXIMITY_FAILURE',
-        params: { fatal: false }
-      });
-    }
-  }, [proximityStatus, navigation]);
+  useFocusEffect(
+    useCallback(() => {
+      // Handle navigation based on the proximity presentation result
+      if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_STOPPED) {
+        navigation.navigate('MAIN_WALLET_NAV', {
+          screen: 'PROXIMITY_SUCCESS'
+        });
+      } else if (
+        proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED ||
+        proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR
+      ) {
+        navigation.navigate('MAIN_WALLET_NAV', {
+          screen: 'PROXIMITY_FAILURE',
+          params: {
+            fatal: true
+          }
+        });
+      } else if (
+        proximityStatus === ProximityStatus.PRXOMIMITY_STATUS_ERROR_AUTHORIZED
+      ) {
+        navigation.navigate('MAIN_WALLET_NAV', {
+          screen: 'PROXIMITY_FAILURE',
+          params: { fatal: false }
+        });
+      }
+    }, [proximityStatus, navigation])
+  );
 
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();
