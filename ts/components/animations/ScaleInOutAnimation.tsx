@@ -1,6 +1,6 @@
 import { ViewStyle } from 'react-native';
 import Animated, {
-  AnimateStyle,
+  AnimatedStyle,
   LayoutAnimation,
   WithSpringConfig,
   withDelay,
@@ -65,7 +65,7 @@ const ScaleInOutAnimation = ({
 
   return (
     <Animated.View
-      style={style as AnimateStyle<ViewStyle>}
+      style={style as AnimatedStyle<ViewStyle>}
       entering={enteringAnimation}
       exiting={exitingAnimation}
     >

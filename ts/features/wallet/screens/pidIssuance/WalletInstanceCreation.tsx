@@ -19,7 +19,7 @@ import { StyleSheet, View } from 'react-native';
 import Animated, {
   useAnimatedRef,
   useDerivedValue,
-  useScrollViewOffset,
+  useScrollOffset,
   useSharedValue
 } from 'react-native-reanimated';
 import { AnimatedImage } from '../../../../components/AnimatedImage';
@@ -110,7 +110,7 @@ export const WalletInstanceCreation = () => {
 
   const productHighlightsRef = useRef<View>(null);
   const animatedRef = useAnimatedRef<Animated.ScrollView>();
-  const scrollPosition = useScrollViewOffset(animatedRef);
+  const scrollPosition = useScrollOffset(animatedRef);
   const hideAnchorLink = useSharedValue(false);
 
   useDerivedValue(() => {
