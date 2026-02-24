@@ -1,5 +1,6 @@
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+import { EmitterSubscription } from 'react-native';
 import { serializeError } from 'serialize-error';
 import { takeLatestEffect } from '../../../middleware/listener/effects';
 import {
@@ -47,33 +48,23 @@ const {
   start
 } = ISO18013_5;
 
+const removeProximityListeners = async (
+  listeners: Array<EmitterSubscription>
+) => {
+  return () => listeners.forEach(listener => listener.remove());
+};
+
 /**
  * Listener that handles the state of a proximity presentation
  */
 const proximityListener: AppListenerWithAction<
   ReturnType<typeof setProximityStatusStarted>
 > = async (_, listenerApi) => {
-  try {
-    // First thing, we request BLE permissions and we setup the proximity handler
-    const permissions = await requestBlePermissions();
-    if (!permissions) {
-      throw new Error('Permissions not granted');
-    }
-
-    await close().catch(() => {});
-
-    // Provide the verifiers certificates
-    const certificates = verifierCertificates.map(cert => cert.certificate);
-    await start({
-      certificates: [certificates]
-    });
-
-    addListener('onDeviceConnecting', () => {});
-
+  const listeners = [
+    addListener('onDeviceConnecting', () => {}),
     addListener('onDeviceConnected', () => {
       listenerApi.dispatch(setProximityStatusConnected());
-    });
-
+    }),
     addListener('onDocumentRequestReceived', payload => {
       // A new request has been received
       if (!payload || !payload.data) {
@@ -87,16 +78,30 @@ const proximityListener: AppListenerWithAction<
       const parsedJson = JSON.parse(payload.data);
       const parsedRequest = parseVerifierRequest(parsedJson);
       listenerApi.dispatch(setProximityStatusReceivedDocument(parsedRequest));
-    });
-
+    }),
     addListener('onDeviceDisconnected', () => {
       listenerApi.dispatch(setProximityStatusStopped());
-    });
-
+    }),
     addListener('onError', payload => {
       listenerApi.dispatch(
         setProximityStatusError(payload?.error ?? 'Unknown internal error')
       );
+    })
+  ];
+
+  try {
+    // First thing, we request BLE permissions and we setup the proximity handler
+    const permissions = await requestBlePermissions();
+    if (!permissions) {
+      throw new Error('Permissions not granted');
+    }
+
+    await close().catch(() => {});
+
+    // Provide the verifiers certificates
+    const certificates = verifierCertificates.map(cert => cert.certificate);
+    await start({
+      certificates: [certificates]
     });
 
     // Set QR Code
@@ -127,6 +132,8 @@ const proximityListener: AppListenerWithAction<
     }
     listenerApi.dispatch(setProximityStatusError(`${serializeError(error)}`));
     await closeFlow(listenerApi); // We can ignore this error in this particular case as we don't even know if the flow started successfully.
+  } finally {
+    await removeProximityListeners(listeners);
   }
 };
 
