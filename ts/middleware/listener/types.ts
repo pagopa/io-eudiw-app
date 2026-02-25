@@ -2,7 +2,6 @@ import {
   Action,
   ListenerEffect,
   ListenerEffectAPI,
-  TypedAddListener,
   TypedStartListening
 } from '@reduxjs/toolkit';
 import { AppDispatch, RootState } from '../../store/types';
@@ -12,11 +11,6 @@ import { AppDispatch, RootState } from '../../store/types';
  * It can be used to define a new listener.
  */
 export type AppStartListening = TypedStartListening<RootState, AppDispatch>;
-
-/**
- * Typed version of the listener which includes the correct RootState and AppDispatch types.
- */
-export type AppAddListener = TypedAddListener<RootState, AppDispatch>;
 
 /**
  * Type for a listener with typed action, state and dispatch. It can be used in conjunction with action which triggers the listener

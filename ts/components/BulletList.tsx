@@ -11,7 +11,7 @@ import { View } from 'react-native';
 
 const BULLET_ITEM = '\u2022';
 
-export type BulletListItem = {
+type BulletListItem = {
   /**
    * The text of the list item.
    */

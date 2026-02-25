@@ -75,22 +75,10 @@ const STARTS_WITH_PICTOGRAM = new RegExp(
 const PICTOGRAM_REGEXP_GLOB = new RegExp(PICTOGRAM_REGEXP.source, 'g');
 const HEADING_REGEXP_GLOB_MULTI = new RegExp(HEADING_REGEXP.source, 'gm');
 
-export function getPictogramName(value?: Nullable<string>): IOPictogramsBleed {
+function getPictogramName(value?: Nullable<string>): IOPictogramsBleed {
   const isValidPictogram =
     value && Boolean(IOPictogramsBleed[value as IOPictogramsBleed]);
   return isValidPictogram ? (value as IOPictogramsBleed) : 'notification';
-}
-
-export function getStrValue({ children }: TxtParentNode): string {
-  return children.reduce((acc, inc) => {
-    if (inc.type === 'Str' || inc.type === 'Code') {
-      return acc + inc.value;
-    }
-    if ('children' in inc) {
-      return acc + getStrValue(inc);
-    }
-    return acc;
-  }, '');
 }
 
 /**
@@ -125,7 +113,7 @@ export function getTxtNodeKey(txtNode: AnyTxtNode): string {
   return `${txtNode.type}_${encoded}`;
 }
 
-export const generateAccesibilityLinkViewsIfNeeded = (
+const generateAccesibilityLinkViewsIfNeeded = (
   allLinkData: ReadonlyArray<LinkData>,
   nodeKey: string,
   onPress: (url: string) => void,
@@ -148,7 +136,7 @@ export const generateAccesibilityLinkViewsIfNeeded = (
   ));
 };
 
-export const handleOpenLink = (url: string) => {
+const handleOpenLink = (url: string) => {
   openWebUrl(url, () => {
     IOToast.error(t('generics.error.title', { ns: 'global' }));
   });
@@ -427,7 +415,7 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
   )
 };
 
-export const headerNodeToReactNative = (
+const headerNodeToReactNative = (
   header: TxtHeaderNode,
   headingsMap: Record<
     number,
@@ -459,7 +447,7 @@ export const headerNodeToReactNative = (
   );
 };
 
-export const htmlNodeToReactNative = (
+const htmlNodeToReactNative = (
   content: string,
   node: AnyTxtNode,
   parent?: TxtParentNode
@@ -527,6 +515,6 @@ export const paragraphNodeToReactNative = (
   );
 };
 
-export const strNodeToReactNative = (content: string, node: AnyTxtNode) => (
+const strNodeToReactNative = (content: string, node: AnyTxtNode) => (
   <Fragment key={getTxtNodeKey(node)}>{content}</Fragment>
 );

@@ -4,12 +4,7 @@
 
 import { differenceInCalendarDays, isValid } from 'date-fns';
 import { t } from 'i18next';
-import * as z from 'zod';
 import { claimScheme, parseClaims } from './claims';
-import { wellKnownCredential } from './credentials';
-import { getCredentialStatus } from './itwCredentialStatusUtils';
-import { validCredentialStatuses } from './itwCredentialUtils';
-import { CredentialType } from './itwMocksUtils';
 import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
 import {
   ClaimDisplayResult,
@@ -126,79 +121,6 @@ export const getCredentialExpireDays = (
   return differenceInCalendarDays(expireDate, Date.now());
 };
 
-const FISCAL_CODE_REGEX =
-  /([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z])/g;
-
-/**
- * Extract a fiscal code from any string.
- * @param s - the input string
- * @returns An option with the extracted fiscal code
- */
-export const extractFiscalCode = (s: string) => {
-  const match = s.match(FISCAL_CODE_REGEX);
-  return match?.[0];
-};
-
-/**
- *
- *
- * Claim extractors
- *
- *
- */
-
-/**
- * Function that extracts a claim from a credential.
- * @param claimId - the claim id / name to extract
- * @param decoder - optional decoder for the claim value, defaults to decoding a string
- * @returns a function that extracts a claim from a credential
- */
-export const extractClaim =
-  <T = string>(
-    claimId: string,
-    decoder: z.ZodType<T> = z.string() as unknown as z.ZodType<T>
-  ) =>
-  (credential: ParsedCredential): T =>
-    decoder.parse(credential[claimId]?.value);
-
-/**
- * Returns the fiscal code from a credential (if applicable)
- * @param credential - the credential
- * @returns the fiscal code
- */
-export const getFiscalCodeFromCredential = (
-  credential: StoredCredential | undefined
-) =>
-  credential?.parsedCredential
-    ? extractFiscalCode(
-        extractClaim(WellKnownClaim.tax_id_code)(credential?.parsedCredential)
-      )
-    : '';
-
-/**
- * Returns the first name from a credential (if applicable)
- * @param credential - the credential
- * @returns the first name
- */
-export const getFirstNameFromCredential = (
-  credential: StoredCredential | undefined
-) =>
-  credential?.parsedCredential
-    ? extractClaim(WellKnownClaim.given_name)(credential.parsedCredential)
-    : '';
-
-/**
- * Returns the family name from a credential (if applicable)
- * @param credential - the credential
- * @returns the family name
- */
-export const getFamilyNameFromCredential = (
-  credential: StoredCredential | undefined
-) =>
-  credential?.parsedCredential
-    ? extractClaim(WellKnownClaim.family_name)(credential.parsedCredential)
-    : '';
-
 /**
  *
  *
@@ -213,38 +135,6 @@ const SIMPLE_DATE_FORMAT = {
   DDMMYYYY: 'DD/MM/YYYY',
   DDMMYY: 'DD/MM/YY'
 } as const;
-
-/**
- * Maps a vct name to the corresponding credential type, used in UI contexts
- * Note: although this list is unlikely to change, you should ensure to have
- * a fallback when dealing with this list to prevent unwanted behaviours
- */
-const credentialTypesByVct: { [vct: string]: CredentialType } = {
-  [wellKnownCredential.PID]: CredentialType.PID,
-  [wellKnownCredential.DRIVING_LICENSE]: CredentialType.DRIVING_LICENSE,
-  [wellKnownCredential.DISABILITY_CARD]: CredentialType.EUROPEAN_DISABILITY_CARD
-};
-
-/**
- * Return a list of credential types that have an invalid status.
- */
-export const getInvalidCredentials = (
-  presentationDetails: PresentationDetails,
-  credentialsByType: Array<StoredCredential>
-) =>
-  presentationDetails
-    // Retries the type from the VCT map
-    .map(({ vct }) => (vct ? credentialTypesByVct[vct] : undefined))
-    // Removes undefined
-    .filter(isDefined)
-    // Retrieve the credential using the type from the previous step
-    .map(type => credentialsByType.find(c => c.credentialType === type))
-    // Removes undefined
-    .filter(isDefined)
-    // Removes credential with valid statuses
-    .filter(c => !validCredentialStatuses.includes(getCredentialStatus(c)))
-    // Gets the invalid credential's type
-    .map(c => c.credentialType);
 
 /**
  * Enrich the result of the presentation request evaluation with localized claim names for UI display.

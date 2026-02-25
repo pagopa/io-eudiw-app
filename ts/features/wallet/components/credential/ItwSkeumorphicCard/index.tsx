@@ -31,7 +31,7 @@ import { CardData } from './CardData';
 import { FlippableCard } from './FlippableCard';
 import { CardMode } from './types';
 
-export type ItwSkeumorphicCardProps = {
+type ItwSkeumorphicCardProps = {
   credential: StoredCredential;
   status: ItwCredentialStatus;
   valuesHidden: boolean;

@@ -16,7 +16,7 @@ import {
 
 export type CredentialCtaProps = ButtonBlockProps;
 
-export type ItwPresentationDetailsScreenBaseProps = {
+type ItwPresentationDetailsScreenBaseProps = {
   credential: StoredCredential;
   children?: ReactNode;
   ctaProps?: CredentialCtaProps;

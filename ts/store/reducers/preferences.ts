@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import uuid from 'react-native-uuid';
+import * as Crypto from 'expo-crypto';
 import { persistReducer, type PersistConfig } from 'redux-persist';
 import { RootState } from '../types';
 
@@ -12,7 +12,7 @@ export type TypefaceChoice = 'comfortable' | 'standard';
  * isOnboardingComplete - Indicates if the user has completed the onboarding flow.
  * isBiometricEnabled - Indicates if the biometric is enabled for the user.
  */
-export type PreferencesState = {
+type PreferencesState = {
   sessionId: string;
   isOnboardingComplete: boolean;
   isBiometricEnabled: boolean;
@@ -21,7 +21,7 @@ export type PreferencesState = {
 
 // Initial state for the preferences slice
 const initialState: PreferencesState = {
-  sessionId: uuid.v4().toString(),
+  sessionId: Crypto.randomUUID().toString(),
   isOnboardingComplete: false,
   isBiometricEnabled: false,
   fontPreference: 'comfortable'

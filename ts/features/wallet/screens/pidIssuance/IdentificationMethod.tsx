@@ -11,10 +11,6 @@ import { View } from 'react-native';
 import { IOScrollViewWithLargeHeader } from '../../../../components/IOScrollViewWithLargeHeader';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 
-export type ItwIdentificationNavigationParams = {
-  animationEnabled?: boolean;
-};
-
 export const IdentificationMethod = () => {
   const navigation = useNavigation();
 

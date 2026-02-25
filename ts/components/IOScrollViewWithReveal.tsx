@@ -45,7 +45,7 @@ type ButtonBlockProps = Omit<
 
 type ButtonLinkProps = Omit<IOButtonLinkSpecificProps, 'color' | 'variant'>;
 
-export type IOScrollViewRevealActions = {
+type IOScrollViewRevealActions = {
   primary: ButtonBlockProps;
   anchor: ButtonLinkProps;
 };

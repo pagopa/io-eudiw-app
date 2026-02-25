@@ -8,7 +8,7 @@ import { PropsWithChildren } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-export type WalletCardPressableBaseProps = WithTestID<PressableBaseProps>;
+type WalletCardPressableBaseProps = WithTestID<PressableBaseProps>;
 
 export const WalletCardPressableBase = ({
   onPress,

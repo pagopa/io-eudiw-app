@@ -8,7 +8,7 @@ import { resetLifecycle } from './lifecycle';
 /* State type definition for the instance slice
  * keyTag - The keytag bound to the wallet instance
  */
-export type InstanceState = {
+type InstanceState = {
   keyTag: string | undefined;
 };
 
@@ -26,8 +26,7 @@ const instanceSlice = createSlice({
   reducers: {
     setInstanceKeyTag: (state, action: PayloadAction<string>) => {
       state.keyTag = action.payload;
-    },
-    resetInstanceKeyTag: () => initialState
+    }
   },
   extraReducers: builder => {
     // This happens when the whole app state is reset
@@ -57,7 +56,7 @@ export const instanceReducer = persistReducer(
 /**
  * Exports the actions for the instance slice.
  */
-export const { setInstanceKeyTag, resetInstanceKeyTag } = instanceSlice.actions;
+export const { setInstanceKeyTag } = instanceSlice.actions;
 
 /**
  * Select the wallet instance keytag.

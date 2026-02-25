@@ -6,7 +6,7 @@ import { preferencesReset } from './preferences';
  * State definition for the deep linking slice.
  * It contains the pending URL coming from a deep link.
  */
-export type DeepLinkingState = {
+type DeepLinkingState = {
   url: string | undefined;
 };
 
@@ -25,8 +25,7 @@ const deeplinkingSlice = createSlice({
   reducers: {
     setUrl: (state, action: PayloadAction<{ url: string }>) => {
       state.url = action.payload.url;
-    },
-    resetUrl: () => initialState
+    }
   },
   extraReducers: builder => {
     // This happens when the whole app state is reset
@@ -36,13 +35,10 @@ const deeplinkingSlice = createSlice({
 
 export const { reducer: deepLinkingReducer } = deeplinkingSlice;
 
-export const credentialsSelector = (state: RootState) =>
-  state.wallet.credentials;
-
 /**
  * Exports the actions for the credentials slice.
  */
-export const { setUrl, resetUrl } = deeplinkingSlice.actions;
+export const { setUrl } = deeplinkingSlice.actions;
 
 /**
  * Select the pending url from the deep linking state.

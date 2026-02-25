@@ -117,7 +117,7 @@ type ItwPresentationCredentialDetailProps = {
 /**
  * Component that renders the credential detail content.
  */
-export const ItwPresentationCredentialDetail = ({
+const ItwPresentationCredentialDetail = ({
   credential
 }: ItwPresentationCredentialDetailProps) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();

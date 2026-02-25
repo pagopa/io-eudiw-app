@@ -14,7 +14,7 @@ type IdentificationState = {
   isValidatingTask: boolean;
 };
 
-export const initialState: IdentificationState = {
+const initialState: IdentificationState = {
   status: 'unidentified',
   canResetPin: false,
   isValidatingTask: false
@@ -40,8 +40,7 @@ const identificationSlice = createSlice({
     },
     setIdentificationUnidentified: state => {
       state.status = 'unidentified';
-    },
-    resetIdentification: () => initialState
+    }
   },
   extraReducers: builder => {
     // This happens when the whole app state is reset
@@ -55,8 +54,7 @@ const identificationSlice = createSlice({
 export const {
   setIdentificationStarted,
   setIdentificationIdentified,
-  setIdentificationUnidentified,
-  resetIdentification
+  setIdentificationUnidentified
 } = identificationSlice.actions;
 
 export const identificationReducer = identificationSlice.reducer;
@@ -68,13 +66,3 @@ export const identificationReducer = identificationSlice.reducer;
  */
 export const selectIdentificationStatus = (state: RootState) =>
   state.identification;
-
-/**
- * Select if the identification is validating a task.
- * @param state - The root state.
- * @returns true if the identification is validating a task, false otherwise.
- */
-export const selectIsValidationTask = (state: RootState) =>
-  state.identification.status === 'started'
-    ? state.identification.isValidatingTask
-    : false;
