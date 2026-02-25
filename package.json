@@ -117,7 +117,7 @@
   "jest": {
     "preset": "jest-expo",
     "transformIgnorePatterns": [
-      "node_modules/(?!(react-native|@react-native|expo(-.*)?|react-native-gesture-handler|react-native-reanimated|react-native-linear-gradient|react-native-qrcode-svg|@react-navigation|@react-native-community|immer|@reduxjs/toolkit|@pagopa/io-app-design-system|@shopify/react-native-skia)/)"
+      "node_modules/(?!(react-native|@react-native|expo(-.*)?|react-native-gesture-handler|react-native-reanimated|react-native-linear-gradient|react-native-qrcode-svg|@react-navigation|@react-native-community|immer|@reduxjs/toolkit|@pagopa/io-app-design-system|@shopify/react-native-skia|react-native-worklets)/)"
     ],
     "setupFilesAfterEnv": [
       "./jestSetup.js",
