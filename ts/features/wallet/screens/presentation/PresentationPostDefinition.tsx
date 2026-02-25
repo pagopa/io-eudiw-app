@@ -16,12 +16,6 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { ComponentProps, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, StyleSheet, View } from 'react-native';
-import IOMarkdown from '../../../../components/IOMarkdown';
-import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
-import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
-import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
-import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
-import { useAppDispatch, useAppSelector } from '../../../../store';
 import { getSafeText } from '../../../../utils/string';
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import { WalletNavigatorParamsList } from '../../navigation/WalletNavigator';
@@ -40,6 +34,12 @@ import {
   groupCredentialsByPurpose
 } from '../../utils/itwRemotePresentationUtils';
 import { EnrichedPresentationDetails } from '../../utils/itwTypesUtils';
+import IOMarkdown from '@/ts/components/IOMarkdown';
+import { useDisableGestureNavigation } from '@/ts/hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '@/ts/hooks/useHardwareBackButton';
+import { useHeaderSecondLevel } from '@/ts/hooks/useHeaderSecondLevel';
+import { useNavigateToWalletWithReset } from '@/ts/hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '@/ts/store';
 /**
  * Description which contains the requested of the credential to be presented.
  */

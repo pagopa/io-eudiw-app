@@ -13,8 +13,6 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, StyleSheet, Alert } from 'react-native';
-
-import IOMarkdown from '../../../../components/IOMarkdown';
 import { useDebugInfo } from '../../../../hooks/useDebugInfo';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
 import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
@@ -36,6 +34,7 @@ import {
 } from '../../store/proximity';
 import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
 import { ItwProximityPresentationDetails } from './ItwProximityPresentationDetails';
+import IOMarkdown from '@/ts/components/IOMarkdown';
 
 export type PresentationProximityPreviewProps = ProximityDisclosure;
 
