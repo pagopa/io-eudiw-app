@@ -37,7 +37,7 @@
     "@react-navigation/native": "^7.1.8",
     "@react-navigation/stack": "^7.6.11",
     "@reduxjs/toolkit": "^2.11.1",
-    "@shopify/react-native-skia": "2.2.12",
+    "@shopify/react-native-skia": "2.4.18",
     "@testing-library/react-native": "^13.3.3",
     "@textlint/markdown-to-ast": "^14.3.0",
     "color": "^5.0.3",
@@ -74,12 +74,13 @@
     "react-native-qrcode-svg": "^6.3.21",
     "react-native-quick-base64": "^2.2.2",
     "react-native-quick-crypto": "0.7.17",
-    "react-native-reanimated": "3.19.4",
+    "react-native-reanimated": "4.2.2",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",
     "react-native-svg": "15.12.1",
     "react-native-svg-transformer": "^1.5.2",
     "react-native-url-polyfill": "^3.0.0",
+    "react-native-worklets": "^0.7.4",
     "react-redux": "^9.2.0",
     "redux-persist": "^6.0.0",
     "rn-qr-generator": "^2.0.0",
@@ -119,7 +120,7 @@
   "jest": {
     "preset": "jest-expo",
     "transformIgnorePatterns": [
-      "node_modules/(?!(react-native|@react-native|expo(-.*)?|react-native-gesture-handler|react-native-reanimated|react-native-linear-gradient|react-native-qrcode-svg|@react-navigation|@react-native-community|immer|@reduxjs/toolkit|@pagopa/io-app-design-system|@shopify/react-native-skia)/)"
+      "node_modules/(?!(react-native|@react-native|expo(-.*)?|react-native-gesture-handler|react-native-reanimated|react-native-linear-gradient|react-native-qrcode-svg|@react-navigation|@react-native-community|immer|@reduxjs/toolkit|@pagopa/io-app-design-system|@shopify/react-native-skia|react-native-worklets)/)"
     ],
     "setupFilesAfterEnv": [
       "./jestSetup.js",
