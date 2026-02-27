@@ -109,6 +109,7 @@ const obtainCredentialListener: AppListenerWithAction<
       await Credential.Issuance.startUserAuthorization(
         issuerConf,
         [credentialConfigId],
+        { proofType: 'none' },
         {
           walletInstanceAttestation,
           redirectUri,
@@ -176,7 +177,6 @@ const obtainCredentialListener: AppListenerWithAction<
       await Credential.Issuance.completeUserAuthorizationWithFormPostJwtMode(
         requestObject,
         pid.credential,
-        issuerConf,
         {
           wiaCryptoContext,
           pidCryptoContext: createCryptoContextFor(pid.keyTag),

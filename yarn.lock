@@ -1112,6 +1112,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@craftzdog/react-native-buffer@npm:^6.0.5, @craftzdog/react-native-buffer@npm:^6.1.1":
+  version: 6.1.1
+  resolution: "@craftzdog/react-native-buffer@npm:6.1.1"
+  dependencies:
+    ieee754: "npm:^1.2.1"
+    react-native-quick-base64: "npm:^2.2.2"
+  checksum: 10/a78a74d8c63597f601b79e3b14e809508d481a407b35041bd46e50a245f4c98382af574d2e9f01adaa77e26a5683ec2c47c7bf2392b49afeabdc37a1a5bfbac5
+  languageName: node
+  linkType: hard
+
 "@egjs/hammerjs@npm:^2.0.17":
   version: 2.0.17
   resolution: "@egjs/hammerjs@npm:2.0.17"
@@ -2210,10 +2220,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pagopa/io-react-native-wallet@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@pagopa/io-react-native-wallet@npm:2.2.0"
+"@pagopa/io-react-native-wallet@npm:2.5.0":
+  version: 2.5.0
+  resolution: "@pagopa/io-react-native-wallet@npm:2.5.0"
   dependencies:
+    "@sd-jwt/core": "npm:^0.18.0"
+    "@sd-jwt/crypto-nodejs": "npm:^0.18.0"
+    "@sd-jwt/types": "npm:^0.18.0"
     dcql: "npm:^0.2.21"
     js-base64: "npm:^3.7.7"
     js-sha256: "npm:^0.9.0"
@@ -2230,55 +2243,8 @@ __metadata:
     "@pagopa/io-react-native-jwt": "*"
     react: "*"
     react-native: "*"
-  checksum: 10/8863d10599167607e48b2dd29605d716f08cd146b518372ab6d8b62252bc48feb391888c5bff4176d7201296e5bd5b36249dab16c0006f67a34f3281920de363
-  languageName: node
-  linkType: hard
-
-"@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@npm%3A2.2.0#./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch::version=2.2.0&hash=f1346c&locator=ioeudiwapp%40workspace%3A.":
-  version: 2.2.0
-  resolution: "@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@npm%3A2.2.0#./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch::version=2.2.0&hash=f1346c&locator=ioeudiwapp%40workspace%3A."
-  dependencies:
-    dcql: "npm:^0.2.21"
-    js-base64: "npm:^3.7.7"
-    js-sha256: "npm:^0.9.0"
-    jsonpath-plus: "npm:^10.2.0"
-    jsrsasign: "npm:^11.1.0"
-    parse-url: "npm:^9.2.0"
-    react-native-url-polyfill: "npm:^2.0.0"
-    react-native-uuid: "npm:^2.0.1"
-    uuid: "npm:^11.0.3"
-    zod: "npm:^3.21.4"
-  peerDependencies:
-    "@pagopa/io-react-native-crypto": "*"
-    "@pagopa/io-react-native-iso18013": "*"
-    "@pagopa/io-react-native-jwt": "*"
-    react: "*"
-    react-native: "*"
-  checksum: 10/8ecb60f5f52e39635f886748ddb879b407e937b4e28779511efd26e2e69da88aaf217bc8937dc66f163ded16aa36a1d5cc07460cedfeee1c0aedb86caa51ca06
-  languageName: node
-  linkType: hard
-
-"@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch::locator=io-eudiw-app%40workspace%3A.":
-  version: 2.2.0
-  resolution: "@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@patch%3A@pagopa/io-react-native-wallet@npm%253A2.2.0%23./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.2.0-dccbc7101a.patch%3A%3Aversion=2.2.0&hash=f1346c&locator=ioeudiwapp%2540workspace%253A.#./.yarn/patches/@pagopa-io-react-native-wallet-patch-d0ffbc6b4b.patch::version=2.2.0&hash=f00e7f&locator=io-eudiw-app%40workspace%3A."
-  dependencies:
-    dcql: "npm:^0.2.21"
-    js-base64: "npm:^3.7.7"
-    js-sha256: "npm:^0.9.0"
-    jsonpath-plus: "npm:^10.2.0"
-    jsrsasign: "npm:^11.1.0"
-    parse-url: "npm:^9.2.0"
-    react-native-url-polyfill: "npm:^2.0.0"
-    react-native-uuid: "npm:^2.0.1"
-    uuid: "npm:^11.0.3"
-    zod: "npm:^3.21.4"
-  peerDependencies:
-    "@pagopa/io-react-native-crypto": "*"
-    "@pagopa/io-react-native-iso18013": "*"
-    "@pagopa/io-react-native-jwt": "*"
-    react: "*"
-    react-native: "*"
-  checksum: 10/bef6b7ef7d5a42b87f47cd107acde78277dae3ad7c5fd3718bf08d7956131f4e15ca89cae84f33331b015a5056d029b0b7d122fb2b3b2823d789dcc081f38d2a
+    react-native-quick-crypto: "*"
+  checksum: 10/24bcbd12730ade45a70a7f921865a1662fea64aba9fb836e856e55440e63e699f61055f8392088d1e27e68f56e820550f0326f4bd0f4c83fcc5bf52ca5c65c4e
   languageName: node
   linkType: hard
 
@@ -2666,6 +2632,63 @@ __metadata:
   version: 1.1.0
   resolution: "@rtsao/scc@npm:1.1.0"
   checksum: 10/17d04adf404e04c1e61391ed97bca5117d4c2767a76ae3e879390d6dec7b317fcae68afbf9e98badee075d0b64fa60f287729c4942021b4d19cd01db77385c01
+  languageName: node
+  linkType: hard
+
+"@sd-jwt/core@npm:^0.18.0":
+  version: 0.18.1
+  resolution: "@sd-jwt/core@npm:0.18.1"
+  dependencies:
+    "@sd-jwt/decode": "npm:0.18.1"
+    "@sd-jwt/present": "npm:0.18.1"
+    "@sd-jwt/types": "npm:0.18.1"
+    "@sd-jwt/utils": "npm:0.18.1"
+  checksum: 10/aabbb6eecc08dd8ad5f73ddda9a1a00957d5b561bbd92ef56023b843807a224c34602792ff3243830baba4fa7a6ab1bab88de3c2abb8eaebc8d905c7bbc4dd7e
+  languageName: node
+  linkType: hard
+
+"@sd-jwt/crypto-nodejs@npm:^0.18.0":
+  version: 0.18.0
+  resolution: "@sd-jwt/crypto-nodejs@npm:0.18.0"
+  checksum: 10/5b8ee5706f56be3817e7ff7bbe70b007305a4022bfa614998985e4f0393c604bde1c7bdae4a91e827037d339e5d073f0237568d517a081c1859e459ba734862f
+  languageName: node
+  linkType: hard
+
+"@sd-jwt/decode@npm:0.18.1":
+  version: 0.18.1
+  resolution: "@sd-jwt/decode@npm:0.18.1"
+  dependencies:
+    "@sd-jwt/types": "npm:0.18.1"
+    "@sd-jwt/utils": "npm:0.18.1"
+  checksum: 10/7c2596e48a8c0d72c5ddcfeb285c8467d9118db910aff5e259227532c0fdaece9c9b645aeb0912d29dc621306a9202efbb9988c483a2d3b028e5281896db4f9a
+  languageName: node
+  linkType: hard
+
+"@sd-jwt/present@npm:0.18.1":
+  version: 0.18.1
+  resolution: "@sd-jwt/present@npm:0.18.1"
+  dependencies:
+    "@sd-jwt/decode": "npm:0.18.1"
+    "@sd-jwt/types": "npm:0.18.1"
+    "@sd-jwt/utils": "npm:0.18.1"
+  checksum: 10/047c4721c82809baff6cda19437e2034c1ffb15b23ee4aeb77b930d7e6f919e3144efc0b236fca85f4f28f5fe4397ed9bf336c6fe19da131dbd480721f53c911
+  languageName: node
+  linkType: hard
+
+"@sd-jwt/types@npm:0.18.1, @sd-jwt/types@npm:^0.18.0":
+  version: 0.18.1
+  resolution: "@sd-jwt/types@npm:0.18.1"
+  checksum: 10/bf6cb5e73ef4d2557135a45429d7424f4420a9dfe48718a9562baec0e5d60785492f97152b06f4c9b10b5db9c094141fc1828c17cdc9445dcf2e79ee42c094d1
+  languageName: node
+  linkType: hard
+
+"@sd-jwt/utils@npm:0.18.1":
+  version: 0.18.1
+  resolution: "@sd-jwt/utils@npm:0.18.1"
+  dependencies:
+    "@sd-jwt/types": "npm:0.18.1"
+    js-base64: "npm:^3.7.8"
+  checksum: 10/8543608b526dd20658c09732c3426c8eea4759ae15672476efac7e85a9666803d0ef25cada2f0a98c303f0d55df9731fcac037ee3cbfef9aeff790f5689fb8ab
   languageName: node
   linkType: hard
 
@@ -6420,6 +6443,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"events@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "events@npm:3.3.0"
+  checksum: 10/a3d47e285e28d324d7180f1e493961a2bbb4cad6412090e4dec114f4db1f5b560c7696ee8e758f55e23913ede856e3689cd3aa9ae13c56b5d8314cd3b3ddd1be
+  languageName: node
+  linkType: hard
+
 "evp_bytestokey@npm:^1.0.0, evp_bytestokey@npm:^1.0.3":
   version: 1.0.3
   resolution: "evp_bytestokey@npm:1.0.3"
@@ -7699,13 +7729,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "io-eudiw-app@workspace:."
   dependencies:
+    "@craftzdog/react-native-buffer": "npm:^6.1.1"
     "@expo/vector-icons": "npm:^15.0.3"
     "@gorhom/bottom-sheet": "npm:^5.2.8"
     "@pagopa/io-app-design-system": "npm:5.12.1"
     "@pagopa/io-react-native-crypto": "npm:^1.2.3"
     "@pagopa/io-react-native-iso18013": "npm:^0.7.0"
     "@pagopa/io-react-native-jwt": "npm:2.1.0"
-    "@pagopa/io-react-native-wallet": "npm:2.2.0"
+    "@pagopa/io-react-native-wallet": "npm:2.5.0"
     "@pagopa/react-native-nodelibs": "npm:^0.1.0"
     "@react-native-async-storage/async-storage": "npm:^2.2.0"
     "@react-navigation/bottom-tabs": "npm:^7.4.0"
@@ -7764,7 +7795,9 @@ __metadata:
     react-native-linear-gradient: "npm:^2.8.3"
     react-native-permissions: "npm:^5.4.4"
     react-native-qrcode-svg: "npm:^6.3.21"
-    react-native-reanimated: "npm:^3.19.4"
+    react-native-quick-base64: "npm:^2.2.2"
+    react-native-quick-crypto: "npm:0.7.17"
+    react-native-reanimated: "npm:3.19.4"
     react-native-safe-area-context: "npm:~5.6.0"
     react-native-screens: "npm:~4.16.0"
     react-native-svg: "npm:15.12.1"
@@ -7802,6 +7835,16 @@ __metadata:
     is-alphabetical: "npm:^1.0.0"
     is-decimal: "npm:^1.0.0"
   checksum: 10/e2e491acc16fcf5b363f7c726f666a9538dba0a043665740feb45bba1652457a73441e7c5179c6768a638ed396db3437e9905f403644ec7c468fb41f4813d03f
+  languageName: node
+  linkType: hard
+
+"is-arguments@npm:^1.0.4":
+  version: 1.2.0
+  resolution: "is-arguments@npm:1.2.0"
+  dependencies:
+    call-bound: "npm:^1.0.2"
+    has-tostringtag: "npm:^1.0.2"
+  checksum: 10/471a8ef631b8ee8829c43a8ab05c081700c0e25180c73d19f3bf819c1a8448c426a9e8e601f278973eca68966384b16ceb78b8c63af795b099cd199ea5afc457
   languageName: node
   linkType: hard
 
@@ -7970,7 +8013,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-generator-function@npm:^1.0.10":
+"is-generator-function@npm:^1.0.10, is-generator-function@npm:^1.0.7":
   version: 1.1.2
   resolution: "is-generator-function@npm:1.1.2"
   dependencies:
@@ -8114,7 +8157,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-typed-array@npm:^1.1.13, is-typed-array@npm:^1.1.14, is-typed-array@npm:^1.1.15":
+"is-typed-array@npm:^1.1.13, is-typed-array@npm:^1.1.14, is-typed-array@npm:^1.1.15, is-typed-array@npm:^1.1.3":
   version: 1.1.15
   resolution: "is-typed-array@npm:1.1.15"
   dependencies:
@@ -8815,7 +8858,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-base64@npm:^3.7.7":
+"js-base64@npm:^3.7.7, js-base64@npm:^3.7.8":
   version: 3.7.8
   resolution: "js-base64@npm:3.7.8"
   checksum: 10/4baa9a222bc094b072933e4894735653b59992477c731879784e3112f21862b08dd5c56b8b23b0b8e43bc5bb514d957621d1892a6c58950f29e12b731fe087b6
@@ -10968,7 +11011,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"process@npm:^0.11.0":
+"process@npm:^0.11.0, process@npm:^0.11.10":
   version: 0.11.10
   resolution: "process@npm:0.11.10"
   checksum: 10/dbaa7e8d1d5cf375c36963ff43116772a989ef2bb47c9bdee20f38fd8fc061119cf38140631cf90c781aca4d3f0f0d2c834711952b728953f04fd7d238f59f5b
@@ -11379,7 +11422,54 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:3.19.5, react-native-reanimated@npm:^3.19.4":
+"react-native-quick-base64@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "react-native-quick-base64@npm:2.2.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/aeebf6f520830dc042201e2a72a381fb29d1376fe0acdf9e266c8a7e3499f45534b11b27b2241bf6cf007ff82874b6def9fa52d62f0027953fc2e6f8d0009266
+  languageName: node
+  linkType: hard
+
+"react-native-quick-crypto@npm:0.7.17":
+  version: 0.7.17
+  resolution: "react-native-quick-crypto@npm:0.7.17"
+  dependencies:
+    "@craftzdog/react-native-buffer": "npm:^6.0.5"
+    events: "npm:^3.3.0"
+    readable-stream: "npm:^4.5.2"
+    string_decoder: "npm:^1.3.0"
+    util: "npm:^0.12.5"
+  checksum: 10/3a51c4cdee05c2906f12be28f983873598325284e0f06d5248000b49cd57afe53de318ad53fec0e10923b31540a7506ca57764eca7869f0948996165a990d6a6
+  languageName: node
+  linkType: hard
+
+"react-native-reanimated@npm:3.19.4":
+  version: 3.19.4
+  resolution: "react-native-reanimated@npm:3.19.4"
+  dependencies:
+    "@babel/plugin-transform-arrow-functions": "npm:^7.0.0-0"
+    "@babel/plugin-transform-class-properties": "npm:^7.0.0-0"
+    "@babel/plugin-transform-classes": "npm:^7.0.0-0"
+    "@babel/plugin-transform-nullish-coalescing-operator": "npm:^7.0.0-0"
+    "@babel/plugin-transform-optional-chaining": "npm:^7.0.0-0"
+    "@babel/plugin-transform-shorthand-properties": "npm:^7.0.0-0"
+    "@babel/plugin-transform-template-literals": "npm:^7.0.0-0"
+    "@babel/plugin-transform-unicode-regex": "npm:^7.0.0-0"
+    "@babel/preset-typescript": "npm:^7.16.7"
+    convert-source-map: "npm:^2.0.0"
+    invariant: "npm:^2.2.4"
+    react-native-is-edge-to-edge: "npm:1.1.7"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+    react: "*"
+    react-native: "*"
+  checksum: 10/d0a5a9340a7bbf50b2e913f8655c037d15ac404d3ebe95e92b13af5da44c84a785b6d4b6f4616c0f63aaac8eff1bfd3851977c097bd82f77c550e90fc01a4698
+  languageName: node
+  linkType: hard
+
+"react-native-reanimated@npm:3.19.5":
   version: 3.19.5
   resolution: "react-native-reanimated@npm:3.19.5"
   dependencies:
@@ -11657,6 +11747,19 @@ __metadata:
     string_decoder: "npm:~1.1.1"
     util-deprecate: "npm:~1.0.1"
   checksum: 10/8500dd3a90e391d6c5d889256d50ec6026c059fadee98ae9aa9b86757d60ac46fff24fafb7a39fa41d54cb39d8be56cc77be202ebd4cd8ffcf4cb226cbaa40d4
+  languageName: node
+  linkType: hard
+
+"readable-stream@npm:^4.5.2":
+  version: 4.7.0
+  resolution: "readable-stream@npm:4.7.0"
+  dependencies:
+    abort-controller: "npm:^3.0.0"
+    buffer: "npm:^6.0.3"
+    events: "npm:^3.3.0"
+    process: "npm:^0.11.10"
+    string_decoder: "npm:^1.3.0"
+  checksum: 10/bdf096c8ff59452ce5d08f13da9597f9fcfe400b4facfaa88e74ec057e5ad1fdfa140ffe28e5ed806cf4d2055f0b812806e962bca91dce31bc4cef08e53be3a4
   languageName: node
   linkType: hard
 
@@ -12836,7 +12939,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"string_decoder@npm:^1.0.3":
+"string_decoder@npm:^1.0.3, string_decoder@npm:^1.3.0":
   version: 1.3.0
   resolution: "string_decoder@npm:1.3.0"
   dependencies:
@@ -13695,6 +13798,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"util@npm:^0.12.5":
+  version: 0.12.5
+  resolution: "util@npm:0.12.5"
+  dependencies:
+    inherits: "npm:^2.0.3"
+    is-arguments: "npm:^1.0.4"
+    is-generator-function: "npm:^1.0.7"
+    is-typed-array: "npm:^1.1.3"
+    which-typed-array: "npm:^1.1.2"
+  checksum: 10/61a10de7753353dd4d744c917f74cdd7d21b8b46379c1e48e1c4fd8e83f8190e6bd9978fc4e5102ab6a10ebda6019d1b36572fa4a325e175ec8b789a121f6147
+  languageName: node
+  linkType: hard
+
 "utils-merge@npm:1.0.1":
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
@@ -13967,6 +14083,21 @@ __metadata:
     gopd: "npm:^1.2.0"
     has-tostringtag: "npm:^1.0.2"
   checksum: 10/12be30fb88567f9863186bee1777f11bea09dd59ed8b3ce4afa7dd5cade75e2f4cc56191a2da165113cc7cf79987ba021dac1e22b5b62aa7e5c56949f2469a68
+  languageName: node
+  linkType: hard
+
+"which-typed-array@npm:^1.1.2":
+  version: 1.1.20
+  resolution: "which-typed-array@npm:1.1.20"
+  dependencies:
+    available-typed-arrays: "npm:^1.0.7"
+    call-bind: "npm:^1.0.8"
+    call-bound: "npm:^1.0.4"
+    for-each: "npm:^0.3.5"
+    get-proto: "npm:^1.0.1"
+    gopd: "npm:^1.2.0"
+    has-tostringtag: "npm:^1.0.2"
+  checksum: 10/e56da3fc995d330ff012f682476f7883c16b12d36c6717c87c7ca23eb5a5ef957fa89115dacb389b11a9b4e99d5dbe2d12689b4d5d08c050b5aed0eae385b840
   languageName: node
   linkType: hard
 
