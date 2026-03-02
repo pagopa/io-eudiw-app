@@ -2576,7 +2576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/elements@npm:^2.6.3, @react-navigation/elements@npm:^2.9.8":
+"@react-navigation/elements@npm:^2.9.8":
   version: 2.9.8
   resolution: "@react-navigation/elements@npm:2.9.8"
   dependencies:
@@ -3409,7 +3409,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/type-utils@npm:8.56.1, @typescript-eslint/type-utils@npm:^8.0.0":
+"@typescript-eslint/type-utils@npm:8.56.1":
   version: 8.56.1
   resolution: "@typescript-eslint/type-utils@npm:8.56.1"
   dependencies:
@@ -3451,7 +3451,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:8.56.1, @typescript-eslint/utils@npm:^8.0.0, @typescript-eslint/utils@npm:^8.26.0, @typescript-eslint/utils@npm:^8.29.1":
+"@typescript-eslint/utils@npm:8.56.1, @typescript-eslint/utils@npm:^8.0.0, @typescript-eslint/utils@npm:^8.29.1":
   version: 8.56.1
   resolution: "@typescript-eslint/utils@npm:8.56.1"
   dependencies:
@@ -6047,26 +6047,6 @@ __metadata:
   peerDependencies:
     eslint: ">=8.10"
   checksum: 10/a8737f3cab27e9686ca68780304f9283ae0b181b4638dc1bde7b1128e0deeb1c4db48dc8a00b2b8dcb168f3ebd7f7293781925ff504ea0b5353f4da4cec22d04
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-functional@npm:^9.0.2":
-  version: 9.0.4
-  resolution: "eslint-plugin-functional@npm:9.0.4"
-  dependencies:
-    "@typescript-eslint/utils": "npm:^8.26.0"
-    deepmerge-ts: "npm:^7.1.5"
-    escape-string-regexp: "npm:^5.0.0"
-    is-immutable-type: "npm:^5.0.1"
-    ts-api-utils: "npm:^2.0.1"
-    ts-declaration-location: "npm:^1.0.6"
-  peerDependencies:
-    eslint: ^9.0.0 || ^10.0.0
-    typescript: ">=4.7.4"
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 10/7ed82da6d4467dcab974c10e2b418be36882d8aa7970dd748e905e332280155f81eea9267c815496e397a28075552c9ac08870cc939492560f87519ffe9e523b
   languageName: node
   linkType: hard
 
@@ -13475,20 +13455,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-api-utils@npm:^2.0.0, ts-api-utils@npm:^2.0.1, ts-api-utils@npm:^2.4.0":
+"ts-api-utils@npm:^2.4.0":
   version: 2.4.0
   resolution: "ts-api-utils@npm:2.4.0"
-  peerDependencies:
-    typescript: ">=4.8.4"
-  checksum: 10/d6b2b3b6caad8d2f4ddc0c3785d22bb1a6041773335a1c71d73a5d67d11d993763fe8e4faefc4a4d03bb42b26c6126bbcf2e34826baed1def5369d0ebad358fa
-  languageName: node
-  linkType: hard
-
-"ts-declaration-location@npm:^1.0.4, ts-declaration-location@npm:^1.0.6":
-  version: 1.0.7
-  resolution: "ts-declaration-location@npm:1.0.7"
-  dependencies:
-    picomatch: "npm:^4.0.2"
   peerDependencies:
     typescript: ">=4.8.4"
   checksum: 10/d6b2b3b6caad8d2f4ddc0c3785d22bb1a6041773335a1c71d73a5d67d11d993763fe8e4faefc4a4d03bb42b26c6126bbcf2e34826baed1def5369d0ebad358fa
