@@ -19,7 +19,7 @@ export enum Lifecycle {
 /* State type definition for the lifecycle slice
  * lifecycle - Lifecycle state of the wallet
  */
-export type LifecycleState = Readonly<{
+type LifecycleState = Readonly<{
   lifecycle: Lifecycle;
 }>;
 
@@ -67,14 +67,6 @@ export const lifecycleReducer = persistReducer(
  * Exports the actions for the lifecycle slice.
  */
 export const { setLifecycle, resetLifecycle } = lifecycleSlice.actions;
-
-/**
- * Select the current wallet lifecycle.
- * @param state - The root state
- * @returns the current wallet lifecycle
- */
-export const selectLifecycle = (state: RootState) =>
-  state.wallet.lifecycle.lifecycle;
 
 /**
  * Selects if the wallet lifecycle is valid.

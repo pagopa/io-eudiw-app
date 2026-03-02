@@ -14,7 +14,7 @@ import { ComponentProps, forwardRef, useState } from 'react';
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { IOScrollView } from './IOScrollView';
 
-export type LargeHeaderTitleProps = {
+type LargeHeaderTitleProps = {
   label: string;
   accessibilityLabel?: string;
   testID?: string;

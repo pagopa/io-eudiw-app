@@ -9,7 +9,7 @@ import Animated, {
 import { WalletCard } from '../types';
 import { ItwCredentialWalletCard } from './credential/ItwCredentialWalletCard';
 
-export type WalletCardsCategoryContainerProps = WithTestID<{
+type WalletCardsCategoryContainerProps = WithTestID<{
   cards: ReadonlyArray<WalletCard>;
   header?: React.ReactElement;
   topElement?: React.ReactElement;

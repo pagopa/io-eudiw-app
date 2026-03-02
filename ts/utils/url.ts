@@ -5,7 +5,7 @@ import { Linking } from 'react-native';
  * @param url - The URL to check.
  * @returns true if the URL is an HTTP URL, false otherwise.
  */
-export const isHttp = (url: string): boolean => {
+const isHttp = (url: string): boolean => {
   const urlLower = url.trim().toLocaleLowerCase();
   return urlLower.match(/http(s)?:\/\//gm) !== null;
 };

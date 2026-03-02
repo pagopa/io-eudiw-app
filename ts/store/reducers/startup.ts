@@ -52,8 +52,7 @@ export const startupSlice = createSlice({
     },
     startupSetLoading: state => {
       state.startUpStatus = 'LOADING';
-    },
-    startupReset: () => initialState
+    }
   },
   extraReducers: builder => {
     // This happens when the whole app state is reset
@@ -68,8 +67,7 @@ export const {
   startupSetError,
   startupSetLoading,
   startupSetStatus,
-  startupSetAttributes,
-  startupReset
+  startupSetAttributes
 } = startupSlice.actions;
 
 /**

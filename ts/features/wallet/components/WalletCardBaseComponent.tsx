@@ -9,7 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 // Wallet card base component props, which declares common props that wallet cards must have
-export type WalletCardComponentBaseProps<P> = WithTestID<{
+type WalletCardComponentBaseProps<P> = WithTestID<{
   isStacked?: boolean;
   cardProps: P;
 }>;
@@ -32,12 +32,6 @@ export const withWalletCardBaseComponent =
       <CardContent {...cardProps} />
     </Animated.View>
   );
-
-export type WalletCardBaseComponent<
-  CardProps extends object = object,
-  ContentProps extends WalletCardComponentBaseProps<CardProps> =
-    WalletCardComponentBaseProps<CardProps>
-> = ReturnType<typeof withWalletCardBaseComponent<CardProps, ContentProps>>;
 
 const styles = StyleSheet.create({
   container: {

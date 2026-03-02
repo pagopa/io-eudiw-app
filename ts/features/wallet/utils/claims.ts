@@ -31,14 +31,14 @@ const baseClaimSchema = z.object({
 /**
  * {@link baseClaimSchema} transformation extracting the value property from the schema to allow pipelining
  */
-export const baseClaimSchemaExtracted = baseClaimSchema.transform(
+const baseClaimSchemaExtracted = baseClaimSchema.transform(
   baseClaim => baseClaim.value
 );
 
 /**
  * Schema to validate a string that represents a date when the base claim label is not specified.
  */
-export const dateSchema = z
+const dateSchema = z
   .union([z.string().date(), z.string().datetime()])
   .transform(str => ({
     value: new Date(str),
@@ -48,7 +48,7 @@ export const dateSchema = z
 /**
  * Schema to validate a string when the base claim label is not specified.
  */
-export const stringSchema = z.string().transform(str => ({
+const stringSchema = z.string().transform(str => ({
   value: str,
   type: claimType.string
 }));
@@ -56,7 +56,7 @@ export const stringSchema = z.string().transform(str => ({
 /**
  * Schema to validate an empty string
  */
-export const emptyStringSchema = z
+const emptyStringSchema = z
   .string()
   .refine(str => str === '')
   .transform(str => ({
@@ -67,7 +67,7 @@ export const emptyStringSchema = z
 /**
  * Schema to validate an array of strings when the base claim label is not specified.
  */
-export const stringArraySchema = z
+const stringArraySchema = z
   .string()
   .array()
   .transform(array => ({
@@ -78,7 +78,7 @@ export const stringArraySchema = z
 /**
  * Schema to validate a boolean when the base claim label is not specified
  */
-export const booleanSchema = z.boolean().transform(bool => ({
+const booleanSchema = z.boolean().transform(bool => ({
   value: bool,
   type: claimType.boolean
 }));
@@ -86,7 +86,7 @@ export const booleanSchema = z.boolean().transform(bool => ({
 /**
  * Schema to validate a number when the base claim label is not specified
  */
-export const numberSchema = z.number().transform(num => ({
+const numberSchema = z.number().transform(num => ({
   value: String(num),
   type: claimType.string
 }));
@@ -104,10 +104,6 @@ export const verificationEvidenceSchema = z
     value: obj,
     type: claimType.verificationEvidence
   }));
-
-export type VerificationEvidenceClaimType = z.infer<
-  typeof verificationEvidenceSchema
->;
 
 /**
  * Schema to validate a dirving privileges claim of the MDL when the base claim label is not specified
@@ -142,7 +138,7 @@ const JPEG_SOF_CODES = [
  * Schema to validate claims that are known to have a base64url representation of a jpeg in their value,
  * discriminated by the claim ids
  */
-export const base64ImageSchema = z
+const base64ImageSchema = z
   .object({
     id: z
       .string()
@@ -219,12 +215,10 @@ export const base64ImageSchema = z
     };
   });
 
-export type Base64ImageClaimType = z.infer<typeof base64ImageSchema>;
-
 /**
  * Schema to validate claims that are known to be dates for which expiration should be checked
  */
-export const dateThatCanExpireSchema = z
+const dateThatCanExpireSchema = z
   .object({
     id: z.enum(['expiry_date']),
     value: z.string()
