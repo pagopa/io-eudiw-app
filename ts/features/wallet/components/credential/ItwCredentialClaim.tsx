@@ -368,15 +368,13 @@ const DrivingPrivilegesClaimItem = ({
   );
 };
 
-export type VerificationEvidenceClaimType = z.infer<
-  typeof verificationEvidenceSchema
->;
+type VerificationEvidenceClaimType = z.infer<typeof verificationEvidenceSchema>;
 
 /**
  * Component which renders a verification evidence type claim.
  * It features a bottom sheet with information about the organization id, name and country code.
  */
-export const VerificationEvidenceClaimItem = ({
+const VerificationEvidenceClaimItem = ({
   label,
   claim,
   detailsButtonVisible = true,

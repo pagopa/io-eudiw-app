@@ -11,13 +11,13 @@ import { OnBarcodeSuccess } from '../screens/QrCodeScanScreen';
 /**
  * {@link useQrCodeCameraScanner} configuration
  */
-export type QrCodeCameraScannerConfiguration = {
+type QrCodeCameraScannerConfiguration = {
   onBarcodeSuccess: OnBarcodeSuccess;
   isDisabled?: boolean;
   isLoading?: boolean;
 };
 
-export type QrCodeCameraScanner = {
+type QrCodeCameraScanner = {
   /**
    * Component that renders the camera
    */

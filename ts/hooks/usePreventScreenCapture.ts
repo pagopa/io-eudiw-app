@@ -1,10 +1,10 @@
 import { useFocusEffect } from '@react-navigation/native';
+import * as Crypto from 'expo-crypto';
 import {
   preventScreenCaptureAsync,
   allowScreenCaptureAsync
 } from 'expo-screen-capture';
 import { useCallback, useMemo, useRef } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useAppSelector } from '../store';
 import { selectIsDebugModeEnabled } from '../store/reducers/debug';
 
@@ -36,7 +36,7 @@ const allowScreenCapture = (tag: string) => {
  * @param key An optional key to prevent conflicts when using multiple instances of this hook at the same time.
  */
 export function usePreventScreenCapture(key?: string) {
-  const tag = useMemo(() => key || uuidv4().toString(), [key]);
+  const tag = useMemo(() => key || Crypto.randomUUID().toString(), [key]);
   const isDebugEnabled = useAppSelector(selectIsDebugModeEnabled);
 
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(

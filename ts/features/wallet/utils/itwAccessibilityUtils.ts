@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { ItwJwtCredentialStatus } from './itwTypesUtils';
 
 // Combined status of a credential, that includes both the physical and the digital version
-export type ItwCredentialStatus =
+type ItwCredentialStatus =
   | 'unknown'
   | 'valid'
   | 'invalid'

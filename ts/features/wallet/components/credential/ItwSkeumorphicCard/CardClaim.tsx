@@ -30,12 +30,12 @@ type VerticalClaimPosition = Either<
 
 export type ClaimPosition = HorizontalClaimPosition & VerticalClaimPosition;
 
-export type ClaimDimensions = Prettify<
+type ClaimDimensions = Prettify<
   Partial<Record<'width' | 'height', PercentPosition>> &
     Pick<ViewStyle, 'aspectRatio'>
 >;
 
-export type CardClaimProps = Prettify<
+type CardClaimProps = Prettify<
   {
     // A claim that will be used to render its component
     // Since we are passing this value by accessing the claims object by key, the value could be undefined
@@ -156,7 +156,7 @@ const CardClaimRenderer = <T extends keyof typeof claimType>({
   return component(claim as ClaimOfType<T>);
 };
 
-export type CardClaimContainerProps = WithTestID<{
+type CardClaimContainerProps = WithTestID<{
   position?: ClaimPosition;
   dimensions?: ClaimDimensions;
   children?: ReactNode;
