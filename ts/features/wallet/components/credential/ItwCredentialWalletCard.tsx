@@ -5,7 +5,7 @@ import { withWalletCardBaseComponent } from '../WalletCardBaseComponent';
 import { WalletCardPressableBase } from '../WalletCardPressableBase';
 import { ItwCredentialCard, ItwCredentialCardProps } from './ItwCredentialCard';
 
-export type ItwCredentialWalletCardProps = ItwCredentialCardProps & {
+type ItwCredentialWalletCardProps = ItwCredentialCardProps & {
   isPreview?: false; // Cards in wallet cannot be in preview mode
 };
 

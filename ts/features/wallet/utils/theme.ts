@@ -37,7 +37,7 @@ const themeKeys = [
   'banner-background'
 ] as const;
 
-export type ItWalletTheme = {
+type ItWalletTheme = {
   [K in (typeof themeKeys)[number]]: string;
 };
 

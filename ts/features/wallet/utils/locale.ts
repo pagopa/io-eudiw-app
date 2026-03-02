@@ -16,7 +16,7 @@ export enum ClaimsLocales {
  * Map from the app locales to the claims locales.
  * Currently en is mapped to en-US and it to it-IT.
  */
-export const localeToClaimsLocales = new Map<string, ClaimsLocales>([
+const localeToClaimsLocales = new Map<string, ClaimsLocales>([
   ['it', ClaimsLocales.it],
   ['en', ClaimsLocales.en]
 ]);

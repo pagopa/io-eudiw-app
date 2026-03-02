@@ -23,10 +23,8 @@ import {
   setPreDefinitionRequest,
   setPreDefinitionSuccess
 } from '../store/presentation';
-import {
-  enrichPresentationDetails,
-  getInvalidCredentials
-} from '../utils/itwClaimsUtils';
+import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
+import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import {
   AppListenerWithAction,
   AppStartListening

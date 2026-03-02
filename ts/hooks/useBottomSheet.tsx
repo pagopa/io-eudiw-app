@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export type IOBottomSheetModal = {
+type IOBottomSheetModal = {
   present: () => void;
   dismiss: () => void;
   bottomSheet: React.JSX.Element;

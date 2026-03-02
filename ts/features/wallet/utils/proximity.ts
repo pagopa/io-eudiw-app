@@ -6,19 +6,6 @@ import { WellKnownClaim } from './itwClaimsUtils';
 import { StoredCredential } from './itwTypesUtils';
 
 /**
- * Temporary helper function to convert from Base64URL to Base64
- * @param b64u Base64URL encoded string
- * @returns The string in Base64 format
- */
-export function b64utob64(b64u: string) {
-  const replaced = b64u.replaceAll('-', '+').replaceAll('_', '/');
-  return (
-    replaced +
-    '='.repeat(replaced.length % 4 !== 0 ? 4 - (replaced.length % 4) : 0)
-  );
-}
-
-/**
  * Get the Presentation details based on the request from the Verifier.
  *
  * @param request The request from the Verifier, specifying which document types and claims are required
