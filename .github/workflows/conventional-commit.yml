@@ -1,4 +1,4 @@
-name: "Check for conventional commit change type inside the PR title"
+name: Validate conventional commit in PR Title
 
 on:
   pull_request:
@@ -13,7 +13,6 @@ permissions:
 
 jobs:
   lint:
-    name: Validate PR Title
     runs-on: ubuntu-22.04
     env:
       VALID_TYPES: "feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert"
@@ -95,5 +94,5 @@ jobs:
       - name: Fail if Title Invalid
         if: ${{ env.VALIDATION_RESULT == 'failure' }}
         run: |
-          echo "Pull request title (${{ github.event.pull_request.title }}) is not properly formatted."
+          echo "Pull request title ($TITLE) is not properly formatted."
           exit 1
