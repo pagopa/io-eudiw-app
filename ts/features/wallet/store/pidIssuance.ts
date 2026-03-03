@@ -17,7 +17,7 @@ import { resetLifecycle } from './lifecycle';
  * issuanceCreation - Async status for the instance creation
  * issuance - Async status for the PID issuance
  */
-export type PidIssuanceStatusState = {
+type PidIssuanceStatusState = {
   instanceCreation: AsyncStatusValues;
   issuance: AsyncStatusValues<StoredCredential>;
   pendingCredential: RequestedCredential;

@@ -1,5 +1,5 @@
 /* eslint-disable no-bitwise */
-export const hexToRgb = (hex: string) => {
+const hexToRgb = (hex: string) => {
   const cleaned = hex.replace('#', '');
   const bigint = parseInt(cleaned, 16);
   const r = (bigint >> 16) & 255;

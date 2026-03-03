@@ -51,4 +51,4 @@ const WalletCardsContainer = () => {
   );
 };
 
-export { ItwWalletCardsContainer, WalletCardsContainer };
+export { WalletCardsContainer };

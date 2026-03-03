@@ -1,12 +1,4 @@
-import { Credential } from '@pagopa/io-react-native-wallet';
 import { EnrichedPresentationDetails, ParsedCredential } from './itwTypesUtils';
-
-/**
- * Type representing the parsed DCQL query with the presentation details
- */
-export type PresentationDetails = Awaited<
-  ReturnType<Credential.Presentation.EvaluateDcqlQuery>
->;
 
 /**
  * Flat claim that contains a primitive value or an array of primitives

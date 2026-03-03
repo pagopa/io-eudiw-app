@@ -4,8 +4,8 @@ import {
   Credential
 } from '@pagopa/io-react-native-wallet';
 import { isAnyOf } from '@reduxjs/toolkit';
+import * as Crypto from 'expo-crypto';
 import * as WebBrowser from 'expo-web-browser';
-import uuid from 'react-native-uuid';
 import { serializeError } from 'serialize-error';
 import { getEnv } from '../../../config/env';
 import { takeLatestEffect } from '../../../middleware/listener/effects';
@@ -138,7 +138,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
         );
 
       // Create credential crypto context
-      const credentialKeyTag = uuid.v4().toString();
+      const credentialKeyTag = Crypto.randomUUID().toString();
       await generate(credentialKeyTag);
       const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
 

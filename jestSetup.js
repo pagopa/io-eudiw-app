@@ -8,6 +8,10 @@ jest.mock('react-native-haptic-feedback', () => ({
   trigger: jest.fn()
 }));
 
+jest.mock('expo-crypto', () => ({
+  randomUUID: jest.fn(() => 'mocked-uuid-1234')
+}));
+
 /*
  * Turbo modules mocks.
  */
@@ -28,3 +32,14 @@ jest.mock('react-native/Libraries/TurboModule/TurboModuleRegistry', () => {
     }
   };
 });
+
+// Mock react-native-worklets before reanimated setup
+// See: https://docs.swmansion.com/react-native-worklets/docs/guides/testing/
+jest.mock('react-native-worklets', () =>
+  require('react-native-worklets/lib/module/mock')
+);
+
+// Setup react-native-reanimated for testing (v4.x)
+// See: https://docs.swmansion.com/react-native-reanimated/docs/guides/testing/
+const { setUpTests } = require('react-native-reanimated');
+setUpTests();

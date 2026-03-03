@@ -15,7 +15,7 @@ import { resetLifecycle } from './lifecycle';
  * pid - The PID credential
  * credentials - A map of all the stored credentials
  */
-export type CredentialsState = {
+type CredentialsState = {
   credentials: Array<StoredCredential>;
   valuesHidden: boolean;
 };
@@ -78,8 +78,7 @@ const credentialsSlice = createSlice({
     },
     itwSetClaimValuesHidden: (state, action: PayloadAction<boolean>) => {
       state.valuesHidden = action.payload;
-    },
-    resetCredentials: () => initialState
+    }
   },
   extraReducers: builder => {
     // This happens when the whole app state is reset
@@ -106,9 +105,6 @@ export const credentialsReducer = persistReducer(
   credentialsSlice.reducer
 );
 
-export const credentialsSelector = (state: RootState) =>
-  state.wallet.credentials;
-
 /**
  * Exports the actions for the credentials slice.
  */
@@ -117,8 +113,7 @@ export const {
   removeCredential,
   addCredentialWithIdentification,
   addPidWithIdentification,
-  itwSetClaimValuesHidden,
-  resetCredentials
+  itwSetClaimValuesHidden
 } = credentialsSlice.actions;
 
 export const selectCredentials = (state: RootState) =>

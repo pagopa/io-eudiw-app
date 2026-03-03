@@ -43,15 +43,6 @@ export function navigateWithReset<RouteName extends keyof RootStackParamList>(
 }
 
 /**
- * Go back to the previous screen outside of React context.
- */
-export function goBack() {
-  if (navigationRef.isReady()) {
-    navigationRef.goBack();
-  }
-}
-
-/**
  * Method to retrieve the navigation status.
  * @returns true if the navigation is ready, false otherwise.
  */

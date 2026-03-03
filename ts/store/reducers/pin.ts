@@ -9,7 +9,7 @@ import { preferencesReset } from './preferences';
  * State type definition for the pin slice
  * pin - Application PIN set by the user
  */
-export type PreferencesState = Readonly<{
+type PreferencesState = Readonly<{
   pin: PinString | undefined;
 }>;
 
@@ -28,8 +28,7 @@ const pinSlice = createSlice({
   reducers: {
     pinSet: (state, action: PayloadAction<PinString>) => {
       state.pin = action.payload;
-    },
-    pinReset: () => initialState
+    }
   },
   extraReducers: builder => {
     // This happens when the whole app state is reset
@@ -40,7 +39,7 @@ const pinSlice = createSlice({
 /**
  * Exports the actions for the pin slice.
  */
-export const { pinSet, pinReset } = pinSlice.actions;
+export const { pinSet } = pinSlice.actions;
 
 /**
  * Redux persist configuration for the pin slice.
