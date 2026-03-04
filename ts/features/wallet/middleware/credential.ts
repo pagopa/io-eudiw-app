@@ -35,12 +35,14 @@ import {
   addCredentialWithIdentification,
   selectCredential
 } from '../store/credentials';
+import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredential } from '../utils/credentials';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
-import { DcqlQuery } from '../utils/itwTypesUtils';
+import { extractVerification } from '../utils/itwCredentialUtils';
+import { CredentialFormat, DcqlQuery } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 import {
   AppListenerWithAction,
@@ -121,7 +123,7 @@ const obtainCredentialListener: AppListenerWithAction<
         credentialConfigId
       ];
     const credentialType =
-      credentialConfig.format === 'mso_mdoc'
+      credentialConfig.format === CredentialFormat.MDOC
         ? credentialConfig.scope
         : credentialConfig.vct;
 
@@ -239,10 +241,16 @@ const obtainCredentialListener: AppListenerWithAction<
           parsedCredential,
           credentialType,
           keyTag: credentialKeyTag,
-          format: format as 'vc+sd-jwt' | 'mso_mdoc',
+          format: format as CredentialFormat.SD_JWT | CredentialFormat.MDOC,
           expiration: expiration.toISOString(),
           issuedAt: issuedAt?.toISOString(),
-          issuerConf
+          issuerConf,
+          spec_version: WALLET_SPEC_VERSION,
+          verification: extractVerification({
+            format,
+            credential,
+            parsedCredential
+          })
         }
       })
     );
