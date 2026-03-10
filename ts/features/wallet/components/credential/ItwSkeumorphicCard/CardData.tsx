@@ -76,13 +76,11 @@ const MdlFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
         dateFormat={'DD/MM/YY'}
         hidden={valuesHidden}
       />
-      {/* TODO: EUDIW mDL does not contain the birth_place claim 
-        <CardClaim
-        claim={getClaimMdl("birth_place", claims)}
+      <CardClaim
+        claim={getClaim(claims, 'birth_place', 'DRIVING_LICENSE')}
         position={{ left: `${cols[0] + 17}%`, top: `${rows[2]}%` }}
         hidden={valuesHidden}
-        />
-        */}
+      />
       <CardClaim
         claim={getClaim(claims, 'issue_date', 'DRIVING_LICENSE')}
         position={{ left: `${cols[0]}%`, top: `${rows[3]}%` }}
