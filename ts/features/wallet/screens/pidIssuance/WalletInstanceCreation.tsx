@@ -187,18 +187,6 @@ export const WalletInstanceCreation = () => {
               ns: 'wallet'
             })}
           />
-          <FeatureBlock
-            image={<Feature4Image width={48} height={48} />}
-            content={t('discovery.screen.itw.features.4', {
-              ns: 'wallet'
-            })}
-          />
-          <FeatureBlock
-            image={<Feature5Image width={48} height={48} />}
-            content={t('discovery.screen.itw.features.5', {
-              ns: 'wallet'
-            })}
-          />
         </VStack>
       </ContentWrapper>
       <VSpacer size={32} />
@@ -254,13 +242,6 @@ export const WalletInstanceCreation = () => {
           />
 
           <VSpacer size={24} />
-          <IOMarkdown
-            content={t('discovery.screen.itw.tos', { ns: 'wallet' })}
-            rules={generateItwIOMarkdownRules({
-              linkCallback: () => null,
-              paragraphSize: 'small'
-            })}
-          />
         </ContentWrapper>
       </View>
     </IOScrollViewWithReveal>
