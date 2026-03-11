@@ -31,13 +31,10 @@ import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import Feature1Image from '../../assets/img/discovery/feature_1.svg';
 import Feature2Image from '../../assets/img/discovery/feature_2.svg';
 import Feature3Image from '../../assets/img/discovery/feature_3.svg';
-import Feature4Image from '../../assets/img/discovery/feature_4.svg';
-import Feature5Image from '../../assets/img/discovery/feature_5.svg';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { createInstanceThunk } from '../../middleware/instance';
 import { resetInstanceCreation } from '../../store/pidIssuance';
 import { selectInstanceStatus } from '../../store/selectors/pidIssuance';
-import { generateItwIOMarkdownRules } from '../../utils/markdown';
 import { useAppDispatch, useAppSelector } from '@/ts/store';
 
 // Offset to avoid to scroll to the block without margins
