@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [".expo/types/**/*.ts", "expo-env.d.ts"],
+  "references": [
+    {
+      "path": "../../libs/it-wallet"
+    },
+    {
+      "path": "../../libs/identification"
+    },
+    {
+      "path": "../../libs/debug-info"
+    },
+    {
+      "path": "../../libs/commons"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

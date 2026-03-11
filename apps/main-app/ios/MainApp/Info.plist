@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>CADisableMinimumFrameDurationOnPhone</key>
+    <true/>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>$(DEVELOPMENT_LANGUAGE)</string>
+    <key>CFBundleDisplayName</key>
+    <string>MainApp</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>$(PRODUCT_NAME)</string>
+    <key>CFBundlePackageType</key>
+    <string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+    <key>CFBundleShortVersionString</key>
+    <string>2.6.2</string>
+    <key>CFBundleSignature</key>
+    <string>????</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>haip</string>
+          <string>openid4vp</string>
+          <string>eudi-openid4vp</string>
+          <string>mdoc-openid4vp</string>
+        </array>
+      </dict>
+    </array>
+    <key>CFBundleVersion</key>
+    <string>0</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>12.0</string>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <key>NSAllowsArbitraryLoads</key>
+      <false/>
+      <key>NSAllowsLocalNetworking</key>
+      <true/>
+    </dict>
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>This app uses Bluetooth to connect to external devices.</string>
+    <key>NSBluetoothPeripheralUsageDescription</key>
+    <string>This app uses Bluetooth to connect to external devices.</string>
+    <key>NSBluetoothScanUsageDescription</key>
+    <string>This app uses Bluetooth to connect to external devices.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your camera</string>
+    <key>NSFaceIDUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to use Face ID.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app uses your location to improve user experience.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your microphone</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>The app accesses your photos to scan QR codes.</string>
+    <key>RCTNewArchEnabled</key>
+    <true/>
+    <key>UIAppFonts</key>
+    <array>
+      <string>Titillio-Black.otf</string>
+      <string>Titillio-BlackItalic.otf</string>
+      <string>Titillio-Bold.otf</string>
+      <string>Titillio-BoldItalic.otf</string>
+      <string>Titillio-Extrablack.otf</string>
+      <string>Titillio-ExtrablackItalic.otf</string>
+      <string>Titillio-Extrabold.otf</string>
+      <string>Titillio-ExtraboldItalic.otf</string>
+      <string>Titillio-Light.otf</string>
+      <string>Titillio-LightItalic.otf</string>
+      <string>Titillio-Regular.otf</string>
+      <string>Titillio-RegularItalic.otf</string>
+      <string>Titillio-Semibold.otf</string>
+      <string>Titillio-SemiboldItalic.otf</string>
+      <string>Titillio-Thin.otf</string>
+      <string>Titillio-ThinItalic.otf</string>
+      <string>TitilliumSansPro-Black.otf</string>
+      <string>TitilliumSansPro-BlackItalic.otf</string>
+      <string>TitilliumSansPro-Bold.otf</string>
+      <string>TitilliumSansPro-BoldItalic.otf</string>
+      <string>TitilliumSansPro-Italic.otf</string>
+      <string>TitilliumSansPro-Light.otf</string>
+      <string>TitilliumSansPro-LightItalic.otf</string>
+      <string>TitilliumSansPro-Regular.otf</string>
+      <string>TitilliumSansPro-Semibold.otf</string>
+      <string>TitilliumSansPro-SemiboldItalic.otf</string>
+      <string>TitilliumSansPro-Thin.otf</string>
+      <string>TitilliumSansPro-ThinItalic.otf</string>
+      <string>FiraCode-Medium.ttf</string>
+    </array>
+    <key>UILaunchStoryboardName</key>
+    <string>SplashScreen</string>
+    <key>UIRequiredDeviceCapabilities</key>
+    <array>
+      <string>arm64</string>
+    </array>
+    <key>UIRequiresFullScreen</key>
+    <false/>
+    <key>UIStatusBarStyle</key>
+    <string>UIStatusBarStyleDefault</string>
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+      <string>UIInterfaceOrientationPortrait</string>
+      <string>UIInterfaceOrientationPortraitUpsideDown</string>
+    </array>
+    <key>UIUserInterfaceStyle</key>
+    <string>Automatic</string>
+    <key>UIViewControllerBasedStatusBarAppearance</key>
+    <false/>
+  </dict>
+</plist>

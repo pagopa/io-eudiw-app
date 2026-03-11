@@ -1,20 +1,28 @@
 {
-  "extends": "expo/tsconfig.base",
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "noImplicitAny": true,
-    "preserveConstEnums": true,
-    "allowJs": false,
-    "noImplicitReturns": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
-    "strictFunctionTypes": true,
-    "useUnknownInCatchVariables": true,
-    "strict": true,
-    "paths": {
-      "@/*": ["./*"]
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/main-app"
+    },
+    {
+      "path": "./libs/it-wallet"
+    },
+    {
+      "path": "./libs/commons"
+    },
+    {
+      "path": "./libs/env"
+    },
+    {
+      "path": "./libs/common-store"
+    },
+    {
+      "path": "./libs/identification"
+    },
+    {
+      "path": "./libs/debug-info"
     }
-  },
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
-  "exclude": ["node_modules"]
+  ]
 }
