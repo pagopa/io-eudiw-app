@@ -1,16 +1,16 @@
 {
   "carousel": {
     "first": {
-      "title": "Welcome to the Wallet app!",
-      "content": "Discover what you can do"
+      "title": "Ti diamo il benvenuto",
+      "content": "Esplora DWallet Lab e scopri cosa puoi fare"
     },
     "second": {
-      "title": "Add your documents",
-      "content": "Securely save and store digital versions of your documents"
+      "title": "Testa nuove funzionalità",
+      "content": "Prova funzionalità innovative che rispettano gli standard tecnici europei"
     },
     "third": {
-      "title": "Authenticate with Wallet",
-      "content": "Use this app to present your documents and access online services"
+      "title": "Un access simulato",
+      "content": "L'ativazione e l'autenticazione sono simulate a scopo di test,in piena conformita con gli standarddi sicurezza dell'UE."
     }
   },
   "start": {
