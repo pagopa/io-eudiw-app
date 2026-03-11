@@ -1,0 +1,102 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "types": ["node"],
+    "rootDir": "src",
+    "jsx": "react-jsx",
+    "noUnusedLocals": false,
+    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo"
+  },
+  "files": ["../../node_modules/@nx/expo/typings/svg.d.ts"],
+  "exclude": [
+    "out-tsc",
+    "dist",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.test.tsx",
+    "**/*.spec.tsx",
+    "**/*.test.js",
+    "**/*.spec.js",
+    "**/*.test.jsx",
+    "**/*.spec.jsx",
+    "src/test-setup.ts",
+    "jest.config.ts",
+    "jest.config.cts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "eslint.config.js",
+    "eslint.config.cjs",
+    "eslint.config.mjs"
+  ],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.json",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "../../libs/commons/src/lib/hooks/useDisableGestureNavigation.tsx",
+    "../../libs/commons/src/lib/hooks/useHardwareBackButton.tsx",
+    "../../libs/commons/src/lib/utils/string.ts",
+    "../../libs/commons/src/lib/hooks/useBottomSheet.tsx",
+    "../../libs/commons/src/lib/components/BottomSheetHeader.tsx",
+    "../../libs/commons/src/lib/utils/brightness.ts",
+    "../../libs/commons/src/lib/utils/device.ts",
+    "../../libs/commons/src/lib/utils/url.ts",
+    "../../libs/commons/src/lib/components/LoadingScreenContent.tsx",
+    "../../libs/commons/src/lib/components/LoadingIndicator.tsx",
+    "../../libs/commons/src/lib/components/IOScrollViewWithLargeHeader.tsx",
+    "../../libs/commons/src/lib/middleware/listener/effects.ts",
+    "../../libs/commons/src/lib/utils/clipboard.ts",
+    "../../libs/commons/src/lib/components/AnimatedImage.tsx",
+    "../../libs/commons/src/lib/components/FocusAwareStatusBar.tsx",
+    "../../libs/commons/src/lib/utils/color.ts",
+    "../../libs/commons/src/lib/utils/crypto.ts",
+    "../../libs/commons/src/lib/components/IOScrollViewWithReveal.tsx",
+    "../../libs/commons/src/lib/hooks/useFooterActionsMargin.tsx",
+    "../../libs/commons/src/lib/hooks/usePreventScreenCapture.ts",
+    "../../libs/commons/src/lib/utils/asyncStatus.ts",
+    "../../libs/commons/src/lib/utils/common.ts",
+    "../../libs/identification/src/lib/reducer/identification.ts",
+    "../../libs/identification/src/lib/components/IdentificationModal.tsx",
+    "../../libs/identification/src/lib/hooks/useBiometricType.ts",
+    "../../libs/identification/src/lib/utils/biometric.tsx",
+    "../../libs/identification/src/lib/components/IdentificationNumberPad.tsx",
+    "../../libs/commons/src/lib/utils/env.ts",
+    "../../libs/identification/src/lib/reducer/pin.ts",
+    "../../libs/commons/src/lib/types/pin.ts",
+    "../../libs/commons/src/lib/utils/pin.ts",
+    "../../libs/debug-info/src/lib/hooks/useDebugInfo.ts",
+    "../../libs/debug-info/src/lib/utils.ts",
+    "../../libs/debug-info/src/lib/reducer/debug.ts",
+    "../../libs/it-wallet/src/hooks/useNavigateToWalletWithReset.tsx",
+    "../../libs/it-wallet/src/navigation/tab/TabNavigator.tsx",
+    "../../libs/it-wallet/src/navigation/tab/routes.ts",
+    "../../libs/it-wallet/src/navigation/main/MainStackNavigator.tsx",
+    "../../libs/it-wallet/src/screens/tab/QrCodeScanScreen.tsx",
+    "../../libs/it-wallet/src/components/QrCodeScanBaseScreenComponent.tsx",
+    "../../libs/it-wallet/src/components/AnimatedCameraMarker.tsx",
+    "../../libs/it-wallet/src/components/CameraPermissionView.tsx",
+    "../../libs/it-wallet/src/hooks/useSineWaveAnimation.ts",
+    "../../libs/it-wallet/src/screens/Settings.tsx",
+    "../../libs/it-wallet/src/components/TabIconComponent.tsx",
+    "../../libs/it-wallet/src/screens/WalletHome.tsx",
+    "../../libs/it-wallet/src/navigation/utils.ts"
+  ],
+  "references": [
+    {
+      "path": "../../libs/it-wallet/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/identification/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/debug-info/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/commons/tsconfig.lib.json"
+    }
+  ]
+}
