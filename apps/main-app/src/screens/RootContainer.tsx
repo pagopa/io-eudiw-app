@@ -3,7 +3,7 @@ import { StatusBar } from 'react-native';
 import DebugInfoOverlay from '../components/debug/DebugInfoOverlay';
 import { RootStackNavigator } from '../navigation/RootStacknavigator';
 import { useAppSelector } from '../store';
-import { selectIsDebugModeEnabled } from '../../../../libs/debug-info/src/lib/reducer/debug';
+import { selectIsDebugModeEnabled } from '@io-eudiw-app/debug-info';
 
 /**
  * This is the root container of the app. It contains the main navigation stack and the debug overlay.

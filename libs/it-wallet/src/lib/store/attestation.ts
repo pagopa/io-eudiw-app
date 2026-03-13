@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { resetLifecycle } from './lifecycle';
-import { WalletPartialRootState } from '.';
+import { WalletCombinedRootState } from '.';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 
 /* State type definition for the attestation slice
@@ -60,5 +60,5 @@ export const { setAttestation } = attestationSlice.actions;
  * @param state - The root state
  * @returns the wallet instance attestation
  */
-export const selectAttestation = (state: WalletPartialRootState) =>
+export const selectAttestation = (state: WalletCombinedRootState) =>
   state.wallet.attestation.attestation;

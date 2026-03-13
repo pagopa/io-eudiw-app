@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
-import { WalletPartialRootState } from '.';
+import { WalletCombinedRootState } from '.';
 
 /**
  * Enum for the lifecycle state of the wallet.
@@ -68,7 +68,7 @@ export const { setLifecycle, resetLifecycle } = lifecycleSlice.actions;
  * @param state - The root state
  * @returns true if the wallet lifecycle is valid, false otherwise
  */
-export const lifecycleIsValidSelector = (state: WalletPartialRootState) =>
+export const lifecycleIsValidSelector = (state: WalletCombinedRootState) =>
   state.wallet.lifecycle.lifecycle === Lifecycle.LIFECYCLE_VALID;
 
 /**
@@ -76,5 +76,5 @@ export const lifecycleIsValidSelector = (state: WalletPartialRootState) =>
  * @param state - The root state
  * @returns true if the wallet lifecycle is operational, false otherwise
  */
-export const lifecycleIsOperationalSelector = (state: WalletPartialRootState) =>
+export const lifecycleIsOperationalSelector = (state: WalletCombinedRootState) =>
   state.wallet.lifecycle.lifecycle === Lifecycle.LIFECYCLE_OPERATIONAL;

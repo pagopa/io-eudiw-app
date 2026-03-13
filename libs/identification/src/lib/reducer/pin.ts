@@ -1,7 +1,7 @@
 import { PinString, secureStoragePersistor } from '@io-eudiw-app/commons';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
-import { IdentificationPartialRootState } from '.';
+import { IdentificationCombinedRootState } from '.';
 
 /*
  * State type definition for the pin slice
@@ -54,4 +54,4 @@ export const pinReducer = persistReducer(pinPersist, pinSlice.reducer);
  * @param state - The root state of the Redux store
  * @returns a string representing the pin
  */
-export const selectPin = (state: IdentificationPartialRootState) => state.pin.pin;
+export const selectPin = (state: IdentificationCombinedRootState) => state.identification.pin.pin;

@@ -40,6 +40,8 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
         EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri,
         EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl
       } = getEnv();
+
+      console.log('obtaining pid with', { EXPO_PUBLIC_PID_PROVIDER_BASE_URL, redirectUri, walletProviderBaseUrl })
       const state = getState();
 
       const walletInstanceAttestation = await dispatch(getAttestationThunk());
@@ -190,6 +192,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
         issuerConf
       };
     } catch (error) {
+      console.log(error)
       const serialized = serializeError(error);
       return rejectWithValue(serialized);
     }
@@ -204,6 +207,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
 const addPidWithAuthListener: AppListenerWithAction<
   ReturnType<typeof addPidWithIdentification>
 > = async (action, listenerApi) => {
+  console.log('triggered')
   listenerApi.dispatch(
     setIdentificationStarted({ canResetPin: false, isValidatingTask: true })
   );
@@ -236,6 +240,7 @@ const addPidWithAuthListener: AppListenerWithAction<
 };
 
 export const addPidListeners = (startAppListening: AppStartListening) => {
+  console.log('adding pid listeners');
   startAppListening({
     actionCreator: addPidWithIdentification,
     effect: takeLatestEffect(addPidWithAuthListener)

@@ -6,7 +6,7 @@ import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
-import { WalletPartialRootState } from '.';
+import { WalletCombinedRootState } from '.';
 
 /* State type definition for the credentials slice.
  * This is stored as an array to avoid overhead due to map not being serializable,
@@ -113,7 +113,7 @@ export const {
   itwSetClaimValuesHidden
 } = credentialsSlice.actions;
 
-export const selectCredentials = (state: WalletPartialRootState) =>
+export const selectCredentials = (state: WalletCombinedRootState) =>
   state.wallet.credentials.credentials;
 
 export const selectCredential = (credentialType: string) =>
@@ -152,7 +152,7 @@ export const itwCredentialsPidExpirationSelector = createSelector(
  * Selects all the credentials beside the PID and transforms them
  * into {@link ItwCredentialCardProps}
  */
-export const selectWalletCards: (state: WalletPartialRootState) => Array<WalletCard> =
+export const selectWalletCards: (state: WalletCombinedRootState) => Array<WalletCard> =
   createSelector(selectCredentials, credentials =>
     credentials
       .filter(cred => cred.credentialType !== wellKnownCredential.PID)
@@ -164,5 +164,5 @@ export const selectWalletCards: (state: WalletPartialRootState) => Array<WalletC
       }))
   );
 
-export const itwIsClaimValueHiddenSelector = (state: WalletPartialRootState) =>
+export const itwIsClaimValueHiddenSelector = (state: WalletCombinedRootState) =>
   state.wallet.credentials.valuesHidden;

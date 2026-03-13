@@ -29,12 +29,13 @@ import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { DcqlQuery } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
-import { AppListenerWithAction, AppStartListening } from './types';
-import { raceEffect, regenerateCryptoKey, takeLatestEffect } from '@io-eudiw-app/commons';
-import { selectSessionId } from '@io-eudiw-app/common-store';
 import { getEnv } from '@io-eudiw-app/env';
-import { setIdentificationIdentified, setIdentificationStarted, setIdentificationUnidentified } from "@io-eudiw-app/identification"
+import { AppListenerWithAction, AppStartListening } from './types';
+import { selectSessionId } from '@io-eudiw-app/common-store';
+import { raceEffect, regenerateCryptoKey, takeLatestEffect } from '@io-eudiw-app/commons';
+import { setIdentificationIdentified, setIdentificationIdentified, setIdentificationStarted, setIdentificationUnidentified } from '@io-eudiw-app/identification';
 import { navigateWithReset } from '../navigation/utils';
+
 
 /**
  * Function which handles the issuance of a credential.
@@ -74,6 +75,7 @@ const obtainCredentialListener: AppListenerWithAction<
     const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
 
     const sessionId = selectSessionId(state);
+    console.log(sessionId, 'session id in credential issuance');
     const pid = selectCredential(wellKnownCredential.PID)(state);
     const appFetch = createWalletProviderFetch(
       walletProviderBaseUrl,
@@ -163,6 +165,7 @@ const obtainCredentialListener: AppListenerWithAction<
       await Credential.Issuance.completeUserAuthorizationWithFormPostJwtMode(
         requestObject,
         pid.credential,
+        issuerConf,
         {
           wiaCryptoContext,
           pidCryptoContext: createCryptoContextFor(pid.keyTag),

@@ -1,15 +1,15 @@
+import { useHeaderSecondLevel } from '@io-eudiw-app/commons';
 import {
   Body,
   FooterActions,
   H3,
   Pictogram,
-  VSpacer
+  VSpacer,
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useHeaderSecondLevel } from '../../../hooks/useHeaderSecondLevel';
 
 /**
  * Onboarding screen which is shown after the initial carousel.
@@ -21,13 +21,13 @@ const OnboardingStart = () => {
 
   useHeaderSecondLevel({
     title: '',
-    goBack: () => navigation.goBack()
+    goBack: () => navigation.goBack(),
   });
 
   const onStartPress = () =>
     navigation.navigate('ROOT_ONBOARDING_NAV', {
       screen: 'ONBOARDING_PIN_CREATION',
-      params: { isOnboarding: true }
+      params: { isOnboarding: true },
     });
 
   return (
@@ -45,9 +45,9 @@ const OnboardingStart = () => {
         actions={{
           primary: {
             label: t('global:buttons.start'),
-            onPress: onStartPress
+            onPress: onStartPress,
           },
-          type: 'SingleButton'
+          type: 'SingleButton',
         }}
       />
     </SafeAreaView>
@@ -58,12 +58,12 @@ export default OnboardingStart;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   content: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
-  text: { textAlign: 'center' }
+  text: { textAlign: 'center' },
 });

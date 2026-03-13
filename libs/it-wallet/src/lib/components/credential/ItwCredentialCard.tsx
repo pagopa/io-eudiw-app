@@ -14,7 +14,7 @@ import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
 import { CardBackground } from './CardBackground';
 import { DigitalVersionBadge } from './DigitalVersionBadge';
 import { useAppSelector } from '../../store';
-import { fontPreferenceSelector } from '@io-eudiw-app/common-store';
+import { selectFontPreference } from '@io-eudiw-app/common-store';
 
 export type ItwCredentialCardProps = {
   /**
@@ -52,7 +52,7 @@ export const ItwCredentialCard = ({
   credentialStatus = 'valid',
   isMultiCredential
 }: ItwCredentialCardProps) => {
-  const typefacePreference = useAppSelector(fontPreferenceSelector);
+  const typefacePreference = useAppSelector(selectFontPreference);
   const status = useItwDisplayCredentialStatus(credentialStatus);
   const theme = useThemeColorByCredentialType(credentialType);
   const borderColorMap = useBorderColorByStatus();

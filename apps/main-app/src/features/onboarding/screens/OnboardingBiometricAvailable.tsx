@@ -1,14 +1,13 @@
 import { Banner, Body, H2, VSpacer } from '@pagopa/io-app-design-system';
 import { ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IOScrollView } from '../../../components/IOScrollView';
-import { useHeaderSecondLevel } from '../../../hooks/useHeaderSecondLevel';
 import { useAppDispatch } from '../../../store';
 import {
   preferencesSetIsBiometricEnabled,
-  preferencesSetIsOnboardingDone
-} from '../../../store/reducers/preferences';
-import { confirmBiometricEnabling } from '../../../../../../libs/identification/src/lib/utils/biometric';
+  preferencesSetIsOnboardingDone,
+} from '@io-eudiw-app/common-store';
+import { IOScrollView, useHeaderSecondLevel } from '@io-eudiw-app/commons';
+import { confirmBiometricEnabling } from '@io-eudiw-app/identification';
 
 type IOScrollViewActions = ComponentProps<typeof IOScrollView>['actions'];
 
@@ -22,7 +21,7 @@ const OnboardingBiometricAvailable = () => {
 
   useHeaderSecondLevel({
     goBack: () => dispatch(preferencesSetIsOnboardingDone()),
-    title: ''
+    title: '',
   });
 
   /**
@@ -55,13 +54,13 @@ const OnboardingBiometricAvailable = () => {
     primary: {
       label: t('global:buttons.activate'),
       accessibilityLabel: t('global:buttons.activate'),
-      onPress: onPressPrimary
+      onPress: onPressPrimary,
     },
     secondary: {
       label: t('global:buttons.notNow'),
       accessibilityLabel: t('global:buttons.notNow'),
-      onPress: onPressSecondary
-    }
+      onPress: onPressSecondary,
+    },
   };
 
   return (

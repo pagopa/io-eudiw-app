@@ -10,7 +10,7 @@ import {
   selectCredentials
 } from '../credentials';
 import { lifecycleIsValidSelector } from '../lifecycle';
-import { WalletPartialRootState } from '..';
+import { WalletCombinedRootState } from '..';
 
 /**
  * Returns the credentials object from the itw credentials state, excluding the PID credential.
@@ -59,7 +59,7 @@ const itwIsWalletEmptySelector = createSelector(
  * @param state the application global state
  * @returns true if the banner should be visible, false otherwise
  */
-export const itwShouldRenderWalletReadyBannerSelector = (state: WalletPartialRootState) =>
+export const itwShouldRenderWalletReadyBannerSelector = (state: WalletCombinedRootState) =>
   lifecycleIsValidSelector(state) &&
   // NOTE: Wallet instance status not yet implemented
   // NOTE: Online status checks not yet implemented
@@ -78,7 +78,7 @@ export const itwShouldRenderWalletReadyBannerSelector = (state: WalletPartialRoo
  */
 export const itwCredentialStatusSelector = createSelector(
   itwCredentialsSelector,
-  (_state: WalletPartialRootState, type: string) => type,
+  (_state: WalletCombinedRootState, type: string) => type,
   (credentials, type) => {
     const credential = credentials.find(
       ({ credentialType }) => credentialType === type

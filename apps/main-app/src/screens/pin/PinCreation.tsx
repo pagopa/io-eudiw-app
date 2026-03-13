@@ -4,7 +4,7 @@ import {
   IOButton,
   NumberPad,
   Pictogram,
-  VSpacer
+  VSpacer,
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -16,18 +16,21 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { CarouselFlat } from '../../components/CarouselFlat';
 import usePinValidationBottomSheet from '../../features/onboarding/hooks/usePinValidationBottomSheet';
 import { OnboardingNavigatorParamsList } from '../../features/onboarding/navigation/OnboardingNavigator';
-import { PinString } from '../../../../../libs/commons/src/lib/types/pin';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { pinSet } from '../../../../../libs/identification/src/lib/reducer/pin';
-import { preferencesSetIsOnboardingDone } from '../../store/reducers/preferences';
 import {
   selectStartupBiometricState,
-  selectStartupHasScreenLock
+  selectStartupHasScreenLock,
 } from '../../store/reducers/startup';
-import { isDevEnv } from '../../../../../libs/commons/src/lib/utils/env';
-import { isValidPinNumber, PIN_LENGTH } from '../../../../../libs/commons/src/lib/utils/pin';
 import { PinCarouselItem, PinCarouselItemProps } from './PinCarouselItem';
-import { useHeaderSecondLevel } from '@io-eudiw-app/commons';
+import {
+  isDevEnv,
+  isValidPinNumber,
+  PIN_LENGTH,
+  PinString,
+  useHeaderSecondLevel,
+} from '@io-eudiw-app/commons';
+import { pinSet } from '@io-eudiw-app/identification';
+import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/common-store';
 
 const CREATION_INDEX = 0;
 const CONFIRMATION_INDEX = 1;
@@ -75,19 +78,19 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
       if (isOnboarding) {
         if (biometricState === 'AVAILABLE') {
           navigation.navigate('ROOT_ONBOARDING_NAV', {
-            screen: 'ONBOARDING_BIOMETRIC_AVAILABLE'
+            screen: 'ONBOARDING_BIOMETRIC_AVAILABLE',
           });
           return;
         } else {
           if (!hasDeviceScreenLock) {
             navigation.navigate('ROOT_ONBOARDING_NAV', {
-              screen: 'ONBOARDING_BIOMETRIC_NO_SCREEN_LOCK'
+              screen: 'ONBOARDING_BIOMETRIC_NO_SCREEN_LOCK',
             });
             return;
           }
           if (biometricState === 'NOT_ENROLLED') {
             navigation.navigate('ROOT_ONBOARDING_NAV', {
-              screen: 'ONBOARDING_BIOMETRIC_NOT_ENROLLED'
+              screen: 'ONBOARDING_BIOMETRIC_NOT_ENROLLED',
             });
             return;
           }
@@ -96,7 +99,7 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
         }
       }
     },
-    [biometricState, dispatch, hasDeviceScreenLock, isOnboarding, navigation]
+    [biometricState, dispatch, hasDeviceScreenLock, isOnboarding, navigation],
   );
 
   const scrollToCreation = useCallback(() => {
@@ -105,7 +108,7 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
     pinModeRef.current = 'creation';
     carouselRef.current?.scrollToIndex({
       animated: true,
-      index: CREATION_INDEX
+      index: CREATION_INDEX,
     });
   }, []);
   const scrollToConfirmation = useCallback(() => {
@@ -113,7 +116,7 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
     pinModeRef.current = 'confirmation';
     carouselRef.current?.scrollToIndex({
       animated: true,
-      index: CONFIRMATION_INDEX
+      index: CONFIRMATION_INDEX,
     });
   }, []);
 
@@ -133,20 +136,20 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
       pinModeRef.current === 'creation'
         ? setPin(updateValue)
         : setPinConfirmation(updateValue),
-    []
+    [],
   );
 
   const handlePinChange = useCallback(
     (value: number) =>
       getCurrentSetState((prev: string) =>
-        prev.length < PIN_LENGTH ? `${prev}${value}` : prev
+        prev.length < PIN_LENGTH ? `${prev}${value}` : prev,
       ),
-    [getCurrentSetState]
+    [getCurrentSetState],
   );
 
   const onDeletePress = useCallback(
     () => getCurrentSetState((prev: string) => prev.slice(0, -1)),
-    [getCurrentSetState]
+    [getCurrentSetState],
   );
 
   const insertValidPin = useCallback(() => {
@@ -174,15 +177,15 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
           t('onboarding:pin.errors.invalid.description'),
           [
             {
-              text: t('onboarding:pin.errors.invalid.cta')
-            }
-          ]
+              text: t('onboarding:pin.errors.invalid.cta'),
+            },
+          ],
         );
       }
 
       return isValid;
     },
-    [scrollToConfirmation, t]
+    [scrollToConfirmation, t],
   );
 
   const handlePinConfirmation = useCallback(
@@ -196,14 +199,14 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
         Alert.alert(t('onboarding:pin.errors.match.title'), undefined, [
           {
             text: t('onboarding:pin.errors.match.cta'),
-            onPress: scrollToCreation
-          }
+            onPress: scrollToCreation,
+          },
         ]);
       }
 
       return isValid;
     },
-    [handleSubmit, scrollToCreation, t]
+    [handleSubmit, scrollToCreation, t],
   );
 
   const data: Array<PinCarouselItemProps> = [
@@ -215,7 +218,7 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
       testID: 'create-pin-carousel-item',
       handleOnValidate: handlePinCreation,
       onValueChange: setPin,
-      maxLength: PIN_LENGTH
+      maxLength: PIN_LENGTH,
     },
     {
       title: t('onboarding:pin.confirmation.title'),
@@ -224,13 +227,13 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
       testID: 'confirm-pin-carousel-item',
       handleOnValidate: handlePinConfirmation,
       onValueChange: setPinConfirmation,
-      maxLength: PIN_LENGTH
-    }
+      maxLength: PIN_LENGTH,
+    },
   ];
 
   useHeaderSecondLevel({
     title: '',
-    goBack
+    goBack,
   });
 
   return (
@@ -275,9 +278,9 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
             actions={{
               primary: {
                 label: `Enter Pin: ${DEFAULT_PIN} (DevEnv Only)`,
-                onPress: insertValidPin
+                onPress: insertValidPin,
               },
-              type: 'SingleButton'
+              type: 'SingleButton',
             }}
           />
         </>
@@ -288,13 +291,13 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   content: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   pictogram: {
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });

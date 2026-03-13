@@ -2,7 +2,7 @@ import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProximityDetails } from '../screens/proximity/ItwProximityPresentationDetails';
 import { resetLifecycle } from './lifecycle';
-import { WalletPartialRootState } from '.';
+import { WalletCombinedRootState } from '.';
 
 /**
  * The application-internal statuses used to control the proximity listener
@@ -153,7 +153,7 @@ export const { reducer: proximityReducer } = proximitySlice;
  * @param state - The root state
  * @returns The QR Code if present, undefined otherwise
  */
-export const selectProximityQrCode = (state: WalletPartialRootState) =>
+export const selectProximityQrCode = (state: WalletCombinedRootState) =>
   state.wallet.proximity.qrCode;
 
 /**
@@ -161,7 +161,7 @@ export const selectProximityQrCode = (state: WalletPartialRootState) =>
  * @param state - The root state
  * @returns The proximity status
  */
-export const selectProximityStatus = (state: WalletPartialRootState) =>
+export const selectProximityStatus = (state: WalletCombinedRootState) =>
   state.wallet.proximity.status;
 
 /**
@@ -169,7 +169,7 @@ export const selectProximityStatus = (state: WalletPartialRootState) =>
  * @param state - The root state
  * @returns The request sent by the Verifier App
  */
-export const selectProximityDocumentRequest = (state: WalletPartialRootState) =>
+export const selectProximityDocumentRequest = (state: WalletCombinedRootState) =>
   state.wallet.proximity.documentRequest;
 
 /**
@@ -177,7 +177,7 @@ export const selectProximityDocumentRequest = (state: WalletPartialRootState) =>
  * @param state - The root state
  * @returns A {@link ProximityDisclosureDescriptor}
  */
-export const selectProximityDisclosureDescriptor = (state: WalletPartialRootState) =>
+export const selectProximityDisclosureDescriptor = (state: WalletCombinedRootState) =>
   state.wallet.proximity.proximityDisclosureDescriptor?.descriptor;
 
 /**
@@ -186,7 +186,7 @@ export const selectProximityDisclosureDescriptor = (state: WalletPartialRootStat
  * @returns The verifier authentication flags
  */
 export const selectProximityDisclosureIsAuthenticated = createSelector(
-  (state: WalletPartialRootState) => state.wallet.proximity.proximityDisclosureDescriptor,
+  (state: WalletCombinedRootState) => state.wallet.proximity.proximityDisclosureDescriptor,
   descriptor => descriptor?.isAuthenticated || false
 );
 
@@ -195,5 +195,5 @@ export const selectProximityDisclosureIsAuthenticated = createSelector(
  * @param state - The root state
  * @returns The error details
  */
-export const selectProximityErrorDetails = (state: WalletPartialRootState) =>
+export const selectProximityErrorDetails = (state: WalletCombinedRootState) =>
   state.wallet.proximity.errorDetails;

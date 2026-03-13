@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IdentificationPartialRootState } from '.';
+import { IdentificationCombinedRootState } from '.';
 
 /**
  * The identification state.
@@ -59,5 +59,5 @@ export const identificationReducer = identificationSlice.reducer;
  * @param state - The root state.
  * @returns The identification state.
  */
-export const selectIdentificationStatus = (state: IdentificationPartialRootState) =>
-  state.identification;
+export const selectIdentificationStatus = (state: IdentificationCombinedRootState) =>
+  state.identification.identification;

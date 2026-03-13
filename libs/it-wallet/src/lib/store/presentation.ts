@@ -5,7 +5,7 @@ import { FederationEntity } from '../types';
 import { EnrichedPresentationDetails } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 import { AsyncStatusValues, setError, setInitial, setLoading, setSuccess } from '@io-eudiw-app/commons';
-import { WalletPartialRootState } from '.';
+import { WalletCombinedRootState } from '.';
 
 /**
  * Type for the description which contains the requested claims during the presentation.
@@ -128,7 +128,7 @@ export const { reducer: presentationReducer } = presentationSlice;
  * @param state - The root state
  * @returns the preDefinition status object
  */
-export const selectPreDefinitionStatus = (state: WalletPartialRootState) =>
+export const selectPreDefinitionStatus = (state: WalletCombinedRootState) =>
   state.wallet.presentation.preDefinition;
 
 /**
@@ -136,7 +136,7 @@ export const selectPreDefinitionStatus = (state: WalletPartialRootState) =>
  * @param state - The root state
  * @returns the descriptor containing the requested claims if the preDefinition was successful, undefined otherwise
  */
-export const selectPreDefitionResult = (state: WalletPartialRootState) =>
+export const selectPreDefitionResult = (state: WalletCombinedRootState) =>
   state.wallet.presentation.preDefinition.success.status === true
     ? state.wallet.presentation.preDefinition.success.data
     : undefined;
@@ -147,7 +147,7 @@ export const selectPreDefitionResult = (state: WalletPartialRootState) =>
  * @param state - The root state
  * @returns the postDefinition status object
  */
-export const selectPostDefinitionStatus = (state: WalletPartialRootState) =>
+export const selectPostDefinitionStatus = (state: WalletCombinedRootState) =>
   state.wallet.presentation.postDefinition;
 
 /**
@@ -155,7 +155,7 @@ export const selectPostDefinitionStatus = (state: WalletPartialRootState) =>
  * @param state - The root state
  * @returns the auth response containing if the postDefinition was successful, undefined otherwise
  */
-export const selectPostDefinitionResult = (state: WalletPartialRootState) =>
+export const selectPostDefinitionResult = (state: WalletCombinedRootState) =>
   state.wallet.presentation.postDefinition.success.status === true
     ? state.wallet.presentation.postDefinition.success.data
     : undefined;
@@ -165,5 +165,5 @@ export const selectPostDefinitionResult = (state: WalletPartialRootState) =>
  * @param state - The root state
  * @returns an array of strings containing the names of the optional credentials selected by the user
  */
-export const selectOptionalCredentials = (state: WalletPartialRootState) =>
+export const selectOptionalCredentials = (state: WalletCombinedRootState) =>
   state.wallet.presentation.optionalCredentials;

@@ -3,13 +3,13 @@ import {
   IOBadgeRadius,
   IOBadgeVSpacing,
   IOColors,
-  makeFontStyleObject
+  makeFontStyleObject,
 } from '@pagopa/io-app-design-system';
 import {
   Canvas,
   LinearGradient,
   RoundedRect,
-  vec
+  vec,
 } from '@shopify/react-native-skia';
 import Color from 'color';
 import { t } from 'i18next';
@@ -19,11 +19,11 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
 } from 'react-native';
 import { CardColorScheme } from '../../types';
 import { useAppSelector } from '../../store';
-import { fontPreferenceSelector } from '@io-eudiw-app/common-store';
+import { selectFontPreference } from '@io-eudiw-app/common-store';
 
 type DigitalVersionBadgeProps = {
   credentialType: string;
@@ -37,29 +37,29 @@ type CredentialTypesProps = {
 
 const getColorPropsByScheme = (
   credentialType: string,
-  colorScheme: CardColorScheme
+  colorScheme: CardColorScheme,
 ) => {
   const mapCredentialTypes: Record<string, CredentialTypesProps> = {
     'org.iso.18013.5.1.mDL': {
       foreground: '#5E303E',
-      background: '#FADCF5'
+      background: '#FADCF5',
     },
     'urn:eu.europa.ec.eudi:edc:1': {
       foreground: '#01527F',
-      background: '#E8EEF4'
+      background: '#E8EEF4',
     },
     education_degree: {
       foreground: '#403C36',
-      background: ['#ECECEC', '#F2F1CE']
+      background: ['#ECECEC', '#F2F1CE'],
     },
     education_enrollment: {
       foreground: '#403C36',
-      background: ['#ECECEC', '#E0F2CE']
+      background: ['#ECECEC', '#E0F2CE'],
     },
     residency: {
       foreground: '#403C36',
-      background: ['#ECECEC', '#F2E4CE']
-    }
+      background: ['#ECECEC', '#F2E4CE'],
+    },
   };
 
   const baseColorProps = mapCredentialTypes[credentialType];
@@ -71,14 +71,14 @@ const getColorPropsByScheme = (
     if (Array.isArray(baseColorProps.background)) {
       return {
         foreground: Color(baseColorProps.foreground).grayscale().hex(),
-        background: baseColorProps.background.map(c =>
-          Color(c).grayscale().hex()
-        )
+        background: baseColorProps.background.map((c) =>
+          Color(c).grayscale().hex(),
+        ),
       };
     }
     return {
       foreground: Color(baseColorProps.foreground).grayscale().hex(),
-      background: Color(baseColorProps.background).grayscale().hex()
+      background: Color(baseColorProps.background).grayscale().hex(),
     };
   }
 
@@ -87,9 +87,9 @@ const getColorPropsByScheme = (
 
 const DigitalVersionBadge = ({
   credentialType,
-  colorScheme = 'default'
+  colorScheme = 'default',
 }: DigitalVersionBadgeProps) => {
-  const typefacePreference = useAppSelector(fontPreferenceSelector);
+  const typefacePreference = useAppSelector(selectFontPreference);
   const [layout, setLayout] = useState<{
     width: number;
     height: number;
@@ -117,8 +117,8 @@ const DigitalVersionBadge = ({
         style={[
           styles.badge,
           {
-            backgroundColor: isGradient ? undefined : background
-          }
+            backgroundColor: isGradient ? undefined : background,
+          },
         ]}
       >
         {isGradient && layout && (
@@ -155,8 +155,8 @@ const DigitalVersionBadge = ({
                 ? 'Titillio'
                 : 'TitilliumSansPro',
               16,
-              'Semibold'
-            )
+              'Semibold',
+            ),
           }}
         >
           {`${t('credentials.digital', { ns: 'wallet' })}`}
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   wrapper: {
     position: 'absolute',
     bottom: 16,
-    right: 2
+    right: 2,
   },
   badge: {
     overflow: 'hidden',
@@ -179,26 +179,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     ...Platform.select({
       android: {
-        textAlignVertical: 'center'
-      }
+        textAlignVertical: 'center',
+      },
     }),
     borderCurve: 'continuous',
     borderRadius: IOBadgeRadius,
     paddingHorizontal: IOBadgeHSpacing,
     paddingVertical: IOBadgeVSpacing,
     paddingEnd: IOBadgeHSpacing + 8,
-    marginEnd: -IOBadgeHSpacing
+    marginEnd: -IOBadgeHSpacing,
   },
   faded: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: IOColors.white,
     opacity: 0.6,
-    zIndex: 10
+    zIndex: 10,
   },
   gradientCanvas: {
     ...StyleSheet.absoluteFillObject,
-    zIndex: 0
-  }
+    zIndex: 0,
+  },
 });
 
 const MemoizedDigitalVersionBadge = memo(DigitalVersionBadge);

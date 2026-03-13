@@ -1,6 +1,7 @@
 /**
  * A mocked version of the DeviceInfo
  */
+import jest from 'jest-mock';
 
 const getReadableVersion = jest.fn();
 const getDeviceIdMock = jest.fn();

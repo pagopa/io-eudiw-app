@@ -20,7 +20,7 @@ import { IdentificationModal } from '@io-eudiw-app/identification';
 
 require('@pagopa/react-native-nodelibs/globals');
 
-function App(): React.JSX.Element {
+export default function App(): React.JSX.Element {
   void initI18n();
 
   return (

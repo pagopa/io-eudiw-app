@@ -112,7 +112,6 @@ export const WalletInstanceCreation = () => {
 
   const productHighlightsRef = useRef<View>(null);
   const animatedRef = useAnimatedRef<Animated.ScrollView>();
-  const scrollPosition = useScrollOffset(animatedRef);
   const hideAnchorLink = useSharedValue(false);
 
   useDerivedValue(() => {

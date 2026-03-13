@@ -5,7 +5,7 @@ import {
 } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 import { AsyncStatusValues, setError, setInitial, setLoading, setSuccess } from '@io-eudiw-app/commons';
-import { WalletPartialRootState } from '.';
+import { WalletCombinedRootState } from '.';
 
 export type RequestedCredential = string | undefined;
 type RequestedCredentialType = string | undefined;
@@ -104,20 +104,20 @@ export const {
 export const { reducer: credentialIssuanceStatusReducer } =
   credentialIssuanceStatusSlice;
 
-export const selectCredentialIssuancePreAuthStatus = (state: WalletPartialRootState) =>
+export const selectCredentialIssuancePreAuthStatus = (state: WalletCombinedRootState) =>
   state.wallet.credentialIssuanceStatus.statusPreAuth;
 
-export const selectCredentialIssuancePostAuthStatus = (state: WalletPartialRootState) =>
+export const selectCredentialIssuancePostAuthStatus = (state: WalletCombinedRootState) =>
   state.wallet.credentialIssuanceStatus.statusPostAuth;
 
-export const selectRequestedCredential = (state: WalletPartialRootState) =>
+export const selectRequestedCredential = (state: WalletCombinedRootState) =>
   state.wallet.credentialIssuanceStatus.requestedCredential;
 
-export const selectRequestedCredentialType = (state: WalletPartialRootState) =>
+export const selectRequestedCredentialType = (state: WalletCombinedRootState) =>
   state.wallet.credentialIssuanceStatus.requestedCredentialType;
 
-export const selectCredentialIssuancePostAuthError = (state: WalletPartialRootState) =>
+export const selectCredentialIssuancePostAuthError = (state: WalletCombinedRootState) =>
   state.wallet.credentialIssuanceStatus.statusPostAuth.error.error;
 
-export const selectCredentialIssuancePreAuthError = (state: WalletPartialRootState) =>
+export const selectCredentialIssuancePreAuthError = (state: WalletCombinedRootState) =>
   state.wallet.credentialIssuanceStatus.statusPreAuth.error.error;

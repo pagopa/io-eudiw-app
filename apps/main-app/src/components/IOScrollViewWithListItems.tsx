@@ -1,3 +1,4 @@
+import { IOScrollView, IOScrollViewActions } from '@io-eudiw-app/commons';
 import {
   Body,
   BodyProps,
@@ -9,7 +10,6 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import { View } from 'react-native';
-import { IOScrollView, IOScrollViewActions } from './IOScrollView';
 
 type IOScrollViewWithListItemsProps = {
   title?: string;

@@ -8,7 +8,10 @@ const ROOT_ROUTES = {
   LOADING: 'ROOT_LOADING',
 
   // Onboarding
-  ONBOARDING_NAV: 'ROOT_ONBOARDING_NAV'
+  ONBOARDING_NAV: 'ROOT_ONBOARDING_NAV',
+
+  // Wallet
+  IT_WALLET_NAV: 'ROOT_IT_WALLET_NAV',
 } as const;
 
 export default ROOT_ROUTES;

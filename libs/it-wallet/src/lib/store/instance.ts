@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { resetLifecycle } from './lifecycle';
-import { WalletPartialRootState } from '.';
+import { WalletCombinedRootState } from '.';
 
 /* State type definition for the instance slice
  * keyTag - The keytag bound to the wallet instance
@@ -60,5 +60,5 @@ export const { setInstanceKeyTag } = instanceSlice.actions;
  * @param state - The root state
  * @returns the wallet instance keytag
  */
-export const selectInstanceKeyTag = (state: WalletPartialRootState) =>
+export const selectInstanceKeyTag = (state: WalletCombinedRootState) =>
   state.wallet.instance.keyTag;

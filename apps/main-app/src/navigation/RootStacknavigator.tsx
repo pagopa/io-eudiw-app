@@ -1,38 +1,31 @@
 import { useIOThemeContext } from '@pagopa/io-app-design-system';
 import {
-  LinkingOptions,
   NavigationContainer,
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { t } from 'i18next';
 import { useCallback, useEffect } from 'react';
-import { Linking } from 'react-native';
-import { LoadingScreenContent } from '../../../../libs/commons/src/lib/components/LoadingScreenContent';
-import { OperationResultScreenContent } from '@io-eudiw-app/commons';
+import {
+  LoadingScreenContent,
+  OperationResultScreenContent,
+} from '@io-eudiw-app/commons';
 import { useStoredFontPreference } from '../context/DSTypeFaceContext';
 import OnboardingNavigator, {
   OnboardingNavigatorParamsList,
 } from '../features/onboarding/navigation/OnboardingNavigator';
-import { WalletNavigatorParamsList } from '../features/wallet/navigation/WalletNavigator';
 import { useAppDispatch, useAppSelector } from '../store';
-import { setUrl } from '../store/reducers/deeplinking';
 import {
   selectStartupState,
   startupSetLoading,
 } from '../store/reducers/startup';
-import { PRESENTATION_INTERNAL_LINKS } from './deepLinkSchemas';
-import MainStackNavigator, {
-  MainNavigatorParamsList,
-} from '../../../../libs/it-wallet/src/navigation/main/MainStackNavigator';
-import MAIN_ROUTES from '../../../../libs/it-wallet/src/navigation/main/routes';
 import ROOT_ROUTES from './routes';
 import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
-import { navigationRef } from '../../../../libs/it-wallet/src/navigation/utils';
+import { navigationRef } from './utils';
+import { MainStackNavigator } from '@io-eudiw-app/it-wallet';
 
 export type RootStackParamList = {
   // Main
-  [ROOT_ROUTES.MAIN_NAV]: NavigatorScreenParams<MainNavigatorParamsList>;
   [ROOT_ROUTES.ERROR]: undefined;
   [ROOT_ROUTES.LOADING]: undefined;
   [ROOT_ROUTES.ERROR]: undefined;
@@ -40,9 +33,8 @@ export type RootStackParamList = {
   // Onboarding
   [ROOT_ROUTES.ONBOARDING_NAV]: NavigatorScreenParams<OnboardingNavigatorParamsList>;
 
-  // Main navigator when onboarding is completed
-  [MAIN_ROUTES.TAB_NAV]: undefined;
-  [MAIN_ROUTES.WALLET_NAV]: NavigatorScreenParams<WalletNavigatorParamsList>;
+  // Features
+  [ROOT_ROUTES.IT_WALLET_NAV]: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -90,7 +82,10 @@ export const RootStackNavigator = () => {
   const getInitialScreen = useCallback((): Screens => {
     switch (isStartupDone) {
       case 'DONE':
-        return { name: ROOT_ROUTES.MAIN_NAV, component: MainStackNavigator };
+        return {
+          name: ROOT_ROUTES.IT_WALLET_NAV,
+          component: MainStackNavigator,
+        };
 
       case 'WAIT_ONBOARDING':
         return {
@@ -110,68 +105,68 @@ export const RootStackNavigator = () => {
     }
   }, [isStartupDone]);
 
-  const linking: LinkingOptions<RootStackParamList> = {
-    prefixes: PRESENTATION_INTERNAL_LINKS,
-    config: {
-      screens: {
-        ROOT_MAIN_NAV: {
-          screens: {
-            MAIN_WALLET_NAV: {
-              screens: {
-                PRESENTATION_PRE_DEFINITION: {
-                  // why can't typescript infer the type of deeply nested navigators?
-                  path: '', // match any path after PRESENTATION_PRE_DEFINITION
-                  parse: {
-                    // This is needed because otherwise the URL encoded parameters are not properly decoded
-                    client_id: (value: string) => decodeURIComponent(value),
-                    request_uri: (value: string) => decodeURIComponent(value),
-                    state: (value: string) => value,
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-    async getInitialURL() {
-      /**
-       * If the app was opened by a deep link, get the initial URL and set it in the store.
-       * We know for sure that this can't be handled because the navigation which can handle it isn't mounted yet.
-       */
-      const url = await Linking.getInitialURL();
-      if (url) {
-        dispatch(setUrl({ url }));
-      }
-      return url;
-    },
-    subscribe(listener) {
-      /**
-       * If the appr receives a deep link while it's running and the main navigation is not ready yet, set the URL in the store.
-       * We know for sure that this can't be handled because the main navigation which can handle it isn't mounted yet if the startup is one of the following:
-       * - WAIT_IDENTIFICATION as the user must identify before the main navigation is mounted
-       * - LOADING as the main navigation is not mounted yet
-       * - NOT_STARTED as the main navigation is not mounted yet
-       * A listener will take care of handling this deep link later.
-       */
-      const onReceiveURL = ({ url }: { url: string }) => {
-        listener(url);
-        if (
-          isStartupDone === 'WAIT_IDENTIFICATION' ||
-          isStartupDone === 'LOADING' ||
-          isStartupDone === 'NOT_STARTED'
-        ) {
-          dispatch(setUrl({ url }));
-        }
-      };
+  // const linking: LinkingOptions<RootStackParamList> = {
+  //   prefixes: PRESENTATION_INTERNAL_LINKS,
+  //   config: {
+  //     screens: {
+  //       ROOT_MAIN_NAV: {
+  //         screens: {
+  //           MAIN_WALLET_NAV: {
+  //             screens: {
+  //               PRESENTATION_PRE_DEFINITION: {
+  //                 // why can't typescript infer the type of deeply nested navigators?
+  //                 path: '', // match any path after PRESENTATION_PRE_DEFINITION
+  //                 parse: {
+  //                   // This is needed because otherwise the URL encoded parameters are not properly decoded
+  //                   client_id: (value: string) => decodeURIComponent(value),
+  //                   request_uri: (value: string) => decodeURIComponent(value),
+  //                   state: (value: string) => value,
+  //                 },
+  //               },
+  //             },
+  //           },
+  //         },
+  //       },
+  //     },
+  //   },
+  //   async getInitialURL() {
+  //     /**
+  //      * If the app was opened by a deep link, get the initial URL and set it in the store.
+  //      * We know for sure that this can't be handled because the navigation which can handle it isn't mounted yet.
+  //      */
+  //     const url = await Linking.getInitialURL();
+  //     if (url) {
+  //       dispatch(setUrl({ url }));
+  //     }
+  //     return url;
+  //   },
+  //   subscribe(listener) {
+  //     /**
+  //      * If the appr receives a deep link while it's running and the main navigation is not ready yet, set the URL in the store.
+  //      * We know for sure that this can't be handled because the main navigation which can handle it isn't mounted yet if the startup is one of the following:
+  //      * - WAIT_IDENTIFICATION as the user must identify before the main navigation is mounted
+  //      * - LOADING as the main navigation is not mounted yet
+  //      * - NOT_STARTED as the main navigation is not mounted yet
+  //      * A listener will take care of handling this deep link later.
+  //      */
+  //     const onReceiveURL = ({ url }: { url: string }) => {
+  //       listener(url);
+  //       if (
+  //         isStartupDone === 'WAIT_IDENTIFICATION' ||
+  //         isStartupDone === 'LOADING' ||
+  //         isStartupDone === 'NOT_STARTED'
+  //       ) {
+  //         dispatch(setUrl({ url }));
+  //       }
+  //     };
 
-      Linking.addEventListener('url', onReceiveURL);
+  //     Linking.addEventListener('url', onReceiveURL);
 
-      return () => {
-        Linking.removeAllListeners('url');
-      };
-    },
-  };
+  //     return () => {
+  //       Linking.removeAllListeners('url');
+  //     };
+  //   },
+  // };
 
   const initialScreen = getInitialScreen();
 
@@ -180,7 +175,7 @@ export const RootStackNavigator = () => {
       theme={
         themeType === 'light' ? IONavigationLightTheme : IONavigationDarkTheme
       }
-      linking={linking}
+      // linking={linking}
       ref={navigationRef}
     >
       <Stack.Navigator screenOptions={{ headerShown: false }}>

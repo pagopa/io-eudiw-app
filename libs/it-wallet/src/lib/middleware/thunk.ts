@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { WalletPartialRootState } from '../store';
+import { WalletCombinedRootState } from '../store';
 
 
 export const createAppAsyncThunk = createAsyncThunk.withTypes<{
-  state: WalletPartialRootState;
+  state: WalletCombinedRootState;
 }>();

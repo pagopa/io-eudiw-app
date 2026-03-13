@@ -11,7 +11,7 @@ export type TypefaceChoice = 'comfortable' | 'standard';
  * isOnboardingComplete - Indicates if the user has completed the onboarding flow.
  * isBiometricEnabled - Indicates if the biometric is enabled for the user.
  */
-export type PreferencesState = {
+export type PreferencesSlice = {
   sessionId: string;
   isOnboardingComplete: boolean;
   isBiometricEnabled: boolean;
@@ -19,11 +19,11 @@ export type PreferencesState = {
 };
 
 export type PreferencesPartialRootState = {
-  preferences: PreferencesState;
+  preferences: PreferencesSlice;
 }
 
 // Initial state for the preferences slice
-const initialState: PreferencesState = {
+const initialState: PreferencesSlice = {
   sessionId: Crypto.randomUUID().toString(),
   isOnboardingComplete: false,
   isBiometricEnabled: false,
@@ -74,7 +74,7 @@ export const {
  * Redux persist configuration for the preferences slice.
  * Currently it uses AsyncStorage as the storage engine which stores it unencrypted in the device storage.
  */
-const preferencesPersist: PersistConfig<PreferencesState> = {
+const preferencesPersist: PersistConfig<PreferencesSlice> = {
   key: 'preferences',
   storage: AsyncStorage
 };
@@ -90,15 +90,15 @@ export const preferencesReducer = persistReducer(
 /**
  * Selects if the onboarding has been completed.
  * @param state - The root state of the Redux store
- * @returns a boolean indicating weather the onboarding has been completed
+ * @returns a boolean indicating whether the onboarding has been completed
  */
-export const selectisOnboardingComplete = (state: PreferencesPartialRootState) =>
+export const selectIsOnboardingComplete = (state: PreferencesPartialRootState) =>
   state.preferences.isOnboardingComplete;
 
 /**
  * Selects if the biometric is enabled.
  * @param state - The root state of the Redux store
- * @returns a boolean indicating weather the biometric is enabled
+ * @returns a boolean indicating whether the biometric is enabled
  */
 export const selectIsBiometricEnabled = (state: PreferencesPartialRootState) =>
   state.preferences.isBiometricEnabled;
@@ -111,5 +111,5 @@ export const selectIsBiometricEnabled = (state: PreferencesPartialRootState) =>
 export const selectSessionId = (state: PreferencesPartialRootState) =>
   state.preferences.sessionId;
 
-export const fontPreferenceSelector = (state: PreferencesPartialRootState): TypefaceChoice =>
+export const selectFontPreference = (state: PreferencesPartialRootState): TypefaceChoice =>
   state.preferences.fontPreference;

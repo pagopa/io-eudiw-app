@@ -1,4 +1,4 @@
-import { WalletPartialRootState } from "..";
+import { WalletCombinedRootState } from "..";
 
 
 /**
@@ -6,7 +6,7 @@ import { WalletPartialRootState } from "..";
  * @param state - The root state
  * @returns The instanceCreation async status
  */
-export const selectInstanceStatus = (state: WalletPartialRootState) =>
+export const selectInstanceStatus = (state: WalletCombinedRootState) =>
   state.wallet.pidIssuanceStatus.instanceCreation;
 
 /**
@@ -14,7 +14,7 @@ export const selectInstanceStatus = (state: WalletPartialRootState) =>
  * @param state - The root state
  * @returns The issuance async status
  */
-export const selectPidIssuanceStatus = (state: WalletPartialRootState) =>
+export const selectPidIssuanceStatus = (state: WalletCombinedRootState) =>
   state.wallet.pidIssuanceStatus.issuance;
 
 /**
@@ -22,7 +22,7 @@ export const selectPidIssuanceStatus = (state: WalletPartialRootState) =>
  * @param state - The root state
  * @returns The issuance data if the status is success, otherwise undefined
  */
-export const selectPidIssuanceData = (state: WalletPartialRootState) =>
+export const selectPidIssuanceData = (state: WalletCombinedRootState) =>
   state.wallet.pidIssuanceStatus.issuance.success.status === true
     ? state.wallet.pidIssuanceStatus.issuance.success.data
     : undefined;
@@ -32,7 +32,7 @@ export const selectPidIssuanceData = (state: WalletPartialRootState) =>
  * @param state - The root state
  * @returns The error occurred during the issuance flow
  */
-export const selectPidIssuanceError = (state: WalletPartialRootState) =>
+export const selectPidIssuanceError = (state: WalletCombinedRootState) =>
   state.wallet.pidIssuanceStatus.issuance.error.error;
 
 /**
@@ -40,5 +40,5 @@ export const selectPidIssuanceError = (state: WalletPartialRootState) =>
  * @param state - The root state
  * @returns The credential to issue after the wallet is operational
  */
-export const selectPendingCredential = (state: WalletPartialRootState) =>
+export const selectPendingCredential = (state: WalletCombinedRootState) =>
   state.wallet.pidIssuanceStatus.pendingCredential;

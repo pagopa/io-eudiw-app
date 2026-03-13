@@ -1,21 +1,20 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
-import { DebugPartialRootState } from '.';
-
+import { DebugRootState } from '.';
 
 /*
  * State type definition for the debug  slice
  * isDebugModeEnabled - Indicates if the debug mode is enabled or not
  * debugData - Data that is used for debugging purposes
  */
-export type DebugState = Readonly<{
+export type DebugSlice = Readonly<{
   isDebugModeEnabled: boolean;
   debugData: Record<string, unknown>;
 }>;
 
 // Initial state for the debug slice
-const initialState: DebugState = {
+const initialState: DebugSlice = {
   isDebugModeEnabled: true,
   debugData: {}
 };
@@ -53,7 +52,7 @@ const debugSlice = createSlice({
 export const { setDebugModeEnabled, setDebugData, resetDebugData } =
   debugSlice.actions;
 
-const debugPersist: PersistConfig<DebugState> = {
+const debugPersist: PersistConfig<DebugSlice> = {
   key: 'debug',
   storage: AsyncStorage,
   whitelist: ['isDebugModeEnabled']
@@ -69,7 +68,7 @@ export const debugReducer = persistReducer(debugPersist, debugSlice.reducer);
  * @param state - The root state of the Redux store
  * @returns a boolean indicating if the debug mode is enabled
  */
-export const selectIsDebugModeEnabled = (state: DebugPartialRootState) =>
+export const selectIsDebugModeEnabled = (state: DebugRootState) =>
   state.debug.isDebugModeEnabled;
 
 /**
@@ -77,4 +76,4 @@ export const selectIsDebugModeEnabled = (state: DebugPartialRootState) =>
  * @param state - The root state of the Redux store
  * @returns a record with the debug data
  */
-export const selectDebugData = (state: DebugPartialRootState) => state.debug.debugData;
+export const selectDebugData = (state: DebugRootState) => state.debug.debugData;

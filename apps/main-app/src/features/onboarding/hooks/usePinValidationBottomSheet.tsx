@@ -3,8 +3,8 @@ import { t } from 'i18next';
 import { memo } from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BulletList } from '@/ts/components/BulletList';
-import { useIOBottomSheetModal } from '@/ts/hooks/useBottomSheet';
+import { BulletList } from '../../../components/BulletList';
+import { useIOBottomSheetModal } from '@io-eudiw-app/commons';
 
 const BottomSheetContent = memo(() => {
   const { bottom } = useSafeAreaInsets();
@@ -18,12 +18,12 @@ const BottomSheetContent = memo(() => {
         list={[
           {
             value: t('pin.policy.firstItem', { ns: 'onboarding' }),
-            id: 'first_item'
+            id: 'first_item',
           },
           {
             value: t('pin.policy.secondItem', { ns: 'onboarding' }),
-            id: 'second_item'
-          }
+            id: 'second_item',
+          },
         ]}
         spacing={16}
       />
@@ -35,5 +35,5 @@ const BottomSheetContent = memo(() => {
 export default () =>
   useIOBottomSheetModal({
     title: t('pin.policy.title', { ns: 'onboarding' }),
-    component: <BottomSheetContent />
+    component: <BottomSheetContent />,
   });

@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { fontPreferenceSelector } from '@io-eudiw-app/common-store';
+import { selectFontPreference } from '@io-eudiw-app/common-store';
 import TAB_ROUTES from './routes';
 import { setProximityStatusStarted } from '../../store/proximity';
 import { TabIconComponent } from '../../components/TabIconComponent';
@@ -30,7 +30,7 @@ export const TabNavigator = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
-  const typefacePreference = useAppSelector(fontPreferenceSelector);
+  const typefacePreference = useAppSelector(selectFontPreference);
 
   /**
    * Used to mock tab content. This will never be rendered.

@@ -2,28 +2,20 @@ import { isAnyOf, UnknownAction } from '@reduxjs/toolkit';
 import * as SplashScreen from 'expo-splash-screen';
 import { Linking } from 'react-native';
 import { isPinOrFingerprintSet } from 'react-native-device-info';
-import { checkConfig } from '../../config/env';
-import { addWalletListeners } from '../../features/wallet/middleware';
-import { resetLifecycle } from '../../features/wallet/store/lifecycle';
-import { isNavigationReady } from '../../../../../libs/it-wallet/src/navigation/utils';
 import { selectUrl } from '../../store/reducers/deeplinking';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '../../../../../libs/identification/src/lib/identification';
-import {
-  preferencesSetIsOnboardingDone,
-  selectisOnboardingComplete
-} from '../../store/reducers/preferences';
+
 import {
   startupSetAttributes,
   startupSetError,
   startupSetStatus,
   StartupState
 } from '../../store/reducers/startup';
-import { getBiometricState } from '../../../../../libs/identification/src/lib/utils/biometric';
 import { AppListener, AppListenerWithAction } from './types';
+import { isNavigationReady } from '../../navigation/utils';
+import { getBiometricState, setIdentificationIdentified, setIdentificationStarted, setIdentificationUnidentified } from '@io-eudiw-app/identification';
+import { initEnv } from '@io-eudiw-app/env';
+import { preferencesSetIsOnboardingDone, selectIsOnboardingComplete } from '@io-eudiw-app/common-store';
+import { addWalletListeners } from '@io-eudiw-app/it-wallet';
 import { startAppListening } from '.';
 
 /**
@@ -63,9 +55,11 @@ const handlePendingDeepLink = async (listenerApi: AppListener) => {
  * @param listenerApi - The listener API
  */
 const startIdentification = async (listenerApi: AppListener) => {
+  console.log('in start')
   listenerApi.dispatch(
     setIdentificationStarted({ canResetPin: true, isValidatingTask: false })
   );
+  console.log('dispatched start')
   // Wait for either success or failure
   const action = await listenerApi.take(
     isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
@@ -82,11 +76,6 @@ const startIdentification = async (listenerApi: AppListener) => {
  */
 const startOnboarding = async (listenerApi: AppListener) => {
   await listenerApi.take(isAnyOf(preferencesSetIsOnboardingDone));
-
-  /* This clears the wallet state in order to ensure a clean state, specifically on iOS
-   * where data stored in the keychain is not cleared on app uninstall.
-   */
-  listenerApi.dispatch(resetLifecycle());
 };
 
 /**
@@ -106,7 +95,7 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
   try {
     // Check env config and device capabilities
     const state = listenerApi.getState();
-    checkConfig();
+    initEnv();
     const biometricState = await getBiometricState();
     const hasScreenLock = await isPinOrFingerprintSet();
     listenerApi.dispatch(
@@ -117,7 +106,8 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
     );
 
     // Handle onboarding process or identification based on onboarding completion status
-    const isOnboardingCompleted = selectisOnboardingComplete(state);
+    const isOnboardingCompleted = selectIsOnboardingComplete(state);
+    console.log('is onboarding completed?', isOnboardingCompleted);
     const status: StartupState['startUpStatus'] = isOnboardingCompleted
       ? 'WAIT_IDENTIFICATION'
       : 'WAIT_ONBOARDING';

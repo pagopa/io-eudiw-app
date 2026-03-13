@@ -4,16 +4,22 @@
   "include": [".expo/types/**/*.ts", "expo-env.d.ts"],
   "references": [
     {
-      "path": "../../libs/it-wallet"
+      "path": "../../libs/env"
     },
     {
-      "path": "../../libs/identification"
+      "path": "../../libs/common-store"
     },
     {
       "path": "../../libs/debug-info"
     },
     {
+      "path": "../../libs/identification"
+    },
+    {
       "path": "../../libs/commons"
+    },
+    {
+      "path": "../../libs/it-wallet"
     },
     {
       "path": "./tsconfig.app.json"

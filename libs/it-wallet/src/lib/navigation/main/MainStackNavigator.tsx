@@ -2,7 +2,9 @@ import { NavigatorScreenParams } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TabNavigator } from '../tab/TabNavigator';
 import MAIN_ROUTES from './routes';
-import WalletNavigator, { WalletNavigatorParamsList } from '../wallet/WalletNavigator';
+import WalletNavigator, {
+  WalletNavigatorParamsList,
+} from '../wallet/WalletNavigator';
 import QrCodeScanScreen from '../../screens/presentation/QrCodeScanScreen';
 import ProximityQrCode from '../../screens/proximity/ProximityQrCode';
 import Settings from '../../screens/Settings';
@@ -24,7 +26,7 @@ const Stack = createStackNavigator<MainNavigatorParamsList>();
  * The main stack navigator which renders screen after the onboarding has been completed.
  * It mounts the tab navigator and any other inner navigator.
  */
-const MainStackNavigator = () => (
+export const MainStackNavigator = () => (
   <Stack.Navigator
     initialRouteName={MAIN_ROUTES.TAB_NAV}
     screenOptions={{ headerShown: false }}
@@ -44,5 +46,3 @@ const MainStackNavigator = () => (
     <Stack.Screen name={MAIN_ROUTES.SETTINGS} component={Settings} />
   </Stack.Navigator>
 );
-
-export default MainStackNavigator;

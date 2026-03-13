@@ -1,4 +1,4 @@
-import { configureStore, isAnyOf, ReducersMapObject } from '@reduxjs/toolkit';
+import { configureStore, EnhancedStore, isAnyOf } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   FLUSH,
@@ -12,35 +12,19 @@ import {
 import reactotron from '../config/reactotron';
 import { listenerMiddleware, startAppListening } from '../middleware/listener';
 import { startupListener } from '../middleware/listener/startup';
-import { debugReducer } from '../../../../libs/debug-info/src/lib/reducer/debug';
 import { deepLinkingReducer } from './reducers/deeplinking';
-import { identificationReducer } from '../../../../libs/identification/src/lib/identification';
-import { pinReducer } from '../../../../libs/identification/src/lib/reducer/pin';
-import { preferencesReducer, preferencesReset } from './reducers/preferences';
 import { startupSetLoading, startupSlice } from './reducers/startup';
 import { AppDispatch, RootState } from './types';
-import { reducer, WalletState } from '@io-eudiw-app/it-wallet';
+import { walletReducer, WalletRootState } from '@io-eudiw-app/it-wallet';
+import { PreferenceRootState, preferencesReducer, preferencesReset } from '@io-eudiw-app/common-store';
+import { debugReducer, DebugRootState } from "@io-eudiw-app/debug-info";
+import { identificationReducer, IdentificationRootState } from '@io-eudiw-app/identification';
+
 
 // 1. Explicitly type the combined state of all your reducers to prevent TS2742.
-export interface AppRootState {
-  wallet: WalletState;
-  debug: ReturnType<typeof debugReducer>;
+export type AppRootState = DebugRootState & IdentificationRootState & WalletRootState & PreferenceRootState &{
   deepLinking: ReturnType<typeof deepLinkingReducer>;
-  identification: ReturnType<typeof identificationReducer>;
-  pin: ReturnType<typeof pinReducer>;
-  preferences: ReturnType<typeof preferencesReducer>;
   startup: ReturnType<typeof startupSlice.reducer>;
-}
-
-// 2. We put the explicit type HERE, on the reducer object, not on the store!
-const rootReducer: ReducersMapObject<AppRootState> = {
-  startup: startupSlice.reducer,
-  preferences: preferencesReducer,
-  pin: pinReducer,
-  ...reducer,
-  identification: identificationReducer,
-  debug: debugReducer,
-  deepLinking: deepLinkingReducer
 };
 
 /**
@@ -48,8 +32,15 @@ const rootReducer: ReducersMapObject<AppRootState> = {
  * 3. Look closely here: It is JUST `export const store = `
  * There is NO `: ReducersMapObject<...>` after `store`.
  */
-export const store = configureStore({
-  reducer: rootReducer,
+export const store: EnhancedStore<AppRootState> = configureStore({
+  reducer: {
+    startup: startupSlice.reducer,
+    ...preferencesReducer,
+    ...debugReducer,
+    ...identificationReducer,
+    ...walletReducer,
+    deepLinking: deepLinkingReducer
+  },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
