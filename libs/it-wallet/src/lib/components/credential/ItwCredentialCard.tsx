@@ -14,7 +14,7 @@ import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
 import { CardBackground } from './CardBackground';
 import { DigitalVersionBadge } from './DigitalVersionBadge';
 import { useAppSelector } from '../../store';
-import { selectFontPreference } from '@io-eudiw-app/common-store';
+import { selectFontPreference } from '@io-eudiw-app/preferences';
 
 export type ItwCredentialCardProps = {
   /**

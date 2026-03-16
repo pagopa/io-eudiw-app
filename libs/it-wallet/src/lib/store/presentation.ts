@@ -31,7 +31,7 @@ type OptionalClaims = Descriptor['descriptor']; // The optional claims selected 
  * preDefinition - Async status for the prestation before receiving the descriptor
  * postDefinition - Async status for the presentation afetr receiving the descriptor
  */
-type PresentationState = {
+type PresentationSlice = {
   preDefinition: AsyncStatusValues<Descriptor>;
   postDefinition: AsyncStatusValues<AuthResponse>;
   relyingPartyData?: FederationEntity;
@@ -39,7 +39,7 @@ type PresentationState = {
 };
 
 // Initial state for the presentation slice
-const initialState: PresentationState = {
+const initialState: PresentationSlice = {
   preDefinition: setInitial(),
   postDefinition: setInitial(),
   optionalCredentials: []

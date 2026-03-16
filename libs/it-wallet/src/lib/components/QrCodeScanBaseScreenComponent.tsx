@@ -2,7 +2,7 @@ import {
   IconButton,
   IOColors,
   TabItem,
-  TabNavigation
+  TabNavigation,
 } from '@pagopa/io-app-design-system';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -12,7 +12,7 @@ import { AppState, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   SafeAreaView,
-  useSafeAreaInsets
+  useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
 import { OnBarcodeSuccess } from '../screens/presentation/QrCodeScanScreen';
@@ -47,7 +47,7 @@ const QrCodeScanBaseScreenComponent = ({
   onFileInputPressed,
   // onManualInputPressed,
   isLoading = false,
-  isDisabled = false
+  isDisabled = false,
 }: Props) => {
   const isFocused = useIsFocused();
   const insets = useSafeAreaInsets();
@@ -55,7 +55,7 @@ const QrCodeScanBaseScreenComponent = ({
   const { t } = useTranslation(['global', 'qrcodeScan']);
 
   const [isAppInBackground, setIsAppInBackground] = useState(
-    AppState.currentState !== 'active'
+    AppState.currentState !== 'active',
   );
 
   /**
@@ -66,7 +66,7 @@ const QrCodeScanBaseScreenComponent = ({
    * @returns {void}
    */
   useEffect(() => {
-    const subscription = AppState.addEventListener('change', nextAppState => {
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
       setIsAppInBackground(nextAppState !== 'active');
     });
 
@@ -81,7 +81,7 @@ const QrCodeScanBaseScreenComponent = ({
   const { cameraComponent, enableTorch, toggleTorch } = useQrCodeCameraScanner({
     onBarcodeSuccess,
     isDisabled: isAppInBackground || !isFocused || isDisabled,
-    isLoading
+    isLoading,
   });
 
   const shouldDisplayTorchButton = cameraPermissionStatus === 'granted';
@@ -102,7 +102,7 @@ const QrCodeScanBaseScreenComponent = ({
             accessibilityLabel: t('qrcodeScan:permissions.denied.action'),
             onPress: async () => {
               openCameraSettings();
-            }
+            },
           }}
         />
       );
@@ -118,7 +118,7 @@ const QrCodeScanBaseScreenComponent = ({
           accessibilityLabel: t('qrcodeScan:permissions.undefined.action'),
           onPress: async () => {
             await requestPermission();
-          }
+          },
         }}
       />
     );
@@ -127,7 +127,7 @@ const QrCodeScanBaseScreenComponent = ({
     t,
     cameraComponent,
     requestPermission,
-    openCameraSettings
+    openCameraSettings,
   ]);
 
   const handleTorchToggle = useCallback(() => {
@@ -145,7 +145,7 @@ const QrCodeScanBaseScreenComponent = ({
         />
       </View>
     ),
-    [navigation.goBack, t]
+    [navigation.goBack, t],
   );
 
   const torchButton = useMemo(
@@ -159,7 +159,7 @@ const QrCodeScanBaseScreenComponent = ({
         />
       </View>
     ),
-    [enableTorch, handleTorchToggle, t]
+    [enableTorch, handleTorchToggle, t],
   );
 
   /**
@@ -171,7 +171,7 @@ const QrCodeScanBaseScreenComponent = ({
       headerShown: true,
       headerTransparent: true,
       headerLeft: () => customGoBack,
-      headerRight: () => (shouldDisplayTorchButton ? torchButton : null)
+      headerRight: () => (shouldDisplayTorchButton ? torchButton : null),
     });
   }, [customGoBack, navigation, shouldDisplayTorchButton, torchButton]);
 
@@ -208,13 +208,13 @@ const QrCodeScanBaseScreenComponent = ({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: IOColors['blueIO-850']
+    backgroundColor: IOColors['blueIO-850'],
   },
   headerContainer: {
     flex: 1,
     position: 'absolute',
     width: '100%',
-    height: 160
+    height: 160,
   },
   cameraContainer: {
     flex: 1,
@@ -223,17 +223,17 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   navigationContainer: {
-    paddingVertical: 16
+    paddingVertical: 16,
   },
   torch: {
-    marginRight: 24
+    marginRight: 24,
   },
   goBack: {
-    marginLeft: 24
-  }
+    marginLeft: 24,
+  },
 });
 
 export { QrCodeScanBaseScreenComponent };

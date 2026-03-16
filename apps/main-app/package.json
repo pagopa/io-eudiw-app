@@ -12,7 +12,7 @@
   "dependencies": {
     "@io-eudiw-app/it-wallet": "workspace:*",
     "@io-eudiw-app/commons": "workspace:*",
-    "@io-eudiw-app/common-store": "workspace:*",
+    "@io-eudiw-app/preferences": "workspace:*",
     "@io-eudiw-app/debug-info": "workspace:*",
     "@io-eudiw-app/identification": "workspace:*",
     "@io-eudiw-app/env": "workspace:*",

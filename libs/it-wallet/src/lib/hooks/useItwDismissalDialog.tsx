@@ -23,7 +23,7 @@ type ItwDismissalDialogProps = {
  */
 export const useItwDismissalDialog = ({
   handleDismiss,
-  customLabels = {}
+  customLabels = {},
 }: ItwDismissalDialogProps = {}) => {
   const navigation = useNavigation();
 
@@ -39,15 +39,15 @@ export const useItwDismissalDialog = ({
     Alert.alert(title, body, [
       {
         text: cancelLabel,
-        style: 'cancel'
+        style: 'cancel',
       },
       {
         text: confirmLabel,
         style: 'destructive',
         onPress: () => {
           (handleDismiss || navigation.goBack)();
-        }
-      }
+        },
+      },
     ]);
   };
 

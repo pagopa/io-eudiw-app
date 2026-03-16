@@ -7,7 +7,7 @@ const resources = {
   global,
   onboarding,
   qrcodeScan,
-  wallet
+  wallet,
 } as const;
 
 export default resources;

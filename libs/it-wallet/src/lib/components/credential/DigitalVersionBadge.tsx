@@ -23,7 +23,7 @@ import {
 } from 'react-native';
 import { CardColorScheme } from '../../types';
 import { useAppSelector } from '../../store';
-import { selectFontPreference } from '@io-eudiw-app/common-store';
+import { selectFontPreference } from '@io-eudiw-app/preferences';
 
 type DigitalVersionBadgeProps = {
   credentialType: string;

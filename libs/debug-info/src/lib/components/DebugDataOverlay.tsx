@@ -2,12 +2,12 @@ import {
   ScrollView,
   StyleSheet,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAppSelector } from '../../store';
-import { selectDebugData } from '../../../../../libs/debug-info/src/lib/reducer/debug';
 import { DebugPrettyPrint } from './DebugPrettyPrint';
+import { selectDebugData } from '../reducer/debug';
+import { useAppSelector } from '../reducer';
 
 type DebugDataOverlayProps = {
   onDismissed?: () => void;
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 999,
-    paddingTop: 60
+    paddingTop: 60,
   },
   overlay: {
     position: 'absolute',
@@ -61,12 +61,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: overlayColor
+    backgroundColor: overlayColor,
   },
   scroll: {
-    flexGrow: 0
+    flexGrow: 0,
   },
   scrollContainer: {
-    paddingHorizontal: 16
-  }
+    paddingHorizontal: 16,
+  },
 });

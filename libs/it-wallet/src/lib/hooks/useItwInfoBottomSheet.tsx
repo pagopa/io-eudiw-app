@@ -38,12 +38,12 @@ export const useItwInfoBottomSheet = ({ title, content }: ItwInfoFlowProps) => {
 
   const { present, bottomSheet, dismiss } = useIOBottomSheetModal({
     title,
-    component: <BottomSheetBody />
+    component: <BottomSheetBody />,
   });
 
   return {
     dismiss,
     present,
-    bottomSheet
+    bottomSheet,
   };
 };

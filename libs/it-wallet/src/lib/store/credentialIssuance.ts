@@ -16,7 +16,7 @@ type ObtainCredentialPreAuthResult = EnrichedPresentationDetails | undefined;
  * issuanceCreation - Async status for the instance creation
  * issuance - Async status for the CREDENTIAL issuance
  */
-type CredentialIssuanceStatusState = {
+type CredentialIssuanceStatusSlice = {
   requestedCredential: RequestedCredential;
   requestedCredentialType: RequestedCredentialType;
   statusPreAuth: AsyncStatusValues<ObtainCredentialPreAuthResult>;
@@ -24,7 +24,7 @@ type CredentialIssuanceStatusState = {
 };
 
 // Initial state for the credentialIssuance slice
-const initialState: CredentialIssuanceStatusState = {
+const initialState: CredentialIssuanceStatusSlice = {
   requestedCredential: undefined,
   requestedCredentialType: undefined,
   statusPreAuth: setInitial(),

@@ -30,7 +30,10 @@
   "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
   "references": [
     {
-      "path": "../common-store/tsconfig.lib.json"
+      "path": "../commons/tsconfig.lib.json"
+    },
+    {
+      "path": "../preferences/tsconfig.lib.json"
     }
   ]
 }

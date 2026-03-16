@@ -12,7 +12,8 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@io-eudiw-app/common-store": "workspace:*"
+    "@io-eudiw-app/preferences": "workspace:*",
+    "@io-eudiw-app/commons": "workspace:*"
   },
   "peerDependencies": {
     "react": "^19.1.0",

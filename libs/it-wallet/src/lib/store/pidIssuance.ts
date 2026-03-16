@@ -10,14 +10,14 @@ import { AsyncStatusValues, setInitial, setError, setSuccess, setLoading } from 
  * issuanceCreation - Async status for the instance creation
  * issuance - Async status for the PID issuance
  */
-type PidIssuanceStatusState = {
+type PidIssuanceStatusSlice = {
   instanceCreation: AsyncStatusValues;
   issuance: AsyncStatusValues<StoredCredential>;
   pendingCredential: RequestedCredential;
 };
 
 // Initial state for the pidIssuance slice
-const initialState: PidIssuanceStatusState = {
+const initialState: PidIssuanceStatusSlice = {
   instanceCreation: setInitial(),
   issuance: setInitial(),
   pendingCredential: undefined

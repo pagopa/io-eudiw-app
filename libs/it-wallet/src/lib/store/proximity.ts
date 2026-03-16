@@ -36,7 +36,7 @@ export type ProximityDisclosure = {
  * error - Cotains the error object if any error occurs during the proximity process
  * state - The state of the proximity process
  */
-type ProximityState = {
+type ProximitySlice = {
   qrCode?: string;
   status: ProximityStatus;
   documentRequest?: ISO18013_5.VerifierRequest;
@@ -45,7 +45,7 @@ type ProximityState = {
 };
 
 // Initial state for the proximity slice
-const initialState: ProximityState = {
+const initialState: ProximitySlice = {
   qrCode: undefined,
   status: ProximityStatus.PROXIMITY_STATUS_STOPPED,
   errorDetails: undefined,

@@ -1,12 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { OperationResultScreenContent, useHardwareBackButton } from '@io-eudiw-app/commons';
+import {
+  OperationResultScreenContent,
+  useHardwareBackButton,
+} from '@io-eudiw-app/commons';
 import {
   resetInstanceCreation,
-  resetPidIssuance
+  resetPidIssuance,
 } from '../../store/pidIssuance';
 import { selectPidIssuanceError } from '../../store/selectors/pidIssuance';
 import { useAppDispatch, useAppSelector } from '../../store';
-import {useDebugInfo} from "@io-eudiw-app/debug-info"
+import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
 /**
@@ -37,7 +40,7 @@ const PidIssuanceFailure = () => {
       action={{
         accessibilityLabel: t('global:buttons.back'),
         label: t('global:buttons.back'),
-        onPress
+        onPress,
       }}
     />
   );

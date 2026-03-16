@@ -8,12 +8,20 @@ import {
   startupSetAttributes,
   startupSetError,
   startupSetStatus,
-  StartupState
+  StartupSlice,
 } from '../../store/reducers/startup';
 import { AppListener, AppListenerWithAction } from './types';
-import { getBiometricState, setIdentificationIdentified, setIdentificationStarted, setIdentificationUnidentified } from '@io-eudiw-app/identification';
+import {
+  getBiometricState,
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified,
+} from '@io-eudiw-app/identification';
 import { initEnv } from '@io-eudiw-app/env';
-import { preferencesSetIsOnboardingDone, selectIsOnboardingComplete } from '@io-eudiw-app/common-store';
+import {
+  preferencesSetIsOnboardingDone,
+  selectIsOnboardingComplete,
+} from '@io-eudiw-app/preferences';
 import { addWalletListeners } from '@io-eudiw-app/it-wallet';
 import { startAppListening } from '.';
 import { isNavigationReady } from '@io-eudiw-app/navigation';
@@ -56,11 +64,11 @@ const handlePendingDeepLink = async (listenerApi: AppListener) => {
  */
 const startIdentification = async (listenerApi: AppListener) => {
   listenerApi.dispatch(
-    setIdentificationStarted({ canResetPin: true, isValidatingTask: false })
+    setIdentificationStarted({ canResetPin: true, isValidatingTask: false }),
   );
   // Wait for either success or failure
   const action = await listenerApi.take(
-    isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
+    isAnyOf(setIdentificationIdentified, setIdentificationUnidentified),
   );
   if (setIdentificationIdentified.match(action[0])) {
     return;
@@ -88,7 +96,7 @@ const startOnboarding = async (listenerApi: AppListener) => {
  */
 export const startupListener: AppListenerWithAction<UnknownAction> = async (
   _,
-  listenerApi
+  listenerApi,
 ) => {
   try {
     // Check env config and device capabilities
@@ -99,13 +107,13 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
     listenerApi.dispatch(
       startupSetAttributes({
         biometricState,
-        hasScreenLock
-      })
+        hasScreenLock,
+      }),
     );
 
     // Handle onboarding process or identification based on onboarding completion status
     const isOnboardingCompleted = selectIsOnboardingComplete(state);
-    const status: StartupState['startUpStatus'] = isOnboardingCompleted
+    const status: StartupSlice['startUpStatus'] = isOnboardingCompleted
       ? 'WAIT_IDENTIFICATION'
       : 'WAIT_ONBOARDING';
     listenerApi.dispatch(startupSetStatus(status));

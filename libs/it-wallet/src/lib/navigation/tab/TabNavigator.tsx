@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { selectFontPreference } from '@io-eudiw-app/common-store';
+import { selectFontPreference } from '@io-eudiw-app/preferences';
 import TAB_ROUTES from './routes';
 import { setProximityStatusStarted } from '../../store/proximity';
 import { TabIconComponent } from '../../components/TabIconComponent';

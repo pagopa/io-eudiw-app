@@ -16,7 +16,7 @@
       "path": "./libs/env"
     },
     {
-      "path": "./libs/common-store"
+      "path": "./libs/preferences"
     },
     {
       "path": "./libs/identification"

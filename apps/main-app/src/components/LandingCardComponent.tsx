@@ -9,14 +9,14 @@ import {
   IOPictograms,
   IOVisualCostants,
   Pictogram,
-  VSpacer
+  VSpacer,
 } from '@pagopa/io-app-design-system';
 import { forwardRef } from 'react';
 import {
   View,
   ScrollView,
   useWindowDimensions,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 
 type Props = {
@@ -47,7 +47,7 @@ export const LandingCardComponent = forwardRef<View, Props>((props, ref) => {
   const screenDimension = useWindowDimensions();
   const screenWidth = screenDimension.width;
   const wrapperStyle = {
-    width: screenWidth
+    width: screenWidth,
   };
   const {
     accessibilityLabel,
@@ -57,7 +57,7 @@ export const LandingCardComponent = forwardRef<View, Props>((props, ref) => {
     content,
     titleColor,
     contentColor,
-    pictogramStyle
+    pictogramStyle,
   } = props;
 
   return (
@@ -101,6 +101,6 @@ const styles = StyleSheet.create({
   container: { flexGrow: 1, justifyContent: 'center' },
   wrapper: {
     paddingHorizontal: IOVisualCostants.appMarginDefault,
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });

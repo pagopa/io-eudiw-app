@@ -36,24 +36,24 @@ type CardAssets = Record<CardSide, ImageSourcePropType>;
 const assetsMap: Record<string, CardAssets> = {
   [wellKnownCredential.DRIVING_LICENSE]: {
     front: require('../../../assets/img/credential/mdl_front.png'),
-    back: require('../../../assets/img/credential/mdl_back.png')
+    back: require('../../../assets/img/credential/mdl_back.png'),
   },
   [wellKnownCredential.DISABILITY_CARD]: {
     front: require('../../../assets/img/credential/dc_front.png'),
-    back: require('../../../assets/img/credential/dc_back.png')
-  }
+    back: require('../../../assets/img/credential/dc_back.png'),
+  },
 };
 
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: IOColors['grey-100'],
-    borderRadius: 8
+    borderRadius: 8,
   },
   background: {
     width: '100%',
     height: '100%',
-    borderRadius: 8
-  }
+    borderRadius: 8,
+  },
 });
 
 const MemoizedCardBackground = memo(CardBackground);

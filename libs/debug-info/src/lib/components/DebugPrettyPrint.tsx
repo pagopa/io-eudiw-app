@@ -3,14 +3,16 @@ import {
   HStack,
   IOColors,
   IOText,
-  IconButton
+  IconButton,
 } from '@pagopa/io-app-design-system';
 import { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Prettify } from '../../../../../libs/commons/src/lib/types/utils';
-import { clipboardSetStringWithFeedback } from '../../../../../libs/commons/src/lib/utils/clipboard';
-import { truncateObjectStrings } from '../../../../../libs/debug-info/src/lib/utils';
 import { withDebugEnabled } from './withDebugEnabled';
+import { truncateObjectStrings } from '../utils';
+import {
+  clipboardSetStringWithFeedback,
+  Prettify,
+} from '@io-eudiw-app/commons';
 
 type ExpandableProps =
   | {
@@ -25,6 +27,7 @@ type ExpandableProps =
 type Props = Prettify<
   {
     title: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any;
   } & ExpandableProps
 >;
@@ -71,7 +74,7 @@ export const DebugPrettyPrint = withDebugEnabled(
               iconSize={20}
               onPress={async () =>
                 await clipboardSetStringWithFeedback(
-                  JSON.stringify(data, null, 2)
+                  JSON.stringify(data, null, 2),
                 )
               }
               color="contrast"
@@ -81,7 +84,7 @@ export const DebugPrettyPrint = withDebugEnabled(
                 icon={expanded ? 'eyeHide' : 'eyeShow'}
                 accessibilityLabel="show"
                 iconSize={24}
-                onPress={() => setExpanded(_ => !_)}
+                onPress={() => setExpanded((_) => !_)}
                 color="contrast"
               />
             )}
@@ -90,24 +93,24 @@ export const DebugPrettyPrint = withDebugEnabled(
         {content}
       </View>
     );
-  }
+  },
 );
 
 const styles = StyleSheet.create({
   container: {
     borderRadius: 4,
     overflow: 'hidden',
-    marginVertical: 4
+    marginVertical: 4,
   },
   header: {
     backgroundColor: IOColors['error-600'],
     padding: 12,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   content: {
     backgroundColor: IOColors['grey-50'],
-    padding: 8
-  }
+    padding: 8,
+  },
 });

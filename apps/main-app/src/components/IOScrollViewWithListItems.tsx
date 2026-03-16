@@ -7,7 +7,7 @@ import {
   H2,
   ListItemHeader,
   ListItemInfo,
-  VSpacer
+  VSpacer,
 } from '@pagopa/io-app-design-system';
 import { View } from 'react-native';
 
@@ -48,7 +48,7 @@ export const IOScrollViewWithListItems = ({
   subtitle,
   actions,
   renderItems,
-  listItemHeaderLabel
+  listItemHeaderLabel,
 }: IOScrollViewWithListItemsProps) => (
   <IOScrollView actions={actions}>
     <H2>{title}</H2>

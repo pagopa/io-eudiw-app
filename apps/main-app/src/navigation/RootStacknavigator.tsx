@@ -6,23 +6,23 @@ import {
 import { createStackNavigator } from '@react-navigation/stack';
 import { t } from 'i18next';
 import { useCallback, useEffect } from 'react';
-import {
-  LoadingScreenContent,
-  OperationResultScreenContent,
-} from '@io-eudiw-app/commons';
 import { useStoredFontPreference } from '../context/DSTypeFaceContext';
 import OnboardingNavigator, {
   OnboardingNavigatorParamsList,
 } from '../features/onboarding/navigation/OnboardingNavigator';
 import { useAppDispatch, useAppSelector } from '../store';
-import {
-  selectStartupState,
-  startupSetLoading,
-} from '../store/reducers/startup';
 import ROOT_ROUTES from './routes';
 import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
 import { MainStackNavigator } from '@io-eudiw-app/it-wallet';
 import { navigationRef } from '@io-eudiw-app/navigation';
+import {
+  selectStartupStatus,
+  startupSetLoading,
+} from '../store/reducers/startup';
+import {
+  LoadingScreenContent,
+  OperationResultScreenContent,
+} from '@io-eudiw-app/commons';
 
 export type RootStackParamList = {
   // Main
@@ -44,7 +44,7 @@ const Stack = createStackNavigator<RootStackParamList>();
  */
 type Screens = {
   name: keyof RootStackParamList;
-  component: React.ComponentType<any>;
+  component: React.ComponentType<unknown>;
 };
 
 /**
@@ -54,7 +54,7 @@ type Screens = {
 export const RootStackNavigator = () => {
   useStoredFontPreference();
 
-  const isStartupDone = useAppSelector(selectStartupState);
+  const startupStatus = useAppSelector(selectStartupStatus);
   const { themeType } = useIOThemeContext();
   const dispatch = useAppDispatch();
 
@@ -80,7 +80,7 @@ export const RootStackNavigator = () => {
   }, [dispatch]);
 
   const getInitialScreen = useCallback((): Screens => {
-    switch (isStartupDone) {
+    switch (startupStatus) {
       case 'DONE':
         return {
           name: ROOT_ROUTES.IT_WALLET_NAV,
@@ -103,7 +103,7 @@ export const RootStackNavigator = () => {
       default:
         return { name: ROOT_ROUTES.LOADING, component: Loading };
     }
-  }, [isStartupDone]);
+  }, [startupStatus]);
 
   // const linking: LinkingOptions<RootStackParamList> = {
   //   prefixes: PRESENTATION_INTERNAL_LINKS,

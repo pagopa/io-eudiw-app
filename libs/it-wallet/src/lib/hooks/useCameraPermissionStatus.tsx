@@ -53,7 +53,7 @@ export const useCameraPermissionStatus = () => {
     requestPermission,
     isFocused,
     isNavigationTransitionEnded,
-    permission?.canAskAgain
+    permission?.canAskAgain,
   ]);
 
   /**
@@ -63,7 +63,7 @@ export const useCameraPermissionStatus = () => {
   useEffect(() => {
     const subscription = AppState.addEventListener(
       'change',
-      async nextAppState => {
+      async (nextAppState) => {
         if (nextAppState === 'active' && isFocused) {
           // Get the latest permission status when coming back from settings
           const status = await Camera.getCameraPermissionsAsync();
@@ -77,7 +77,7 @@ export const useCameraPermissionStatus = () => {
             await requestPermission();
           }
         }
-      }
+      },
     );
 
     return () => {
@@ -100,6 +100,6 @@ export const useCameraPermissionStatus = () => {
     // Returns PermissionStatus | undefined (if loading)
     cameraPermissionStatus: permission?.status,
     requestPermission,
-    openCameraSettings
+    openCameraSettings,
   };
 };

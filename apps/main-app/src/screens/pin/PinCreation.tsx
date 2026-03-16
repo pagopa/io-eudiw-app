@@ -30,7 +30,7 @@ import {
   useHeaderSecondLevel,
 } from '@io-eudiw-app/commons';
 import { pinSet } from '@io-eudiw-app/identification';
-import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/common-store';
+import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/preferences';
 
 const CREATION_INDEX = 0;
 const CONFIRMATION_INDEX = 1;

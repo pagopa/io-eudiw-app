@@ -1,9 +1,9 @@
-import { 
-  configureStore, 
-  EnhancedStore, 
-  isAnyOf, 
-  combineReducers, 
-  UnknownAction 
+import {
+  configureStore,
+  EnhancedStore,
+  isAnyOf,
+  combineReducers,
+  UnknownAction,
 } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -13,7 +13,7 @@ import {
   persistStore,
   PURGE,
   REGISTER,
-  REHYDRATE
+  REHYDRATE,
 } from 'redux-persist';
 import reactotron from '../config/reactotron';
 import { listenerMiddleware, startAppListening } from '../middleware/listener';
@@ -22,14 +22,21 @@ import { deepLinkingReducer } from './reducers/deeplinking';
 import { startupSetLoading, startupSlice } from './reducers/startup';
 import { AppDispatch, RootState } from './types';
 import { walletReducer, WalletRootState } from '@io-eudiw-app/it-wallet';
-import { PreferenceRootState, preferencesReducer, preferencesReset } from '@io-eudiw-app/common-store';
-import { debugReducer, DebugRootState } from "@io-eudiw-app/debug-info";
-import { identificationReducer, IdentificationRootState } from '@io-eudiw-app/identification';
+import {
+  PreferenceRootState,
+  preferencesReducer,
+  preferencesReset,
+} from '@io-eudiw-app/preferences';
+import { debugReducer, DebugRootState } from '@io-eudiw-app/debug-info';
+import {
+  identificationReducer,
+  IdentificationRootState,
+} from '@io-eudiw-app/identification';
 
 // 1. Explicitly type the combined state of all your reducers.
-export type AppRootState = DebugRootState & 
-  IdentificationRootState & 
-  WalletRootState & 
+export type AppRootState = DebugRootState &
+  IdentificationRootState &
+  WalletRootState &
   PreferenceRootState & {
     deepLinking: ReturnType<typeof deepLinkingReducer>;
     startup: ReturnType<typeof startupSlice.reducer>;
@@ -45,13 +52,16 @@ const combinedReducer = combineReducers({
   ...debugReducer,
   ...identificationReducer,
   ...walletReducer,
-  deepLinking: deepLinkingReducer
+  deepLinking: deepLinkingReducer,
 });
 
 /**
  * Intercepts the reset action to clear the entire state tree.
  */
-const rootReducer = (state: ReturnType<typeof combinedReducer> | undefined, action: UnknownAction) => {
+const rootReducer = (
+  state: ReturnType<typeof combinedReducer> | undefined,
+  action: UnknownAction,
+) => {
   if (action.type === preferencesReset.type) {
     state = undefined;
   }
@@ -64,16 +74,16 @@ const rootReducer = (state: ReturnType<typeof combinedReducer> | undefined, acti
 export const store: EnhancedStore<AppRootState> = configureStore({
   // Use the wrapped rootReducer instead of the reducer object
   reducer: rootReducer,
-  middleware: getDefaultMiddleware =>
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
-      }
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
     }).prepend(listenerMiddleware.middleware),
-  enhancers: getDefaultEnhancers =>
+  enhancers: (getDefaultEnhancers) =>
     __DEV__
       ? getDefaultEnhancers().concat(reactotron.createEnhancer())
-      : getDefaultEnhancers()
+      : getDefaultEnhancers(),
 });
 
 /**
@@ -81,7 +91,7 @@ export const store: EnhancedStore<AppRootState> = configureStore({
  */
 startAppListening({
   matcher: isAnyOf(startupSetLoading, preferencesReset),
-  effect: startupListener
+  effect: startupListener,
 });
 
 /**

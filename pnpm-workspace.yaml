@@ -5,7 +5,7 @@ packages:
   - 'libs/commons'
   - 'libs/asd'
   - 'libs/env'
-  - 'libs/common-store'
+  - 'libs/preferences'
   - 'libs/identification'
   - 'libs/debug-info'
   - 'libs/test'

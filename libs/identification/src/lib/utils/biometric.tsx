@@ -1,4 +1,10 @@
-import { getTxtNodeKey, IOMarkdown, isAndroid, isIos, Renderer } from '@io-eudiw-app/commons';
+import {
+  getTxtNodeKey,
+  IOMarkdown,
+  isAndroid,
+  isIos,
+  Renderer,
+} from '@io-eudiw-app/commons';
 import { BiometricsValidType, Body } from '@pagopa/io-app-design-system';
 import { TxtParagraphNode } from '@textlint/ast-node-types';
 import * as LocalAuthentication from 'expo-local-authentication';
@@ -35,11 +41,11 @@ export const confirmBiometricEnabling = async () => {
   try {
     if (isIos) {
       const promptMessage = t('identification.biometric.sensorDescription', {
-        ns: 'global'
+        ns: 'global',
       });
       const res = await LocalAuthentication.authenticateAsync({
         promptMessage,
-        disableDeviceFallback: true
+        disableDeviceFallback: true,
       });
       return res.success;
     } else {
@@ -56,17 +62,17 @@ export const confirmBiometricEnabling = async () => {
  * @returns The design system icon name as a string.
  */
 export const getBiometryDesignSystemIconName = (
-  biometricType: LocalAuthentication.AuthenticationType
+  biometricType: LocalAuthentication.AuthenticationType,
 ) => {
   switch (biometricType) {
     case LocalAuthentication.AuthenticationType.FINGERPRINT:
       return t('identification.unlockCode.accessibility.fingerprint', {
-        ns: 'global'
+        ns: 'global',
       });
     case LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION:
     case LocalAuthentication.AuthenticationType.IRIS:
       return t('identification.unlockCode.accessibility.faceId', {
-        ns: 'global'
+        ns: 'global',
       });
   }
 };
@@ -77,7 +83,7 @@ export const getBiometryDesignSystemIconName = (
  * @returns The design system biometric type as BiometricsValidType.
  */
 export const getBiometricDesignSystemType = (
-  biometricType: LocalAuthentication.AuthenticationType
+  biometricType: LocalAuthentication.AuthenticationType,
 ): BiometricsValidType => {
   switch (biometricType) {
     case LocalAuthentication.AuthenticationType.FINGERPRINT:
@@ -95,7 +101,7 @@ export const getBiometricDesignSystemType = (
  */
 export const biometricAuthenticationRequest = async (
   onSuccess: () => void,
-  onError: (e?: LocalAuthentication.LocalAuthenticationError) => void
+  onError: (e?: LocalAuthentication.LocalAuthenticationError) => void,
 ) => {
   try {
     const options: LocalAuthentication.LocalAuthenticationOptions = {
@@ -103,16 +109,16 @@ export const biometricAuthenticationRequest = async (
       promptMessage: isAndroid
         ? t('identification.biometric.title', { ns: 'global' })
         : t('identification.biometric.sensorDescription', {
-            ns: 'global'
+            ns: 'global',
           }),
       ...(isAndroid
         ? {
             cancelLabel: t('buttons.cancel', { ns: 'global' }),
             promptDescription: t('identification.biometric.sensorDescription', {
-              ns: 'global'
-            })
+              ns: 'global',
+            }),
           }
-        : {})
+        : {}),
     };
 
     const res = await LocalAuthentication.authenticateAsync(options);
@@ -143,14 +149,14 @@ export const IdentificationInstructionsComponent = (props: {
           {paragraph.children.map(render)}
         </Body>
       );
-    }
+    },
   });
 
   const instructionComponent = (
     <View accessible style={{ flexDirection: 'row' }}>
       <IOMarkdown
         content={t('identification.instructions.useUnlockCode', {
-          ns: 'global'
+          ns: 'global',
         })}
         rules={generatePragraphRule()}
       />
@@ -167,7 +173,7 @@ export const IdentificationInstructionsComponent = (props: {
         <View accessible style={{ flexDirection: 'row' }}>
           <IOMarkdown
             content={t(
-              'identification.instructions.useFingerPrintOrUnlockCode'
+              'identification.instructions.useFingerPrintOrUnlockCode',
             )}
             rules={generatePragraphRule()}
           />
@@ -179,7 +185,7 @@ export const IdentificationInstructionsComponent = (props: {
         <View accessible style={{ flexDirection: 'row' }}>
           <IOMarkdown
             content={t('identification.instructions.useFaceIdOrUnlockCode', {
-              ns: 'global'
+              ns: 'global',
             })}
             rules={generatePragraphRule()}
           />

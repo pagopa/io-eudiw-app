@@ -14,13 +14,13 @@ import { WalletCombinedRootState } from '.';
  * pid - The PID credential
  * credentials - A map of all the stored credentials
  */
-type CredentialsState = {
+type CredentialsSlice = {
   credentials: Array<StoredCredential>;
   valuesHidden: boolean;
 };
 
 // Initial state for the credential slice
-const initialState: CredentialsState = {
+const initialState: CredentialsSlice = {
   credentials: [],
   valuesHidden: false
 };
@@ -89,7 +89,7 @@ const credentialsSlice = createSlice({
  * Redux persist configuration for the credential slice.
  * Currently it uses `io-react-native-secure-storage` as the storage engine which stores it encrypted.
  */
-const credentialsPersistor: PersistConfig<CredentialsState> = {
+const credentialsPersistor: PersistConfig<CredentialsSlice> = {
   key: 'credentials',
   storage: secureStoragePersistor()
 };

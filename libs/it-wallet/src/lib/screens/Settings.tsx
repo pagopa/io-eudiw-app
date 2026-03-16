@@ -25,7 +25,7 @@ import {
   preferencesFontSet,
   preferencesReset,
   TypefaceChoice,
-} from '@io-eudiw-app/common-store';
+} from '@io-eudiw-app/preferences';
 
 type TestButtonsListItem = Pick<
   ComponentProps<typeof IOButton>,

@@ -39,7 +39,7 @@ import {
 import {
   preferencesReset,
   selectIsBiometricEnabled,
-} from '@io-eudiw-app/common-store';
+} from '@io-eudiw-app/preferences';
 import { IdentificationNumberPad } from './IdentificationNumberPad';
 import { useAppDispatch, useAppSelector } from '../reducer';
 import { selectPin } from '../reducer/pin';

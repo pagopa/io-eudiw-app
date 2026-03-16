@@ -33,19 +33,19 @@
       "path": "../navigation/tsconfig.lib.json"
     },
     {
-      "path": "../debug-info/tsconfig.lib.json"
-    },
-    {
       "path": "../identification/tsconfig.lib.json"
-    },
-    {
-      "path": "../common-store/tsconfig.lib.json"
     },
     {
       "path": "../env/tsconfig.lib.json"
     },
     {
+      "path": "../debug-info/tsconfig.lib.json"
+    },
+    {
       "path": "../commons/tsconfig.lib.json"
+    },
+    {
+      "path": "../preferences/tsconfig.lib.json"
     }
   ]
 }

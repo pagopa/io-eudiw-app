@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../../store';
 import {
   preferencesSetIsBiometricEnabled,
   preferencesSetIsOnboardingDone,
-} from '@io-eudiw-app/common-store';
+} from '@io-eudiw-app/preferences';
 import { IOScrollView, useHeaderSecondLevel } from '@io-eudiw-app/commons';
 import { confirmBiometricEnabling } from '@io-eudiw-app/identification';
 

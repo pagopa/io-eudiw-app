@@ -5,13 +5,13 @@ import { RootState } from '../types';
  * State definition for the deep linking slice.
  * It contains the pending URL coming from a deep link.
  */
-type DeepLinkingState = {
+type DeepLinkingSlice = {
   url: string | undefined;
 };
 
 // Initial state for the deeplinking slice
-const initialState: DeepLinkingState = {
-  url: undefined
+const initialState: DeepLinkingSlice = {
+  url: undefined,
 };
 
 /**
@@ -24,8 +24,8 @@ const deeplinkingSlice = createSlice({
   reducers: {
     setUrl: (state, action: PayloadAction<{ url: string }>) => {
       state.url = action.payload.url;
-    }
-  }
+    },
+  },
 });
 
 export const { reducer: deepLinkingReducer } = deeplinkingSlice;

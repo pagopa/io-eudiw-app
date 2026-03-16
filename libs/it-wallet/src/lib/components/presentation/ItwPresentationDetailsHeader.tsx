@@ -1,7 +1,7 @@
 import {
   ContentWrapper,
   makeFontStyleObject,
-  useIOExperimentalDesign
+  useIOExperimentalDesign,
 } from '@pagopa/io-app-design-system';
 import { memo, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -9,14 +9,14 @@ import { lifecycleIsValidSelector } from '../../store/lifecycle';
 import { ParsedClaimsRecord } from '../../utils/claims';
 import {
   wellKnownCredential,
-  WellKnownCredentialTypes
+  WellKnownCredentialTypes,
 } from '../../utils/credentials';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
 import { StoredCredential } from '../../utils/itwTypesUtils';
 import { ItwPresentationCredentialCard } from './ItwPresentationCredentialCard';
 import { useAppSelector } from '../../store';
-import { FocusAwareStatusBar } from "@io-eudiw-app/commons";
+import { FocusAwareStatusBar } from '@io-eudiw-app/commons';
 
 type ItwPresentationDetailsHeaderProps = {
   credential: StoredCredential;
@@ -28,7 +28,7 @@ type ItwPresentationDetailsHeaderProps = {
  */
 const credentialsWithSkeumorphicCard: ReadonlyArray<string> = [
   wellKnownCredential.DRIVING_LICENSE,
-  wellKnownCredential.DISABILITY_CARD
+  wellKnownCredential.DISABILITY_CARD,
 ];
 
 /**
@@ -37,7 +37,7 @@ const credentialsWithSkeumorphicCard: ReadonlyArray<string> = [
  */
 const ItwPresentationDetailsHeader = ({
   credential,
-  parsedClaims
+  parsedClaims,
 }: ItwPresentationDetailsHeaderProps) => {
   const { isExperimental } = useIOExperimentalDesign();
   const itwFeaturesEnabled = useAppSelector(lifecycleIsValidSelector);
@@ -45,7 +45,7 @@ const ItwPresentationDetailsHeader = ({
   const { backgroundColor, textColor, statusBarStyle } =
     useThemeColorByCredentialType(
       credential.credentialType as WellKnownCredentialTypes,
-      itwFeaturesEnabled
+      itwFeaturesEnabled,
     );
 
   const headerContent = useMemo(() => {
@@ -66,7 +66,7 @@ const ItwPresentationDetailsHeader = ({
               isExperimental
                 ? styles.headerLabelExperimental
                 : styles.headerLabel,
-              { color: textColor }
+              { color: textColor },
             ]}
             accessibilityRole="header"
           >
@@ -93,14 +93,14 @@ const styles = StyleSheet.create({
     marginTop: -300,
     paddingTop: 300,
     justifyContent: 'flex-end',
-    paddingBottom: 24
+    paddingBottom: 24,
   },
   headerLabel: {
-    ...makeFontStyleObject(26, 'TitilliumSansPro', 30, 'Semibold')
+    ...makeFontStyleObject(26, 'TitilliumSansPro', 30, 'Semibold'),
   },
   headerLabelExperimental: {
-    ...makeFontStyleObject(26, 'Titillio', 30, 'Semibold')
-  }
+    ...makeFontStyleObject(26, 'Titillio', 30, 'Semibold'),
+  },
 });
 
 const MemoizedItwPresentationDetailsHeader = memo(ItwPresentationDetailsHeader);

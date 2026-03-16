@@ -8,7 +8,7 @@ import {
 } from '../utils/integrity';
 import { createAppAsyncThunk } from './thunk';
 import { getEnv } from '@io-eudiw-app/env';
-import { selectSessionId } from '@io-eudiw-app/common-store';
+import { selectSessionId } from '@io-eudiw-app/preferences';
 
 export const createInstanceThunk = createAppAsyncThunk<void, void>(
   'pidIssuanceStatus/createInstance',

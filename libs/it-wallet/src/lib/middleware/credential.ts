@@ -31,7 +31,7 @@ import { DcqlQuery } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 import { getEnv } from '@io-eudiw-app/env';
 import { AppListenerWithAction, AppStartListening } from './types';
-import { selectSessionId } from '@io-eudiw-app/common-store';
+import { selectSessionId } from '@io-eudiw-app/preferences';
 import { raceEffect, regenerateCryptoKey, takeLatestEffect } from '@io-eudiw-app/commons';
 import { setIdentificationIdentified, setIdentificationStarted, setIdentificationUnidentified } from '@io-eudiw-app/identification';
 import { navigator } from '../navigation/utils';

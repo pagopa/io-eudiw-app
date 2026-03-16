@@ -2,11 +2,15 @@ import { useIOToast } from '@pagopa/io-app-design-system';
 import { useTranslation } from 'react-i18next';
 import {
   resetPresentation,
-  selectPostDefinitionResult
+  selectPostDefinitionResult,
 } from '../../store/presentation';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { openWebUrl, OperationResultScreenContent, OperationResultScreenContentProps } from '@io-eudiw-app/commons';
-import {useDebugInfo} from "@io-eudiw-app/debug-info"
+import {
+  openWebUrl,
+  OperationResultScreenContent,
+  OperationResultScreenContentProps,
+} from '@io-eudiw-app/commons';
+import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
 /**
@@ -31,17 +35,17 @@ const PresentationSuccess = () => {
           subtitle: t('wallet:presentation.successWithRedirect.subtitle'),
           action: {
             accessibilityLabel: t(
-              'wallet:presentation.successWithRedirect.continue'
+              'wallet:presentation.successWithRedirect.continue',
             ),
             label: t('wallet:presentation.successWithRedirect.continue'),
             onPress: () => {
               openWebUrl(redirectUri, () =>
-                toast.error(t('global:errors.generic'))
+                toast.error(t('global:errors.generic')),
               );
               navigateToWallet();
               dispatch(resetPresentation());
-            }
-          }
+            },
+          },
         }
       : {
           pictogram: 'success',
@@ -53,8 +57,8 @@ const PresentationSuccess = () => {
             onPress: () => {
               navigateToWallet();
               dispatch(resetPresentation());
-            }
-          }
+            },
+          },
         };
   };
 

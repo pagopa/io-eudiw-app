@@ -7,12 +7,12 @@ import { secureStoragePersistor } from '@io-eudiw-app/commons';
 /* State type definition for the attestation slice
  * attestation - The wallet instance attestation
  */
-type AttestationState = {
+type AttestationSlice = {
   attestation: string | undefined;
 };
 
 // Initial state for the attestation slice
-const initialState: AttestationState = {
+const initialState: AttestationSlice = {
   attestation: undefined
 };
 
@@ -37,7 +37,7 @@ const attestationSlice = createSlice({
  * Redux persist configuration for the attestation slice.
  * Currently it uses `io-react-native-secure-storage` as the storage engine which stores it encrypted.
  */
-const attestationPersist: PersistConfig<AttestationState> = {
+const attestationPersist: PersistConfig<AttestationSlice> = {
   key: 'attestation',
   storage: secureStoragePersistor()
 };

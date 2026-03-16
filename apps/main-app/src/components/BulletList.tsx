@@ -4,7 +4,7 @@ import {
   ComposedBodyFromArray,
   HSpacer,
   IOSpacer,
-  VSpacer
+  VSpacer,
 } from '@pagopa/io-app-design-system';
 import { ComponentProps, memo, useCallback } from 'react';
 import { View } from 'react-native';
@@ -83,7 +83,7 @@ export const BulletList = memo(
      * @returns {JSX.Element} The rendered list.
      */
     const renderListItems = useCallback(
-      (list?: Array<BulletListItem>, count: number = 0) =>
+      (list?: Array<BulletListItem>, count = 0) =>
         list?.map(({ id, value, textProps = {}, ...rest }) => (
           <View key={id} style={{ flexDirection: 'row' }}>
             <HSpacer size={spacing} />
@@ -101,7 +101,7 @@ export const BulletList = memo(
               renderListItems(rest.list, count + 1)}
           </View>
         )),
-      [spacing]
+      [spacing],
     );
 
     return (
@@ -113,5 +113,5 @@ export const BulletList = memo(
         </View>
       </View>
     );
-  }
+  },
 );

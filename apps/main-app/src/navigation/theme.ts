@@ -1,7 +1,7 @@
 import {
   IOColors,
   IOThemeDark,
-  IOThemeLight
+  IOThemeLight,
 } from '@pagopa/io-app-design-system';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 
@@ -13,8 +13,8 @@ export const IONavigationDarkTheme = {
   colors: {
     ...DarkTheme.colors,
     background: IOColors[IOThemeDark['appBackground-primary']],
-    card: IOColors[IOThemeDark['appBackground-primary']]
-  }
+    card: IOColors[IOThemeDark['appBackground-primary']],
+  },
 };
 
 /**
@@ -25,6 +25,6 @@ export const IONavigationLightTheme = {
   colors: {
     ...DefaultTheme.colors,
     background: IOColors[IOThemeLight['appBackground-primary']],
-    card: IOColors[IOThemeLight['appBackground-primary']]
-  }
+    card: IOColors[IOThemeLight['appBackground-primary']],
+  },
 };

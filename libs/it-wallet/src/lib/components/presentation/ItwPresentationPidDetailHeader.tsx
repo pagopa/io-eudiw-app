@@ -2,7 +2,7 @@ import {
   Body,
   ContentWrapper,
   IOAppMargin,
-  VStack
+  VStack,
 } from '@pagopa/io-app-design-system';
 import { t } from 'i18next';
 import { StyleSheet, View } from 'react-native';
@@ -26,7 +26,7 @@ export const ItwPresentationPidDetailHeader = () => {
       <View
         style={[
           styles.scrollHack,
-          { backgroundColor: theme['header-background'] }
+          { backgroundColor: theme['header-background'] },
         ]}
       >
         <ContentWrapper>
@@ -44,11 +44,11 @@ export const ItwPresentationPidDetailHeader = () => {
 
 const styles = StyleSheet.create({
   content: {
-    paddingVertical: IOAppMargin[1]
+    paddingVertical: IOAppMargin[1],
   },
   /** Hack to remove the white band when scrolling on iOS devices  */
   scrollHack: {
     paddingTop: 300,
-    marginTop: -300
-  }
+    marginTop: -300,
+  },
 });

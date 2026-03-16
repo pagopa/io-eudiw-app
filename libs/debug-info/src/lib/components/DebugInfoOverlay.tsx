@@ -3,14 +3,14 @@ import {
   IOText,
   VStack,
   hexToRgba,
-  useIOTheme
+  useIOTheme,
 } from '@pagopa/io-app-design-system';
 import { useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { getAppVersion } from '../../../../../libs/commons/src/lib/utils/device';
 import { DebugDataIndicator } from './DebugDataIndicator';
 import { DebugDataOverlay } from './DebugDataOverlay';
+import { getAppVersion } from '@io-eudiw-app/commons';
 
 const debugItemBgColor = hexToRgba(IOColors.white, 0.4);
 const debugItemBorderColor = hexToRgba(IOColors.black, 0.1);
@@ -18,7 +18,7 @@ const debugItemBorderColor = hexToRgba(IOColors.black, 0.1);
 /**
  * Overlay which shows the debug data stored in the debug state.
  */
-const DebugInfoOverlay = () => {
+export const DebugInfoOverlay = () => {
   const theme = useIOTheme();
   const appVersion = getAppVersion();
   const [isDebugDataVisibile, showDebugData] = useState(false);
@@ -41,7 +41,7 @@ const DebugInfoOverlay = () => {
             </IOText>
           </View>
           <DebugDataIndicator
-            onPress={() => showDebugData(prevState => !prevState)}
+            onPress={() => showDebugData((prevState) => !prevState)}
           />
         </VStack>
       </SafeAreaView>
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     top: Platform.OS === 'android' ? 0 : -8,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    zIndex: 1000
+    zIndex: 1000,
   },
   versionTextWrapper: {
     display: 'flex',
@@ -69,8 +69,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 4,
     borderRadius: 8,
-    backgroundColor: debugItemBgColor
-  }
+    backgroundColor: debugItemBgColor,
+  },
 });
-
-export default DebugInfoOverlay;

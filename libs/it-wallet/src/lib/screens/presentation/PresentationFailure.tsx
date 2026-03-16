@@ -1,11 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { OperationResultScreenContent, useDisableGestureNavigation, useHardwareBackButton } from '@io-eudiw-app/commons';
+import {
+  OperationResultScreenContent,
+  useDisableGestureNavigation,
+  useHardwareBackButton,
+} from '@io-eudiw-app/commons';
 import {
   resetPresentation,
   selectPostDefinitionStatus,
-  selectPreDefinitionStatus
+  selectPreDefinitionStatus,
 } from '../../store/presentation';
-import {useDebugInfo} from "@io-eudiw-app/debug-info"
+import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
@@ -39,7 +43,7 @@ const PresentationFailure = () => {
       action={{
         accessibilityLabel: t('wallet:presentation.failure.button'),
         label: t('wallet:presentation.failure.button'),
-        onPress
+        onPress,
       }}
     />
   );

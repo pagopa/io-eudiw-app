@@ -9,7 +9,7 @@ import { presentationReducer } from './presentation';
 import { proximityReducer } from './proximity';
 import { useDispatch, useSelector } from 'react-redux';
 import { DebugRootState } from '@io-eudiw-app/debug-info';
-import { PreferenceRootState } from '@io-eudiw-app/common-store';
+import { PreferenceRootState } from '@io-eudiw-app/preferences';
 
 export const walletRootReducer = combineReducers({
   lifecycle: lifecycleReducer,

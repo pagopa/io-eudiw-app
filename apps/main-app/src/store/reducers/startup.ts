@@ -7,7 +7,7 @@ import { BiometricState } from '@io-eudiw-app/identification';
  * hasScreenLock - Indicates if the device has a screen lock
  * biometricState - Indicates the state of the biometric on the device
  */
-export type StartupState = {
+export type StartupSlice = {
   startUpStatus:
     | 'DONE'
     | 'WAIT_ONBOARDING'
@@ -20,10 +20,10 @@ export type StartupState = {
 };
 
 // Initial state for the startup slice
-const initialState: StartupState = {
+const initialState: StartupSlice = {
   startUpStatus: 'NOT_STARTED',
   hasScreenLock: false,
-  biometricState: 'NOT_SUPPORTED'
+  biometricState: 'NOT_SUPPORTED',
 };
 
 /**
@@ -35,23 +35,23 @@ export const startupSlice = createSlice({
   reducers: {
     startupSetStatus: (
       state,
-      action: PayloadAction<StartupState['startUpStatus']>
+      action: PayloadAction<StartupSlice['startUpStatus']>,
     ) => {
       state.startUpStatus = action.payload;
     },
     startupSetAttributes: (
       state,
-      action: PayloadAction<Omit<StartupState, 'startUpStatus'>>
+      action: PayloadAction<Omit<StartupSlice, 'startUpStatus'>>,
     ) => {
       state.biometricState = action.payload.biometricState;
       state.hasScreenLock = action.payload.hasScreenLock;
     },
-    startupSetError: state => {
+    startupSetError: (state) => {
       state.startUpStatus = 'ERROR';
     },
-    startupSetLoading: state => {
+    startupSetLoading: (state) => {
       state.startUpStatus = 'LOADING';
-    }
+    },
   },
 });
 
@@ -62,7 +62,7 @@ export const {
   startupSetError,
   startupSetLoading,
   startupSetStatus,
-  startupSetAttributes
+  startupSetAttributes,
 } = startupSlice.actions;
 
 /**
@@ -70,7 +70,7 @@ export const {
  * @param state - The root state of the Redux store
  * @returns the startup state of the app
  */
-export const selectStartupState = (state: RootState) =>
+export const selectStartupStatus = (state: RootState) =>
   state.startup.startUpStatus;
 
 /**

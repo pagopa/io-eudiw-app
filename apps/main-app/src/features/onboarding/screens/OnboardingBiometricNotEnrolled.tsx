@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IOScrollViewWithListItems } from '../../../components/IOScrollViewWithListItems';
 import { useAppDispatch } from '../../../store';
-import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/common-store';
+import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/preferences';
 import { useHeaderSecondLevel } from '@io-eudiw-app/commons';
 
 /**

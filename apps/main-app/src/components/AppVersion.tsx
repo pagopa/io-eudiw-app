@@ -1,15 +1,15 @@
 import { BodySmall } from '@pagopa/io-app-design-system';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import { getAppVersion } from '../../../../libs/commons/src/lib/utils/device';
+import { getAppVersion } from '@io-eudiw-app/commons';
 
 const styles = StyleSheet.create({
   versionButton: {
     paddingVertical: 20,
     alignSelf: 'flex-start',
     flexDirection: 'row',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 /**

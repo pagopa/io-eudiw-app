@@ -7,13 +7,13 @@ import { IdentificationCombinedRootState } from '.';
  * - canResetPin: If the pin can be reset in the identification modal.
  * - isValidatingTask: If the identification is validating a task and thus a different text and pictogram are shown.
  */
-export type IdentificationState = {
+export type IdentificationSlice = {
   status: 'started' | 'identified' | 'unidentified';
   canResetPin: boolean;
   isValidatingTask: boolean;
 };
 
-const initialState: IdentificationState = {
+const initialState: IdentificationSlice = {
   status: 'unidentified',
   canResetPin: false,
   isValidatingTask: false
@@ -28,7 +28,7 @@ const identificationSlice = createSlice({
   reducers: {
     setIdentificationStarted: (
       state,
-      action: PayloadAction<Omit<IdentificationState, 'status'>>
+      action: PayloadAction<Omit<IdentificationSlice, 'status'>>
     ) => {
       state.status = 'started';
       state.canResetPin = action.payload.canResetPin;

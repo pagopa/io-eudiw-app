@@ -5,7 +5,7 @@ import {
   IOColors,
   BodySmall,
   useIOTheme,
-  HStack
+  HStack,
 } from '@pagopa/io-app-design-system';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
@@ -32,14 +32,14 @@ const ItwRequiredClaimsList = ({ items }: ItwRequiredClaimsListProps) => {
             style={{
               justifyContent: 'space-between',
               alignItems: 'center',
-              paddingVertical: 12
+              paddingVertical: 12,
             }}
           >
             <View>
               <ClaimText claim={claim} />
               <BodySmall weight="Regular" color={theme['textBody-tertiary']}>
                 {t('wallet:credentialIssuance.trust.dataSource', {
-                  source
+                  source,
                 })}
               </BodySmall>
             </View>
@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 8,
     borderCurve: 'continuous',
-    paddingHorizontal: 24
-  }
+    paddingHorizontal: 24,
+  },
 });
 
 export { ItwRequiredClaimsList as ItwRequestedClaimsList };

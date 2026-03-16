@@ -5,7 +5,7 @@ import { Platform } from 'react-native';
 import { IOScrollViewWithListItems } from '../../../components/IOScrollViewWithListItems';
 import { useAppDispatch } from '../../../store';
 import { useHeaderSecondLevel } from '@io-eudiw-app/commons';
-import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/common-store';
+import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/preferences';
 
 /**
  * A screen to be shown if the user has not set a screen lock with intructions on how to set it.

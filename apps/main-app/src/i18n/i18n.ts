@@ -11,16 +11,16 @@ const initI18n = async () =>
     fallbackLng: 'it',
     defaultNS: 'global',
     react: {
-      useSuspense: true
+      useSuspense: true,
     },
     resources: {
       it: {
         global: itGlobal,
         onboarding: itOnboarding,
         wallet: itWallet,
-        qrcodeScan: itQrCodeScan
-      }
-    }
+        qrcodeScan: itQrCodeScan,
+      },
+    },
   });
 
 export default initI18n;

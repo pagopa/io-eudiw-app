@@ -18,12 +18,12 @@ export enum Lifecycle {
 /* State type definition for the lifecycle slice
  * lifecycle - Lifecycle state of the wallet
  */
-type LifecycleState = Readonly<{
+type LifecycleSlice = Readonly<{
   lifecycle: Lifecycle;
 }>;
 
 // Initial state for the lifecycle slice
-const initialState: LifecycleState = {
+const initialState: LifecycleSlice = {
   lifecycle: Lifecycle.LIFECYCLE_OPERATIONAL
 };
 
@@ -34,7 +34,7 @@ const lifecycleSlice = createSlice({
   name: 'lifecycle',
   initialState,
   reducers: {
-    setLifecycle: (state, action: PayloadAction<LifecycleState>) => {
+    setLifecycle: (state, action: PayloadAction<LifecycleSlice>) => {
       state.lifecycle = action.payload.lifecycle;
     },
     resetLifecycle: () => initialState
@@ -45,7 +45,7 @@ const lifecycleSlice = createSlice({
  * Redux persist configuration for the instance slice.
  * Currently it uses AsyncStorage as the storage engine.
  */
-const lifecyclePersist: PersistConfig<LifecycleState> = {
+const lifecyclePersist: PersistConfig<LifecycleSlice> = {
   key: 'lifecycle',
   storage: AsyncStorage
 };

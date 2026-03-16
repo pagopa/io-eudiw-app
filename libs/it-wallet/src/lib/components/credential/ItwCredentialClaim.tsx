@@ -8,12 +8,16 @@ import {
   DrivingPrivilegesClaimType,
   ParsedClaimsRecord,
   PlaceOfBirthClaimType,
-  verificationEvidenceSchema
+  verificationEvidenceSchema,
 } from '../../utils/claims';
 import { HIDDEN_CLAIM_TEXT } from '../../utils/constants';
 import { format } from '../../utils/dates';
 import { ItwCredentialStatus } from '../../utils/itwTypesUtils';
-import { clipboardSetStringWithFeedback, getSafeText, useIOBottomSheetModal } from '@io-eudiw-app/commons';
+import {
+  clipboardSetStringWithFeedback,
+  getSafeText,
+  useIOBottomSheetModal,
+} from '@io-eudiw-app/commons';
 
 /**
  * Helper function to get the accessibility text for hidden claims.
@@ -32,7 +36,7 @@ const PlaceOfBirthClaimItem = ({
   label,
   claim,
   hidden,
-  reversed
+  reversed,
 }: {
   label: string;
   claim: PlaceOfBirthClaimType;
@@ -65,7 +69,7 @@ const BoolClaimItem = ({
   label,
   claim,
   hidden,
-  reversed
+  reversed,
 }: {
   label: string;
   claim: boolean;
@@ -73,7 +77,7 @@ const BoolClaimItem = ({
   reversed: boolean;
 }) => {
   const realValue = t(`presentation.credentialDetails.boolClaim.${claim}`, {
-    ns: 'wallet'
+    ns: 'wallet',
   });
   const displayValue = hidden ? HIDDEN_CLAIM_TEXT : realValue;
   const accessibilityStateText = hidden
@@ -103,7 +107,7 @@ const PlainTextClaimItem = ({
   claim,
   isCopyable,
   hidden,
-  reversed
+  reversed,
 }: {
   label: string;
   claim: string;
@@ -145,7 +149,7 @@ const DateClaimItem = ({
   claim,
   status,
   hidden,
-  reversed
+  reversed,
 }: {
   label: string;
   claim: Date;
@@ -173,24 +177,24 @@ const DateClaimItem = ({
           type: 'badge',
           componentProps: {
             variant: 'success',
-            text: t(`${ns}.valid`, { ns: 'wallet' })
-          }
+            text: t(`${ns}.valid`, { ns: 'wallet' }),
+          },
         };
       case 'expired':
         return {
           type: 'badge',
           componentProps: {
             variant: 'error',
-            text: t(`${ns}.expired`, { ns: 'wallet' })
-          }
+            text: t(`${ns}.expired`, { ns: 'wallet' }),
+          },
         };
       case 'invalid':
         return {
           type: 'badge',
           componentProps: {
             variant: 'error',
-            text: t(`${ns}.invalid`, { ns: 'wallet' })
-          }
+            text: t(`${ns}.invalid`, { ns: 'wallet' }),
+          },
         };
       default:
         return undefined;
@@ -216,7 +220,7 @@ const DateClaimItem = ({
  */
 const UnknownClaimItem = ({
   label,
-  reversed
+  reversed,
 }: {
   label: string;
   _claim?: unknown;
@@ -225,7 +229,7 @@ const UnknownClaimItem = ({
   <PlainTextClaimItem
     label={label}
     claim={t('verifiableCredentials.generic.placeholders.claimNotAvailable', {
-      ns: 'wallet'
+      ns: 'wallet',
     })}
     reversed={reversed}
   />
@@ -243,7 +247,7 @@ const ImageClaimItem = ({
   height,
   width,
   hidden,
-  reversed
+  reversed,
 }: {
   label: string;
   claim: string;
@@ -262,7 +266,7 @@ const ImageClaimItem = ({
           source={{ uri: claim }}
           style={{
             width: 200,
-            height: Math.ceil((200 * height) / width)
+            height: Math.ceil((200 * height) / width),
           }}
           resizeMode="contain"
           accessibilityIgnoresInvertColors
@@ -288,7 +292,7 @@ const DrivingPrivilegesClaimItem = ({
   claim,
   detailsButtonVisible,
   hidden,
-  reversed
+  reversed,
 }: {
   label: string;
   claim: DrivingPrivilegesClaimType['value'][0];
@@ -299,39 +303,39 @@ const DrivingPrivilegesClaimItem = ({
   const privilegeBottomSheet = useIOBottomSheetModal({
     title: t('verifiableCredentials.claims.mdl.category', {
       ns: 'wallet',
-      category: claim.vehicle_category_code
+      category: claim.vehicle_category_code,
     }),
     component: (
       <>
         <ListItemInfo
           label={t('verifiableCredentials.claims.mdl.issuedDate', {
-            ns: 'wallet'
+            ns: 'wallet',
           })}
           value={format(claim.issue_date, 'DD/MM/YYYY')}
           accessibilityLabel={`${t(
             'verifiableCredentials.claims.mdl.issuedDate',
             {
-              ns: 'wallet'
-            }
+              ns: 'wallet',
+            },
           )} ${claim.issue_date}`}
           reversed={reversed}
         />
         <Divider />
         <ListItemInfo
           label={t('verifiableCredentials.claims.mdl.expirationDate', {
-            ns: 'wallet'
+            ns: 'wallet',
           })}
           value={format(claim.expiry_date, 'DD/MM/YYYY')}
           accessibilityLabel={`${t(
             'verifiableCredentials.claims.mdl.expirationDate',
             {
-              ns: 'wallet'
-            }
+              ns: 'wallet',
+            },
           )} ${claim.expiry_date}`}
           reversed={reversed}
         />
       </>
-    )
+    ),
   });
 
   const realValue = claim.vehicle_category_code;
@@ -347,8 +351,8 @@ const DrivingPrivilegesClaimItem = ({
           componentProps: {
             label: t('buttons.show', { ns: 'global' }),
             onPress: () => privilegeBottomSheet.present(),
-            accessibilityLabel: t('buttons.show', { ns: 'global' })
-          }
+            accessibilityLabel: t('buttons.show', { ns: 'global' }),
+          },
         }
       : undefined;
 
@@ -376,7 +380,7 @@ const VerificationEvidenceClaimItem = ({
   label,
   claim,
   detailsButtonVisible = true,
-  reversed
+  reversed,
 }: {
   label: string;
   claim: VerificationEvidenceClaimType['value'];
@@ -392,28 +396,28 @@ const VerificationEvidenceClaimItem = ({
         <ListItemInfo
           label={t(
             'verifiableCredentials.claims.mdl.verificationEvidence.organizationId',
-            { ns: 'wallet' }
+            { ns: 'wallet' },
           )}
           value={organization_id}
           accessibilityLabel={`${t(
             'verifiableCredentials.claims.mdl.verificationEvidence.organizationId',
-            { ns: 'wallet' }
+            { ns: 'wallet' },
           )} ${organization_id}`}
         />
         <Divider />
         <ListItemInfo
           label={t(
             'verifiableCredentials.claims.mdl.verificationEvidence.countryCode',
-            { ns: 'wallet' }
+            { ns: 'wallet' },
           )}
           value={country_code}
           accessibilityLabel={`${t(
             'verifiableCredentials.claims.mdl.verificationEvidence.countryCode',
-            { ns: 'wallet' }
+            { ns: 'wallet' },
           )} ${country_code}`}
         />
       </>
-    )
+    ),
   });
 
   const endElement: ListItemInfo['endElement'] = detailsButtonVisible
@@ -422,8 +426,8 @@ const VerificationEvidenceClaimItem = ({
         componentProps: {
           label: t('global:buttons.show'),
           onPress: () => verificationBottomSheet.present(),
-          accessibilityLabel: t('global:buttons.show')
-        }
+          accessibilityLabel: t('global:buttons.show'),
+        },
       }
     : undefined;
 
@@ -455,7 +459,7 @@ export const ItwCredentialClaim = ({
   hidden,
   isPreview,
   credentialStatus,
-  reversed = false
+  reversed = false,
 }: {
   claim: ParsedClaimsRecord[string];
   hidden?: boolean;

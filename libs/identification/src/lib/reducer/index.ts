@@ -1,18 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
-import { identificationReducer, IdentificationState } from "./identification";
+import { identificationReducer, IdentificationSlice } from "./identification";
 import { combineReducers, ThunkDispatch, UnknownAction } from "@reduxjs/toolkit";
 import { pinReducer, PinState } from "./pin";
-import { PreferenceRootState } from "@io-eudiw-app/common-store";
+import { PreferenceRootState } from "@io-eudiw-app/preferences";
 
 export type IdentificationCombinedRootState = {
   identification: {
-    identification: IdentificationState;
+    identification: IdentificationSlice;
     pin: PinState;
   };
 } & PreferenceRootState;
 
 export type IdentificationRootState = {
-  identification: IdentificationState;
+  identification: IdentificationSlice;
   pin: PinState;
 };
 

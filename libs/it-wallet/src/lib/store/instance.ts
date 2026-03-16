@@ -7,12 +7,12 @@ import { WalletCombinedRootState } from '.';
 /* State type definition for the instance slice
  * keyTag - The keytag bound to the wallet instance
  */
-type InstanceState = {
+type InstanceSlice = {
   keyTag: string | undefined;
 };
 
 // Initial state for the instance slice
-const initialState: InstanceState = {
+const initialState: InstanceSlice = {
   keyTag: undefined
 };
 
@@ -37,7 +37,7 @@ const instanceSlice = createSlice({
  * Redux persist configuration for the instance slice.
  * Currently it uses AsyncStorage as the storage engine.
  */
-const instancePersist: PersistConfig<InstanceState> = {
+const instancePersist: PersistConfig<InstanceSlice> = {
   key: 'attestation',
   storage: AsyncStorage
 };

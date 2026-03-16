@@ -25,7 +25,7 @@ const PidIssuanceSuccess = () => {
         onPress: () => {
           dispatch(resetPidIssuance());
           navigateToWallet();
-        }
+        },
       }}
     />
   );
