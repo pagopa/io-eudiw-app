@@ -33,8 +33,8 @@ import { getEnv } from '@io-eudiw-app/env';
 import { AppListenerWithAction, AppStartListening } from './types';
 import { selectSessionId } from '@io-eudiw-app/common-store';
 import { raceEffect, regenerateCryptoKey, takeLatestEffect } from '@io-eudiw-app/commons';
-import { setIdentificationIdentified, setIdentificationIdentified, setIdentificationStarted, setIdentificationUnidentified } from '@io-eudiw-app/identification';
-import { navigateWithReset } from '../navigation/utils';
+import { setIdentificationIdentified, setIdentificationStarted, setIdentificationUnidentified } from '@io-eudiw-app/identification';
+import { navigator } from '../navigation/utils';
 
 
 /**
@@ -75,7 +75,6 @@ const obtainCredentialListener: AppListenerWithAction<
     const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
 
     const sessionId = selectSessionId(state);
-    console.log(sessionId, 'session id in credential issuance');
     const pid = selectCredential(wellKnownCredential.PID)(state);
     const appFetch = createWalletProviderFetch(
       walletProviderBaseUrl,
@@ -270,7 +269,7 @@ const addCredentialWithAuthListener: AppListenerWithAction<
   if (setIdentificationIdentified.match(resAction[0])) {
     listenerApi.dispatch(addCredential(action.payload));
     listenerApi.dispatch(resetCredentialIssuance());
-    navigateWithReset('MAIN_TAB_NAV');
+    navigator.navigateWithReset('MAIN_TAB_NAV');
     IOToast.success(t('buttons.done', { ns: 'global' }));
   } else {
     return;

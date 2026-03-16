@@ -27,25 +27,5 @@
     "src/**/*.spec.ts",
     "src/**/*.test.ts"
   ],
-  "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx", "**/*.json"],
-  "references": [
-    {
-      "path": "../navigation/tsconfig.lib.json"
-    },
-    {
-      "path": "../debug-info/tsconfig.lib.json"
-    },
-    {
-      "path": "../identification/tsconfig.lib.json"
-    },
-    {
-      "path": "../common-store/tsconfig.lib.json"
-    },
-    {
-      "path": "../env/tsconfig.lib.json"
-    },
-    {
-      "path": "../commons/tsconfig.lib.json"
-    }
-  ]
+  "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"]
 }

@@ -1,0 +1,16 @@
+packages:
+  - 'apps/*'
+  - 'libs/it-wallet'
+  - 'libs/common'
+  - 'libs/commons'
+  - 'libs/asd'
+  - 'libs/env'
+  - 'libs/common-store'
+  - 'libs/identification'
+  - 'libs/debug-info'
+  - 'libs/test'
+  - 'libs/navigation'
+onlyBuiltDependencies:
+  - '@shopify/react-native-skia'
+patchedDependencies:
+  '@pagopa/io-react-native-wallet': 'patches/@pagopa__io-react-native-wallet.patch'

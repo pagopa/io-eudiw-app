@@ -1,4 +1,10 @@
-import { configureStore, EnhancedStore, isAnyOf } from '@reduxjs/toolkit';
+import { 
+  configureStore, 
+  EnhancedStore, 
+  isAnyOf, 
+  combineReducers, 
+  UnknownAction 
+} from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   FLUSH,
@@ -20,27 +26,44 @@ import { PreferenceRootState, preferencesReducer, preferencesReset } from '@io-e
 import { debugReducer, DebugRootState } from "@io-eudiw-app/debug-info";
 import { identificationReducer, IdentificationRootState } from '@io-eudiw-app/identification';
 
+// 1. Explicitly type the combined state of all your reducers.
+export type AppRootState = DebugRootState & 
+  IdentificationRootState & 
+  WalletRootState & 
+  PreferenceRootState & {
+    deepLinking: ReturnType<typeof deepLinkingReducer>;
+    startup: ReturnType<typeof startupSlice.reducer>;
+  };
 
-// 1. Explicitly type the combined state of all your reducers to prevent TS2742.
-export type AppRootState = DebugRootState & IdentificationRootState & WalletRootState & PreferenceRootState &{
-  deepLinking: ReturnType<typeof deepLinkingReducer>;
-  startup: ReturnType<typeof startupSlice.reducer>;
+/**
+ * Combine all reducers into a single object.
+ * This makes it easy to pass them to the rootReducer wrapper.
+ */
+const combinedReducer = combineReducers({
+  startup: startupSlice.reducer,
+  ...preferencesReducer,
+  ...debugReducer,
+  ...identificationReducer,
+  ...walletReducer,
+  deepLinking: deepLinkingReducer
+});
+
+/**
+ * Intercepts the reset action to clear the entire state tree.
+ */
+const rootReducer = (state: ReturnType<typeof combinedReducer> | undefined, action: UnknownAction) => {
+  if (action.type === preferencesReset.type) {
+    state = undefined;
+  }
+  return combinedReducer(state, action);
 };
 
 /**
  * Redux store configuration.
- * 3. Look closely here: It is JUST `export const store = `
- * There is NO `: ReducersMapObject<...>` after `store`.
  */
 export const store: EnhancedStore<AppRootState> = configureStore({
-  reducer: {
-    startup: startupSlice.reducer,
-    ...preferencesReducer,
-    ...debugReducer,
-    ...identificationReducer,
-    ...walletReducer,
-    deepLinking: deepLinkingReducer
-  },
+  // Use the wrapped rootReducer instead of the reducer object
+  reducer: rootReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -62,7 +85,7 @@ startAppListening({
 });
 
 /**
- * Redux persistor configuration used in the root component with {@link PersistGate}.
+ * Redux persistor configuration.
  */
 export const persistor = persistStore(store);
 

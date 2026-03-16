@@ -21,8 +21,8 @@ import {
 } from '../store/reducers/startup';
 import ROOT_ROUTES from './routes';
 import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
-import { navigationRef } from './utils';
 import { MainStackNavigator } from '@io-eudiw-app/it-wallet';
+import { navigationRef } from '@io-eudiw-app/navigation';
 
 export type RootStackParamList = {
   // Main

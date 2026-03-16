@@ -4,16 +4,19 @@
   "include": [".expo/types/**/*.ts", "expo-env.d.ts"],
   "references": [
     {
+      "path": "../../libs/navigation"
+    },
+    {
       "path": "../../libs/env"
     },
     {
-      "path": "../../libs/common-store"
+      "path": "../../libs/identification"
     },
     {
       "path": "../../libs/debug-info"
     },
     {
-      "path": "../../libs/identification"
+      "path": "../../libs/common-store"
     },
     {
       "path": "../../libs/commons"

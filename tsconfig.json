@@ -23,6 +23,9 @@
     },
     {
       "path": "./libs/debug-info"
+    },
+    {
+      "path": "./libs/navigation"
     }
   ]
 }

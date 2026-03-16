@@ -12,11 +12,13 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@io-eudiw-app/commons": "*",
-    "@io-eudiw-app/env": "*",
-    "@io-eudiw-app/common-store": "*",
-    "@io-eudiw-app/identification": "*",
-    "@io-eudiw-app/debug-info": "*"
+    "@io-eudiw-app/common-store": "workspace:*",
+    "@io-eudiw-app/commons": "workspace:*",
+    "@io-eudiw-app/debug-info": "workspace:*",
+    "@io-eudiw-app/env": "workspace:*",
+    "@io-eudiw-app/identification": "workspace:*",
+    "@io-eudiw-app/navigation": "workspace:*",
+    "@types/color": "^4.2.0"
   },
   "peerDependencies": {
     "react": "^19.1.0",

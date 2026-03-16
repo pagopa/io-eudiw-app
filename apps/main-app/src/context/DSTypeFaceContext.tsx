@@ -1,19 +1,17 @@
 import { useIONewTypeface } from '@pagopa/io-app-design-system';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLayoutEffect } from 'react';
+import { useAppSelector } from '../store';
+import { selectFontPreference } from '@io-eudiw-app/common-store';
 
 export const FONT_PERSISTENCE_KEY = 'fontTypeface';
 
 export const useStoredFontPreference = () => {
   const { setNewTypefaceEnabled } = useIONewTypeface();
+  const fontPreference = useAppSelector(selectFontPreference);
 
   useLayoutEffect(() => {
-    AsyncStorage.getItem(FONT_PERSISTENCE_KEY)
-      .then(value => {
-        setNewTypefaceEnabled(value ? value === 'comfortable' : true);
-      })
-      .catch(() => {
-        setNewTypefaceEnabled(true);
-      });
-  }, [setNewTypefaceEnabled]);
+    setNewTypefaceEnabled(
+      fontPreference ? fontPreference === 'comfortable' : true,
+    );
+  }, [setNewTypefaceEnabled, fontPreference]);
 };

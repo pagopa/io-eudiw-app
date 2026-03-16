@@ -11,12 +11,12 @@ import {
   StartupState
 } from '../../store/reducers/startup';
 import { AppListener, AppListenerWithAction } from './types';
-import { isNavigationReady } from '../../navigation/utils';
 import { getBiometricState, setIdentificationIdentified, setIdentificationStarted, setIdentificationUnidentified } from '@io-eudiw-app/identification';
 import { initEnv } from '@io-eudiw-app/env';
 import { preferencesSetIsOnboardingDone, selectIsOnboardingComplete } from '@io-eudiw-app/common-store';
 import { addWalletListeners } from '@io-eudiw-app/it-wallet';
 import { startAppListening } from '.';
+import { isNavigationReady } from '@io-eudiw-app/navigation';
 
 /**
  * Utility function to wait for the navigation to be ready before dispatching a navigation event.
@@ -55,11 +55,9 @@ const handlePendingDeepLink = async (listenerApi: AppListener) => {
  * @param listenerApi - The listener API
  */
 const startIdentification = async (listenerApi: AppListener) => {
-  console.log('in start')
   listenerApi.dispatch(
     setIdentificationStarted({ canResetPin: true, isValidatingTask: false })
   );
-  console.log('dispatched start')
   // Wait for either success or failure
   const action = await listenerApi.take(
     isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
@@ -107,7 +105,6 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
 
     // Handle onboarding process or identification based on onboarding completion status
     const isOnboardingCompleted = selectIsOnboardingComplete(state);
-    console.log('is onboarding completed?', isOnboardingCompleted);
     const status: StartupState['startUpStatus'] = isOnboardingCompleted
       ? 'WAIT_IDENTIFICATION'
       : 'WAIT_ONBOARDING';

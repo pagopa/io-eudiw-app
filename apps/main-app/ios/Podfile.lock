@@ -80,10 +80,6 @@ PODS:
     - ExpoModulesCore
   - ExpoSecureStore (15.0.8):
     - ExpoModulesCore
-  - ExpoSplashScreen (31.0.13):
-    - ExpoModulesCore
-  - ExpoSystemUI (6.0.9):
-    - ExpoModulesCore
   - ExpoWebBrowser (15.0.10):
     - ExpoModulesCore
   - FBLazyVector (0.81.5)
@@ -1936,7 +1932,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - RNPermissions (5.5.0):
+  - RNPermissions (5.5.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2268,8 +2264,6 @@ DEPENDENCIES:
   - ExpoModulesCore (from `../../../node_modules/expo-modules-core`)
   - ExpoScreenCapture (from `../../../node_modules/expo-screen-capture/ios`)
   - ExpoSecureStore (from `../../../node_modules/expo-secure-store/ios`)
-  - ExpoSplashScreen (from `../../../node_modules/expo-splash-screen/ios`)
-  - ExpoSystemUI (from `../../../node_modules/expo-system-ui/ios`)
   - ExpoWebBrowser (from `../../../node_modules/expo-web-browser/ios`)
   - FBLazyVector (from `../../../node_modules/react-native/Libraries/FBLazyVector`)
   - hermes-engine (from `../../../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
@@ -2400,10 +2394,6 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/expo-screen-capture/ios"
   ExpoSecureStore:
     :path: "../../../node_modules/expo-secure-store/ios"
-  ExpoSplashScreen:
-    :path: "../../../node_modules/expo-splash-screen/ios"
-  ExpoSystemUI:
-    :path: "../../../node_modules/expo-system-ui/ios"
   ExpoWebBrowser:
     :path: "../../../node_modules/expo-web-browser/ios"
   FBLazyVector:
@@ -2594,8 +2584,6 @@ SPEC CHECKSUMS:
   ExpoModulesCore: f3da4f1ab5a8375d0beafab763739dbee8446583
   ExpoScreenCapture: 73e5215ce972e245806c19a546ae0ffef33ead48
   ExpoSecureStore: d32f751874a2ceb5aaeebeb3578e165c1ba2b24a
-  ExpoSplashScreen: bc3cffefca2716e5f22350ca109badd7e50ec14d
-  ExpoSystemUI: 2ad325f361a2fcd96a464e8574e19935c461c9cc
   ExpoWebBrowser: 17b064c621789e41d4816c95c93f429b84971f52
   FBLazyVector: e95a291ad2dadb88e42b06e0c5fb8262de53ec12
   hermes-engine: 9f4dfe93326146a1c99eb535b1cb0b857a3cd172
@@ -2677,7 +2665,7 @@ SPEC CHECKSUMS:
   RNDeviceInfo: 4c852998208b60dc192ae3529e5867817719ad1e
   RNFS: 89de7d7f4c0f6bafa05343c578f61118c8282ed8
   RNGestureHandler: e0d0bce5599f6120b7adf90c38d2805e2935795f
-  RNPermissions: 2fe039c40935eacabd57763414088531be04fc06
+  RNPermissions: c29d39e0b187f34d32d9b1324b396a75b62d414c
   RNQrGenerator: dd31405ad364fc0950cda4e4e9c08293d26c7058
   RNReactNativeHapticFeedback: d7bc1bcfe68bb139c9919ea81d11d7c6e866e870
   RNReanimated: 7e9b28e1578a9125cae7a692370db31fcf04f9cf

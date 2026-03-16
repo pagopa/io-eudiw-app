@@ -87,16 +87,19 @@
   ],
   "references": [
     {
+      "path": "../../libs/navigation/tsconfig.lib.json"
+    },
+    {
       "path": "../../libs/env/tsconfig.lib.json"
     },
     {
-      "path": "../../libs/common-store/tsconfig.lib.json"
+      "path": "../../libs/identification/tsconfig.lib.json"
     },
     {
       "path": "../../libs/debug-info/tsconfig.lib.json"
     },
     {
-      "path": "../../libs/identification/tsconfig.lib.json"
+      "path": "../../libs/common-store/tsconfig.lib.json"
     },
     {
       "path": "../../libs/commons/tsconfig.lib.json"

@@ -24,7 +24,7 @@ import { selectSessionId } from '@io-eudiw-app/common-store';
 import { getEnv } from '@io-eudiw-app/env';
 import { setIdentificationIdentified, setIdentificationStarted, setIdentificationUnidentified } from '@io-eudiw-app/identification';
 import MAIN_ROUTES from '../navigation/main/routes';
-import { navigate, navigateWithReset } from '../navigation/utils';
+import { navigator } from '../navigation/utils';
 
 
 /**
@@ -40,8 +40,6 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
         EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri,
         EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl
       } = getEnv();
-
-      console.log('obtaining pid with', { EXPO_PUBLIC_PID_PROVIDER_BASE_URL, redirectUri, walletProviderBaseUrl })
       const state = getState();
 
       const walletInstanceAttestation = await dispatch(getAttestationThunk());
@@ -192,7 +190,6 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
         issuerConf
       };
     } catch (error) {
-      console.log(error)
       const serialized = serializeError(error);
       return rejectWithValue(serialized);
     }
@@ -207,7 +204,6 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
 const addPidWithAuthListener: AppListenerWithAction<
   ReturnType<typeof addPidWithIdentification>
 > = async (action, listenerApi) => {
-  console.log('triggered')
   listenerApi.dispatch(
     setIdentificationStarted({ canResetPin: false, isValidatingTask: true })
   );
@@ -227,12 +223,12 @@ const addPidWithAuthListener: AppListenerWithAction<
       listenerApi.dispatch(
         setCredentialIssuancePreAuthRequest({ credential: pendingCredential })
       );
-      navigate(MAIN_ROUTES.WALLET_NAV, {
+      navigator.navigate(MAIN_ROUTES.WALLET_NAV, {
         screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
       });
     } else {
       // This should not happen, so by default the flow will just reset navigation and go back home
-      navigateWithReset(MAIN_ROUTES.TAB_NAV);
+      navigator.navigateWithReset(MAIN_ROUTES.TAB_NAV);
     }
   } else {
     return;
@@ -240,7 +236,6 @@ const addPidWithAuthListener: AppListenerWithAction<
 };
 
 export const addPidListeners = (startAppListening: AppStartListening) => {
-  console.log('adding pid listeners');
   startAppListening({
     actionCreator: addPidWithIdentification,
     effect: takeLatestEffect(addPidWithAuthListener)

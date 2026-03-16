@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../types';
-import { preferencesReset } from '@io-eudiw-app/common-store';
 
 /**
  * State definition for the deep linking slice.
@@ -26,10 +25,6 @@ const deeplinkingSlice = createSlice({
     setUrl: (state, action: PayloadAction<{ url: string }>) => {
       state.url = action.payload.url;
     }
-  },
-  extraReducers: builder => {
-    // This happens when the whole app state is reset
-    builder.addCase(preferencesReset, _ => initialState);
   }
 });
 

@@ -53,10 +53,6 @@ const preferencesSlice = createSlice({
       state.fontPreference = action.payload;
     },
     preferencesReset: () => initialState
-  },
-  extraReducers: builder => {
-    // This happens when the whole app state is reset
-    builder.addCase(preferencesReset, _ => initialState);
   }
 });
 

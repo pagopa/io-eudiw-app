@@ -1,5 +1,5 @@
 {
-  "name": "@io-eudiw-app/identification",
+  "name": "@io-eudiw-app/navigation",
   "version": "0.0.1",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -10,10 +10,6 @@
       "default": "./src/index.ts"
     },
     "./package.json": "./package.json"
-  },
-  "dependencies": {
-    "@io-eudiw-app/commons": "workspace:*",
-    "@io-eudiw-app/common-store": "workspace:*"
   },
   "peerDependencies": {
     "react": "^19.1.0",

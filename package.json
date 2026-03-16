@@ -27,6 +27,7 @@
     "react-redux": "^9.2.0"
   },
   "devDependencies": {
+    "@babel/runtime": "~7.27.6",
     "@eslint/js": "^9.8.0",
     "@expo/cli": "~54.0.16",
     "@nx/eslint": "22.5.3",
@@ -66,17 +67,5 @@
     "tslib": "^2.3.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.40.0"
-  },
-  "workspaces": [
-    "apps/*",
-    "libs/it-wallet",
-    "libs/common",
-    "libs/commons",
-    "libs/asd",
-    "libs/env",
-    "libs/common-store",
-    "libs/identification",
-    "libs/debug-info",
-    "libs/test"
-  ]
+  }
 }

@@ -53,7 +53,6 @@ const pidIssuanceStatusSlice = createSlice({
       state.instanceCreation = setLoading();
     });
     builder.addCase(createInstanceThunk.rejected, (state, action) => {
-      console.log('instance creation rejected', { action });
       if (action.meta.aborted) {
         state.instanceCreation = setInitial();
       } else {
@@ -68,7 +67,6 @@ const pidIssuanceStatusSlice = createSlice({
       state.issuance = setLoading();
     });
     builder.addCase(obtainPidThunk.rejected, (state, action) => {
-      console.log('pid issuance rejected', { action });
       if (action.meta.aborted) {
         state.issuance = setInitial();
       } else {

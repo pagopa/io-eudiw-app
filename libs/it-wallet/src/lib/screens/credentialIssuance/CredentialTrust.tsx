@@ -66,7 +66,6 @@ const CredentialTrust = () => {
   }, [dispatch, navigateToWallet]);
 
   const onContinue = useCallback(() => {
-    console.log('dispatching');
     dispatch(setCredentialIssuancePostAuthRequest());
   }, [dispatch]);
 
