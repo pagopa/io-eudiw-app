@@ -1,54 +1,60 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# compiled output
+dist
+tmp
+out-tsc
 
 # dependencies
-node_modules/
+node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+.nx/cache
+.nx/workspace-data
 
 # Expo
+node_modules/
 .expo/
+.yarn/
 dist/
-web-build/
-expo-env.d.ts
-
-# Native
-.kotlin/
-*.orig.*
+npm-debug.*
 *.jks
 *.p8
 *.p12
 *.key
 *.mobileprovision
+*.orig.*
+web-build/
+cache/
 
-# Metro
-.metro-health-check*
 
-# debug
-npm-debug.*
-yarn-debug.*
-yarn-error.*
-
-# macOS
-.DS_Store
-*.pem
-
-# local env files
-.env*.local
-
-# typescript
-*.tsbuildinfo
-
-app-example
-
-# generated native folders
-/ios
-/android
-
-# Yarn
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-
-# VSCode
-.vscode/
+test-output

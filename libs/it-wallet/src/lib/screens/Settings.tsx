@@ -1,0 +1,161 @@
+import {
+  IOButton,
+  IOVisualCostants,
+  ListItemHeader,
+  ListItemSwitch,
+  RadioGroup,
+  useIONewTypeface,
+  useIOToast,
+  VSpacer
+} from '@pagopa/io-app-design-system';
+import { ComponentProps, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList, View } from 'react-native';
+import { useAppDispatch, useAppSelector } from '../store';
+import {
+  selectIsDebugModeEnabled,
+  setDebugModeEnabled
+} from '@io-eudiw-app/debug-info';
+import { resetLifecycle } from '../store/lifecycle';
+import {
+  IOScrollViewWithLargeHeader,
+  useHeaderSecondLevel
+} from '@io-eudiw-app/commons';
+import {
+  preferencesFontSet,
+  preferencesReset,
+  TypefaceChoice
+} from '@io-eudiw-app/preferences';
+
+type TestButtonsListItem = Pick<
+  ComponentProps<typeof IOButton>,
+  'onPress' | 'label'
+>;
+
+/**
+ * A screen to show all the options related to the user profile
+ */
+
+const Settings = () => {
+  const toast = useIOToast();
+  const { t } = useTranslation('global');
+  const dispatch = useAppDispatch();
+  const isDebugModeEnabled = useAppSelector(selectIsDebugModeEnabled);
+  const { newTypefaceEnabled, setNewTypefaceEnabled } = useIONewTypeface();
+
+  const testButtonListItems: ReadonlyArray<TestButtonsListItem> = [
+    {
+      label: t('settings.reset.walletReset'),
+      onPress: () => {
+        dispatch(resetLifecycle());
+        toast.success(t('generics.success'));
+      }
+    },
+    {
+      label: t('settings.reset.onboardingReset'),
+      onPress: () => {
+        dispatch(preferencesReset());
+      }
+    }
+  ];
+
+  const DebugSwitch = () => (
+    <ListItemSwitch
+      label={t('settings.debug')}
+      value={isDebugModeEnabled}
+      onSwitchValueChange={state => {
+        dispatch(setDebugModeEnabled({ state }));
+      }}
+    />
+  );
+
+  const FontRadioSelection = useCallback(() => {
+    // Options for typeface
+    const typefaceOptions = [
+      {
+        id: 'comfortable' as TypefaceChoice,
+        value: t('settings.appearance.typefaceStyle.comfortable.title', {
+          ns: 'global'
+        }),
+        description: t(
+          'settings.appearance.typefaceStyle.comfortable.description',
+          { ns: 'global' }
+        )
+      },
+      {
+        id: 'standard' as TypefaceChoice,
+        value: t('settings.appearance.typefaceStyle.standard.title', {
+          ns: 'global'
+        }),
+        description: t(
+          'settings.appearance.typefaceStyle.standard.description',
+          { ns: 'global' }
+        )
+      }
+    ];
+
+    const selectedTypeface: TypefaceChoice = newTypefaceEnabled
+      ? 'comfortable'
+      : 'standard';
+
+    const handleTypefaceChange = async (choice: TypefaceChoice) => {
+      dispatch(preferencesFontSet(choice));
+      setNewTypefaceEnabled(choice === 'comfortable');
+    };
+
+    return (
+      <View>
+        <ListItemHeader
+          iconName="typeface"
+          label={t('settings.appearance.typefaceStyle.title', {
+            ns: 'global'
+          })}
+        />
+        <RadioGroup<TypefaceChoice>
+          type="radioListItem"
+          items={typefaceOptions}
+          selectedItem={selectedTypeface}
+          onPress={handleTypefaceChange}
+        />
+      </View>
+    );
+  }, [t]);
+
+  useHeaderSecondLevel({
+    title: ''
+  });
+
+  return (
+    <IOScrollViewWithLargeHeader
+      title={{
+        label: t('settings.title'),
+        accessibilityLabel: t('settings.title')
+      }}
+    >
+      <View style={{ paddingHorizontal: IOVisualCostants.appMarginDefault }}>
+        <FontRadioSelection />
+        <DebugSwitch />
+        {isDebugModeEnabled && (
+          <FlatList
+            scrollEnabled={false}
+            data={testButtonListItems}
+            renderItem={({ item }) => (
+              <IOButton
+                variant="solid"
+                label={item.label}
+                onPress={item.onPress}
+                fullWidth
+              />
+            )}
+            ListHeaderComponent={
+              <ListItemHeader label={t('settings.reset.title')} />
+            }
+            ItemSeparatorComponent={() => <VSpacer />}
+          />
+        )}
+      </View>
+    </IOScrollViewWithLargeHeader>
+  );
+};
+
+export default Settings;

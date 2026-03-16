@@ -1,0 +1,679 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		11CCBCF804FC49BEB363D8DD /* TitilliumSansPro-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6E6068A8E845482BB8EED14D /* TitilliumSansPro-LightItalic.otf */; };
+		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		1CC48AD0DE934A7C9739D1D0 /* Titillio-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1334088E94724E748794B2D8 /* Titillio-Regular.otf */; };
+		288D6A4691BD428CB42B07C2 /* Titillio-Extrablack.otf in Resources */ = {isa = PBXBuildFile; fileRef = 46D94ADB3D054087B3BEE59C /* Titillio-Extrablack.otf */; };
+		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
+		3E98C6827487483980FA58A5 /* Titillio-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2FAFF8EC92B54B319FAB0761 /* Titillio-ThinItalic.otf */; };
+		3EE51B5AF95441E1A79D75FF /* TitilliumSansPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8FCBADF0ABC04444A8346CF1 /* TitilliumSansPro-Light.otf */; };
+		5167F841E4664DCE8788034D /* TitilliumSansPro-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = A4A5A364F1B44C7DB4270170 /* TitilliumSansPro-BlackItalic.otf */; };
+		54964D498F49216D5F0B476F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = BEB0AEC8E60F1B2EEF95D9AF /* PrivacyInfo.xcprivacy */; };
+		72813389E4E34542B5A9F032 /* TitilliumSansPro-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = A76826209A6248848584051E /* TitilliumSansPro-BoldItalic.otf */; };
+		75E278A5BA1D41E29D0600AE /* TitilliumSansPro-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0E877262C30941F8AD74FAB6 /* TitilliumSansPro-ThinItalic.otf */; };
+		7C6031C4F35D471A8FC219AD /* Titillio-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC718503163641EDAE07045B /* Titillio-BlackItalic.otf */; };
+		82CD68B88D5949E3AFC3865F /* TitilliumSansPro-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = F4B8406D17224B2ABE9BD04C /* TitilliumSansPro-Thin.otf */; };
+		8541C450A38464B29BDC285A /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6B8EEA9D11DC5DDDA164A /* ExpoModulesProvider.swift */; };
+		88571417991F40FD9A8E5546 /* Titillio-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = AE42E41116094DC4A173A717 /* Titillio-SemiboldItalic.otf */; };
+		8A35E6B42C5AAD0BA4FB1716 /* libPods-MainApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EB74E15A63B166C2FEBC0AC /* libPods-MainApp.a */; };
+		8B16C274B26D48DFAAD3C484 /* Titillio-Extrabold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AB814ECB2BAD4BB9BEB8BBA0 /* Titillio-Extrabold.otf */; };
+		9DD6321B1CD44EB5AD34DFD8 /* TitilliumSansPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7F0AAFD017DA48A9B69A6B67 /* TitilliumSansPro-Bold.otf */; };
+		A08CDFFDF713499283B4486D /* TitilliumSansPro-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = A3BD7B2FEB154C1299740920 /* TitilliumSansPro-Black.otf */; };
+		A799E0B4AD594C10AB133413 /* Titillio-ExtrablackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6E37833B6C564F93A79DBB5D /* Titillio-ExtrablackItalic.otf */; };
+		BAF8DB1491FA447288CE85EC /* TitilliumSansPro-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = BD7ABE2CC128425190B8FE50 /* TitilliumSansPro-SemiboldItalic.otf */; };
+		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		BD0E9D3AA589481BB9ADF337 /* TitilliumSansPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2BB73C6B9316490C8ECA29FB /* TitilliumSansPro-Regular.otf */; };
+		BF2D803FB98648D8BC07D036 /* Titillio-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 63388A7E10BD49238CF17FFD /* Titillio-Black.otf */; };
+		BFAD2735D27041ABA52577AF /* Titillio-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B19C34907E464CB59978B9FF /* Titillio-Bold.otf */; };
+		C02C2DFBE4434A53973072D5 /* Titillio-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9DACC7422D3E44BE800D6836 /* Titillio-BoldItalic.otf */; };
+		D1C0B673655B4ADD9105F6F3 /* TitilliumSansPro-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6D77B35D45D54ED5AF4B01A3 /* TitilliumSansPro-Italic.otf */; };
+		D1E6AA3F3DA74DC4AF801C7E /* FiraCode-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3E6466EB5D0C42AAB3B2DD9E /* FiraCode-Medium.ttf */; };
+		D33E440CC02C4F24BC3B7E95 /* Titillio-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = ADE37897188E45FB9F39B060 /* Titillio-RegularItalic.otf */; };
+		E171E6F804D144DD99D16490 /* Titillio-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3B44A4B639194528B3112033 /* Titillio-Thin.otf */; };
+		E4FD398CB7C04452A1D712CD /* Titillio-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6537C44D77D6424C98557246 /* Titillio-Light.otf */; };
+		EAC31C65833641C095E07298 /* Titillio-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = B17ACAEE9EBC4E01BE99B937 /* Titillio-LightItalic.otf */; };
+		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
+		F144524F50A6405581717CF4 /* TitilliumSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA821A4D6FFE44AABC3C58FE /* TitilliumSansPro-Semibold.otf */; };
+		F518CB02A7FB43E9A00FA021 /* Titillio-ExtraboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 29CD71BB3F58463D9553D749 /* Titillio-ExtraboldItalic.otf */; };
+		F6318198E6DD4140BFB694E6 /* Titillio-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EB64F97DE18F4A59891D52BF /* Titillio-Semibold.otf */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0E877262C30941F8AD74FAB6 /* TitilliumSansPro-ThinItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-ThinItalic.otf"; path = "../assets/fonts/TitilliumSansPro-ThinItalic.otf"; sourceTree = "<group>"; };
+		1334088E94724E748794B2D8 /* Titillio-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Regular.otf"; path = "../assets/fonts/Titillio-Regular.otf"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* MainApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MainApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = MainApp/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MainApp/Info.plist; sourceTree = "<group>"; };
+		29CD71BB3F58463D9553D749 /* Titillio-ExtraboldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-ExtraboldItalic.otf"; path = "../assets/fonts/Titillio-ExtraboldItalic.otf"; sourceTree = "<group>"; };
+		2BB73C6B9316490C8ECA29FB /* TitilliumSansPro-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Regular.otf"; path = "../assets/fonts/TitilliumSansPro-Regular.otf"; sourceTree = "<group>"; };
+		2FAFF8EC92B54B319FAB0761 /* Titillio-ThinItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-ThinItalic.otf"; path = "../assets/fonts/Titillio-ThinItalic.otf"; sourceTree = "<group>"; };
+		3B44A4B639194528B3112033 /* Titillio-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Thin.otf"; path = "../assets/fonts/Titillio-Thin.otf"; sourceTree = "<group>"; };
+		3E6466EB5D0C42AAB3B2DD9E /* FiraCode-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "FiraCode-Medium.ttf"; path = "../assets/fonts/FiraCode-Medium.ttf"; sourceTree = "<group>"; };
+		46D94ADB3D054087B3BEE59C /* Titillio-Extrablack.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Extrablack.otf"; path = "../assets/fonts/Titillio-Extrablack.otf"; sourceTree = "<group>"; };
+		4EB74E15A63B166C2FEBC0AC /* libPods-MainApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MainApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		63388A7E10BD49238CF17FFD /* Titillio-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Black.otf"; path = "../assets/fonts/Titillio-Black.otf"; sourceTree = "<group>"; };
+		6537C44D77D6424C98557246 /* Titillio-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Light.otf"; path = "../assets/fonts/Titillio-Light.otf"; sourceTree = "<group>"; };
+		6D77B35D45D54ED5AF4B01A3 /* TitilliumSansPro-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Italic.otf"; path = "../assets/fonts/TitilliumSansPro-Italic.otf"; sourceTree = "<group>"; };
+		6E37833B6C564F93A79DBB5D /* Titillio-ExtrablackItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-ExtrablackItalic.otf"; path = "../assets/fonts/Titillio-ExtrablackItalic.otf"; sourceTree = "<group>"; };
+		6E6068A8E845482BB8EED14D /* TitilliumSansPro-LightItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-LightItalic.otf"; path = "../assets/fonts/TitilliumSansPro-LightItalic.otf"; sourceTree = "<group>"; };
+		7F0AAFD017DA48A9B69A6B67 /* TitilliumSansPro-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Bold.otf"; path = "../assets/fonts/TitilliumSansPro-Bold.otf"; sourceTree = "<group>"; };
+		8FCBADF0ABC04444A8346CF1 /* TitilliumSansPro-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Light.otf"; path = "../assets/fonts/TitilliumSansPro-Light.otf"; sourceTree = "<group>"; };
+		9CC6B8EEA9D11DC5DDDA164A /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-MainApp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		9DACC7422D3E44BE800D6836 /* Titillio-BoldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-BoldItalic.otf"; path = "../assets/fonts/Titillio-BoldItalic.otf"; sourceTree = "<group>"; };
+		A3BD7B2FEB154C1299740920 /* TitilliumSansPro-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Black.otf"; path = "../assets/fonts/TitilliumSansPro-Black.otf"; sourceTree = "<group>"; };
+		A4A5A364F1B44C7DB4270170 /* TitilliumSansPro-BlackItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-BlackItalic.otf"; path = "../assets/fonts/TitilliumSansPro-BlackItalic.otf"; sourceTree = "<group>"; };
+		A76826209A6248848584051E /* TitilliumSansPro-BoldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-BoldItalic.otf"; path = "../assets/fonts/TitilliumSansPro-BoldItalic.otf"; sourceTree = "<group>"; };
+		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = MainApp/SplashScreen.storyboard; sourceTree = "<group>"; };
+		AB814ECB2BAD4BB9BEB8BBA0 /* Titillio-Extrabold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Extrabold.otf"; path = "../assets/fonts/Titillio-Extrabold.otf"; sourceTree = "<group>"; };
+		ADE37897188E45FB9F39B060 /* Titillio-RegularItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-RegularItalic.otf"; path = "../assets/fonts/Titillio-RegularItalic.otf"; sourceTree = "<group>"; };
+		AE42E41116094DC4A173A717 /* Titillio-SemiboldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-SemiboldItalic.otf"; path = "../assets/fonts/Titillio-SemiboldItalic.otf"; sourceTree = "<group>"; };
+		B17ACAEE9EBC4E01BE99B937 /* Titillio-LightItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-LightItalic.otf"; path = "../assets/fonts/Titillio-LightItalic.otf"; sourceTree = "<group>"; };
+		B19C34907E464CB59978B9FF /* Titillio-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Bold.otf"; path = "../assets/fonts/Titillio-Bold.otf"; sourceTree = "<group>"; };
+		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
+		BD7ABE2CC128425190B8FE50 /* TitilliumSansPro-SemiboldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-SemiboldItalic.otf"; path = "../assets/fonts/TitilliumSansPro-SemiboldItalic.otf"; sourceTree = "<group>"; };
+		BEB0AEC8E60F1B2EEF95D9AF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = MainApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		C45ED5CB5D629099EE694C1E /* Pods-MainApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MainApp.release.xcconfig"; path = "Target Support Files/Pods-MainApp/Pods-MainApp.release.xcconfig"; sourceTree = "<group>"; };
+		CA821A4D6FFE44AABC3C58FE /* TitilliumSansPro-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Semibold.otf"; path = "../assets/fonts/TitilliumSansPro-Semibold.otf"; sourceTree = "<group>"; };
+		EB64F97DE18F4A59891D52BF /* Titillio-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-Semibold.otf"; path = "../assets/fonts/Titillio-Semibold.otf"; sourceTree = "<group>"; };
+		EC718503163641EDAE07045B /* Titillio-BlackItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Titillio-BlackItalic.otf"; path = "../assets/fonts/Titillio-BlackItalic.otf"; sourceTree = "<group>"; };
+		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		ED8984BB3188BA038F7E94AD /* Pods-MainApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MainApp.debug.xcconfig"; path = "Target Support Files/Pods-MainApp/Pods-MainApp.debug.xcconfig"; sourceTree = "<group>"; };
+		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = MainApp/AppDelegate.swift; sourceTree = "<group>"; };
+		F11748442D0722820044C1D9 /* MainApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MainApp-Bridging-Header.h"; path = "MainApp/MainApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		F4B8406D17224B2ABE9BD04C /* TitilliumSansPro-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "TitilliumSansPro-Thin.otf"; path = "../assets/fonts/TitilliumSansPro-Thin.otf"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		13B07F8C1A680F5B00A75B9A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A35E6B42C5AAD0BA4FB1716 /* libPods-MainApp.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		13B07FAE1A68108700A75B9A /* MainApp */ = {
+			isa = PBXGroup;
+			children = (
+				F11748412D0307B40044C1D9 /* AppDelegate.swift */,
+				F11748442D0722820044C1D9 /* MainApp-Bridging-Header.h */,
+				BB2F792B24A3F905000567C9 /* Supporting */,
+				13B07FB51A68108700A75B9A /* Images.xcassets */,
+				13B07FB61A68108700A75B9A /* Info.plist */,
+				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
+				BEB0AEC8E60F1B2EEF95D9AF /* PrivacyInfo.xcprivacy */,
+			);
+			name = MainApp;
+			sourceTree = "<group>";
+		};
+		2143EFCA55402DDB97A9FFC9 /* MainApp */ = {
+			isa = PBXGroup;
+			children = (
+				9CC6B8EEA9D11DC5DDDA164A /* ExpoModulesProvider.swift */,
+			);
+			name = MainApp;
+			sourceTree = "<group>";
+		};
+		2978958536D6A5F875E45137 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ED8984BB3188BA038F7E94AD /* Pods-MainApp.debug.xcconfig */,
+				C45ED5CB5D629099EE694C1E /* Pods-MainApp.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
+				4EB74E15A63B166C2FEBC0AC /* libPods-MainApp.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		83CBB9F61A601CBA00E9B192 = {
+			isa = PBXGroup;
+			children = (
+				13B07FAE1A68108700A75B9A /* MainApp */,
+				832341AE1AAA6A7D00B99B32 /* Libraries */,
+				83CBBA001A601CBA00E9B192 /* Products */,
+				2D16E6871FA4F8E400B85C8A /* Frameworks */,
+				955C973C16BD489BA7DB8DCE /* Resources */,
+				2978958536D6A5F875E45137 /* Pods */,
+				FD14676DA87EDF7492492523 /* ExpoModulesProviders */,
+			);
+			indentWidth = 2;
+			sourceTree = "<group>";
+			tabWidth = 2;
+			usesTabs = 0;
+		};
+		83CBBA001A601CBA00E9B192 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				13B07F961A680F5B00A75B9A /* MainApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		955C973C16BD489BA7DB8DCE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				63388A7E10BD49238CF17FFD /* Titillio-Black.otf */,
+				EC718503163641EDAE07045B /* Titillio-BlackItalic.otf */,
+				B19C34907E464CB59978B9FF /* Titillio-Bold.otf */,
+				9DACC7422D3E44BE800D6836 /* Titillio-BoldItalic.otf */,
+				46D94ADB3D054087B3BEE59C /* Titillio-Extrablack.otf */,
+				6E37833B6C564F93A79DBB5D /* Titillio-ExtrablackItalic.otf */,
+				AB814ECB2BAD4BB9BEB8BBA0 /* Titillio-Extrabold.otf */,
+				29CD71BB3F58463D9553D749 /* Titillio-ExtraboldItalic.otf */,
+				6537C44D77D6424C98557246 /* Titillio-Light.otf */,
+				B17ACAEE9EBC4E01BE99B937 /* Titillio-LightItalic.otf */,
+				1334088E94724E748794B2D8 /* Titillio-Regular.otf */,
+				ADE37897188E45FB9F39B060 /* Titillio-RegularItalic.otf */,
+				EB64F97DE18F4A59891D52BF /* Titillio-Semibold.otf */,
+				AE42E41116094DC4A173A717 /* Titillio-SemiboldItalic.otf */,
+				3B44A4B639194528B3112033 /* Titillio-Thin.otf */,
+				2FAFF8EC92B54B319FAB0761 /* Titillio-ThinItalic.otf */,
+				A3BD7B2FEB154C1299740920 /* TitilliumSansPro-Black.otf */,
+				A4A5A364F1B44C7DB4270170 /* TitilliumSansPro-BlackItalic.otf */,
+				7F0AAFD017DA48A9B69A6B67 /* TitilliumSansPro-Bold.otf */,
+				A76826209A6248848584051E /* TitilliumSansPro-BoldItalic.otf */,
+				6D77B35D45D54ED5AF4B01A3 /* TitilliumSansPro-Italic.otf */,
+				8FCBADF0ABC04444A8346CF1 /* TitilliumSansPro-Light.otf */,
+				6E6068A8E845482BB8EED14D /* TitilliumSansPro-LightItalic.otf */,
+				2BB73C6B9316490C8ECA29FB /* TitilliumSansPro-Regular.otf */,
+				CA821A4D6FFE44AABC3C58FE /* TitilliumSansPro-Semibold.otf */,
+				BD7ABE2CC128425190B8FE50 /* TitilliumSansPro-SemiboldItalic.otf */,
+				F4B8406D17224B2ABE9BD04C /* TitilliumSansPro-Thin.otf */,
+				0E877262C30941F8AD74FAB6 /* TitilliumSansPro-ThinItalic.otf */,
+				3E6466EB5D0C42AAB3B2DD9E /* FiraCode-Medium.ttf */,
+			);
+			name = Resources;
+			path = "";
+			sourceTree = "<group>";
+		};
+		BB2F792B24A3F905000567C9 /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				BB2F792C24A3F905000567C9 /* Expo.plist */,
+			);
+			name = Supporting;
+			path = MainApp/Supporting;
+			sourceTree = "<group>";
+		};
+		FD14676DA87EDF7492492523 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				2143EFCA55402DDB97A9FFC9 /* MainApp */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		13B07F861A680F5B00A75B9A /* MainApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "MainApp" */;
+			buildPhases = (
+				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
+				984D8AC648CCBCD374BC550D /* [Expo] Configure project */,
+				13B07F871A680F5B00A75B9A /* Sources */,
+				13B07F8C1A680F5B00A75B9A /* Frameworks */,
+				13B07F8E1A680F5B00A75B9A /* Resources */,
+				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
+				253DEC56CED6E93E7261805C /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MainApp;
+			productName = MainApp;
+			productReference = 13B07F961A680F5B00A75B9A /* MainApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		83CBB9F71A601CBA00E9B192 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1130;
+				TargetAttributes = {
+					13B07F861A680F5B00A75B9A = {
+						LastSwiftMigration = 1250;
+					};
+				};
+			};
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "MainApp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 83CBB9F61A601CBA00E9B192;
+			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				13B07F861A680F5B00A75B9A /* MainApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		13B07F8E1A680F5B00A75B9A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
+				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
+				BF2D803FB98648D8BC07D036 /* Titillio-Black.otf in Resources */,
+				7C6031C4F35D471A8FC219AD /* Titillio-BlackItalic.otf in Resources */,
+				BFAD2735D27041ABA52577AF /* Titillio-Bold.otf in Resources */,
+				C02C2DFBE4434A53973072D5 /* Titillio-BoldItalic.otf in Resources */,
+				288D6A4691BD428CB42B07C2 /* Titillio-Extrablack.otf in Resources */,
+				A799E0B4AD594C10AB133413 /* Titillio-ExtrablackItalic.otf in Resources */,
+				8B16C274B26D48DFAAD3C484 /* Titillio-Extrabold.otf in Resources */,
+				F518CB02A7FB43E9A00FA021 /* Titillio-ExtraboldItalic.otf in Resources */,
+				E4FD398CB7C04452A1D712CD /* Titillio-Light.otf in Resources */,
+				EAC31C65833641C095E07298 /* Titillio-LightItalic.otf in Resources */,
+				1CC48AD0DE934A7C9739D1D0 /* Titillio-Regular.otf in Resources */,
+				D33E440CC02C4F24BC3B7E95 /* Titillio-RegularItalic.otf in Resources */,
+				F6318198E6DD4140BFB694E6 /* Titillio-Semibold.otf in Resources */,
+				88571417991F40FD9A8E5546 /* Titillio-SemiboldItalic.otf in Resources */,
+				E171E6F804D144DD99D16490 /* Titillio-Thin.otf in Resources */,
+				3E98C6827487483980FA58A5 /* Titillio-ThinItalic.otf in Resources */,
+				A08CDFFDF713499283B4486D /* TitilliumSansPro-Black.otf in Resources */,
+				5167F841E4664DCE8788034D /* TitilliumSansPro-BlackItalic.otf in Resources */,
+				9DD6321B1CD44EB5AD34DFD8 /* TitilliumSansPro-Bold.otf in Resources */,
+				72813389E4E34542B5A9F032 /* TitilliumSansPro-BoldItalic.otf in Resources */,
+				D1C0B673655B4ADD9105F6F3 /* TitilliumSansPro-Italic.otf in Resources */,
+				3EE51B5AF95441E1A79D75FF /* TitilliumSansPro-Light.otf in Resources */,
+				11CCBCF804FC49BEB363D8DD /* TitilliumSansPro-LightItalic.otf in Resources */,
+				BD0E9D3AA589481BB9ADF337 /* TitilliumSansPro-Regular.otf in Resources */,
+				F144524F50A6405581717CF4 /* TitilliumSansPro-Semibold.otf in Resources */,
+				BAF8DB1491FA447288CE85EC /* TitilliumSansPro-SemiboldItalic.otf in Resources */,
+				82CD68B88D5949E3AFC3865F /* TitilliumSansPro-Thin.otf in Resources */,
+				75E278A5BA1D41E29D0600AE /* TitilliumSansPro-ThinItalic.otf in Resources */,
+				D1E6AA3F3DA74DC4AF801C7E /* FiraCode-Medium.ttf in Resources */,
+				54964D498F49216D5F0B476F /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/.xcode.env",
+				"$(SRCROOT)/.xcode.env.local",
+			);
+			name = "Bundle React Native code and images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n# The project root by default is one level up from the ios directory\nexport PROJECT_ROOT=\"$PROJECT_DIR\"/..\n\nif [[ \"$CONFIGURATION\" = *Debug* ]]; then\n  export SKIP_BUNDLING=1\nfi\nif [[ -z \"$ENTRY_FILE\" ]]; then\n  # Set the entry JS file using the bundler's entry resolution.\n  export ENTRY_FILE=\"$(\"$NODE_BINARY\" -e \"require('expo/scripts/resolveAppEntry')\" \"$PROJECT_ROOT\" ios absolute | tail -n 1)\"\nfi\n\nif [[ -z \"$CLI_PATH\" ]]; then\n  # Use Expo CLI\n  export CLI_PATH=\"$(\"$NODE_BINARY\" --print \"require.resolve('@expo/cli', { paths: [require.resolve('expo/package.json')] })\")\"\nfi\nif [[ -z \"$BUNDLE_COMMAND\" ]]; then\n  # Default Expo CLI command for bundling\n  export BUNDLE_COMMAND=\"export:embed\"\nfi\n\n# Source .xcode.env.updates if it exists to allow\n# SKIP_BUNDLING to be unset if needed\nif [[ -f \"$PODS_ROOT/../.xcode.env.updates\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.updates\"\nfi\n# Source local changes to allow overrides\n# if needed\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n`\"$NODE_BINARY\" --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/react-native-xcode.sh'\"`\n\n";
+		};
+		08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MainApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		253DEC56CED6E93E7261805C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MainApp/Pods-MainApp-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/IOWalletCBOR/IOWalletCBOR.framework/IOWalletCBOR",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/IOWalletProximity/IOWalletProximity.framework/IOWalletProximity",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/React-Core-prebuilt/React.framework/React",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IOWalletCBOR.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IOWalletProximity.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MainApp/Pods-MainApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MainApp/Pods-MainApp-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/ExpoConstants_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoFileSystem/ExpoFileSystem_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNCAsyncStorage/RNCAsyncStorage_resources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNDeviceInfo/RNDeviceInfoPrivacyInfo.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNPermissions/RNPermissionsPrivacyInfo.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNSVG/RNSVGFilters.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXConstants.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoConstants_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoFileSystem_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNCAsyncStorage_resources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNDeviceInfoPrivacyInfo.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNPermissionsPrivacyInfo.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNSVGFilters.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MainApp/Pods-MainApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		984D8AC648CCBCD374BC550D /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/.xcode.env",
+				"$(SRCROOT)/.xcode.env.local",
+				"$(SRCROOT)/MainApp/MainApp.entitlements",
+				"$(SRCROOT)/Pods/Target Support Files/Pods-MainApp/expo-configure-project.sh",
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/Pods/Target Support Files/Pods-MainApp/ExpoModulesProvider.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-MainApp/expo-configure-project.sh\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		13B07F871A680F5B00A75B9A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
+				8541C450A38464B29BDC285A /* ExpoModulesProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		13B07F941A680F5B00A75B9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED8984BB3188BA038F7E94AD /* Pods-MainApp.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MainApp/MainApp.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_BITCODE = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"FB_SONARKIT_ENABLED=1",
+				);
+				INFOPLIST_FILE = MainApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
+				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
+				PRODUCT_NAME = MainApp;
+				SWIFT_OBJC_BRIDGING_HEADER = "MainApp/MainApp-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		13B07F951A680F5B00A75B9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C45ED5CB5D629099EE694C1E /* Pods-MainApp.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MainApp/MainApp.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = MainApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = it.pagopa.app.io.poc.eudiw;
+				PRODUCT_NAME = MainApp;
+				SWIFT_OBJC_BRIDGING_HEADER = "MainApp/MainApp-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		83CBBA201A601CBA00E9B192 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../node_modules/react-native";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_ENABLE_EXPLICIT_MODULES = NO;
+				USE_HERMES = true;
+			};
+			name = Debug;
+		};
+		83CBBA211A601CBA00E9B192 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../node_modules/react-native";
+				SDKROOT = iphoneos;
+				SWIFT_ENABLE_EXPLICIT_MODULES = NO;
+				USE_HERMES = true;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "MainApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				13B07F941A680F5B00A75B9A /* Debug */,
+				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "MainApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83CBBA201A601CBA00E9B192 /* Debug */,
+				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
+}
