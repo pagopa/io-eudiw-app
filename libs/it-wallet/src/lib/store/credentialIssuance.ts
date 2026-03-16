@@ -4,7 +4,13 @@ import {
   StoredCredential
 } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
-import { AsyncStatusValues, setError, setInitial, setLoading, setSuccess } from '@io-eudiw-app/commons';
+import {
+  AsyncStatusValues,
+  setError,
+  setInitial,
+  setLoading,
+  setSuccess
+} from '@io-eudiw-app/commons';
 import { WalletCombinedRootState } from '.';
 
 export type RequestedCredential = string | undefined;
@@ -104,11 +110,13 @@ export const {
 export const { reducer: credentialIssuanceStatusReducer } =
   credentialIssuanceStatusSlice;
 
-export const selectCredentialIssuancePreAuthStatus = (state: WalletCombinedRootState) =>
-  state.wallet.credentialIssuanceStatus.statusPreAuth;
+export const selectCredentialIssuancePreAuthStatus = (
+  state: WalletCombinedRootState
+) => state.wallet.credentialIssuanceStatus.statusPreAuth;
 
-export const selectCredentialIssuancePostAuthStatus = (state: WalletCombinedRootState) =>
-  state.wallet.credentialIssuanceStatus.statusPostAuth;
+export const selectCredentialIssuancePostAuthStatus = (
+  state: WalletCombinedRootState
+) => state.wallet.credentialIssuanceStatus.statusPostAuth;
 
 export const selectRequestedCredential = (state: WalletCombinedRootState) =>
   state.wallet.credentialIssuanceStatus.requestedCredential;
@@ -116,8 +124,10 @@ export const selectRequestedCredential = (state: WalletCombinedRootState) =>
 export const selectRequestedCredentialType = (state: WalletCombinedRootState) =>
   state.wallet.credentialIssuanceStatus.requestedCredentialType;
 
-export const selectCredentialIssuancePostAuthError = (state: WalletCombinedRootState) =>
-  state.wallet.credentialIssuanceStatus.statusPostAuth.error.error;
+export const selectCredentialIssuancePostAuthError = (
+  state: WalletCombinedRootState
+) => state.wallet.credentialIssuanceStatus.statusPostAuth.error.error;
 
-export const selectCredentialIssuancePreAuthError = (state: WalletCombinedRootState) =>
-  state.wallet.credentialIssuanceStatus.statusPreAuth.error.error;
+export const selectCredentialIssuancePreAuthError = (
+  state: WalletCombinedRootState
+) => state.wallet.credentialIssuanceStatus.statusPreAuth.error.error;

@@ -4,7 +4,7 @@ import { RootStackNavigator } from '../navigation/RootStacknavigator';
 import { useAppSelector } from '../store';
 import {
   DebugInfoOverlay,
-  selectIsDebugModeEnabled,
+  selectIsDebugModeEnabled
 } from '@io-eudiw-app/debug-info';
 
 /**

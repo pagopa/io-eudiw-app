@@ -27,7 +27,7 @@ const pinSlice = createSlice({
     pinSet: (state, action: PayloadAction<PinString>) => {
       state.pin = action.payload;
     }
-  },
+  }
 });
 
 /**
@@ -54,4 +54,5 @@ export const pinReducer = persistReducer(pinPersist, pinSlice.reducer);
  * @param state - The root state of the Redux store
  * @returns a string representing the pin
  */
-export const selectPin = (state: IdentificationCombinedRootState) => state.identification.pin.pin;
+export const selectPin = (state: IdentificationCombinedRootState) =>
+  state.identification.pin.pin;

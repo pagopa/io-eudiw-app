@@ -2,7 +2,7 @@ import {
   ClaimsSelector,
   ListItemHeader,
   VStack,
-  useIOTheme,
+  useIOTheme
 } from '@pagopa/io-app-design-system';
 import { addPadding } from '@pagopa/io-react-native-jwt';
 import { ComponentProps, memo } from 'react';
@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import {
   getClaimDisplayValue,
-  WellKnownClaim,
+  WellKnownClaim
 } from '../../utils/itwClaimsUtils';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { ClaimDisplayFormat } from '../../utils/itwRemotePresentationUtils';
@@ -20,9 +20,9 @@ import { getSafeText } from '@io-eudiw-app/commons';
  * Maps claims to the format required by the ClaimsSelector component.
  */
 const mapClaims = (
-  claims: Array<ClaimDisplayFormat>,
+  claims: Array<ClaimDisplayFormat>
 ): ComponentProps<typeof ClaimsSelector>['items'] =>
-  claims.map((c) => {
+  claims.map(c => {
     const displayResult = getClaimDisplayValue(c);
 
     if (displayResult.type === 'image') {
@@ -30,7 +30,7 @@ const mapClaims = (
         id: c.id,
         value: displayResult.value,
         description: c.label,
-        type: 'image',
+        type: 'image'
       };
     }
 
@@ -43,7 +43,7 @@ const mapClaims = (
         id: c.id,
         value: `data:image/jpeg;base64,${addPadding(displayResult.value)}`,
         description: c.label,
-        type: 'image',
+        type: 'image'
       };
     }
 
@@ -54,7 +54,7 @@ const mapClaims = (
     return {
       id: c.id,
       value: textValue,
-      description: c.label,
+      description: c.label
     };
   });
 
@@ -71,7 +71,7 @@ type ItwProximityPresentationDetailsProps = {
 };
 
 const ItwProximityPresentationDetails = ({
-  data,
+  data
 }: ItwProximityPresentationDetailsProps) => {
   const theme = useIOTheme();
   const { t } = useTranslation();
@@ -99,7 +99,7 @@ const ItwProximityPresentationDetails = ({
 };
 
 const MemoizedItwProximityPresentationDetails = memo(
-  ItwProximityPresentationDetails,
+  ItwProximityPresentationDetails
 );
 
 export { MemoizedItwProximityPresentationDetails as ItwProximityPresentationDetails };

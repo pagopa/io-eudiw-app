@@ -38,7 +38,7 @@ const lifecycleSlice = createSlice({
       state.lifecycle = action.payload.lifecycle;
     },
     resetLifecycle: () => initialState
-  },
+  }
 });
 
 /**
@@ -76,5 +76,6 @@ export const lifecycleIsValidSelector = (state: WalletCombinedRootState) =>
  * @param state - The root state
  * @returns true if the wallet lifecycle is operational, false otherwise
  */
-export const lifecycleIsOperationalSelector = (state: WalletCombinedRootState) =>
-  state.wallet.lifecycle.lifecycle === Lifecycle.LIFECYCLE_OPERATIONAL;
+export const lifecycleIsOperationalSelector = (
+  state: WalletCombinedRootState
+) => state.wallet.lifecycle.lifecycle === Lifecycle.LIFECYCLE_OPERATIONAL;

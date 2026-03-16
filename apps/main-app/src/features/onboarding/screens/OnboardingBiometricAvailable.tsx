@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from '../../../store';
 import {
   preferencesSetIsBiometricEnabled,
-  preferencesSetIsOnboardingDone,
+  preferencesSetIsOnboardingDone
 } from '@io-eudiw-app/preferences';
 import { IOScrollView, useHeaderSecondLevel } from '@io-eudiw-app/commons';
 import { confirmBiometricEnabling } from '@io-eudiw-app/identification';
@@ -21,7 +21,7 @@ const OnboardingBiometricAvailable = () => {
 
   useHeaderSecondLevel({
     goBack: () => dispatch(preferencesSetIsOnboardingDone()),
-    title: '',
+    title: ''
   });
 
   /**
@@ -54,13 +54,13 @@ const OnboardingBiometricAvailable = () => {
     primary: {
       label: t('global:buttons.activate'),
       accessibilityLabel: t('global:buttons.activate'),
-      onPress: onPressPrimary,
+      onPress: onPressPrimary
     },
     secondary: {
       label: t('global:buttons.notNow'),
       accessibilityLabel: t('global:buttons.notNow'),
-      onPress: onPressSecondary,
-    },
+      onPress: onPressSecondary
+    }
   };
 
   return (

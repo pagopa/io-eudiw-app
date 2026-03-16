@@ -43,7 +43,7 @@ const debugSlice = createSlice({
         )
       );
     }
-  },
+  }
 });
 
 /**

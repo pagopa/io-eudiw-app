@@ -50,13 +50,13 @@ export const TabNavigator = () => {
             ? 'Titillio'
             : 'TitilliumSansPro',
           14,
-          'Regular',
+          'Regular'
         ),
         headerShown: false,
         tabBarHideOnKeyboard: true,
         tabBarAllowFontScaling: false,
         tabBarActiveTintColor: IOColors['blueIO-500'],
-        tabBarInactiveTintColor: IOColors['grey-850'],
+        tabBarInactiveTintColor: IOColors['grey-850']
       }}
     >
       <Tab.Screen
@@ -71,7 +71,7 @@ export const TabNavigator = () => {
               color={color}
               focused={focused}
             />
-          ),
+          )
         }}
       />
       <Tab.Screen
@@ -81,7 +81,7 @@ export const TabNavigator = () => {
           tabPress: ({ preventDefault }) => {
             preventDefault();
             navigateToQrCodeScanScreen();
-          },
+          }
         }}
         options={{
           title: t('tabNavigator.scanQr'),
@@ -92,7 +92,7 @@ export const TabNavigator = () => {
               color={color}
               focused={focused}
             />
-          ),
+          )
         }}
       />
       <Tab.Screen
@@ -103,7 +103,7 @@ export const TabNavigator = () => {
             preventDefault();
             dispatch(setProximityStatusStarted());
             navigateToQrCodeShowScreen();
-          },
+          }
         }}
         options={{
           title: t('tabNavigator.showQr'),
@@ -114,7 +114,7 @@ export const TabNavigator = () => {
               color={color}
               focused={focused}
             />
-          ),
+          )
         }}
       />
     </Tab.Navigator>

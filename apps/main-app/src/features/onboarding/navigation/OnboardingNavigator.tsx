@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import {
   PinCreation,
-  PinCreationProps,
+  PinCreationProps
 } from '../../../screens/pin/PinCreation';
 import OnboardingBiometricAvailable from '../screens/OnboardingBiometricAvailable';
 import OnboardingBiometricNoScreenLock from '../screens/OnboardingBiometricNoScreenLock';

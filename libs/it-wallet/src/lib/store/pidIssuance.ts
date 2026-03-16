@@ -4,7 +4,13 @@ import { obtainPidThunk } from '../middleware/pid';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { RequestedCredential } from './credentialIssuance';
 import { resetLifecycle } from './lifecycle';
-import { AsyncStatusValues, setInitial, setError, setSuccess, setLoading } from '@io-eudiw-app/commons';
+import {
+  AsyncStatusValues,
+  setInitial,
+  setError,
+  setSuccess,
+  setLoading
+} from '@io-eudiw-app/commons';
 
 /* State type definition for the pidIssuance slice
  * issuanceCreation - Async status for the instance creation

@@ -18,14 +18,21 @@ import { createWalletProviderFetch } from '../utils/fetch';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 import { createAppAsyncThunk } from './thunk';
-import { isAndroid, regenerateCryptoKey, takeLatestEffect } from '@io-eudiw-app/commons';
+import {
+  isAndroid,
+  regenerateCryptoKey,
+  takeLatestEffect
+} from '@io-eudiw-app/commons';
 import { AppListenerWithAction, AppStartListening } from './types';
 import { selectSessionId } from '@io-eudiw-app/preferences';
 import { getEnv } from '@io-eudiw-app/env';
-import { setIdentificationIdentified, setIdentificationStarted, setIdentificationUnidentified } from '@io-eudiw-app/identification';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '@io-eudiw-app/identification';
 import MAIN_ROUTES from '../navigation/main/routes';
 import { navigator } from '../navigation/utils';
-
 
 /**
  * Thunk to obtain the PID credential.

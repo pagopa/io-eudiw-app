@@ -5,7 +5,7 @@ import {
   IOPictograms,
   IconButton,
   Pictogram,
-  VSpacer,
+  VSpacer
 } from '@pagopa/io-app-design-system';
 import { t } from 'i18next';
 import { memo, useCallback, useMemo, useRef, useState } from 'react';
@@ -16,7 +16,7 @@ import {
   Platform,
   StatusBar,
   StyleSheet,
-  View,
+  View
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -24,21 +24,21 @@ import { useBiometricType } from '../hooks/useBiometricType';
 import {
   selectIdentificationStatus,
   setIdentificationIdentified,
-  setIdentificationUnidentified,
+  setIdentificationUnidentified
 } from '../reducer/identification';
 import {
   biometricAuthenticationRequest,
   getBiometricDesignSystemType,
   getBiometryDesignSystemIconName,
-  IdentificationInstructionsComponent,
+  IdentificationInstructionsComponent
 } from '../utils/biometric';
 import {
   isAndroid,
-  useAppBackgroundAccentColorName,
+  useAppBackgroundAccentColorName
 } from '@io-eudiw-app/commons';
 import {
   preferencesReset,
-  selectIsBiometricEnabled,
+  selectIsBiometricEnabled
 } from '@io-eudiw-app/preferences';
 import { IdentificationNumberPad } from './IdentificationNumberPad';
 import { useAppDispatch, useAppSelector } from '../reducer';
@@ -61,7 +61,7 @@ export const IdentificationModal = () => {
   const pin = useAppSelector(selectPin);
   const dispatch = useAppDispatch();
   const { status, isValidatingTask } = useAppSelector(
-    selectIdentificationStatus,
+    selectIdentificationStatus
   );
   const [isBiometricLocked, setIsBiometricLocked] = useState(false);
   const blueColor = useAppBackgroundAccentColorName();
@@ -93,16 +93,16 @@ export const IdentificationModal = () => {
         () => {
           onIdentificationSuccess();
         },
-        (e) => {
+        e => {
           if (!e) {
             return;
           }
           if (e === 'lockout') {
             setIsBiometricLocked(true);
           }
-        },
+        }
       ),
-    [onIdentificationSuccess],
+    [onIdentificationSuccess]
   );
 
   const biometricsConfig = useMemo(
@@ -112,10 +112,10 @@ export const IdentificationModal = () => {
             biometricType: getBiometricDesignSystemType(biometricType),
             biometricAccessibilityLabel:
               getBiometryDesignSystemIconName(biometricType),
-            onBiometricPress: () => onFingerprintRequest(),
+            onBiometricPress: () => onFingerprintRequest()
           }
         : {},
-    [biometricType, onFingerprintRequest],
+    [biometricType, onFingerprintRequest]
   );
 
   const onPinValidated = useCallback(
@@ -127,7 +127,7 @@ export const IdentificationModal = () => {
         showRetryText.current = true;
       }
     },
-    [onIdentificationSuccess],
+    [onIdentificationSuccess]
   );
 
   const confirmResetAlert = useCallback(
@@ -137,22 +137,22 @@ export const IdentificationModal = () => {
         t(
           isValidatingTask
             ? 'identification.forgot.confirmMsgWithTask'
-            : 'identification.forgot.confirmMsg',
+            : 'identification.forgot.confirmMsg'
         ),
         [
           {
             text: t('buttons.confirm'),
             style: 'default',
-            onPress: onPinResetHandler,
+            onPress: onPinResetHandler
           },
           {
             text: t('buttons.cancel'),
-            style: 'cancel',
-          },
+            style: 'cancel'
+          }
         ],
-        { cancelable: false },
+        { cancelable: false }
       ),
-    [isValidatingTask, onPinResetHandler],
+    [isValidatingTask, onPinResetHandler]
   );
 
   const NumberPad = memo(() =>
@@ -163,7 +163,7 @@ export const IdentificationModal = () => {
         numberPadVariant={numberPadVariant}
         biometricsConfig={biometricsConfig}
       />
-    ) : null,
+    ) : null
   );
 
   // If the authentication process is not started, we don't show the modal.
@@ -208,8 +208,8 @@ export const IdentificationModal = () => {
           contentContainerStyle={[
             styles.scrollViewContentContainer,
             {
-              justifyContent: isValidatingTask ? undefined : 'center',
-            },
+              justifyContent: isValidatingTask ? undefined : 'center'
+            }
           ]}
         >
           <ContentWrapper>
@@ -262,9 +262,9 @@ const styles = StyleSheet.create({
   closeButton: {
     zIndex: 100,
     flexGrow: 1,
-    alignItems: 'flex-end',
+    alignItems: 'flex-end'
   },
   scrollViewContentContainer: {
-    flexGrow: 1,
-  },
+    flexGrow: 1
+  }
 });

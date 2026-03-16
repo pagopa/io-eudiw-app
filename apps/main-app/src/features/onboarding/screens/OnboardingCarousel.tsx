@@ -2,7 +2,7 @@ import {
   FooterActions,
   IOButton,
   IOColors,
-  IOVisualCostants,
+  IOVisualCostants
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { ComponentProps, useCallback, useMemo, useRef, useState } from 'react';
@@ -11,14 +11,14 @@ import {
   ScrollView,
   StyleSheet,
   useWindowDimensions,
-  View,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Carousel } from '../../../components/Carousel';
 import { LandingCardComponent } from '../../../components/LandingCardComponent';
 import {
   FocusAwareStatusBar,
-  useAppBackgroundAccentColorName,
+  useAppBackgroundAccentColorName
 } from '@io-eudiw-app/commons';
 
 const TEXT_COLOR = 'white';
@@ -46,7 +46,7 @@ export const OnboardingCarousel = () => {
     } else {
       carouselRef.current?.scrollTo({
         x: windowDimensions.width * (step + 1),
-        animated: true,
+        animated: true
       });
     }
   }, [step, windowDimensions.width, skipCarousel]);
@@ -64,7 +64,7 @@ export const OnboardingCarousel = () => {
         accessibilityHint: t('onboarding:carousel.first.content'),
         titleColor: TEXT_COLOR,
         contentColor: TEXT_COLOR,
-        pictogramStyle: 'light-content',
+        pictogramStyle: 'light-content'
       },
       {
         id: 1,
@@ -75,7 +75,7 @@ export const OnboardingCarousel = () => {
         accessibilityHint: t('onboarding:carousel.second.content'),
         titleColor: TEXT_COLOR,
         contentColor: TEXT_COLOR,
-        pictogramStyle: 'light-content',
+        pictogramStyle: 'light-content'
       },
       {
         id: 2,
@@ -86,10 +86,10 @@ export const OnboardingCarousel = () => {
         accessibilityHint: t('onboarding:carousel.third.content'),
         titleColor: TEXT_COLOR,
         contentColor: TEXT_COLOR,
-        pictogramStyle: 'light-content',
-      },
+        pictogramStyle: 'light-content'
+      }
     ],
-    [t],
+    [t]
   );
   return (
     <>
@@ -102,7 +102,7 @@ export const OnboardingCarousel = () => {
           style={{
             flexDirection: 'row',
             justifyContent: 'flex-end',
-            padding: IOVisualCostants.appMarginDefault,
+            padding: IOVisualCostants.appMarginDefault
           }}
         >
           <IOButton
@@ -126,9 +126,9 @@ export const OnboardingCarousel = () => {
             primary: {
               label: t('global:buttons.next'),
               onPress: nextStep,
-              color: 'contrast',
+              color: 'contrast'
             },
-            type: 'SingleButton',
+            type: 'SingleButton'
           }}
           transparent
         />
@@ -140,6 +140,6 @@ export const OnboardingCarousel = () => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: IOColors['blueIO-500'],
-  },
+    backgroundColor: IOColors['blueIO-500']
+  }
 });

@@ -1,14 +1,14 @@
 import { useIOThemeContext } from '@pagopa/io-app-design-system';
 import {
   NavigationContainer,
-  NavigatorScreenParams,
+  NavigatorScreenParams
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { t } from 'i18next';
 import { useCallback, useEffect } from 'react';
 import { useStoredFontPreference } from '../context/DSTypeFaceContext';
 import OnboardingNavigator, {
-  OnboardingNavigatorParamsList,
+  OnboardingNavigatorParamsList
 } from '../features/onboarding/navigation/OnboardingNavigator';
 import { useAppDispatch, useAppSelector } from '../store';
 import ROOT_ROUTES from './routes';
@@ -17,11 +17,11 @@ import { MainStackNavigator } from '@io-eudiw-app/it-wallet';
 import { navigationRef } from '@io-eudiw-app/navigation';
 import {
   selectStartupStatus,
-  startupSetLoading,
+  startupSetLoading
 } from '../store/reducers/startup';
 import {
   LoadingScreenContent,
-  OperationResultScreenContent,
+  OperationResultScreenContent
 } from '@io-eudiw-app/commons';
 
 export type RootStackParamList = {
@@ -84,13 +84,13 @@ export const RootStackNavigator = () => {
       case 'DONE':
         return {
           name: ROOT_ROUTES.IT_WALLET_NAV,
-          component: MainStackNavigator,
+          component: MainStackNavigator
         };
 
       case 'WAIT_ONBOARDING':
         return {
           name: ROOT_ROUTES.ONBOARDING_NAV,
-          component: OnboardingNavigator,
+          component: OnboardingNavigator
         };
 
       case 'ERROR':

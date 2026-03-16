@@ -11,7 +11,7 @@ const ROOT_ROUTES = {
   ONBOARDING_NAV: 'ROOT_ONBOARDING_NAV',
 
   // Wallet
-  IT_WALLET_NAV: 'ROOT_IT_WALLET_NAV',
+  IT_WALLET_NAV: 'ROOT_IT_WALLET_NAV'
 } as const;
 
 export default ROOT_ROUTES;

@@ -59,5 +59,6 @@ export const identificationReducer = identificationSlice.reducer;
  * @param state - The root state.
  * @returns The identification state.
  */
-export const selectIdentificationStatus = (state: IdentificationCombinedRootState) =>
-  state.identification.identification;
+export const selectIdentificationStatus = (
+  state: IdentificationCombinedRootState
+) => state.identification.identification;

@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 import Animated, {
   useAnimatedRef,
-  useSharedValue,
+  useSharedValue
 } from 'react-native-reanimated';
 import {
   ButtonBlockProps,
   IOScrollView,
   IOScrollViewActions,
-  useHeaderSecondLevel,
+  useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import { lifecycleIsValidSelector } from '../../store/lifecycle';
 import { useHeaderPropsByCredentialType } from '../../utils/itwStyleUtils';
@@ -28,7 +28,7 @@ const scrollTriggerOffsetValue: number = 88;
 const ItwPresentationDetailsScreenBase = ({
   credential,
   children,
-  ctaProps,
+  ctaProps
 }: ItwPresentationDetailsScreenBaseProps) => {
   const animatedScrollViewRef = useAnimatedRef<Animated.ScrollView>();
   const itwFeaturesEnabled = useAppSelector(lifecycleIsValidSelector);
@@ -36,7 +36,7 @@ const ItwPresentationDetailsScreenBase = ({
 
   const headerProps = useHeaderPropsByCredentialType(
     credential.credentialType,
-    itwFeaturesEnabled,
+    itwFeaturesEnabled
   );
 
   // TODO add support toast?
@@ -44,12 +44,12 @@ const ItwPresentationDetailsScreenBase = ({
   useHeaderSecondLevel({
     scrollValues: {
       triggerOffset: scrollTriggerOffsetValue,
-      contentOffsetY: scrollTranslationY,
+      contentOffsetY: scrollTranslationY
     },
     supportRequest: true,
     enableDiscreteTransition: true,
     animatedRef: animatedScrollViewRef,
-    ...headerProps,
+    ...headerProps
   });
 
   const actions: IOScrollViewActions | undefined = ctaProps

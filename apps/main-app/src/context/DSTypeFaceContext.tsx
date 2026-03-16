@@ -11,7 +11,7 @@ export const useStoredFontPreference = () => {
 
   useLayoutEffect(() => {
     setNewTypefaceEnabled(
-      fontPreference ? fontPreference === 'comfortable' : true,
+      fontPreference ? fontPreference === 'comfortable' : true
     );
   }, [setNewTypefaceEnabled, fontPreference]);
 };

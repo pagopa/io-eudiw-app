@@ -4,7 +4,7 @@ import {
   resetProximity,
   selectProximityDocumentRequest,
   selectProximityErrorDetails,
-  selectProximityStatus,
+  selectProximityStatus
 } from '../../store/proximity';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
@@ -23,7 +23,7 @@ const PresentationProximitySuccess = () => {
   useDebugInfo({
     verifierRequest,
     proximityStatusEnd: proximityStatus,
-    proximityErrorDetailsEnd: proximityErrorDetails,
+    proximityErrorDetailsEnd: proximityErrorDetails
   });
 
   return (
@@ -37,7 +37,7 @@ const PresentationProximitySuccess = () => {
         onPress: () => {
           navigateToWallet();
           dispatch(resetProximity());
-        },
+        }
       }}
     />
   );

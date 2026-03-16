@@ -3,7 +3,7 @@ import {
   EnhancedStore,
   isAnyOf,
   combineReducers,
-  UnknownAction,
+  UnknownAction
 } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -13,7 +13,7 @@ import {
   persistStore,
   PURGE,
   REGISTER,
-  REHYDRATE,
+  REHYDRATE
 } from 'redux-persist';
 import reactotron from '../config/reactotron';
 import { listenerMiddleware, startAppListening } from '../middleware/listener';
@@ -25,12 +25,12 @@ import { walletReducer, WalletRootState } from '@io-eudiw-app/it-wallet';
 import {
   PreferenceRootState,
   preferencesReducer,
-  preferencesReset,
+  preferencesReset
 } from '@io-eudiw-app/preferences';
 import { debugReducer, DebugRootState } from '@io-eudiw-app/debug-info';
 import {
   identificationReducer,
-  IdentificationRootState,
+  IdentificationRootState
 } from '@io-eudiw-app/identification';
 
 // 1. Explicitly type the combined state of all your reducers.
@@ -52,7 +52,7 @@ const combinedReducer = combineReducers({
   ...debugReducer,
   ...identificationReducer,
   ...walletReducer,
-  deepLinking: deepLinkingReducer,
+  deepLinking: deepLinkingReducer
 });
 
 /**
@@ -60,7 +60,7 @@ const combinedReducer = combineReducers({
  */
 const rootReducer = (
   state: ReturnType<typeof combinedReducer> | undefined,
-  action: UnknownAction,
+  action: UnknownAction
 ) => {
   if (action.type === preferencesReset.type) {
     state = undefined;
@@ -74,16 +74,16 @@ const rootReducer = (
 export const store: EnhancedStore<AppRootState> = configureStore({
   // Use the wrapped rootReducer instead of the reducer object
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+      }
     }).prepend(listenerMiddleware.middleware),
-  enhancers: (getDefaultEnhancers) =>
+  enhancers: getDefaultEnhancers =>
     __DEV__
       ? getDefaultEnhancers().concat(reactotron.createEnhancer())
-      : getDefaultEnhancers(),
+      : getDefaultEnhancers()
 });
 
 /**
@@ -91,7 +91,7 @@ export const store: EnhancedStore<AppRootState> = configureStore({
  */
 startAppListening({
   matcher: isAnyOf(startupSetLoading, preferencesReset),
-  effect: startupListener,
+  effect: startupListener
 });
 
 /**

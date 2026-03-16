@@ -59,7 +59,9 @@ const itwIsWalletEmptySelector = createSelector(
  * @param state the application global state
  * @returns true if the banner should be visible, false otherwise
  */
-export const itwShouldRenderWalletReadyBannerSelector = (state: WalletCombinedRootState) =>
+export const itwShouldRenderWalletReadyBannerSelector = (
+  state: WalletCombinedRootState
+) =>
   lifecycleIsValidSelector(state) &&
   // NOTE: Wallet instance status not yet implemented
   // NOTE: Online status checks not yet implemented

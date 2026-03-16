@@ -4,7 +4,7 @@ import {
   CodeInput,
   Body,
   WithTestID,
-  IOVisualCostants,
+  IOVisualCostants
 } from '@pagopa/io-app-design-system';
 import { RefObject, memo } from 'react';
 import { Dimensions, View } from 'react-native';
@@ -40,7 +40,7 @@ export const PinCarouselItem = memo(
     titleRef,
     maxLength,
     handleOnValidate,
-    onValueChange,
+    onValueChange
   }: PinCarouselItemProps) => (
     <View
       style={{
@@ -48,7 +48,7 @@ export const PinCarouselItem = memo(
         alignItems: 'center',
         height: 128,
         justifyContent: 'space-between',
-        width,
+        width
       }}
       testID={testID}
     >
@@ -75,5 +75,5 @@ export const PinCarouselItem = memo(
         value={value}
       />
     </View>
-  ),
+  )
 );

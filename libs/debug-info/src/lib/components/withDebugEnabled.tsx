@@ -6,7 +6,7 @@ import { selectIsDebugModeEnabled } from '../reducer/debug';
  */
 export const withDebugEnabled =
   <P extends Record<string, unknown>>(
-    WrappedComponent: React.ComponentType<P>,
+    WrappedComponent: React.ComponentType<P>
   ) =>
   (props: P) => {
     const isDebug = useAppSelector(selectIsDebugModeEnabled);

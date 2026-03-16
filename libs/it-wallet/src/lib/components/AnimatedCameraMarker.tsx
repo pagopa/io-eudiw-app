@@ -23,7 +23,7 @@ const defaultCornerSize = 44;
 const AnimatedCameraMarker = ({
   size = defaultMarkerSize,
   cornerSize = defaultCornerSize,
-  isAnimated = true,
+  isAnimated = true
 }: Props) => {
   const lineSpan = size / 2 - cornerSize - 8;
 
@@ -31,7 +31,7 @@ const AnimatedCameraMarker = ({
     enabled: isAnimated,
     span: lineSpan,
     duration: ANIMATION_DURATION,
-    axis: 'y',
+    axis: 'y'
   });
 
   const drawMarkerCorner = (rotation: number, markerSize: number) => (
@@ -39,7 +39,7 @@ const AnimatedCameraMarker = ({
       width={markerSize}
       height={markerSize}
       style={{
-        transform: [{ rotate: `${rotation}deg` }],
+        transform: [{ rotate: `${rotation}deg` }]
       }}
     />
   );
@@ -69,23 +69,23 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '105%',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   marker: {
     overflow: 'hidden',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   corners: {
     width: '100%',
     height: '100%',
     justifyContent: 'space-between',
-    position: 'absolute',
+    position: 'absolute'
   },
   cornersSide: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
+    justifyContent: 'space-between'
+  }
 });
 
 export { AnimatedCameraMarker };

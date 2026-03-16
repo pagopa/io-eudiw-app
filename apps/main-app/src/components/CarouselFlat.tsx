@@ -5,14 +5,14 @@ import {
   Ref,
   forwardRef,
   useCallback,
-  useMemo,
+  useMemo
 } from 'react';
 import {
   Dimensions,
   FlatList,
   FlatListProps,
   StyleSheet,
-  View,
+  View
 } from 'react-native';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
@@ -62,13 +62,13 @@ function CarouselComponent<T extends Record<string, unknown>>(
     testID,
     Component,
     onViewableItemsChanged,
-    keyExtractor,
+    keyExtractor
   }: WithTestID<Props<T>>,
-  ref: Ref<FlatList<T>>,
+  ref: Ref<FlatList<T>>
 ) {
   const snapToInterval = useMemo(
     () => WINDOW_WIDTH - itemsGap * itemsPerTime,
-    [itemsGap, itemsPerTime],
+    [itemsGap, itemsPerTime]
   );
 
   const renderItem = useCallback(
@@ -79,22 +79,22 @@ function CarouselComponent<T extends Record<string, unknown>>(
             data.length === 1 && itemsPerTime === 1
               ? WINDOW_WIDTH
               : WINDOW_WIDTH / itemsPerTime - itemsGap * 2,
-          marginRight: itemsGap,
+          marginRight: itemsGap
         }}
       >
         <Component {...item} />
       </View>
     ),
-    [Component, data, itemsGap, itemsPerTime],
+    [Component, data, itemsGap, itemsPerTime]
   );
 
   const getItemLayout = useCallback(
     (_: Nullable<ArrayLike<T>> | undefined, index: number) => ({
       length: WINDOW_WIDTH,
       offset: WINDOW_WIDTH * index,
-      index,
+      index
     }),
-    [],
+    []
   );
 
   return (
@@ -122,9 +122,9 @@ function CarouselComponent<T extends Record<string, unknown>>(
 }
 
 const styles = StyleSheet.create({
-  box: { overflow: 'visible' },
+  box: { overflow: 'visible' }
 });
 
 export const CarouselFlat = forwardRef(CarouselComponent) as <T>(
-  p: WithTestID<Props<T>> & { ref?: Ref<FlatList<T>> },
+  p: WithTestID<Props<T>> & { ref?: Ref<FlatList<T>> }
 ) => ReactElement;

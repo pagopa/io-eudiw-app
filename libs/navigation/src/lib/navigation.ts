@@ -10,11 +10,15 @@ export const isNavigationReady = () => navigationRef.isReady();
  * We create a "Factory" or "Wrapper" creator.
  * This forces you to declare your types ONCE per library.
  */
-export function createSafeNavigator<ParamList extends Record<string, object | undefined>>() {
+export function createSafeNavigator<
+  ParamList extends Record<string, object | undefined>
+>() {
   return {
     navigate: <RouteName extends keyof ParamList>(
       ...args: undefined extends ParamList[RouteName]
-        ? [screen: RouteName] | [screen: RouteName, params: ParamList[RouteName]]
+        ?
+            | [screen: RouteName]
+            | [screen: RouteName, params: ParamList[RouteName]]
         : [screen: RouteName, params: ParamList[RouteName]]
     ) => {
       if (navigationRef.isReady()) {
@@ -22,10 +26,12 @@ export function createSafeNavigator<ParamList extends Record<string, object | un
         navigationRef.navigate(args[0] as any, args[1] as any);
       }
     },
-    
+
     navigateWithReset: <RouteName extends keyof ParamList>(
       ...args: undefined extends ParamList[RouteName]
-        ? [screen: RouteName] | [screen: RouteName, params: ParamList[RouteName]]
+        ?
+            | [screen: RouteName]
+            | [screen: RouteName, params: ParamList[RouteName]]
         : [screen: RouteName, params: ParamList[RouteName]]
     ) => {
       if (navigationRef.isReady()) {

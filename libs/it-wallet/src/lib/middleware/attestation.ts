@@ -10,8 +10,8 @@ import { createWalletProviderFetch } from '../utils/fetch';
 import { getIntegrityContext } from '../utils/integrity';
 import { AppThunk } from '../store';
 import { regenerateCryptoKey } from '@io-eudiw-app/commons';
-import {getEnv} from "@io-eudiw-app/env"
-import { selectSessionId } from "@io-eudiw-app/preferences"
+import { getEnv } from '@io-eudiw-app/env';
+import { selectSessionId } from '@io-eudiw-app/preferences';
 
 /**
  * Thunk to obtain the wallet instance attestation.

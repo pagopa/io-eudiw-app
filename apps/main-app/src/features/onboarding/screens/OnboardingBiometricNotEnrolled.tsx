@@ -19,7 +19,7 @@ const OnboardingBiometricNotEnrolled = () => {
 
   useHeaderSecondLevel({
     goBack: concludeOnboarding,
-    title: '',
+    title: ''
   });
 
   const listItems = useMemo<Array<ListItemInfo>>(
@@ -27,27 +27,27 @@ const OnboardingBiometricNotEnrolled = () => {
       {
         label: t('onboarding:biometric.notEnrolled.list.firstItem.label'),
         value: t('onboarding:biometric.notEnrolled.list.firstItem.value'),
-        icon: 'systemSettingsAndroid',
+        icon: 'systemSettingsAndroid'
       },
       {
         label: t('onboarding:biometric.notEnrolled.list.secondItem.label'),
         value: t('onboarding:biometric.notEnrolled.list.secondItem.value'),
-        icon: 'systemBiometricRecognitionOS',
+        icon: 'systemBiometricRecognitionOS'
       },
       {
         label: t('onboarding:biometric.notEnrolled.list.thirdItem.label'),
         value: t('onboarding:biometric.notEnrolled.list.thirdItem.value'),
-        icon: 'systemToggleInstructions',
-      },
+        icon: 'systemToggleInstructions'
+      }
     ],
-    [t],
+    [t]
   );
 
   const primaryActionProps = {
     label: t('global:buttons.continue'),
     accessibilityLabel: t('global:buttons.continue'),
     onPress: concludeOnboarding,
-    testID: 'not-enrolled-biometric-confirm',
+    testID: 'not-enrolled-biometric-confirm'
   };
 
   return (
@@ -58,7 +58,7 @@ const OnboardingBiometricNotEnrolled = () => {
       renderItems={listItems}
       actions={{
         primary: primaryActionProps,
-        type: 'SingleButton',
+        type: 'SingleButton'
       }}
     />
   );

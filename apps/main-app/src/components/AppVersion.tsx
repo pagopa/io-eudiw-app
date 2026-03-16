@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     alignSelf: 'flex-start',
     flexDirection: 'row',
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });
 
 /**

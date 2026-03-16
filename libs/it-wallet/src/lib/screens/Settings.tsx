@@ -6,7 +6,7 @@ import {
   RadioGroup,
   useIONewTypeface,
   useIOToast,
-  VSpacer,
+  VSpacer
 } from '@pagopa/io-app-design-system';
 import { ComponentProps, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,17 +14,17 @@ import { FlatList, View } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../store';
 import {
   selectIsDebugModeEnabled,
-  setDebugModeEnabled,
+  setDebugModeEnabled
 } from '@io-eudiw-app/debug-info';
 import { resetLifecycle } from '../store/lifecycle';
 import {
   IOScrollViewWithLargeHeader,
-  useHeaderSecondLevel,
+  useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import {
   preferencesFontSet,
   preferencesReset,
-  TypefaceChoice,
+  TypefaceChoice
 } from '@io-eudiw-app/preferences';
 
 type TestButtonsListItem = Pick<
@@ -49,21 +49,21 @@ const Settings = () => {
       onPress: () => {
         dispatch(resetLifecycle());
         toast.success(t('generics.success'));
-      },
+      }
     },
     {
       label: t('settings.reset.onboardingReset'),
       onPress: () => {
         dispatch(preferencesReset());
-      },
-    },
+      }
+    }
   ];
 
   const DebugSwitch = () => (
     <ListItemSwitch
       label={t('settings.debug')}
       value={isDebugModeEnabled}
-      onSwitchValueChange={(state) => {
+      onSwitchValueChange={state => {
         dispatch(setDebugModeEnabled({ state }));
       }}
     />
@@ -75,23 +75,23 @@ const Settings = () => {
       {
         id: 'comfortable' as TypefaceChoice,
         value: t('settings.appearance.typefaceStyle.comfortable.title', {
-          ns: 'global',
+          ns: 'global'
         }),
         description: t(
           'settings.appearance.typefaceStyle.comfortable.description',
-          { ns: 'global' },
-        ),
+          { ns: 'global' }
+        )
       },
       {
         id: 'standard' as TypefaceChoice,
         value: t('settings.appearance.typefaceStyle.standard.title', {
-          ns: 'global',
+          ns: 'global'
         }),
         description: t(
           'settings.appearance.typefaceStyle.standard.description',
-          { ns: 'global' },
-        ),
-      },
+          { ns: 'global' }
+        )
+      }
     ];
 
     const selectedTypeface: TypefaceChoice = newTypefaceEnabled
@@ -108,7 +108,7 @@ const Settings = () => {
         <ListItemHeader
           iconName="typeface"
           label={t('settings.appearance.typefaceStyle.title', {
-            ns: 'global',
+            ns: 'global'
           })}
         />
         <RadioGroup<TypefaceChoice>
@@ -122,14 +122,14 @@ const Settings = () => {
   }, [t]);
 
   useHeaderSecondLevel({
-    title: '',
+    title: ''
   });
 
   return (
     <IOScrollViewWithLargeHeader
       title={{
         label: t('settings.title'),
-        accessibilityLabel: t('settings.title'),
+        accessibilityLabel: t('settings.title')
       }}
     >
       <View style={{ paddingHorizontal: IOVisualCostants.appMarginDefault }}>

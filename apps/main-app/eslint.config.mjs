@@ -7,9 +7,9 @@ export default [
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     // Override or add rules here
-    rules: {},
+    rules: {}
   },
   {
-    ignores: ['.expo', 'web-build', 'cache', 'dist', '**/out-tsc', 'scripts'],
-  },
+    ignores: ['.expo', 'web-build', 'cache', 'dist', '**/out-tsc', 'scripts']
+  }
 ];

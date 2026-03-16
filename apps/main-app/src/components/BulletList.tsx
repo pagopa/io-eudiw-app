@@ -4,7 +4,7 @@ import {
   ComposedBodyFromArray,
   HSpacer,
   IOSpacer,
-  VSpacer,
+  VSpacer
 } from '@pagopa/io-app-design-system';
 import { ComponentProps, memo, useCallback } from 'react';
 import { View } from 'react-native';
@@ -101,7 +101,7 @@ export const BulletList = memo(
               renderListItems(rest.list, count + 1)}
           </View>
         )),
-      [spacing],
+      [spacing]
     );
 
     return (
@@ -113,5 +113,5 @@ export const BulletList = memo(
         </View>
       </View>
     );
-  },
+  }
 );

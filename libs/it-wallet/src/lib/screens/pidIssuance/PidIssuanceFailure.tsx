@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import {
   OperationResultScreenContent,
-  useHardwareBackButton,
+  useHardwareBackButton
 } from '@io-eudiw-app/commons';
 import {
   resetInstanceCreation,
-  resetPidIssuance,
+  resetPidIssuance
 } from '../../store/pidIssuance';
 import { selectPidIssuanceError } from '../../store/selectors/pidIssuance';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -40,7 +40,7 @@ const PidIssuanceFailure = () => {
       action={{
         accessibilityLabel: t('global:buttons.back'),
         label: t('global:buttons.back'),
-        onPress,
+        onPress
       }}
     />
   );

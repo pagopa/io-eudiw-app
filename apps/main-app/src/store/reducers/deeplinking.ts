@@ -11,7 +11,7 @@ type DeepLinkingSlice = {
 
 // Initial state for the deeplinking slice
 const initialState: DeepLinkingSlice = {
-  url: undefined,
+  url: undefined
 };
 
 /**
@@ -24,8 +24,8 @@ const deeplinkingSlice = createSlice({
   reducers: {
     setUrl: (state, action: PayloadAction<{ url: string }>) => {
       state.url = action.payload.url;
-    },
-  },
+    }
+  }
 });
 
 export const { reducer: deepLinkingReducer } = deeplinkingSlice;

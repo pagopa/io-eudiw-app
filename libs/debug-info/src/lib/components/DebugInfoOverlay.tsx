@@ -3,7 +3,7 @@ import {
   IOText,
   VStack,
   hexToRgba,
-  useIOTheme,
+  useIOTheme
 } from '@pagopa/io-app-design-system';
 import { useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
@@ -41,7 +41,7 @@ export const DebugInfoOverlay = () => {
             </IOText>
           </View>
           <DebugDataIndicator
-            onPress={() => showDebugData((prevState) => !prevState)}
+            onPress={() => showDebugData(prevState => !prevState)}
           />
         </VStack>
       </SafeAreaView>
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     top: Platform.OS === 'android' ? 0 : -8,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    zIndex: 1000,
+    zIndex: 1000
   },
   versionTextWrapper: {
     display: 'flex',
@@ -69,6 +69,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 4,
     borderRadius: 8,
-    backgroundColor: debugItemBgColor,
-  },
+    backgroundColor: debugItemBgColor
+  }
 });

@@ -9,13 +9,13 @@ import {
   IOVisualCostants,
   Pictogram,
   VSpacer,
-  WithTestID,
+  WithTestID
 } from '@pagopa/io-app-design-system';
 import {
   cloneElement,
   forwardRef,
   isValidElement,
-  PropsWithChildren,
+  PropsWithChildren
 } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -60,9 +60,9 @@ const OperationResultScreenContent = forwardRef<
       secondaryAction,
       children,
       testID,
-      isHeaderVisible,
+      isHeaderVisible
     },
-    ref,
+    ref
   ) => (
     <SafeAreaView
       edges={isHeaderVisible ? ['bottom'] : undefined}
@@ -75,7 +75,7 @@ const OperationResultScreenContent = forwardRef<
         contentContainerStyle={[
           styles.wrapper,
           /* Android fallback because `centerContent` is only an iOS property */
-          Platform.OS === 'android' && styles.wrapper_android,
+          Platform.OS === 'android' && styles.wrapper_android
         ]}
       >
         {pictogram && (
@@ -115,27 +115,27 @@ const OperationResultScreenContent = forwardRef<
         {isValidElement(children) && cloneElement(children)}
       </ScrollView>
     </SafeAreaView>
-  ),
+  )
 );
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    marginHorizontal: IOVisualCostants.appMarginDefault,
+    marginHorizontal: IOVisualCostants.appMarginDefault
   },
   wrapper: {
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'center',
-    alignContent: 'center',
+    alignContent: 'center'
   },
   wrapper_android: {
     flexGrow: 1,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   alignCenter: {
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });
 
 export { OperationResultScreenContent };

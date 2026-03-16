@@ -10,7 +10,10 @@ import { WalletDispatch, WalletCombinedRootState } from '../store';
  * Typed version of the startListening method which includes the correct RootState and AppDispatch types.
  * It can be used to define a new listener.
  */
-export type AppStartListening = TypedStartListening<WalletCombinedRootState, WalletDispatch>;
+export type AppStartListening = TypedStartListening<
+  WalletCombinedRootState,
+  WalletDispatch
+>;
 
 /**
  * Type for a listener with typed action, state and dispatch. It can be used in conjunction with action which triggers the listener
@@ -30,4 +33,7 @@ export type AppListenerWithAction<ActionType extends Action> = ListenerEffect<
  * Type for a listener function which doesn't depend on a specific action.
  * It can be used in helper functions which create listeners not tied to a specific action.
  */
-export type AppListener = ListenerEffectAPI<WalletCombinedRootState, WalletDispatch>;
+export type AppListener = ListenerEffectAPI<
+  WalletCombinedRootState,
+  WalletDispatch
+>;

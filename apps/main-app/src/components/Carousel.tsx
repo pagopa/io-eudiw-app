@@ -6,7 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   useWindowDimensions,
-  View,
+  View
 } from 'react-native';
 import { LandingCardComponent } from './LandingCardComponent';
 import { useInteractiveElementDefaultColorName } from '@io-eudiw-app/commons';
@@ -17,13 +17,13 @@ const styles = StyleSheet.create({
     width: 8,
     borderRadius: 4,
     backgroundColor: IOColors['blueIO-150'],
-    marginHorizontal: 4,
+    marginHorizontal: 4
   },
   indicatorContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center'
+  }
 });
 
 const newDsGrey = IOColors['grey-200'];
@@ -82,19 +82,19 @@ const CarouselDots = (props: CarouselDotsProps) => {
           inputRange: [
             windowWidth * (imageIndex - 1),
             windowWidth * imageIndex,
-            windowWidth * (imageIndex + 1),
+            windowWidth * (imageIndex + 1)
           ],
           outputRange: [8, 16, 8],
-          extrapolate: 'clamp',
+          extrapolate: 'clamp'
         });
         const backgroundColor = scrollX.interpolate({
           inputRange: [
             windowWidth * (imageIndex - 1),
             windowWidth * imageIndex,
-            windowWidth * (imageIndex + 1),
+            windowWidth * (imageIndex + 1)
           ],
           outputRange: [newDsGrey, dotColor || blueColor, newDsGrey],
-          extrapolate: 'clamp',
+          extrapolate: 'clamp'
         });
         return (
           <Animated.View
@@ -115,24 +115,24 @@ export const Carousel = forwardRef<View, CarouselProps>((props, ref) => {
       {
         nativeEvent: {
           contentOffset: {
-            x: scrollX,
-          },
-        },
-      },
+            x: scrollX
+          }
+        }
+      }
     ],
-    { useNativeDriver: false },
+    { useNativeDriver: false }
   );
 
   const renderCardComponents = useCallback(
     () =>
-      carouselCards.map((p) => (
+      carouselCards.map(p => (
         <LandingCardComponent
           ref={p.id === 0 ? ref : null}
           key={`card-${p.id}`}
           {...p}
         />
       )),
-    [carouselCards, ref],
+    [carouselCards, ref]
   );
 
   const cardComponents = renderCardComponents();
@@ -144,10 +144,10 @@ export const Carousel = forwardRef<View, CarouselProps>((props, ref) => {
         pagingEnabled
         ref={props.scrollViewRef}
         showsHorizontalScrollIndicator={false}
-        onScroll={(event) => {
+        onScroll={event => {
           props.setStep(
             event.nativeEvent.contentOffset.x /
-              event.nativeEvent.layoutMeasurement.width,
+              event.nativeEvent.layoutMeasurement.width
           );
           scrollEvent(event);
         }}

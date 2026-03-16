@@ -2,26 +2,26 @@ import {
   debugReducer,
   resetDebugData,
   setDebugData,
-  selectDebugData,
+  selectDebugData
 } from '../debug';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
+  require('@react-native-async-storage/async-storage/jest/async-storage-mock')
 );
 
 const internalSelectDebugData: (
-  state: ReturnType<typeof debugReducer>,
-) => ReturnType<typeof selectDebugData> = (state) => state.debugData;
+  state: ReturnType<typeof debugReducer>
+) => ReturnType<typeof selectDebugData> = state => state.debugData;
 
 describe('debug', () => {
   it('should return the debug data without the undefined values', () => {
     const state = debugReducer(
       {
         isDebugModeEnabled: true,
-        debugData: {},
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        debugData: {}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
-      setDebugData({ not_visible: undefined, visible: 'visible' }),
+      setDebugData({ not_visible: undefined, visible: 'visible' })
     );
     expect(internalSelectDebugData(state)).toEqual({ visible: 'visible' });
   });
@@ -29,10 +29,10 @@ describe('debug', () => {
     const state = debugReducer(
       {
         isDebugModeEnabled: true,
-        debugData: { A: 'A', B: 'B', C: 'C' },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        debugData: { A: 'A', B: 'B', C: 'C' }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
-      resetDebugData(['A', 'B']),
+      resetDebugData(['A', 'B'])
     );
     expect(internalSelectDebugData(state)).toEqual({ C: 'C' });
   });
@@ -40,33 +40,33 @@ describe('debug', () => {
     const state = debugReducer(
       {
         isDebugModeEnabled: true,
-        debugData: { A: 'A', B: 'B', C: 'C' },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        debugData: { A: 'A', B: 'B', C: 'C' }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
-      setDebugData({ C: 'Updated!', D: 'D', E: 'E' }),
+      setDebugData({ C: 'Updated!', D: 'D', E: 'E' })
     );
     expect(internalSelectDebugData(state)).toEqual({
       A: 'A',
       B: 'B',
       C: 'Updated!',
       D: 'D',
-      E: 'E',
+      E: 'E'
     });
   });
   it('should remove undefined values', () => {
     const state = debugReducer(
       {
         isDebugModeEnabled: true,
-        debugData: { A: 'A', B: 'B', C: 'C' }, // <- C has a value
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        debugData: { A: 'A', B: 'B', C: 'C' } // <- C has a value
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
-      setDebugData({ C: undefined, D: 'D', E: 'E' }), // <- C is updated to undefined
+      setDebugData({ C: undefined, D: 'D', E: 'E' }) // <- C is updated to undefined
     );
     expect(internalSelectDebugData(state)).toEqual({
       A: 'A',
       B: 'B',
       D: 'D',
-      E: 'E',
+      E: 'E'
     });
   });
 });

@@ -14,14 +14,14 @@ type Props = {
  * i.e. the API call to fetch the status assertion from the issuer failed.
  */
 export const ItwPresentationCredentialUnknownStatus = ({
-  credential,
+  credential
 }: Props) => {
   const navigation = useNavigation();
   const credentialName = getCredentialNameFromType(credential.credentialType);
 
   useHeaderSecondLevel({
     title: '',
-    headerShown: false,
+    headerShown: false
   });
 
   return (
@@ -29,16 +29,16 @@ export const ItwPresentationCredentialUnknownStatus = ({
       pictogram="updateOS"
       title={t('presentation.statusAssertionUnknown.title', {
         ns: 'wallet',
-        credentialName,
+        credentialName
       })}
       subtitle={t('presentation.statusAssertionUnknown.content', {
-        ns: 'wallet',
+        ns: 'wallet'
       })}
       action={{
         label: t('presentation.statusAssertionUnknown.primaryAction', {
-          ns: 'wallet',
+          ns: 'wallet'
         }),
-        onPress: () => navigation.goBack(),
+        onPress: () => navigation.goBack()
       }}
     />
   );

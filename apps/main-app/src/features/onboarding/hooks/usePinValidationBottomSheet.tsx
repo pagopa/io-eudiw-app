@@ -18,12 +18,12 @@ const BottomSheetContent = memo(() => {
         list={[
           {
             value: t('pin.policy.firstItem', { ns: 'onboarding' }),
-            id: 'first_item',
+            id: 'first_item'
           },
           {
             value: t('pin.policy.secondItem', { ns: 'onboarding' }),
-            id: 'second_item',
-          },
+            id: 'second_item'
+          }
         ]}
         spacing={16}
       />
@@ -35,5 +35,5 @@ const BottomSheetContent = memo(() => {
 export default () =>
   useIOBottomSheetModal({
     title: t('pin.policy.title', { ns: 'onboarding' }),
-    component: <BottomSheetContent />,
+    component: <BottomSheetContent />
   });

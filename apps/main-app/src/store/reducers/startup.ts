@@ -23,7 +23,7 @@ export type StartupSlice = {
 const initialState: StartupSlice = {
   startUpStatus: 'NOT_STARTED',
   hasScreenLock: false,
-  biometricState: 'NOT_SUPPORTED',
+  biometricState: 'NOT_SUPPORTED'
 };
 
 /**
@@ -35,24 +35,24 @@ export const startupSlice = createSlice({
   reducers: {
     startupSetStatus: (
       state,
-      action: PayloadAction<StartupSlice['startUpStatus']>,
+      action: PayloadAction<StartupSlice['startUpStatus']>
     ) => {
       state.startUpStatus = action.payload;
     },
     startupSetAttributes: (
       state,
-      action: PayloadAction<Omit<StartupSlice, 'startUpStatus'>>,
+      action: PayloadAction<Omit<StartupSlice, 'startUpStatus'>>
     ) => {
       state.biometricState = action.payload.biometricState;
       state.hasScreenLock = action.payload.hasScreenLock;
     },
-    startupSetError: (state) => {
+    startupSetError: state => {
       state.startUpStatus = 'ERROR';
     },
-    startupSetLoading: (state) => {
+    startupSetLoading: state => {
       state.startUpStatus = 'LOADING';
-    },
-  },
+    }
+  }
 });
 
 /**
@@ -62,7 +62,7 @@ export const {
   startupSetError,
   startupSetLoading,
   startupSetStatus,
-  startupSetAttributes,
+  startupSetAttributes
 } = startupSlice.actions;
 
 /**

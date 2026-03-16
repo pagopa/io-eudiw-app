@@ -20,7 +20,7 @@ export type PreferencesSlice = {
 
 export type PreferencesPartialRootState = {
   preferences: PreferencesSlice;
-}
+};
 
 // Initial state for the preferences slice
 const initialState: PreferencesSlice = {
@@ -88,8 +88,9 @@ export const preferencesReducer = persistReducer(
  * @param state - The root state of the Redux store
  * @returns a boolean indicating whether the onboarding has been completed
  */
-export const selectIsOnboardingComplete = (state: PreferencesPartialRootState) =>
-  state.preferences.isOnboardingComplete;
+export const selectIsOnboardingComplete = (
+  state: PreferencesPartialRootState
+) => state.preferences.isOnboardingComplete;
 
 /**
  * Selects if the biometric is enabled.
@@ -107,5 +108,6 @@ export const selectIsBiometricEnabled = (state: PreferencesPartialRootState) =>
 export const selectSessionId = (state: PreferencesPartialRootState) =>
   state.preferences.sessionId;
 
-export const selectFontPreference = (state: PreferencesPartialRootState): TypefaceChoice =>
-  state.preferences.fontPreference;
+export const selectFontPreference = (
+  state: PreferencesPartialRootState
+): TypefaceChoice => state.preferences.fontPreference;

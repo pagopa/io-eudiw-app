@@ -16,8 +16,8 @@ allprojects {
 }
 `;
 
-module.exports = (config) => {
-  return withProjectBuildGradle(config, (config) => {
+module.exports = config => {
+  return withProjectBuildGradle(config, config => {
     if (
       !config.modResults.contents.includes('org.bouncycastle:bcprov-jdk18on')
     ) {

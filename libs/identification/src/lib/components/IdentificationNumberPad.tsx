@@ -3,7 +3,7 @@ import {
   CodeInput,
   IconButton,
   NumberPad,
-  VSpacer,
+  VSpacer
 } from '@pagopa/io-app-design-system';
 import { NumberButton } from '@pagopa/io-app-design-system/lib/typescript/components/numberpad/NumberButton';
 import { t } from 'i18next';
@@ -39,14 +39,14 @@ type IdentificationNumberPadProps = {
  * If the environment is development, a button to automatically insert the correct pin is shown.
  */
 export const IdentificationNumberPad = (
-  props: IdentificationNumberPadProps,
+  props: IdentificationNumberPadProps
 ) => {
   const [value, setValue] = useState('');
 
   const { pin, pinValidation, numberPadVariant, biometricsConfig } = props;
 
   const onValueChange = useCallback((v: number) => {
-    setValue((prev) => (prev.length < PIN_LENGTH ? `${prev}${v}` : prev));
+    setValue(prev => (prev.length < PIN_LENGTH ? `${prev}${v}` : prev));
   }, []);
 
   const onDeletePress = useCallback(() => {
@@ -71,7 +71,7 @@ export const IdentificationNumberPad = (
         return false;
       }
     },
-    [pin, pinValidation],
+    [pin, pinValidation]
   );
 
   // We don't need to handle the value change on code input,
@@ -100,7 +100,7 @@ export const IdentificationNumberPad = (
             alignSelf: 'center',
             position: 'absolute',
             /* Ugly magic number, but the position is nicer with this value */
-            bottom: 38,
+            bottom: 38
           }}
         >
           <IconButton
@@ -118,7 +118,7 @@ export const IdentificationNumberPad = (
       <View>
         <NumberPad
           deleteAccessibilityLabel={t('buttons.delete', {
-            ns: 'global',
+            ns: 'global'
           })}
           onDeletePress={onDeletePress}
           onNumberPress={onValueChange}
@@ -132,6 +132,6 @@ export const IdentificationNumberPad = (
 
 const styles = StyleSheet.create({
   codeInputContainer: {
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });

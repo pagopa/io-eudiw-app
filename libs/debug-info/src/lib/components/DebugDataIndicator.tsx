@@ -3,7 +3,7 @@ import {
   IOColors,
   IOText,
   Icon,
-  hexToRgba,
+  hexToRgba
 } from '@pagopa/io-app-design-system';
 import _ from 'lodash';
 import { Pressable, StyleSheet } from 'react-native';
@@ -41,7 +41,7 @@ export const DebugDataIndicator = (props: DebugDataIndicatorProps) => {
           color="warning-850"
           style={{
             letterSpacing: 0.2,
-            textTransform: 'uppercase',
+            textTransform: 'uppercase'
           }}
         >
           {dataSize}
@@ -64,6 +64,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 6,
     borderRadius: 8,
-    backgroundColor: debugItemBgColor,
-  },
+    backgroundColor: debugItemBgColor
+  }
 });

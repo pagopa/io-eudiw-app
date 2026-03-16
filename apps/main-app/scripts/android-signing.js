@@ -2,7 +2,7 @@
 const { withAppBuildGradle } = require('@expo/config-plugins');
 
 module.exports = function withAndroidSigning(config) {
-  return withAppBuildGradle(config, (config) => {
+  return withAppBuildGradle(config, config => {
     let contents = config.modResults.contents;
 
     // Ensure signingConfigs.release exists
@@ -27,14 +27,14 @@ module.exports = function withAndroidSigning(config) {
 
       contents = contents.replace(
         /signingConfigs\s*\{/,
-        (match) => `${match}${signingConfigBlock}`,
+        match => `${match}${signingConfigBlock}`
       );
     }
 
     // Replace release signingConfig debug with release in the buildTypes block
     contents = contents.replace(
       /(buildTypes\s*\{[\s\S]*?release\s*\{[\s\S]*?)signingConfig\s+signingConfigs\.debug/,
-      `$1signingConfig signingConfigs.release`,
+      `$1signingConfig signingConfigs.release`
     );
 
     config.modResults.contents = contents;

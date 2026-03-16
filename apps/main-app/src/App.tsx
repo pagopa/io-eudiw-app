@@ -3,7 +3,7 @@ import {
   IODSExperimentalContextProvider,
   IONewTypefaceContextProvider,
   IOThemeContextProvider,
-  ToastProvider,
+  ToastProvider
 } from '@pagopa/io-app-design-system';
 import { registerRootComponent } from 'expo';
 import React from 'react';
@@ -49,8 +49,8 @@ export default function App(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   gestureHandlerContainer: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });
 
 registerRootComponent(App);

@@ -53,7 +53,9 @@ const credentialsSlice = createSlice({
     addPidWithIdentification: (
       _,
       __: PayloadAction<{ credential: StoredCredential }>
-    ) => { /* empty */ },
+    ) => {
+      /* empty */
+    },
     // Empty action which will be intercepted by the listener and trigger the identification before storing a credential
     addCredentialWithIdentification: (
       _,
@@ -152,17 +154,18 @@ export const itwCredentialsPidExpirationSelector = createSelector(
  * Selects all the credentials beside the PID and transforms them
  * into {@link ItwCredentialCardProps}
  */
-export const selectWalletCards: (state: WalletCombinedRootState) => Array<WalletCard> =
-  createSelector(selectCredentials, credentials =>
-    credentials
-      .filter(cred => cred.credentialType !== wellKnownCredential.PID)
-      .map(cred => ({
-        key: cred.keyTag,
-        type: 'itw',
-        credentialType: cred.credentialType,
-        credentialStatus: getCredentialStatus(cred)
-      }))
-  );
+export const selectWalletCards: (
+  state: WalletCombinedRootState
+) => Array<WalletCard> = createSelector(selectCredentials, credentials =>
+  credentials
+    .filter(cred => cred.credentialType !== wellKnownCredential.PID)
+    .map(cred => ({
+      key: cred.keyTag,
+      type: 'itw',
+      credentialType: cred.credentialType,
+      credentialStatus: getCredentialStatus(cred)
+    }))
+);
 
 export const itwIsClaimValueHiddenSelector = (state: WalletCombinedRootState) =>
   state.wallet.credentials.valuesHidden;

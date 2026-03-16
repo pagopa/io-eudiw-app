@@ -17,7 +17,7 @@ const OnboardingBiometricNoScreenLock = () => {
 
   useHeaderSecondLevel({
     title: '',
-    goBack: () => dispatch(preferencesSetIsOnboardingDone()),
+    goBack: () => dispatch(preferencesSetIsOnboardingDone())
   });
 
   const listItems = useMemo<Array<ListItemInfo>>(
@@ -25,27 +25,27 @@ const OnboardingBiometricNoScreenLock = () => {
       {
         label: t('onboarding:biometric.noLockScreen.list.firstItem.label'),
         value: t('onboarding:biometric.noLockScreen.list.firstItem.value'),
-        icon: 'systemSettingsAndroid',
+        icon: 'systemSettingsAndroid'
       },
       {
         label: t('onboarding:biometric.noLockScreen.list.secondItem.label'),
         value: t('onboarding:biometric.noLockScreen.list.secondItem.value'),
         icon: Platform.select({
           ios: 'systemPasswordiOS',
-          android: 'systemPasswordAndroid',
-        }),
-      },
+          android: 'systemPasswordAndroid'
+        })
+      }
     ],
-    [t],
+    [t]
   );
 
   const actionProps = useMemo(
     () => ({
       label: t('global:buttons.continue'),
       accessibilityLabel: t('global:buttons.continue'),
-      onPress: () => dispatch(preferencesSetIsOnboardingDone()),
+      onPress: () => dispatch(preferencesSetIsOnboardingDone())
     }),
-    [dispatch, t],
+    [dispatch, t]
   );
 
   return (
@@ -56,7 +56,7 @@ const OnboardingBiometricNoScreenLock = () => {
       renderItems={listItems}
       actions={{
         primary: actionProps,
-        type: 'SingleButton',
+        type: 'SingleButton'
       }}
     />
   );

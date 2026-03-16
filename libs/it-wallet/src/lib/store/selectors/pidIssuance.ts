@@ -1,5 +1,4 @@
-import { WalletCombinedRootState } from "..";
-
+import { WalletCombinedRootState } from '..';
 
 /**
  * Selects the instanceCreation async status.

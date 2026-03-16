@@ -2,7 +2,7 @@ import {
   HeaderSecondLevel,
   IOVisualCostants,
   useIOTheme,
-  VSpacer,
+  VSpacer
 } from '@pagopa/io-app-design-system';
 import { StackScreenProps } from '@react-navigation/stack';
 import { t } from 'i18next';
@@ -11,7 +11,7 @@ import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   ItwSkeumorphicCard,
-  SKEUMORPHIC_CARD_ASPECT_RATIO,
+  SKEUMORPHIC_CARD_ASPECT_RATIO
 } from '../../components/credential/ItwSkeumorphicCard';
 import { FlipGestureDetector } from '../../components/credential/ItwSkeumorphicCard/FlipGestureDetector';
 import { ItwPresentationCredentialCardFlipButton } from '../../components/presentation/ItwPresentationCredentialCardFlipButton';
@@ -19,17 +19,17 @@ import { ItwPresentationCredentialCardHideValuesButton } from '../../components/
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import {
   itwIsClaimValueHiddenSelector,
-  itwSetClaimValuesHidden,
+  itwSetClaimValuesHidden
 } from '../../store/credentials';
 import { ParsedClaimsRecord } from '../../utils/claims';
 import {
   ItwCredentialStatus,
-  StoredCredential,
+  StoredCredential
 } from '../../utils/itwTypesUtils';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   useMaxBrightness,
-  usePreventScreenCapture,
+  usePreventScreenCapture
 } from '@io-eudiw-app/commons';
 import { selectIsDebugModeEnabled } from '@io-eudiw-app/debug-info';
 
@@ -68,10 +68,10 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
           firstAction={{
             icon: 'closeLarge',
             accessibilityLabel: t('buttons.close', { ns: 'global' }),
-            onPress: () => navigation.goBack(),
+            onPress: () => navigation.goBack()
           }}
         />
-      ),
+      )
     });
   }, [navigation]);
 
@@ -85,8 +85,8 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
         styles.contentContainer,
         {
           paddingBottom: safeAreaInsets.bottom,
-          backgroundColor: theme['appBackground-primary'],
-        },
+          backgroundColor: theme['appBackground-primary']
+        }
       ]}
     >
       <FlipGestureDetector
@@ -98,8 +98,8 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
           style={[
             styles.cardContainer,
             {
-              top: -safeAreaInsets.top,
-            },
+              top: -safeAreaInsets.top
+            }
           ]}
         >
           <View style={styles.rotationContainer}>
@@ -116,7 +116,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
       </FlipGestureDetector>
       <ItwPresentationCredentialCardFlipButton
         isFlipped={isFlipped}
-        handleOnPress={() => setFlipped((_) => !_)}
+        handleOnPress={() => setFlipped(_ => !_)}
         fullScreen={true}
       />
       <VSpacer size={12} />
@@ -132,28 +132,28 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   cardContainer: {
     transform: [
-      { scale: SKEUMORPHIC_CARD_ASPECT_RATIO }, // Scales the card to fit the screen
+      { scale: SKEUMORPHIC_CARD_ASPECT_RATIO } // Scales the card to fit the screen
     ],
     position: 'absolute',
     paddingHorizontal: 24,
     justifyContent: 'center',
     bottom: IOVisualCostants.headerHeight,
     left: 0,
-    right: 0,
+    right: 0
   },
   rotationContainer: {
     transform: [
-      { rotate: '90deg' }, // Rotates the card to landscape
-    ],
-  },
+      { rotate: '90deg' } // Rotates the card to landscape
+    ]
+  }
 });
 
 const MemoizedItwPresentationCredentialCardModal = memo(
-  ItwPresentationCredentialCardModal,
+  ItwPresentationCredentialCardModal
 );
 
 export { MemoizedItwPresentationCredentialCardModal as ItwPresentationCredentialCardModal };

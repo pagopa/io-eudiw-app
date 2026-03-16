@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { TabNavigator } from '../tab/TabNavigator';
 import MAIN_ROUTES from './routes';
 import WalletNavigator, {
-  WalletNavigatorParamsList,
+  WalletNavigatorParamsList
 } from '../wallet/WalletNavigator';
 import QrCodeScanScreen from '../../screens/presentation/QrCodeScanScreen';
 import ProximityQrCode from '../../screens/proximity/ProximityQrCode';

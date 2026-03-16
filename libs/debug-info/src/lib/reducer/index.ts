@@ -1,18 +1,16 @@
-import { ThunkDispatch, UnknownAction } from "@reduxjs/toolkit";
+import { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
-import { DebugSlice } from "./debug";
+import { DebugSlice } from './debug';
 
 export type DebugRootState = {
   debug: DebugSlice;
 };
 
-
 export type DebugDispatch = ThunkDispatch<
-  DebugRootState, 
-  undefined,              
-  UnknownAction          
+  DebugRootState,
+  undefined,
+  UnknownAction
 >;
-
 
 /**
  * A typed selector hook for internal use within the wallet submodule.

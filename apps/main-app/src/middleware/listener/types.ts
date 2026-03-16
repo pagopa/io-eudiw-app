@@ -2,7 +2,7 @@ import {
   Action,
   ListenerEffect,
   ListenerEffectAPI,
-  TypedStartListening,
+  TypedStartListening
 } from '@reduxjs/toolkit';
 import { AppDispatch, RootState } from '../../store/types';
 

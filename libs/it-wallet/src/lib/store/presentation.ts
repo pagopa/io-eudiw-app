@@ -4,7 +4,13 @@ import { PresentationPreDefinitionParams } from '../screens/presentation/Present
 import { FederationEntity } from '../types';
 import { EnrichedPresentationDetails } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
-import { AsyncStatusValues, setError, setInitial, setLoading, setSuccess } from '@io-eudiw-app/commons';
+import {
+  AsyncStatusValues,
+  setError,
+  setInitial,
+  setLoading,
+  setSuccess
+} from '@io-eudiw-app/commons';
 import { WalletCombinedRootState } from '.';
 
 /**

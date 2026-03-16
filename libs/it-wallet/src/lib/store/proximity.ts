@@ -169,16 +169,18 @@ export const selectProximityStatus = (state: WalletCombinedRootState) =>
  * @param state - The root state
  * @returns The request sent by the Verifier App
  */
-export const selectProximityDocumentRequest = (state: WalletCombinedRootState) =>
-  state.wallet.proximity.documentRequest;
+export const selectProximityDocumentRequest = (
+  state: WalletCombinedRootState
+) => state.wallet.proximity.documentRequest;
 
 /**
  * Selects the descriptor proccessed from the {@link VerifierRequest}
  * @param state - The root state
  * @returns A {@link ProximityDisclosureDescriptor}
  */
-export const selectProximityDisclosureDescriptor = (state: WalletCombinedRootState) =>
-  state.wallet.proximity.proximityDisclosureDescriptor?.descriptor;
+export const selectProximityDisclosureDescriptor = (
+  state: WalletCombinedRootState
+) => state.wallet.proximity.proximityDisclosureDescriptor?.descriptor;
 
 /**
  * Selects the verifier authentication flags
@@ -186,7 +188,8 @@ export const selectProximityDisclosureDescriptor = (state: WalletCombinedRootSta
  * @returns The verifier authentication flags
  */
 export const selectProximityDisclosureIsAuthenticated = createSelector(
-  (state: WalletCombinedRootState) => state.wallet.proximity.proximityDisclosureDescriptor,
+  (state: WalletCombinedRootState) =>
+    state.wallet.proximity.proximityDisclosureDescriptor,
   descriptor => descriptor?.isAuthenticated || false
 );
 
