@@ -3,6 +3,7 @@ import { t } from 'i18next';
 import { useMemo } from 'react';
 import { useItwInfoBottomSheet } from '../hooks/useItwInfoBottomSheet';
 import { wellKnownCredential } from '../utils/credentials';
+import { isItwCredential } from '../utils/itwCredentialUtils';
 import { StoredCredential } from '../utils/itwTypesUtils';
 
 type ItwIssuanceMetadataProps = {
@@ -87,8 +88,10 @@ export const ItwIssuanceMetadata = ({
   */
   const authSource = t('presentation.authSource', { ns: 'wallet' });
 
+  const itwCredential = isItwCredential(credential);
+
   const releasedByKey =
-    credential.credentialType === wellKnownCredential.PID
+    itwCredential && credential.credentialType === wellKnownCredential.PID
       ? 'releasedByPid'
       : 'releasedBy';
 
