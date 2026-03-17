@@ -7,15 +7,15 @@ module.exports = function (api) {
         '@nx/react/babel',
         {
           runtime: 'automatic',
-          useBuiltIns: 'usage',
-        },
-      ],
+          useBuiltIns: 'usage'
+        }
+      ]
     ],
     plugins: [],
     env: {
       test: {
-        presets: ['babel-preset-expo'],
-      },
-    },
+        presets: ['babel-preset-expo']
+      }
+    }
   };
 };

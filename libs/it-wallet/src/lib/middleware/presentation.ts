@@ -21,8 +21,11 @@ import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { AppListenerWithAction, AppStartListening } from './types';
 import { takeLatestEffect } from '@io-eudiw-app/commons';
-import { setIdentificationIdentified, setIdentificationStarted, setIdentificationUnidentified } from '@io-eudiw-app/identification';
-
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '@io-eudiw-app/identification';
 
 type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
 
@@ -165,8 +168,8 @@ const presentationListener: AppListenerWithAction<
         error: 'access_denied',
         errorDescription: 'The user cancelled the presentation.'
       })
-        .then(() => {})
-        .catch(() => {})
+        .then(() => null)
+        .catch(() => null)
         .finally(() => {
           listenerApi.dispatch(resetPresentation());
         });

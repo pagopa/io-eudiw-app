@@ -23,17 +23,17 @@ export const ItwPresentationPidDetail = ({ credential }: Props) => {
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
 
   const listItemHeaderLabel = t('presentation.itWalletId.listItemHeader', {
-    ns: 'wallet',
+    ns: 'wallet'
   });
 
   const claims = useMemo(
     () =>
       Object.entries(
         parseClaimsToRecord(credential.parsedCredential, {
-          exclude: [WellKnownClaim.unique_id, WellKnownClaim.content],
-        }),
+          exclude: [WellKnownClaim.unique_id, WellKnownClaim.content]
+        })
       ),
-    [credential.parsedCredential],
+    [credential.parsedCredential]
   );
 
   const endElement = useMemo<ListItemHeader['endElement']>(
@@ -42,10 +42,10 @@ export const ItwPresentationPidDetail = ({ credential }: Props) => {
       componentProps: {
         icon: claimsHidden ? 'eyeHide' : 'eyeShow',
         accessibilityLabel: listItemHeaderLabel,
-        onPress: () => setClaimsHidden((state) => !state),
-      },
+        onPress: () => setClaimsHidden(state => !state)
+      }
     }),
-    [claimsHidden, listItemHeaderLabel],
+    [claimsHidden, listItemHeaderLabel]
   );
 
   return (

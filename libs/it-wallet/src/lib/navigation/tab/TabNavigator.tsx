@@ -35,7 +35,7 @@ export const TabNavigator = () => {
   /**
    * Used to mock tab content. This will never be rendered.
    */
-  const EmptyComponent = () => <></>;
+  const EmptyComponent = () => null;
 
   const navigateToQrCodeScanScreen = () => navigation.navigate('MAIN_SCAN_QR');
 

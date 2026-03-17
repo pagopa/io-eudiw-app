@@ -1,7 +1,7 @@
 import {
   IOVisualCostants,
   ListItemHeader,
-  VStack,
+  VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { useCallback } from 'react';
@@ -9,14 +9,14 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import {
   IOScrollViewWithLargeHeader,
-  useHeaderSecondLevel,
+  useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import { OnboardingModuleCredential } from '../../components/credential/OnboardingModuleCredential';
 import { useCredentialIssuanceNavigationListeners } from '../../hooks/useCredentialIssuanceNavigationListeners';
 import {
   resetCredentialIssuance,
   selectRequestedCredential,
-  setCredentialIssuancePreAuthRequest,
+  setCredentialIssuancePreAuthRequest
 } from '../../store/credentialIssuance';
 import { selectCredentials } from '../../store/credentials';
 import { lifecycleIsOperationalSelector } from '../../store/lifecycle';
@@ -24,7 +24,7 @@ import { setPendingCredential } from '../../store/pidIssuance';
 import {
   CredentialsKeys,
   wellKnownCredential,
-  wellKnownCredentialConfigurationIDs,
+  wellKnownCredentialConfigurationIDs
 } from '../../utils/credentials';
 import { useAppDispatch, useAppSelector } from '../../store';
 import MAIN_ROUTES from '../../navigation/main/routes';
@@ -48,7 +48,7 @@ const CredentialsList = () => {
   }, [dispatch, navigation]);
 
   const isCredentialSaved = (type: string) =>
-    credentials.find((c) => c.credentialType === type) !== undefined;
+    credentials.find(c => c.credentialType === type) !== undefined;
 
   const isCredentialRequested = (type: string) => requestedCredential === type;
 
@@ -57,13 +57,13 @@ const CredentialsList = () => {
 
   useHeaderSecondLevel({
     title: '',
-    goBack,
+    goBack
   });
 
   return (
     <IOScrollViewWithLargeHeader
       title={{
-        label: t('credentialIssuance.list.title'),
+        label: t('credentialIssuance.list.title')
       }}
     >
       <View style={styles.wrapper}>
@@ -84,18 +84,18 @@ const CredentialsList = () => {
                 isFetching={isCredentialRequested(
                   wellKnownCredentialConfigurationIDs[
                     credentialKey as CredentialsKeys
-                  ],
+                  ]
                 )}
-                onPress={(c) => {
+                onPress={c => {
                   if (shouldIssuePidFirst) {
                     dispatch(setPendingCredential({ credential: c }));
                     navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-                      screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION,
+                      screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
                     });
                     return;
                   }
                   dispatch(
-                    setCredentialIssuancePreAuthRequest({ credential: c }),
+                    setCredentialIssuancePreAuthRequest({ credential: c })
                   );
                 }}
               />
@@ -110,8 +110,8 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingVertical: 16,
     paddingHorizontal: IOVisualCostants.appMarginDefault,
-    gap: 16,
-  },
+    gap: 16
+  }
 });
 
 export default CredentialsList;

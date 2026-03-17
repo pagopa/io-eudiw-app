@@ -8,11 +8,11 @@ import { View } from 'react-native';
 import WALLET_ROUTES from '../navigation/wallet/routes';
 import {
   itwCredentialsPidSelector,
-  itwCredentialsPidStatusSelector,
+  itwCredentialsPidStatusSelector
 } from '../store/credentials';
 import {
   ItwJwtCredentialStatus,
-  StoredCredential,
+  StoredCredential
 } from '../utils/itwTypesUtils';
 import { useAppSelector } from '../store';
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
@@ -21,7 +21,7 @@ import MAIN_ROUTES from '../navigation/main/routes';
 const defaultLifecycleStatus: Array<ItwJwtCredentialStatus> = [
   'valid',
   'jwtExpiring',
-  'jwtExpired',
+  'jwtExpired'
 ];
 
 type Props = {
@@ -39,20 +39,20 @@ type Props = {
  */
 export const ItwPidLifecycleAlert = ({
   lifecycleStatus = defaultLifecycleStatus,
-  navigation,
+  navigation
 }: Props) => {
   const pid = useAppSelector(itwCredentialsPidSelector);
   const maybePidStatus = useAppSelector(itwCredentialsPidStatusSelector);
 
   const startPidReissuing = () => {
     navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-      screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION,
+      screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
     });
   };
 
   const Content = ({
     pidCredential,
-    pidStatus,
+    pidStatus
   }: {
     pidCredential: StoredCredential;
     pidStatus: ItwJwtCredentialStatus;
@@ -73,9 +73,9 @@ export const ItwPidLifecycleAlert = ({
               date: pidCredential.issuedAt
                 ? format(pidCredential.issuedAt, 'DD-MM-YYYY')
                 : '-',
-              ns: 'wallet',
-            },
-          ),
+              ns: 'wallet'
+            }
+          )
         },
         jwtExpiring: {
           testID: 'itwPidLifecycleAlertTestID_jwtExpiring',
@@ -85,16 +85,16 @@ export const ItwPidLifecycleAlert = ({
             // TODO [SIW-3225]: date in bold
             {
               date: format(pidCredential.expiration, 'DD-MM-YYYY'),
-              ns: 'wallet',
-            },
+              ns: 'wallet'
+            }
           ),
           action: t(
             `presentation.bottomSheets.pidInfo.alert.${nameSpace}.action`,
             {
-              ns: 'wallet',
-            },
+              ns: 'wallet'
+            }
           ),
-          onPress: startPidReissuing,
+          onPress: startPidReissuing
         },
         jwtExpired: {
           testID: 'itwPidLifecycleAlertTestID_jwtExpired',
@@ -102,15 +102,15 @@ export const ItwPidLifecycleAlert = ({
           content: t(
             `presentation.bottomSheets.pidInfo.alert.${nameSpace}.expired`,
             {
-              ns: 'wallet',
-            },
+              ns: 'wallet'
+            }
           ),
           action: t(
             `presentation.bottomSheets.pidInfo.alert.${nameSpace}.action`,
-            { ns: 'wallet' },
+            { ns: 'wallet' }
           ),
-          onPress: startPidReissuing,
-        },
+          onPress: startPidReissuing
+        }
       };
 
       return pidAlertPropsMap[pidStatus];
@@ -118,7 +118,7 @@ export const ItwPidLifecycleAlert = ({
       pidStatus,
       pidCredential.issuedAt,
       pidCredential.expiration,
-      nameSpace,
+      nameSpace
     ]);
 
     if (!lifecycleStatus.includes(pidStatus)) {

@@ -26,7 +26,11 @@ import {
 import { takeLatestEffect } from '@io-eudiw-app/commons';
 import { AppListener, AppListenerWithAction, AppStartListening } from './types';
 import { serializeError } from 'serialize-error';
-import { setIdentificationIdentified, setIdentificationStarted, setIdentificationUnidentified } from '@io-eudiw-app/identification';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '@io-eudiw-app/identification';
 
 const {
   ErrorCode,
@@ -53,7 +57,7 @@ const proximityListener: AppListenerWithAction<
   ReturnType<typeof setProximityStatusStarted>
 > = async (_, listenerApi) => {
   const listeners = [
-    addListener('onDeviceConnecting', () => {}),
+    addListener('onDeviceConnecting', () => null),
     addListener('onDeviceConnected', () => {
       listenerApi.dispatch(setProximityStatusConnected());
     }),
@@ -88,7 +92,7 @@ const proximityListener: AppListenerWithAction<
       throw new Error('Permissions not granted');
     }
 
-    await close().catch(() => {});
+    await close().catch(() => null);
 
     // Provide the verifiers certificates
     const certificates = verifierCertificates.map(cert => cert.certificate);

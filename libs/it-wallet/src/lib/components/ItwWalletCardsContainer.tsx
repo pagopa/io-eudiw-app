@@ -6,7 +6,7 @@ import WALLET_ROUTES from '../navigation/wallet/routes';
 import {
   itwCredentialsPidExpirationSelector,
   itwCredentialsPidStatusSelector,
-  selectWalletCards,
+  selectWalletCards
 } from '../store/credentials';
 import { ItwJwtCredentialStatus } from '../utils/itwTypesUtils';
 import { ItwPidLifecycleAlert } from './ItwPidLifecycleAlert';
@@ -20,7 +20,7 @@ import MAIN_ROUTES from '../navigation/main/routes';
 
 const LIFECYCLE_STATUS: Array<ItwJwtCredentialStatus> = [
   'jwtExpiring',
-  'jwtExpired',
+  'jwtExpired'
 ];
 
 export const ItwWalletCardsContainer = () => {
@@ -34,13 +34,13 @@ export const ItwWalletCardsContainer = () => {
     itw: {
       pidStatus,
       pidExpiration,
-      cards,
-    },
+      cards
+    }
   });
 
   const handleNavigateToItwId = useCallback(() => {
     navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-      screen: WALLET_ROUTES.PRESENTATION.PID_DETAIL,
+      screen: WALLET_ROUTES.PRESENTATION.PID_DETAIL
     });
   }, [navigation]);
 
@@ -55,7 +55,7 @@ export const ItwWalletCardsContainer = () => {
         <VSpacer size={16} />
       </>
     ),
-    [pidStatus, pidExpiration, handleNavigateToItwId],
+    [pidStatus, pidExpiration, handleNavigateToItwId]
   );
 
   return (

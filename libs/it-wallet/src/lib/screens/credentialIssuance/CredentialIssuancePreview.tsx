@@ -3,20 +3,20 @@ import {
   ForceScrollDownView,
   H2,
   IOVisualCostants,
-  VSpacer,
+  VSpacer
 } from '@pagopa/io-app-design-system';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import {
   useDisableGestureNavigation,
-  useHeaderSecondLevel,
+  useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import {
   resetCredentialIssuance,
-  selectCredentialIssuancePostAuthStatus,
+  selectCredentialIssuancePostAuthStatus
 } from '../../store/credentialIssuance';
 import { addCredentialWithIdentification } from '../../store/credentials';
 import { parseClaimsToRecord } from '../../utils/claims';
@@ -27,7 +27,7 @@ import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWit
 
 export const CredentialPreview = () => {
   const credentialPostStatus = useAppSelector(
-    selectCredentialIssuancePostAuthStatus,
+    selectCredentialIssuancePostAuthStatus
   );
   const dispatch = useAppDispatch();
   const { t } = useTranslation(['wallet', 'global']);
@@ -42,25 +42,25 @@ export const CredentialPreview = () => {
     handleDismiss: cancel,
     customLabels: {
       title: t('generic.alert.title', {
-        ns: 'wallet',
+        ns: 'wallet'
       }),
       body: t('generic.alert.body', {
-        ns: 'wallet',
+        ns: 'wallet'
       }),
       confirmLabel: t('generic.alert.confirm', {
-        ns: 'wallet',
+        ns: 'wallet'
       }),
       cancelLabel: t('generic.alert.cancel', {
-        ns: 'wallet',
-      }),
-    },
+        ns: 'wallet'
+      })
+    }
   });
 
   useHeaderSecondLevel({
     title: '',
     goBack: () => {
       dismissalDialog.show();
-    },
+    }
   });
 
   useDisableGestureNavigation();
@@ -75,7 +75,7 @@ export const CredentialPreview = () => {
 
   const credential = credentialPostStatus.success.data;
   const parsedClaims = parseClaimsToRecord(credential.parsedCredential, {
-    exclude: [WellKnownClaim.unique_id, WellKnownClaim.content],
+    exclude: [WellKnownClaim.unique_id, WellKnownClaim.content]
   });
 
   return (
@@ -96,19 +96,19 @@ export const CredentialPreview = () => {
             onPress: () =>
               dispatch(
                 addCredentialWithIdentification({
-                  credential,
-                }),
+                  credential
+                })
               ),
             icon: 'add',
-            iconPosition: 'end',
+            iconPosition: 'end'
           },
           secondary: {
             label: t('global:buttons.cancel'),
             onPress: () => {
               dismissalDialog.show();
-            },
+            }
           },
-          type: 'TwoButtons',
+          type: 'TwoButtons'
         }}
       />
     </ForceScrollDownView>
@@ -117,10 +117,10 @@ export const CredentialPreview = () => {
 
 const styles = StyleSheet.create({
   scrollView: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   container: {
     flex: 1,
-    marginHorizontal: IOVisualCostants.appMarginDefault,
-  },
+    marginHorizontal: IOVisualCostants.appMarginDefault
+  }
 });

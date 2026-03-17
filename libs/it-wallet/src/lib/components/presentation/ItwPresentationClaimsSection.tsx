@@ -93,15 +93,15 @@ export const ItwPresentationClaimsSection = ({
         // If do not have claims, we should not render the title and the toggle
         claims.length > 0 && (
           <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-            >
-              <H6 color={theme['textHeading-tertiary']}>
-                {t('presentation.credentialDetails.documentDataTitle', {
-                  ns: 'wallet'
-                })}
-              </H6>
-              {renderHideValuesToggle()}
-            </View>
+            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+          >
+            <H6 color={theme['textHeading-tertiary']}>
+              {t('presentation.credentialDetails.documentDataTitle', {
+                ns: 'wallet'
+              })}
+            </H6>
+            {renderHideValuesToggle()}
+          </View>
         )
       }
       <LinkQrCode />

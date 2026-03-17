@@ -2,7 +2,7 @@ import {
   ContentWrapper,
   Optional,
   VSpacer,
-  VStack,
+  VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
@@ -13,7 +13,7 @@ import { View } from 'react-native';
 import {
   OperationResultScreenContent,
   useIOBottomSheetModal,
-  usePreventScreenCapture,
+  usePreventScreenCapture
 } from '@io-eudiw-app/commons';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { selectCredential } from '../../store/credentials';
@@ -25,7 +25,7 @@ import {
   selectProximityErrorDetails,
   selectProximityStatus,
   setProximityStatusStarted,
-  setProximityStatusStopped,
+  setProximityStatusStopped
 } from '../../store/proximity';
 import { parseClaimsToRecord } from '../../utils/claims';
 import { wellKnownCredential } from '../../utils/credentials';
@@ -36,7 +36,7 @@ import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
 import { PresentationProximityQrCode } from '../../components/proximity/PresentationProximityQRCode';
 import {
   CredentialCtaProps,
-  ItwPresentationDetailsScreenBase,
+  ItwPresentationDetailsScreenBase
 } from '../../components/presentation/ItwPresentationDetailsScreenBase';
 import { ItwPresentationCredentialUnknownStatus } from '../../components/presentation/ItwPresentationCredentialUnknownStatus';
 import { ItwPresentationDetailsHeader } from '../../components/presentation/ItwPresentationDetailsHeader';
@@ -47,7 +47,7 @@ import { ItwPresentationDetailsFooter } from '../../components/presentation/ItwP
 import { PoweredByItWalletText } from '../../components/PoweredByItWalletText';
 import {
   selectIsDebugModeEnabled,
-  useDebugInfo,
+  useDebugInfo
 } from '@io-eudiw-app/debug-info';
 import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
 
@@ -82,17 +82,17 @@ export const ItwPresentationCredentialDetailScreen = ({ route }: Props) => {
           { text: t(`${ns}.itWallet.body`, { ns: 'wallet' }) },
           {
             text: t(`${ns}.itWallet.bodyBold`, { ns: 'wallet' }),
-            weight: 'Semibold',
-          },
+            weight: 'Semibold'
+          }
         ]}
         pictogram="itWallet"
         action={{
           label: t(`${ns}.primaryAction`, { ns: 'wallet' }),
-          onPress: () => navigation.replace('PID_ISSUANCE_INSTANCE_CREATION'),
+          onPress: () => navigation.replace('PID_ISSUANCE_INSTANCE_CREATION')
         }}
         secondaryAction={{
           label: t(`${ns}.secondaryAction`, { ns: 'wallet' }),
-          onPress: () => navigation.popToTop(),
+          onPress: () => navigation.popToTop()
         }}
       />
     );
@@ -113,7 +113,7 @@ type ItwPresentationCredentialDetailProps = {
  * Component that renders the credential detail content.
  */
 const ItwPresentationCredentialDetail = ({
-  credential,
+  credential
 }: ItwPresentationCredentialDetailProps) => {
   const navigation =
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
@@ -128,7 +128,7 @@ const ItwPresentationCredentialDetail = ({
 
   const proximityStatus = useAppSelector(selectProximityStatus);
   const proximityDisclosureDescriptor = useAppSelector(
-    selectProximityDisclosureDescriptor,
+    selectProximityDisclosureDescriptor
   );
   const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
 
@@ -139,9 +139,9 @@ const ItwPresentationCredentialDetail = ({
       ? {
           proximityDisclosureDescriptorQR: proximityDisclosureDescriptor,
           proximityStatusQR: proximityStatus,
-          proximityErrorDetailsQR: proximityErrorDetails ?? 'No errors',
+          proximityErrorDetailsQR: proximityErrorDetails ?? 'No errors'
         }
-      : {},
+      : {}
   );
 
   const QrCodeModal = useIOBottomSheetModal({
@@ -153,7 +153,7 @@ const ItwPresentationCredentialDetail = ({
         dispatch(setProximityStatusStopped());
         dispatch(resetProximity());
       }
-    },
+    }
   });
 
   useEffect(() => {
@@ -179,7 +179,7 @@ const ItwPresentationCredentialDetail = ({
         onPress: () => {
           dispatch(setProximityStatusStarted());
           QrCodeModal.present();
-        },
+        }
       };
     }
 
@@ -188,7 +188,7 @@ const ItwPresentationCredentialDetail = ({
 
   const parsedClaims = useMemo(
     () => parseClaimsToRecord(credential.parsedCredential),
-    [credential.parsedCredential],
+    [credential.parsedCredential]
   );
 
   if (status === 'unknown') {

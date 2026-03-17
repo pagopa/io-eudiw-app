@@ -34,7 +34,7 @@ export const requestBlePermissions = async (): Promise<boolean> => {
     }
 
     return true; // All permissions were already granted
-  } catch (error) {
+  } catch {
     return false;
   }
 };

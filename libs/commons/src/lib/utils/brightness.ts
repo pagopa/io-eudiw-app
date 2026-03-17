@@ -156,6 +156,7 @@ export function useMaxBrightness({
    * - Removing the AppState event listener
    */
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let appStateSubscription: any;
 
     const handleAppStateChange = async (nextAppState: AppStateStatus) => {
@@ -181,7 +182,7 @@ export function useMaxBrightness({
           'change',
           handleAppStateChange
         );
-      } catch (error) {
+      } catch {
         // Ignore
       }
     };

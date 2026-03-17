@@ -9,7 +9,7 @@ import {
   ListItemHeader,
   useIOTheme,
   VSpacer,
-  VStack,
+  VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -24,13 +24,13 @@ import {
   selectPreDefinitionStatus,
   setOptionalCredentials,
   setPostDefinitionCancel,
-  setPostDefinitionRequest,
+  setPostDefinitionRequest
 } from '../../store/presentation';
 import { getClaimDisplayValue } from '../../utils/itwClaimsUtils';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import {
   ClaimDisplayFormat,
-  groupCredentialsByPurpose,
+  groupCredentialsByPurpose
 } from '../../utils/itwRemotePresentationUtils';
 import { EnrichedPresentationDetails } from '../../utils/itwTypesUtils';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -38,7 +38,7 @@ import {
   getSafeText,
   useDisableGestureNavigation,
   useHardwareBackButton,
-  useHeaderSecondLevel,
+  useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import { IOMarkdown } from '@io-eudiw-app/commons';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
@@ -86,12 +86,12 @@ const PresentationPostDefinition = ({ route }: Props) => {
       {
         text: t('global:cancelOperation.confirm'),
         onPress: cancel,
-        style: 'destructive',
+        style: 'destructive'
       },
       {
         text: t('global:cancelOperation.cancel'),
-        style: 'cancel',
-      },
+        style: 'cancel'
+      }
     ]);
   };
 
@@ -106,31 +106,31 @@ const PresentationPostDefinition = ({ route }: Props) => {
   useEffect(() => {
     if (postDefinitionStatus.success.status) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PRESENTATION_SUCCESS',
+        screen: 'PRESENTATION_SUCCESS'
       });
     } else if (postDefinitionStatus.error.status) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PRESENTATION_FAILURE',
+        screen: 'PRESENTATION_FAILURE'
       });
     }
   }, [
     navigation,
     postDefinitionStatus.error.status,
-    postDefinitionStatus.success.status,
+    postDefinitionStatus.success.status
   ]);
 
   useHeaderSecondLevel({
     title: '',
-    goBack: cancelAlert,
+    goBack: cancelAlert
   });
 
   /**
    * Maps claims to the format required by the ClaimsSelector component.
    */
   const mapClaims = (
-    claims: Array<ClaimDisplayFormat>,
+    claims: Array<ClaimDisplayFormat>
   ): ComponentProps<typeof ClaimsSelector>['items'] =>
-    claims.map((c) => {
+    claims.map(c => {
       const displayResult = getClaimDisplayValue(c);
 
       if (displayResult.type === 'image') {
@@ -138,7 +138,7 @@ const PresentationPostDefinition = ({ route }: Props) => {
           id: c.id,
           value: displayResult.value, // This is always a string for images
           description: c.label,
-          type: 'image',
+          type: 'image'
         };
       }
 
@@ -149,7 +149,7 @@ const PresentationPostDefinition = ({ route }: Props) => {
       return {
         id: c.id,
         value: textValue,
-        description: c.label,
+        description: c.label
       };
     });
 
@@ -157,12 +157,12 @@ const PresentationPostDefinition = ({ route }: Props) => {
    * Renders the block of credentials requested during the presentation flow.
    */
   const RequestedCredentialsBlock = ({
-    credentials,
+    credentials
   }: {
     credentials: EnrichedPresentationDetails;
   }) => {
     const visibleCredentials = credentials.filter(
-      (c) => c.claimsToDisplay.length > 0,
+      c => c.claimsToDisplay.length > 0
     );
 
     return (
@@ -187,13 +187,13 @@ const PresentationPostDefinition = ({ route }: Props) => {
 
   const { required, optional } = useMemo(
     () => groupCredentialsByPurpose(route.params.descriptor.descriptor ?? []),
-    [route.params.descriptor],
+    [route.params.descriptor]
   );
 
   const sendOptionalCredentials = (
-    credentials: EnrichedPresentationDetails,
+    credentials: EnrichedPresentationDetails
   ) => {
-    dispatch(setOptionalCredentials(credentials.map((c) => c.id)));
+    dispatch(setOptionalCredentials(credentials.map(c => c.id)));
   };
 
   return (
@@ -209,7 +209,7 @@ const PresentationPostDefinition = ({ route }: Props) => {
           <H2>{t('wallet:presentation.trust.title')}</H2>
           <IOMarkdown
             content={t('wallet:presentation.trust.subtitle', {
-              relyingParty: rpConfig?.organization_name,
+              relyingParty: rpConfig?.organization_name
             })}
           />
         </VStack>
@@ -223,7 +223,7 @@ const PresentationPostDefinition = ({ route }: Props) => {
               description={
                 purpose
                   ? t('wallet:presentation.trust.purpose', {
-                      purpose,
+                      purpose
                     })
                   : undefined
               }
@@ -237,13 +237,13 @@ const PresentationPostDefinition = ({ route }: Props) => {
             <ListItemCheckbox
               value={t('wallet:presentation.trust.optionalClaims')}
               icon="security"
-              onValueChange={(value) => {
+              onValueChange={value => {
                 sendOptionalCredentials(value ? credentials : []);
               }}
               description={
                 purpose
                   ? t('wallet:presentation.trust.purpose', {
-                      purpose,
+                      purpose
                     })
                   : undefined
               }
@@ -270,12 +270,12 @@ const PresentationPostDefinition = ({ route }: Props) => {
           primary: {
             label: t('global:buttons.continue'),
             onPress: () => dispatch(setPostDefinitionRequest([])),
-            loading: postDefinitionStatus.loading,
+            loading: postDefinitionStatus.loading
           },
           secondary: {
             label: t('global:buttons.cancel'),
-            onPress: cancelAlert,
-          },
+            onPress: cancelAlert
+          }
         }}
       />
     </ForceScrollDownView>
@@ -284,8 +284,8 @@ const PresentationPostDefinition = ({ route }: Props) => {
 
 const styles = StyleSheet.create({
   scroll: {
-    flexGrow: 1,
-  },
+    flexGrow: 1
+  }
 });
 
 export default PresentationPostDefinition;

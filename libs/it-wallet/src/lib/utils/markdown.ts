@@ -1,4 +1,10 @@
-import { linkNodeToReactNative, openWebUrl, paragraphNodeToReactNative, ParagraphSize, Renderer } from '@io-eudiw-app/commons';
+import {
+  linkNodeToReactNative,
+  openWebUrl,
+  paragraphNodeToReactNative,
+  ParagraphSize,
+  Renderer
+} from '@io-eudiw-app/commons';
 import { IOToast } from '@pagopa/io-app-design-system';
 import { TxtLinkNode, TxtParagraphNode } from '@textlint/ast-node-types';
 import { t } from 'i18next';

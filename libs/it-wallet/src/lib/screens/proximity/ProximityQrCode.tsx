@@ -4,7 +4,7 @@ import {
   H2,
   H6,
   VSpacer,
-  VStack,
+  VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
@@ -15,7 +15,7 @@ import {
   LoadingIndicator,
   useDisableGestureNavigation,
   useHardwareBackButton,
-  useHeaderSecondLevel,
+  useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import {
   ProximityStatus,
@@ -25,7 +25,7 @@ import {
   selectProximityErrorDetails,
   selectProximityQrCode,
   selectProximityStatus,
-  setProximityStatusStopped,
+  setProximityStatusStopped
 } from '../../store/proximity';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
@@ -41,14 +41,14 @@ const ProximityQrCode = () => {
   const proximityStatus = useAppSelector(selectProximityStatus);
   const descriptor = useAppSelector(selectProximityDisclosureDescriptor);
   const isAuthenticated = useAppSelector(
-    selectProximityDisclosureIsAuthenticated,
+    selectProximityDisclosureIsAuthenticated
   );
   const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
 
   useDebugInfo({
     proximityDisclosureDescriptorQR: descriptor,
     proximityStatusQR: proximityStatus,
-    proximityErrorDetailsQR: proximityErrorDetails ?? 'No errors',
+    proximityErrorDetailsQR: proximityErrorDetails ?? 'No errors'
   });
 
   const dispatch = useAppDispatch();
@@ -62,7 +62,7 @@ const ProximityQrCode = () => {
       navigation.goBack();
       dispatch(setProximityStatusStopped());
       dispatch(resetProximity());
-    },
+    }
   });
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const ProximityQrCode = () => {
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_PREVIEW',
-        params: { descriptor, isAuthenticated },
+        params: { descriptor, isAuthenticated }
       });
       // If we reach this state, it means that a connection has already been established but failed before
       // reaching the preview screen: the bottom spinner of the modal has been activated,
@@ -85,7 +85,7 @@ const ProximityQrCode = () => {
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_FAILURE',
-        params: { fatal: true },
+        params: { fatal: true }
       });
     }
   }, [proximityStatus, navigation, descriptor, isAuthenticated]);

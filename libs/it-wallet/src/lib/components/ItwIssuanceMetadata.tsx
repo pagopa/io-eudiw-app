@@ -105,7 +105,7 @@ export const ItwIssuanceMetadata = ({
             privacyUrl: ''
           }
         ),
-        onPress: () => {}
+        onPress: () => null
       }),
       []
     );
@@ -123,7 +123,7 @@ export const ItwIssuanceMetadata = ({
             ns: 'wallet'
           }
         ),
-        onPress: () => {}
+        onPress: () => null
       }),
       []
     );

@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import {
   OperationResultScreenContent,
-  useHardwareBackButton,
+  useHardwareBackButton
 } from '@io-eudiw-app/commons';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthError,
-  selectCredentialIssuancePreAuthError,
+  selectCredentialIssuancePreAuthError
 } from '../../store/credentialIssuance';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
@@ -40,7 +40,7 @@ const CredentialFailure = () => {
       action={{
         accessibilityLabel: t('global:buttons.back'),
         label: t('global:buttons.back'),
-        onPress,
+        onPress
       }}
     />
   );

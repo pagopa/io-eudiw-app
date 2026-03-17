@@ -60,7 +60,9 @@ const credentialsSlice = createSlice({
     addCredentialWithIdentification: (
       _,
       __: PayloadAction<{ credential: StoredCredential }>
-    ) => {},
+    ) => {
+      /* empty */
+    },
     removeCredential: (
       state,
       action: PayloadAction<{ credentialType: string }>

@@ -1,4 +1,3 @@
-/* eslint-disable no-bitwise */
 const hexToRgb = (hex: string) => {
   const cleaned = hex.replace('#', '');
   const bigint = parseInt(cleaned, 16);

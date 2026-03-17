@@ -54,13 +54,17 @@
     {
       "plugin": "@nx/jest/plugin",
       "options": {
-        "targetName": "test"
+        "targetName": "test",
+        "passWithNoTests": true 
       }
     }
   ],
   "targetDefaults": {
     "test": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "options": {
+        "passWithNoTests": true
+      }
     }
   },
   "neverConnectToCloud": true

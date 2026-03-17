@@ -83,7 +83,9 @@ const presentationSlice = createSlice({
       state.postDefinition = setLoading();
     },
     // Empty action which will be intercepted by the listener and trigger the identification before finishing the presentation process
-    setPostDefinitionCancel: _ => {},
+    setPostDefinitionCancel: _ => {
+      /* empty */
+    },
     setPostDefinitionError: (
       state,
       action: PayloadAction<{ error: unknown }>

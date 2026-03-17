@@ -131,11 +131,6 @@ export const getCredentialExpireDays = (
  *
  */
 
-const SIMPLE_DATE_FORMAT = {
-  DDMMYYYY: 'DD/MM/YYYY',
-  DDMMYY: 'DD/MM/YY'
-} as const;
-
 /**
  * Enrich the result of the presentation request evaluation with localized claim names for UI display.
  *
@@ -221,7 +216,7 @@ export const getClaimDisplayValue = (
           value: parsed.value.join(', ')
         };
 
-      case 'drivingPrivileges':
+      case 'drivingPrivileges': {
         const categories = parsed.value
           .map(v => v.vehicle_category_code)
           .join(', ');
@@ -229,6 +224,7 @@ export const getClaimDisplayValue = (
           type: 'text',
           value: categories
         };
+      }
 
       case 'string':
         return {
@@ -257,7 +253,7 @@ export const getClaimDisplayValue = (
           )
         };
     }
-  } catch (error) {
+  } catch {
     return {
       type: 'text',
       value: t('verifiableCredentials.generic.placeholders.claimNotAvailable', {
@@ -266,5 +262,12 @@ export const getClaimDisplayValue = (
     };
   }
 };
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const SIMPLE_DATE_FORMAT = {
+  DDMMYYYY: 'DD/MM/YYYY',
+  DDMMYY: 'DD/MM/YY'
+} as const;
+
 export type SimpleDateFormat =
   (typeof SIMPLE_DATE_FORMAT)[keyof typeof SIMPLE_DATE_FORMAT];

@@ -3,7 +3,10 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Linking } from 'react-native';
 import RNQRGenerator from 'rn-qr-generator';
-import { OnBarcodeSuccess, OnBardCodeError } from '../screens/presentation/QrCodeScanScreen';
+import {
+  OnBarcodeSuccess,
+  OnBardCodeError
+} from '../screens/presentation/QrCodeScanScreen';
 
 type QrCodeFileReader = {
   /**
@@ -92,7 +95,7 @@ const useQrCodeFileReader = ({
       }
 
       await processImage(result.assets[0].uri);
-    } catch (error) {
+    } catch {
       onBarcodeError();
     } finally {
       setIsLoading(false);

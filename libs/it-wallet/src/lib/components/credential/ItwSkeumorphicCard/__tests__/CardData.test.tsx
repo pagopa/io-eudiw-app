@@ -6,13 +6,13 @@ import { CardData } from '../CardData';
 jest.mock('@shopify/react-native-skia', () => ({
   Skia: {
     Data: {
-      fromBase64: jest.fn(),
+      fromBase64: jest.fn()
     },
     Image: {
-      MakeImageFromEncoded: jest.fn(),
-    },
+      MakeImageFromEncoded: jest.fn()
+    }
   },
-  Canvas: jest.fn(),
+  Canvas: jest.fn()
 }));
 
 describe('CardData', () => {
@@ -21,12 +21,12 @@ describe('CardData', () => {
       <CardData
         credential={ItwStoredCredentialsMocks.mdl}
         claims={parseClaimsToRecord(
-          ItwStoredCredentialsMocks.mdl.parsedCredential,
+          ItwStoredCredentialsMocks.mdl.parsedCredential
         )}
         side="front"
         mode="vertical"
         valuesHidden={false}
-      />,
+      />
     );
 
     expect(component.queryByTestId('mdlFrontDataTestID')).toBeTruthy();
@@ -38,12 +38,12 @@ describe('CardData', () => {
       <CardData
         credential={ItwStoredCredentialsMocks.mdl}
         claims={parseClaimsToRecord(
-          ItwStoredCredentialsMocks.mdl.parsedCredential,
+          ItwStoredCredentialsMocks.mdl.parsedCredential
         )}
         side="back"
         mode="vertical"
         valuesHidden={false}
-      />,
+      />
     );
 
     expect(component.queryByTestId('mdlBackDataTestID')).toBeTruthy();
@@ -55,12 +55,12 @@ describe('CardData', () => {
       <CardData
         credential={ItwStoredCredentialsMocks.dc}
         claims={parseClaimsToRecord(
-          ItwStoredCredentialsMocks.dc.parsedCredential,
+          ItwStoredCredentialsMocks.dc.parsedCredential
         )}
         side="front"
         mode="vertical"
         valuesHidden={false}
-      />,
+      />
     );
 
     expect(component.queryByTestId('dcFrontDataTestID')).toBeTruthy();
@@ -72,12 +72,12 @@ describe('CardData', () => {
       <CardData
         credential={ItwStoredCredentialsMocks.dc}
         claims={parseClaimsToRecord(
-          ItwStoredCredentialsMocks.dc.parsedCredential,
+          ItwStoredCredentialsMocks.dc.parsedCredential
         )}
         side="back"
         mode="vertical"
         valuesHidden={false}
-      />,
+      />
     );
 
     expect(component.queryByTestId('dcBackDataTestID')).toBeTruthy();

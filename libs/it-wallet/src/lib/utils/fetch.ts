@@ -1,7 +1,6 @@
 import { getEnv } from '@io-eudiw-app/env';
 import { URL as PolyfillURL } from 'react-native-url-polyfill';
 
-
 interface AuthHeaders {
   'x-user-id'?: string;
 }

@@ -6,7 +6,7 @@ import {
   IOVisualCostants,
   VSpacer,
   VStack,
-  Alert as AlertDs,
+  Alert as AlertDs
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -17,7 +17,7 @@ import {
   IOMarkdown,
   useDisableGestureNavigation,
   useHardwareBackButton,
-  useHeaderSecondLevel,
+  useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
@@ -29,14 +29,14 @@ import {
   selectProximityErrorDetails,
   selectProximityStatus,
   setProximityStatusAuthorizationRejected,
-  setProximityStatusAuthorizationSend,
+  setProximityStatusAuthorizationSend
 } from '../../store/proximity';
 import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
 import { ItwProximityPresentationDetails } from './ItwProximityPresentationDetails';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   selectIsDebugModeEnabled,
-  useDebugInfo,
+  useDebugInfo
 } from '@io-eudiw-app/debug-info';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
@@ -66,14 +66,14 @@ const PresentationProximityPreview = ({ route }: Props) => {
     proximityDetails,
     verifierRequest,
     proximityStatusPreview: proximityStatus,
-    proximityErrorDetailsPreview: proximityErrorDetails ?? 'No errors',
+    proximityErrorDetailsPreview: proximityErrorDetails ?? 'No errors'
   });
 
   useEffect(() => {
     // Handle navigation based on the proximity presentation result
     if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_STOPPED) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PROXIMITY_SUCCESS',
+        screen: 'PROXIMITY_SUCCESS'
       });
     } else if (
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED ||
@@ -82,15 +82,15 @@ const PresentationProximityPreview = ({ route }: Props) => {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_FAILURE',
         params: {
-          fatal: true,
-        },
+          fatal: true
+        }
       });
     } else if (
       proximityStatus === ProximityStatus.PRXOMIMITY_STATUS_ERROR_AUTHORIZED
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PROXIMITY_FAILURE',
-        params: { fatal: false },
+        params: { fatal: false }
       });
     }
   }, [proximityStatus, navigation]);
@@ -111,12 +111,12 @@ const PresentationProximityPreview = ({ route }: Props) => {
       {
         text: t('global:cancelOperation.confirm'),
         onPress: cancel,
-        style: 'destructive',
+        style: 'destructive'
       },
       {
         text: t('global:cancelOperation.cancel'),
-        style: 'cancel',
-      },
+        style: 'cancel'
+      }
     ]);
   };
 
@@ -139,7 +139,7 @@ const PresentationProximityPreview = ({ route }: Props) => {
 
   useHeaderSecondLevel({
     title: '',
-    goBack: cancelAlert,
+    goBack: cancelAlert
   });
 
   return (
@@ -151,7 +151,7 @@ const PresentationProximityPreview = ({ route }: Props) => {
           <H2>{t('wallet:presentation.trust.title')}</H2>
           <IOMarkdown
             content={t('wallet:proximity.trust.subtitle', {
-              relyingParty: ISSUER_MOCK_NAME,
+              relyingParty: ISSUER_MOCK_NAME
             })}
           />
         </VStack>
@@ -182,12 +182,12 @@ const PresentationProximityPreview = ({ route }: Props) => {
               proximityStatus ===
                 ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_SEND ||
               proximityStatus ===
-                ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE,
+                ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE
           },
           secondary: {
             label: t('global:buttons.cancel'),
-            onPress: cancelAlert,
-          },
+            onPress: cancelAlert
+          }
         }}
       />
     </ForceScrollDownView>
@@ -196,8 +196,8 @@ const PresentationProximityPreview = ({ route }: Props) => {
 
 const styles = StyleSheet.create({
   scroll: {
-    flexGrow: 1,
-  },
+    flexGrow: 1
+  }
 });
 
 export default PresentationProximityPreview;

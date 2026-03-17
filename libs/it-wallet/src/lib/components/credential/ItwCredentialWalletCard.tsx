@@ -17,8 +17,8 @@ const WrappedItwCredentialCard = (props: ItwCredentialWalletCardProps) => {
     navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
       screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_DETAILS,
       params: {
-        credentialType,
-      },
+        credentialType
+      }
     });
   };
 
@@ -36,5 +36,5 @@ const WrappedItwCredentialCard = (props: ItwCredentialWalletCardProps) => {
  * Wrapper component which adds wallet capabilites to the ItwCredentialCard component
  */
 export const ItwCredentialWalletCard = withWalletCardBaseComponent(
-  WrappedItwCredentialCard,
+  WrappedItwCredentialCard
 );

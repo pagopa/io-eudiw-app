@@ -46,7 +46,7 @@ const QRCODE_SCANNER_REACTIVATION_TIME_MS = 5000;
 export const useQrCodeCameraScanner = ({
   onBarcodeSuccess,
   isDisabled,
-  isLoading = false,
+  isLoading = false
 }: QrCodeCameraScannerConfiguration): QrCodeCameraScanner => {
   // Checks that the device has a torch
   const [enableTorch, setEnableTorch] = useState<boolean>(false);
@@ -80,7 +80,7 @@ export const useQrCodeCameraScanner = ({
 
       onBarcodeSuccess(scanningResult.data);
     },
-    [isDisabled, isResting, isLoading, onBarcodeSuccess],
+    [isDisabled, isResting, isLoading, onBarcodeSuccess]
   );
 
   /**
@@ -92,7 +92,7 @@ export const useQrCodeCameraScanner = ({
         clearTimeout(scannerReactivateTimeoutHandler.current);
       }
     },
-    [scannerReactivateTimeoutHandler],
+    [scannerReactivateTimeoutHandler]
   );
 
   /**
@@ -102,7 +102,7 @@ export const useQrCodeCameraScanner = ({
     <View style={styles.cameraContainer} testID="BarcodeScannerCameraTestID">
       <CameraView
         barcodeScannerSettings={{
-          barcodeTypes: ['qr'],
+          barcodeTypes: ['qr']
         }}
         style={styles.camera}
         active={!isDisabled}
@@ -121,12 +121,12 @@ export const useQrCodeCameraScanner = ({
     </View>
   );
 
-  const toggleTorch = () => setEnableTorch((prev) => !prev);
+  const toggleTorch = () => setEnableTorch(prev => !prev);
 
   return {
     cameraComponent,
     enableTorch,
-    toggleTorch,
+    toggleTorch
   };
 };
 
@@ -144,17 +144,17 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: '100%',
     height: '100%',
-    backgroundColor: IOColors.black,
+    backgroundColor: IOColors.black
   },
   camera: {
     position: 'absolute',
     width: '100%',
-    height: '100%',
+    height: '100%'
   },
   markerContainer: {
     alignSelf: 'center',
     position: 'absolute',
     top: 0,
-    bottom: 0,
-  },
+    bottom: 0
+  }
 });

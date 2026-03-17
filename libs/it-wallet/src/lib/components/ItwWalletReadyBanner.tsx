@@ -16,7 +16,7 @@ export const ItwWalletReadyBanner = () => {
 
   const handleOnPress = () => {
     navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-      screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST,
+      screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST
     });
   };
 
@@ -25,10 +25,10 @@ export const ItwWalletReadyBanner = () => {
       <Banner
         title={undefined}
         content={t('issuance.emptyWallet.readyBanner.content', {
-          ns: 'wallet',
+          ns: 'wallet'
         })}
         action={t('issuance.emptyWallet.readyBanner.action', {
-          ns: 'wallet',
+          ns: 'wallet'
         })}
         color="turquoise"
         onPress={handleOnPress}

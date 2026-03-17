@@ -23,7 +23,7 @@ export const useCredentialIssuanceNavigationListeners = () => {
   useEffect(() => {
     if (preAuthStatus.success.status && !shouldIssuePidFirst) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'CREDENTIAL_ISSUANCE_TRUST',
+        screen: 'CREDENTIAL_ISSUANCE_TRUST'
       });
     }
   }, [preAuthStatus.success, navigation, shouldIssuePidFirst]);
@@ -34,7 +34,7 @@ export const useCredentialIssuanceNavigationListeners = () => {
   useEffect(() => {
     if (preAuthStatus.error.status && !shouldIssuePidFirst) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'CREDENTIAL_ISSUANCE_FAILURE',
+        screen: 'CREDENTIAL_ISSUANCE_FAILURE'
       });
     }
   }, [preAuthStatus.error, navigation, shouldIssuePidFirst]);

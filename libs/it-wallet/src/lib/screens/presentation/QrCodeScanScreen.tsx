@@ -1,13 +1,13 @@
 import {
   useDisableGestureNavigation,
-  useHardwareBackButton,
+  useHardwareBackButton
 } from '@io-eudiw-app/commons';
 import { IOToast } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import ReactNativeHapticFeedback, {
-  HapticFeedbackTypes,
+  HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
 import { presentationLinkToUrl } from '../../utils/parsing';
 import { useQrCodeFileReader } from '../../hooks/useQrCodeFileReader';
@@ -35,10 +35,10 @@ const QrCodeScanScreen = () => {
       [
         {
           text: t(`multipleResultsAlert.action`),
-          style: 'default',
-        },
+          style: 'default'
+        }
       ],
-      { cancelable: false },
+      { cancelable: false }
     );
 
   /**
@@ -51,22 +51,22 @@ const QrCodeScanScreen = () => {
     try {
       const { request_uri, client_id } = presentationLinkToUrl(barcode);
       ReactNativeHapticFeedback.trigger(
-        HapticFeedbackTypes.notificationSuccess,
+        HapticFeedbackTypes.notificationSuccess
       );
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PRESENTATION_PRE_DEFINITION',
         params: {
           client_id,
-          request_uri,
-        },
+          request_uri
+        }
       });
-    } catch (e) {
+    } catch {
       ReactNativeHapticFeedback.trigger(HapticFeedbackTypes.notificationError);
       IOToast.error(t('error'));
     }
   };
 
-  const handleBarcodeSuccess: OnBarcodeSuccess = (barcode) => {
+  const handleBarcodeSuccess: OnBarcodeSuccess = barcode => {
     const codes = Array.isArray(barcode) ? barcode : [barcode];
 
     if (codes.length > 1) {
@@ -80,7 +80,7 @@ const QrCodeScanScreen = () => {
 
   const { showImagePicker, isLoading } = useQrCodeFileReader({
     onBarcodeSuccess: handleBarcodeSuccess,
-    onBarcodeError: handleBarcodeError,
+    onBarcodeError: handleBarcodeError
   });
 
   return (

@@ -26,5 +26,5 @@ export const TabIconComponent = memo(
         color={color}
       />
     </View>
-  ),
+  )
 );

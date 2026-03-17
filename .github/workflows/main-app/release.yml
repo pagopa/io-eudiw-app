@@ -27,12 +27,12 @@ jobs:
       newAppVersion: ${{ steps.get-current-version.outputs.NEW_APP_VERSION }}
     steps:
       - id: checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
         with:
           fetch-depth: 0
           ssh-key: ${{ secrets.SSH_DEPLOY_KEY }}
       - id: setup-node
-        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version-file: '.node-version'
       - id: setup
@@ -41,8 +41,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-
-          yarn increment-version ${{ github.event.inputs.releaseLevel }}
+          pnpm nx run main-app:increment-version ${{ github.event.inputs.releaseLevel }}
       - id: get-current-version
         run: |
           NEW_APP_VERSION=$(node -p -e "require('./package.json').version")
@@ -73,12 +72,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab #v3.5.2
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
         with:
           fetch-depth: 0
           ref: ${{ needs.bump-app-version.outputs.newAppVersion }}
       - id: setup-node
-        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0 # v3.6.0
         with:
           node-version-file: '.node-version'
       - id: setup
@@ -96,7 +95,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Prebuild Android
-        run: yarn prebuild --platform android --clean
+        run: pnpm nx prebuild main-app --platform android --clean
       - id: build-android
         name: Build and submit to Play Store
         run: |
@@ -156,12 +155,12 @@ jobs:
         run: sudo xcode-select -s '/Applications/Xcode_16.4.0.app/Contents/Developer'
         shell: bash
       - id: checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab #v3.5.2
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
         with:
           fetch-depth: 0
           ref: ${{ needs.bump-app-version.outputs.newAppVersion }}
       - id: setup-node
-        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version-file: '.node-version'
       - id: setup
@@ -181,7 +180,7 @@ jobs:
         env:
           SSH_DEPLOY_KEY: ${{secrets.SSH_CERTS_DEPLOY_KEY}}
       - name: Prebuild iOS
-        run: yarn prebuild --platform ios --clean
+        run: pnpm nx prebuild main-app --platform ios --clean
       - id: build-ios
         name: Build and submit to App Store
         run: |

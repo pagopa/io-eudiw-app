@@ -70,7 +70,7 @@ const itwGetCredentialNameByCredentialType = (): Record<string, string> => ({
 
 export const getCredentialNameFromType = (
   credentialType: string | undefined,
-  withDefault: string = ''
+  withDefault = ''
 ): string =>
   credentialType !== undefined
     ? itwGetCredentialNameByCredentialType()[credentialType]

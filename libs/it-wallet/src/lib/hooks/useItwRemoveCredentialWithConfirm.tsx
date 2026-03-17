@@ -12,7 +12,7 @@ import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
  * Hook that shows a confirmation dialog and, if confirmed, removes a credential from the wallet
  */
 export const useItwRemoveCredentialWithConfirm = (
-  credential: StoredCredential,
+  credential: StoredCredential
 ) => {
   const dispatch = useAppDispatch();
   const toast = useIOToast();
@@ -22,7 +22,7 @@ export const useItwRemoveCredentialWithConfirm = (
   const handleRemoveCredential = () => {
     dispatch(removeCredential(credential));
     toast.success(
-      t('presentation.credentialDetails.toast.removed', { ns: 'wallet' }),
+      t('presentation.credentialDetails.toast.removed', { ns: 'wallet' })
     );
 
     navigation.pop();
@@ -31,27 +31,27 @@ export const useItwRemoveCredentialWithConfirm = (
   const confirmAndRemoveCredential = () =>
     Alert.alert(
       t('presentation.credentialDetails.dialogs.remove.title', {
-        ns: 'wallet',
+        ns: 'wallet'
       }),
       t('presentation.credentialDetails.dialogs.remove.content', {
-        ns: 'wallet',
+        ns: 'wallet'
       }),
       [
         {
           text: t('buttons.cancel', { ns: 'global' }),
-          style: 'cancel',
+          style: 'cancel'
         },
         {
           text: t('presentation.credentialDetails.dialogs.remove.confirm', {
-            ns: 'wallet',
+            ns: 'wallet'
           }),
           style: 'destructive',
-          onPress: handleRemoveCredential,
-        },
-      ],
+          onPress: handleRemoveCredential
+        }
+      ]
     );
 
   return {
-    confirmAndRemoveCredential,
+    confirmAndRemoveCredential
   };
 };

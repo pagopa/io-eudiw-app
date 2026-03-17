@@ -4,7 +4,7 @@ import {
   H2,
   IOVisualCostants,
   VSpacer,
-  VStack,
+  VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
@@ -14,7 +14,7 @@ import {
   useDisableGestureNavigation,
   useHeaderSecondLevel,
   useHardwareBackButtonToDismiss,
-  LoadingScreenContent,
+  LoadingScreenContent
 } from '@io-eudiw-app/commons';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
@@ -22,7 +22,7 @@ import { obtainPidThunk } from '../../middleware/pid';
 import { addPidWithIdentification } from '../../store/credentials';
 import {
   selectPidIssuanceData,
-  selectPidIssuanceStatus,
+  selectPidIssuanceStatus
 } from '../../store/selectors/pidIssuance';
 import { parseClaimsToRecord } from '../../utils/claims';
 import { StoredCredential } from '../../utils/itwTypesUtils';
@@ -56,7 +56,7 @@ const PidIssuanceRequest = () => {
   useEffect(() => {
     if (error.status === true) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PID_ISSUANCE_FAILURE',
+        screen: 'PID_ISSUANCE_FAILURE'
       });
     }
   }, [error, navigation]);
@@ -66,25 +66,25 @@ const PidIssuanceRequest = () => {
     canGoBack: success.status,
     goBack: () => {
       dismissalDialog.show();
-    },
+    }
   });
 
   const dismissalDialog = useItwDismissalDialog({
     customLabels: {
       title: t('discovery.screen.itw.dismissalDialog.title', {
-        ns: 'wallet',
+        ns: 'wallet'
       }),
       body: t('discovery.screen.itw.dismissalDialog.body', {
-        ns: 'wallet',
+        ns: 'wallet'
       }),
       confirmLabel: t('discovery.screen.itw.dismissalDialog.confirm', {
-        ns: 'wallet',
+        ns: 'wallet'
       }),
       cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel', {
-        ns: 'wallet',
-      }),
+        ns: 'wallet'
+      })
     },
-    handleDismiss: () => navigateToWallet(),
+    handleDismiss: () => navigateToWallet()
   });
 
   const PidPreview = ({ credential }: { credential: StoredCredential }) => {
@@ -98,11 +98,11 @@ const PidIssuanceRequest = () => {
             type: 'SingleButton',
             primary: {
               label: t('buttons.continue', {
-                ns: 'global',
+                ns: 'global'
               }),
-              onPress: () => dispatch(addPidWithIdentification({ credential })),
-            },
-          },
+              onPress: () => dispatch(addPidWithIdentification({ credential }))
+            }
+          }
         }}
       >
         <VStack style={styles.contentWrapper}>
@@ -135,10 +135,10 @@ export default PidIssuanceRequest;
 
 const styles = StyleSheet.create({
   scroll: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   contentWrapper: {
     flexGrow: 1,
-    paddingHorizontal: IOVisualCostants.appMarginDefault,
-  },
+    paddingHorizontal: IOVisualCostants.appMarginDefault
+  }
 });

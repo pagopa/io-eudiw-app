@@ -1,6 +1,5 @@
-import { PRESENTATION_INTERNAL_LINKS } from "../navigation/main/deepLinkSchemas";
-import { PresentationPreDefinitionParams } from "../screens/presentation/PresentationPreDefinition";
-
+import { PRESENTATION_INTERNAL_LINKS } from '../navigation/main/deepLinkSchemas';
+import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
 
 /**
  * Parses a URL result from a QR code scan to a presentation link.

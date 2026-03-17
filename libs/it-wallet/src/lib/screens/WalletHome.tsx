@@ -1,6 +1,6 @@
 import {
   HeaderActionProps,
-  HeaderFirstLevel,
+  HeaderFirstLevel
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { useMemo } from 'react';
@@ -25,17 +25,17 @@ const WalletHome = () => {
         icon: 'add',
         onPress: () =>
           navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-            screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST,
+            screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST
           }),
-        accessibilityLabel: t('global:settings.title'),
+        accessibilityLabel: t('global:settings.title')
       } satisfies HeaderActionProps,
       {
         icon: 'coggle',
         onPress: () => navigation.navigate('MAIN_SETTINGS'),
-        accessibilityLabel: t('global:settings.title'),
-      },
+        accessibilityLabel: t('global:settings.title')
+      }
     ],
-    [navigation, t],
+    [navigation, t]
   );
 
   return (

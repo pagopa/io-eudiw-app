@@ -2,7 +2,10 @@ import { useMemo } from 'react';
 import { StatusBarStyle } from 'react-native';
 import { getCredentialNameByType, wellKnownCredential } from './credentials';
 import { useItWalletTheme } from './theme';
-import { getLuminance, HeaderSecondLevelHookProps } from '@io-eudiw-app/commons';
+import {
+  getLuminance,
+  HeaderSecondLevelHookProps
+} from '@io-eudiw-app/commons';
 
 type CredentialTheme = {
   backgroundColor: string;

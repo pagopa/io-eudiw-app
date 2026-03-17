@@ -457,9 +457,7 @@ const htmlNodeToReactNative = (
   return hasAParentParagraphNode ? (
     <Fragment key={nodeKey}>{content}</Fragment>
   ) : (
-    <Body key={nodeKey}>
-      <Fragment>{content}</Fragment>
-    </Body>
+    <Body key={nodeKey}>{content}</Body>
   );
 };
 

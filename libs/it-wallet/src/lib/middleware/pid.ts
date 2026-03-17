@@ -161,7 +161,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
       // Obtain the credential
       // # TODO: WLEO-727 - rework to support multiple credentials issuance
       const { credential_configuration_id, credential_identifiers } =
-        accessToken.authorization_details[0]!;
+        accessToken.authorization_details[0];
 
       const { credential, format } = await Credential.Issuance.obtainCredential(
         issuerConf,

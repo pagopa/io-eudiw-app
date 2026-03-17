@@ -119,7 +119,7 @@ const Settings = () => {
         />
       </View>
     );
-  }, [t]);
+  }, [dispatch, newTypefaceEnabled, setNewTypefaceEnabled, t]);
 
   useHeaderSecondLevel({
     title: ''

@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import {
   OperationResultScreenContent,
   useDisableGestureNavigation,
-  useHardwareBackButton,
+  useHardwareBackButton
 } from '@io-eudiw-app/commons';
 import { useCredentialIssuanceNavigationListeners } from '../hooks/useCredentialIssuanceNavigationListeners';
 import WALLET_ROUTES from '../navigation/wallet/routes';
@@ -17,7 +17,7 @@ import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../navigation/main/routes';
 
 const ItwCredentialNotFound = ({
-  credentialType,
+  credentialType
 }: {
   credentialType: string;
 }) => {
@@ -36,12 +36,12 @@ const ItwCredentialNotFound = ({
     if (shouldIssuePidFirst) {
       dispatch(setPendingCredential({ credential: credentialType }));
       navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-        screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION,
+        screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
       });
       return;
     }
     dispatch(
-      setCredentialIssuancePreAuthRequest({ credential: credentialType }),
+      setCredentialIssuancePreAuthRequest({ credential: credentialType })
     );
   };
 
@@ -52,7 +52,7 @@ const ItwCredentialNotFound = ({
   // Since this component could be used on a screen where the header is visible, we hide it.
   useEffect(() => {
     navigation.setOptions({
-      headerShown: false,
+      headerShown: false
     });
   }, [navigation]);
 
@@ -61,18 +61,18 @@ const ItwCredentialNotFound = ({
       pictogram="cie"
       title={t('issuance.credentialNotFound.title', { ns: 'wallet' })}
       subtitle={t('issuance.credentialNotFound.subtitle', {
-        ns: 'wallet',
+        ns: 'wallet'
       })}
       isHeaderVisible={false}
       action={{
         label: t('buttons.continue', { ns: 'global' }),
         accessibilityLabel: t('buttons.continue', { ns: 'global' }),
-        onPress: navigateToCredential,
+        onPress: navigateToCredential
       }}
       secondaryAction={{
         label: t('buttons.cancel', { ns: 'global' }),
         accessibilityLabel: t('buttons.cancel', { ns: 'global' }),
-        onPress: handleClose,
+        onPress: handleClose
       }}
     />
   );

@@ -9,14 +9,14 @@ import { itwCredentialsPidStatusSelector } from '../../store/credentials';
 import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
 import {
   wellKnownCredential,
-  WellKnownCredentialTypes,
+  WellKnownCredentialTypes
 } from '../../utils/credentials';
 import { format } from '../../utils/dates';
 import { getCredentialExpireDays } from '../../utils/itwClaimsUtils';
 import {
   ItwCredentialStatus,
   ItwJwtCredentialStatus,
-  StoredCredential,
+  StoredCredential
 } from '../../utils/itwTypesUtils';
 import { ClaimsLocales, getClaimsFullLocale } from '../../utils/locale';
 import { ItwPidLifecycleAlert } from '../ItwPidLifecycleAlert';
@@ -24,7 +24,7 @@ import { useAppSelector } from '../../store';
 import {
   IOMarkdown,
   openWebUrl,
-  useIOBottomSheetModal,
+  useIOBottomSheetModal
 } from '@io-eudiw-app/commons';
 import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
 
@@ -32,8 +32,9 @@ type Props = {
   credential: StoredCredential;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const excludedCredentialTypes = [
-  wellKnownCredential.PID,
+  wellKnownCredential.PID
 ] satisfies Array<WellKnownCredentialTypes>;
 
 type ExcludedCredentialTypes = (typeof excludedCredentialTypes)[number];
@@ -50,7 +51,7 @@ enum CredentialAlertType {
   JWT_VERIFICATION = 'JWT_VERIFICATION',
   DOCUMENT_EXPIRING = 'DOCUMENT_EXPIRING',
   ISSUER_DYNAMIC_ERROR = 'ISSUER_DYNAMIC_ERROR',
-  DOCUMENT_EXPIRED = 'DOCUMENT_EXPIRED',
+  DOCUMENT_EXPIRED = 'DOCUMENT_EXPIRED'
 }
 
 type CredentialAlertProps = {
@@ -65,7 +66,7 @@ const useAlertPressHandler = (bottomSheet: { present: () => void }) => () => {
 
 // Helper function that calculates which alert type should be shown.
 const deriveCredentialAlertType = (
-  props: CredentialAlertProps,
+  props: CredentialAlertProps
 ): CredentialAlertType | undefined => {
   const { eidStatus, credentialStatus, message } = props;
 
@@ -121,14 +122,14 @@ const ItwPresentationCredentialStatusAlert = ({ credential }: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
   const eidStatus = useAppSelector(itwCredentialsPidStatusSelector);
-  const { status, message } = useAppSelector((state) =>
-    itwCredentialStatusSelector(state, credential.credentialType),
+  const { status, message } = useAppSelector(state =>
+    itwCredentialStatusSelector(state, credential.credentialType)
   );
 
   const alertType = deriveCredentialAlertType({
     eidStatus,
     credentialStatus: status,
-    message,
+    message
   });
 
   if (!alertType) {
@@ -144,6 +145,7 @@ const ItwPresentationCredentialStatusAlert = ({ credential }: Props) => {
       return <DocumentExpiringAlert credential={credential} />;
     case CredentialAlertType.ISSUER_DYNAMIC_ERROR:
       return (
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         <IssuerDynamicErrorAlert message={message!} credential={credential} />
       );
     case CredentialAlertType.DOCUMENT_EXPIRED:
@@ -152,7 +154,7 @@ const ItwPresentationCredentialStatusAlert = ({ credential }: Props) => {
           testID="itwExpiredBannerTestID"
           variant="error"
           content={I18n.t('presentation.alerts.expired.content', {
-            ns: 'wallet',
+            ns: 'wallet'
           })}
         />
       );
@@ -161,7 +163,7 @@ const ItwPresentationCredentialStatusAlert = ({ credential }: Props) => {
 
 const JwtVerificationAlert = ({
   credential,
-  status,
+  status
 }: CredentialStatusAlertProps) => {
   const isExpired = status === 'jwtExpired';
 
@@ -179,11 +181,11 @@ const JwtVerificationAlert = ({
         }`,
         {
           ns: 'wallet',
-          date: format(credential.expiration, 'DD-MM-YYYY'),
-        },
+          date: format(credential.expiration, 'DD-MM-YYYY')
+        }
       )}
       action={I18n.t('presentation.alerts.jwtVerification.action', {
-        ns: 'wallet',
+        ns: 'wallet'
       })}
       onPress={beginCredentialIssuance}
     />
@@ -204,7 +206,7 @@ const DocumentExpiringAlert = ({ credential }: CredentialStatusAlertProps) => {
 
   const handleCtaPress = useCallback(() => {
     openWebUrl(LICENSE_RENEWAL_URL, () =>
-      IOToast.error(I18n.t('errors.generic', { ns: 'global' })),
+      IOToast.error(I18n.t('errors.generic', { ns: 'global' }))
     );
   }, []);
 
@@ -218,7 +220,7 @@ const DocumentExpiringAlert = ({ credential }: CredentialStatusAlertProps) => {
           content={I18n.getResource(
             I18n.language,
             'wallet',
-            `${bottomSheetNs}.content`,
+            `${bottomSheetNs}.content`
           )}
         />
         {showCta && (
@@ -229,15 +231,15 @@ const DocumentExpiringAlert = ({ credential }: CredentialStatusAlertProps) => {
               label={I18n.t(
                 'presentation.bottomSheets.org.iso.18013.5.1.mDL.expiring.cta',
                 {
-                  ns: 'wallet',
-                },
+                  ns: 'wallet'
+                }
               )}
               onPress={handleCtaPress}
             />
           </View>
         )}
       </VStack>
-    ),
+    )
   });
 
   const handleAlertPress = useAlertPressHandler(bottomSheet);
@@ -249,7 +251,7 @@ const DocumentExpiringAlert = ({ credential }: CredentialStatusAlertProps) => {
         variant="warning"
         content={I18n.t('presentation.alerts.expiring.content', {
           ns: 'wallet',
-          days: expireDays,
+          days: expireDays
         })}
         action={I18n.t('presentation.alerts.statusAction', { ns: 'wallet' })}
         onPress={handleAlertPress}
@@ -266,7 +268,7 @@ type IssuerDynamicErrorAlertProps = {
 
 const IssuerDynamicErrorAlert = ({
   message,
-  credential,
+  credential
 }: IssuerDynamicErrorAlertProps) => {
   const localizedMessage = getLocalizedMessageOrFallback(message);
   const showCta =
@@ -286,14 +288,14 @@ const IssuerDynamicErrorAlert = ({
               variant="solid"
               fullWidth
               label={I18n.t('presentation.alerts.mdl.invalid.cta', {
-                ns: 'wallet',
+                ns: 'wallet'
               })}
               onPress={confirmAndRemoveCredential}
             />
           </View>
         )}
       </VStack>
-    ),
+    )
   });
 
   const handleAlertPress = useAlertPressHandler(bottomSheet);
@@ -312,17 +314,17 @@ const IssuerDynamicErrorAlert = ({
 };
 
 const getLocalizedMessageOrFallback = (
-  message: IssuerDynamicErrorAlertProps['message'],
+  message: IssuerDynamicErrorAlertProps['message']
 ) =>
   message
     ? (message[getClaimsFullLocale()] ??
       message[ClaimsLocales.it] ?? {
         title: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
-        description: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
+        description: I18n.t('credentials.status.unknown', { ns: 'wallet' })
       })
     : {
         title: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
-        description: I18n.t('credentials.status.unknown', { ns: 'wallet' }),
+        description: I18n.t('credentials.status.unknown', { ns: 'wallet' })
       };
 
 const Memoized = memo(ItwPresentationCredentialStatusAlert);

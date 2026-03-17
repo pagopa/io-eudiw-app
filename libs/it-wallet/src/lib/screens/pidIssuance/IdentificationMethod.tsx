@@ -3,40 +3,40 @@ import {
   IOButton,
   ModuleNavigationAlt,
   VSpacer,
-  VStack,
+  VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
 import { View } from 'react-native';
 import {
   IOScrollViewWithLargeHeader,
-  useHeaderSecondLevel,
+  useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 
 export const IdentificationMethod = () => {
   const navigation = useNavigation();
 
   useHeaderSecondLevel({
-    title: '',
+    title: ''
   });
 
   const handleOnPress = () => {
     navigation.navigate('MAIN_WALLET_NAV', {
-      screen: 'PID_ISSUANCE_REQUEST',
+      screen: 'PID_ISSUANCE_REQUEST'
     });
   };
   return (
     <IOScrollViewWithLargeHeader
       title={{
         section: t('identification.modeSelection.section.issuance', {
-          ns: 'wallet',
+          ns: 'wallet'
         }),
         label: t('identification.modeSelection.title.issuance', {
-          ns: 'wallet',
-        }),
+          ns: 'wallet'
+        })
       }}
       description={t('identification.modeSelection.description.issuance', {
-        ns: 'wallet',
+        ns: 'wallet'
       })}
     >
       <ContentWrapper>
@@ -44,27 +44,27 @@ export const IdentificationMethod = () => {
         <VStack space={16}>
           <ModuleNavigationAlt
             title={t('identification.modeSelection.mode.ciePin.title', {
-              ns: 'wallet',
+              ns: 'wallet'
             })}
             subtitle={t('identification.modeSelection.mode.ciePin.subtitle', {
-              ns: 'wallet',
+              ns: 'wallet'
             })}
             testID="CiePinMethodModuleTestID"
             icon="cieCard"
             onPress={handleOnPress}
             badge={{
               text: t('identification.modeSelection.mode.ciePin.badge', {
-                ns: 'wallet',
+                ns: 'wallet'
               }),
-              variant: 'highlight',
+              variant: 'highlight'
             }}
           />
           <ModuleNavigationAlt
             title={t('identification.modeSelection.mode.spid.title', {
-              ns: 'wallet',
+              ns: 'wallet'
             })}
             subtitle={t('identification.modeSelection.mode.spid.subtitle', {
-              ns: 'wallet',
+              ns: 'wallet'
             })}
             testID="SpidMethodModuleTestID"
             icon="spid"
@@ -72,10 +72,10 @@ export const IdentificationMethod = () => {
           />
           <ModuleNavigationAlt
             title={t('identification.modeSelection.mode.cieId.title', {
-              ns: 'wallet',
+              ns: 'wallet'
             })}
             subtitle={t('identification.modeSelection.mode.cieId.subtitle', {
-              ns: 'wallet',
+              ns: 'wallet'
             })}
             testID="CiePinMethodModuleTestID"
             icon="cie"
@@ -86,7 +86,7 @@ export const IdentificationMethod = () => {
               variant="link"
               textAlign="center"
               label={t('identification.modeSelection.noCieCta', {
-                ns: 'wallet',
+                ns: 'wallet'
               })}
               onPress={handleOnPress}
               testID={'noCieButtonTestID'}

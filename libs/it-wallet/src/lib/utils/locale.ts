@@ -34,9 +34,6 @@ export const getClaimsFullLocale = (): ClaimsLocales =>
  *
  * @see https://en.wikipedia.org/wiki/IETF_language_tag
  */
-export function getLocalePrimary(
-  locale: string,
-  separator: string = '-'
-): string {
+export function getLocalePrimary(locale: string, separator = '-'): string {
   return locale.split(separator).filter(_ => _.length > 0)?.[0];
 }

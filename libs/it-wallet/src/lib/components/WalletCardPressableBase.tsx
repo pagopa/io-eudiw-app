@@ -8,7 +8,7 @@ import { PropsWithChildren } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-type WalletCardPressableBaseProps = WithTestID<PressableBaseProps>;
+export type WalletCardPressableBaseProps = WithTestID<PressableBaseProps>;
 
 export const WalletCardPressableBase = ({
   onPress,
@@ -19,6 +19,7 @@ export const WalletCardPressableBase = ({
   const { onPressIn, onPressOut, scaleAnimatedStyle } = useScaleAnimation();
 
   if (onPress === undefined) {
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     return <>{children}</>;
   }
 

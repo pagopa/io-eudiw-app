@@ -8,14 +8,14 @@ import { selectCredential } from '../../store/credentials';
 import {
   selectPreDefinitionStatus,
   selectPreDefitionResult,
-  setPreDefinitionRequest,
+  setPreDefinitionRequest
 } from '../../store/presentation';
 import { wellKnownCredential } from '../../utils/credentials';
 import {
   LoadingScreenContent,
   useDisableGestureNavigation,
   useHardwareBackButton,
-  useHeaderSecondLevel,
+  useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import { useAppDispatch, useAppSelector } from '../../store';
 
@@ -62,19 +62,19 @@ const PresentationPreDefinition = ({ route }: Props) => {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PRESENTATION_POST_DEFINITION',
         params: {
-          descriptor: preDefinitionResult,
-        },
+          descriptor: preDefinitionResult
+        }
       });
     } else if (preDefinitionStatus.error.status) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PRESENTATION_FAILURE',
+        screen: 'PRESENTATION_FAILURE'
       });
     }
   }, [navigation, pid, preDefinitionResult, preDefinitionStatus]);
 
   useHeaderSecondLevel({
     headerShown: false,
-    title: '',
+    title: ''
   });
 
   return (

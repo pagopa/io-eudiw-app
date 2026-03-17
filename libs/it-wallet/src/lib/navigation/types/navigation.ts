@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable @typescript-eslint/no-empty-interface */
 
-import { MainNavigatorParamsList } from "../main/MainStackNavigator";
+import { MainNavigatorParamsList } from '../main/MainStackNavigator';
 
 /**
  * Global type for the root navigator which is used as default type.

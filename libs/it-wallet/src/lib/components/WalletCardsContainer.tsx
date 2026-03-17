@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { View } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
-import {useDebugInfo} from "@io-eudiw-app/debug-info"
+import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import {
   lifecycleIsOperationalSelector,
   lifecycleIsValidSelector

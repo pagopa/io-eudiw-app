@@ -7,7 +7,7 @@ import {
   ListItemHeader,
   useIOTheme,
   VSpacer,
-  VStack,
+  VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { Fragment, useCallback, useEffect } from 'react';
@@ -16,7 +16,7 @@ import { View } from 'react-native';
 import {
   IOMarkdown,
   useDisableGestureNavigation,
-  useHeaderSecondLevel,
+  useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import { ItwRequestedClaimsList } from '../../components/presentation/ItwRequiredClaimsList';
@@ -26,7 +26,7 @@ import {
   selectCredentialIssuancePostAuthStatus,
   selectCredentialIssuancePreAuthStatus,
   selectRequestedCredentialType,
-  setCredentialIssuancePostAuthRequest,
+  setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
 import { getCredentialNameByType } from '../../utils/credentials';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
@@ -41,11 +41,11 @@ import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWit
 const CredentialTrust = () => {
   const dispatch = useAppDispatch();
   const { success: preAuthSuccess } = useAppSelector(
-    selectCredentialIssuancePreAuthStatus,
+    selectCredentialIssuancePreAuthStatus
   );
   const { t } = useTranslation(['global', 'wallet']);
   const { loading, error, success } = useAppSelector(
-    selectCredentialIssuancePostAuthStatus,
+    selectCredentialIssuancePostAuthStatus
   );
   const requestedCredential = useAppSelector(selectRequestedCredentialType);
   const navigation = useNavigation();
@@ -55,9 +55,9 @@ const CredentialTrust = () => {
   const navigateToErrorScreen = useCallback(
     () =>
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'CREDENTIAL_ISSUANCE_FAILURE',
+        screen: 'CREDENTIAL_ISSUANCE_FAILURE'
       }),
-    [navigation],
+    [navigation]
   );
 
   const cancel = useCallback(() => {
@@ -73,25 +73,25 @@ const CredentialTrust = () => {
     handleDismiss: cancel,
     customLabels: {
       title: t('generic.alert.title', {
-        ns: 'wallet',
+        ns: 'wallet'
       }),
       body: t('generic.alert.body', {
-        ns: 'wallet',
+        ns: 'wallet'
       }),
       confirmLabel: t('generic.alert.confirm', {
-        ns: 'wallet',
+        ns: 'wallet'
       }),
       cancelLabel: t('generic.alert.cancel', {
-        ns: 'wallet',
-      }),
-    },
+        ns: 'wallet'
+      })
+    }
   });
 
   useHeaderSecondLevel({
     title: '',
     goBack: () => {
       dismissalDialog.show();
-    },
+    }
   });
 
   useDisableGestureNavigation();
@@ -103,7 +103,7 @@ const CredentialTrust = () => {
   useEffect(() => {
     if (success.status) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'CREDENTIAL_ISSUANCE_PREVIEW',
+        screen: 'CREDENTIAL_ISSUANCE_PREVIEW'
       });
     }
   }, [navigation, success.status]);
@@ -120,11 +120,11 @@ const CredentialTrust = () => {
   const presentationDetails = preAuthSuccess.status
     ? preAuthSuccess.data
     : undefined;
-  const requiredClaimsByCredential = presentationDetails?.map((detail) =>
-    detail.claimsToDisplay.map((claim) => ({
+  const requiredClaimsByCredential = presentationDetails?.map(detail =>
+    detail.claimsToDisplay.map(claim => ({
       claim,
-      source: getCredentialNameFromType(detail.vct, ''),
-    })),
+      source: getCredentialNameFromType(detail.vct, '')
+    }))
   );
 
   return (
@@ -136,12 +136,12 @@ const CredentialTrust = () => {
         <VStack space={24}>
           <H2>
             {t('wallet:credentialIssuance.trust.title', {
-              credential: getCredentialNameByType(requestedCredential),
+              credential: getCredentialNameByType(requestedCredential)
             })}
           </H2>
           <IOMarkdown
             content={t('wallet:credentialIssuance.trust.subtitle', {
-              organization: ISSUER_MOCK_NAME,
+              organization: ISSUER_MOCK_NAME
             })}
           />
         </VStack>
@@ -179,14 +179,14 @@ const CredentialTrust = () => {
           primary: {
             label: t('global:buttons.continue'),
             onPress: onContinue,
-            loading,
+            loading
           },
           secondary: {
             label: t('global:buttons.cancel'),
             onPress: () => {
               dismissalDialog.show();
-            },
-          },
+            }
+          }
         }}
       />
     </ForceScrollDownView>

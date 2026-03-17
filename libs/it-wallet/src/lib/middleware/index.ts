@@ -1,4 +1,3 @@
-
 import { addCredentialListeners } from './credential';
 import { addPidListeners } from './pid';
 import { addPresentationListeners } from './presentation';
