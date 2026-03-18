@@ -2301,6 +2301,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@npm:2.5.0#./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.5.0-7edb896e81.patch::locator=io-eudiw-app%40workspace%3A.":
+  version: 2.5.0
+  resolution: "@pagopa/io-react-native-wallet@patch:@pagopa/io-react-native-wallet@npm%3A2.5.0#./.yarn/patches/@pagopa-io-react-native-wallet-npm-2.5.0-7edb896e81.patch::version=2.5.0&hash=721ff0&locator=io-eudiw-app%40workspace%3A."
+  dependencies:
+    "@sd-jwt/core": "npm:^0.18.0"
+    "@sd-jwt/crypto-nodejs": "npm:^0.18.0"
+    "@sd-jwt/types": "npm:^0.18.0"
+    dcql: "npm:^0.2.21"
+    js-base64: "npm:^3.7.7"
+    js-sha256: "npm:^0.9.0"
+    jsonpath-plus: "npm:^10.2.0"
+    jsrsasign: "npm:^11.1.0"
+    parse-url: "npm:^9.2.0"
+    react-native-url-polyfill: "npm:^2.0.0"
+    react-native-uuid: "npm:^2.0.1"
+    uuid: "npm:^11.0.3"
+    zod: "npm:^3.21.4"
+  peerDependencies:
+    "@pagopa/io-react-native-crypto": "*"
+    "@pagopa/io-react-native-iso18013": "*"
+    "@pagopa/io-react-native-jwt": "*"
+    react: "*"
+    react-native: "*"
+    react-native-quick-crypto: "*"
+  checksum: 10/c6009afbcfb3513519ba968e2dfd49221221af3a12286669feb8bf458095f6de35e469b57130cf1352c20adec1fe27c8821e4eb4e7ea331d81c93d3b54e33fd5
+  languageName: node
+  linkType: hard
+
 "@pagopa/react-native-nodelibs@npm:^0.1.0":
   version: 0.1.0
   resolution: "@pagopa/react-native-nodelibs@npm:0.1.0"
@@ -7631,7 +7659,7 @@ __metadata:
     "@pagopa/io-react-native-crypto": "npm:^1.2.3"
     "@pagopa/io-react-native-iso18013": "npm:^0.7.0"
     "@pagopa/io-react-native-jwt": "npm:2.1.0"
-    "@pagopa/io-react-native-wallet": "npm:2.5.0"
+    "@pagopa/io-react-native-wallet": "patch:@pagopa/io-react-native-wallet@npm%3A2.5.0#~/.yarn/patches/@pagopa-io-react-native-wallet-npm-2.5.0-7edb896e81.patch"
     "@pagopa/react-native-nodelibs": "npm:^0.1.0"
     "@react-native-async-storage/async-storage": "npm:^2.2.0"
     "@react-navigation/bottom-tabs": "npm:^7.4.0"
