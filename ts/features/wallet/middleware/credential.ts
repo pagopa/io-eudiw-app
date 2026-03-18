@@ -175,6 +175,7 @@ const obtainCredentialListener: AppListenerWithAction<
       await Credential.Issuance.completeUserAuthorizationWithFormPostJwtMode(
         requestObject,
         pid.credential,
+        issuerConf,
         {
           wiaCryptoContext,
           pidCryptoContext: createCryptoContextFor(pid.keyTag),
