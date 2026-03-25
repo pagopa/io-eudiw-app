@@ -5,9 +5,7 @@ import {
   ParagraphSize,
   Renderer
 } from '@io-eudiw-app/commons';
-import { IOToast } from '@pagopa/io-app-design-system';
 import { TxtLinkNode, TxtParagraphNode } from '@textlint/ast-node-types';
-import { t } from 'i18next';
 
 type Options = {
   /**
@@ -35,9 +33,7 @@ export const generateItwIOMarkdownRules = ({
       {
         size: paragraphSize,
         onPress: () => {
-          openWebUrl(link.url, () =>
-            IOToast.error(t('errors.generic', { ns: 'global' }))
-          );
+          openWebUrl(link.url, () => null);
           linkCallback();
         }
       },

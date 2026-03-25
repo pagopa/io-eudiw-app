@@ -2,14 +2,23 @@ import nx from '@nx/eslint-plugin';
 import sonarjs from 'eslint-plugin-sonarjs';
 import reactNative from 'eslint-plugin-react-native';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import eslintPluginJsonc from 'eslint-plugin-jsonc';
 
 export default [
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
+  ...eslintPluginJsonc.configs['recommended-with-jsonc'],
 
   {
-    ignores: ['**/dist', '**/out-tsc', '**/node_modules/**', '**/.expo/**']
+    ignores: [
+      '**/dist',
+      '**/out-tsc',
+      '**/node_modules/**',
+      '**/.expo/**',
+      '**/ios',
+      '**/android'
+    ]
   },
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx', '**/*.mjs'],
@@ -44,6 +53,17 @@ export default [
     rules: {
       '@typescript-eslint/await-thenable': 'off',
       '@typescript-eslint/no-floating-promises': 'off'
+    }
+  },
+  {
+    files: ['**/*.json', '**/*.jsonc', '**/*.json5'],
+    languageOptions: {
+      parser: await import('jsonc-eslint-parser')
+    },
+    rules: {
+      ...eslintPluginJsonc.configs['recommended-with-jsonc'].rules,
+      'jsonc/indent': ['error', 2],
+      'jsonc/comma-dangle': ['error', 'never']
     }
   },
 

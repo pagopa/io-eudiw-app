@@ -18,7 +18,7 @@ import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWit
  * Currently it only shows a message and a button to go back to the main screen.
  */
 const PresentationFailure = () => {
-  const { t } = useTranslation(['global', 'wallet']);
+  const { t } = useTranslation(['common', 'wallet']);
   const dispatch = useAppDispatch();
   const errorPre = useAppSelector(selectPreDefinitionStatus);
   const errorPost = useAppSelector(selectPostDefinitionStatus);

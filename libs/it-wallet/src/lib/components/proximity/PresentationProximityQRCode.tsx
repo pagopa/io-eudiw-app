@@ -26,7 +26,7 @@ type PresentationProximityQRCodeProps = {
 const PresentationProximityQRCode = ({
   navigation
 }: PresentationProximityQRCodeProps) => {
-  const { t } = useTranslation(['wallet']);
+  const { t } = useTranslation();
   const qrCode = useAppSelector(selectProximityQrCode);
   const proximityStatus = useAppSelector(selectProximityStatus);
   const descriptor = useAppSelector(selectProximityDisclosureDescriptor);
@@ -68,7 +68,7 @@ const PresentationProximityQRCode = ({
         <LoadingIndicator size={24} />
       )}
       <VSpacer size={40} />
-      <Body>{t('wallet:proximity.showQr.body')}</Body>
+      <Body>{t('proximity.showQr.body', { ns: 'wallet' })}</Body>
       <VSpacer size={40} />
       {(proximityStatus === ProximityStatus.PROXIMITY_STATUS_CONNECTED ||
         proximityStatus ===
@@ -76,7 +76,7 @@ const PresentationProximityQRCode = ({
         <VStack space={16} style={{ alignItems: 'center' }}>
           <LoadingIndicator size={24} />
           <H6 textStyle={{ textAlign: 'center' }}>
-            {t('wallet:proximity.connected.body')}
+            {t('proximity.connected.body', { ns: 'wallet' })}
           </H6>
           <VSpacer size={32} />
         </VStack>

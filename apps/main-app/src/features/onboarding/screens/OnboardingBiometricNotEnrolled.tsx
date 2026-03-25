@@ -13,7 +13,7 @@ import { useHeaderSecondLevel } from '@io-eudiw-app/commons';
  */
 const OnboardingBiometricNotEnrolled = () => {
   const dispatch = useAppDispatch();
-  const { t } = useTranslation(['onboarding', 'global']);
+  const { t } = useTranslation(['common', 'global']);
 
   const concludeOnboarding = () => dispatch(preferencesSetIsOnboardingDone());
 
@@ -25,18 +25,30 @@ const OnboardingBiometricNotEnrolled = () => {
   const listItems = useMemo<Array<ListItemInfo>>(
     () => [
       {
-        label: t('onboarding:biometric.notEnrolled.list.firstItem.label'),
-        value: t('onboarding:biometric.notEnrolled.list.firstItem.value'),
+        label: t(
+          'global:onboarding.biometric.notEnrolled.list.firstItem.label'
+        ),
+        value: t(
+          'global:onboarding.biometric.notEnrolled.list.firstItem.value'
+        ),
         icon: 'systemSettingsAndroid'
       },
       {
-        label: t('onboarding:biometric.notEnrolled.list.secondItem.label'),
-        value: t('onboarding:biometric.notEnrolled.list.secondItem.value'),
+        label: t(
+          'global:onboarding.biometric.notEnrolled.list.secondItem.label'
+        ),
+        value: t(
+          'global:onboarding.biometric.notEnrolled.list.secondItem.value'
+        ),
         icon: 'systemBiometricRecognitionOS'
       },
       {
-        label: t('onboarding:biometric.notEnrolled.list.thirdItem.label'),
-        value: t('onboarding:biometric.notEnrolled.list.thirdItem.value'),
+        label: t(
+          'global:onboarding.biometric.notEnrolled.list.thirdItem.label'
+        ),
+        value: t(
+          'global:onboarding.biometric.notEnrolled.list.thirdItem.value'
+        ),
         icon: 'systemToggleInstructions'
       }
     ],
@@ -44,17 +56,19 @@ const OnboardingBiometricNotEnrolled = () => {
   );
 
   const primaryActionProps = {
-    label: t('global:buttons.continue'),
-    accessibilityLabel: t('global:buttons.continue'),
+    label: t('common:buttons.continue'),
+    accessibilityLabel: t('common:buttons.continue'),
     onPress: concludeOnboarding,
     testID: 'not-enrolled-biometric-confirm'
   };
 
   return (
     <IOScrollViewWithListItems
-      title={t('onboarding:biometric.title')}
-      subtitle={t('onboarding:biometric.notEnrolled.description')}
-      listItemHeaderLabel={t('onboarding:biometric.notEnrolled.list.header')}
+      title={t('global:onboarding.biometric.title')}
+      subtitle={t('global:onboarding.biometric.notEnrolled.description')}
+      listItemHeaderLabel={t(
+        'global:onboarding.biometric.notEnrolled.list.header'
+      )}
       renderItems={listItems}
       actions={{
         primary: primaryActionProps,

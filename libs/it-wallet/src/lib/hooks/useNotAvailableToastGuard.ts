@@ -13,7 +13,7 @@ export const useNotAvailableToastGuard = () => {
   const toast = useIOToast();
 
   const guardFn = useCallback(() => {
-    toast.info(t('generic.featureUnavailable.title', { ns: 'wallet' }));
+    toast.info(t('featureUnavailable.title', { ns: 'common' }));
   }, [toast]);
 
   return () => guardFn();

@@ -52,7 +52,7 @@ const QrCodeScanBaseScreenComponent = ({
   const isFocused = useIsFocused();
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<NavigationProps>();
-  const { t } = useTranslation(['global', 'qrcodeScan']);
+  const { t } = useTranslation(['common', 'wallet']);
 
   const [isAppInBackground, setIsAppInBackground] = useState(
     AppState.currentState !== 'active'
@@ -95,11 +95,11 @@ const QrCodeScanBaseScreenComponent = ({
       return (
         <CameraPermissionView
           pictogram="cameraDenied"
-          title={t('qrcodeScan:permissions.denied.title')}
-          body={t('qrcodeScan:permissions.denied.label')}
+          title={t('wallet:qr.permissions.denied.title')}
+          body={t('wallet:qr.permissions.denied.label')}
           action={{
-            label: t('qrcodeScan:permissions.denied.action'),
-            accessibilityLabel: t('qrcodeScan:permissions.denied.action'),
+            label: t('wallet:qr.permissions.denied.action'),
+            accessibilityLabel: t('wallet:qr.permissions.denied.action'),
             onPress: async () => {
               openCameraSettings();
             }
@@ -111,11 +111,11 @@ const QrCodeScanBaseScreenComponent = ({
     return (
       <CameraPermissionView
         pictogram="cameraRequest"
-        title={t('qrcodeScan:permissions.undefined.title')}
-        body={t('qrcodeScan:permissions.undefined.label')}
+        title={t('wallet:qr.permissions.undefined.title')}
+        body={t('wallet:qr.permissions.undefined.label')}
         action={{
-          label: t('qrcodeScan:permissions.undefined.action'),
-          accessibilityLabel: t('qrcodeScan:permissions.undefined.action'),
+          label: t('wallet:qr.permissions.undefined.action'),
+          accessibilityLabel: t('wallet:qr.permissions.undefined.action'),
           onPress: async () => {
             await requestPermission();
           }
@@ -140,7 +140,7 @@ const QrCodeScanBaseScreenComponent = ({
         <IconButton
           icon="closeLarge"
           onPress={navigation.goBack}
-          accessibilityLabel={t('global:buttons.close')}
+          accessibilityLabel={t('common:buttons.close')}
           color="contrast"
         />
       </View>
@@ -153,7 +153,7 @@ const QrCodeScanBaseScreenComponent = ({
       <View style={styles.torch}>
         <IconButton
           icon={enableTorch ? 'lightFilled' : 'light'}
-          accessibilityLabel={t('qrcodeScan:flash')}
+          accessibilityLabel={t('wallet:qr.flash')}
           onPress={handleTorchToggle}
           color="contrast"
         />
@@ -182,8 +182,8 @@ const QrCodeScanBaseScreenComponent = ({
         <TabNavigation tabAlignment="center" selectedIndex={0} color="dark">
           <TabItem
             testID="barcodeScanBaseScreenTabUpload"
-            label={t('qrcodeScan:tabs.upload')}
-            accessibilityLabel={t('qrcodeScan:tabs.upload')}
+            label={t('wallet:qr.tabs.upload')}
+            accessibilityLabel={t('wallet:qr.tabs.upload')}
             onPress={onFileInputPressed}
           />
         </TabNavigation>

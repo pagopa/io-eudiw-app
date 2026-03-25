@@ -17,7 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
  */
 const OnboardingStart = () => {
   const navigation = useNavigation();
-  const { t } = useTranslation(['global', 'onboarding']);
+  const { t } = useTranslation(['global', 'common']);
 
   useHeaderSecondLevel({
     title: '',
@@ -36,15 +36,17 @@ const OnboardingStart = () => {
         <View style={{ alignItems: 'center' }}>
           <Pictogram name="cie" size={180} />
           <VSpacer size={24} />
-          <H3 style={styles.text}>{t('onboarding:start.title')}</H3>
+          <H3 style={styles.text}>{t('global:onboarding.start.title')}</H3>
           <VSpacer size={8} />
-          <Body style={styles.text}>{t('onboarding:start.subtitle')}</Body>
+          <Body style={styles.text}>
+            {t('global:onboarding.start.subtitle')}
+          </Body>
         </View>
       </View>
       <FooterActions
         actions={{
           primary: {
-            label: t('global:buttons.start'),
+            label: t('common:buttons.start'),
             onPress: onStartPress
           },
           type: 'SingleButton'

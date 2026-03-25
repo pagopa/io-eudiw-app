@@ -5,7 +5,6 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import { StackScreenProps } from '@react-navigation/stack';
-import { t } from 'i18next';
 import { memo, useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -32,6 +31,7 @@ import {
   usePreventScreenCapture
 } from '@io-eudiw-app/commons';
 import { selectIsDebugModeEnabled } from '@io-eudiw-app/debug-info';
+import { useTranslation } from 'react-i18next';
 
 export type ItwPresentationCredentialCardModalNavigationParams = {
   credential: StoredCredential;
@@ -55,6 +55,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
   const dispatch = useAppDispatch();
   const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
   const isDebugEnabled = useAppSelector(selectIsDebugModeEnabled);
+  const { t } = useTranslation(['common', 'wallet']);
 
   usePreventScreenCapture(isDebugEnabled);
   useMaxBrightness({ useSmoothTransition: true });
@@ -67,13 +68,13 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
           type="singleAction"
           firstAction={{
             icon: 'closeLarge',
-            accessibilityLabel: t('buttons.close', { ns: 'global' }),
+            accessibilityLabel: t('common:buttons.close'),
             onPress: () => navigation.goBack()
           }}
         />
       )
     });
-  }, [navigation]);
+  }, [navigation, t]);
 
   const handleClaimVisibility = useCallback(() => {
     dispatch(itwSetClaimValuesHidden(!valuesHidden));

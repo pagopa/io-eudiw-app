@@ -42,16 +42,16 @@ const useQrCodeFileReader = ({
   const [isLoading, setIsLoading] = useState(false);
   const [permissionStatus, requestPermission] =
     ImagePicker.useMediaLibraryPermissions();
-  const { t } = useTranslation(['qrcodeScan', 'global']);
+  const { t } = useTranslation(['wallet', 'common']);
 
   const showPermissionsAlert = useCallback(() => {
     Alert.alert(
-      t('qrcodeScan:imagePicker.settingsAlert.title'),
-      t('qrcodeScan:imagePicker.settingsAlert.message'),
+      t('wallet:imagePicker.settingsAlert.title'),
+      t('wallet:imagePicker.settingsAlert.message'),
       [
-        { text: t('global:buttons.cancel'), style: 'cancel' },
+        { text: t('common:buttons.cancel'), style: 'cancel' },
         {
-          text: t('qrcodeScan:imagePicker.settingsAlert.buttonText.enable'),
+          text: t('wallet:imagePicker.settingsAlert.buttonText.enable'),
           onPress: Linking.openSettings
         }
       ],

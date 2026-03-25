@@ -3,7 +3,6 @@ import {
   LoadingSpinner,
   WithTestID
 } from '@pagopa/io-app-design-system';
-import { t } from 'i18next';
 import { useInteractiveElementDefaultColor } from '../hooks/theme';
 
 type LoadingIndicatorProps = WithTestID<
@@ -17,12 +16,8 @@ type LoadingIndicatorProps = WithTestID<
  * Loading indicator component which renders a loading spinner with 48 size.
  */
 export const LoadingIndicator = ({
-  accessibilityHint = t('accessibility.activityIndicator.hint', {
-    ns: 'global'
-  }),
-  accessibilityLabel = t('accessibility.activityIndicator.label', {
-    ns: 'global'
-  }),
+  accessibilityHint,
+  accessibilityLabel,
   testID = 'LoadingIndicator'
 }: LoadingIndicatorProps) => {
   const blueColor = useInteractiveElementDefaultColor();

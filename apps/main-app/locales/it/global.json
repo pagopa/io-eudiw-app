@@ -1,74 +1,4 @@
 {
-  "generics": {
-    "waiting": "Aspetta qualche secondo",
-    "success": "Success",
-    "error": {
-      "title": "C'è un problema sui nostri sistemi",
-      "body": "Riprova tra qualche minuto. Se si ripete, contatta l'assistenza."
-    },
-    "alert": {
-      "title": "Vuoi interrompere l'operazione?",
-      "body": "Dovrai ripetere di nuovo tutti i passaggi",
-      "confirm": "Sì, interrompi",
-      "cancel": "No, riprendi"
-    }
-  },
-  "tabNavigator": {
-    "wallet": "Portafoglio",
-    "scanQr": "Inquadra",
-    "showQr": "Mostra QR"
-  },
-  "settings": {
-    "title": "Settings",
-    "reset": {
-      "title": "Reset App",
-      "walletReset": "Reset wallet",
-      "onboardingReset": "Reset onboarding"
-    },
-    "debug": "Enable debug mode",
-    "version": "Version",
-    "appearance": {
-      "typefaceStyle": {
-        "title": "Stile carattere",
-        "comfortable": {
-          "title": "Confortevole",
-          "description": "Progettato per una migliore leggibilità dei testi"
-        },
-        "standard": {
-          "title": "Standard",
-          "description": "Lo stile di sempre, con forme strette e geometriche"
-        }
-      }
-    }
-  },
-  "buttons": {
-    "next": "Next",
-    "skip": "Skip",
-    "start": "Inizia",
-    "close": "Chiudi",
-    "delete": "Delete",
-    "continue": "Continua",
-    "activate": "Attiva",
-    "notNow": "Non ora",
-    "back": "Back",
-    "cancel": "Cancella",
-    "confirm": "Conferma",
-    "help": "Help",
-    "done": "Done",
-    "show": "Show"
-  },
-  "loading": {
-    "body": "Please wait a moment"
-  },
-  "accessibility": {
-    "activityIndicator": {
-      "label": "Loading",
-      "hint": "Wait for the content load"
-    }
-  },
-  "clipboard": {
-    "copyFeedback": "Copied to clipboard"
-  },
   "identification": {
     "instructions": {
       "useFingerPrintOrUnlockCode": "usa l'**impronta** o inserisci il **codice di sblocco**",
@@ -95,15 +25,93 @@
       "sensorDescription": "Accedi velocemente"
     }
   },
-  "errors": {
-    "generic": "Si è verificato un errore"
+  "settings": {
+    "version": "Versione"
   },
-  "cancelOperation": {
-    "title": "Do you want to stop the operation?",
-    "confirm": "Yes, stop",
-    "cancel": "No, continue"
-  },
-  "badges" : {
-    "new" : "Novità"
+  "onboarding": {
+    "carousel": {
+      "first": {
+        "title": "Welcome to the Wallet app!",
+        "content": "Discover what you can do"
+      },
+      "second": {
+        "title": "Add your documents",
+        "content": "Securely save and store digital versions of your documents"
+      },
+      "third": {
+        "title": "Authenticate with Wallet",
+        "content": "Use this app to present your documents and access online services"
+      }
+    },
+    "start": {
+      "title": "Start with Wallet",
+      "subtitle": "Store your documents securely."
+    },
+    "pin": {
+      "title": "Crea un codice di sblocco",
+      "subTitle": "È il codice a 6 cifre per accedere a IO e autorizzare alcune operazioni in app.",
+      "confirmation": {
+        "title": "Conferma il codice di sblocco"
+      },
+      "policy": {
+        "title": "Come scegliere il codice?",
+        "description": "Il codice di sblocco è composto da 6 cifre e ti servirà per accedere a IO e autorizzare alcune operazioni in app.",
+        "bulletListTitle": "Scegli un codice difficile da indovinare e che non contenga:",
+        "firstItem": "un unico numero ripetuto (es. 000000)",
+        "secondItem": "elenco di numeri ordinati (es. 123456 o 654321)"
+      },
+      "errors": {
+        "invalid": {
+          "title": "Troppo facile!",
+          "description": "Scegli un codice difficile da indovinare, che non contenga un unico numero ripetuto (es. 000000)o un elenco di numeri ordinati (es. 123456 o 654321).",
+          "cta": "Scegli un altro codice"
+        },
+        "match": {
+          "title": "Il codice non coincide",
+          "cta": "Riprova"
+        }
+      }
+    },
+    "biometric": {
+      "title": "Attiva il riconoscimento biometrico",
+      "notEnrolled": {
+        "description": "Potrai usare il tuo volto o impronta digitale al posto del codice di sblocco. Ti permetterà di accedere all’app e autorizzare operazioni e pagamenti in modo più rapido e sicuro. \n \nPer farlo, devi prima configurarlo nelle impostazioni di sistema del tuo dispositivo.",
+        "list": {
+          "header": "Come fare",
+          "firstItem": {
+            "label": "Step 1",
+            "value": "Vai alle impostazioni del tuo dispositivo"
+          },
+          "secondItem": {
+            "label": "Step 2",
+            "value": "Configura il volto o l’impronta"
+          },
+          "thirdItem": {
+            "label": "Step 3",
+            "value": "Attivalo su IO in Impostazioni > Sicurezza"
+          }
+        }
+      },
+      "noLockScreen": {
+        "title": "Proteggi il tuo dispositivo",
+        "subtitle": "IO ti invia comunicazioni che ti riguardano personalmente. Assicurati che solo tu possa accedere all’app impostando un codice o un segno per sbloccare il dispositivo.",
+        "list": {
+          "header": "Come fare",
+          "firstItem": {
+            "label": "Step 1",
+            "value": "Vai alle impostazioni del tuo dispositivo"
+          },
+          "secondItem": {
+            "label": "Step 2",
+            "value": "Imposta un codice o un segno per sbloccare il dispositivo"
+          }
+        }
+      },
+      "available": {
+        "title": "Attiva il riconoscimento biometrico",
+        "settings": "Puoi modificare la tua scelta in ogni momento da Impostazioni > Sicurezza",
+        "body": "Potrai usare il tuo volto o impronta digitale al posto del codice di sblocco. Ti permetterà di accedere all’app e autorizzare operazioni e pagamenti in modo più rapido e sicuro."
+      }
+    }
   }
 }

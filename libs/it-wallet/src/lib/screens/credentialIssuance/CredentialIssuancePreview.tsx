@@ -30,7 +30,7 @@ export const CredentialPreview = () => {
     selectCredentialIssuancePostAuthStatus
   );
   const dispatch = useAppDispatch();
-  const { t } = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation(['wallet', 'common']);
   const { navigateToWallet } = useNavigateToWalletWithReset();
 
   const cancel = useCallback(() => {
@@ -41,18 +41,10 @@ export const CredentialPreview = () => {
   const dismissalDialog = useItwDismissalDialog({
     handleDismiss: cancel,
     customLabels: {
-      title: t('generic.alert.title', {
-        ns: 'wallet'
-      }),
-      body: t('generic.alert.body', {
-        ns: 'wallet'
-      }),
-      confirmLabel: t('generic.alert.confirm', {
-        ns: 'wallet'
-      }),
-      cancelLabel: t('generic.alert.cancel', {
-        ns: 'wallet'
-      })
+      title: t('common:alert.title'),
+      body: t('common:alert.body'),
+      confirmLabel: t('common:alert.confirm'),
+      cancelLabel: t('common:alert.cancel')
     }
   });
 
@@ -92,7 +84,7 @@ export const CredentialPreview = () => {
         fixed={false}
         actions={{
           primary: {
-            label: t('global:buttons.continue'),
+            label: t('common:buttons.continue'),
             onPress: () =>
               dispatch(
                 addCredentialWithIdentification({
@@ -103,7 +95,7 @@ export const CredentialPreview = () => {
             iconPosition: 'end'
           },
           secondary: {
-            label: t('global:buttons.cancel'),
+            label: t('common:buttons.cancel'),
             onPress: () => {
               dismissalDialog.show();
             }

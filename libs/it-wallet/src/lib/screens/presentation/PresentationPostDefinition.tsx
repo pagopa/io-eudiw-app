@@ -61,7 +61,7 @@ type Props = StackScreenProps<
  */
 const PresentationPostDefinition = ({ route }: Props) => {
   const navigation = useNavigation();
-  const { t } = useTranslation(['global', 'wallet']);
+  const { t } = useTranslation(['common', 'wallet']);
   const dispatch = useAppDispatch();
   const postDefinitionStatus = useAppSelector(selectPostDefinitionStatus);
   const { navigateToWallet } = useNavigateToWalletWithReset();
@@ -82,14 +82,14 @@ const PresentationPostDefinition = ({ route }: Props) => {
   };
 
   const cancelAlert = () => {
-    Alert.alert(t('global:cancelOperation.title'), '', [
+    Alert.alert(t('common:cancelOperation.title'), '', [
       {
-        text: t('global:cancelOperation.confirm'),
+        text: t('common:cancelOperation.confirm'),
         onPress: cancel,
         style: 'destructive'
       },
       {
-        text: t('global:cancelOperation.cancel'),
+        text: t('common:cancelOperation.cancel'),
         style: 'cancel'
       }
     ]);
@@ -268,12 +268,12 @@ const PresentationPostDefinition = ({ route }: Props) => {
         actions={{
           type: 'TwoButtons',
           primary: {
-            label: t('global:buttons.continue'),
+            label: t('buttons.continue'),
             onPress: () => dispatch(setPostDefinitionRequest([])),
             loading: postDefinitionStatus.loading
           },
           secondary: {
-            label: t('global:buttons.cancel'),
+            label: t('buttons.cancel'),
             onPress: cancelAlert
           }
         }}

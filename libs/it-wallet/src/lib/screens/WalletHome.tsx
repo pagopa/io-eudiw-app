@@ -16,7 +16,7 @@ import { IOScrollView } from '@io-eudiw-app/commons';
  * available in the wallet.
  */
 const WalletHome = () => {
-  const { t } = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation();
   const navigation = useNavigation();
 
   const actions: HeaderFirstLevel['actions'] = useMemo(
@@ -27,12 +27,12 @@ const WalletHome = () => {
           navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
             screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST
           }),
-        accessibilityLabel: t('global:settings.title')
+        accessibilityLabel: t('settings.title', { ns: 'wallet' })
       } satisfies HeaderActionProps,
       {
         icon: 'coggle',
         onPress: () => navigation.navigate('MAIN_SETTINGS'),
-        accessibilityLabel: t('global:settings.title')
+        accessibilityLabel: t('settings.title', { ns: 'wallet' })
       }
     ],
     [navigation, t]
@@ -40,10 +40,7 @@ const WalletHome = () => {
 
   return (
     <>
-      <HeaderFirstLevel
-        title={t('global:tabNavigator.wallet')}
-        actions={actions}
-      />
+      <HeaderFirstLevel title={t('tabNavigator.wallet', { ns: 'wallet' })} actions={actions} />
       <IOScrollView centerContent={true} excludeSafeAreaMargins={true}>
         <WalletCardsContainer />
       </IOScrollView>

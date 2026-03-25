@@ -36,7 +36,7 @@ import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWit
  * If the PID issuance fails, the user is redirected to the failure screen.
  */
 const PidIssuanceRequest = () => {
-  const { t } = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation(['wallet', 'common']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { error, success, loading } = useAppSelector(selectPidIssuanceStatus);
@@ -71,18 +71,10 @@ const PidIssuanceRequest = () => {
 
   const dismissalDialog = useItwDismissalDialog({
     customLabels: {
-      title: t('discovery.screen.itw.dismissalDialog.title', {
-        ns: 'wallet'
-      }),
-      body: t('discovery.screen.itw.dismissalDialog.body', {
-        ns: 'wallet'
-      }),
-      confirmLabel: t('discovery.screen.itw.dismissalDialog.confirm', {
-        ns: 'wallet'
-      }),
-      cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel', {
-        ns: 'wallet'
-      })
+      title: t('discovery.screen.itw.dismissalDialog.title'),
+      body: t('discovery.screen.itw.dismissalDialog.body'),
+      confirmLabel: t('discovery.screen.itw.dismissalDialog.confirm'),
+      cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel')
     },
     handleDismiss: () => navigateToWallet()
   });
@@ -98,7 +90,7 @@ const PidIssuanceRequest = () => {
             type: 'SingleButton',
             primary: {
               label: t('buttons.continue', {
-                ns: 'global'
+                ns: 'common'
               }),
               onPress: () => dispatch(addPidWithIdentification({ credential }))
             }
@@ -106,9 +98,9 @@ const PidIssuanceRequest = () => {
         }}
       >
         <VStack style={styles.contentWrapper}>
-          <H2>{t('wallet:pidIssuance.preview.title')}</H2>
+          <H2>{t('pidIssuance.preview.title')}</H2>
           <VSpacer size={16} />
-          <Body>{t('wallet:pidIssuance.preview.subtitle')}</Body>
+          <Body>{t('pidIssuance.preview.subtitle')}</Body>
           <VSpacer size={24} />
           <View>
             <CredentialPreviewClaimsList
@@ -123,9 +115,7 @@ const PidIssuanceRequest = () => {
 
   return (
     <>
-      {loading && (
-        <LoadingScreenContent contentTitle={t('global:generics.waiting')} />
-      )}
+      {loading && <LoadingScreenContent contentTitle={t('common:waiting')} />}
       {success.status === true && pid && <PidPreview credential={pid} />}
     </>
   );

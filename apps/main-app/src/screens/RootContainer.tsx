@@ -6,6 +6,7 @@ import {
   DebugInfoOverlay,
   selectIsDebugModeEnabled
 } from '@io-eudiw-app/debug-info';
+import { useTranslation } from 'react-i18next';
 
 /**
  * This is the root container of the app. It contains the main navigation stack and the debug overlay.
@@ -14,11 +15,16 @@ import {
  */
 const RootContainer = () => {
   const isDebugModeEnabled = useAppSelector(selectIsDebugModeEnabled);
+  const { t } = useTranslation(['common']);
 
   return (
     <>
       <StatusBar barStyle={'dark-content'} backgroundColor={IOColors.white} />
-      {isDebugModeEnabled && <DebugInfoOverlay />}
+      {isDebugModeEnabled && (
+        <DebugInfoOverlay
+          clipboardSuccessMessage={t('common:clipboard.copyFeedback')}
+        />
+      )}
       <RootStackNavigator />
     </>
   );

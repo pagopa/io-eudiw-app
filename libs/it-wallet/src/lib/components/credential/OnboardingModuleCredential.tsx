@@ -40,7 +40,7 @@ const OnboardingModuleCredential = ({
     if (isSaved) {
       return {
         variant: 'success',
-        text: t('credentialIssuance.badges.saved', { ns: 'wallet' })
+        text: t('credentialIssuance.badges.saved')
       };
     }
     return undefined;

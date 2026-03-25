@@ -10,6 +10,7 @@ import { selectDebugData } from '../reducer/debug';
 import { useAppSelector } from '../reducer';
 
 type DebugDataOverlayProps = {
+  clipboardSuccessMessage: string;
   onDismissed?: () => void;
 };
 
@@ -17,7 +18,10 @@ type DebugDataOverlayProps = {
  * Debug overlay to show all the debug data in a list for each entry in the debug state via {@link DebugPrettyPrint}.
  * Used in {@link DebugInfoOverlay}
  */
-export const DebugDataOverlay = ({ onDismissed }: DebugDataOverlayProps) => {
+export const DebugDataOverlay = ({
+  onDismissed,
+  clipboardSuccessMessage
+}: DebugDataOverlayProps) => {
   const debugData = useAppSelector(selectDebugData);
 
   return (
@@ -34,6 +38,7 @@ export const DebugDataOverlay = ({ onDismissed }: DebugDataOverlayProps) => {
             key={`debug_data_${key}`}
             title={key}
             data={value}
+            clipboardSuccessMessage={clipboardSuccessMessage}
             expandable={true}
             isExpanded={false}
           />

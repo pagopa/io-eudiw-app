@@ -13,7 +13,6 @@ import {
   HSpacer,
   IOPictogramsBleed,
   IOSpacer,
-  IOToast,
   IOVisualCostants,
   Nullable,
   VSpacer
@@ -37,7 +36,6 @@ import {
   TxtStrNode,
   TxtStrongNode
 } from '@textlint/ast-node-types';
-import { t } from 'i18next';
 import {
   ExoticComponent,
   Fragment,
@@ -137,9 +135,7 @@ const generateAccesibilityLinkViewsIfNeeded = (
 };
 
 const handleOpenLink = (url: string) => {
-  openWebUrl(url, () => {
-    IOToast.error(t('generics.error.title', { ns: 'global' }));
-  });
+  openWebUrl(url, () => null);
 };
 
 /**

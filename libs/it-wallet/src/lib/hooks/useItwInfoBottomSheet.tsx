@@ -1,6 +1,7 @@
 import { IOMarkdown, useIOBottomSheetModal } from '@io-eudiw-app/commons';
 import { H6, VSpacer, VStack } from '@pagopa/io-app-design-system';
 import { View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 /**
  * The type of the content of the bottom sheet.
@@ -24,6 +25,7 @@ type ItwInfoFlowProps = {
  * @param content - the content of the bottom sheet. Consists of an array of objects with a title and a body.
  */
 export const useItwInfoBottomSheet = ({ title, content }: ItwInfoFlowProps) => {
+  const { t } = useTranslation(['common']);
   const BottomSheetBody = () => (
     <View style={{ flex: 1 }}>
       {content.map((item, index) => (
@@ -38,6 +40,7 @@ export const useItwInfoBottomSheet = ({ title, content }: ItwInfoFlowProps) => {
 
   const { present, bottomSheet, dismiss } = useIOBottomSheetModal({
     title,
+    closeAccessibilityLabel: t('buttons.close'),
     component: <BottomSheetBody />
   });
 

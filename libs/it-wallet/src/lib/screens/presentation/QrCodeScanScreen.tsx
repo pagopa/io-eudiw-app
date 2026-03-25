@@ -22,7 +22,7 @@ export type OnBardCodeError = () => void;
 
 const QrCodeScanScreen = () => {
   const navigation = useNavigation();
-  const { t } = useTranslation('qrcodeScan');
+  const { t } = useTranslation();
 
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();
@@ -30,11 +30,11 @@ const QrCodeScanScreen = () => {
 
   const handleMultipleResults = () =>
     Alert.alert(
-      t('multipleResultsAlert.title'),
-      t('multipleResultsAlert.body'),
+      t('qr.multipleResultsAlert.title', { ns: 'wallet' }),
+      t('qr.multipleResultsAlert.body', { ns: 'wallet' }),
       [
         {
-          text: t(`multipleResultsAlert.action`),
+          text: t(`qr.multipleResultsAlert.action`, { ns: 'wallet' }),
           style: 'default'
         }
       ],
@@ -62,7 +62,7 @@ const QrCodeScanScreen = () => {
       });
     } catch {
       ReactNativeHapticFeedback.trigger(HapticFeedbackTypes.notificationError);
-      IOToast.error(t('error'));
+      IOToast.error(t('qr.error', { ns: 'wallet' }));
     }
   };
 
@@ -76,7 +76,8 @@ const QrCodeScanScreen = () => {
     }
   };
 
-  const handleBarcodeError: OnBardCodeError = () => IOToast.error(t('error'));
+  const handleBarcodeError: OnBardCodeError = () =>
+    IOToast.error(t('qr.error', { ns: 'wallet' }));
 
   const { showImagePicker, isLoading } = useQrCodeFileReader({
     onBarcodeSuccess: handleBarcodeSuccess,

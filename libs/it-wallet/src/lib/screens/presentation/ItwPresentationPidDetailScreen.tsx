@@ -19,9 +19,11 @@ import {
   StoredCredential
 } from '../../utils/itwTypesUtils';
 import { useAppSelector } from '../../store';
+import { useTranslation } from 'react-i18next';
 
 export const ItwPresentationPidDetailScreen = () => {
   const pidOption = useAppSelector(itwCredentialsPidSelector);
+  const { t } = useTranslation(['common']);
 
   const getContent = (credential: StoredCredential) => (
     <ItwPresentationDetailsScreenBase credential={credential}>
@@ -35,7 +37,9 @@ export const ItwPresentationPidDetailScreen = () => {
       <ContentWrapper>
         <VStack style={{ paddingVertical: 16 }} space={16}>
           <ItwPresentationPidDetail credential={credential} />
-          <ItwPresentationPidDetailFooter />
+          <ItwPresentationPidDetailFooter
+            successToastLabel={t('generics.success')}
+          />
           <PoweredByItWalletText />
         </VStack>
       </ContentWrapper>

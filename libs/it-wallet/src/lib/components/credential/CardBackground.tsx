@@ -102,7 +102,7 @@ export const CardBackground = ({
 const credentialCardBackgrounds: {
   [type: string]: string;
 } = {
-  [wellKnownCredential.PID]: require('../../assets/img/cards/pid.png'),
-  [wellKnownCredential.DRIVING_LICENSE]: require('../../assets/img/cards/mdl.png'),
-  [wellKnownCredential.DISABILITY_CARD]: require('../../assets/img/cards/disabilityCard.png')
+  [wellKnownCredential.PID]: require('../../../assets/img/cards/pid.png'),
+  [wellKnownCredential.DRIVING_LICENSE]: require('../../../assets/img/cards/mdl.png'),
+  [wellKnownCredential.DISABILITY_CARD]: require('../../../assets/img/cards/disabilityCard.png')
 };

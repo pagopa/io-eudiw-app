@@ -6,7 +6,6 @@ import {
   VSpacer
 } from '@pagopa/io-app-design-system';
 import { NumberButton } from '@pagopa/io-app-design-system/lib/typescript/components/numberpad/NumberButton';
-import { t } from 'i18next';
 import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { isDevEnv } from '@io-eudiw-app/commons';
@@ -28,6 +27,7 @@ type BiometricConfigType =
     };
 type IdentificationNumberPadProps = {
   pin: string;
+  deleteAccessibilityLabel: string;
   pinValidation: (success: boolean) => void;
   numberPadVariant: React.ComponentProps<typeof NumberButton>['variant'];
   biometricsConfig: BiometricConfigType;
@@ -43,7 +43,13 @@ export const IdentificationNumberPad = (
 ) => {
   const [value, setValue] = useState('');
 
-  const { pin, pinValidation, numberPadVariant, biometricsConfig } = props;
+  const {
+    pin,
+    deleteAccessibilityLabel,
+    pinValidation,
+    numberPadVariant,
+    biometricsConfig
+  } = props;
 
   const onValueChange = useCallback((v: number) => {
     setValue(prev => (prev.length < PIN_LENGTH ? `${prev}${v}` : prev));
@@ -117,9 +123,7 @@ export const IdentificationNumberPad = (
       <VSpacer size={48} />
       <View>
         <NumberPad
-          deleteAccessibilityLabel={t('buttons.delete', {
-            ns: 'global'
-          })}
+          deleteAccessibilityLabel={deleteAccessibilityLabel}
           onDeletePress={onDeletePress}
           onNumberPress={onValueChange}
           variant={numberPadVariant}

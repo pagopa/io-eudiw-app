@@ -8,7 +8,6 @@ import {
 import { BiometricsValidType, Body } from '@pagopa/io-app-design-system';
 import { TxtParagraphNode } from '@textlint/ast-node-types';
 import * as LocalAuthentication from 'expo-local-authentication';
-import { t } from 'i18next';
 import { View } from 'react-native';
 
 /**
@@ -35,14 +34,12 @@ export const getBiometricState = async (): Promise<BiometricState> => {
 /**
  * On iOS devices, prompts the user to confirm biometric enabling.
  * If the device is Android, it directly returns true.
+ * @param promptMessage - The message to display in the biometric prompt on iOS devices.
  * @returns A promise that resolves to true if biometric enabling is confirmed or not needed, false otherwise.
  */
-export const confirmBiometricEnabling = async () => {
+export const confirmBiometricEnabling = async (promptMessage: string) => {
   try {
     if (isIos) {
-      const promptMessage = t('identification.biometric.sensorDescription', {
-        ns: 'global'
-      });
       const res = await LocalAuthentication.authenticateAsync({
         promptMessage,
         disableDeviceFallback: true
@@ -51,29 +48,29 @@ export const confirmBiometricEnabling = async () => {
     } else {
       return true;
     }
-  } catch (e) {
+  } catch {
     return false;
   }
 };
 
 /**
- * Get the design system icon name for the given biometric type.
+ * Get the accessibility label for the biometric icon based on the biometric type.
  * @param biometricType - The biometric type from expo-local-authentication.
- * @returns The design system icon name as a string.
+ * @param fingerprintLabel - The label to use for fingerprint authentication.
+ * @param faceIdLabel - The label to use for facial recognition authentication.
+ * @returns The accessibility label as a string.
  */
-export const getBiometryDesignSystemIconName = (
-  biometricType: LocalAuthentication.AuthenticationType
+export const getBiometryAccessibilityLabel = (
+  biometricType: LocalAuthentication.AuthenticationType,
+  fingerprintLabel: string,
+  faceLabel: string
 ) => {
   switch (biometricType) {
     case LocalAuthentication.AuthenticationType.FINGERPRINT:
-      return t('identification.unlockCode.accessibility.fingerprint', {
-        ns: 'global'
-      });
+      return fingerprintLabel;
     case LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION:
     case LocalAuthentication.AuthenticationType.IRIS:
-      return t('identification.unlockCode.accessibility.faceId', {
-        ns: 'global'
-      });
+      return faceLabel;
   }
 };
 
@@ -94,40 +91,41 @@ export const getBiometricDesignSystemType = (
   }
 };
 
+interface BiometricStrings {
+  promptMessage: string;
+  promptDescription: string;
+  cancelLabel: string;
+}
+
 /**
  * Perform a biometric authentication request.
+ * @param strings - Object containing the localized strings for the UI.
  * @param onSuccess - Callback function to be called on successful authentication.
- * @param onError - Callback function to be called on authentication error, with an optional error parameter matching LocalAuthenticationError.
+ * @param onError - Callback function to be called on error.
  */
 export const biometricAuthenticationRequest = async (
+  strings: BiometricStrings,
   onSuccess: () => void,
   onError: (e?: LocalAuthentication.LocalAuthenticationError) => void
 ) => {
   try {
     const options: LocalAuthentication.LocalAuthenticationOptions = {
       disableDeviceFallback: true,
-      promptMessage: isAndroid
-        ? t('identification.biometric.title', { ns: 'global' })
-        : t('identification.biometric.sensorDescription', {
-            ns: 'global'
-          }),
-      ...(isAndroid
-        ? {
-            cancelLabel: t('buttons.cancel', { ns: 'global' }),
-            promptDescription: t('identification.biometric.sensorDescription', {
-              ns: 'global'
-            })
-          }
-        : {})
+      promptMessage: strings.promptMessage,
+      ...(isAndroid && {
+        cancelLabel: strings.cancelLabel,
+        promptDescription: strings.promptDescription
+      })
     };
 
     const res = await LocalAuthentication.authenticateAsync(options);
+
     if (res.success) {
       onSuccess();
     } else {
       onError(res.error);
     }
-  } catch (error) {
+  } catch {
     onError();
   }
 };
@@ -135,8 +133,17 @@ export const biometricAuthenticationRequest = async (
 export const IdentificationInstructionsComponent = (props: {
   biometricType: LocalAuthentication.AuthenticationType | undefined;
   isBiometricIdentificationFailed: boolean;
+  instructionsUnlockCode: string;
+  instructionsFingerprint: string;
+  instructionsFaceId: string;
 }) => {
-  const { biometricType, isBiometricIdentificationFailed } = props;
+  const {
+    biometricType,
+    isBiometricIdentificationFailed,
+    instructionsUnlockCode,
+    instructionsFingerprint,
+    instructionsFaceId
+  } = props;
 
   const generatePragraphRule = () => ({
     Paragraph(paragraph: TxtParagraphNode, render: Renderer) {
@@ -155,9 +162,7 @@ export const IdentificationInstructionsComponent = (props: {
   const instructionComponent = (
     <View accessible style={{ flexDirection: 'row' }}>
       <IOMarkdown
-        content={t('identification.instructions.useUnlockCode', {
-          ns: 'global'
-        })}
+        content={instructionsUnlockCode}
         rules={generatePragraphRule()}
       />
     </View>
@@ -172,9 +177,7 @@ export const IdentificationInstructionsComponent = (props: {
       return (
         <View accessible style={{ flexDirection: 'row' }}>
           <IOMarkdown
-            content={t(
-              'identification.instructions.useFingerPrintOrUnlockCode'
-            )}
+            content={instructionsFingerprint}
             rules={generatePragraphRule()}
           />
         </View>
@@ -184,9 +187,7 @@ export const IdentificationInstructionsComponent = (props: {
       return (
         <View accessible style={{ flexDirection: 'row' }}>
           <IOMarkdown
-            content={t('identification.instructions.useFaceIdOrUnlockCode', {
-              ns: 'global'
-            })}
+            content={instructionsFaceId}
             rules={generatePragraphRule()}
           />
         </View>

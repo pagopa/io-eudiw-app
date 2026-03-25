@@ -42,6 +42,7 @@ type IOBottomSheetModal = {
 type BottomSheetOptions = {
   component: React.ReactNode;
   title: string | React.ReactNode;
+  closeAccessibilityLabel: string;
   snapPoint?: NonEmptyArray<number | string>;
   maxDynamicContentSizePercent?: number;
   footer?: React.ReactElement;
@@ -61,6 +62,7 @@ type BottomSheetOptions = {
 export const useIOBottomSheetModal = ({
   component,
   title,
+  closeAccessibilityLabel,
   snapPoint,
   maxDynamicContentSizePercent = 1,
   footer,
@@ -71,7 +73,13 @@ export const useIOBottomSheetModal = ({
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const { onOpen, onClose } = useHardwareBackButtonToDismiss(dismissAll);
 
-  const header = <BottomSheetHeader title={title} onClose={dismissAll} />;
+  const header = (
+    <BottomSheetHeader
+      title={title}
+      onClose={dismissAll}
+      closeAccessibilityLabel={closeAccessibilityLabel}
+    />
+  );
   const bottomSheetContent = (
     <BottomSheetScrollView
       style={{

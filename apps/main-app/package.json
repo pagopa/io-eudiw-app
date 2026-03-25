@@ -6,6 +6,7 @@
     "eas-build-post-install": "cd ../../ && node tools/scripts/eas-build-post-install.mjs . apps/main-app",
     "android": "expo run:android",
     "ios": "expo run:ios",
+    "format:check": "prettier --check .",
     "increment-version": "bash ./scripts/increment-version.sh"
   },
   "dependencies": {
@@ -50,7 +51,7 @@
     "react-native-get-random-values": "^1.11.0",
     "react-native-haptic-feedback": "^2.3.3",
     "react-native-linear-gradient": "^2.8.3",
-    "react-native-permissions": "^5.4.4",
+    "react-native-permissions": "^5.5.1",
     "react-native-qrcode-svg": "^6.3.21",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",
@@ -67,23 +68,5 @@
     "@types/lodash": "^4.17.21",
     "reactotron-redux": "^3.1.10",
     "reactotron-react-native": "^5.1.12"
-  },
-  "jest": {
-    "preset": "jest-expo",
-    "transformIgnorePatterns": [
-      "node_modules/(?!(react-native|@react-native|expo(-.*)?|react-native-gesture-handler|react-native-reanimated|react-native-linear-gradient|react-native-qrcode-svg|@react-navigation|@react-native-community|immer|@reduxjs/toolkit|@pagopa/io-app-design-system|@shopify/react-native-skia|react-native-worklets)/)"
-    ],
-    "setupFilesAfterEnv": [
-      "./jestSetup.js",
-      "./node_modules/react-native-gesture-handler/jestSetup.js",
-      "./node_modules/@shopify/react-native-skia/jestSetup.js"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ]
   }
 }

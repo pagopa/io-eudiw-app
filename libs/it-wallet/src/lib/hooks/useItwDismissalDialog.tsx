@@ -1,15 +1,14 @@
 import { useHardwareBackButton } from '@io-eudiw-app/commons';
 import { useNavigation } from '@react-navigation/native';
-import { t } from 'i18next';
 import { Alert } from 'react-native';
 
 type ItwDismissalDialogProps = {
   handleDismiss?: () => void;
-  customLabels?: {
-    title?: string;
-    body?: string;
-    confirmLabel?: string;
-    cancelLabel?: string;
+  customLabels: {
+    title: string;
+    body: string;
+    confirmLabel: string;
+    cancelLabel: string;
   };
 };
 
@@ -23,17 +22,11 @@ type ItwDismissalDialogProps = {
  */
 export const useItwDismissalDialog = ({
   handleDismiss,
-  customLabels = {}
-}: ItwDismissalDialogProps = {}) => {
+  customLabels
+}: ItwDismissalDialogProps) => {
   const navigation = useNavigation();
 
-  const title =
-    customLabels.title ?? t('generics.alert.title', { ns: 'global' });
-  const body = customLabels.body ?? t('generics.alert.body', { ns: 'global' });
-  const confirmLabel =
-    customLabels.confirmLabel ?? t('generics.alert.confirm', { ns: 'global' });
-  const cancelLabel =
-    customLabels.cancelLabel ?? t('generics.alert.cancel', { ns: 'global' });
+  const { title, body, confirmLabel, cancelLabel } = customLabels;
 
   const show = () => {
     Alert.alert(title, body, [

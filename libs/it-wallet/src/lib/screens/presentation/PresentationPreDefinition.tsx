@@ -39,7 +39,7 @@ type Props = StackScreenProps<
  */
 const PresentationPreDefinition = ({ route }: Props) => {
   const navigation = useNavigation();
-  const { t } = useTranslation(['global', 'wallet']);
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const preDefinitionStatus = useAppSelector(selectPreDefinitionStatus);
   const preDefinitionResult = useAppSelector(selectPreDefitionResult);
@@ -78,9 +78,9 @@ const PresentationPreDefinition = ({ route }: Props) => {
   });
 
   return (
-    <LoadingScreenContent contentTitle={t('wallet:presentation.loading.title')}>
+    <LoadingScreenContent contentTitle={t('presentation.loading.title', { ns: 'wallet' })}>
       <Body style={{ textAlign: 'center' }}>
-        {t('wallet:presentation.loading.subtitle')}
+        {t('presentation.loading.subtitle', { ns: 'wallet' })}
       </Body>
     </LoadingScreenContent>
   );

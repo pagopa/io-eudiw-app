@@ -15,10 +15,16 @@ import { getAppVersion } from '@io-eudiw-app/commons';
 const debugItemBgColor = hexToRgba(IOColors.white, 0.4);
 const debugItemBorderColor = hexToRgba(IOColors.black, 0.1);
 
+type DebugInfoOverlayProps = {
+  clipboardSuccessMessage: string;
+};
+
 /**
  * Overlay which shows the debug data stored in the debug state.
  */
-export const DebugInfoOverlay = () => {
+export const DebugInfoOverlay = ({
+  clipboardSuccessMessage
+}: DebugInfoOverlayProps) => {
   const theme = useIOTheme();
   const appVersion = getAppVersion();
   const [isDebugDataVisibile, showDebugData] = useState(false);
@@ -46,7 +52,10 @@ export const DebugInfoOverlay = () => {
         </VStack>
       </SafeAreaView>
       {isDebugDataVisibile && (
-        <DebugDataOverlay onDismissed={() => showDebugData(false)} />
+        <DebugDataOverlay
+          onDismissed={() => showDebugData(false)}
+          clipboardSuccessMessage={clipboardSuccessMessage}
+        />
       )}
     </>
   );

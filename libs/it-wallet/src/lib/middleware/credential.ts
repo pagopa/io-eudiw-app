@@ -277,7 +277,7 @@ const addCredentialWithAuthListener: AppListenerWithAction<
     listenerApi.dispatch(addCredential(action.payload));
     listenerApi.dispatch(resetCredentialIssuance());
     navigator.navigateWithReset('MAIN_TAB_NAV');
-    IOToast.success(t('buttons.done', { ns: 'global' }));
+    IOToast.success(t('buttons.done', { ns: 'common' }));
   } else {
     return;
   }

@@ -38,30 +38,31 @@ type TestButtonsListItem = Pick<
 
 const Settings = () => {
   const toast = useIOToast();
-  const { t } = useTranslation('global');
+  const { t } = useTranslation(['common', 'wallet']);
   const dispatch = useAppDispatch();
   const isDebugModeEnabled = useAppSelector(selectIsDebugModeEnabled);
   const { newTypefaceEnabled, setNewTypefaceEnabled } = useIONewTypeface();
 
   const testButtonListItems: ReadonlyArray<TestButtonsListItem> = [
     {
-      label: t('settings.reset.walletReset'),
+      label: t('wallet:settings.reset.walletReset'),
       onPress: () => {
         dispatch(resetLifecycle());
-        toast.success(t('generics.success'));
+        toast.success(t('common:generics.success'));
       }
     },
     {
-      label: t('settings.reset.onboardingReset'),
+      label: t('wallet:settings.reset.onboardingReset'),
       onPress: () => {
         dispatch(preferencesReset());
+        toast.success(t('common:generics.success'));
       }
     }
   ];
 
   const DebugSwitch = () => (
     <ListItemSwitch
-      label={t('settings.debug')}
+      label={t('wallet:settings.debug')}
       value={isDebugModeEnabled}
       onSwitchValueChange={state => {
         dispatch(setDebugModeEnabled({ state }));
@@ -74,22 +75,16 @@ const Settings = () => {
     const typefaceOptions = [
       {
         id: 'comfortable' as TypefaceChoice,
-        value: t('settings.appearance.typefaceStyle.comfortable.title', {
-          ns: 'global'
-        }),
+        value: t('wallet:settings.appearance.typefaceStyle.comfortable.title'),
         description: t(
-          'settings.appearance.typefaceStyle.comfortable.description',
-          { ns: 'global' }
+          'wallet:settings.appearance.typefaceStyle.comfortable.description'
         )
       },
       {
         id: 'standard' as TypefaceChoice,
-        value: t('settings.appearance.typefaceStyle.standard.title', {
-          ns: 'global'
-        }),
+        value: t('wallet:settings.appearance.typefaceStyle.standard.title'),
         description: t(
-          'settings.appearance.typefaceStyle.standard.description',
-          { ns: 'global' }
+          'wallet:settings.appearance.typefaceStyle.standard.description'
         )
       }
     ];
@@ -107,9 +102,7 @@ const Settings = () => {
       <View>
         <ListItemHeader
           iconName="typeface"
-          label={t('settings.appearance.typefaceStyle.title', {
-            ns: 'global'
-          })}
+          label={t('wallet:settings.appearance.typefaceStyle.title')}
         />
         <RadioGroup<TypefaceChoice>
           type="radioListItem"
@@ -128,8 +121,8 @@ const Settings = () => {
   return (
     <IOScrollViewWithLargeHeader
       title={{
-        label: t('settings.title'),
-        accessibilityLabel: t('settings.title')
+        label: t('wallet:settings.title'),
+        accessibilityLabel: t('wallet:settings.title')
       }}
     >
       <View style={{ paddingHorizontal: IOVisualCostants.appMarginDefault }}>
@@ -148,7 +141,7 @@ const Settings = () => {
               />
             )}
             ListHeaderComponent={
-              <ListItemHeader label={t('settings.reset.title')} />
+              <ListItemHeader label={t('wallet:settings.reset.title')} />
             }
             ItemSeparatorComponent={() => <VSpacer />}
           />

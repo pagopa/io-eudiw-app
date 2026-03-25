@@ -4,7 +4,6 @@ import {
   IconButton,
   useIOTheme
 } from '@pagopa/io-app-design-system';
-import { t } from 'i18next';
 import { Fragment, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import {
@@ -19,6 +18,7 @@ import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
 import { ItwQrCodeClaimImage } from '../credential/ItwQrCodeClaimImage';
 import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
 import { useAppDispatch, useAppSelector } from '../../store';
+import { useTranslation } from 'react-i18next';
 
 type ItwPresentationClaimsSectionProps = {
   credential: StoredCredential;
@@ -30,6 +30,7 @@ export const ItwPresentationClaimsSection = ({
   parsedClaims
 }: ItwPresentationClaimsSectionProps) => {
   const theme = useIOTheme();
+  const { t } = useTranslation(['common']);
 
   const credentialStatus = useMemo(
     () => getCredentialStatus(credential),
@@ -120,6 +121,8 @@ export const ItwPresentationClaimsSection = ({
               isPreview={false}
               hidden={valuesHidden}
               credentialStatus={credentialStatus}
+              clipboardSuccessMessage={t('clipboard.copyFeedback')}
+              showLabel={t('buttons.show')}
             />
           </Fragment>
         );

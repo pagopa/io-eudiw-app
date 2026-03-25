@@ -18,7 +18,7 @@ import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWit
  * It shows a success message and a button to navigate back to the wallet.
  */
 const PresentationSuccess = () => {
-  const { t } = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation(['wallet', 'common']);
   const dispatch = useAppDispatch();
   const { navigateToWallet } = useNavigateToWalletWithReset();
   const result = useAppSelector(selectPostDefinitionResult);
@@ -40,7 +40,7 @@ const PresentationSuccess = () => {
             label: t('wallet:presentation.successWithRedirect.continue'),
             onPress: () => {
               openWebUrl(redirectUri, () =>
-                toast.error(t('global:errors.generic'))
+                toast.error(t('common:errors.generic'))
               );
               navigateToWallet();
               dispatch(resetPresentation());
@@ -52,8 +52,8 @@ const PresentationSuccess = () => {
           title: t('wallet:presentation.success.title'),
           subtitle: t('wallet:presentation.success.subtitle'),
           action: {
-            accessibilityLabel: t('global:buttons.close'),
-            label: t('global:buttons.close'),
+            accessibilityLabel: t('common:buttons.close'),
+            label: t('common:buttons.close'),
             onPress: () => {
               navigateToWallet();
               dispatch(resetPresentation());

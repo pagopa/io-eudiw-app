@@ -35,9 +35,7 @@ export const IdentificationMethod = () => {
           ns: 'wallet'
         })
       }}
-      description={t('identification.modeSelection.description.issuance', {
-        ns: 'wallet'
-      })}
+      description={t('identification.modeSelection.description.issuance', { ns: 'wallet' })}
     >
       <ContentWrapper>
         <VSpacer size={8} />

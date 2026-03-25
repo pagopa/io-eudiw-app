@@ -17,11 +17,11 @@ const PidIssuanceSuccess = () => {
   return (
     <OperationResultScreenContent
       pictogram="success"
-      title={t('wallet:pidIssuance.success.title')}
-      subtitle={t('wallet:pidIssuance.success.subtitle')}
+      title={t('pidIssuance.success.title')}
+      subtitle={t('pidIssuance.success.subtitle')}
       action={{
-        accessibilityLabel: t('wallet:pidIssuance.success.button'),
-        label: t('wallet:pidIssuance.success.button'),
+        accessibilityLabel: t('pidIssuance.success.button'),
+        label: t('pidIssuance.success.button'),
         onPress: () => {
           dispatch(resetPidIssuance());
           navigateToWallet();

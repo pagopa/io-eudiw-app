@@ -5,7 +5,6 @@ import {
   IOVisualCostants
 } from '@pagopa/io-app-design-system';
 import { createRef, isValidElement } from 'react';
-import { useTranslation } from 'react-i18next';
 import { View, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -25,6 +24,7 @@ const styles = StyleSheet.create({
 
 type Props = {
   title: string | React.ReactNode;
+  closeAccessibilityLabel: string;
   onClose: () => void;
 };
 
@@ -35,10 +35,10 @@ type Props = {
  */
 export const BottomSheetHeader: React.FunctionComponent<Props> = ({
   title,
+  closeAccessibilityLabel,
   onClose
 }: Props) => {
   const headerRef = createRef<View>();
-  const { t } = useTranslation('global');
 
   return (
     <View style={styles.bottomSheetHeader} ref={headerRef}>
@@ -58,7 +58,7 @@ export const BottomSheetHeader: React.FunctionComponent<Props> = ({
         color="neutral"
         onPress={onClose}
         icon="closeMedium"
-        accessibilityLabel={t('buttons.close')}
+        accessibilityLabel={closeAccessibilityLabel}
       />
     </View>
   );

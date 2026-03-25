@@ -4,7 +4,7 @@ import {
   NavigatorScreenParams
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect } from 'react';
 import { useStoredFontPreference } from '../context/DSTypeFaceContext';
 import OnboardingNavigator, {
@@ -54,6 +54,7 @@ type Screens = {
 export const RootStackNavigator = () => {
   useStoredFontPreference();
 
+  const { t } = useTranslation(['common']);
   const startupStatus = useAppSelector(selectStartupStatus);
   const { themeType } = useIOThemeContext();
   const dispatch = useAppDispatch();
@@ -103,7 +104,7 @@ export const RootStackNavigator = () => {
       default:
         return { name: ROOT_ROUTES.LOADING, component: Loading };
     }
-  }, [startupStatus]);
+  }, [Loading, startupStatus]);
 
   // const linking: LinkingOptions<RootStackParamList> = {
   //   prefixes: PRESENTATION_INTERNAL_LINKS,

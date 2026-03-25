@@ -205,9 +205,7 @@ export const getClaimDisplayValue = (
       case 'boolean':
         return {
           type: 'text',
-          value: t(`presentation.credentialDetails.boolClaim.${parsed.value}`, {
-            ns: 'wallet'
-          })
+          value: t(`presentation.credentialDetails.boolClaim.${parsed.value}`, { ns: 'wallet' })
         };
 
       case 'stringArray':
@@ -248,17 +246,14 @@ export const getClaimDisplayValue = (
         return {
           type: 'text',
           value: t(
-            'verifiableCredentials.generic.placeholders.claimNotAvailable',
-            { ns: 'wallet' }
+            'verifiableCredentials.generic.placeholders.claimNotAvailable', { ns: 'wallet' }
           )
         };
     }
   } catch {
     return {
       type: 'text',
-      value: t('verifiableCredentials.generic.placeholders.claimNotAvailable', {
-        ns: 'wallet'
-      })
+      value: t('verifiableCredentials.generic.placeholders.claimNotAvailable', { ns: 'wallet' })
     };
   }
 };

@@ -27,6 +27,7 @@ type ExpandableProps =
 type Props = Prettify<
   {
     title: string;
+    clipboardSuccessMessage: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any;
   } & ExpandableProps
@@ -38,7 +39,13 @@ type Props = Prettify<
  * The component it is rendered only if debug mode is enabled
  */
 export const DebugPrettyPrint = withDebugEnabled(
-  ({ title, data, expandable = true, isExpanded = false }: Props) => {
+  ({
+    title,
+    data,
+    clipboardSuccessMessage,
+    expandable = true,
+    isExpanded = false
+  }: Props) => {
     const [expanded, setExpanded] = useState(isExpanded);
 
     const content = useMemo(() => {
@@ -74,7 +81,8 @@ export const DebugPrettyPrint = withDebugEnabled(
               iconSize={20}
               onPress={async () =>
                 await clipboardSetStringWithFeedback(
-                  JSON.stringify(data, null, 2)
+                  JSON.stringify(data, null, 2),
+                  clipboardSuccessMessage
                 )
               }
               color="contrast"

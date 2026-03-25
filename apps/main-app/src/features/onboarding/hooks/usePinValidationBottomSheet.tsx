@@ -11,17 +11,17 @@ const BottomSheetContent = memo(() => {
 
   return (
     <View>
-      <Body>{t('pin.policy.description', { ns: 'onboarding' })}</Body>
+      <Body>{t('onboarding.pin.policy.description', { ns: 'global' })}</Body>
       <VSpacer size={16} />
       <BulletList
-        title={t('pin.policy.bulletListTitle', { ns: 'onboarding' })}
+        title={t('onboarding.pin.policy.bulletListTitle', { ns: 'global' })}
         list={[
           {
-            value: t('pin.policy.firstItem', { ns: 'onboarding' }),
+            value: t('onboarding.pin.policy.firstItem', { ns: 'global' }),
             id: 'first_item'
           },
           {
-            value: t('pin.policy.secondItem', { ns: 'onboarding' }),
+            value: t('onboarding.pin.policy.secondItem', { ns: 'global' }),
             id: 'second_item'
           }
         ]}
@@ -34,6 +34,7 @@ const BottomSheetContent = memo(() => {
 
 export default () =>
   useIOBottomSheetModal({
-    title: t('pin.policy.title', { ns: 'onboarding' }),
+    title: t('onboarding.pin.policy.title', { ns: 'global' }),
+    closeAccessibilityLabel: t('buttons.close', { ns: 'common' }),
     component: <BottomSheetContent />
   });

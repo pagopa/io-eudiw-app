@@ -30,11 +30,11 @@ import {
   useHardwareBackButtonToDismiss,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
-import Feature1Image from '../../assets/img/discovery/feature_1.svg';
-import Feature2Image from '../../assets/img/discovery/feature_2.svg';
-import Feature3Image from '../../assets/img/discovery/feature_3.svg';
-import Feature4Image from '../../assets/img/discovery/feature_4.svg';
-import Feature5Image from '../../assets/img/discovery/feature_5.svg';
+import Feature1Image from '../../../assets/img/discovery/feature_1.svg';
+import Feature2Image from '../../../assets/img/discovery/feature_2.svg';
+import Feature3Image from '../../../assets/img/discovery/feature_3.svg';
+import Feature4Image from '../../../assets/img/discovery/feature_4.svg';
+import Feature5Image from '../../../assets/img/discovery/feature_5.svg';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { createInstanceThunk } from '../../middleware/instance';
 import { resetInstanceCreation } from '../../store/pidIssuance';
@@ -61,18 +61,10 @@ export const WalletInstanceCreation = () => {
 
   const dismissalDialog = useItwDismissalDialog({
     customLabels: {
-      title: t('discovery.screen.itw.dismissalDialog.title', {
-        ns: 'wallet'
-      }),
-      body: t('discovery.screen.itw.dismissalDialog.body', {
-        ns: 'wallet'
-      }),
-      confirmLabel: t('discovery.screen.itw.dismissalDialog.confirm', {
-        ns: 'wallet'
-      }),
-      cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel', {
-        ns: 'wallet'
-      })
+      title: t('discovery.screen.itw.dismissalDialog.title', { ns: 'wallet' }),
+      body: t('discovery.screen.itw.dismissalDialog.body', { ns: 'wallet' }),
+      confirmLabel: t('discovery.screen.itw.dismissalDialog.confirm', { ns: 'wallet' }),
+      cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel', { ns: 'wallet' })
     },
     handleDismiss: () => {
       thunkRef.current?.abort();
@@ -159,7 +151,7 @@ export const WalletInstanceCreation = () => {
       }}
     >
       <AnimatedImage
-        source={require('../../assets/img/discovery/itw_hero.png')}
+        source={require('../../../assets/img/discovery/itw_hero.png')}
         style={styles.hero}
       />
       <VSpacer size={24} />

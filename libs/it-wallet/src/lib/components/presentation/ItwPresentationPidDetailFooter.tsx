@@ -7,7 +7,11 @@ import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard
 import { resetLifecycle } from '../../store/lifecycle';
 import { useAppDispatch } from '../../store';
 
-const ItwPresentationPidDetailFooter = () => {
+const ItwPresentationPidDetailFooter = ({
+  successToastLabel
+}: {
+  successToastLabel: string;
+}) => {
   const requestAssistanceLabel = t(
     'presentation.credentialDetails.actions.requestAssistance',
     {
@@ -37,7 +41,7 @@ const ItwPresentationPidDetailFooter = () => {
           style: 'destructive',
           onPress: () => {
             dispatch(resetLifecycle());
-            toast.success(t('generics.success', { ns: 'global' }));
+            toast.success(successToastLabel);
             navigation.goBack();
           }
         }

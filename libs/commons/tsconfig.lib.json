@@ -27,5 +27,13 @@
     "src/**/*.spec.ts",
     "src/**/*.test.ts"
   ],
-  "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"]
+  "include": [
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.json",
+    "../it-wallet/src/lib/locales/i18next.d.ts",
+    "../it-wallet/src/lib/locales/resources.ts"
+  ]
 }

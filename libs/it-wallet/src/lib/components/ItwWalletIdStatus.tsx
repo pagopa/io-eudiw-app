@@ -9,14 +9,15 @@ import { t } from 'i18next';
 import { ComponentProps } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import BackgroundImageValid from '../assets/img/brand/itw_deck_status.svg';
-import BackgroundImageExpired from '../assets/img/brand/itw_deck_status_expired.svg';
-import ItWalletIdLogoImage from '../assets/img/brand/itw_id_logo.svg';
+import BackgroundImageValid from '../../assets/img/brand/itw_deck_status.svg';
+import BackgroundImageExpired from '../../assets/img/brand/itw_deck_status_expired.svg';
+import ItWalletIdLogoImage from '../../assets/img/brand/itw_id_logo.svg';
 import { ItwJwtCredentialStatus } from '../types';
 import { ItwBrandedBox } from './ItwBrandedBox';
 import { ItwSkiaBrandedGradientVariant } from './ItwBrandedSkiaGradient';
 
 type ItwWalletIdStatusProps = {
+  startButtonLabel: string;
   pidStatus?: ItwJwtCredentialStatus;
   pidExpiration?: string;
   onPress?: () => void;
@@ -46,7 +47,8 @@ const statusIconPropsByPidStatus: Record<
 export const ItwWalletIdStatus = ({
   onPress,
   pidStatus = 'valid',
-  pidExpiration
+  pidExpiration,
+  startButtonLabel
 }: ItwWalletIdStatusProps) => {
   const { onPressIn, onPressOut, scaleAnimatedStyle } =
     useScaleAnimation('slight');
@@ -118,7 +120,7 @@ export const ItwWalletIdStatus = ({
             <View pointerEvents="none">
               <IOButton
                 variant="link"
-                label={t('buttons.start', { ns: 'global' })}
+                label={startButtonLabel}
                 onPress={() => null}
               />
             </View>

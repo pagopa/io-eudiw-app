@@ -206,7 +206,7 @@ const DocumentExpiringAlert = ({ credential }: CredentialStatusAlertProps) => {
 
   const handleCtaPress = useCallback(() => {
     openWebUrl(LICENSE_RENEWAL_URL, () =>
-      IOToast.error(I18n.t('errors.generic', { ns: 'global' }))
+      IOToast.error(I18n.t('errors.generic', { ns: 'common' }))
     );
   }, []);
 
@@ -214,6 +214,7 @@ const DocumentExpiringAlert = ({ credential }: CredentialStatusAlertProps) => {
     //    title: I18n.t(`${bottomSheetNs}.title`, { ns: 'wallet' }),
     // This API is needed to bypass translation engine interpretations of ":" symbols as namespaces
     title: I18n.getResource(I18n.language, 'wallet', `${bottomSheetNs}.title`),
+    closeAccessibilityLabel: I18n.t('buttons.close', { ns: 'common' }),
     component: (
       <VStack space={24}>
         <IOMarkdown
@@ -279,6 +280,7 @@ const IssuerDynamicErrorAlert = ({
 
   const bottomSheet = useIOBottomSheetModal({
     title: localizedMessage.title,
+    closeAccessibilityLabel: I18n.t('buttons.close', { ns: 'common' }),
     component: (
       <VStack space={24}>
         <IOMarkdown content={localizedMessage.description} />

@@ -1,3 +1,5 @@
+import { default as commonRawResources } from './lib/locales/it/common.json';
+import { Resource } from 'i18next';
 export * from './lib/hooks/useHeaderSecondLevel';
 export * from './lib/hooks/useDisableGestureNavigation';
 export * from './lib/hooks/useHardwareBackButton';
@@ -32,3 +34,11 @@ export * from './lib/hooks/theme';
 export * from './lib/types/pin';
 export * from './lib/utils/pin';
 export * from './lib/hooks/usePreventScreenCapture';
+
+export const resources: Resource = {
+  it: {
+    common: commonRawResources
+  }
+};
+
+export { commonRawResources };

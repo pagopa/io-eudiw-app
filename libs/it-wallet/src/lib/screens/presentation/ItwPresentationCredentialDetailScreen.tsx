@@ -6,7 +6,6 @@ import {
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
-import { t } from 'i18next';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
@@ -67,6 +66,7 @@ export const ItwPresentationCredentialDetailScreen = ({ route }: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<WalletNavigatorParamsList>>();
   const { credentialType } = route.params;
+  const { t } = useTranslation(['wallet', 'common']);
 
   const credential = useAppSelector(selectCredential(credentialType));
 
@@ -77,21 +77,21 @@ export const ItwPresentationCredentialDetailScreen = ({ route }: Props) => {
 
     return (
       <OperationResultScreenContent
-        title={t(`${ns}.itWallet.title`, { ns: 'wallet' })}
+        title={t(`${ns}.itWallet.title`)}
         subtitle={[
-          { text: t(`${ns}.itWallet.body`, { ns: 'wallet' }) },
+          { text: t(`${ns}.itWallet.body`) },
           {
-            text: t(`${ns}.itWallet.bodyBold`, { ns: 'wallet' }),
+            text: t(`${ns}.itWallet.bodyBold`),
             weight: 'Semibold'
           }
         ]}
         pictogram="itWallet"
         action={{
-          label: t(`${ns}.primaryAction`, { ns: 'wallet' }),
+          label: t(`${ns}.primaryAction`),
           onPress: () => navigation.replace('PID_ISSUANCE_INSTANCE_CREATION')
         }}
         secondaryAction={{
-          label: t(`${ns}.secondaryAction`, { ns: 'wallet' }),
+          label: t(`${ns}.secondaryAction`),
           onPress: () => navigation.popToTop()
         }}
       />
@@ -100,7 +100,13 @@ export const ItwPresentationCredentialDetailScreen = ({ route }: Props) => {
 
   if (!credential) {
     // If the credential is not found, we render a screen that allows the user to request that credential.
-    return <ItwCredentialNotFound credentialType={credentialType} />;
+    return (
+      <ItwCredentialNotFound
+        credentialType={credentialType}
+        continueButtonLabel={t('common:buttons.continue')}
+        cancelButtonLabel={t('common:buttons.cancel')}
+      />
+    );
   }
   return <ItwPresentationCredentialDetail credential={credential} />;
 };
@@ -120,7 +126,7 @@ const ItwPresentationCredentialDetail = ({
   const isDebugEnabled = useAppSelector(selectIsDebugModeEnabled);
   const status = getCredentialStatus(credential);
 
-  const { t } = useTranslation(['wallet']);
+  const { t } = useTranslation(['wallet', 'common']);
 
   useDebugInfo(credential);
 
@@ -146,6 +152,7 @@ const ItwPresentationCredentialDetail = ({
 
   const QrCodeModal = useIOBottomSheetModal({
     title: t('wallet:proximity.showQr.title'),
+    closeAccessibilityLabel: t('common:buttons.close'),
     component: <PresentationProximityQrCode navigation={navigation} />,
     onDismiss: () => {
       // In case the flow is stopped before receiving a document
@@ -172,7 +179,7 @@ const ItwPresentationCredentialDetail = ({
 
     if (credentialType === wellKnownCredential.DRIVING_LICENSE) {
       return {
-        label: t('presentation.ctas.showQRCode', { ns: 'wallet' }),
+        label: t('wallet:presentation.ctas.showQRCode'),
         icon: 'qrCode',
         iconPosition: 'end',
         loading: false,

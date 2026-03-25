@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
  */
 export const AppVersion = () => {
   const appVersion = getAppVersion();
-  const { t } = useTranslation('global');
+  const { t } = useTranslation();
   const appVersionText = `${t('settings.version')} ${appVersion}`;
 
   return (

@@ -64,7 +64,7 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
   const titleCreationRef = useRef<View>(null);
   const titleConfirmationRef = useRef<View>(null);
   const { present, bottomSheet } = usePinValidationBottomSheet();
-  const { t } = useTranslation(['global', 'onboarding']);
+  const { t } = useTranslation(['global', 'common']);
   const biometricState = useAppSelector(selectStartupBiometricState);
   const hasDeviceScreenLock = useAppSelector(selectStartupHasScreenLock);
 
@@ -173,11 +173,11 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
         scrollToConfirmation();
       } else {
         Alert.alert(
-          t('onboarding:pin.errors.invalid.title'),
-          t('onboarding:pin.errors.invalid.description'),
+          t('global:onboarding.pin.errors.invalid.title'),
+          t('global:onboarding.pin.errors.invalid.description'),
           [
             {
-              text: t('onboarding:pin.errors.invalid.cta')
+              text: t('global:onboarding.pin.errors.invalid.cta')
             }
           ]
         );
@@ -196,9 +196,9 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
         handleSubmit(v as PinString);
       } else {
         // trackPinError("confirm", getFlowType(isOnboarding, isFirstOnBoarding));
-        Alert.alert(t('onboarding:pin.errors.match.title'), undefined, [
+        Alert.alert(t('global:onboarding.pin.errors.match.title'), undefined, [
           {
-            text: t('onboarding:pin.errors.match.cta'),
+            text: t('global:onboarding.pin.errors.match.cta'),
             onPress: scrollToCreation
           }
         ]);
@@ -211,9 +211,9 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
 
   const data: Array<PinCarouselItemProps> = [
     {
-      title: t('onboarding:pin.title'),
+      title: t('global:onboarding.pin.title'),
       titleRef: titleCreationRef,
-      description: t('onboarding:pin.subTitle'),
+      description: t('global:onboarding.pin.subTitle'),
       value: pin,
       testID: 'create-pin-carousel-item',
       handleOnValidate: handlePinCreation,
@@ -221,7 +221,7 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
       maxLength: PIN_LENGTH
     },
     {
-      title: t('onboarding:pin.confirmation.title'),
+      title: t('global:onboarding.pin.confirmation.title'),
       titleRef: titleConfirmationRef,
       value: pinConfirmation,
       testID: 'confirm-pin-carousel-item',
@@ -258,14 +258,14 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
             onNumberPress={handlePinChange}
             onDeletePress={onDeletePress}
             variant="neutral"
-            deleteAccessibilityLabel={t('global:buttons.delete')}
+            deleteAccessibilityLabel={t('common:buttons.delete')}
           />
           <VSpacer />
           <View style={{ alignSelf: 'center' }}>
             <IOButton
               variant="link"
               onPress={present}
-              label={t('onboarding:pin.policy.title')}
+              label={t('global:onboarding.pin.policy.title')}
             />
           </View>
           {bottomSheet}

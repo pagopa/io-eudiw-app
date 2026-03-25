@@ -11,7 +11,7 @@ import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
 const PresentationProximitySuccess = () => {
-  const { t } = useTranslation('wallet');
+  const { t } = useTranslation();
   const { navigateToWallet } = useNavigateToWalletWithReset();
   const dispatch = useAppDispatch();
 
@@ -29,11 +29,11 @@ const PresentationProximitySuccess = () => {
   return (
     <OperationResultScreenContent
       pictogram="success"
-      title={t('proximity.success.title')}
-      subtitle={t('proximity.success.subtitle')}
+      title={t('proximity.success.title', { ns: 'wallet' })}
+      subtitle={t('proximity.success.subtitle', { ns: 'wallet' })}
       action={{
-        accessibilityLabel: t('proximity.success.button'),
-        label: t('proximity.success.button'),
+        accessibilityLabel: t('proximity.success.button', { ns: 'wallet' }),
+        label: t('proximity.success.button', { ns: 'wallet' }),
         onPress: () => {
           navigateToWallet();
           dispatch(resetProximity());

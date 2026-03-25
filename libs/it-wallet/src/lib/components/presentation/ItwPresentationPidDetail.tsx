@@ -1,7 +1,6 @@
 import { Divider, ListItemHeader } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { t } from 'i18next';
 import { useMemo, useState } from 'react';
 import { Fragment } from 'react/jsx-runtime';
 import { View } from 'react-native';
@@ -12,6 +11,7 @@ import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
 import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
 import { ItwPidLifecycleAlert } from '../ItwPidLifecycleAlert';
 import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   credential: StoredCredential;
@@ -21,10 +21,10 @@ export const ItwPresentationPidDetail = ({ credential }: Props) => {
   const [claimsHidden, setClaimsHidden] = useState(false);
   const navigation =
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
-
-  const listItemHeaderLabel = t('presentation.itWalletId.listItemHeader', {
-    ns: 'wallet'
-  });
+  const { t } = useTranslation(['common', 'wallet']);
+  const listItemHeaderLabel = t(
+    'wallet:presentation.itWalletId.listItemHeader'
+  );
 
   const claims = useMemo(
     () =>
@@ -57,7 +57,13 @@ export const ItwPresentationPidDetail = ({ credential }: Props) => {
       {claims.map(([id, claim], index) => (
         <Fragment key={id}>
           {index !== 0 && <Divider />}
-          <ItwCredentialClaim claim={claim} isPreview hidden={claimsHidden} />
+          <ItwCredentialClaim
+            claim={claim}
+            isPreview
+            hidden={claimsHidden}
+            clipboardSuccessMessage={t('common:clipboard.copyFeedback')}
+            showLabel={t('common:buttons.show')}
+          />
         </Fragment>
       ))}
       {claims.length > 0 && <Divider />}

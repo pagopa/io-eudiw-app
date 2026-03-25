@@ -17,7 +17,7 @@ type IOScrollViewActions = ComponentProps<typeof IOScrollView>['actions'];
  */
 const OnboardingBiometricAvailable = () => {
   const dispatch = useAppDispatch();
-  const { t } = useTranslation(['onboarding', 'global']);
+  const { t } = useTranslation(['common', 'global']);
 
   useHeaderSecondLevel({
     goBack: () => dispatch(preferencesSetIsOnboardingDone()),
@@ -30,7 +30,10 @@ const OnboardingBiometricAvailable = () => {
    */
   const onPressPrimary = async () => {
     try {
-      await confirmBiometricEnabling();
+      const description = t(
+        'global:identification.biometric.sensorDescription'
+      );
+      await confirmBiometricEnabling(description);
       dispatch(preferencesSetIsBiometricEnabled(true));
     } catch (err) {
       if (err === 'PERMISSION_DENIED') {
@@ -52,25 +55,25 @@ const OnboardingBiometricAvailable = () => {
   const actions: IOScrollViewActions = {
     type: 'TwoButtons',
     primary: {
-      label: t('global:buttons.activate'),
-      accessibilityLabel: t('global:buttons.activate'),
+      label: t('common:buttons.activate'),
+      accessibilityLabel: t('common:buttons.activate'),
       onPress: onPressPrimary
     },
     secondary: {
-      label: t('global:buttons.notNow'),
-      accessibilityLabel: t('global:buttons.notNow'),
+      label: t('common:buttons.notNow'),
+      accessibilityLabel: t('common:buttons.notNow'),
       onPress: onPressSecondary
     }
   };
 
   return (
     <IOScrollView actions={actions}>
-      <H2>{t('onboarding:biometric.available.title')}</H2>
+      <H2>{t('global:onboarding.biometric.available.title')}</H2>
       <VSpacer size={16} />
-      <Body>{t('onboarding:biometric.available.body')}</Body>
+      <Body>{t('global:onboarding.biometric.available.body')}</Body>
       <VSpacer size={24} />
       <Banner
-        content={t('onboarding:biometric.available.settings')}
+        content={t('global:onboarding.biometric.available.settings')}
         color="neutral"
         pictogramName="activate"
       />

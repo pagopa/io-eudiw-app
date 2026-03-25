@@ -55,7 +55,7 @@
       "plugin": "@nx/jest/plugin",
       "options": {
         "targetName": "test",
-        "passWithNoTests": true 
+        "passWithNoTests": true
       }
     }
   ],

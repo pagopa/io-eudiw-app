@@ -33,7 +33,7 @@ export const OnboardingCarousel = () => {
   const carouselRef = useRef<ScrollView>(null);
   const [step, setStep] = useState(0);
   const windowDimensions = useWindowDimensions();
-  const { t } = useTranslation(['global', 'onboarding']);
+  const { t } = useTranslation(['global', 'common']);
   const blueColor = useAppBackgroundAccentColorName();
 
   const skipCarousel = useCallback(() => {
@@ -58,10 +58,10 @@ export const OnboardingCarousel = () => {
       {
         id: 0,
         pictogramName: 'smile',
-        title: t('onboarding:carousel.first.title'),
-        content: t('onboarding:carousel.first.content'),
-        accessibilityLabel: t('onboarding:carousel.first.title'),
-        accessibilityHint: t('onboarding:carousel.first.content'),
+        title: t('global:onboarding.carousel.first.title'),
+        content: t('global:onboarding.carousel.first.content'),
+        accessibilityLabel: t('global:onboarding.carousel.first.title'),
+        accessibilityHint: t('global:onboarding.carousel.first.content'),
         titleColor: TEXT_COLOR,
         contentColor: TEXT_COLOR,
         pictogramStyle: 'light-content'
@@ -69,10 +69,10 @@ export const OnboardingCarousel = () => {
       {
         id: 1,
         pictogramName: 'walletDoc',
-        title: t('onboarding:carousel.second.title'),
-        content: t('onboarding:carousel.second.content'),
-        accessibilityLabel: t('onboarding:carousel.second.title'),
-        accessibilityHint: t('onboarding:carousel.second.content'),
+        title: t('global:onboarding.carousel.second.title'),
+        content: t('global:onboarding.carousel.second.content'),
+        accessibilityLabel: t('global:onboarding.carousel.second.title'),
+        accessibilityHint: t('global:onboarding.carousel.second.content'),
         titleColor: TEXT_COLOR,
         contentColor: TEXT_COLOR,
         pictogramStyle: 'light-content'
@@ -80,10 +80,10 @@ export const OnboardingCarousel = () => {
       {
         id: 2,
         pictogramName: 'fingerprint',
-        title: t('onboarding:carousel.third.title'),
-        content: t('onboarding:carousel.third.content'),
-        accessibilityLabel: t('onboarding:carousel.third.title'),
-        accessibilityHint: t('onboarding:carousel.third.content'),
+        title: t('global:onboarding.carousel.third.title'),
+        content: t('global:onboarding.carousel.third.content'),
+        accessibilityLabel: t('global:onboarding.carousel.third.title'),
+        accessibilityHint: t('global:onboarding.carousel.third.content'),
         titleColor: TEXT_COLOR,
         contentColor: TEXT_COLOR,
         pictogramStyle: 'light-content'
@@ -108,9 +108,9 @@ export const OnboardingCarousel = () => {
           <IOButton
             variant="link"
             testID="skip-button-onboarding-wallet"
-            accessibilityLabel="features.itWallet.onboarding.skip"
+            accessibilityLabel={t('common:buttons.skip')}
             color={'contrast'}
-            label={t('global:buttons.skip')}
+            label={t('common:buttons.skip')}
             onPress={skipCarousel}
           />
         </View>
@@ -124,7 +124,7 @@ export const OnboardingCarousel = () => {
           fixed={false}
           actions={{
             primary: {
-              label: t('global:buttons.next'),
+              label: t('common:buttons.next'),
               onPress: nextStep,
               color: 'contrast'
             },

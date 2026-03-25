@@ -17,6 +17,7 @@ import { useAppSelector } from '../store';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../navigation/main/routes';
+import { useTranslation } from 'react-i18next';
 
 const LIFECYCLE_STATUS: Array<ItwJwtCredentialStatus> = [
   'jwtExpiring',
@@ -29,6 +30,7 @@ export const ItwWalletCardsContainer = () => {
   const cards = useAppSelector(selectWalletCards);
   const pidStatus = useAppSelector(itwCredentialsPidStatusSelector);
   const pidExpiration = useAppSelector(itwCredentialsPidExpirationSelector);
+  const { t } = useTranslation(['common']);
 
   useDebugInfo({
     itw: {
@@ -51,11 +53,12 @@ export const ItwWalletCardsContainer = () => {
           pidStatus={pidStatus}
           pidExpiration={pidExpiration}
           onPress={handleNavigateToItwId}
+          startButtonLabel={t('buttons.start')}
         />
         <VSpacer size={16} />
       </>
     ),
-    [pidStatus, pidExpiration, handleNavigateToItwId]
+    [pidStatus, pidExpiration, handleNavigateToItwId, t]
   );
 
   return (

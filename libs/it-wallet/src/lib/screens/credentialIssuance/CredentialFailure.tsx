@@ -17,7 +17,7 @@ import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWit
  * Currently it only shows a message and a button to go back to the main screen, along with the debug information.
  */
 const CredentialFailure = () => {
-  const { t } = useTranslation(['global', 'wallet']);
+  const { t } = useTranslation(['common', 'wallet']);
   const { navigateToWallet } = useNavigateToWalletWithReset();
   const dispatch = useAppDispatch();
   const postError = useAppSelector(selectCredentialIssuancePostAuthError);
@@ -38,8 +38,8 @@ const CredentialFailure = () => {
       title={t('wallet:credentialIssuance.failure.title')}
       subtitle={t('wallet:credentialIssuance.failure.subtitle')}
       action={{
-        accessibilityLabel: t('global:buttons.back'),
-        label: t('global:buttons.back'),
+        accessibilityLabel: t('common:buttons.close'),
+        label: t('common:buttons.close'),
         onPress
       }}
     />

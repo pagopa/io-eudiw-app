@@ -47,13 +47,13 @@ export const wellKnownCredentialNamespaces: Partial<
 export const getCredentialNameByType = (type?: string): string => {
   switch (type) {
     case wellKnownCredential.DRIVING_LICENSE:
-      return t(['wallet:credentials.names.mdl']);
+      return t(['credentials.names.mdl'], { ns: 'wallet' });
     case wellKnownCredential.PID:
-      return t(['wallet:credentials.names.pid']);
+      return t(['credentials.names.pid'], { ns: 'wallet' });
     case wellKnownCredential.DISABILITY_CARD:
-      return t(['wallet:credentials.names.disabilityCard']);
+      return t(['credentials.names.disabilityCard'], { ns: 'wallet' });
     default:
-      return t(['wallet:credentials.names.unknown']);
+      return t(['credentials.names.unknown'], { ns: 'wallet' });
   }
 };
 

@@ -1,8 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useSineWaveAnimation } from '../hooks/useSineWaveAnimation';
-import CameraMarkerCorner from '../assets/img/camera/camera-marker-corner.svg';
-import CameraMarkerLine from '../assets/img/camera/camera-marker-line.svg';
+import CameraMarkerCorner from '../../assets/img/camera/camera-marker-corner.svg';
+import CameraMarkerLine from '../../assets/img/camera/camera-marker-line.svg';
 const ANIMATION_DURATION = 1500;
 
 type Props = {

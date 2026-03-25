@@ -43,7 +43,7 @@ const CredentialTrust = () => {
   const { success: preAuthSuccess } = useAppSelector(
     selectCredentialIssuancePreAuthStatus
   );
-  const { t } = useTranslation(['global', 'wallet']);
+  const { t } = useTranslation(['common', 'wallet']);
   const { loading, error, success } = useAppSelector(
     selectCredentialIssuancePostAuthStatus
   );
@@ -72,18 +72,10 @@ const CredentialTrust = () => {
   const dismissalDialog = useItwDismissalDialog({
     handleDismiss: cancel,
     customLabels: {
-      title: t('generic.alert.title', {
-        ns: 'wallet'
-      }),
-      body: t('generic.alert.body', {
-        ns: 'wallet'
-      }),
-      confirmLabel: t('generic.alert.confirm', {
-        ns: 'wallet'
-      }),
-      cancelLabel: t('generic.alert.cancel', {
-        ns: 'wallet'
-      })
+      title: t('common:alert.title'),
+      body: t('common:alert.body'),
+      confirmLabel: t('common:alert.confirm'),
+      cancelLabel: t('common:alert.cancel')
     }
   });
 
@@ -177,12 +169,12 @@ const CredentialTrust = () => {
         actions={{
           type: 'TwoButtons',
           primary: {
-            label: t('global:buttons.continue'),
+            label: t('common:buttons.continue'),
             onPress: onContinue,
             loading
           },
           secondary: {
-            label: t('global:buttons.cancel'),
+            label: t('common:buttons.cancel'),
             onPress: () => {
               dismissalDialog.show();
             }

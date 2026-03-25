@@ -21,30 +21,24 @@ export const useItwRemoveCredentialWithConfirm = (
 
   const handleRemoveCredential = () => {
     dispatch(removeCredential(credential));
-    toast.success(
-      t('presentation.credentialDetails.toast.removed', { ns: 'wallet' })
-    );
+    toast.success(t('presentation.credentialDetails.toast.removed', { ns: 'wallet' }));
 
     navigation.pop();
   };
 
   const confirmAndRemoveCredential = () =>
     Alert.alert(
-      t('presentation.credentialDetails.dialogs.remove.title', {
-        ns: 'wallet'
-      }),
-      t('presentation.credentialDetails.dialogs.remove.content', {
-        ns: 'wallet'
-      }),
+      t('presentation.credentialDetails.dialogs.remove.title', { ns: 'wallet' }),
+      t('presentation.credentialDetails.dialogs.remove.content', { ns: 'wallet' }),
       [
         {
-          text: t('buttons.cancel', { ns: 'global' }),
+          text: t('buttons.cancel', { ns: 'common' }),
           style: 'cancel'
         },
         {
-          text: t('presentation.credentialDetails.dialogs.remove.confirm', {
-            ns: 'wallet'
-          }),
+          text: t(
+            'presentation.credentialDetails.dialogs.remove.confirm', { ns: 'wallet' }
+          ),
           style: 'destructive',
           onPress: handleRemoveCredential
         }

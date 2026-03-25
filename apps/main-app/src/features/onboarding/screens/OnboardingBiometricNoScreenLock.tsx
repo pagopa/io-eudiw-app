@@ -13,7 +13,7 @@ import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/preferences';
  */
 const OnboardingBiometricNoScreenLock = () => {
   const dispatch = useAppDispatch();
-  const { t } = useTranslation(['onboarding', 'global']);
+  const { t } = useTranslation(['global', 'common']);
 
   useHeaderSecondLevel({
     title: '',
@@ -23,13 +23,21 @@ const OnboardingBiometricNoScreenLock = () => {
   const listItems = useMemo<Array<ListItemInfo>>(
     () => [
       {
-        label: t('onboarding:biometric.noLockScreen.list.firstItem.label'),
-        value: t('onboarding:biometric.noLockScreen.list.firstItem.value'),
+        label: t(
+          'global:onboarding.biometric.noLockScreen.list.firstItem.label'
+        ),
+        value: t(
+          'global:onboarding.biometric.noLockScreen.list.firstItem.value'
+        ),
         icon: 'systemSettingsAndroid'
       },
       {
-        label: t('onboarding:biometric.noLockScreen.list.secondItem.label'),
-        value: t('onboarding:biometric.noLockScreen.list.secondItem.value'),
+        label: t(
+          'global:onboarding.biometric.noLockScreen.list.secondItem.label'
+        ),
+        value: t(
+          'global:onboarding.biometric.noLockScreen.list.secondItem.value'
+        ),
         icon: Platform.select({
           ios: 'systemPasswordiOS',
           android: 'systemPasswordAndroid'
@@ -41,8 +49,8 @@ const OnboardingBiometricNoScreenLock = () => {
 
   const actionProps = useMemo(
     () => ({
-      label: t('global:buttons.continue'),
-      accessibilityLabel: t('global:buttons.continue'),
+      label: t('common:buttons.continue'),
+      accessibilityLabel: t('common:buttons.continue'),
       onPress: () => dispatch(preferencesSetIsOnboardingDone())
     }),
     [dispatch, t]
@@ -50,9 +58,11 @@ const OnboardingBiometricNoScreenLock = () => {
 
   return (
     <IOScrollViewWithListItems
-      title={t('onboarding:biometric.noLockScreen.title')}
-      subtitle={t('onboarding:biometric.noLockScreen.subtitle')}
-      listItemHeaderLabel={t('onboarding:biometric.noLockScreen.list.header')}
+      title={t('global:onboarding.biometric.noLockScreen.title')}
+      subtitle={t('global:onboarding.biometric.noLockScreen.subtitle')}
+      listItemHeaderLabel={t(
+        'global:onboarding.biometric.noLockScreen.list.header'
+      )}
       renderItems={listItems}
       actions={{
         primary: actionProps,

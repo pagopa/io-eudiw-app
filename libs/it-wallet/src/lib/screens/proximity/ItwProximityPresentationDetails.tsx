@@ -79,7 +79,7 @@ const ItwProximityPresentationDetails = ({
   return (
     <View>
       <ListItemHeader
-        label={t('wallet:presentation.trust.requiredClaims')}
+        label={t('presentation.trust.requiredClaims', { ns: 'wallet' })}
         iconName="security"
         iconColor={theme['icon-decorative']}
       />

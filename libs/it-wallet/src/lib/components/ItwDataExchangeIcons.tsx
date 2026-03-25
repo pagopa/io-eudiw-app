@@ -23,7 +23,7 @@ export const ItwDataExchangeIcons = memo(({ requesterLogoUri }: Props) => {
       <Icon name="transactions" color={theme['icon-default']} size={24} />
       <Avatar
         size="small"
-        logoUri={require('../assets/img/brand/app-logo-inverted.png')}
+        logoUri={require('../../assets/img/brand/app-logo-inverted.png')}
       />
     </HStack>
   );

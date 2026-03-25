@@ -6,21 +6,21 @@ import {
   ToastProvider
 } from '@pagopa/io-app-design-system';
 import { registerRootComponent } from 'expo';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-get-random-values';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import initI18n from './i18n/i18n';
 import { persistor, store } from './store';
 import RootContainer from './screens/RootContainer';
-import { IdentificationModal } from '@io-eudiw-app/identification';
+import { IdentificationModalWrapper } from './components/IdentificationModalWrapper';
+import initI18n from './i18n';
 
 require('@pagopa/react-native-nodelibs/globals');
 
-export default function App(): React.JSX.Element {
+export default function App() {
   void initI18n();
 
   return (
@@ -34,7 +34,7 @@ export default function App(): React.JSX.Element {
                   <ToastProvider>
                     <BottomSheetModalProvider>
                       <RootContainer />
-                      <IdentificationModal />
+                      <IdentificationModalWrapper />
                     </BottomSheetModalProvider>
                   </ToastProvider>
                 </PersistGate>
@@ -50,6 +50,12 @@ export default function App(): React.JSX.Element {
 const styles = StyleSheet.create({
   gestureHandlerContainer: {
     flex: 1
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF'
   }
 });
 

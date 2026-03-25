@@ -143,9 +143,7 @@ export const ItwIssuanceMetadata = ({
       {authSource && releaserName && <Divider />}
       {releaserName && (
         <ItwMetadataIssuanceListItem
-          label={t(`verifiableCredentials.claims.${releasedByKey}`, {
-            ns: 'wallet'
-          })}
+          label={t(`verifiableCredentials.claims.${releasedByKey}`, { ns: 'wallet' })}
           value={releaserName}
           isPreview={isPreview}
           bottomSheet={releaserNameBottomSheet}

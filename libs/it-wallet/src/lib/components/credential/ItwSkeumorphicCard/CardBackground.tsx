@@ -35,12 +35,12 @@ type CardAssets = Record<CardSide, ImageSourcePropType>;
  */
 const assetsMap: Record<string, CardAssets> = {
   [wellKnownCredential.DRIVING_LICENSE]: {
-    front: require('../../../assets/img/credential/mdl_front.png'),
-    back: require('../../../assets/img/credential/mdl_back.png')
+    front: require('../../../../assets/img/credential/mdl_front.png'),
+    back: require('../../../../assets/img/credential/mdl_back.png')
   },
   [wellKnownCredential.DISABILITY_CARD]: {
-    front: require('../../../assets/img/credential/dc_front.png'),
-    back: require('../../../assets/img/credential/dc_back.png')
+    front: require('../../../../assets/img/credential/dc_front.png'),
+    back: require('../../../../assets/img/credential/dc_back.png')
   }
 };
 

@@ -26,7 +26,7 @@ const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
  * It is used to navigate between the main screens of the application which are currently the home, scan qr and show qr screens.
  */
 export const TabNavigator = () => {
-  const { t } = useTranslation('global');
+  const { t } = useTranslation(['common', 'wallet']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
@@ -63,7 +63,7 @@ export const TabNavigator = () => {
         name={TAB_ROUTES.WALLET}
         component={WalletHome}
         options={{
-          title: t('tabNavigator.wallet'),
+          title: t('wallet:tabNavigator.wallet'),
           tabBarIcon: ({ color, focused }) => (
             <TabIconComponent
               iconName={'navWallet'}
@@ -84,7 +84,7 @@ export const TabNavigator = () => {
           }
         }}
         options={{
-          title: t('tabNavigator.scanQr'),
+          title: t('wallet:tabNavigator.scanQr'),
           tabBarIcon: ({ color, focused }) => (
             <TabIconComponent
               iconName={'navScan'}
@@ -106,7 +106,7 @@ export const TabNavigator = () => {
           }
         }}
         options={{
-          title: t('tabNavigator.showQr'),
+          title: t('wallet:tabNavigator.showQr'),
           tabBarIcon: ({ color, focused }) => (
             <TabIconComponent
               iconName={'navQrWallet'}

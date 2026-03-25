@@ -298,7 +298,7 @@
       "content": "Chiudi e riapri l'app per riprovare.",
       "primaryAction": "Ho capito"
     },
-    "authSource" : "PagoPa S.p.A."
+    "authSource": "PagoPa S.p.A."
   },
   "proximity": {
     "showQr": {
@@ -306,7 +306,7 @@
       "body": "Display the QR code to verify the validity of the documents in your Wallet."
     },
     "trust": {
-     "subtitle": "Saranno mostrati a **{{relyingParty}}** per completare la verifica dei documenti richiesti."
+      "subtitle": "Saranno mostrati a **{{relyingParty}}** per completare la verifica dei documenti richiesti."
     },
     "connected": {
       "body": "Verification in progress. Please wait a few seconds..."
@@ -452,19 +452,78 @@
       "secondaryAction": "Non ora"
     }
   },
-  "generic": {
-    "alert": {
-      "title": "Vuoi interrompere l'operazione?",
-      "body": "Dovrai ripetere di nuovo tutti i passaggi",
-      "confirm": "Sì, interrompi",
-      "cancel": "No, riprendi"
+  "settings": {
+    "title": "Settings",
+    "debug": "Enable debug mode",
+    "reset": {
+      "title": "Reset App",
+      "walletReset": "Reset wallet",
+      "onboardingReset": "Reset onboarding"
     },
-    "featureUnavailable": {
-      "title": "In arrivo: questa funzione sarà disponibile a breve"
+    "appearance": {
+      "typefaceStyle": {
+        "title": "Stile carattere",
+        "comfortable": {
+          "title": "Confortevole",
+          "description": "Progettato per una migliore leggibilità dei testi"
+        },
+        "standard": {
+          "title": "Standard",
+          "description": "Lo stile di sempre, con forme strette e geometriche"
+        }
+      }
+    }
+  },
+  "tabNavigator": {
+    "wallet": "Portafoglio",
+    "scanQr": "Inquadra",
+    "showQr": "Mostra QR"
+  },
+  "qr": {
+    "error": "Unrecognized QR code",
+    "flash": "Flash",
+    "tabs": {
+      "scan": "Scan",
+      "upload": "Upload"
     },
-    "error": {
-      "title": "C'è un problema sui nostri sistemi",
-      "body": "Riprova tra qualche minuto. Se si ripete, contatta l'assistenza."
+    "upload": {
+      "image": "Upload an image",
+      "file": "Upload a file"
+    },
+    "permissions": {
+      "undefined": {
+        "title": "We need your permission to access the camera",
+        "label": "Allow access to the camera to scan QR codes",
+        "action": "Allow access"
+      },
+      "denied": {
+        "title": "You denied access to the camera",
+        "label": "To allow access to the camera, go to the settings of your device",
+        "action": "Open settings"
+      }
+    },
+    "imagePicker": {
+      "settingsAlert": {
+        "title": "It seems access to Photos has been denied",
+        "message": "We need access to your gallery in addition to upload QR codes",
+        "buttonText": {
+          "enable": "Enable permissions"
+        }
+      }
+    },
+    "multipleResultsAlert": {
+      "title": "Hai inquadrato più codici",
+      "body": "Inquadra un solo codice alla volta",
+      "action": "Riprova"
+    }
+  },
+  "imagePicker": {
+    "settingsAlert": {
+      "title": "It seems access to Photos has been denied",
+      "message": "We need access to your gallery in addition to upload QR codes",
+      "buttonText": {
+        "enable": "Enable permissions"
+      }
     }
   }
 }

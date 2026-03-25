@@ -17,7 +17,7 @@ import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWit
  * Currently it only shows a message and a button to go back to the main screen.
  */
 const PidIssuanceFailure = () => {
-  const { t } = useTranslation(['global', 'wallet']);
+  const { t } = useTranslation(['common', 'wallet']);
   const dispatch = useAppDispatch();
   const error = useAppSelector(selectPidIssuanceError);
   const { navigateToWallet } = useNavigateToWalletWithReset();
@@ -38,8 +38,8 @@ const PidIssuanceFailure = () => {
       title={t('wallet:pidIssuance.failure.title')}
       subtitle={t('wallet:pidIssuance.failure.subtitle')}
       action={{
-        accessibilityLabel: t('global:buttons.back'),
-        label: t('global:buttons.back'),
+        accessibilityLabel: t('common:buttons.close'),
+        label: t('common:buttons.close'),
         onPress
       }}
     />

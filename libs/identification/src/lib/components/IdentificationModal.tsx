@@ -7,7 +7,6 @@ import {
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import { t } from 'i18next';
 import { memo, useCallback, useMemo, useRef, useState } from 'react';
 import {
   Alert,
@@ -29,7 +28,7 @@ import {
 import {
   biometricAuthenticationRequest,
   getBiometricDesignSystemType,
-  getBiometryDesignSystemIconName,
+  getBiometryAccessibilityLabel,
   IdentificationInstructionsComponent
 } from '../utils/biometric';
 import {
@@ -46,13 +45,51 @@ import { selectPin } from '../reducer/pin';
 
 const onRequestCloseHandler = () => undefined;
 
+type IdentificationModalProps = {
+  titleLabels: {
+    validation: string;
+    access: string;
+  };
+  biometricLabels: {
+    promptMessage: string;
+    promptDescription: string;
+    cancelLabel: string;
+  };
+  instructionsLabels: {
+    unlockCode: string;
+    fingerprint: string;
+    faceId: string;
+  };
+  resetLabels: {
+    forgotButton: string;
+    title: string;
+    confirmMsg: string;
+    confirmMsgWithTask: string;
+    confirmButton: string;
+    cancelButton: string;
+  };
+  closeAccessibilityLabel: string;
+  deleteAccessibilityLabel: string;
+  fingerprintAccessibilityLabel: string;
+  faceAccessibilityLabel: string;
+};
+
 /**
  * Identification modal screen which asks for the pin code or biometric authentication.
  * It depends on the status of the identification redux state {@link ts/store/reducers/identification.ts} and can be started by dispatching the setIdentificationStarted action.
  * If the identification is successful, the setIdentificationIdentified action is dispatched, otherwise the setIdentificationUnidentified action is dispatched.
  * The middleware can listen for these actions to perform additional tasks.
  */
-export const IdentificationModal = () => {
+export const IdentificationModal = ({
+  titleLabels,
+  biometricLabels,
+  instructionsLabels,
+  resetLabels,
+  deleteAccessibilityLabel,
+  fingerprintAccessibilityLabel,
+  faceAccessibilityLabel,
+  closeAccessibilityLabel
+}: IdentificationModalProps) => {
   const showRetryText = useRef(false);
   const headerRef = useRef<View>(null);
   const colorScheme: ColorSchemeName = 'light';
@@ -72,8 +109,8 @@ export const IdentificationModal = () => {
   const pictogramKey: IOPictograms = isValidatingTask ? 'passcode' : 'key';
 
   const titleLabel = isValidatingTask
-    ? t('identification.title.validation')
-    : t('identification.title.access');
+    ? titleLabels.validation
+    : titleLabels.access;
 
   const onIdentificationCanceled = useCallback(() => {
     dispatch(setIdentificationUnidentified());
@@ -90,6 +127,11 @@ export const IdentificationModal = () => {
   const onFingerprintRequest = useCallback(
     () =>
       biometricAuthenticationRequest(
+        {
+          promptMessage: biometricLabels.promptMessage,
+          promptDescription: biometricLabels.promptDescription,
+          cancelLabel: biometricLabels.cancelLabel
+        },
         () => {
           onIdentificationSuccess();
         },
@@ -102,7 +144,12 @@ export const IdentificationModal = () => {
           }
         }
       ),
-    [onIdentificationSuccess]
+    [
+      biometricLabels.cancelLabel,
+      biometricLabels.promptDescription,
+      biometricLabels.promptMessage,
+      onIdentificationSuccess
+    ]
   );
 
   const biometricsConfig = useMemo(
@@ -110,12 +157,20 @@ export const IdentificationModal = () => {
       biometricType
         ? {
             biometricType: getBiometricDesignSystemType(biometricType),
-            biometricAccessibilityLabel:
-              getBiometryDesignSystemIconName(biometricType),
+            biometricAccessibilityLabel: getBiometryAccessibilityLabel(
+              biometricType,
+              fingerprintAccessibilityLabel,
+              faceAccessibilityLabel
+            ),
             onBiometricPress: () => onFingerprintRequest()
           }
         : {},
-    [biometricType, onFingerprintRequest]
+    [
+      biometricType,
+      onFingerprintRequest,
+      fingerprintAccessibilityLabel,
+      faceAccessibilityLabel
+    ]
   );
 
   const onPinValidated = useCallback(
@@ -133,26 +188,32 @@ export const IdentificationModal = () => {
   const confirmResetAlert = useCallback(
     () =>
       Alert.alert(
-        t('identification.forgot.title'),
-        t(
-          isValidatingTask
-            ? 'identification.forgot.confirmMsgWithTask'
-            : 'identification.forgot.confirmMsg'
-        ),
+        resetLabels.title,
+        isValidatingTask
+          ? resetLabels.confirmMsgWithTask
+          : resetLabels.confirmMsg,
         [
           {
-            text: t('buttons.confirm'),
+            text: resetLabels.confirmButton,
             style: 'default',
             onPress: onPinResetHandler
           },
           {
-            text: t('buttons.cancel'),
+            text: resetLabels.cancelButton,
             style: 'cancel'
           }
         ],
         { cancelable: false }
       ),
-    [isValidatingTask, onPinResetHandler]
+    [
+      isValidatingTask,
+      onPinResetHandler,
+      resetLabels.cancelButton,
+      resetLabels.confirmButton,
+      resetLabels.confirmMsg,
+      resetLabels.confirmMsgWithTask,
+      resetLabels.title
+    ]
   );
 
   const NumberPad = memo(() =>
@@ -162,6 +223,7 @@ export const IdentificationModal = () => {
         pinValidation={onPinValidated}
         numberPadVariant={numberPadVariant}
         biometricsConfig={biometricsConfig}
+        deleteAccessibilityLabel={deleteAccessibilityLabel}
       />
     ) : null
   );
@@ -198,7 +260,7 @@ export const IdentificationModal = () => {
                 icon={'closeLarge'}
                 color="contrast"
                 onPress={onIdentificationCanceled}
-                accessibilityLabel={t('buttons.close')}
+                accessibilityLabel={closeAccessibilityLabel}
               />
             </ContentWrapper>
           </View>
@@ -232,6 +294,9 @@ export const IdentificationModal = () => {
                 <IdentificationInstructionsComponent
                   biometricType={biometricType}
                   isBiometricIdentificationFailed={isBiometricLocked}
+                  instructionsUnlockCode={instructionsLabels.unlockCode}
+                  instructionsFingerprint={instructionsLabels.fingerprint}
+                  instructionsFaceId={instructionsLabels.faceId}
                 />
               </View>
             </View>
@@ -242,9 +307,9 @@ export const IdentificationModal = () => {
               <View style={{ alignSelf: 'center' }}>
                 <IOButton
                   variant="link"
-                  accessibilityLabel={t('identification.forgot.title')}
+                  accessibilityLabel={resetLabels.forgotButton}
                   color="contrast"
-                  label={t('identification.forgot.title')}
+                  label={resetLabels.forgotButton}
                   onPress={() => confirmResetAlert()}
                 />
                 <VSpacer size={16} />

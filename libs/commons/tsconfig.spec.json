@@ -20,5 +20,8 @@
     "src/**/*.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
+    "src/**/*.json",
+    "../it-wallet/src/lib/locales/i18next.d.ts",
+    "../it-wallet/src/lib/locales/resources.ts"
   ]
 }

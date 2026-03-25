@@ -18,7 +18,7 @@ export type PresentationProximityFailureProps = {
 
 type Props = StackScreenProps<WalletNavigatorParamsList, 'PROXIMITY_FAILURE'>;
 const PresentationProximityFailure = ({ route }: Props) => {
-  const { t } = useTranslation('wallet');
+  const { t } = useTranslation();
   const { navigateToWallet } = useNavigateToWalletWithReset();
   const dispatch = useAppDispatch();
 
@@ -36,15 +36,15 @@ const PresentationProximityFailure = ({ route }: Props) => {
   return (
     <OperationResultScreenContent
       pictogram="umbrella"
-      title={t('proximity.failure.title')}
+      title={t('proximity.failure.title', { ns: 'wallet' })}
       subtitle={
         route.params.fatal
-          ? t('proximity.failure.subtitleFatal')
-          : t('proximity.failure.subtitle')
+          ? t('proximity.failure.subtitleFatal', { ns: 'wallet' })
+          : t('proximity.failure.subtitle', { ns: 'wallet' })
       }
       action={{
-        accessibilityLabel: t('proximity.failure.understand'),
-        label: t('proximity.failure.understand'),
+        accessibilityLabel: t('proximity.failure.understand', { ns: 'wallet' }),
+        label: t('proximity.failure.understand', { ns: 'wallet' }),
         onPress: () => {
           navigateToWallet();
           dispatch(resetProximity());

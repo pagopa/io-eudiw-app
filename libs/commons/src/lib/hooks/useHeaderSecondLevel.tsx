@@ -4,7 +4,6 @@ import {
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { ComponentProps, useLayoutEffect, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 
 type SpecificHookProps = {
   canGoBack?: boolean;
@@ -89,7 +88,6 @@ export const useHeaderSecondLevel = ({
   animatedRef
 }: HeaderSecondLevelHookProps) => {
   const navigation = useNavigation();
-  const { t } = useTranslation('global');
 
   const backProps = useMemo(
     () =>
@@ -136,7 +134,7 @@ export const useHeaderSecondLevel = ({
     const helpAction: HeaderActionProps = {
       icon: 'help',
       onPress: () => void 0,
-      accessibilityLabel: t('buttons.help')
+      accessibilityLabel: ''
     };
 
     // Three actions
@@ -163,7 +161,7 @@ export const useHeaderSecondLevel = ({
       type: 'singleAction',
       firstAction: helpAction
     };
-  }, [supportRequest, t, secondAction, thirdAction]);
+  }, [supportRequest, secondAction, thirdAction]);
 
   const headerComponentProps = useMemo(
     () => ({

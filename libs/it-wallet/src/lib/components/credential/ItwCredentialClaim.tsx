@@ -107,13 +107,15 @@ const PlainTextClaimItem = ({
   claim,
   isCopyable,
   hidden,
-  reversed
+  reversed,
+  clipboardSuccessMessage
 }: {
   label: string;
   claim: string;
   isCopyable?: boolean;
   hidden?: boolean;
   reversed: boolean;
+  clipboardSuccessMessage: string;
 }) => {
   const safeValue = getSafeText(claim);
   const displayValue = hidden ? HIDDEN_CLAIM_TEXT : safeValue;
@@ -122,7 +124,7 @@ const PlainTextClaimItem = ({
     : safeValue;
 
   const handleLongPress = async () => {
-    await clipboardSetStringWithFeedback(safeValue);
+    await clipboardSetStringWithFeedback(safeValue, clipboardSuccessMessage);
   };
 
   return (
@@ -220,11 +222,13 @@ const DateClaimItem = ({
  */
 const UnknownClaimItem = ({
   label,
-  reversed
+  reversed,
+  clipboardSuccessMessage
 }: {
   label: string;
   _claim?: unknown;
   reversed: boolean;
+  clipboardSuccessMessage: string;
 }) => (
   <PlainTextClaimItem
     label={label}
@@ -232,6 +236,7 @@ const UnknownClaimItem = ({
       ns: 'wallet'
     })}
     reversed={reversed}
+    clipboardSuccessMessage={clipboardSuccessMessage}
   />
 );
 
@@ -247,7 +252,8 @@ const ImageClaimItem = ({
   height,
   width,
   hidden,
-  reversed
+  reversed,
+  clipboardSuccessMessage
 }: {
   label: string;
   claim: string;
@@ -255,9 +261,16 @@ const ImageClaimItem = ({
   height: number;
   hidden?: boolean;
   reversed: boolean;
+  clipboardSuccessMessage: string;
 }) =>
   hidden ? (
-    <PlainTextClaimItem label={label} claim="" hidden reversed={reversed} />
+    <PlainTextClaimItem
+      label={label}
+      claim=""
+      hidden
+      reversed={reversed}
+      clipboardSuccessMessage={clipboardSuccessMessage}
+    />
   ) : (
     <ListItemInfo
       label={label}
@@ -291,11 +304,13 @@ const DrivingPrivilegesClaimItem = ({
   label,
   claim,
   detailsButtonVisible,
+  showLabel,
   hidden,
   reversed
 }: {
   label: string;
   claim: DrivingPrivilegesClaimType['value'][0];
+  showLabel: string;
   detailsButtonVisible?: boolean;
   hidden?: boolean;
   reversed: boolean;
@@ -305,6 +320,7 @@ const DrivingPrivilegesClaimItem = ({
       ns: 'wallet',
       category: claim.vehicle_category_code
     }),
+    closeAccessibilityLabel: t('buttons.close', { ns: 'common' }),
     component: (
       <>
         <ListItemInfo
@@ -349,9 +365,9 @@ const DrivingPrivilegesClaimItem = ({
       ? {
           type: 'buttonLink',
           componentProps: {
-            label: t('buttons.show', { ns: 'global' }),
+            label: showLabel,
             onPress: () => privilegeBottomSheet.present(),
-            accessibilityLabel: t('buttons.show', { ns: 'global' })
+            accessibilityLabel: showLabel
           }
         }
       : undefined;
@@ -388,32 +404,29 @@ const VerificationEvidenceClaimItem = ({
   reversed: boolean;
 }) => {
   const { organization_id, organization_name, country_code } = claim;
-  const { t } = useTranslation(['wallet', 'global']);
+  const { t } = useTranslation(['wallet', 'common']);
   const verificationBottomSheet = useIOBottomSheetModal({
     title: organization_name,
+    closeAccessibilityLabel: t('buttons.close', { ns: 'common' }),
     component: (
       <>
         <ListItemInfo
           label={t(
-            'verifiableCredentials.claims.mdl.verificationEvidence.organizationId',
-            { ns: 'wallet' }
+            'verifiableCredentials.claims.mdl.verificationEvidence.organizationId'
           )}
           value={organization_id}
           accessibilityLabel={`${t(
-            'verifiableCredentials.claims.mdl.verificationEvidence.organizationId',
-            { ns: 'wallet' }
+            'verifiableCredentials.claims.mdl.verificationEvidence.organizationId'
           )} ${organization_id}`}
         />
         <Divider />
         <ListItemInfo
           label={t(
-            'verifiableCredentials.claims.mdl.verificationEvidence.countryCode',
-            { ns: 'wallet' }
+            'verifiableCredentials.claims.mdl.verificationEvidence.countryCode'
           )}
           value={country_code}
           accessibilityLabel={`${t(
-            'verifiableCredentials.claims.mdl.verificationEvidence.countryCode',
-            { ns: 'wallet' }
+            'verifiableCredentials.claims.mdl.verificationEvidence.countryCode'
           )} ${country_code}`}
         />
       </>
@@ -424,9 +437,9 @@ const VerificationEvidenceClaimItem = ({
     ? {
         type: 'buttonLink',
         componentProps: {
-          label: t('global:buttons.show'),
+          label: t('common:buttons.show'),
           onPress: () => verificationBottomSheet.present(),
-          accessibilityLabel: t('global:buttons.show')
+          accessibilityLabel: t('common:buttons.show')
         }
       }
     : undefined;
@@ -449,6 +462,8 @@ const VerificationEvidenceClaimItem = ({
  * Component which renders a claim.
  * It renders a different component based on the type of the claim.
  * @param claim - the claim to render
+ * @param clipboardSuccessMessage - the message to show when the claim value is copied to the clipboard
+ * @param showLabel - the label to show for the details button of some claim types
  * @param hidden - a flag to hide the claim value
  * @param isPreview - a flag to indicate if the claim is being rendered in preview mode
  * @param credentialStatus - the status of the credential, used for expiration date claims
@@ -456,12 +471,16 @@ const VerificationEvidenceClaimItem = ({
  */
 export const ItwCredentialClaim = ({
   claim,
+  clipboardSuccessMessage,
+  showLabel,
   hidden,
   isPreview,
   credentialStatus,
   reversed = false
 }: {
   claim: ParsedClaimsRecord[string];
+  clipboardSuccessMessage: string;
+  showLabel: string;
   hidden?: boolean;
   isPreview?: boolean;
   credentialStatus?: ItwCredentialStatus;
@@ -506,6 +525,7 @@ export const ItwCredentialClaim = ({
             reversed={reversed}
             width={claim.parsed.width}
             height={claim.parsed.height}
+            clipboardSuccessMessage={clipboardSuccessMessage}
           />
         );
       case 'drivingPrivileges':
@@ -520,6 +540,7 @@ export const ItwCredentialClaim = ({
               detailsButtonVisible={!isPreview}
               hidden={hidden}
               reversed={reversed}
+              showLabel={showLabel}
             />
           </Fragment>
         ));
@@ -539,6 +560,7 @@ export const ItwCredentialClaim = ({
             claim={claim.parsed.value.join(', ')}
             hidden={hidden}
             reversed={reversed}
+            clipboardSuccessMessage={clipboardSuccessMessage}
           />
         );
       case 'emptyString':
@@ -551,6 +573,7 @@ export const ItwCredentialClaim = ({
             isCopyable={!isPreview}
             hidden={hidden}
             reversed={reversed}
+            clipboardSuccessMessage={clipboardSuccessMessage}
           />
         ); // must be the last one to be checked due to overlap with IPatternStringTag
       case 'verificationEvidence':
@@ -565,6 +588,11 @@ export const ItwCredentialClaim = ({
     }
   }
   return (
-    <UnknownClaimItem label={claim.label} _claim={claim} reversed={reversed} />
+    <UnknownClaimItem
+      label={claim.label}
+      _claim={claim}
+      reversed={reversed}
+      clipboardSuccessMessage={clipboardSuccessMessage}
+    />
   );
 };

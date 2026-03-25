@@ -54,7 +54,7 @@ const PresentationProximityPreview = ({ route }: Props) => {
   const navigation = useNavigation();
   const { navigateToWallet } = useNavigateToWalletWithReset();
   const proximityStatus = useAppSelector(selectProximityStatus);
-  const { t } = useTranslation(['global', 'wallet']);
+  const { t } = useTranslation(['common', 'wallet']);
   const isDebug = useAppSelector(selectIsDebugModeEnabled);
   const isAuthenticated = route.params.isAuthenticated;
 
@@ -107,14 +107,14 @@ const PresentationProximityPreview = ({ route }: Props) => {
   };
 
   const cancelAlert = () => {
-    Alert.alert(t('global:cancelOperation.title'), '', [
+    Alert.alert(t('common:cancelOperation.title'), '', [
       {
-        text: t('global:cancelOperation.confirm'),
+        text: t('common:cancelOperation.cancel'),
         onPress: cancel,
         style: 'destructive'
       },
       {
-        text: t('global:cancelOperation.cancel'),
+        text: t('common:cancelOperation.cancel'),
         style: 'cancel'
       }
     ]);
@@ -174,7 +174,7 @@ const PresentationProximityPreview = ({ route }: Props) => {
         actions={{
           type: 'TwoButtons',
           primary: {
-            label: t('global:buttons.confirm'),
+            label: t('buttons.confirm'),
             onPress: () => {
               dispatch(setProximityStatusAuthorizationSend());
             },
@@ -185,7 +185,7 @@ const PresentationProximityPreview = ({ route }: Props) => {
                 ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE
           },
           secondary: {
-            label: t('global:buttons.cancel'),
+            label: t('buttons.cancel'),
             onPress: cancelAlert
           }
         }}
