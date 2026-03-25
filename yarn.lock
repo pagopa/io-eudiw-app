@@ -1178,7 +1178,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@craftzdog/react-native-buffer@npm:^6.0.5, @craftzdog/react-native-buffer@npm:^6.1.1":
+"@craftzdog/react-native-buffer@npm:^6.0.5":
   version: 6.1.1
   resolution: "@craftzdog/react-native-buffer@npm:6.1.1"
   dependencies:
@@ -7652,8 +7652,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "io-eudiw-app@workspace:."
   dependencies:
-    "@craftzdog/react-native-buffer": "npm:^6.1.1"
-    "@expo/vector-icons": "npm:^15.0.3"
     "@gorhom/bottom-sheet": "npm:^5.2.8"
     "@pagopa/io-app-design-system": "npm:5.12.1"
     "@pagopa/io-react-native-crypto": "npm:^1.2.3"
