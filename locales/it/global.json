@@ -42,8 +42,8 @@
     }
   },
   "buttons": {
-    "next": "Next",
-    "skip": "Skip",
+    "next": "Avanti",
+    "skip": "Salta",
     "start": "Inizia",
     "close": "Chiudi",
     "delete": "Delete",
