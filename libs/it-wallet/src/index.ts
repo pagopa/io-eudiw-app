@@ -1,5 +1,5 @@
 import { walletRootReducer } from './lib/store';
-export { rawResources, resources } from './lib/i18n';
+export { type DefaultResource, resource } from './lib/i18n';
 export * from './lib/navigation/main/MainStackNavigator';
 export { addWalletListeners } from './lib/middleware/index';
 

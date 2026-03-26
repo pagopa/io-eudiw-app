@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "@io-eudiw-app/preferences": "workspace:*",
-    "@io-eudiw-app/commons": "workspace:*"
+    "@io-eudiw-app/commons": "workspace:*",
+    "react-redux": "catalog:"
   },
   "peerDependencies": {
     "react": "^19.1.0",

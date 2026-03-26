@@ -1,8 +1,8 @@
 import i18n from 'i18next'; // Change this from * as i18n
 import { initReactI18next } from 'react-i18next';
 import global from '../../locales/it/global.json';
-import { resources as commonResources } from '@io-eudiw-app/commons';
-import { resources as itWalletResources } from '@io-eudiw-app/it-wallet';
+import { resource as commonResource } from '@io-eudiw-app/commons';
+import { resource as itWalletResource } from '@io-eudiw-app/it-wallet';
 
 const addResources = (resourceMap: Record<string, unknown>) => {
   Object.entries(resourceMap).forEach(([lang, namespaces]) => {
@@ -27,8 +27,8 @@ const initI18n = async () => {
     }
   });
 
-  addResources(commonResources);
-  addResources(itWalletResources);
+  addResources(commonResource);
+  addResources(itWalletResource);
 
   return i18n;
 };

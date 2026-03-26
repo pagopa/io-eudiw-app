@@ -18,6 +18,9 @@
     "@io-eudiw-app/env": "workspace:*",
     "@io-eudiw-app/identification": "workspace:*",
     "@io-eudiw-app/navigation": "workspace:*",
+    "@react-navigation/stack": "catalog:",
+    "@react-navigation/bottom-tabs": "catalog:",
+    "serialize-error": "catalog:",
     "@types/color": "^4.2.0"
   },
   "peerDependencies": {

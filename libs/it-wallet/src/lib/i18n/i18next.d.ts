@@ -1,8 +1,8 @@
-import rawResources from './resources';
+import { DefaultResource } from '.';
 
 declare module 'i18next' {
   interface CustomTypeOptions {
-    resources: typeof rawResources;
+    resources: DefaultResource;
     defaultNS: never;
   }
 }

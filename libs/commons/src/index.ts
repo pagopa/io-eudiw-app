@@ -1,4 +1,4 @@
-import { default as commonRawResources } from './lib/locales/it/common.json';
+import { default as jsonLocale } from './lib/locales/it/common.json';
 import { Resource } from 'i18next';
 export * from './lib/hooks/useHeaderSecondLevel';
 export * from './lib/hooks/useDisableGestureNavigation';
@@ -35,10 +35,12 @@ export * from './lib/types/pin';
 export * from './lib/utils/pin';
 export * from './lib/hooks/usePreventScreenCapture';
 
-export const resources: Resource = {
+export const resource: Resource = {
   it: {
-    common: commonRawResources
+    common: jsonLocale
   }
 };
 
-export { commonRawResources };
+export type DefaultResource = {
+  common: typeof jsonLocale;
+};
