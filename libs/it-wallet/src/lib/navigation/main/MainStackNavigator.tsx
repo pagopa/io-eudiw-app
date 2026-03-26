@@ -1,4 +1,4 @@
-import { NavigatorScreenParams } from '@react-navigation/native';
+import { NavigatorScreenParams, PathConfigMap } from '@react-navigation/native';
 import {
   createStackNavigator,
   TransitionPresets
@@ -23,6 +23,24 @@ export type MainNavigatorParamsList = {
   [MAIN_ROUTES.SETTINGS]: undefined;
   [MAIN_ROUTES.SCAN_QR]: undefined;
   [MAIN_ROUTES.SHOW_QR]: undefined;
+};
+
+export const LINKING_SCHEMES = [
+  'haip://',
+  'openid4vp://',
+  'eudi-openid4vp://',
+  'mdoc-openid4vp://'
+];
+
+export const walletLinkingConfig: PathConfigMap<WalletNavigatorParamsList> = {
+  PRESENTATION_PRE_DEFINITION: {
+    path: '',
+    parse: {
+      client_id: (value: string) => decodeURIComponent(value),
+      request_uri: (value: string) => decodeURIComponent(value),
+      state: (value: string) => value
+    }
+  }
 };
 
 const Stack = createStackNavigator<MainNavigatorParamsList>();

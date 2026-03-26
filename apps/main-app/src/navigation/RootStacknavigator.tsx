@@ -1,5 +1,6 @@
 import { useIOThemeContext } from '@pagopa/io-app-design-system';
 import {
+  LinkingOptions,
   NavigationContainer,
   NavigatorScreenParams
 } from '@react-navigation/native';
@@ -13,7 +14,11 @@ import OnboardingNavigator, {
 import { useAppDispatch, useAppSelector } from '../store';
 import ROOT_ROUTES from './routes';
 import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
-import { MainStackNavigator } from '@io-eudiw-app/it-wallet';
+import {
+  LINKING_SCHEMES,
+  MainStackNavigator,
+  walletLinkingConfig
+} from '@io-eudiw-app/it-wallet';
 import { navigationRef } from '@io-eudiw-app/navigation';
 import {
   selectStartupStatus,
@@ -23,6 +28,9 @@ import {
   LoadingScreenContent,
   OperationResultScreenContent
 } from '@io-eudiw-app/commons';
+import { Linking } from 'react-native';
+import { setUrl } from '../store/reducers/deeplinking';
+import { t } from 'i18next';
 
 export type RootStackParamList = {
   // Main
@@ -47,21 +55,23 @@ type Screens = {
   component: React.ComponentType<unknown>;
 };
 
+const Loading = ({ title }: { title: string }) => (
+  <LoadingScreenContent contentTitle={title} />
+);
+
+const LoadingScreen = () => (
+  <Loading title={t('generics.waiting', { ns: 'common' })} />
+);
+
 /**
  * Entry point stack navigator for the application. This is the main navigation which orchestrates the whole app navigation.
  * It's based on the startup state and the onboarding completion state and renders the appropriate screen based on these states.
  */
 export const RootStackNavigator = () => {
   useStoredFontPreference();
-
-  const { t } = useTranslation(['common']);
   const startupStatus = useAppSelector(selectStartupStatus);
   const { themeType } = useIOThemeContext();
   const dispatch = useAppDispatch();
-
-  const Loading = () => (
-    <LoadingScreenContent contentTitle={t('generics.waiting')} />
-  );
 
   const GenericError = () => {
     // Title and body are hardcoded to minimize the risk of errors while displaying the error screen
@@ -102,72 +112,49 @@ export const RootStackNavigator = () => {
       case 'NOT_STARTED':
       case 'WAIT_IDENTIFICATION':
       default:
-        return { name: ROOT_ROUTES.LOADING, component: Loading };
+        return { name: ROOT_ROUTES.LOADING, component: LoadingScreen };
     }
-  }, [Loading, startupStatus]);
+  }, [startupStatus]);
 
-  // const linking: LinkingOptions<RootStackParamList> = {
-  //   prefixes: PRESENTATION_INTERNAL_LINKS,
-  //   config: {
-  //     screens: {
-  //       ROOT_MAIN_NAV: {
-  //         screens: {
-  //           MAIN_WALLET_NAV: {
-  //             screens: {
-  //               PRESENTATION_PRE_DEFINITION: {
-  //                 // why can't typescript infer the type of deeply nested navigators?
-  //                 path: '', // match any path after PRESENTATION_PRE_DEFINITION
-  //                 parse: {
-  //                   // This is needed because otherwise the URL encoded parameters are not properly decoded
-  //                   client_id: (value: string) => decodeURIComponent(value),
-  //                   request_uri: (value: string) => decodeURIComponent(value),
-  //                   state: (value: string) => value,
-  //                 },
-  //               },
-  //             },
-  //           },
-  //         },
-  //       },
-  //     },
-  //   },
-  //   async getInitialURL() {
-  //     /**
-  //      * If the app was opened by a deep link, get the initial URL and set it in the store.
-  //      * We know for sure that this can't be handled because the navigation which can handle it isn't mounted yet.
-  //      */
-  //     const url = await Linking.getInitialURL();
-  //     if (url) {
-  //       dispatch(setUrl({ url }));
-  //     }
-  //     return url;
-  //   },
-  //   subscribe(listener) {
-  //     /**
-  //      * If the appr receives a deep link while it's running and the main navigation is not ready yet, set the URL in the store.
-  //      * We know for sure that this can't be handled because the main navigation which can handle it isn't mounted yet if the startup is one of the following:
-  //      * - WAIT_IDENTIFICATION as the user must identify before the main navigation is mounted
-  //      * - LOADING as the main navigation is not mounted yet
-  //      * - NOT_STARTED as the main navigation is not mounted yet
-  //      * A listener will take care of handling this deep link later.
-  //      */
-  //     const onReceiveURL = ({ url }: { url: string }) => {
-  //       listener(url);
-  //       if (
-  //         isStartupDone === 'WAIT_IDENTIFICATION' ||
-  //         isStartupDone === 'LOADING' ||
-  //         isStartupDone === 'NOT_STARTED'
-  //       ) {
-  //         dispatch(setUrl({ url }));
-  //       }
-  //     };
+  const linking: LinkingOptions<RootStackParamList> = {
+    prefixes: [...LINKING_SCHEMES],
+    config: {
+      screens: {
+        ROOT_IT_WALLET_NAV: {
+          screens: {
+            // Mount the library config here
+            MAIN_WALLET_NAV: {
+              screens: walletLinkingConfig
+            }
+            // You can do the same for other mini-apps
+            // MAIN_PROFILE_NAV: profileLinkingConfig,
+          }
+        }
+      }
+    },
+    async getInitialURL() {
+      const url = await Linking.getInitialURL();
+      if (url) {
+        dispatch(setUrl({ url }));
+      }
+      return url;
+    },
+    subscribe(listener) {
+      const onReceiveURL = ({ url }: { url: string }) => {
+        listener(url);
+        if (
+          ['WAIT_IDENTIFICATION', 'LOADING', 'NOT_STARTED'].includes(
+            startupStatus
+          )
+        ) {
+          dispatch(setUrl({ url }));
+        }
+      };
 
-  //     Linking.addEventListener('url', onReceiveURL);
-
-  //     return () => {
-  //       Linking.removeAllListeners('url');
-  //     };
-  //   },
-  // };
+      const subscription = Linking.addEventListener('url', onReceiveURL);
+      return () => subscription.remove();
+    }
+  };
 
   const initialScreen = getInitialScreen();
 
@@ -176,7 +163,7 @@ export const RootStackNavigator = () => {
       theme={
         themeType === 'light' ? IONavigationLightTheme : IONavigationDarkTheme
       }
-      // linking={linking}
+      linking={linking}
       ref={navigationRef}
     >
       <Stack.Navigator screenOptions={{ headerShown: false }}>

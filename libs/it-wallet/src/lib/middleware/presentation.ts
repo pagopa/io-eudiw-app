@@ -178,14 +178,9 @@ const presentationListener: AppListenerWithAction<
     if (error instanceof TaskAbortError) {
       return;
     }
-    // We don't know which step is failed thus we set the same error for both
-    const serializableError = JSON.stringify(error);
-    listenerApi.dispatch(
-      setPostDefinitionError({ error: serializeError(serializableError) })
-    );
-    listenerApi.dispatch(
-      setPreDefinitionError({ error: serializeError(serializableError) })
-    );
+    const serializedError = serializeError(error);
+    listenerApi.dispatch(setPostDefinitionError({ error: serializedError }));
+    listenerApi.dispatch(setPreDefinitionError({ error: serializedError }));
   }
 };
 
