@@ -29,8 +29,7 @@ node_modules
 /connect.lock
 /coverage
 /libpeerconnection.log
-npm-debug.log
-yarn-error.log
+npm-debug.*
 testem.log
 /typings
 
@@ -38,15 +37,12 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# Nx
 .nx/cache
 .nx/workspace-data
 
 # Expo
-node_modules/
 .expo/
-.yarn/
-dist/
-npm-debug.*
 *.jks
 *.p8
 *.p12
@@ -56,5 +52,5 @@ npm-debug.*
 web-build/
 cache/
 
-
 test-output
+

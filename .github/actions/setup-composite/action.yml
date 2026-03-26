@@ -3,14 +3,14 @@ description: 'This action collects the steps to setup any job'
 runs:
   using: 'composite'
   steps:
-    - id: setup-pnpm
-      uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
-
     - id: setup-node
       uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
       with:
         node-version-file: '.node-version'
-        cache: 'pnpm'
+
+    - name: Enable Corepack
+      run: corepack enable && corepack prepare --activate
+      shell: bash
 
     - name: Install dependencies
       run: pnpm install --frozen-lockfile

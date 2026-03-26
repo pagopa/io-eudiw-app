@@ -1,16 +1,12 @@
 packages:
   - 'apps/*'
   - 'libs/it-wallet'
-  - 'libs/common'
   - 'libs/commons'
-  - 'libs/asd'
   - 'libs/env'
   - 'libs/preferences'
   - 'libs/identification'
   - 'libs/debug-info'
-  - 'libs/test'
   - 'libs/navigation'
-  - 'libs/localization'
 catalog:
   '@react-navigation/bottom-tabs': ^7.4.0
   '@react-navigation/native': ^7.1.8

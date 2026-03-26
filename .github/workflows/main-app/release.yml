@@ -37,11 +37,12 @@ jobs:
           node-version-file: '.node-version'
       - id: setup
         uses: ./.github/actions/setup-composite
-      - id: bump-version
+      - id: configure-git
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          pnpm nx run main-app:increment-version ${{ github.event.inputs.releaseLevel }}
+      - id: bump-version
+        run: pnpm nx run main-app:increment-version ${{ github.event.inputs.releaseLevel }}
       - id: get-current-version
         run: |
           NEW_APP_VERSION=$(node -p -e "require('./package.json').version")
@@ -49,8 +50,6 @@ jobs:
           echo "NEW_APP_VERSION=$NEW_APP_VERSION" >> $GITHUB_OUTPUT
       - id: commit-version-changes
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
           git add package.json app.json
           git commit -m "chore: Release ${{ steps.get-current-version.outputs.NEW_APP_VERSION }}" || echo "No changes to commit"
           git push origin HEAD:${GITHUB_REF#refs/heads/}
