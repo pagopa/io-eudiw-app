@@ -21,7 +21,7 @@ import { startupListener } from '../middleware/listener/startup';
 import { deepLinkingReducer } from './reducers/deeplinking';
 import { startupSetLoading, startupSlice } from './reducers/startup';
 import { AppDispatch, RootState } from './types';
-import { walletReducer, WalletRootState } from '@io-eudiw-app/it-wallet';
+import { itWalletFeature } from '@io-eudiw-app/it-wallet';
 import {
   PreferenceRootState,
   preferencesReducer,
@@ -35,9 +35,9 @@ import {
 
 // 1. Explicitly type the combined state of all your reducers.
 export type AppRootState = DebugRootState &
-  IdentificationRootState &
-  WalletRootState &
-  PreferenceRootState & {
+  IdentificationRootState & {
+    wallet: ReturnType<typeof itWalletFeature.reducer.wallet>;
+  } & PreferenceRootState & {
     deepLinking: ReturnType<typeof deepLinkingReducer>;
     startup: ReturnType<typeof startupSlice.reducer>;
   };
@@ -51,7 +51,7 @@ const combinedReducer = combineReducers({
   ...preferencesReducer,
   ...debugReducer,
   ...identificationReducer,
-  ...walletReducer,
+  ...itWalletFeature.reducer,
   deepLinking: deepLinkingReducer
 });
 

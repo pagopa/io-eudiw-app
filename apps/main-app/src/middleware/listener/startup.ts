@@ -22,7 +22,7 @@ import {
   preferencesSetIsOnboardingDone,
   selectIsOnboardingComplete
 } from '@io-eudiw-app/preferences';
-import { addWalletListeners } from '@io-eudiw-app/it-wallet';
+import { itWalletFeature } from '@io-eudiw-app/it-wallet';
 import { startAppListening } from '.';
 import { isNavigationReady } from '@io-eudiw-app/navigation';
 
@@ -125,7 +125,7 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
     }
 
     // Registers all the listeners related to the app features.
-    addWalletListeners(startAppListening);
+    itWalletFeature.addListeners(startAppListening);
 
     // Handle deep linking
     await waitForNavigationToBeReady(listenerApi);

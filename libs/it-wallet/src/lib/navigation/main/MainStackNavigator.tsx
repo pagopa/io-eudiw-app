@@ -32,13 +32,17 @@ export const LINKING_SCHEMES = [
   'mdoc-openid4vp://'
 ];
 
-export const walletLinkingConfig: PathConfigMap<WalletNavigatorParamsList> = {
-  PRESENTATION_PRE_DEFINITION: {
-    path: '',
-    parse: {
-      client_id: (value: string) => decodeURIComponent(value),
-      request_uri: (value: string) => decodeURIComponent(value),
-      state: (value: string) => value
+export const walletLinkingConfig: PathConfigMap<MainNavigatorParamsList> = {
+  [MAIN_ROUTES.WALLET_NAV]: {
+    screens: {
+      PRESENTATION_PRE_DEFINITION: {
+        path: '',
+        parse: {
+          client_id: (value: string) => decodeURIComponent(value),
+          request_uri: (value: string) => decodeURIComponent(value),
+          state: (value: string) => value
+        }
+      }
     }
   }
 };

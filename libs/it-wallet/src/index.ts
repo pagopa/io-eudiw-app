@@ -1,13 +1,28 @@
 import { walletRootReducer } from './lib/store';
-export { type DefaultResource, resource } from './lib/i18n';
-export * from './lib/navigation/main/MainStackNavigator';
-export { addWalletListeners } from './lib/middleware/index';
+import type { MiniApp } from '@io-eudiw-app/commons';
+import { resource } from './lib/i18n';
+import {
+  LINKING_SCHEMES,
+  MainNavigatorParamsList,
+  MainStackNavigator,
+  walletLinkingConfig
+} from './lib/navigation/main/MainStackNavigator';
+import { addWalletListeners } from './lib/middleware/index';
 
-// 2. Explicitly type the exported object so TypeScript stops inferring deeply
-export const walletReducer = {
+const walletReducer = {
   wallet: walletRootReducer
 };
 
-export type WalletRootState = {
-  wallet: ReturnType<typeof walletRootReducer>;
-};
+// export type WalletRootState = {
+//   wallet: ReturnType<typeof walletRootReducer>;
+// };
+
+// 3. Use 'satisfies' with the exact slice name and route params
+export const itWalletFeature = {
+  reducer: walletReducer,
+  resource,
+  Navigator: MainStackNavigator,
+  linkingSchemes: LINKING_SCHEMES,
+  linkingConfig: walletLinkingConfig,
+  addListeners: addWalletListeners
+} satisfies MiniApp<'wallet', MainNavigatorParamsList>;

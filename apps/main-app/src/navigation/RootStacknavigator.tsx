@@ -13,11 +13,7 @@ import OnboardingNavigator, {
 import { useAppDispatch, useAppSelector } from '../store';
 import ROOT_ROUTES from './routes';
 import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
-import {
-  LINKING_SCHEMES,
-  MainStackNavigator,
-  walletLinkingConfig
-} from '@io-eudiw-app/it-wallet';
+import { itWalletFeature } from '@io-eudiw-app/it-wallet';
 import { navigationRef } from '@io-eudiw-app/navigation';
 import {
   selectStartupStatus,
@@ -94,7 +90,7 @@ export const RootStackNavigator = () => {
       case 'DONE':
         return {
           name: ROOT_ROUTES.IT_WALLET_NAV,
-          component: MainStackNavigator
+          component: itWalletFeature.Navigator
         };
 
       case 'WAIT_ONBOARDING':
@@ -116,18 +112,11 @@ export const RootStackNavigator = () => {
   }, [startupStatus]);
 
   const linking: LinkingOptions<RootStackParamList> = {
-    prefixes: [...LINKING_SCHEMES],
+    prefixes: [...itWalletFeature.linkingSchemes],
     config: {
       screens: {
         ROOT_IT_WALLET_NAV: {
-          screens: {
-            // Mount the library config here
-            MAIN_WALLET_NAV: {
-              screens: walletLinkingConfig
-            }
-            // You can do the same for other mini-apps
-            // MAIN_PROFILE_NAV: profileLinkingConfig,
-          }
+          screens: { ...itWalletFeature.linkingConfig }
         }
       }
     },

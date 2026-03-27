@@ -1,19 +1,14 @@
 import {
-  DefaultResource as CommonDefaultResource,
-  resource as commonResource
+  resource as commonResource,
+  LocaleResource
 } from '@io-eudiw-app/commons';
 import wallet from '../../locales/it/wallet.json';
-import { Resource } from 'i18next';
 import { merge } from 'lodash';
 
 const walletResource = {
   it: {
     wallet
   }
-};
+} satisfies LocaleResource;
 
-export type DefaultResource = CommonDefaultResource & {
-  wallet: typeof wallet;
-};
-
-export const resource: Resource = merge({}, commonResource, walletResource);
+export const resource = merge({}, commonResource, walletResource);
