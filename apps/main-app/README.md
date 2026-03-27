@@ -1,6 +1,6 @@
 # main-app
 
-`main-app` is the host Expo / React Native application that orchestrates all miniapps. It owns the top-level Redux store, the root navigation stack, the i18n instance and the startup lifecycle — but it deliberately contains no feature logic of its own. All features live in **miniapp libraries** (e.g. `libs/it-wallet`) that plug into the host through a single, well-defined contract: the `MiniApp` interface.
+`main-app` is the host Expo / React Native application that orchestrates all miniapps. It owns the top-level Redux store, the root navigation stack, the i18n instance and the startup lifecycle — but it deliberately contains no feature logic of its own. All features live in **miniapp libraries** (e.g. `libs/it-wallet`) that plug into the host through a single, well-defined contract: the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface.
 
 ---
 
@@ -25,9 +25,9 @@ packages:
 
 ---
 
-### 2. Implement the `MiniApp` interface
+### 2. Implement the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface
 
-Every miniapp must export a single object that satisfies `MiniApp<TReducerKey, TNavigatorParamsList>` from `@io-eudiw-app/commons`.
+Every miniapp must export a single object that satisfies [`MiniApp<TReducerKey, TNavigatorParamsList>`](../../libs/commons/src/lib/interfaces/miniapp.ts) from `@io-eudiw-app/commons`.
 
 ```ts
 // libs/my-feature/src/lib/interfaces/miniapp.ts (for reference)
@@ -173,7 +173,7 @@ export const addMyFeatureListeners = (
 
 #### 2f. Public barrel export
 
-Assemble all pieces in `src/index.ts` using the `satisfies` keyword to get compile-time verification against the `MiniApp` interface:
+Assemble all pieces in `src/index.ts` using the `satisfies` keyword to get compile-time verification against the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface:
 
 ```ts
 // libs/my-feature/src/index.ts

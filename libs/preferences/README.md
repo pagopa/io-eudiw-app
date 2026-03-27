@@ -1,7 +1,37 @@
 # @io-eudiw-app/preferences
 
-This library was generated with [Nx](https://nx.dev).
+Manages user preferences that persist across app sessions. Exposed as a Redux slice injected into the host store via `preferencesReducer`.
 
-## Running unit tests
+---
 
-Run `nx test @io-eudiw-app/preferences` to execute the unit tests via [Jest](https://jestjs.io).
+## Public API
+
+### Reducer
+
+```ts
+import { preferencesReducer } from '@io-eudiw-app/preferences';
+
+combineReducers({
+  ...preferencesReducer, // mounts under the 'preferences' key
+});
+```
+
+### Actions
+
+| Action | Description |
+|---|---|
+| `preferencesSetIsOnboardingDone()` | Marks the onboarding flow as completed |
+| `preferencesSetIsBiometricEnabled(boolean)` | Enables or disables biometric unlock |
+| `preferencesFontSet(TypefaceChoice)` | Sets the font size preference |
+| `preferencesReset()` | Resets the entire app state |
+
+### Selectors
+
+| Selector | Returns |
+|---|---|
+| `selectIsOnboardingComplete(state)` | `boolean` |
+| `selectIsBiometricEnabled(state)` | `boolean` |
+| `selectSessionId(state)` | `string` |
+| `selectFontPreference(state)` | `TypefaceChoice` |
+
+---
