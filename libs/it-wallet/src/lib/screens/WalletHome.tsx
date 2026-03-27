@@ -40,7 +40,10 @@ const WalletHome = () => {
 
   return (
     <>
-      <HeaderFirstLevel title={t('tabNavigator.wallet', { ns: 'wallet' })} actions={actions} />
+      <HeaderFirstLevel
+        title={t('tabNavigator.wallet', { ns: 'wallet' })}
+        actions={actions}
+      />
       <IOScrollView centerContent={true} excludeSafeAreaMargins={true}>
         <WalletCardsContainer />
       </IOScrollView>

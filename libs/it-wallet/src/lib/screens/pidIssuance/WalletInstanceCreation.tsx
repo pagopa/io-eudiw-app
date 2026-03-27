@@ -63,8 +63,12 @@ export const WalletInstanceCreation = () => {
     customLabels: {
       title: t('discovery.screen.itw.dismissalDialog.title', { ns: 'wallet' }),
       body: t('discovery.screen.itw.dismissalDialog.body', { ns: 'wallet' }),
-      confirmLabel: t('discovery.screen.itw.dismissalDialog.confirm', { ns: 'wallet' }),
-      cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel', { ns: 'wallet' })
+      confirmLabel: t('discovery.screen.itw.dismissalDialog.confirm', {
+        ns: 'wallet'
+      }),
+      cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel', {
+        ns: 'wallet'
+      })
     },
     handleDismiss: () => {
       thunkRef.current?.abort();

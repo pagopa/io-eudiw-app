@@ -1,7 +1,7 @@
 import { Banner, Body, H2, VSpacer } from '@pagopa/io-app-design-system';
 import { ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch } from '../../../store';
+import { useAppDispatch } from '../../store';
 import {
   preferencesSetIsBiometricEnabled,
   preferencesSetIsOnboardingDone

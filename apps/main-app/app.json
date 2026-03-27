@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "MainApp",
-    "slug": "@io-eudiw-app/main-app",
-    "scheme": "@io-eudiw-app/main-app",
+    "name": "io-eudiw-app",
+    "slug": "io-eudiw-app",
+    "scheme": "io-eudiw-app",
     "version": "2.6.2",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",

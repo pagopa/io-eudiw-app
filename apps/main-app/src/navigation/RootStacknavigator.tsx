@@ -5,12 +5,11 @@ import {
   NavigatorScreenParams
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect } from 'react';
 import { useStoredFontPreference } from '../context/DSTypeFaceContext';
 import OnboardingNavigator, {
   OnboardingNavigatorParamsList
-} from '../features/onboarding/navigation/OnboardingNavigator';
+} from './OnboardingNavigator';
 import { useAppDispatch, useAppSelector } from '../store';
 import ROOT_ROUTES from './routes';
 import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';

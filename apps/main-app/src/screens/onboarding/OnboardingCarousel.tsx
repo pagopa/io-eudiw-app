@@ -14,8 +14,8 @@ import {
   View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Carousel } from '../../../components/Carousel';
-import { LandingCardComponent } from '../../../components/LandingCardComponent';
+import { Carousel } from '../../components/Carousel';
+import { LandingCardComponent } from '../../components/LandingCardComponent';
 import {
   FocusAwareStatusBar,
   useAppBackgroundAccentColorName

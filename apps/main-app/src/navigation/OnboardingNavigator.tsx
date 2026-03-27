@@ -1,14 +1,11 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import {
-  PinCreation,
-  PinCreationProps
-} from '../../../screens/pin/PinCreation';
-import OnboardingBiometricAvailable from '../screens/OnboardingBiometricAvailable';
-import OnboardingBiometricNoScreenLock from '../screens/OnboardingBiometricNoScreenLock';
-import OnboardingBiometricNotEnrolled from '../screens/OnboardingBiometricNotEnrolled';
-import { OnboardingCarousel } from '../screens/OnboardingCarousel';
-import OnboardingStart from '../screens/OnboardingStart';
-import ONBOARDING_ROUTES from './routes';
+import { PinCreation, PinCreationProps } from '../screens/pin/PinCreation';
+import OnboardingBiometricAvailable from '../screens/onboarding/OnboardingBiometricAvailable';
+import OnboardingBiometricNoScreenLock from '../screens/onboarding/OnboardingBiometricNoScreenLock';
+import OnboardingBiometricNotEnrolled from '../screens/onboarding/OnboardingBiometricNotEnrolled';
+import { OnboardingCarousel } from '../screens/onboarding/OnboardingCarousel';
+import OnboardingStart from '../screens/onboarding/OnboardingStart';
+import ONBOARDING_ROUTES from '../screens/onboarding/routes';
 
 /**
  * Screen parameters for the onboarding navigator.

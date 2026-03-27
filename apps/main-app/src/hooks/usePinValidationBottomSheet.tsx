@@ -3,7 +3,7 @@ import { t } from 'i18next';
 import { memo } from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BulletList } from '../../../components/BulletList';
+import { BulletList } from '../components/BulletList';
 import { useIOBottomSheetModal } from '@io-eudiw-app/commons';
 
 const BottomSheetContent = memo(() => {

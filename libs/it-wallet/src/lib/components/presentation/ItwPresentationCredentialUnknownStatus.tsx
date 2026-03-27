@@ -31,7 +31,9 @@ export const ItwPresentationCredentialUnknownStatus = ({
         ns: 'wallet',
         credentialName
       })}
-      subtitle={t('presentation.statusAssertionUnknown.content', { ns: 'wallet' })}
+      subtitle={t('presentation.statusAssertionUnknown.content', {
+        ns: 'wallet'
+      })}
       action={{
         label: t('presentation.statusAssertionUnknown.primaryAction', {
           ns: 'wallet'

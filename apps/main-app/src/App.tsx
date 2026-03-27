@@ -6,7 +6,6 @@ import {
   ToastProvider
 } from '@pagopa/io-app-design-system';
 import { registerRootComponent } from 'expo';
-import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-get-random-values';

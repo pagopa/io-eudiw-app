@@ -2,8 +2,8 @@ import { ListItemInfo } from '@pagopa/io-app-design-system';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
-import { IOScrollViewWithListItems } from '../../../components/IOScrollViewWithListItems';
-import { useAppDispatch } from '../../../store';
+import { IOScrollViewWithListItems } from '../../components/IOScrollViewWithListItems';
+import { useAppDispatch } from '../../store';
 import { useHeaderSecondLevel } from '@io-eudiw-app/commons';
 import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/preferences';
 

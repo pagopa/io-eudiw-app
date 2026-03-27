@@ -14,23 +14,18 @@ import { Alert, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CarouselFlat } from '../../components/CarouselFlat';
-import usePinValidationBottomSheet from '../../features/onboarding/hooks/usePinValidationBottomSheet';
-import { OnboardingNavigatorParamsList } from '../../features/onboarding/navigation/OnboardingNavigator';
+import usePinValidationBottomSheet from '../../hooks/usePinValidationBottomSheet';
+import { OnboardingNavigatorParamsList } from '../../navigation/OnboardingNavigator';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   selectStartupBiometricState,
   selectStartupHasScreenLock
 } from '../../store/reducers/startup';
 import { PinCarouselItem, PinCarouselItemProps } from './PinCarouselItem';
-import {
-  isDevEnv,
-  isValidPinNumber,
-  PIN_LENGTH,
-  PinString,
-  useHeaderSecondLevel
-} from '@io-eudiw-app/commons';
+import { isDevEnv, useHeaderSecondLevel } from '@io-eudiw-app/commons';
 import { pinSet } from '@io-eudiw-app/identification';
 import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/preferences';
+import { isValidPinNumber, PIN_LENGTH } from '../../utils/pin';
 
 const CREATION_INDEX = 0;
 const CONFIRMATION_INDEX = 1;
@@ -69,7 +64,7 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
   const hasDeviceScreenLock = useAppSelector(selectStartupHasScreenLock);
 
   const handleSubmit = useCallback(
-    (pinParam: PinString) => {
+    (pinParam: string) => {
       dispatch(pinSet(pinParam));
 
       /* If an onboarding flow is in progress, we need to navigate to the next screen based on the biometric state
@@ -193,7 +188,7 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
       const isValid = v === pinRef.current;
 
       if (isValid) {
-        handleSubmit(v as PinString);
+        handleSubmit(v);
       } else {
         // trackPinError("confirm", getFlowType(isOnboarding, isFirstOnBoarding));
         Alert.alert(t('global:onboarding.pin.errors.match.title'), undefined, [

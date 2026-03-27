@@ -32,7 +32,9 @@ export const ItwPresentationPidDetailHeader = () => {
         <ContentWrapper>
           <VStack space={8} style={styles.content}>
             <ITWalletIDImage width={140} height={34} />
-            <Body>{t('presentation.itWalletId.description', { ns: 'wallet' })}</Body>
+            <Body>
+              {t('presentation.itWalletId.description', { ns: 'wallet' })}
+            </Body>
           </VStack>
         </ContentWrapper>
       </View>

@@ -1,4 +1,4 @@
-import { PinString, secureStoragePersistor } from '@io-eudiw-app/commons';
+import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { IdentificationCombinedRootState } from '.';
@@ -8,7 +8,7 @@ import { IdentificationCombinedRootState } from '.';
  * pin - Application PIN set by the user
  */
 export type PinState = Readonly<{
-  pin: PinString | undefined;
+  pin: string | undefined;
 }>;
 
 // Initial state for the pin slice
@@ -24,7 +24,7 @@ const pinSlice = createSlice({
   name: 'pin',
   initialState,
   reducers: {
-    pinSet: (state, action: PayloadAction<PinString>) => {
+    pinSet: (state, action: PayloadAction<string>) => {
       state.pin = action.payload;
     }
   }

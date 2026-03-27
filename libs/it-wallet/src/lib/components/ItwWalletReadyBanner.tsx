@@ -24,7 +24,9 @@ export const ItwWalletReadyBanner = () => {
     <View style={{ marginHorizontal: -8 }}>
       <Banner
         title={undefined}
-        content={t('issuance.emptyWallet.readyBanner.content', { ns: 'wallet' })}
+        content={t('issuance.emptyWallet.readyBanner.content', {
+          ns: 'wallet'
+        })}
         action={t('issuance.emptyWallet.readyBanner.action', { ns: 'wallet' })}
         color="turquoise"
         onPress={handleOnPress}

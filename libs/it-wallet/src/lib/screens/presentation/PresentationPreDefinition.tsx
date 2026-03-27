@@ -78,7 +78,9 @@ const PresentationPreDefinition = ({ route }: Props) => {
   });
 
   return (
-    <LoadingScreenContent contentTitle={t('presentation.loading.title', { ns: 'wallet' })}>
+    <LoadingScreenContent
+      contentTitle={t('presentation.loading.title', { ns: 'wallet' })}
+    >
       <Body style={{ textAlign: 'center' }}>
         {t('presentation.loading.subtitle', { ns: 'wallet' })}
       </Body>
