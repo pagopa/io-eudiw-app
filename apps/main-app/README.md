@@ -1,7 +1,20 @@
 # main-app
 
-`main-app` is the host Expo / React Native application that orchestrates all miniapps. It owns the top-level Redux store, the root navigation stack, the i18n instance and the startup lifecycle — but it deliberately contains no feature logic of its own. All features live in **miniapp libraries** (e.g. `libs/it-wallet`) that plug into the host through a single, well-defined contract: the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface.
+`main-app` is the host Expo / React Native application that orchestrates all miniapps. It owns the top-level Redux store, the root navigation stack, the i18n instance and the startup lifecycle. All features live in **miniapp libraries** (e.g. `libs/it-wallet`) that plug into the host through the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface.
 
+---
+
+## Start the app 
+From the repo root, run:
+
+```bash
+  # Generate the native code for the app (only needed on the first run or after adding new native dependencies)
+  $ pnpm nx prebuild main-app
+
+  # Start the app either on iOS or Android
+  $ pnpm nx run-ios main-app 
+  $ pnpm nx run-android main-app
+```
 ---
 
 ## Adding a new miniapp
