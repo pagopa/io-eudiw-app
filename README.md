@@ -5,7 +5,7 @@
 
 ## Introduction
 This repository is a [nx](https://nx.dev/) monorepo containing the codebase of PagoPA's EUDIW app which consists of a Expo application which orchestrates multiple miniapp libraries. Each miniapp implements a specific testing scenario for both italian and european digital identity wallets. 
-More details on each miniapp can be found in their respective README files under `libs/`. The [`main-app`](./apps/main-app/README.md) README contains instructions for adding new miniapps to the host application as well as instruction on how to run the app locally.
+More details on each miniapp can be found in their respective README files under `libs/`. The `main-app` [README](./apps/main-app/README.md) contains instructions for adding new miniapps to the host application as well as instruction on how to run the app locally.
 
 
 ## Prerequisites
