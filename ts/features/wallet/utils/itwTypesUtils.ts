@@ -86,7 +86,6 @@ export type StoredCredential = {
   issuerConf: IssuerConfiguration;
   storedStatusAssertion?: StoredStatusAssertion;
   spec_version?: string;
-  verification?: Verification;
 };
 
 export type EnrichedPresentationDetails = Array<

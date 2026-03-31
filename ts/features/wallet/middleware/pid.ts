@@ -199,8 +199,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
         expiration: expiration.toISOString(),
         issuedAt: issuedAt?.toISOString(),
         issuerConf,
-        spec_version: WALLET_SPEC_VERSION,
-        verification: undefined
+        spec_version: WALLET_SPEC_VERSION
       };
     } catch (error) {
       const serialized = serializeError(error);
