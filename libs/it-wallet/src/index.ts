@@ -13,11 +13,6 @@ const walletReducer = {
   wallet: walletRootReducer
 };
 
-// export type WalletRootState = {
-//   wallet: ReturnType<typeof walletRootReducer>;
-// };
-
-// 3. Use 'satisfies' with the exact slice name and route params
 export const itWalletFeature = {
   reducer: walletReducer,
   resource,
