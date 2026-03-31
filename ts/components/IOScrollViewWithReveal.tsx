@@ -283,19 +283,21 @@ export const IOScrollViewWithReveal = ({
             />
           </Animated.View>
           <View style={styles.buttonContainer} pointerEvents="box-none">
+            <View>
+              <IOButton variant="solid" fullWidth {...actions.primary} />
+            </View>
+            <VSpacer size={spaceBetweenActionAndLink} />
             <Animated.View
               onLayout={event => {
                 anchorLinkHeight.value = event.nativeEvent.layout.height;
               }}
-              style={[{ alignSelf: 'center' }, anchorLinkAnimatedStyle]}
+              style={[
+                { alignSelf: 'center', marginBottom: extraBottomMargin },
+                anchorLinkAnimatedStyle
+              ]}
             >
               <IOButton variant="link" {...actions.anchor} />
-              <VSpacer size={spaceBetweenActionAndLink} />
             </Animated.View>
-
-            <View style={{ marginBottom: extraBottomMargin }}>
-              <IOButton variant="solid" fullWidth {...actions.primary} />
-            </View>
           </View>
         </View>
       )}
