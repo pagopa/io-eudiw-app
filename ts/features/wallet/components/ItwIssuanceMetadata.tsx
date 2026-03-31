@@ -88,7 +88,7 @@ export const ItwIssuanceMetadata = ({
   const authSource = t('presentation.authSource', { ns: 'wallet' });
 
   const releasedByKey =
-    credential && credential.credentialType === wellKnownCredential.PID
+    credential.credentialType === wellKnownCredential.PID
       ? 'releasedByPid'
       : 'releasedBy';
 
