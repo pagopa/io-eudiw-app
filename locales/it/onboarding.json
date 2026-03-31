@@ -9,13 +9,9 @@
       "content": "Prova funzionalità innovative che rispettano gli standard tecnici europei"
     },
     "third": {
-      "title": "Un access simulato",
-      "content": "L'ativazione e l'autenticazione sono simulate a scopo di test,in piena conformita con gli standarddi sicurezza dell'UE."
+      "title": "Un accesso simulato",
+      "content": "L'attivazione e l'autenticazione sono simulate a scopo di test, in piena conformità con gli standard di sicurezza dell'UE"
     }
-  },
-  "start": {
-    "title": "Start with Wallet",
-    "subtitle": "Store your documents securely."
   },
   "pin": {
     "title": "Crea un codice di sblocco",
