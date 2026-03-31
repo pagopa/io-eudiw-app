@@ -35,7 +35,10 @@ export const OnboardingCarousel = () => {
   const blueColor = useAppBackgroundAccentColorName();
 
   const skipCarousel = useCallback(() => {
-    navigation.navigate('ROOT_ONBOARDING_NAV', { screen: 'ONBOARDING_START' });
+    navigation.navigate('ROOT_ONBOARDING_NAV', {
+      screen: 'ONBOARDING_PIN_CREATION',
+      params: { isOnboarding: true }
+    });
   }, [navigation]);
 
   const nextStep = useCallback(() => {
