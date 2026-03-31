@@ -25,36 +25,36 @@
   "discovery": {
     "screen": {
       "itw": {
-        "title": "IO è il tuo portafoglio digitale di Stato: pubblico, sicuro, gratuito.",
+        "title": "DWallet Lab: l'app di test compatibile con l'identità digitale europea",
         "features": {
-          "1": "Usi la tua Patente su IO come documento di riconoscimento",
-          "2": "Ti basta il tuo telefono per dimostrare la tua identità",
-          "3": "Hai tutto ciò che ti serve anche se lasci a casa il portafoglio",
+          "1": "Un'app di test compatibile con le ultime regole tecniche europee",
+          "2": "Attivazione ed autenticazione simulate per focalizzarsi sulle funzionalità",
+          "3": "Testa facilmente le funzionalità su un'app compatibile con EUDIW",
           "4": "I nuovi documenti digitali ufficiali, solo sull’app IO",
           "5": "Accedi in pochi tocchi ai servizi digitali della PA"
         },
         "details": {
           "1": {
             "title": "Facile, sicuro, ufficiale",
-            "content": "Ottienilo con la tua **Carta di Identità Elettronica (CIE)** per associarlo alla tua identità.\n\nIl portafoglio IT-Wallet di IO usa sistemi di sicurezza avanzati per proteggere i tuoi dati e mantenerli al sicuro."
+            "content": "Simula diversi metodi di attivazione proprio come i veri portafogli europei.\n\nDWallet Lab utilizza funzionalità di sicurezza avanzate e conformi per proteggere i tuoi dati."
           },
           "2": {
-            "title": "Nuovi documenti in arrivo",
-            "content": "Titoli di studio, attestato di residenza e altri: potrai aggiungere all’app IO nuovi documenti ufficiali."
+            "title": "Testa nuove funzionalità",
+            "content": "Utilizza questa app per testare funzionalità specifiche che non sono ancora state implementate nell'app di produzione."
           },
           "3": {
-            "title": "Tutto nelle tue mani",
-            "content": "Mostri il codice QR della tua Patente digitale: chi verifica non dovrà tenere in mano il tuo dispositivo."
+            "title": "Autenticazione simulata",
+            "content": "L'attivazione e l'autenticazione vengono simulate per mantenere l'attenzione sulle funzionalità da testare."
           },
           "4": {
             "title": "Progettato con l’Europa",
-            "content": "IT-Wallet si integrerà al Portafoglio Digitale Europeo: potrai usare i tuoi documenti con pieno valore legale in tutta Europa."
+            "content": "DWallet Lab è compatibile con EUDIW Wallet: se i test avranno esito positivo, potrebbero essere implementati nell'app di produzione e resi disponibili per un gran numero di cittadini dell'Unione Europea."
           }
         },
         "tos": "Premendo **Continua** dichiari di aver letto e compreso l'Informativa Privacy e i Termini e Condizioni d'uso.",
         "actions": {
           "primary": "Continua",
-          "anchor": "Scopri tutti i vantaggi"
+          "anchor": "Scopri di più"
         },
         "dismissalDialog": {
           "title": "Vuoi rinunciare ai vantaggi di IT-Wallet?",

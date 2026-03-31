@@ -10,6 +10,14 @@ export default [
     rules: {}
   },
   {
-    ignores: ['.expo', 'web-build', 'cache', 'dist', '**/out-tsc', 'scripts']
+    ignores: [
+      '.expo',
+      'web-build',
+      'cache',
+      'dist',
+      '**/out-tsc',
+      'scripts',
+      'expo-env.d.ts'
+    ]
   }
 ];
