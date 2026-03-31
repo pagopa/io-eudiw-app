@@ -41,7 +41,6 @@ import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
-import { extractVerification } from '../utils/itwCredentialUtils';
 import { CredentialFormat, DcqlQuery } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 import {
@@ -246,11 +245,7 @@ const obtainCredentialListener: AppListenerWithAction<
           issuedAt: issuedAt?.toISOString(),
           issuerConf,
           spec_version: WALLET_SPEC_VERSION,
-          verification: extractVerification({
-            format,
-            credential,
-            parsedCredential
-          })
+          verification: undefined
         }
       })
     );

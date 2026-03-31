@@ -29,7 +29,6 @@ import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 import { DPOP_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
-import { extractVerification } from '../utils/itwCredentialUtils';
 import { CredentialFormat, StoredCredential } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 import {
@@ -201,11 +200,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
         issuedAt: issuedAt?.toISOString(),
         issuerConf,
         spec_version: WALLET_SPEC_VERSION,
-        verification: extractVerification({
-          format,
-          credential,
-          parsedCredential
-        })
+        verification: undefined
       };
     } catch (error) {
       const serialized = serializeError(error);
