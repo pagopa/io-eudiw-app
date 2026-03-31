@@ -1,0 +1,58 @@
+import { secureStoragePersistor } from '@io-eudiw-app/commons';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PersistConfig, persistReducer } from 'redux-persist';
+import { IdentificationCombinedRootState } from '.';
+
+/*
+ * State type definition for the pin slice
+ * pin - Application PIN set by the user
+ */
+export type PinState = Readonly<{
+  pin: string | undefined;
+}>;
+
+// Initial state for the pin slice
+const initialState: PinState = {
+  pin: undefined
+};
+
+/**
+ * Redux slice for the pin state. It allows to set and reset the pin.
+ * This must be a separate slice because the pin is sored using a custom persistor.
+ */
+const pinSlice = createSlice({
+  name: 'pin',
+  initialState,
+  reducers: {
+    pinSet: (state, action: PayloadAction<string>) => {
+      state.pin = action.payload;
+    }
+  }
+});
+
+/**
+ * Exports the actions for the pin slice.
+ */
+export const { pinSet } = pinSlice.actions;
+
+/**
+ * Redux persist configuration for the pin slice.
+ * Currently it uses `io-react-native-secure-storage` as the storage engine which stores it encrypted.
+ */
+const pinPersist: PersistConfig<PinState> = {
+  key: 'pin',
+  storage: secureStoragePersistor()
+};
+
+/**
+ * Persisted reducer for the pin slice.
+ */
+export const pinReducer = persistReducer(pinPersist, pinSlice.reducer);
+
+/**
+ * Selects the pin.
+ * @param state - The root state of the Redux store
+ * @returns a string representing the pin
+ */
+export const selectPin = (state: IdentificationCombinedRootState) =>
+  state.identification.pin.pin;

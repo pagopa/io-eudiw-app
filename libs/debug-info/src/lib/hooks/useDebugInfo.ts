@@ -1,0 +1,32 @@
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
+import {
+  resetDebugData,
+  selectIsDebugModeEnabled,
+  setDebugData
+} from '../reducer/debug';
+import { useAppDispatch, useAppSelector } from '../reducer';
+
+/**
+ * Sets debug data for the mounted component. Removes it when the component is unmounted
+ * @param data Data to be displayes in debug mode
+ */
+export const useDebugInfo = (data: Record<string, unknown>) => {
+  const dispatch = useAppDispatch();
+  const isDebug = useAppSelector(selectIsDebugModeEnabled);
+
+  useFocusEffect(
+    useCallback(() => {
+      // Avoids storing debug data if debug is disabled
+      if (!isDebug) {
+        return undefined;
+      }
+
+      dispatch(setDebugData(data));
+
+      return () => {
+        dispatch(resetDebugData(Object.keys(data)));
+      };
+    }, [dispatch, isDebug, data])
+  );
+};
