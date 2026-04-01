@@ -41,7 +41,7 @@ import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
-import { CredentialFormat, DcqlQuery } from '../utils/itwTypesUtils';
+import { DcqlQuery } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 import {
   AppListenerWithAction,
@@ -122,7 +122,7 @@ const obtainCredentialListener: AppListenerWithAction<
         credentialConfigId
       ];
     const credentialType =
-      credentialConfig.format === CredentialFormat.MDOC
+      credentialConfig.format === 'mso_mdoc'
         ? credentialConfig.scope
         : credentialConfig.vct;
 
@@ -240,7 +240,7 @@ const obtainCredentialListener: AppListenerWithAction<
           parsedCredential,
           credentialType,
           keyTag: credentialKeyTag,
-          format: format as CredentialFormat.SD_JWT | CredentialFormat.MDOC,
+          format: format as 'dc+sd-jwt' | 'mso_mdoc',
           expiration: expiration.toISOString(),
           issuedAt: issuedAt?.toISOString(),
           issuerConf,

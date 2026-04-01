@@ -29,7 +29,7 @@ import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 import { DPOP_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
-import { CredentialFormat, StoredCredential } from '../utils/itwTypesUtils';
+import { StoredCredential } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 import {
   AppListenerWithAction,
@@ -90,7 +90,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
           credentialConfigId
         ];
       const credentialType =
-        credentialConfig.format === CredentialFormat.MDOC
+        credentialConfig.format === 'mso_mdoc'
           ? credentialConfig.scope
           : credentialConfig.vct;
 
@@ -193,9 +193,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
         credential,
         credentialType,
         keyTag: credentialKeyTag,
-        format: format as
-          | CredentialFormat.LEGACY_SD_JWT
-          | CredentialFormat.MDOC,
+        format: format as 'vc+sd-jwt' | 'mso_mdoc',
         expiration: expiration.toISOString(),
         issuedAt: issuedAt?.toISOString(),
         issuerConf,

@@ -120,12 +120,6 @@ export type ClaimDisplayResult =
   | { type: 'image'; value: string }
   | { type: 'text'; value: string | Array<string> };
 
-export const enum CredentialFormat {
-  MDOC = 'mso_mdoc',
-  SD_JWT = 'dc+sd-jwt',
-  LEGACY_SD_JWT = 'vc+sd-jwt'
-}
-
 /**
  * Alias for the Verification type
  */
