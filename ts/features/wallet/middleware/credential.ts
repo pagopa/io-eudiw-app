@@ -240,7 +240,7 @@ const obtainCredentialListener: AppListenerWithAction<
           parsedCredential,
           credentialType,
           keyTag: credentialKeyTag,
-          format: format as CredentialFormat.SD_JWT | CredentialFormat.MDOC,
+          format,
           expiration: expiration.toISOString(),
           issuedAt: issuedAt?.toISOString(),
           issuerConf,

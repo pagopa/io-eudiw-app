@@ -193,9 +193,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
         credential,
         credentialType,
         keyTag: credentialKeyTag,
-        format: format as
-          | CredentialFormat.LEGACY_SD_JWT
-          | CredentialFormat.MDOC,
+        format,
         expiration: expiration.toISOString(),
         issuedAt: issuedAt?.toISOString(),
         issuerConf,
