@@ -25,10 +25,11 @@ import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance
 import { addCredential, addPidWithIdentification } from '../store/credentials';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
 import { selectPendingCredential } from '../store/selectors/pidIssuance';
+import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 import { DPOP_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
-import { StoredCredential } from '../utils/itwTypesUtils';
+import { CredentialFormat, StoredCredential } from '../utils/itwTypesUtils';
 import { getAttestationThunk } from './attestation';
 import {
   AppListenerWithAction,
@@ -89,7 +90,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
           credentialConfigId
         ];
       const credentialType =
-        credentialConfig.format === 'mso_mdoc'
+        credentialConfig.format === CredentialFormat.MDOC
           ? credentialConfig.scope
           : credentialConfig.vct;
 
@@ -192,10 +193,11 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential, void>(
         credential,
         credentialType,
         keyTag: credentialKeyTag,
-        format: format as 'vc+sd-jwt' | 'mso_mdoc',
+        format,
         expiration: expiration.toISOString(),
         issuedAt: issuedAt?.toISOString(),
-        issuerConf
+        issuerConf,
+        spec_version: WALLET_SPEC_VERSION
       };
     } catch (error) {
       const serialized = serializeError(error);

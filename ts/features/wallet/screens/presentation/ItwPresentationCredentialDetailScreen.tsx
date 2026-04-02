@@ -47,7 +47,7 @@ import {
 import { parseClaimsToRecord } from '../../utils/claims';
 import { wellKnownCredential } from '../../utils/credentials';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+import { CredentialFormat, StoredCredential } from '../../utils/itwTypesUtils';
 
 export type ItwPresentationCredentialDetailNavigationParams = {
   credentialType: string;
@@ -138,7 +138,7 @@ const ItwPresentationCredentialDetail = ({
   const dispatch = useAppDispatch();
 
   useDebugInfo(
-    credential.format === 'mso_mdoc'
+    credential.format === CredentialFormat.MDOC
       ? {
           proximityDisclosureDescriptorQR: proximityDisclosureDescriptor,
           proximityStatusQR: proximityStatus,
