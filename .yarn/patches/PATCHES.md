@@ -4,7 +4,7 @@ This file describes the reason for the patches applied.
 
 ### mdoc-x5chain-verification-disable-temp.patch
 
-Created on: **02/12/2025**
+Created on: **18/03/2026**
 
 #### Reason
 
@@ -27,7 +27,7 @@ The following check is temporarily disabled:
 
 ### authorization-response-jwe-encryption.patch
 
-Created on: **18/12/2025**
+Created on: **18/03/2026**
 
 ### Reason
 
