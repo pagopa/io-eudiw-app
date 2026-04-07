@@ -128,8 +128,8 @@ jobs:
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
-          name: ioeudiw-universal.apk
-          path: android/ioeudiw-universal.apk
+          name: DWalletLab-universal.apk
+          path: android/DWalletLab-universal.apk
       - id: upload-aab
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
@@ -141,7 +141,7 @@ jobs:
         run: |
           gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} \
             android/app/build/outputs/bundle/release/app-release.aab#android-app-release.aab \
-            android/ioeudiw-universal.apk#ioeudiw-universal.apk
+            android/DWalletLab-universal.apk#DWalletLab-universal.apk
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -201,17 +201,17 @@ jobs:
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.0.3
         with:
-          name: ioeudiw.app.dSYM.zip
-          path: ios/ioeudiw.app.dSYM.zip
+          name: DWalletLab.app.dSYM.zip
+          path: ios/DWalletLab.app.dSYM.zip
       - id: upload-ipa
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
-          name: ioeudiw.ipa
-          path: ios/ioeudiw.ipa
+          name: DWalletLab.ipa
+          path: ios/DWalletLab.ipa
       - id: upload-ipa-release
         continue-on-error: true
         run: |
-          gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} ios/ioeudiw.ipa#ioeudiw.ipa
+          gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} ios/DWalletLab.ipa#DWalletLab.ipa
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
