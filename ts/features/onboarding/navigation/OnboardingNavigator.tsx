@@ -7,7 +7,6 @@ import OnboardingBiometricAvailable from '../screens/OnboardingBiometricAvailabl
 import OnboardingBiometricNoScreenLock from '../screens/OnboardingBiometricNoScreenLock';
 import OnboardingBiometricNotEnrolled from '../screens/OnboardingBiometricNotEnrolled';
 import { OnboardingCarousel } from '../screens/OnboardingCarousel';
-import OnboardingStart from '../screens/OnboardingStart';
 import ONBOARDING_ROUTES from './routes';
 
 /**
@@ -40,7 +39,6 @@ const OnboardingNavigator = () => (
       name={ONBOARDING_ROUTES.CAROUSEL}
       component={OnboardingCarousel}
     />
-    <Stack.Screen name={ONBOARDING_ROUTES.START} component={OnboardingStart} />
     <Stack.Screen
       name={ONBOARDING_ROUTES.PIN.CREATION}
       component={PinCreation}

@@ -1,4 +1,4 @@
-import { Credential } from '@pagopa/io-react-native-wallet';
+import { Credential, SdJwt } from '@pagopa/io-react-native-wallet';
 import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
 
 /**
@@ -80,11 +80,12 @@ export type StoredCredential = {
   credential: string;
   keyTag: string;
   credentialType: string;
-  format: 'vc+sd-jwt' | 'mso_mdoc' | 'dc+sd-jwt';
+  format: string;
   expiration: string;
   issuedAt?: string;
   issuerConf: IssuerConfiguration;
   storedStatusAssertion?: StoredStatusAssertion;
+  spec_version?: string;
 };
 
 export type EnrichedPresentationDetails = Array<
@@ -118,3 +119,16 @@ export type PresentationDetails = Awaited<
 export type ClaimDisplayResult =
   | { type: 'image'; value: string }
   | { type: 'text'; value: string | Array<string> };
+
+export const enum CredentialFormat {
+  MDOC = 'mso_mdoc',
+  SD_JWT = 'dc+sd-jwt',
+  LEGACY_SD_JWT = 'vc+sd-jwt'
+}
+
+/**
+ * Alias for the Verification type
+ */
+export type Verification = NonNullable<
+  ReturnType<typeof SdJwt.getVerification>
+>;
