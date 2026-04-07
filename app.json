@@ -27,9 +27,9 @@
         "NSBluetoothScanUsageDescription": "This app uses Bluetooth to connect to external devices.",
         "NSLocationWhenInUseUsageDescription": "This app uses your location to improve user experience."
       },
-      "icon": {
-        "light": "./assets/images/icons/ios-default.png"
-      }
+     "icon": {
+       "light": "./assets/images/icons/ios-default.png"
+     }
     },
     "android": {
       "package": "it.pagopa.io.app.poc.eudiw",
@@ -42,7 +42,9 @@
         "android.permission.BLUETOOTH_ADMIN",
         "android.permission.ACCESS_FINE_LOCATION"
       ],
-      "blockedPermissions": ["android.permission.READ_MEDIA_IMAGES"],
+      "blockedPermissions": [
+        "android.permission.READ_MEDIA_IMAGES"
+      ],
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "intentFilters": [
@@ -66,7 +68,10 @@
               "scheme": "iowallet"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ],
       "adaptiveIcon": {
@@ -130,7 +135,9 @@
       [
         "react-native-permissions",
         {
-          "iosPermissions": ["Bluetooth"]
+          "iosPermissions": [
+            "Bluetooth"
+          ]
         }
       ],
       [
