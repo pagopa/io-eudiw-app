@@ -29,7 +29,7 @@ import {
 import { parseClaimsToRecord } from '../../utils/claims';
 import { wellKnownCredential } from '../../utils/credentials';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+import { CredentialFormat, StoredCredential } from '../../utils/itwTypesUtils';
 import { useAppDispatch, useAppSelector } from '../../store';
 import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
 import { PresentationProximityQrCode } from '../../components/proximity/PresentationProximityQRCode';
@@ -141,7 +141,7 @@ const ItwPresentationCredentialDetail = ({
   const dispatch = useAppDispatch();
 
   useDebugInfo(
-    credential.format === 'mso_mdoc'
+    credential.format === CredentialFormat.MDOC
       ? {
           proximityDisclosureDescriptorQR: proximityDisclosureDescriptor,
           proximityStatusQR: proximityStatus,

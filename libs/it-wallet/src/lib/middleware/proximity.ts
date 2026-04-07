@@ -16,6 +16,7 @@ import {
   setProximityStatusStarted,
   setProximityStatusStopped
 } from '../store/proximity';
+import { CredentialFormat } from '../utils/itwTypesUtils';
 import { requestBlePermissions } from '../utils/permissions';
 import {
   generateAcceptedFields,
@@ -155,7 +156,7 @@ const responseHandler = async (listenerApi: AppListener) => {
   }
   const allCredentials = selectCredentials(listenerApi.getState());
   const mdocCredentials = allCredentials.filter(
-    credential => credential.format === 'mso_mdoc'
+    credential => credential.format === CredentialFormat.MDOC
   );
 
   const descriptor = getProximityDetails(

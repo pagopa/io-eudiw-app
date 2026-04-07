@@ -1,8 +1,7 @@
 {
   "expo": {
-    "name": "io-eudiw-app",
-    "slug": "io-eudiw-app",
-    "scheme": "io-eudiw-app",
+    "name": "DWalletLab",
+    "slug": "dwalletlab",
     "version": "2.6.2",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
