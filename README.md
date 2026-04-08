@@ -34,7 +34,7 @@ $ nodenv install && nodenv version
 # Install Ruby with rbenv, the returned version should match the one in the .ruby-version file
 $ rbenv install && rbenv version
 
-# Enable corepack and prepare yarn
+# Enable corepack and prepare pnpm
 $ corepack enable
 $ corepack prepare --activate
 
