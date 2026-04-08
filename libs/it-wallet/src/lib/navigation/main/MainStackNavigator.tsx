@@ -67,19 +67,13 @@ export const MainStackNavigator = () => (
     <Stack.Screen
       name={MAIN_ROUTES.SCAN_QR}
       component={QrCodeScanScreen}
-      options={{
-        ...TransitionPresets.ModalPresentationIOS,
-        gestureEnabled: true
-      }}
+      options={{ animation: 'slide_from_bottom' }}
     />
 
     <Stack.Screen
       name={MAIN_ROUTES.SHOW_QR}
       component={ProximityQrCode}
-      options={{
-        ...TransitionPresets.ModalPresentationIOS,
-        gestureEnabled: true
-      }}
+      options={{ animation: 'slide_from_bottom' }}
     />
 
     <Stack.Screen name={MAIN_ROUTES.SETTINGS} component={Settings} />
