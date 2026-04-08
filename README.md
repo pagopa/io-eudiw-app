@@ -1,6 +1,6 @@
 <p align="center">
   <img src="apps/main-app/assets/images/icons/ios-default.png" width="100" style="display: block" /></br>
-  <h3 align="center">EUDIW APP</h3>
+  <h3 align="center">DWalletLab App</h3>
 </p>
 
 ## Introduction
