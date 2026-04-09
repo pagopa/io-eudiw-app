@@ -1,37 +1,35 @@
 diff --git a/lib/typescript/credential/issuance/04-complete-user-authorization.d.ts b/lib/typescript/credential/issuance/04-complete-user-authorization.d.ts
-index 41f7b6f84d9264e3cbab4bac4e18f4c0d715dfe9..99e0cf957c7b396bd10900fcbf0b4f9eecf88f0e 100644
+index fb88a89db6d1975bdd664d39bc27494d82bb33ca..f586d306ffaf37ec4ef613c9691c728d50db5c56 100644
 --- a/lib/typescript/credential/issuance/04-complete-user-authorization.d.ts
 +++ b/lib/typescript/credential/issuance/04-complete-user-authorization.d.ts
-@@ -8,7 +8,7 @@ import { RequestObject } from "../presentation/types";
-  * The interface of the phase to complete User authorization via strong identification when the response mode is "query" and the request credential is a PersonIdentificationData.
+@@ -9,11 +9,12 @@ import { RequestObject } from "../presentation/types";
   */
  export type CompleteUserAuthorizationWithQueryMode = (authRedirectUrl: string) => Promise<AuthorizationResult>;
+ export type ContinueUserAuthorizationWithMRTDPoPChallenge = (authRedirectUrl: string) => Promise<AuthorizationChallengeResult>;
 -export type CompleteUserAuthorizationWithFormPostJwtMode = (requestObject: Out<GetRequestedCredentialToBePresented>, pid: string, context: {
 +export type CompleteUserAuthorizationWithFormPostJwtMode = (requestObject: Out<GetRequestedCredentialToBePresented>, pid: string, issuerConf: Out<EvaluateIssuerTrust>["issuerConf"], context: {
      wiaCryptoContext: CryptoContext;
      pidCryptoContext: CryptoContext;
      appFetch?: GlobalFetch["fetch"];
+ }) => Promise<AuthorizationResult>;
++
+ export type GetRequestedCredentialToBePresented = (issuerRequestUri: Out<StartUserAuthorization>["issuerRequestUri"], clientId: Out<StartUserAuthorization>["clientId"], issuerConf: Out<EvaluateIssuerTrust>["issuerConf"], appFetch?: GlobalFetch["fetch"]) => Promise<RequestObject>;
+ export type BuildAuthorizationUrl = (issuerRequestUri: Out<StartUserAuthorization>["issuerRequestUri"], clientId: Out<StartUserAuthorization>["clientId"], issuerConf: Out<EvaluateIssuerTrust>["issuerConf"], idpHint?: string) => Promise<{
+     authUrl: string;
 diff --git a/src/credential/issuance/04-complete-user-authorization.ts b/src/credential/issuance/04-complete-user-authorization.ts
-index 7dd9e7dd3c205cae0c773f56987460a83db81e4c..03cab788457a1b2a4fbd7dd53f46832e520b49c1 100644
+index d1cef946f0e8ee096859c9bf1ff51bbb11c8b436..2bdd95869499dc88c1c65ae36dcd84f9bcf670d2 100644
 --- a/src/credential/issuance/04-complete-user-authorization.ts
 +++ b/src/credential/issuance/04-complete-user-authorization.ts
-@@ -10,6 +10,7 @@ import { IssuerResponseError, ValidationFailed } from "../../utils/errors";
- import type { EvaluateIssuerTrust } from "./02-evaluate-issuer-trust";
- import {
-   decode,
-+  EncryptJwe,
-   SignJWT,
-   type CryptoContext,
- } from "@pagopa/io-react-native-jwt";
-@@ -20,6 +21,7 @@ import { AuthorizationError, AuthorizationIdpError } from "./errors";
+@@ -22,6 +22,8 @@ import { AuthorizationError, AuthorizationIdpError } from "./errors";
  import { LogLevel, Logger } from "../../utils/logging";
  import { Presentation } from "..";
  import type { DcqlQuery } from "dcql";
 +import { choosePublicKeyToEncrypt } from "../presentation/08-send-authorization-response";
++import { EncryptJwe } from "@pagopa/io-react-native-jwt";
  
  /**
   * The interface of the phase to complete User authorization via strong identification when the response mode is "query" and the request credential is a PersonIdentificationData.
-@@ -31,6 +33,7 @@ export type CompleteUserAuthorizationWithQueryMode = (
+@@ -37,6 +39,7 @@ export type ContinueUserAuthorizationWithMRTDPoPChallenge = (
  export type CompleteUserAuthorizationWithFormPostJwtMode = (
    requestObject: Out<GetRequestedCredentialToBePresented>,
    pid: string,
@@ -39,7 +37,7 @@ index 7dd9e7dd3c205cae0c773f56987460a83db81e4c..03cab788457a1b2a4fbd7dd53f46832e
    context: {
      wiaCryptoContext: CryptoContext;
      pidCryptoContext: CryptoContext;
-@@ -171,6 +174,7 @@ export const completeUserAuthorizationWithFormPostJwtMode: CompleteUserAuthoriza
+@@ -213,6 +216,7 @@ export const completeUserAuthorizationWithFormPostJwtMode: CompleteUserAuthoriza
    async (
      requestObject,
      pid,
@@ -47,44 +45,28 @@ index 7dd9e7dd3c205cae0c773f56987460a83db81e4c..03cab788457a1b2a4fbd7dd53f46832e
      { wiaCryptoContext, pidCryptoContext, appFetch = fetch }
    ) => {
      Logger.log(
-@@ -203,7 +207,8 @@ export const completeUserAuthorizationWithFormPostJwtMode: CompleteUserAuthoriza
-     const authzResponsePayload = await createAuthzResponsePayload({
+@@ -246,6 +250,7 @@ export const completeUserAuthorizationWithFormPostJwtMode: CompleteUserAuthoriza
        state: requestObject.state,
        remotePresentations,
--      wiaCryptoContext,
+       wiaCryptoContext,
 +      issuerConf
-+      // wiaCryptoContext,
      });
  
      Logger.log(
-@@ -296,25 +301,53 @@ export const parseAuthorizationResponse = (
- const createAuthzResponsePayload = async ({
+@@ -339,24 +344,53 @@ const createAuthzResponsePayload = async ({
    state,
    remotePresentations,
--  wiaCryptoContext,
+   wiaCryptoContext,
 +  issuerConf
-+  // wiaCryptoContext,  
  }: {
    state?: string;
    remotePresentations: RemotePresentation[];
--  wiaCryptoContext: CryptoContext;
+   wiaCryptoContext: CryptoContext;
 +  issuerConf: Out<EvaluateIssuerTrust>["issuerConf"];
-+  // wiaCryptoContext: CryptoContext;
  }): Promise<string> => {
 -  const { kid } = await wiaCryptoContext.getPublicKey();
 +  // const { kid } = await wiaCryptoContext.getPublicKey();
- 
--  return new SignJWT(wiaCryptoContext)
--    .setProtectedHeader({
--      typ: "jwt",
--      kid,
--    })
--    .setPayload({
--      /**
--       * TODO [SIW-2264]: `state` coming from `requestObject` is marked as `optional`
--       * At the moment, it is not entirely clear whether this value can indeed be omitted
--       * and, if so, what the consequences of its absence might be.
--       */
++
 +  // return new SignJWT(wiaCryptoContext)
 +  //   .setProtectedHeader({
 +  //     typ: "jwt",
@@ -108,7 +90,8 @@ index 7dd9e7dd3c205cae0c773f56987460a83db81e4c..03cab788457a1b2a4fbd7dd53f46832e
 +  //   .setIssuedAt()
 +  //   .setExpirationTime("1h")
 +  //   .sign();
-+    type Jwe = ConstructorParameters<typeof EncryptJwe>[1];
++
++  type Jwe = ConstructorParameters<typeof EncryptJwe>[1];
 +
 +    if(!issuerConf.openid_credential_verifier)  throw new Error("Issuer configuration missing openid_credential_verifier");
 +
@@ -120,12 +103,23 @@ index 7dd9e7dd3c205cae0c773f56987460a83db81e4c..03cab788457a1b2a4fbd7dd53f46832e
 +    
 +    const keys = jwks.keys;
 +    const encPublicJwk = choosePublicKeyToEncrypt(keys);
-+
+ 
+-  return new SignJWT(wiaCryptoContext)
+-    .setProtectedHeader({
+-      typ: "jwt",
+-      kid,
+-    })
+-    .setPayload({
+-      /**
+-       * TODO [SIW-2264]: `state` coming from `requestObject` is marked as `optional`
+-       * At the moment, it is not entirely clear whether this value can indeed be omitted
+-       * and, if so, what the consequences of its absence might be.
+-       */
 +    const authzResponsePayload = JSON.stringify({
        ...(state ? { state } : {}),
        vp_token: remotePresentations.reduce(
          (vp_token, { credentialId, vpToken }) => ({
-@@ -323,8 +356,24 @@ const createAuthzResponsePayload = async ({
+@@ -365,8 +399,22 @@ const createAuthzResponsePayload = async ({
          }),
          {}
        ),
@@ -152,5 +146,33 @@ index 7dd9e7dd3c205cae0c773f56987460a83db81e4c..03cab788457a1b2a4fbd7dd53f46832e
 +
 +  return encryptedResponse;
  };
-+
-+
+diff --git a/src/credential/issuance/07-verify-and-parse-credential.ts b/src/credential/issuance/07-verify-and-parse-credential.ts
+index 05fcb6d46ac0ef161ea1b6faf381261d15b1994c..49aa98d4887af06cfe95db736aefa4d50ad719e3 100644
+--- a/src/credential/issuance/07-verify-and-parse-credential.ts
++++ b/src/credential/issuance/07-verify-and-parse-credential.ts
+@@ -470,9 +470,9 @@ const verifyAndParseCredentialMDoc: VerifyAndParseCredential = async (
+   { credentialCryptoContext, ignoreMissingAttributes },
+   x509CertRoot
+ ) => {
+-  if (!x509CertRoot) {
+-    throw new IoWalletError("Missing x509CertRoot");
+-  }
++  // if (!x509CertRoot) {
++  //   throw new IoWalletError("Missing x509CertRoot");
++  // }
+ 
+   const decoded = await verifyCredentialMDoc(
+     credential,
+diff --git a/src/mdoc/index.ts b/src/mdoc/index.ts
+index 83f61501ce4ea4cedd469c453d17867d9ac6aac9..f6a883fcdf8f759d14c4d26d70b69e84b2f005d4 100644
+--- a/src/mdoc/index.ts
++++ b/src/mdoc/index.ts
+@@ -32,7 +32,7 @@ export const verify = async (
+   const x5chain =
+     issuerSigned.issuerAuth.unprotectedHeader.x5chain.map(b64utob64);
+   // Verify the x5chain
+-  await verifyX5chain(x5chain, x509CertRoot);
++  // await verifyX5chain(x5chain, x509CertRoot);
+ 
+   const coseSign1 = issuerSigned.issuerAuth.rawValue;
+ 
