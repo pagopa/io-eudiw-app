@@ -5,8 +5,11 @@ import {
   ThunkDispatch,
   UnknownAction
 } from '@reduxjs/toolkit';
-import { pinReducer, PinState } from './pin';
-import { PreferenceRootState } from '@io-eudiw-app/preferences';
+import { pinReducer, PinState, purgePinPersistedState } from './pin';
+import {
+  PreferenceRootState,
+  preferencesReset
+} from '@io-eudiw-app/preferences';
 
 export type IdentificationCombinedRootState = {
   identification: {
@@ -26,10 +29,33 @@ export type IdentificationDispatch = ThunkDispatch<
   UnknownAction
 >;
 
-export const identificationRootReducer = combineReducers({
+/**
+ * Purges all identification persisted state from storage.
+ * This should be called when the identification state is reset
+ * to ensure the persisted state is also cleared.
+ */
+export const purgeIdentificationPersistedState = () => purgePinPersistedState();
+
+const combinedReducer = combineReducers({
   identification: identificationReducer,
   pin: pinReducer
 });
+
+/**
+ * Root Reducer with Global Reset Logic
+ * We intercept 'preferencesReset'. When this action is dispatched,
+ * we pass 'undefined' as the state to the combinedReducer.
+ * This forces all slices to return to their initial state.
+ */
+export const identificationRootReducer = (
+  state: ReturnType<typeof combinedReducer> | undefined,
+  action: UnknownAction
+) => {
+  if (action.type === preferencesReset.type) {
+    state = undefined;
+  }
+  return combinedReducer(state, action);
+};
 
 /**
  * A typed selector hook for internal use within the wallet submodule.

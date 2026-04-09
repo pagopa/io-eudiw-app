@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersistConfig, persistReducer } from 'redux-persist';
-import { resetLifecycle } from './lifecycle';
+import { PersistConfig, persistReducer, purgeStoredState } from 'redux-persist';
 import { WalletCombinedRootState } from '.';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 
@@ -26,10 +25,6 @@ const attestationSlice = createSlice({
     setAttestation: (state, action: PayloadAction<string>) => {
       state.attestation = action.payload;
     }
-  },
-  extraReducers: builder => {
-    // This happens when the wallet state is reset
-    builder.addCase(resetLifecycle, _ => initialState);
   }
 });
 
@@ -49,6 +44,12 @@ export const attestationReducer = persistReducer(
   attestationPersist,
   attestationSlice.reducer
 );
+
+/**
+ * Purges the attestation persisted state from storage.
+ */
+export const purgeAttestationPersistedState = () =>
+  purgeStoredState(attestationPersist);
 
 /**
  * Exports the actions for the attestation slice.

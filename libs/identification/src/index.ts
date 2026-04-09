@@ -7,6 +7,8 @@ export {
   setIdentificationStarted,
   setIdentificationIdentified
 } from './lib/reducer/identification';
+export { purgeIdentificationPersistedState } from './lib/reducer/index';
+export { addIdentificationListeners } from './lib/middleware/index';
 
 export const identificationReducer = {
   identification: identificationRootReducer

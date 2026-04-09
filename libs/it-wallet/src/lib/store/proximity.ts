@@ -1,7 +1,6 @@
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProximityDetails } from '../screens/proximity/ItwProximityPresentationDetails';
-import { resetLifecycle } from './lifecycle';
 import { WalletCombinedRootState } from '.';
 
 /**
@@ -118,10 +117,6 @@ const proximitySlice = createSlice({
     },
     resetProximityQrCode: state => (state.qrCode = undefined),
     resetProximity: _ => initialState
-  },
-  extraReducers: builder => {
-    // This happens when the wallet state is reset
-    builder.addCase(resetLifecycle, _ => initialState);
   }
 });
 

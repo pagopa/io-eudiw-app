@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
 import { FederationEntity } from '../types';
 import { EnrichedPresentationDetails } from '../utils/itwTypesUtils';
-import { resetLifecycle } from './lifecycle';
 import {
   AsyncStatusValues,
   setError,
@@ -103,10 +102,6 @@ const presentationSlice = createSlice({
       state.postDefinition = setInitial();
       state.optionalCredentials = [];
     }
-  },
-  extraReducers: builder => {
-    // This happens when the wallet state is reset
-    builder.addCase(resetLifecycle, _ => initialState);
   }
 });
 

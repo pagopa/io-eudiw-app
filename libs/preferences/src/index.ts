@@ -8,7 +8,9 @@ export {
   selectFontPreference,
   preferencesSetIsBiometricEnabled,
   preferencesSetIsOnboardingDone,
-  selectIsOnboardingComplete
+  preferencesSetIsFirstStartupFalse,
+  selectIsOnboardingComplete,
+  selectIsFirstStartup
 } from './lib/store/preferences';
 
 export const preferencesReducer = {

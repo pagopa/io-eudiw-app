@@ -4,19 +4,51 @@ import {
   ThunkDispatch,
   UnknownAction
 } from '@reduxjs/toolkit';
-import { attestationReducer } from './attestation';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  attestationReducer,
+  purgeAttestationPersistedState
+} from './attestation';
 import { credentialIssuanceStatusReducer } from './credentialIssuance';
-import { credentialsReducer } from './credentials';
-import { instanceReducer } from './instance';
-import { lifecycleReducer } from './lifecycle';
+import {
+  credentialsReducer,
+  purgeCredentialsPersistedState
+} from './credentials';
+import { instanceReducer, purgeInstancePersistedState } from './instance';
+import {
+  lifecycleReducer,
+  purgeLifecyclePersistedState,
+  resetLifecycle
+} from './lifecycle';
 import { pidIssuanceStatusReducer } from './pidIssuance';
 import { presentationReducer } from './presentation';
 import { proximityReducer } from './proximity';
-import { useDispatch, useSelector } from 'react-redux';
-import { DebugRootState } from '@io-eudiw-app/debug-info';
-import { PreferenceRootState } from '@io-eudiw-app/preferences';
 
-export const walletRootReducer = combineReducers({
+// External State Types
+import { DebugRootState } from '@io-eudiw-app/debug-info';
+import {
+  PreferenceRootState,
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
+
+/**
+ * Purges all wallet persisted state from storage.
+ * This should be called when the wallet state is reset
+ * to ensure the persisted state is also cleared.
+ */
+export const purgeWalletPersistedState = () =>
+  Promise.all([
+    purgeInstancePersistedState(),
+    purgeCredentialsPersistedState(),
+    purgeLifecyclePersistedState(),
+    purgeAttestationPersistedState()
+  ]);
+
+/**
+ * Combine all slices into a single base reducer
+ */
+const combinedReducer = combineReducers({
   lifecycle: lifecycleReducer,
   instance: instanceReducer,
   attestation: attestationReducer,
@@ -27,13 +59,27 @@ export const walletRootReducer = combineReducers({
   proximity: proximityReducer
 });
 
-type WalletRootState = ReturnType<typeof walletRootReducer>;
+/**
+ * Root Reducer with Global Reset Logic
+ * We intercept 'preferencesReset' and 'preferencesSetIsFirstStartupFalse'. When these actions are dispatched,
+ * we pass 'undefined' as the state to the combinedReducer.
+ * This forces all slices to return to their initial state.
+ */
+export const walletRootReducer = (
+  state: ReturnType<typeof combinedReducer> | undefined,
+  action: UnknownAction
+) => {
+  if (
+    action.type === resetLifecycle.type ||
+    action.type === preferencesReset.type ||
+    action.type === preferencesSetIsFirstStartupFalse.type
+  ) {
+    state = undefined;
+  }
+  return combinedReducer(state, action);
+};
 
-export type WalletDispatch = ThunkDispatch<
-  WalletCombinedRootState,
-  undefined,
-  UnknownAction
->;
+type WalletRootState = ReturnType<typeof combinedReducer>;
 
 /**
  * This type is required for selectors and middleware in order to correctly type the state of the wallet submodule.
@@ -45,6 +91,12 @@ export type WalletCombinedRootState = {
 } & DebugRootState &
   PreferenceRootState;
 
+export type WalletDispatch = ThunkDispatch<
+  WalletCombinedRootState,
+  undefined,
+  UnknownAction
+>;
+
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   WalletCombinedRootState,
@@ -52,6 +104,8 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   UnknownAction
 >;
 
+/**
+ * HOOKS
+ */
 export const useAppSelector = useSelector.withTypes<WalletCombinedRootState>();
-
 export const useAppDispatch = useDispatch.withTypes<WalletDispatch>();

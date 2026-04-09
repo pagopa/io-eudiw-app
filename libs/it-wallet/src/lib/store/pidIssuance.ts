@@ -3,7 +3,6 @@ import { createInstanceThunk } from '../middleware/instance';
 import { obtainPidThunk } from '../middleware/pid';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { RequestedCredential } from './credentialIssuance';
-import { resetLifecycle } from './lifecycle';
 import {
   AsyncStatusValues,
   setInitial,
@@ -79,8 +78,6 @@ const pidIssuanceStatusSlice = createSlice({
         state.issuance = setError(action.error);
       }
     });
-    // This happens when the wallet state is reset
-    builder.addCase(resetLifecycle, _ => initialState);
   }
 });
 

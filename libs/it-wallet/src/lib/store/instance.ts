@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersistConfig, persistReducer } from 'redux-persist';
-import { resetLifecycle } from './lifecycle';
+import { PersistConfig, persistReducer, purgeStoredState } from 'redux-persist';
 import { WalletCombinedRootState } from '.';
 
 /* State type definition for the instance slice
@@ -26,10 +25,6 @@ const instanceSlice = createSlice({
     setInstanceKeyTag: (state, action: PayloadAction<string>) => {
       state.keyTag = action.payload;
     }
-  },
-  extraReducers: builder => {
-    // This happens when the wallet state is reset
-    builder.addCase(resetLifecycle, _ => initialState);
   }
 });
 
@@ -49,6 +44,12 @@ export const instanceReducer = persistReducer(
   instancePersist,
   instanceSlice.reducer
 );
+
+/**
+ * Purges the instance persisted state from storage.
+ */
+export const purgeInstancePersistedState = () =>
+  purgeStoredState(instancePersist);
 
 /**
  * Exports the actions for the instance slice.

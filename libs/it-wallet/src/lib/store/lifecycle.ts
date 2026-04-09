@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersistConfig, persistReducer } from 'redux-persist';
+import { PersistConfig, persistReducer, purgeStoredState } from 'redux-persist';
 import { WalletCombinedRootState } from '.';
 
 /**
@@ -28,7 +28,7 @@ const initialState: LifecycleSlice = {
 };
 
 /**
- * Redux slice for the lifecycle state. It allows to set and reset the pin.
+ * Redux slice for the lifecycle state.
  */
 const lifecycleSlice = createSlice({
   name: 'lifecycle',
@@ -57,6 +57,12 @@ export const lifecycleReducer = persistReducer(
   lifecyclePersist,
   lifecycleSlice.reducer
 );
+
+/**
+ * Purges the lifecycle persisted state from storage.
+ */
+export const purgeLifecyclePersistedState = () =>
+  purgeStoredState(lifecyclePersist);
 
 /**
  * Exports the actions for the lifecycle slice.

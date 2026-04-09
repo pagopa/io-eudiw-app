@@ -15,6 +15,7 @@ export type PreferencesSlice = {
   sessionId: string;
   isOnboardingComplete: boolean;
   isBiometricEnabled: boolean;
+  isFirstStartup: boolean;
   fontPreference: TypefaceChoice;
 };
 
@@ -27,6 +28,7 @@ const initialState: PreferencesSlice = {
   sessionId: Crypto.randomUUID().toString(),
   isOnboardingComplete: false,
   isBiometricEnabled: false,
+  isFirstStartup: true,
   fontPreference: 'comfortable'
 };
 
@@ -48,6 +50,9 @@ const preferencesSlice = createSlice({
     ) => {
       state.isBiometricEnabled = action.payload;
     },
+    preferencesSetIsFirstStartupFalse: state => {
+      state.isFirstStartup = false;
+    },
     // Font
     preferencesFontSet: (state, action: PayloadAction<TypefaceChoice>) => {
       state.fontPreference = action.payload;
@@ -62,6 +67,7 @@ const preferencesSlice = createSlice({
 export const {
   preferencesSetIsOnboardingDone,
   preferencesSetIsBiometricEnabled,
+  preferencesSetIsFirstStartupFalse,
   preferencesFontSet,
   preferencesReset
 } = preferencesSlice.actions;
@@ -99,6 +105,14 @@ export const selectIsOnboardingComplete = (
  */
 export const selectIsBiometricEnabled = (state: PreferencesPartialRootState) =>
   state.preferences.isBiometricEnabled;
+
+/**
+ * Selects if this is the first startup of the app.
+ * @param state - The root state of the Redux store
+ * @returns a boolean indicating whether this is the first startup of the app
+ */
+export const selectIsFirstStartup = (state: PreferencesPartialRootState) =>
+  state.preferences.isFirstStartup;
 
 /**
  * Selects the session id of the wallet

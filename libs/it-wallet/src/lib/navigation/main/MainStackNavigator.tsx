@@ -1,8 +1,5 @@
 import { NavigatorScreenParams, PathConfigMap } from '@react-navigation/native';
-import {
-  createStackNavigator,
-  TransitionPresets
-} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 // Internal Imports
 import { TabNavigator } from '../tab/TabNavigator';

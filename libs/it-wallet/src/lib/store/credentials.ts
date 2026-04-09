@@ -1,10 +1,9 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersistConfig, persistReducer } from 'redux-persist';
+import { PersistConfig, persistReducer, purgeStoredState } from 'redux-persist';
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
 import { wellKnownCredential } from '../utils/credentials';
 import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 import { StoredCredential } from '../utils/itwTypesUtils';
-import { resetLifecycle } from './lifecycle';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import { WalletCombinedRootState } from '.';
 
@@ -82,10 +81,6 @@ const credentialsSlice = createSlice({
     itwSetClaimValuesHidden: (state, action: PayloadAction<boolean>) => {
       state.valuesHidden = action.payload;
     }
-  },
-  extraReducers: builder => {
-    // This happens when the wallet state is reset
-    builder.addCase(resetLifecycle, _ => initialState);
   }
 });
 
@@ -105,6 +100,12 @@ export const credentialsReducer = persistReducer(
   credentialsPersistor,
   credentialsSlice.reducer
 );
+
+/**
+ * Purges the credentials persisted state from storage.
+ */
+export const purgeCredentialsPersistedState = () =>
+  purgeStoredState(credentialsPersistor);
 
 /**
  * Exports the actions for the credentials slice.

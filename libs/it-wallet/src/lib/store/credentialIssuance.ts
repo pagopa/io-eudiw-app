@@ -3,7 +3,6 @@ import {
   EnrichedPresentationDetails,
   StoredCredential
 } from '../utils/itwTypesUtils';
-import { resetLifecycle } from './lifecycle';
 import {
   AsyncStatusValues,
   setError,
@@ -84,10 +83,6 @@ const credentialIssuanceStatusSlice = createSlice({
       state.statusPostAuth = setSuccess(action.payload.credential);
     },
     resetCredentialIssuance: _ => initialState
-  },
-  extraReducers: builder => {
-    // This happens when the wallet state is reset
-    builder.addCase(resetLifecycle, _ => initialState);
   }
 });
 

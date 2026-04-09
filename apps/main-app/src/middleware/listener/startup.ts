@@ -19,10 +19,13 @@ import {
 } from '@io-eudiw-app/identification';
 import { initEnv } from '@io-eudiw-app/env';
 import {
+  preferencesSetIsFirstStartupFalse,
   preferencesSetIsOnboardingDone,
+  selectIsFirstStartup,
   selectIsOnboardingComplete
 } from '@io-eudiw-app/preferences';
 import { itWalletFeature } from '@io-eudiw-app/it-wallet';
+import { addIdentificationListeners } from '@io-eudiw-app/identification';
 import { startAppListening } from '.';
 import { isNavigationReady } from '@io-eudiw-app/navigation';
 
@@ -99,9 +102,11 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
   listenerApi
 ) => {
   try {
-    // Check env config and device capabilities
-    const state = listenerApi.getState();
+    // Load the env variables
     initEnv();
+
+    // Check for device capabilities in terms of biometrics and screen lock
+    const state = listenerApi.getState();
     const biometricState = await getBiometricState();
     const hasScreenLock = await isPinOrFingerprintSet();
     listenerApi.dispatch(
@@ -126,6 +131,14 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
 
     // Registers all the listeners related to the app features.
     itWalletFeature.addListeners(startAppListening);
+    addIdentificationListeners(startAppListening);
+
+    // Check if this is the first startup app and flip the flag in the store.
+    // This is required because other features might want to know if this is the first time the app is started to clear their persisted state.
+    const isFirstStartup = selectIsFirstStartup(state);
+    if (isFirstStartup) {
+      listenerApi.dispatch(preferencesSetIsFirstStartupFalse());
+    }
 
     // Handle deep linking
     await waitForNavigationToBeReady(listenerApi);
