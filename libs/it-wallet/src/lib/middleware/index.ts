@@ -1,0 +1,17 @@
+import { addCredentialListeners } from './credential';
+import { addPersistenceListeners } from './persistence';
+import { addPidListeners } from './pid';
+import { addPresentationListeners } from './presentation';
+import { addProximityListeners } from './proximity';
+import { AppStartListening } from './types';
+
+/**
+ * Adds all wallet related listeners to the app listener middleware.
+ */
+export const addWalletListeners = (startAppListening: AppStartListening) => {
+  addPidListeners(startAppListening);
+  addCredentialListeners(startAppListening);
+  addPresentationListeners(startAppListening);
+  addProximityListeners(startAppListening);
+  addPersistenceListeners(startAppListening);
+};
