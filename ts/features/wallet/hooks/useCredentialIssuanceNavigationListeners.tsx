@@ -16,17 +16,25 @@ export const useCredentialIssuanceNavigationListeners = () => {
   const navigation =
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
   /**
-   * If the pre auth request is successful, navigate to the trust screen
-   * where the user will be requested to confirm the presentation of the required credentials and claims
-   * to obtain the requested credential.
+   * As soon as the pre auth request starts loading (or has already succeeded),
+   * navigate to the trust screen. The trust screen itself will show a loading state
+   * while the required claims are being fetched and render its content once ready.
    */
   useEffect(() => {
-    if (preAuthStatus.success.status && !shouldIssuePidFirst) {
+    if (
+      (preAuthStatus.loading || preAuthStatus.success.status) &&
+      !shouldIssuePidFirst
+    ) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'CREDENTIAL_ISSUANCE_TRUST'
       });
     }
-  }, [preAuthStatus.success, navigation, shouldIssuePidFirst]);
+  }, [
+    preAuthStatus.loading,
+    preAuthStatus.success.status,
+    navigation,
+    shouldIssuePidFirst
+  ]);
 
   /**
    * If an error occurs during the pre auth request, navigate to the failure screen.
