@@ -43,7 +43,7 @@ platform :android do
     version_code = ENV['VERSION_CODE'].to_i
     download_universal_apk_from_google_play(
       package_name: "it.pagopa.io.app.poc.eudiw",
-      destination: "./android/ioeudiw-universal.apk",
+      destination: "./android/DWalletLab-universal.apk",
       version_code: version_code
     )
   end
@@ -79,10 +79,10 @@ platform :ios do
     # Temporary disables automatic code signing to avoid issues during build
     update_code_signing_settings(
       use_automatic_signing: false,
-      path: "ios/ioeudiw.xcodeproj",
+      path: "ios/DWalletLab.xcodeproj",
       team_id: "M2X5YQ4BJ7",
       profile_name: "match AppStore it.pagopa.app.io.poc.eudiw",
-      targets: ["ioeudiw"],
+      targets: ["DWalletLab"],
       build_configurations: ["Release"],
       code_sign_identity: "iPhone Distribution",
       sdk: "iphoneos*",
@@ -90,12 +90,12 @@ platform :ios do
 
     # build the app
     gym(
-      scheme: "ioeudiw",
+      scheme: "DWalletLab",
       clean: true,
       export_method: "app-store",
-      workspace: "ios/ioeudiw.xcworkspace",
+      workspace: "ios/DWalletLab.xcworkspace",
       include_symbols: false,
-      output_name: "ioeudiw.ipa",
+      output_name: "DWalletLab.ipa",
       output_directory: "./ios"
     )
 

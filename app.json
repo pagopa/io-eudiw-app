@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "ioeudiw",
-    "slug": "ioeudiw",
-    "version": "2.6.2",
+    "name": "DWalletLab",
+    "slug": "dwalletlab",
+    "version": "2.8.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -27,13 +27,13 @@
         "NSBluetoothScanUsageDescription": "This app uses Bluetooth to connect to external devices.",
         "NSLocationWhenInUseUsageDescription": "This app uses your location to improve user experience."
       },
-     "icon": {
-       "light": "./assets/images/icons/ios-default.png"
-     }
+      "icon": {
+        "light": "./assets/images/icons/ios-default.png"
+      }
     },
     "android": {
       "package": "it.pagopa.io.app.poc.eudiw",
-      "versionCode": 59,
+      "versionCode": 61,
       "permissions": [
         "android.permission.BLUETOOTH_SCAN",
         "android.permission.BLUETOOTH_CONNECT",
