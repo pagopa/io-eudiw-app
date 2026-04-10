@@ -8,7 +8,6 @@ import { useHardwareBackButton } from '../../../hooks/useHardwareBackButton';
 import { MainNavigatorParamsList } from '../../../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../../../navigation/main/routes';
 import { useAppDispatch, useAppSelector } from '../../../store';
-import { useCredentialIssuanceNavigationListeners } from '../hooks/useCredentialIssuanceNavigationListeners';
 import WALLET_ROUTES from '../navigation/routes';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
 import { lifecycleIsValidSelector } from '../store/lifecycle';
@@ -28,8 +27,6 @@ const ItwCredentialNotFound = ({
   useHardwareBackButton(() => true);
 
   const shouldIssuePidFirst = useAppSelector(lifecycleIsValidSelector);
-  useCredentialIssuanceNavigationListeners();
-
   const navigateToCredential = () => {
     if (shouldIssuePidFirst) {
       dispatch(setPendingCredential({ credential: credentialType }));
@@ -41,6 +38,9 @@ const ItwCredentialNotFound = ({
     dispatch(
       setCredentialIssuancePreAuthRequest({ credential: credentialType })
     );
+    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+      screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
+    });
   };
 
   const handleClose = () => {

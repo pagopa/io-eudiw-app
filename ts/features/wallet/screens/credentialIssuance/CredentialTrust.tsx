@@ -41,7 +41,7 @@ import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
  */
 const CredentialTrust = () => {
   const dispatch = useAppDispatch();
-  const { success: preAuthSuccess } = useAppSelector(
+  const { success: preAuthSuccess, error: preAuthError } = useAppSelector(
     selectCredentialIssuancePreAuthStatus
   );
   const { t } = useTranslation(['global', 'wallet']);
@@ -120,13 +120,13 @@ const CredentialTrust = () => {
   }, [navigation, success.status]);
 
   /**
-   * If an error occurs during the post auth request, navigate to the error screen.
+   * If an error occurs during the pre auth or post auth request, navigate to the error screen.
    */
   useEffect(() => {
-    if (error.status) {
+    if (preAuthError.status || error.status) {
       navigateToErrorScreen();
     }
-  });
+  }, [preAuthError.status, error.status, navigateToErrorScreen]);
 
   /**
    * While the pre auth response (required claims) is still being fetched,
