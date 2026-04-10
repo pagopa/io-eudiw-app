@@ -1,4 +1,5 @@
 import {
+  Body,
   FeatureInfo,
   FooterActions,
   ForceScrollDownView,
@@ -14,7 +15,9 @@ import { Fragment, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import IOMarkdown from '../../../../components/IOMarkdown';
+import { LoadingScreenContent } from '../../../../components/LoadingScreenContent';
 import { useDisableGestureNavigation } from '../../../../hooks/useDisableGestureNavigation';
+import { useHardwareBackButton } from '../../../../hooks/useHardwareBackButton';
 import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import { useNavigateToWalletWithReset } from '../../../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch, useAppSelector } from '../../../../store';
@@ -38,7 +41,7 @@ import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
  */
 const CredentialTrust = () => {
   const dispatch = useAppDispatch();
-  const { success: preAuthSuccess } = useAppSelector(
+  const { success: preAuthSuccess, error: preAuthError } = useAppSelector(
     selectCredentialIssuancePreAuthStatus
   );
   const { t } = useTranslation(['global', 'wallet']);
@@ -85,14 +88,24 @@ const CredentialTrust = () => {
     }
   });
 
+  const presentationDetails = preAuthSuccess.status
+    ? preAuthSuccess.data
+    : undefined;
+  const isPreAuthReady = presentationDetails !== undefined;
+
   useHeaderSecondLevel({
     title: '',
+    headerShown: isPreAuthReady,
     goBack: () => {
       dismissalDialog.show();
     }
   });
 
   useDisableGestureNavigation();
+
+  // While the pre auth request is still loading, block the hardware back button
+  // so the user cannot exit the trust screen mid-fetch.
+  useHardwareBackButton(() => !isPreAuthReady);
 
   /**
    * When the post auth request is successful, navigate to the preview screen
@@ -107,18 +120,32 @@ const CredentialTrust = () => {
   }, [navigation, success.status]);
 
   /**
-   * If an error occurs during the post auth request, navigate to the error screen.
+   * If an error occurs during the pre auth or post auth request, navigate to the error screen.
    */
   useEffect(() => {
-    if (error.status) {
+    if (preAuthError.status || error.status) {
       navigateToErrorScreen();
     }
-  });
+  }, [preAuthError.status, error.status, navigateToErrorScreen]);
 
-  const presentationDetails = preAuthSuccess.status
-    ? preAuthSuccess.data
-    : undefined;
-  const requiredClaimsByCredential = presentationDetails?.map(detail =>
+  /**
+   * While the pre auth response (required claims) is still being fetched,
+   * show a loading screen. The required claims are needed to render the
+   * trust content below.
+   */
+  if (!presentationDetails) {
+    return (
+      <LoadingScreenContent
+        contentTitle={t('wallet:presentation.loading.title')}
+      >
+        <Body style={{ textAlign: 'center' }}>
+          {t('wallet:presentation.loading.subtitle')}
+        </Body>
+      </LoadingScreenContent>
+    );
+  }
+
+  const requiredClaimsByCredential = presentationDetails.map(detail =>
     detail.claimsToDisplay.map(claim => ({
       claim,
       source: getCredentialNameFromType(detail.vct, '')
@@ -149,7 +176,7 @@ const CredentialTrust = () => {
           iconName="security"
           iconColor={theme['icon-default']}
         />
-        {requiredClaimsByCredential?.map((requiredClaims, index) => (
+        {requiredClaimsByCredential.map((requiredClaims, index) => (
           <Fragment
             key={`${requiredClaims[0].source ?? 'GENERIC_CREDENTIAL'}_${index}`}
           >

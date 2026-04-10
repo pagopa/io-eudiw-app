@@ -12,7 +12,6 @@ import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import MAIN_ROUTES from '../../../../navigation/main/routes';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import { OnboardingModuleCredential } from '../../components/credential/OnboardingModuleCredential';
-import { useCredentialIssuanceNavigationListeners } from '../../hooks/useCredentialIssuanceNavigationListeners';
 import WALLET_ROUTES from '../../navigation/routes';
 import {
   resetCredentialIssuance,
@@ -51,8 +50,6 @@ const CredentialsList = () => {
   const isCredentialRequested = (type: string) => requestedCredential === type;
 
   const shouldIssuePidFirst = useAppSelector(lifecycleIsOperationalSelector);
-  useCredentialIssuanceNavigationListeners();
-
   useHeaderSecondLevel({
     title: '',
     goBack
@@ -95,6 +92,9 @@ const CredentialsList = () => {
                   dispatch(
                     setCredentialIssuancePreAuthRequest({ credential: c })
                   );
+                  navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+                    screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
+                  });
                 }}
               />
             ))}
