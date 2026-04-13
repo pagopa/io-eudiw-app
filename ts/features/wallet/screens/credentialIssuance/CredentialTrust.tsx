@@ -123,7 +123,7 @@ const CredentialTrust = () => {
    * If an error occurs during the pre auth or post auth request, navigate to the error screen.
    */
   useEffect(() => {
-    if (preAuthError.status || error.status) {
+    if (error.status) {
       navigateToErrorScreen();
     }
   }, [preAuthError.status, error.status, navigateToErrorScreen]);
