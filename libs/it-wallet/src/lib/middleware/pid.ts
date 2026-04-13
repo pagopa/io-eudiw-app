@@ -75,6 +75,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
         await Credential.Issuance.startUserAuthorization(
           issuerConf,
           [credentialConfigId],
+          { proofType: 'none' },
           {
             walletInstanceAttestation,
             redirectUri,

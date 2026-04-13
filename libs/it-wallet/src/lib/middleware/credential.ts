@@ -105,6 +105,7 @@ const obtainCredentialListener: AppListenerWithAction<
       await Credential.Issuance.startUserAuthorization(
         issuerConf,
         [credentialConfigId],
+        { proofType: 'none' },
         {
           walletInstanceAttestation,
           redirectUri,

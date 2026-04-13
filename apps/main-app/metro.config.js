@@ -12,6 +12,16 @@ module.exports = (() => {
   config.resolver = {
     ...resolver,
     assetExts: resolver.assetExts.filter(ext => ext !== 'svg'),
+    resolveRequest: (context, moduleName, platform) => {
+      if (moduleName === 'crypto') {
+        return context.resolveRequest(
+          context,
+          'react-native-quick-crypto',
+          platform
+        );
+      }
+      return context.resolveRequest(context, moduleName, platform);
+    },
     sourceExts: [...resolver.sourceExts, 'svg']
   };
 

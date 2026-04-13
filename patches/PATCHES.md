@@ -4,7 +4,7 @@ This file describes the reason for the patches applied.
 
 ### @pagopa__io-react-native-wallet.patch
 
-Created on: **02/12/2025**
+Created on: **18/03/2026**
 
 #### Reason
 
