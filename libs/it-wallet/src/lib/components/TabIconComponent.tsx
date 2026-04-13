@@ -19,7 +19,7 @@ type TabIconComponentProps = {
 export const TabIconComponent = memo(
   ({ focused, iconName, iconNameFocused, color }: TabIconComponentProps) => (
     // accessibilityLabel={""} in order to read the font icon, without modify the library element
-    <View accessibilityLabel={''}>
+    <View accessibilityLabel={''} pointerEvents="none">
       <AnimatedIcon
         name={focused ? iconNameFocused : iconName}
         size={24}

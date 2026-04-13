@@ -1,0 +1,12 @@
+diff --git a/src/components/buttons/IconButton.tsx b/src/components/buttons/IconButton.tsx
+index 5664b15856ab1fb7c2a08d8b4c45c5d63c062025..83aa9b6d3bea6e8ad3298f55886a2613b360e71f 100644
+--- a/src/components/buttons/IconButton.tsx
++++ b/src/components/buttons/IconButton.tsx
+@@ -121,6 +121,7 @@ export const IconButton = ({
+       testID={testID}
+     >
+       <Animated.View
++        pointerEvents={"none"}
+         style={[
+           IOIconButtonStyles.button,
+           IOIconButtonStyles.buttonSizeSmall,

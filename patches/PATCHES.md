@@ -33,3 +33,16 @@ The following check is temporarily disabled:
 - Once valid x5chain certificates and a trust anchor are available, restore the original verification logic: await verifyX5chain(x5chain, x509CertRoot);
 - Remove the patch file from the patches/ directory.
 - Remove this entry from patches.md.
+
+### @pagopa__io-app-design-system.patch
+
+Created on: **13/04/2026**
+
+#### Reason
+
+This patch fixes the touch issue on SVG buttons. It's caused by SVG stealing touch events or not properly calculating hit areas.
+
+### How to remove in the future:
+
+- This should be removed once the patch gets applied to the design system library.
+

@@ -35,13 +35,9 @@ const AnimatedCameraMarker = ({
   });
 
   const drawMarkerCorner = (rotation: number, markerSize: number) => (
-    <CameraMarkerCorner
-      width={markerSize}
-      height={markerSize}
-      style={{
-        transform: [{ rotate: `${rotation}deg` }]
-      }}
-    />
+    <View style={{ transform: [{ rotate: `${rotation}deg` }] }}>
+      <CameraMarkerCorner width={markerSize} height={markerSize} />
+    </View>
   );
 
   return (
