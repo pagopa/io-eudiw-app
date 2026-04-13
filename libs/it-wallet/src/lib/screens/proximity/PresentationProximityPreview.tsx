@@ -111,7 +111,7 @@ const PresentationProximityPreview = ({ route }: Props) => {
   const cancelAlert = () => {
     Alert.alert(t('common:cancelOperation.title'), '', [
       {
-        text: t('common:cancelOperation.cancel'),
+        text: t('common:cancelOperation.confirm'),
         onPress: cancel,
         style: 'destructive'
       },
