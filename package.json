@@ -15,8 +15,8 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
-    "react-native-svg": "15.15.1",
-    "react-native-svg-transformer": "1.5.1"
+    "react-native-svg": "15.12.1",
+    "react-native-svg-transformer": "1.5.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
