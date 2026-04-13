@@ -39,7 +39,7 @@ overrides:
 
 patchedDependencies:
   '@pagopa/io-app-design-system':
-    hash: d2738bce2096d324e2303bc66cfc63bac05c17b23d3156cf22e9bdbe3c9f9b8e
+    hash: 81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4
     path: patches/@pagopa__io-app-design-system.patch
   '@pagopa/io-react-native-wallet':
     hash: 1e926e75c3bed6d82e17c49840e6377c69a30bb96611899e893a7196346c9214
@@ -235,7 +235,7 @@ importers:
         version: link:../../libs/preferences
       '@pagopa/io-app-design-system':
         specifier: 'catalog:'
-        version: 5.12.1(patch_hash=d2738bce2096d324e2303bc66cfc63bac05c17b23d3156cf22e9bdbe3c9f9b8e)(2c810e36a0db694378a49f0766fc43f4)
+        version: 5.12.1(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(2c810e36a0db694378a49f0766fc43f4)
       '@pagopa/io-react-native-crypto':
         specifier: ^1.2.3
         version: 1.2.4(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
@@ -11665,7 +11665,7 @@ snapshots:
   '@oxc-resolver/binding-win32-x64-msvc@11.19.1':
     optional: true
 
-  '@pagopa/io-app-design-system@5.12.1(patch_hash=d2738bce2096d324e2303bc66cfc63bac05c17b23d3156cf22e9bdbe3c9f9b8e)(2c810e36a0db694378a49f0766fc43f4)':
+  '@pagopa/io-app-design-system@5.12.1(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(2c810e36a0db694378a49f0766fc43f4)':
     dependencies:
       auto-changelog: 2.5.0(encoding@0.1.13)
       lodash: 4.17.23

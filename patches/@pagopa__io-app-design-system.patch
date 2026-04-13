@@ -1,8 +1,8 @@
 diff --git a/src/components/buttons/IconButton.tsx b/src/components/buttons/IconButton.tsx
-index 5664b15856ab1fb7c2a08d8b4c45c5d63c062025..83aa9b6d3bea6e8ad3298f55886a2613b360e71f 100644
+index adf70825b1c8f206a15641a4a1368c247f9b0ea2..eac2b5bc3627a5bc46a0b43512b4f8e2d9359cde 100644
 --- a/src/components/buttons/IconButton.tsx
 +++ b/src/components/buttons/IconButton.tsx
-@@ -121,6 +121,7 @@ export const IconButton = ({
+@@ -122,6 +122,7 @@ export const IconButton = ({
        testID={testID}
      >
        <Animated.View
@@ -10,3 +10,15 @@ index 5664b15856ab1fb7c2a08d8b4c45c5d63c062025..83aa9b6d3bea6e8ad3298f55886a2613
          style={[
            IOIconButtonStyles.button,
            IOIconButtonStyles.buttonSizeSmall,
+diff --git a/src/components/buttons/IconButtonSolid.tsx b/src/components/buttons/IconButtonSolid.tsx
+index 209a2a37cbe89f3475c6df1f471ee8a68d3a9edf..fb323d095de0e012fac1e487ee2d1debd2f33e8d 100644
+--- a/src/components/buttons/IconButtonSolid.tsx
++++ b/src/components/buttons/IconButtonSolid.tsx
+@@ -102,6 +102,7 @@ export const IconButtonSolid = ({
+       style={{ alignSelf: "flex-start" }}
+     >
+       <Animated.View
++        pointerEvents={"none"}
+         style={[
+           IOIconButtonStyles.button,
+           IOIconButtonStyles.buttonSizeLarge,
