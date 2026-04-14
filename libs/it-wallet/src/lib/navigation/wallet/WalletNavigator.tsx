@@ -6,7 +6,6 @@ import CredentialTrust from '../../screens/credentialIssuance/CredentialTrust';
 import { IdentificationMethod } from '../../screens/pidIssuance/IdentificationMethod';
 import PidIssuanceFailure from '../../screens/pidIssuance/PidIssuanceFailure';
 import PidIssuancRequest from '../../screens/pidIssuance/PidIssuanceRequest';
-import PidIssuanceSuccess from '../../screens/pidIssuance/PidIssuanceSuccess';
 import { WalletInstanceCreation } from '../../screens/pidIssuance/WalletInstanceCreation';
 import {
   ItwPresentationCredentialCardModal,
@@ -97,10 +96,6 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PID_ISSUANCE.REQUEST}
         component={PidIssuancRequest}
-      />
-      <Stack.Screen
-        name={WALLET_ROUTES.PID_ISSUANCE.SUCCESS}
-        component={PidIssuanceSuccess}
       />
       <Stack.Screen
         name={WALLET_ROUTES.PRESENTATION.PID_DETAIL}

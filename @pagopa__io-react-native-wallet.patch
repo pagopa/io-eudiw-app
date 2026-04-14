@@ -146,21 +146,11 @@ index d1cef946f0e8ee096859c9bf1ff51bbb11c8b436..2bdd95869499dc88c1c65ae36dcd84f9
 +
 +  return encryptedResponse;
  };
-<<<<<<<< HEAD:patches/@pagopa__io-react-native-wallet.patch
-+
-+
-diff --git a/src/credential/issuance/07-verify-and-parse-credential.ts b/src/credential/issuance/07-verify-and-parse-credential.ts
-index 374f15b9be1ee538ca8f0fa90e173cba3ce3073c..6f887806c2a40488bda817d7c78c917e272f55e6 100644
---- a/src/credential/issuance/07-verify-and-parse-credential.ts
-+++ b/src/credential/issuance/07-verify-and-parse-credential.ts
-@@ -426,9 +426,9 @@ const verifyAndParseCredentialMDoc: VerifyAndParseCredential = async (
-========
 diff --git a/src/credential/issuance/07-verify-and-parse-credential.ts b/src/credential/issuance/07-verify-and-parse-credential.ts
 index 05fcb6d46ac0ef161ea1b6faf381261d15b1994c..49aa98d4887af06cfe95db736aefa4d50ad719e3 100644
 --- a/src/credential/issuance/07-verify-and-parse-credential.ts
 +++ b/src/credential/issuance/07-verify-and-parse-credential.ts
 @@ -470,9 +470,9 @@ const verifyAndParseCredentialMDoc: VerifyAndParseCredential = async (
->>>>>>>> b9f7801 (chore:  Update io-react-native-wallet to 2.5.0 (#175)):patches/@pagopa-io-react-native-wallet-npm-2.5.0-7edb896e81.patch
    { credentialCryptoContext, ignoreMissingAttributes },
    x509CertRoot
  ) => {
@@ -185,4 +175,3 @@ index 83f61501ce4ea4cedd469c453d17867d9ac6aac9..f6a883fcdf8f759d14c4d26d70b69e84
 +  // await verifyX5chain(x5chain, x509CertRoot);
  
    const coseSign1 = issuerSigned.issuerAuth.rawValue;
- 
