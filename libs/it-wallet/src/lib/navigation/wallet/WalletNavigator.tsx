@@ -42,7 +42,6 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.ID_METHOD]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.REQUEST]: undefined;
-  [WALLET_ROUTES.PID_ISSUANCE.SUCCESS]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.FAILURE]: undefined;
 
   // Credential presentation
