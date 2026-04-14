@@ -30,5 +30,11 @@
   "peerDependencies": {
     "react": "^19.1.0",
     "react-native": "0.81.5"
+  },
+  "devDependencies": {
+    "@testing-library/react-native": "catalog:",
+    "babel-preset-expo": "catalog:",
+    "jest-expo": "catalog:",
+    "react-test-renderer": "catalog:"
   }
 }

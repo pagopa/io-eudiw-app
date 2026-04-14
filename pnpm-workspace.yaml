@@ -8,16 +8,31 @@ packages:
   - 'libs/debug-info'
   - 'libs/navigation'
 catalog:
-  '@pagopa/io-app-design-system': 5.12.1
+  'react': 19.1.0
+  'react-dom': 19.1.0
+  'react-native': 0.81.5
+  'expo': ~54.0.33
+  '@expo/cli': ~54.0.16
+  '@expo/metro-config': ~54.0.9
+  '@expo/metro-runtime': ~6.1.2
+  'expo-status-bar': ~3.0.8
+  'expo-system-ui': ~6.0.8
+  'react-native-svg': 15.15.3
+  'react-native-svg-transformer': 1.5.1
   '@react-navigation/bottom-tabs': 7.4.0
   '@react-navigation/native': 7.1.8
   '@react-navigation/stack': 7.6.11
   '@reduxjs/toolkit': 2.11.1
+  'react-redux': 9.2.0
+  '@pagopa/io-app-design-system': 5.12.1
   '@shopify/react-native-skia': 2.4.18
   'react-native-reanimated': 4.2.2
   'react-native-worklets': 0.7.4
-  'react-redux': 9.2.0
   'serialize-error': 13.0.1
+  'babel-preset-expo': ~54.0.7
+  'jest-expo': ~54.0.13
+  '@testing-library/react-native': 13.3.3
+  'react-test-renderer': 19.1.0
 onlyBuiltDependencies:
   - '@shopify/react-native-skia'
 overrides:
