@@ -30,8 +30,7 @@ import {
 import { debugReducer, DebugRootState } from '@io-eudiw-app/debug-info';
 import {
   identificationReducer,
-  IdentificationRootState,
-  addIdentificationListeners
+  IdentificationRootState
 } from '@io-eudiw-app/identification';
 
 // 1. Explicitly type the combined state of all your reducers.

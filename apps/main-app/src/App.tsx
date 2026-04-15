@@ -19,8 +19,9 @@ import initI18n from './i18n';
 
 require('@pagopa/react-native-nodelibs/globals');
 
+void initI18n();
+
 export default function App() {
-  void initI18n();
 
   return (
     <GestureHandlerRootView style={styles.gestureHandlerContainer}>
