@@ -4,7 +4,7 @@ import {
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { IOScrollViewWithLargeHeader } from '../../../../components/IOScrollViewWithLargeHeader';
@@ -12,10 +12,10 @@ import { useHeaderSecondLevel } from '../../../../hooks/useHeaderSecondLevel';
 import MAIN_ROUTES from '../../../../navigation/main/routes';
 import { useAppDispatch, useAppSelector } from '../../../../store';
 import { OnboardingModuleCredential } from '../../components/credential/OnboardingModuleCredential';
-import { useCredentialIssuanceNavigationListeners } from '../../hooks/useCredentialIssuanceNavigationListeners';
 import WALLET_ROUTES from '../../navigation/routes';
 import {
   resetCredentialIssuance,
+  selectCredentialIssuancePreAuthStatus,
   selectRequestedCredential,
   setCredentialIssuancePreAuthRequest
 } from '../../store/credentialIssuance';
@@ -51,7 +51,23 @@ const CredentialsList = () => {
   const isCredentialRequested = (type: string) => requestedCredential === type;
 
   const shouldIssuePidFirst = useAppSelector(lifecycleIsOperationalSelector);
-  useCredentialIssuanceNavigationListeners();
+  const preAuthStatus = useAppSelector(selectCredentialIssuancePreAuthStatus);
+
+  useEffect(() => {
+    if (preAuthStatus.success.status && !shouldIssuePidFirst) {
+      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+        screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
+      });
+    }
+  }, [preAuthStatus.success, navigation, shouldIssuePidFirst]);
+
+  useEffect(() => {
+    if (preAuthStatus.error.status && !shouldIssuePidFirst) {
+      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+        screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE
+      });
+    }
+  }, [preAuthStatus.error, navigation, shouldIssuePidFirst]);
 
   useHeaderSecondLevel({
     title: '',
