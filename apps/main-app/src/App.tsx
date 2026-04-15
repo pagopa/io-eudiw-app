@@ -22,7 +22,6 @@ require('@pagopa/react-native-nodelibs/globals');
 void initI18n();
 
 export default function App() {
-
   return (
     <GestureHandlerRootView style={styles.gestureHandlerContainer}>
       <SafeAreaProvider>

@@ -32,6 +32,7 @@ import {
   identificationReducer,
   IdentificationRootState
 } from '@io-eudiw-app/identification';
+import { takeLatestEffect } from '@io-eudiw-app/commons';
 
 // 1. Explicitly type the combined state of all your reducers.
 export type AppRootState = DebugRootState &
@@ -88,10 +89,13 @@ export const store: EnhancedStore<AppRootState> = configureStore({
 
 /**
  * Start global listeners.
+ * Clear any previously registered listeners first to avoid duplicates on hot reload,
+ * since listenerMiddleware is a module-level singleton that persists across re-evaluations.
  */
+listenerMiddleware.clearListeners();
 startAppListening({
   matcher: isAnyOf(startupSetLoading, preferencesReset),
-  effect: startupListener
+  effect: takeLatestEffect(startupListener)
 });
 
 /**
