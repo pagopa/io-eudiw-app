@@ -29,7 +29,7 @@ type CredentialIssuanceStatusSlice = {
 };
 
 // Initial state for the credentialIssuance slice
-const initialState: CredentialIssuanceStatusSlice = {
+export const initialState: CredentialIssuanceStatusSlice = {
   requestedCredential: undefined,
   requestedCredentialType: undefined,
   statusPreAuth: setInitial(),

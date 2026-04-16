@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersistConfig, persistReducer, purgeStoredState } from 'redux-persist';
+import { PersistConfig, persistReducer } from 'redux-persist';
 import { WalletCombinedRootState } from '.';
 
 /**
@@ -23,7 +23,7 @@ type LifecycleSlice = Readonly<{
 }>;
 
 // Initial state for the lifecycle slice
-const initialState: LifecycleSlice = {
+export const initialState: LifecycleSlice = {
   lifecycle: Lifecycle.LIFECYCLE_OPERATIONAL
 };
 
@@ -57,12 +57,6 @@ export const lifecycleReducer = persistReducer(
   lifecyclePersist,
   lifecycleSlice.reducer
 );
-
-/**
- * Purges the lifecycle persisted state from storage.
- */
-export const purgeLifecyclePersistedState = () =>
-  purgeStoredState(lifecyclePersist);
 
 /**
  * Exports the actions for the lifecycle slice.

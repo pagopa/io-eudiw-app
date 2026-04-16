@@ -5,11 +5,14 @@ import {
   ThunkDispatch,
   UnknownAction
 } from '@reduxjs/toolkit';
-import { pinReducer, PinState, purgePinPersistedState } from './pin';
+import { pinReducer, PinState } from './pin';
 import {
   PreferenceRootState,
-  preferencesReset
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
+import { initialState as identificationInitialState } from './identification';
+import { initialState as pinInitialState } from './pin';
 
 export type IdentificationCombinedRootState = {
   identification: {
@@ -29,13 +32,6 @@ export type IdentificationDispatch = ThunkDispatch<
   UnknownAction
 >;
 
-/**
- * Purges all identification persisted state from storage.
- * This should be called when the identification state is reset
- * to ensure the persisted state is also cleared.
- */
-export const purgeIdentificationPersistedState = () => purgePinPersistedState();
-
 const combinedReducer = combineReducers({
   identification: identificationReducer,
   pin: pinReducer
@@ -43,16 +39,26 @@ const combinedReducer = combineReducers({
 
 /**
  * Root Reducer with Global Reset Logic
- * We intercept 'preferencesReset'. When this action is dispatched,
- * we pass 'undefined' as the state to the combinedReducer.
- * This forces all slices to return to their initial state.
+ * We intercept 'preferencesReset' and 'preferencesSetIsFirstStartupFalse'.
+ * When these actions are dispatched this forces all slices to return to their initial state.
  */
 export const identificationRootReducer = (
   state: ReturnType<typeof combinedReducer> | undefined,
   action: UnknownAction
 ) => {
-  if (action.type === preferencesReset.type) {
-    state = undefined;
+  if (
+    action.type === preferencesReset.type ||
+    action.type === preferencesSetIsFirstStartupFalse.type
+  ) {
+    state = state
+      ? {
+          pin: {
+            ...pinInitialState,
+            _persist: state.pin._persist
+          },
+          identification: identificationInitialState
+        }
+      : state;
   }
   return combinedReducer(state, action);
 };

@@ -44,7 +44,7 @@ type PresentationSlice = {
 };
 
 // Initial state for the presentation slice
-const initialState: PresentationSlice = {
+export const initialState: PresentationSlice = {
   preDefinition: setInitial(),
   postDefinition: setInitial(),
   optionalCredentials: []

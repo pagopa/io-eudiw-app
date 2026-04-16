@@ -22,7 +22,7 @@ type PidIssuanceStatusSlice = {
 };
 
 // Initial state for the pidIssuance slice
-const initialState: PidIssuanceStatusSlice = {
+export const initialState: PidIssuanceStatusSlice = {
   instanceCreation: setInitial(),
   issuance: setInitial(),
   pendingCredential: undefined

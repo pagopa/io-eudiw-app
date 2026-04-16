@@ -1,5 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersistConfig, persistReducer, purgeStoredState } from 'redux-persist';
+import { PersistConfig, persistReducer } from 'redux-persist';
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
 import { wellKnownCredential } from '../utils/credentials';
 import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
@@ -19,7 +19,7 @@ type CredentialsSlice = {
 };
 
 // Initial state for the credential slice
-const initialState: CredentialsSlice = {
+export const initialState: CredentialsSlice = {
   credentials: [],
   valuesHidden: false
 };
@@ -100,12 +100,6 @@ export const credentialsReducer = persistReducer(
   credentialsPersistor,
   credentialsSlice.reducer
 );
-
-/**
- * Purges the credentials persisted state from storage.
- */
-export const purgeCredentialsPersistedState = () =>
-  purgeStoredState(credentialsPersistor);
 
 /**
  * Exports the actions for the credentials slice.

@@ -13,7 +13,7 @@ export type IdentificationSlice = {
   isValidatingTask: boolean;
 };
 
-const initialState: IdentificationSlice = {
+export const initialState: IdentificationSlice = {
   status: 'unidentified',
   canResetPin: false,
   isValidatingTask: false

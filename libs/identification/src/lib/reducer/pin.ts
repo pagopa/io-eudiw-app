@@ -1,6 +1,6 @@
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersistConfig, persistReducer, purgeStoredState } from 'redux-persist';
+import { PersistConfig, persistReducer } from 'redux-persist';
 import { IdentificationCombinedRootState } from '.';
 
 /*
@@ -12,7 +12,7 @@ export type PinState = Readonly<{
 }>;
 
 // Initial state for the pin slice
-const initialState: PinState = {
+export const initialState: PinState = {
   pin: undefined
 };
 
@@ -48,11 +48,6 @@ const pinPersist: PersistConfig<PinState> = {
  * Persisted reducer for the pin slice.
  */
 export const pinReducer = persistReducer(pinPersist, pinSlice.reducer);
-
-/**
- * Purges the pin persisted state from storage.
- */
-export const purgePinPersistedState = () => purgeStoredState(pinPersist);
 
 /**
  * Selects the pin.

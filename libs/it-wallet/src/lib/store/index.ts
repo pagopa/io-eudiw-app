@@ -5,21 +5,11 @@ import {
   UnknownAction
 } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  attestationReducer,
-  purgeAttestationPersistedState
-} from './attestation';
+import { attestationReducer } from './attestation';
 import { credentialIssuanceStatusReducer } from './credentialIssuance';
-import {
-  credentialsReducer,
-  purgeCredentialsPersistedState
-} from './credentials';
-import { instanceReducer, purgeInstancePersistedState } from './instance';
-import {
-  lifecycleReducer,
-  purgeLifecyclePersistedState,
-  resetLifecycle
-} from './lifecycle';
+import { credentialsReducer } from './credentials';
+import { instanceReducer } from './instance';
+import { lifecycleReducer, resetLifecycle } from './lifecycle';
 import { pidIssuanceStatusReducer } from './pidIssuance';
 import { presentationReducer } from './presentation';
 import { proximityReducer } from './proximity';
@@ -31,19 +21,14 @@ import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
-
-/**
- * Purges all wallet persisted state from storage.
- * This should be called when the wallet state is reset
- * to ensure the persisted state is also cleared.
- */
-export const purgeWalletPersistedState = () =>
-  Promise.all([
-    purgeInstancePersistedState(),
-    purgeCredentialsPersistedState(),
-    purgeLifecyclePersistedState(),
-    purgeAttestationPersistedState()
-  ]);
+import { initialState as lifeCycleInitialState } from './lifecycle';
+import { initialState as instanceInitialState } from './instance';
+import { initialState as attestationInitialState } from './attestation';
+import { initialState as credentialIssuanceInitialState } from './credentialIssuance';
+import { initialState as credentialInitialState } from './credentials';
+import { initialState as pidIssuanceInitialState } from './pidIssuance';
+import { initialState as presentationInitialState } from './presentation';
+import { initialState as proximityInitialState } from './proximity';
 
 /**
  * Combine all slices into a single base reducer
@@ -61,9 +46,8 @@ const combinedReducer = combineReducers({
 
 /**
  * Root Reducer with Global Reset Logic
- * We intercept 'preferencesReset' and 'preferencesSetIsFirstStartupFalse'. When these actions are dispatched,
- * we pass 'undefined' as the state to the combinedReducer.
- * This forces all slices to return to their initial state.
+ * We intercept 'preferencesReset', 'preferencesSetIsFirstStartupFalse' and 'resetLifecycle'.
+ * When these actions are dispatched this forces all slices to return to their initial state.
  */
 export const walletRootReducer = (
   state: ReturnType<typeof combinedReducer> | undefined,
@@ -74,7 +58,30 @@ export const walletRootReducer = (
     action.type === preferencesReset.type ||
     action.type === preferencesSetIsFirstStartupFalse.type
   ) {
-    state = undefined;
+    state = state
+      ? {
+          lifecycle: {
+            ...lifeCycleInitialState,
+            _persist: state.lifecycle._persist
+          },
+          instance: {
+            ...instanceInitialState,
+            _persist: state.instance._persist
+          },
+          attestation: {
+            ...attestationInitialState,
+            _persist: state.attestation._persist
+          },
+          credentialIssuanceStatus: credentialIssuanceInitialState,
+          credentials: {
+            ...credentialInitialState,
+            _persist: state.credentials._persist
+          },
+          pidIssuanceStatus: pidIssuanceInitialState,
+          presentation: presentationInitialState,
+          proximity: proximityInitialState
+        }
+      : state;
   }
   return combinedReducer(state, action);
 };

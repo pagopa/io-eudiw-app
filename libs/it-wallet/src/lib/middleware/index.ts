@@ -1,5 +1,4 @@
 import { addCredentialListeners } from './credential';
-import { addPersistenceListeners } from './persistence';
 import { addPidListeners } from './pid';
 import { addPresentationListeners } from './presentation';
 import { addProximityListeners } from './proximity';
@@ -13,5 +12,4 @@ export const addWalletListeners = (startAppListening: AppStartListening) => {
   addCredentialListeners(startAppListening);
   addPresentationListeners(startAppListening);
   addProximityListeners(startAppListening);
-  addPersistenceListeners(startAppListening);
 };

@@ -104,18 +104,6 @@ startAppListening({
 export const persistor = persistStore(store);
 
 /**
- * Purge all persisted state when the app-wide reset action is dispatched.
- * This complements the root reducer reset by ensuring that the
- * persisted storage is also cleared.
- */
-startAppListening({
-  actionCreator: preferencesReset,
-  effect: async () => {
-    await persistor.purge();
-  }
-});
-
-/**
  * Hook to use the Redux selector function with the correct type.
  */
 export const useAppSelector = useSelector.withTypes<RootState>();

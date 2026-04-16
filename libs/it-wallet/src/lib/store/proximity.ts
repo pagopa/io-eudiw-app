@@ -44,7 +44,7 @@ type ProximitySlice = {
 };
 
 // Initial state for the proximity slice
-const initialState: ProximitySlice = {
+export const initialState: ProximitySlice = {
   qrCode: undefined,
   status: ProximityStatus.PROXIMITY_STATUS_STOPPED,
   errorDetails: undefined,

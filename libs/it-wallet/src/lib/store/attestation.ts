@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersistConfig, persistReducer, purgeStoredState } from 'redux-persist';
+import { PersistConfig, persistReducer } from 'redux-persist';
 import { WalletCombinedRootState } from '.';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 
@@ -11,7 +11,7 @@ type AttestationSlice = {
 };
 
 // Initial state for the attestation slice
-const initialState: AttestationSlice = {
+export const initialState: AttestationSlice = {
   attestation: undefined
 };
 
@@ -44,12 +44,6 @@ export const attestationReducer = persistReducer(
   attestationPersist,
   attestationSlice.reducer
 );
-
-/**
- * Purges the attestation persisted state from storage.
- */
-export const purgeAttestationPersistedState = () =>
-  purgeStoredState(attestationPersist);
 
 /**
  * Exports the actions for the attestation slice.
