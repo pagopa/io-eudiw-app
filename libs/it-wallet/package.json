@@ -1,0 +1,40 @@
+{
+  "name": "@io-eudiw-app/it-wallet",
+  "version": "0.0.1",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@io-eudiw-app/preferences": "workspace:*",
+    "@io-eudiw-app/commons": "workspace:*",
+    "@io-eudiw-app/debug-info": "workspace:*",
+    "@io-eudiw-app/env": "workspace:*",
+    "@io-eudiw-app/identification": "workspace:*",
+    "@io-eudiw-app/navigation": "workspace:*",
+    "@react-navigation/stack": "catalog:",
+    "@react-navigation/bottom-tabs": "catalog:",
+    "serialize-error": "catalog:",
+    "@pagopa/io-react-native-crypto": "^1.2.3",
+    "@pagopa/io-react-native-iso18013": "^0.7.0",
+    "@pagopa/io-react-native-jwt": "2.1.0",
+    "@pagopa/io-react-native-wallet": "2.5.0",
+    "@types/color": "^4.2.0"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0",
+    "react-native": "0.81.5"
+  },
+  "devDependencies": {
+    "@testing-library/react-native": "catalog:",
+    "babel-preset-expo": "catalog:",
+    "jest-expo": "catalog:",
+    "react-test-renderer": "catalog:"
+  }
+}
