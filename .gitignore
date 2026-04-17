@@ -4,6 +4,7 @@
 dist
 tmp
 out-tsc
+*.tsbuildinfo
 
 # dependencies
 node_modules
@@ -53,5 +54,6 @@ Thumbs.db
 web-build/
 cache/
 
+# Test
 test-output
 
