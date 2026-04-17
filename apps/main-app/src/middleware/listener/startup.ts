@@ -1,4 +1,4 @@
-import { isAnyOf, UnknownAction } from '@reduxjs/toolkit';
+import { isAnyOf } from '@reduxjs/toolkit';
 import * as SplashScreen from 'expo-splash-screen';
 import { Linking } from 'react-native';
 import { isPinOrFingerprintSet } from 'react-native-device-info';
@@ -7,6 +7,7 @@ import { selectUrl } from '../../store/reducers/deeplinking';
 import {
   startupSetAttributes,
   startupSetError,
+  startupSetLoading,
   startupSetStatus,
   StartupSlice
 } from '../../store/reducers/startup';
@@ -19,6 +20,7 @@ import {
 } from '@io-eudiw-app/identification';
 import { initEnv } from '@io-eudiw-app/env';
 import {
+  preferencesReset,
   preferencesSetIsFirstStartupFalse,
   preferencesSetIsOnboardingDone,
   selectIsFirstStartup,
@@ -87,6 +89,14 @@ const startOnboarding = async (listenerApi: AppListener) => {
 };
 
 /**
+ * Mount mini app listeners.
+ * @param startAppListening
+ */
+const mountListeners = () => {
+  itWalletFeature.addListeners(startAppListening);
+};
+
+/**
  * Helper function to start the startup process. It takes the same parameters as a listener
  * as it interacts with the listener API.
  * The startup process consists of checking the env config, checking biometric and screen lock status,
@@ -96,10 +106,9 @@ const startOnboarding = async (listenerApi: AppListener) => {
  * @param _ - The dispatched action which triggered the listener
  * @param listenerApi - The listener API
  */
-export const startupListener: AppListenerWithAction<UnknownAction> = async (
-  _,
-  listenerApi
-) => {
+export const startupListener: AppListenerWithAction<
+  ReturnType<typeof startupSetLoading> | ReturnType<typeof preferencesReset>
+> = async (action, listenerApi) => {
   try {
     // Load the env variables
     initEnv();
@@ -136,8 +145,10 @@ export const startupListener: AppListenerWithAction<UnknownAction> = async (
       await startOnboarding(listenerApi);
     }
 
-    // Registers all the listeners related to the app features.
-    itWalletFeature.addListeners(startAppListening);
+    // If the action is the startupSetLoading we must mount the listeners, otherwise we don't need to mount them again.
+    if (action.type === startupSetLoading.type) {
+      mountListeners();
+    }
 
     // Handle deep linking
     await waitForNavigationToBeReady(listenerApi);
