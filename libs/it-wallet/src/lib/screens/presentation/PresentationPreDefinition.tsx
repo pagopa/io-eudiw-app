@@ -84,8 +84,8 @@ const PresentationPreDefinition = ({ route }: Props) => {
     return (
       <ItwCredentialNotFound
         credentialType={credentialNotFound}
-        continueButtonLabel={''}
-        cancelButtonLabel={''}
+        continueButtonLabel={t('buttons.continue', { ns: 'common' })}
+        cancelButtonLabel={t('buttons.cancel', { ns: 'common' })}
       />
     );
   }

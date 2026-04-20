@@ -10,7 +10,7 @@ import {
 import { useCredentialIssuanceNavigationListeners } from '../hooks/useCredentialIssuanceNavigationListeners';
 import WALLET_ROUTES from '../navigation/wallet/routes';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
-import { lifecycleIsValidSelector } from '../store/lifecycle';
+import { lifecycleIsOperationalSelector } from '../store/lifecycle';
 import { setPendingCredential } from '../store/pidIssuance';
 import { useAppDispatch, useAppSelector } from '../store';
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
@@ -33,7 +33,7 @@ const ItwCredentialNotFound = ({
   useDisableGestureNavigation();
   useHardwareBackButton(() => true);
 
-  const shouldIssuePidFirst = useAppSelector(lifecycleIsValidSelector);
+  const shouldIssuePidFirst = useAppSelector(lifecycleIsOperationalSelector);
   useCredentialIssuanceNavigationListeners();
 
   const navigateToCredential = () => {
