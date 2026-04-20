@@ -41,13 +41,15 @@ type PresentationSlice = {
   postDefinition: AsyncStatusValues<AuthResponse>;
   relyingPartyData?: FederationEntity;
   optionalCredentials?: Array<string>;
+  credentialNotFound?: string;
 };
 
 // Initial state for the presentation slice
 export const initialState: PresentationSlice = {
   preDefinition: setInitial(),
   postDefinition: setInitial(),
-  optionalCredentials: []
+  optionalCredentials: [],
+  credentialNotFound: undefined
 };
 
 /**
@@ -97,10 +99,14 @@ const presentationSlice = createSlice({
     setOptionalCredentials: (state, action: PayloadAction<Array<string>>) => {
       state.optionalCredentials = [...new Set(action.payload)];
     },
+    setCredentialNotFound: (state, action: PayloadAction<string>) => {
+      state.credentialNotFound = action.payload;
+    },
     resetPresentation: state => {
       state.preDefinition = setInitial();
       state.postDefinition = setInitial();
       state.optionalCredentials = [];
+      state.credentialNotFound = undefined;
     }
   }
 });
@@ -117,6 +123,7 @@ export const {
   setPostDefinitionError,
   setPostDefinitionSuccess,
   setOptionalCredentials,
+  setCredentialNotFound,
   resetPresentation
 } = presentationSlice.actions;
 
@@ -170,3 +177,12 @@ export const selectPostDefinitionResult = (state: WalletCombinedRootState) =>
  */
 export const selectOptionalCredentials = (state: WalletCombinedRootState) =>
   state.wallet.presentation.optionalCredentials;
+
+/**
+ * Selects the credential configuration ID of the credential that was not found
+ * during the DCQL presentation evaluation.
+ * @param state - The root state
+ * @returns the credential configuration ID if a credential was not found, undefined otherwise
+ */
+export const selectCredentialNotFound = (state: WalletCombinedRootState) =>
+  state.wallet.presentation.credentialNotFound;

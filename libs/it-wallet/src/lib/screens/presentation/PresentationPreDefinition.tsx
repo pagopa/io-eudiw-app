@@ -4,8 +4,10 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
 import { selectCredential } from '../../store/credentials';
 import {
+  selectCredentialNotFound,
   selectPreDefinitionStatus,
   selectPreDefitionResult,
   setPreDefinitionRequest
@@ -13,8 +15,6 @@ import {
 import { wellKnownCredential } from '../../utils/credentials';
 import {
   LoadingScreenContent,
-  useDisableGestureNavigation,
-  useHardwareBackButton,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -43,11 +43,8 @@ const PresentationPreDefinition = ({ route }: Props) => {
   const dispatch = useAppDispatch();
   const preDefinitionStatus = useAppSelector(selectPreDefinitionStatus);
   const preDefinitionResult = useAppSelector(selectPreDefitionResult);
+  const credentialNotFound = useAppSelector(selectCredentialNotFound);
   const pid = useAppSelector(selectCredential(wellKnownCredential.PID));
-
-  // Disable the back gesture navigation and the hardware back button
-  useDisableGestureNavigation();
-  useHardwareBackButton(() => true);
 
   useEffect(() => {
     dispatch(setPreDefinitionRequest(route.params));
@@ -65,17 +62,33 @@ const PresentationPreDefinition = ({ route }: Props) => {
           descriptor: preDefinitionResult
         }
       });
-    } else if (preDefinitionStatus.error.status) {
+    } else if (preDefinitionStatus.error.status && !credentialNotFound) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PRESENTATION_FAILURE'
       });
     }
-  }, [navigation, pid, preDefinitionResult, preDefinitionStatus]);
+  }, [
+    navigation,
+    pid,
+    preDefinitionResult,
+    preDefinitionStatus,
+    credentialNotFound
+  ]);
 
   useHeaderSecondLevel({
     headerShown: false,
     title: ''
   });
+
+  if (credentialNotFound) {
+    return (
+      <ItwCredentialNotFound
+        credentialType={credentialNotFound}
+        continueButtonLabel={''}
+        cancelButtonLabel={''}
+      />
+    );
+  }
 
   return (
     <LoadingScreenContent

@@ -44,6 +44,34 @@ export const wellKnownCredentialNamespaces: Partial<
   DRIVING_LICENSE: 'org.iso.18013.5.1'
 };
 
+/**
+ * Map from VCT values to credential configuration IDs.
+ * Used to resolve which credential to issue when a DCQL query
+ * reports a missing credential by its VCT.
+ */
+const vctToConfigId: Record<string, string> = Object.fromEntries(
+  (Object.keys(wellKnownCredential) as Array<CredentialsKeys>).map(key => [
+    wellKnownCredential[key],
+    wellKnownCredentialConfigurationIDs[key]
+  ])
+);
+
+/**
+ * Given a list of VCT values, returns the first matching credential configuration ID.
+ * Returns undefined if no match is found.
+ */
+export const getConfigIdByVct = (
+  vctValues: Array<string>
+): string | undefined => {
+  for (const vct of vctValues) {
+    const configId = vctToConfigId[vct];
+    if (configId) {
+      return configId;
+    }
+  }
+  return undefined;
+};
+
 export const getCredentialNameByType = (type?: string): string => {
   switch (type) {
     case wellKnownCredential.DRIVING_LICENSE:

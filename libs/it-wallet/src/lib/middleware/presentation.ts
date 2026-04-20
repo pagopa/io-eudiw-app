@@ -9,6 +9,7 @@ import { selectCredentials } from '../store/credentials';
 import {
   resetPresentation,
   selectOptionalCredentials,
+  setCredentialNotFound,
   setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionRequest,
@@ -17,6 +18,7 @@ import {
   setPreDefinitionRequest,
   setPreDefinitionSuccess
 } from '../store/presentation';
+import { getConfigIdByVct } from '../utils/credentials';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { AppListenerWithAction, AppStartListening } from './types';
@@ -178,9 +180,27 @@ const presentationListener: AppListenerWithAction<
     if (error instanceof TaskAbortError) {
       return;
     }
-    const serializedError = serializeError(error);
-    listenerApi.dispatch(setPostDefinitionError({ error: serializedError }));
-    listenerApi.dispatch(setPreDefinitionError({ error: serializedError }));
+    // Handle the case where a credential required by the DCQL query is not in the wallet
+    if (
+      error instanceof Credential.Presentation.Errors.CredentialsNotFoundError
+    ) {
+      const firstMissing = error.details[0];
+      const configId = firstMissing?.vctValues
+        ? getConfigIdByVct(firstMissing.vctValues)
+        : undefined;
+      if (configId) {
+        listenerApi.dispatch(setCredentialNotFound(configId));
+        return;
+      }
+    }
+    // We don't know which step is failed thus we set the same error for both
+    const serializableError = JSON.stringify(error);
+    listenerApi.dispatch(
+      setPostDefinitionError({ error: serializeError(serializableError) })
+    );
+    listenerApi.dispatch(
+      setPreDefinitionError({ error: serializeError(serializableError) })
+    );
   }
 };
 
