@@ -1,0 +1,62 @@
+{
+  "buttons": {
+    "start": "Inizia",
+    "close": "Chiudi",
+    "continue": "Continua",
+    "activate": "Attiva",
+    "notNow": "Non ora",
+    "cancel": "Cancella",
+    "confirm": "Conferma",
+    "show": "Mostra",
+    "delete": "Elimina",
+    "skip": "Salta",
+    "next": "Avanti",
+    "done": "Fatto"
+  },
+  "clipboard": {
+    "copyFeedback": "Copied to clipboard"
+  },
+  "errors": {
+    "generic": "Si è verificato un errore"
+  },
+  "interrupt": {
+    "title": "Vuoi interrompere l'operazione?",
+    "body": "Dovrai ripetere di nuovo tutti i passaggi",
+    "confirm": "Sì, interrompi",
+    "cancel": "No, riprendi"
+  },
+  "featureUnavailable": {
+    "title": "In arrivo: questa funzione sarà disponibile a breve"
+  },
+  "error": {
+    "title": "C'è un problema sui nostri sistemi",
+    "body": "Riprova tra qualche minuto. Se si ripete, contatta l'assistenza."
+  },
+  "cancelOperation": {
+    "title": "Do you want to stop the operation?",
+    "confirm": "Yes, stop",
+    "cancel": "No, continue"
+  },
+  "alert": {
+    "title": "Vuoi interrompere l'operazione?",
+    "body": "Dovrai ripetere di nuovo tutti i passaggi",
+    "confirm": "Sì, interrompi",
+    "cancel": "No, riprendi"
+  },
+  "waiting": "Aspetta qualche secondo",
+  "debug": "Enable debug mode",
+  "generics": {
+    "waiting": "Aspetta qualche secondo",
+    "success": "Success",
+    "error": {
+      "title": "C'è un problema sui nostri sistemi",
+      "body": "Riprova tra qualche minuto. Se si ripete, contatta l'assistenza."
+    },
+    "alert": {
+      "title": "Vuoi interrompere l'operazione?",
+      "body": "Dovrai ripetere di nuovo tutti i passaggi",
+      "confirm": "Sì, interrompi",
+      "cancel": "No, riprendi"
+    }
+  }
+}
