@@ -6,9 +6,11 @@ export {
   selectIsBiometricEnabled,
   selectSessionId,
   selectFontPreference,
+  selectSelectedMiniAppId,
   preferencesSetIsBiometricEnabled,
   preferencesSetIsOnboardingDone,
   preferencesSetIsFirstStartupFalse,
+  preferencesSetSelectedMiniAppId,
   selectIsOnboardingComplete,
   selectIsFirstStartup
 } from './lib/store/preferences';

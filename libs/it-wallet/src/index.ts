@@ -14,10 +14,13 @@ const walletReducer = {
 };
 
 export const itWalletFeature = {
+  id: 'it-wallet',
   reducer: walletReducer,
   resource,
   Navigator: MainStackNavigator,
   linkingSchemes: LINKING_SCHEMES,
   linkingConfig: walletLinkingConfig,
   addListeners: addWalletListeners
-} satisfies MiniApp<'wallet', MainNavigatorParamsList>;
+} satisfies MiniApp<'it-wallet', 'wallet', MainNavigatorParamsList>;
+
+export type ItWalletMiniAppId = typeof itWalletFeature.id;

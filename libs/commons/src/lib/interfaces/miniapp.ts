@@ -16,26 +16,37 @@ import { LocaleResource } from '.';
  * import type { MiniApp } from '@io-eudiw-app/commons';
  *
  * const miniApp = {
+ *   id: 'it-wallet',
  *   reducer: { wallet: walletRootReducer },
  *   resource,
  *   Navigator: MainStackNavigator,
  *   linkingSchemes: ['haip://', 'openid4vp://'],
  *   linkingConfig: walletLinkingConfig,
  *   addListeners: addWalletListeners,
- * } satisfies MiniApp<'wallet', WalletNavigatorParamsList>;
+ * } satisfies MiniApp<'it-wallet', 'wallet', WalletNavigatorParamsList>;
  * ```
  *
+ * @template TId - A literal string that uniquely identifies this mini-app.
  * @template TReducerKey - The slice name used to mount the reducer in the store.
  * @template TNavigatorParamsList - The param list of the mini-app's nested navigator,
  *   used to type-check the deep-linking config.
  */
 export interface MiniApp<
+  TId extends string = string,
   TReducerKey extends string = string,
   TNavigatorParamsList extends Record<string, object | undefined> = Record<
     string,
     object | undefined
   >
 > {
+  /**
+   * Unique identifier for this mini-app.
+   *
+   * Used to reference the mini-app in the preferences store and
+   * anywhere else the host app needs to distinguish between mini-apps.
+   */
+  id: TId;
+
   /**
    * Reducer object to be spread into the host store's `combineReducers`.
    *

@@ -40,14 +40,16 @@ packages:
 
 ### 2. Implement the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface
 
-Every miniapp must export a single object that satisfies [`MiniApp<TReducerKey, TNavigatorParamsList>`](../../libs/commons/src/lib/interfaces/miniapp.ts) from `@io-eudiw-app/commons`.
+Every miniapp must export a single object that satisfies [`MiniApp<TId, TReducerKey, TNavigatorParamsList>`](../../libs/commons/src/lib/interfaces/miniapp.ts) from `@io-eudiw-app/commons`.
 
 ```ts
 // libs/my-feature/src/lib/interfaces/miniapp.ts (for reference)
 export interface MiniApp<
+  TId extends string,
   TReducerKey extends string,
   TNavigatorParamsList extends Record<string, object | undefined>
 > {
+  id: TId;                                     // Unique miniapp identifier
   reducer: Record<TReducerKey, Reducer>;       // Redux slice(s)
   resource: LocaleResource;                    // i18n bundles
   Navigator: ComponentType;                    // Root navigator component
@@ -186,7 +188,7 @@ export const addMyFeatureListeners = (
 
 #### 2f. Public barrel export
 
-Assemble all pieces in `src/index.ts` using the `satisfies` keyword to get compile-time verification against the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface:
+Assemble all pieces in `src/index.ts` using the `satisfies` keyword to get compile-time verification against the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface. Each miniapp must provide a unique `id` and export its ID type so the host app can build the `AvailableMiniAppId` union:
 
 ```ts
 // libs/my-feature/src/index.ts
@@ -202,20 +204,23 @@ import {
 import { addMyFeatureListeners } from './lib/middleware';
 
 export const myFeature = {
+  id: 'my-feature',
   reducer: { myFeature: myFeatureRootReducer },
   resource,
   Navigator: MainStackNavigator,
   linkingSchemes: LINKING_SCHEMES,
   linkingConfig: myFeatureLinkingConfig,
   addListeners: addMyFeatureListeners,
-} satisfies MiniApp<'myFeature', MainNavigatorParamsList>;
+} satisfies MiniApp<'my-feature', 'myFeature', MainNavigatorParamsList>;
+
+export type MyFeatureMiniAppId = typeof myFeature.id;
 ```
 
 ---
 
 ### 3. Integrate into `main-app`
 
-There are five integration points, each in a different file.
+There are six integration points, each in a different file.
 
 #### 3a. Add the workspace dependency
 
@@ -230,7 +235,19 @@ There are five integration points, each in a different file.
 
 Run `pnpm install` to link the package.
 
-#### 3b. Inject the reducer into the Redux store
+#### 3b. Register the miniapp ID
+
+Add the miniapp's exported ID type to the `AvailableMiniAppId` union in the main-app types file. This type is used to narrow the `selectedMiniAppId` preference at the host-app level.
+
+**`apps/main-app/src/types/miniapp.ts`**
+```ts
+import type { MyFeatureMiniApp2Id } from '@io-eudiw-app/my-feature-2';
+import type { MyFeatureMiniAppId } from '@io-eudiw-app/my-feature';
+
+export type AvailableMiniAppId = MyFeatureMiniApp2Id | MyFeatureMiniAppId;
+```
+
+#### 3c. Inject the reducer into the Redux store
 
 **`apps/main-app/src/store/index.ts`**
 ```ts
@@ -248,7 +265,7 @@ const combinedReducer = combineReducers({
 });
 ```
 
-#### 3c. Register i18n resources
+#### 3d. Register i18n resources
 
 **`apps/main-app/src/i18n/index.ts`**
 ```ts
@@ -279,7 +296,7 @@ declare module 'i18next' {
 }
 ```
 
-#### 3d. Mount the navigator and wire deep-linking
+#### 3e. Mount the navigator and wire deep-linking
 
 Add a new root route constant and mount the miniapp's Navigator in `RootStackNavigator`.
 
@@ -331,7 +348,7 @@ const getInitialScreen = (): Screens => {
 };
 ```
 
-#### 3e. Register Redux listeners during startup
+#### 3f. Register Redux listeners during startup
 
 **`apps/main-app/src/middleware/listener/startup.ts`**
 ```ts
