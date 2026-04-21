@@ -47,7 +47,7 @@ export type AppRootState = DebugRootState &
  * Combine all reducers into a single object.
  * This makes it easy to pass them to the rootReducer wrapper.
  */
-const combinedReducer = combineReducers({
+const rootReducer = combineReducers({
   startup: startupSlice.reducer,
   ...preferencesReducer,
   ...debugReducer,
@@ -55,19 +55,6 @@ const combinedReducer = combineReducers({
   ...itWalletFeature.reducer,
   deepLinking: deepLinkingReducer
 });
-
-/**
- * Intercepts the reset action to clear the entire state tree.
- */
-const rootReducer = (
-  state: ReturnType<typeof combinedReducer> | undefined,
-  action: UnknownAction
-) => {
-  if (action.type === preferencesReset.type) {
-    state = undefined;
-  }
-  return combinedReducer(state, action);
-};
 
 /**
  * Redux store configuration.

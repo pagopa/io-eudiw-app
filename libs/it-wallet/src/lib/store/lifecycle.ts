@@ -23,7 +23,7 @@ type LifecycleSlice = Readonly<{
 }>;
 
 // Initial state for the lifecycle slice
-export const initialState: LifecycleSlice = {
+const initialState: LifecycleSlice = {
   lifecycle: Lifecycle.LIFECYCLE_OPERATIONAL
 };
 

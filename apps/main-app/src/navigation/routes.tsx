@@ -10,8 +10,11 @@ const ROOT_ROUTES = {
   // Onboarding
   ONBOARDING_NAV: 'ROOT_ONBOARDING_NAV',
 
-  // Wallet
-  IT_WALLET_NAV: 'ROOT_IT_WALLET_NAV'
+  // Mini-app selection
+  MINI_APP_SELECTION: 'ROOT_MINI_APP_SELECTION',
+
+  // Selected mini-app
+  MINI_APP_NAV: 'ROOT_MINI_APP_NAV'
 } as const;
 
 export default ROOT_ROUTES;

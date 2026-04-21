@@ -28,6 +28,10 @@
   "settings": {
     "version": "Versione"
   },
+  "miniAppSelection": {
+    "title": "Scegli un'app",
+    "subtitle": "Seleziona l'app che vuoi utilizzare"
+  },
   "onboarding": {
     "carousel": {
       "first": {

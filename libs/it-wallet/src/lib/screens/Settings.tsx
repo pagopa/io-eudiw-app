@@ -71,7 +71,6 @@ const Settings = () => {
   );
 
   const FontRadioSelection = useCallback(() => {
-    // Options for typeface
     const typefaceOptions = [
       {
         id: 'comfortable' as TypefaceChoice,

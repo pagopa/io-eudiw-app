@@ -12,6 +12,7 @@ export type StartupSlice = {
     | 'DONE'
     | 'WAIT_ONBOARDING'
     | 'WAIT_IDENTIFICATION'
+    | 'WAIT_MINI_APP_SELECTION'
     | 'LOADING'
     | 'ERROR'
     | 'NOT_STARTED';

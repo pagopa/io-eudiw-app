@@ -23,12 +23,14 @@ import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse,
   preferencesSetIsOnboardingDone,
+  preferencesSetSelectedMiniAppId,
   selectIsFirstStartup,
-  selectIsOnboardingComplete
+  selectIsOnboardingComplete,
+  selectSelectedMiniAppId
 } from '@io-eudiw-app/preferences';
-import { itWalletFeature } from '@io-eudiw-app/it-wallet';
 import { startAppListening } from '.';
 import { isNavigationReady } from '@io-eudiw-app/navigation';
+import { getMiniAppById } from '../../types/miniapp';
 
 /**
  * Utility function to wait for the navigation to be ready before dispatching a navigation event.
@@ -82,18 +84,12 @@ const startIdentification = async (listenerApi: AppListener) => {
 };
 
 /**
- * Starts the onboarding process by setting the status which will be taken by the navigator to render the onboarding navigation stack.
+ * Mount listeners for the selected mini-app only.
  */
-const startOnboarding = async (listenerApi: AppListener) => {
-  await listenerApi.take(isAnyOf(preferencesSetIsOnboardingDone));
-};
-
-/**
- * Mount mini app listeners.
- * @param startAppListening
- */
-const mountListeners = () => {
-  itWalletFeature.addListeners(startAppListening);
+const mountSelectedMiniAppListeners = (listenerApi: AppListener) => {
+  const selectedId = selectSelectedMiniAppId(listenerApi.getState());
+  const miniApp = getMiniAppById(selectedId);
+  miniApp?.addListeners(startAppListening);
 };
 
 /**
@@ -142,12 +138,21 @@ export const startupListener: AppListenerWithAction<
     if (isOnboardingCompleted) {
       await startIdentification(listenerApi);
     } else {
-      await startOnboarding(listenerApi);
+      // Starts the onboarding process by setting the status which will be taken by the navigator to render the onboarding navigation stack.
+      await listenerApi.take(isAnyOf(preferencesSetIsOnboardingDone));
+    }
+
+    // If no mini-app has been selected yet, show the selection screen and wait
+    const selectedMiniAppId = selectSelectedMiniAppId(listenerApi.getState());
+    if (!selectedMiniAppId) {
+      // Waits for the user to select a mini-app by dispatching preferencesSetSelectedMiniAppId.
+      listenerApi.dispatch(startupSetStatus('WAIT_MINI_APP_SELECTION'));
+      await listenerApi.take(isAnyOf(preferencesSetSelectedMiniAppId));
     }
 
     // If the action is the startupSetLoading we must mount the listeners, otherwise we don't need to mount them again.
     if (action.type === startupSetLoading.type) {
-      mountListeners();
+      mountSelectedMiniAppListeners(listenerApi);
     }
 
     // Handle deep linking
