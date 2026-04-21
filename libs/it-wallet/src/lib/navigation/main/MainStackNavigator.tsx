@@ -9,7 +9,9 @@ import WalletNavigator, {
 } from '../wallet/WalletNavigator';
 import QrCodeScanScreen from '../../screens/presentation/QrCodeScanScreen';
 import ProximityQrCode from '../../screens/proximity/ProximityQrCode';
-import Settings from '../../screens/Settings';
+import Settings from '../../screens/settings/Settings';
+import Preference from '../../screens/settings/Preferences';
+import Appearance from '../../screens/settings/Appearance';
 
 /**
  * Screen parameters for the main navigator.
@@ -17,7 +19,9 @@ import Settings from '../../screens/Settings';
 export type MainNavigatorParamsList = {
   [MAIN_ROUTES.TAB_NAV]: undefined;
   [MAIN_ROUTES.WALLET_NAV]: NavigatorScreenParams<WalletNavigatorParamsList>;
-  [MAIN_ROUTES.SETTINGS]: undefined;
+  [MAIN_ROUTES.SETTINGS.MAIN]: undefined;
+  [MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN]: undefined;
+  [MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE]: undefined;
   [MAIN_ROUTES.SCAN_QR]: undefined;
   [MAIN_ROUTES.SHOW_QR]: undefined;
 };
@@ -73,6 +77,14 @@ export const MainStackNavigator = () => (
       options={{ animation: 'slide_from_bottom' }}
     />
 
-    <Stack.Screen name={MAIN_ROUTES.SETTINGS} component={Settings} />
+    <Stack.Screen name={MAIN_ROUTES.SETTINGS.MAIN} component={Settings} />
+    <Stack.Screen
+      name={MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN}
+      component={Preference}
+    />
+    <Stack.Screen
+      name={MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE}
+      component={Appearance}
+    />
   </Stack.Navigator>
 );

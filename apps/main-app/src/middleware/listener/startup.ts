@@ -31,6 +31,7 @@ import {
 import { startAppListening } from '.';
 import { isNavigationReady } from '@io-eudiw-app/navigation';
 import { getMiniAppById } from '../../types/miniapp';
+import { changeMiniAppSelectionListener } from './miniapp';
 
 /**
  * Utility function to wait for the navigation to be ready before dispatching a navigation event.
@@ -153,6 +154,7 @@ export const startupListener: AppListenerWithAction<
     // If the action is the startupSetLoading we must mount the listeners, otherwise we don't need to mount them again.
     if (action.type === startupSetLoading.type) {
       mountSelectedMiniAppListeners(listenerApi);
+      changeMiniAppSelectionListener();
     }
 
     // Handle deep linking

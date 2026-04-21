@@ -2,8 +2,7 @@ import {
   configureStore,
   EnhancedStore,
   isAnyOf,
-  combineReducers,
-  UnknownAction
+  combineReducers
 } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -33,7 +32,6 @@ import {
   IdentificationRootState
 } from '@io-eudiw-app/identification';
 import { takeLatestEffect } from '@io-eudiw-app/commons';
-
 // 1. Explicitly type the combined state of all your reducers.
 export type AppRootState = DebugRootState &
   IdentificationRootState & {

@@ -59,6 +59,9 @@ const preferencesSlice = createSlice({
     preferencesFontSet: (state, action: PayloadAction<TypefaceChoice>) => {
       state.fontPreference = action.payload;
     },
+    preferencesResetMiniAppSelection: state => {
+      state.selectedMiniAppId = undefined;
+    },
     preferencesSetSelectedMiniAppId: (
       state,
       action: PayloadAction<string | undefined>
@@ -77,6 +80,7 @@ export const {
   preferencesSetIsBiometricEnabled,
   preferencesSetIsFirstStartupFalse,
   preferencesSetSelectedMiniAppId,
+  preferencesResetMiniAppSelection,
   preferencesFontSet,
   preferencesReset
 } = preferencesSlice.actions;

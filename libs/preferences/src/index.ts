@@ -11,6 +11,7 @@ export {
   preferencesSetIsOnboardingDone,
   preferencesSetIsFirstStartupFalse,
   preferencesSetSelectedMiniAppId,
+  preferencesResetMiniAppSelection,
   selectIsOnboardingComplete,
   selectIsFirstStartup
 } from './lib/store/preferences';

@@ -453,24 +453,39 @@
     }
   },
   "settings": {
-    "title": "Settings",
-    "debug": "Enable debug mode",
-    "reset": {
-      "title": "Reset App",
-      "walletReset": "Reset wallet",
-      "onboardingReset": "Reset onboarding"
-    },
-    "appearance": {
-      "typefaceStyle": {
-        "title": "Stile carattere",
-        "comfortable": {
-          "title": "Confortevole",
-          "description": "Progettato per una migliore leggibilità dei testi"
-        },
-        "standard": {
-          "title": "Standard",
-          "description": "Lo stile di sempre, con forme strette e geometriche"
+    "title": "Impostazioni",
+    "preferences": {
+      "title": "Preferenze",
+      "description": "Gestisci le preferenze dell'applicazione",
+      "body": "Queste impostazioni ti permettono di personalizzare la tua esperienza con l'app",
+      "appearance": {
+        "title": "Aspetto dell'app",
+        "description": "Personalizza l'app in base alle tue esigenze",
+        "typefaceStyle": {
+          "title": "Stile carattere",
+          "comfortable": {
+            "title": "Confortevole",
+            "description": "Progettato per una migliore leggibilità dei testi"
+          },
+          "standard": {
+            "title": "Standard",
+            "description": "Lo stile di sempre, con forme strette e geometriche"
+          }
         }
+      }
+    },
+    "changeApp": {
+      "title": "Cambia app",
+      "description": "Scegli un'app per testare"
+    },
+    "debug": {
+      "wallet": {
+        "title": "Resetta il portafoglio",
+        "description": "Rimuove tutti i documenti dal portafoglio"
+      },
+      "app": {
+        "title": "Resetta l'app",
+        "description": "Rimuove tutte le impostazioni e i dati dell'app"
       }
     }
   },
