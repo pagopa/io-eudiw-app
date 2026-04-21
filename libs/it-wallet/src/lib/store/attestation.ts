@@ -2,6 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { WalletCombinedRootState } from '.';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
+import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the attestation slice
  * attestation - The wallet instance attestation
@@ -25,6 +30,11 @@ const attestationSlice = createSlice({
     setAttestation: (state, action: PayloadAction<string>) => {
       state.attestation = action.payload;
     }
+  },
+  extraReducers: builder => {
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 

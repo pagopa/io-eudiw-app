@@ -2,6 +2,10 @@ import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { IdentificationCombinedRootState } from '.';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
 
 /*
  * State type definition for the pin slice
@@ -27,6 +31,10 @@ const pinSlice = createSlice({
     pinSet: (state, action: PayloadAction<string>) => {
       state.pin = action.payload;
     }
+  },
+  extraReducers: builder => {
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 

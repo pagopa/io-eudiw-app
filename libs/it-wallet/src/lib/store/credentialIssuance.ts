@@ -11,6 +11,11 @@ import {
   setSuccess
 } from '@io-eudiw-app/commons';
 import { WalletCombinedRootState } from '.';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
+import { resetLifecycle } from './lifecycle';
 
 export type RequestedCredential = string | undefined;
 type RequestedCredentialType = string | undefined;
@@ -29,7 +34,7 @@ type CredentialIssuanceStatusSlice = {
 };
 
 // Initial state for the credentialIssuance slice
-export const initialState: CredentialIssuanceStatusSlice = {
+const initialState: CredentialIssuanceStatusSlice = {
   requestedCredential: undefined,
   requestedCredentialType: undefined,
   statusPreAuth: setInitial(),
@@ -83,6 +88,11 @@ const credentialIssuanceStatusSlice = createSlice({
       state.statusPostAuth = setSuccess(action.payload.credential);
     },
     resetCredentialIssuance: _ => initialState
+  },
+  extraReducers: builder => {
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 

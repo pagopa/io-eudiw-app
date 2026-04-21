@@ -2,6 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { WalletCombinedRootState } from '.';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
+import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the instance slice
  * keyTag - The keytag bound to the wallet instance
@@ -11,7 +16,7 @@ type InstanceSlice = {
 };
 
 // Initial state for the instance slice
-export const initialState: InstanceSlice = {
+const initialState: InstanceSlice = {
   keyTag: undefined
 };
 
@@ -25,6 +30,11 @@ const instanceSlice = createSlice({
     setInstanceKeyTag: (state, action: PayloadAction<string>) => {
       state.keyTag = action.payload;
     }
+  },
+  extraReducers: builder => {
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 

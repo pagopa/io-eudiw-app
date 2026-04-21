@@ -2,6 +2,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { WalletCombinedRootState } from '.';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
 
 /**
  * Enum for the lifecycle state of the wallet.
@@ -38,6 +42,10 @@ const lifecycleSlice = createSlice({
       state.lifecycle = action.payload.lifecycle;
     },
     resetLifecycle: () => initialState
+  },
+  extraReducers: builder => {
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 

@@ -11,6 +11,11 @@ import {
   setSuccess
 } from '@io-eudiw-app/commons';
 import { WalletCombinedRootState } from '.';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
+import { resetLifecycle } from './lifecycle';
 
 /**
  * Type for the description which contains the requested claims during the presentation.
@@ -44,7 +49,7 @@ type PresentationSlice = {
 };
 
 // Initial state for the presentation slice
-export const initialState: PresentationSlice = {
+const initialState: PresentationSlice = {
   preDefinition: setInitial(),
   postDefinition: setInitial(),
   optionalCredentials: []
@@ -102,6 +107,11 @@ const presentationSlice = createSlice({
       state.postDefinition = setInitial();
       state.optionalCredentials = [];
     }
+  },
+  extraReducers: builder => {
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 
