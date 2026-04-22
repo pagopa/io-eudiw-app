@@ -46,6 +46,7 @@ const identificationSlice = createSlice({
     }
   },
   extraReducers: builder => {
+    // Reset the state when the preferences are reset or if it's the first startup.
     builder.addCase(preferencesReset, () => initialState);
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }

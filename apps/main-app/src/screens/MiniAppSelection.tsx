@@ -23,6 +23,10 @@ type MiniAppOption = {
   image: ImageURISource | ImageSourcePropType;
 };
 
+/**
+ * Screen which contains the list of available mini-apps which can be mounted in the container app.
+ * The actual logic is handled by a listener during the app startup process.
+ */
 const MiniAppSelection = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation(['global']);

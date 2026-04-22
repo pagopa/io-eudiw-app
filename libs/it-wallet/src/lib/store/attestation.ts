@@ -32,6 +32,7 @@ const attestationSlice = createSlice({
     }
   },
   extraReducers: builder => {
+    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
     builder.addCase(preferencesReset, () => initialState);
     builder.addCase(resetLifecycle, () => initialState);
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);

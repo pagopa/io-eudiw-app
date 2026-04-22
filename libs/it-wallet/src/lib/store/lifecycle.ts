@@ -44,6 +44,7 @@ const lifecycleSlice = createSlice({
     resetLifecycle: () => initialState
   },
   extraReducers: builder => {
+    // Reset the state when the preferences are reset, if it's the first startup. This is required to clear the persisted storage.
     builder.addCase(preferencesReset, () => initialState);
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
