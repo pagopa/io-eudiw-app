@@ -64,6 +64,7 @@ const presentationSlice = createSlice({
       _: PayloadAction<PresentationPreDefinitionParams>
     ) => {
       state.preDefinition = setLoading();
+      state.credentialNotFound = undefined;
     },
     setPreDefinitionError: (
       state,
