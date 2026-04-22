@@ -14,11 +14,10 @@ import {
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import { itWalletFeature } from '@io-eudiw-app/it-wallet';
-import type { AvailableMiniAppId } from '../types/miniapp';
 import { ImageSourcePropType, ImageURISource } from 'react-native';
 
 type MiniAppOption = {
-  id: AvailableMiniAppId;
+  id: string;
   label: string;
   image: ImageURISource | ImageSourcePropType;
 };
@@ -31,7 +30,7 @@ const MiniAppSelection = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation(['global']);
 
-  const onSelect = (id: AvailableMiniAppId) => {
+  const onSelect = (id: string) => {
     dispatch(preferencesSetSelectedMiniAppId(id));
   };
 

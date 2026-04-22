@@ -30,7 +30,7 @@ import {
 } from '@io-eudiw-app/preferences';
 import { startAppListening } from '.';
 import { isNavigationReady } from '@io-eudiw-app/navigation';
-import { getMiniAppById } from '../../types/miniapp';
+import { getMiniAppById } from '../../utils/miniapp';
 import { changeMiniAppSelectionListener } from './miniapp';
 
 /**

@@ -24,7 +24,7 @@ import {
   OperationResultScreenContent
 } from '@io-eudiw-app/commons';
 import { selectSelectedMiniAppId } from '@io-eudiw-app/preferences';
-import { getMiniAppById } from '../types/miniapp';
+import { getMiniAppById } from '../utils/miniapp';
 import { Linking } from 'react-native';
 import { setUrl } from '../store/reducers/deeplinking';
 import { t } from 'i18next';

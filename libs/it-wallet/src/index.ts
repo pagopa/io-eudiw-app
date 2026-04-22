@@ -22,5 +22,3 @@ export const itWalletFeature = {
   linkingConfig: walletLinkingConfig,
   addListeners: addWalletListeners
 } satisfies MiniApp<'it-wallet', 'wallet', MainNavigatorParamsList>;
-
-export type ItWalletMiniAppId = typeof itWalletFeature.id;

@@ -188,7 +188,7 @@ export const addMyFeatureListeners = (
 
 #### 2f. Public barrel export
 
-Assemble all pieces in `src/index.ts` using the `satisfies` keyword to get compile-time verification against the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface. Each miniapp must provide a unique `id` and export its ID type so the host app can build the `AvailableMiniAppId` union:
+Assemble all pieces in `src/index.ts` using the `satisfies` keyword to get compile-time verification against the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface. Each miniapp must provide a unique `id`:
 
 ```ts
 // libs/my-feature/src/index.ts
@@ -237,14 +237,25 @@ Run `pnpm install` to link the package.
 
 #### 3b. Register the miniapp ID
 
-Add the miniapp's exported ID type to the `AvailableMiniAppId` union in the main-app types file. This type is used to narrow the `selectedMiniAppId` preference at the host-app level.
+Add the miniapp's exported ID type to the `miniAppRegistry` under `ts/utils/miniapp.ts`:
 
 **`apps/main-app/src/types/miniapp.ts`**
 ```ts
-import type { MyFeatureMiniApp2Id } from '@io-eudiw-app/my-feature-2';
-import type { MyFeatureMiniAppId } from '@io-eudiw-app/my-feature';
+import type { MyFeature } from '@io-eudiw-app/my-feature-2';
+import type { MyFeature2 } from '@io-eudiw-app/my-feature';
 
-export type AvailableMiniAppId = MyFeatureMiniApp2Id | MyFeatureMiniAppId;
+/**
+ * Registry that maps each available mini-app ID to its feature object.
+ * Used by the startup listener and root navigator to dynamically resolve
+ * the selected mini-app's Navigator, listeners, and linking config.
+ *
+ * When adding a new mini-app, add an entry here.
+ */
+export const miniAppRegistry: Record<string, MiniApp> = {
+  [MyFeature.id]: MyFeature,
+  [MyFeature2.id]: MyFeature2,
+  [...]
+};
 ```
 
 #### 3c. Inject the reducer into the Redux store
