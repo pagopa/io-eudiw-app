@@ -28,10 +28,11 @@ import {
   selectIsOnboardingComplete,
   selectSelectedMiniAppId
 } from '@io-eudiw-app/preferences';
-import { startAppListening } from '.';
 import { isNavigationReady } from '@io-eudiw-app/navigation';
-import { getMiniAppById } from '../../utils/miniapp';
-import { changeMiniAppSelectionListener } from './miniapp';
+import {
+  changeMiniAppSelectionListener,
+  mountSelectedMiniAppListeners
+} from './miniapp';
 
 /**
  * Utility function to wait for the navigation to be ready before dispatching a navigation event.
@@ -82,15 +83,6 @@ const startIdentification = async (listenerApi: AppListener) => {
   } else if (setIdentificationUnidentified.match(action[0])) {
     throw new Error('Identification failed');
   }
-};
-
-/**
- * Mount listeners for the selected mini-app only.
- */
-const mountSelectedMiniAppListeners = (listenerApi: AppListener) => {
-  const selectedId = selectSelectedMiniAppId(listenerApi.getState());
-  const miniApp = getMiniAppById(selectedId);
-  miniApp?.addListeners(startAppListening);
 };
 
 /**

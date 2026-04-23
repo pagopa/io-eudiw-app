@@ -15,7 +15,11 @@ import {
   REHYDRATE
 } from 'redux-persist';
 import reactotron from '../config/reactotron';
-import { listenerMiddleware, startAppListening } from '../middleware/listener';
+import {
+  listenerMiddleware,
+  miniAppListenerMiddleware,
+  startAppListening
+} from '../middleware/listener';
 import { startupListener } from '../middleware/listener/startup';
 import { deepLinkingReducer } from './reducers/deeplinking';
 import { startupSetLoading, startupSlice } from './reducers/startup';
@@ -65,7 +69,10 @@ export const store: EnhancedStore<AppRootState> = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
       }
-    }).prepend(listenerMiddleware.middleware),
+    }).prepend(
+      listenerMiddleware.middleware,
+      miniAppListenerMiddleware.middleware
+    ),
   enhancers: getDefaultEnhancers =>
     __DEV__
       ? getDefaultEnhancers().concat(reactotron.createEnhancer())
