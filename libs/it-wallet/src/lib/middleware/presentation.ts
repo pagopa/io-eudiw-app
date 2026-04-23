@@ -4,7 +4,6 @@ import {
   Credential
 } from '@pagopa/io-react-native-wallet';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
-import { serializeError } from 'serialize-error';
 import { selectCredentials } from '../store/credentials';
 import {
   resetPresentation,
@@ -188,19 +187,24 @@ const presentationListener: AppListenerWithAction<
       const configId = firstMissing?.vctValues
         ? getConfigIdByVct(firstMissing.vctValues)
         : undefined;
-      if (configId) {
+      // Only show the "credential not found" screen if the credential is truly missing from the wallet
+      const vctValues = firstMissing?.vctValues;
+      const walletCredentials = selectCredentials(listenerApi.getState());
+      const isAlreadyInWallet =
+        vctValues &&
+        walletCredentials.some(c => vctValues.includes(c.credentialType));
+      if (configId && !isAlreadyInWallet) {
         listenerApi.dispatch(setCredentialNotFound(configId));
-        return;
+      } else {
+        listenerApi.dispatch(setPreDefinitionError({ error: error.message }));
       }
+      return;
     }
     // We don't know which step is failed thus we set the same error for both
-    const serializableError = JSON.stringify(error);
-    listenerApi.dispatch(
-      setPostDefinitionError({ error: serializeError(serializableError) })
-    );
-    listenerApi.dispatch(
-      setPreDefinitionError({ error: serializeError(serializableError) })
-    );
+    const errorMessage =
+      error instanceof Error ? error.message : JSON.stringify(error);
+    listenerApi.dispatch(setPostDefinitionError({ error: errorMessage }));
+    listenerApi.dispatch(setPreDefinitionError({ error: errorMessage }));
   }
 };
 
