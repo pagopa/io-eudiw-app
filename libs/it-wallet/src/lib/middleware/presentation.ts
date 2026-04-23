@@ -22,6 +22,7 @@ import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { AppListenerWithAction, AppStartListening } from './types';
 import { takeLatestEffect } from '@io-eudiw-app/commons';
+import { serializeError } from 'serialize-error';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
@@ -196,15 +197,14 @@ const presentationListener: AppListenerWithAction<
       if (configId && !isAlreadyInWallet) {
         listenerApi.dispatch(setCredentialNotFound(configId));
       } else {
-        listenerApi.dispatch(setPreDefinitionError({ error: error.message }));
+        listenerApi.dispatch(setPreDefinitionError({ error: serializeError(error) }));
       }
       return;
     }
     // We don't know which step is failed thus we set the same error for both
-    const errorMessage =
-      error instanceof Error ? error.message : JSON.stringify(error);
-    listenerApi.dispatch(setPostDefinitionError({ error: errorMessage }));
-    listenerApi.dispatch(setPreDefinitionError({ error: errorMessage }));
+    const serialized = serializeError(error);
+    listenerApi.dispatch(setPostDefinitionError({ error: serialized }));
+    listenerApi.dispatch(setPreDefinitionError({ error: serialized }));
   }
 };
 

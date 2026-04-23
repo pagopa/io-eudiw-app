@@ -15,6 +15,8 @@ import {
 import { wellKnownCredential } from '../../utils/credentials';
 import {
   LoadingScreenContent,
+  useDisableGestureNavigation,
+  useHardwareBackButton,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -45,6 +47,10 @@ const PresentationPreDefinition = ({ route }: Props) => {
   const preDefinitionResult = useAppSelector(selectPreDefitionResult);
   const credentialNotFound = useAppSelector(selectCredentialNotFound);
   const pid = useAppSelector(selectCredential(wellKnownCredential.PID));
+
+  // Disable the back gesture navigation and the hardware back button
+  useDisableGestureNavigation();
+  useHardwareBackButton(() => true);
 
   useEffect(() => {
     dispatch(setPreDefinitionRequest(route.params));
