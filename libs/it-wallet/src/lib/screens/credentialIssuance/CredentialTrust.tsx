@@ -43,13 +43,15 @@ import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWit
  */
 const CredentialTrust = () => {
   const dispatch = useAppDispatch();
-  const { success: preAuthSuccess, error: preAuthError } = useAppSelector(
+  const { success: preAuthSuccess, error } = useAppSelector(
     selectCredentialIssuancePreAuthStatus
   );
   const { t } = useTranslation(['common', 'wallet']);
-  const { loading, error, success } = useAppSelector(
-    selectCredentialIssuancePostAuthStatus
-  );
+  const {
+    loading,
+    error: postAuthError,
+    success
+  } = useAppSelector(selectCredentialIssuancePostAuthStatus);
   const requestedCredential = useAppSelector(selectRequestedCredentialType);
   const navigation = useNavigation();
   const { navigateToWallet } = useNavigateToWalletWithReset();
@@ -117,10 +119,10 @@ const CredentialTrust = () => {
    * If an error occurs during the pre auth or post auth request, navigate to the error screen.
    */
   useEffect(() => {
-    if (preAuthError.status || error.status) {
+    if (postAuthError.status || error.status) {
       navigateToErrorScreen();
     }
-  }, [preAuthError.status, error.status, navigateToErrorScreen]);
+  }, [postAuthError.status, error.status, navigateToErrorScreen]);
 
   /**
    * While the pre auth response (required claims) is still being fetched,
