@@ -15,6 +15,7 @@ import {
   IOScrollViewWithLargeHeader,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
+import MAIN_ROUTES from '../../navigation/main/routes';
 
 type PreferencesNavListItem = {
   value: string;
@@ -37,7 +38,8 @@ const Preferences = () => {
       // Appearance
       value: t('wallet:settings.preferences.appearance.title'),
       description: t('wallet:settings.preferences.appearance.description'),
-      onPress: () => navigation.navigate('MAIN_SETTINGS_PREFERENCES_APPEARANCE')
+      onPress: () =>
+        navigation.navigate(MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE)
     }
   ];
 
@@ -45,7 +47,6 @@ const Preferences = () => {
     item: { value, description, onPress, testID }
   }: ListRenderItemInfo<PreferencesNavListItem>) => (
     <ListItemNav
-      accessibilityLabel={`${value} ${description}`}
       value={value}
       description={description}
       onPress={onPress}

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../types';
+import { preferencesReset } from '@io-eudiw-app/preferences';
 
 /**
  * State definition for the deep linking slice.

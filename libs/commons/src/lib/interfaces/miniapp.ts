@@ -77,7 +77,7 @@ export interface MiniApp<
    * The host app mounts this component inside its own navigation tree
    * when the mini-app's feature area becomes active.
    */
-  Navigator: ComponentType;
+  Navigator: ComponentType<unknown>;
 
   /**
    * URI scheme prefixes handled by this mini-app's deep-linking config.

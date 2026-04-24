@@ -57,7 +57,7 @@ const MiniAppSelection = () => {
       <VSpacer size={8} />
       <Body>{t('global:miniAppSelection.subtitle')}</Body>
       <VSpacer size={24} />
-      <ListItemHeader label="App Disponibili" />
+      <ListItemHeader label={t('global:miniAppSelection.available')} />
       {availableMiniApps.map(app => (
         <ModuleCredential
           key={app.id}

@@ -143,11 +143,13 @@ export const startupListener: AppListenerWithAction<
       await listenerApi.take(isAnyOf(preferencesSetSelectedMiniAppId));
     }
 
-    // If the action is the startupSetLoading we must mount the listeners, otherwise we don't need to mount them again.
+    // We mount this listener only if the app is starting otherwise we would end with mutliple listeners.
     if (action.type === startupSetLoading.type) {
-      mountSelectedMiniAppListeners(listenerApi);
       changeMiniAppSelectionListener();
     }
+
+    // Mount the listeners for the selected mini-app.
+    mountSelectedMiniAppListeners(listenerApi);
 
     // Handle deep linking
     await waitForNavigationToBeReady(listenerApi);

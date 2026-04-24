@@ -52,8 +52,8 @@ const Stack = createStackNavigator<RootStackParamList>();
  */
 type Screens = {
   name: keyof RootStackParamList;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  component: React.ComponentType<any>;
+
+  component: React.ComponentType<unknown>;
 };
 
 const Loading = ({ title }: { title: string }) => (

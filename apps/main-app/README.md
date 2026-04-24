@@ -237,7 +237,7 @@ Run `pnpm install` to link the package.
 
 #### 3b. Register the miniapp ID
 
-Add the miniapp's exported ID type to the `miniAppRegistry` under `ts/utils/miniapp.ts`:
+Add the miniapp's exported ID type to the `miniAppRegistry` under `apps/main-app/src/utils/miniapp.ts`:
 
 **`apps/main-app/src/types/miniapp.ts`**
 ```ts

@@ -19,6 +19,7 @@ import {
   preferencesResetMiniAppSelection
 } from '@io-eudiw-app/preferences';
 import { useNavigation } from '@react-navigation/native';
+import MAIN_ROUTES from '../../navigation/main/routes';
 
 type ProfileNavListItem = {
   value: string;
@@ -48,7 +49,7 @@ const Settings = () => {
       // Preferences
       value: t('wallet:settings.preferences.title'),
       description: t('wallet:settings.preferences.description'),
-      onPress: () => navigation.navigate('MAIN_SETTINGS_PREFERENCES')
+      onPress: () => navigation.navigate(MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN)
     },
     {
       value: t('wallet:settings.changeApp.title'),
