@@ -2,12 +2,12 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { t } from 'i18next';
 import { useEffect } from 'react';
+
 import {
   OperationResultScreenContent,
   useDisableGestureNavigation,
   useHardwareBackButton
 } from '@io-eudiw-app/commons';
-import { useCredentialIssuanceNavigationListeners } from '../hooks/useCredentialIssuanceNavigationListeners';
 import WALLET_ROUTES from '../navigation/wallet/routes';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
 import { lifecycleIsOperationalSelector } from '../store/lifecycle';
@@ -34,7 +34,6 @@ const ItwCredentialNotFound = ({
   useHardwareBackButton(() => true);
 
   const shouldIssuePidFirst = useAppSelector(lifecycleIsOperationalSelector);
-  useCredentialIssuanceNavigationListeners();
 
   const navigateToCredential = () => {
     if (shouldIssuePidFirst) {
@@ -47,6 +46,9 @@ const ItwCredentialNotFound = ({
     dispatch(
       setCredentialIssuancePreAuthRequest({ credential: credentialType })
     );
+    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+      screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
+    });
   };
 
   const handleClose = () => {
