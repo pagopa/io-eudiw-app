@@ -72,7 +72,7 @@ const Preferences = () => {
         }}
         data={preferencesNavListItems}
         renderItem={renderPreferencesNavItem}
-        ItemSeparatorComponent={() => <Divider />}
+        ItemSeparatorComponent={Divider}
       />
     </IOScrollViewWithLargeHeader>
   );
