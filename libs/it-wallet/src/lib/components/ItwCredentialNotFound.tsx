@@ -15,15 +15,18 @@ import { setPendingCredential } from '../store/pidIssuance';
 import { useAppDispatch, useAppSelector } from '../store';
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../navigation/main/routes';
+import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 
 const ItwCredentialNotFound = ({
   credentialType,
   continueButtonLabel,
-  cancelButtonLabel
+  cancelButtonLabel,
+  onDismiss
 }: {
   credentialType: string;
   continueButtonLabel: string;
   cancelButtonLabel: string;
+  onDismiss?: () => void;
 }) => {
   const navigation =
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
@@ -36,8 +39,15 @@ const ItwCredentialNotFound = ({
   const shouldIssuePidFirst = useAppSelector(lifecycleIsOperationalSelector);
 
   const navigateToCredential = () => {
+    onDismiss?.();
     if (shouldIssuePidFirst) {
-      dispatch(setPendingCredential({ credential: credentialType }));
+      const isPidOnlyFlow =
+        credentialType === wellKnownCredentialConfigurationIDs.PID;
+      dispatch(
+        setPendingCredential({
+          credential: isPidOnlyFlow ? undefined : credentialType
+        })
+      );
       navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
         screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
       });
@@ -52,6 +62,10 @@ const ItwCredentialNotFound = ({
   };
 
   const handleClose = () => {
+    if (onDismiss) {
+      onDismiss();
+      return;
+    }
     navigation.pop();
   };
 

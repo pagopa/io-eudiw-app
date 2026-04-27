@@ -17,7 +17,10 @@ import {
   setPreDefinitionRequest,
   setPreDefinitionSuccess
 } from '../store/presentation';
-import { getConfigIdByVct } from '../utils/credentials';
+import {
+  getConfigIdByVct,
+  wellKnownCredentialConfigurationIDs
+} from '../utils/credentials';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { AppListenerWithAction, AppStartListening } from './types';
@@ -180,29 +183,27 @@ const presentationListener: AppListenerWithAction<
     if (error instanceof TaskAbortError) {
       return;
     }
+    const serialized = serializeError(error);
     // Handle the case where a credential required by the DCQL query is not in the wallet
     if (
       error instanceof Credential.Presentation.Errors.CredentialsNotFoundError
     ) {
-      const firstMissing = error.details[0];
-      const configId = firstMissing?.vctValues
+      const firstMissingNonPid = error.details.find(
+        ({ vctValues }) =>
+          getConfigIdByVct(vctValues ?? []) !==
+          wellKnownCredentialConfigurationIDs.PID
+      );
+      const firstMissing = firstMissingNonPid ?? error.details[0];
+      const configId = firstMissing?.vctValues?.length
         ? getConfigIdByVct(firstMissing.vctValues)
         : undefined;
-      // Only show the "credential not found" screen if the credential is truly missing from the wallet
-      const vctValues = firstMissing?.vctValues;
-      const walletCredentials = selectCredentials(listenerApi.getState());
-      const isAlreadyInWallet =
-        vctValues &&
-        walletCredentials.some(c => vctValues.includes(c.credentialType));
-      if (configId && !isAlreadyInWallet) {
+      if (configId) {
         listenerApi.dispatch(setCredentialNotFound(configId));
-      } else {
-        listenerApi.dispatch(setPreDefinitionError({ error: serializeError(error) }));
       }
+      listenerApi.dispatch(setPreDefinitionError({ error: serialized }));
       return;
     }
     // We don't know which step is failed thus we set the same error for both
-    const serialized = serializeError(error);
     listenerApi.dispatch(setPostDefinitionError({ error: serialized }));
     listenerApi.dispatch(setPreDefinitionError({ error: serialized }));
   }

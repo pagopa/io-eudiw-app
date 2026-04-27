@@ -4,10 +4,8 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
-import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
 import { selectCredential } from '../../store/credentials';
 import {
-  selectCredentialNotFound,
   selectPreDefinitionStatus,
   selectPreDefitionResult,
   setPreDefinitionRequest
@@ -45,7 +43,6 @@ const PresentationPreDefinition = ({ route }: Props) => {
   const dispatch = useAppDispatch();
   const preDefinitionStatus = useAppSelector(selectPreDefinitionStatus);
   const preDefinitionResult = useAppSelector(selectPreDefitionResult);
-  const credentialNotFound = useAppSelector(selectCredentialNotFound);
   const pid = useAppSelector(selectCredential(wellKnownCredential.PID));
 
   // Disable the back gesture navigation and the hardware back button
@@ -68,33 +65,17 @@ const PresentationPreDefinition = ({ route }: Props) => {
           descriptor: preDefinitionResult
         }
       });
-    } else if (preDefinitionStatus.error.status && !credentialNotFound) {
+    } else if (preDefinitionStatus.error.status) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PRESENTATION_FAILURE'
       });
     }
-  }, [
-    navigation,
-    pid,
-    preDefinitionResult,
-    preDefinitionStatus,
-    credentialNotFound
-  ]);
+  }, [navigation, pid, preDefinitionResult, preDefinitionStatus]);
 
   useHeaderSecondLevel({
     headerShown: false,
     title: ''
   });
-
-  if (credentialNotFound) {
-    return (
-      <ItwCredentialNotFound
-        credentialType={credentialNotFound}
-        continueButtonLabel={t('buttons.continue', { ns: 'common' })}
-        cancelButtonLabel={t('buttons.cancel', { ns: 'common' })}
-      />
-    );
-  }
 
   return (
     <LoadingScreenContent
