@@ -1,14 +1,19 @@
 import {
+  ContentWrapper,
   Divider,
   IOVisualCostants,
   ListItemNav,
+  ListItemSwitch,
   useIOToast
 } from '@pagopa/io-app-design-system';
-import { ComponentProps, useCallback } from 'react';
+import { ComponentProps, useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, ListRenderItemInfo } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { selectIsDebugModeEnabled } from '@io-eudiw-app/debug-info';
+import {
+  selectIsDebugModeEnabled,
+  setDebugModeEnabled
+} from '@io-eudiw-app/debug-info';
 import { resetLifecycle } from '../../store/lifecycle';
 import {
   IOScrollViewWithLargeHeader,
@@ -20,6 +25,7 @@ import {
 } from '@io-eudiw-app/preferences';
 import { useNavigation } from '@react-navigation/native';
 import MAIN_ROUTES from '../../navigation/main/routes';
+import AppVersion from '../../components/AppVersion';
 
 type ProfileNavListItem = {
   value: string;
@@ -28,6 +34,9 @@ type ProfileNavListItem = {
   ComponentProps<typeof ListItemNav>,
   'description' | 'testID' | 'onPress'
 >;
+
+const DEBUG_TAP_REQUIRED = 4;
+const RESET_COUNTER_TIMEOUT = 2000;
 
 /**
  * A screen to show all the options related to the user profile
@@ -39,6 +48,10 @@ const Settings = () => {
   const { t } = useTranslation(['common', 'wallet']);
   const dispatch = useAppDispatch();
   const isDebugModeEnabled = useAppSelector(selectIsDebugModeEnabled);
+  const idResetTap = useRef<ReturnType<typeof setInterval> | undefined>(
+    undefined
+  );
+  const [tapsOnAppVersion, setTapsOnAppVersion] = useState(0);
 
   useHeaderSecondLevel({
     title: ''
@@ -101,6 +114,33 @@ const Settings = () => {
     []
   );
 
+  const resetAppTapCounter = useCallback(() => {
+    setTapsOnAppVersion(0);
+    clearInterval(idResetTap.current);
+  }, []);
+
+  // When tapped 5 times activate the debug mode of the application.
+  // If more than two seconds pass between taps, the counter is reset
+  const onTapAppVersion = useCallback(() => {
+    if (idResetTap.current) {
+      clearInterval(idResetTap.current);
+    }
+    // do nothing
+    if (isDebugModeEnabled) {
+      return;
+    }
+    if (tapsOnAppVersion === DEBUG_TAP_REQUIRED) {
+      dispatch(setDebugModeEnabled({ state: true }));
+      setTapsOnAppVersion(0);
+    } else {
+      idResetTap.current = setInterval(
+        resetAppTapCounter,
+        RESET_COUNTER_TIMEOUT
+      );
+      setTapsOnAppVersion(prevTaps => prevTaps + 1);
+    }
+  }, [isDebugModeEnabled, resetAppTapCounter, dispatch, tapsOnAppVersion]);
+
   return (
     <IOScrollViewWithLargeHeader
       title={{
@@ -118,6 +158,19 @@ const Settings = () => {
         renderItem={renderProfileNavItem}
         ItemSeparatorComponent={Divider}
       />
+      <ContentWrapper>
+        <AppVersion onPress={onTapAppVersion} />
+        {isDebugModeEnabled && (
+          <ListItemSwitch
+            testID="debugModeSwitch"
+            label={t('wallet:settings.debug.mode')}
+            value={isDebugModeEnabled}
+            onSwitchValueChange={enabled =>
+              dispatch(setDebugModeEnabled({ state: enabled }))
+            }
+          />
+        )}
+      </ContentWrapper>
     </IOScrollViewWithLargeHeader>
   );
 };

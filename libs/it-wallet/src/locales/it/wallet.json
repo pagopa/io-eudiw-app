@@ -454,6 +454,7 @@
   },
   "settings": {
     "title": "Impostazioni",
+    "version": "Versione",
     "preferences": {
       "title": "Preferenze",
       "description": "Gestisci le preferenze dell'applicazione",
@@ -479,6 +480,7 @@
       "description": "Scegli un'app per testare"
     },
     "debug": {
+      "mode": "Modalità debug",
       "wallet": {
         "title": "Resetta il portafoglio",
         "description": "Rimuove tutti i documenti dal portafoglio"
