@@ -241,8 +241,8 @@ Add the miniapp's exported ID type to the `miniAppRegistry` under `apps/main-app
 
 **`apps/main-app/src/utils/miniapp.ts`**
 ```ts
-import type { MyFeature } from '@io-eudiw-app/my-feature-2';
-import type { MyFeature2 } from '@io-eudiw-app/my-feature';
+import { MyFeature } from '@io-eudiw-app/my-feature-2';
+import { MyFeature2 } from '@io-eudiw-app/my-feature';
 
 /**
  * Registry that maps each available mini-app ID to its feature object.
