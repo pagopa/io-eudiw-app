@@ -16,6 +16,9 @@ import {
   ItwPresentationCredentialDetailScreen
 } from '../../screens/presentation/ItwPresentationCredentialDetailScreen';
 import { ItwPresentationPidDetailScreen } from '../../screens/presentation/ItwPresentationPidDetailScreen';
+import PresentationCredentialNotFound, {
+  PresentationCredentialNotFoundParams
+} from '../../screens/presentation/PresentationCredentialNotFound';
 import PresentationFailure from '../../screens/presentation/PresentationFailure';
 import PresentationPostDefinition, {
   PresentationPostDefinitionParams
@@ -52,6 +55,8 @@ export type WalletNavigatorParamsList = {
     .CREDENTIAL_CARD_MODAL]: ItwPresentationCredentialCardModalNavigationParams;
   [WALLET_ROUTES.PRESENTATION.PRE_DEFINITION]: PresentationPreDefinitionParams;
   [WALLET_ROUTES.PRESENTATION.FAILURE]: undefined;
+  [WALLET_ROUTES.PRESENTATION
+    .CREDENTIAL_NOT_FOUND]: PresentationCredentialNotFoundParams;
   [WALLET_ROUTES.PRESENTATION
     .POST_DEFINITION]: PresentationPostDefinitionParams;
   [WALLET_ROUTES.PRESENTATION.SUCCESS]: undefined;
@@ -117,6 +122,11 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PRESENTATION.FAILURE}
         component={PresentationFailure}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_NOT_FOUND}
+        component={PresentationCredentialNotFound}
         options={{ headerShown: false }}
       />
       <Stack.Screen
