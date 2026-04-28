@@ -6,14 +6,12 @@ import {
 } from '@io-eudiw-app/commons';
 import {
   resetPresentation,
-  selectCredentialNotFound,
   selectPostDefinitionStatus,
   selectPreDefinitionStatus
 } from '../../store/presentation';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
-import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
 
 /**
  * Filure screen of the presentation flow.
@@ -24,7 +22,6 @@ const PresentationFailure = () => {
   const dispatch = useAppDispatch();
   const errorPre = useAppSelector(selectPreDefinitionStatus);
   const errorPost = useAppSelector(selectPostDefinitionStatus);
-  const credentialNotFound = useAppSelector(selectCredentialNotFound);
   const { navigateToWallet } = useNavigateToWalletWithReset();
 
   useHardwareBackButton(() => true);
@@ -37,17 +34,6 @@ const PresentationFailure = () => {
     dispatch(resetPresentation());
     navigateToWallet();
   };
-
-  if (credentialNotFound) {
-    return (
-      <ItwCredentialNotFound
-        credentialType={credentialNotFound}
-        continueButtonLabel={t('common:buttons.continue')}
-        cancelButtonLabel={t('common:buttons.cancel')}
-        onDismiss={onPress}
-      />
-    );
-  }
 
   return (
     <OperationResultScreenContent

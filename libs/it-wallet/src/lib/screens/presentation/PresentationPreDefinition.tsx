@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { selectCredential } from '../../store/credentials';
 import {
+  selectCredentialNotFound,
   selectPreDefinitionStatus,
   selectPreDefitionResult,
   setPreDefinitionRequest
@@ -43,6 +44,7 @@ const PresentationPreDefinition = ({ route }: Props) => {
   const dispatch = useAppDispatch();
   const preDefinitionStatus = useAppSelector(selectPreDefinitionStatus);
   const preDefinitionResult = useAppSelector(selectPreDefitionResult);
+  const credentialNotFound = useAppSelector(selectCredentialNotFound);
   const pid = useAppSelector(selectCredential(wellKnownCredential.PID));
 
   // Disable the back gesture navigation and the hardware back button
@@ -66,11 +68,24 @@ const PresentationPreDefinition = ({ route }: Props) => {
         }
       });
     } else if (preDefinitionStatus.error.status) {
+      if (credentialNotFound) {
+        navigation.navigate('MAIN_WALLET_NAV', {
+          screen: 'PRESENTATION_CREDENTIAL_NOT_FOUND',
+          params: { credentialType: credentialNotFound }
+        });
+        return;
+      }
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PRESENTATION_FAILURE'
       });
     }
-  }, [navigation, pid, preDefinitionResult, preDefinitionStatus]);
+  }, [
+    credentialNotFound,
+    navigation,
+    pid,
+    preDefinitionResult,
+    preDefinitionStatus
+  ]);
 
   useHeaderSecondLevel({
     headerShown: false,
