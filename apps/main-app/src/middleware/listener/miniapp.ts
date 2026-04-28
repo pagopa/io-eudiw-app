@@ -13,6 +13,7 @@ import {
 } from '.';
 import { takeLatestEffect } from '@io-eudiw-app/commons';
 import { getMiniAppById } from '../../utils/miniapp';
+import { handlePendingDeepLink } from './common';
 
 export const mountSelectedMiniAppListeners = (listenerApi: AppListener) => {
   miniAppListenerMiddleware.clearListeners();
@@ -29,6 +30,7 @@ const changeMiniAppSelection: AppListenerWithAction<
   await listenerApi.take(isAnyOf(preferencesSetSelectedMiniAppId));
   mountSelectedMiniAppListeners(listenerApi);
   listenerApi.dispatch(startupSetStatus('DONE'));
+  await handlePendingDeepLink(listenerApi);
 };
 
 export const changeMiniAppSelectionListener = () =>

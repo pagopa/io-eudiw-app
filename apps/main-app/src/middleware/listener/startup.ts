@@ -33,6 +33,7 @@ import {
   changeMiniAppSelectionListener,
   mountSelectedMiniAppListeners
 } from './miniapp';
+import { handlePendingDeepLink } from './common';
 
 /**
  * Utility function to wait for the navigation to be ready before dispatching a navigation event.
@@ -50,16 +51,6 @@ const waitForNavigationToBeReady = async (listenerApi: AppListener) => {
     }
     await listenerApi.delay(navigatorPollingTime);
     isMainNavReady = isNavigationReady();
-  }
-};
-
-/**
- * Handles the pending deep link by opening the URL if it exists in the deep linking store.
- */
-const handlePendingDeepLink = async (listenerApi: AppListener) => {
-  const url = selectUrl(listenerApi.getState());
-  if (url) {
-    await Linking.openURL(url);
   }
 };
 
