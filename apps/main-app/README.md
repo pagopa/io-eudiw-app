@@ -306,3 +306,39 @@ declare module 'i18next' {
   }
 }
 ```
+
+#### 3e. Add the miniapp to the selection screen
+
+Register the new miniapp in the `availableMiniApps` array inside **`apps/main-app/src/screens/MiniAppSelection.tsx`** so it appears in the app's home selection UI. Each entry requires three fields:
+
+| Field   | Type                                     | Description                                                             |
+|---------|------------------------------------------|-------------------------------------------------------------------------|
+| `id`    | `string`                                 | Must match the miniapp's exported `id` (use `myFeature.id`)            |
+| `label` | `string`                                 | Display name — reference a translation key from the `global` namespace |
+| `image` | `ImageURISource \| ImageSourcePropType`  | Icon shown in the list — place the asset under `apps/main-app/assets/icons/` |
+
+```tsx
+// apps/main-app/src/screens/MiniAppSelection.tsx
+import { myFeature } from '@io-eudiw-app/my-feature';
+
+const availableMiniApps: Array<MiniAppOption> = [
+  // …existing entries…
+  {
+    id: myFeature.id,
+    label: t('global:miniAppSelection.miniApps.my-feature'),
+    image: require('../../assets/icons/my-feature-mini-app.png')
+  }
+];
+```
+
+Also add the corresponding translation key to the global locale files (e.g. `apps/main-app/src/locales/it/global.json`):
+
+```json
+{
+  "miniAppSelection": {
+    "miniApps": {
+      "my-feature": "My Feature"
+    }
+  }
+}
+```
