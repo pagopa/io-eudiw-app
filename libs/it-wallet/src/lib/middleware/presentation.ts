@@ -4,11 +4,11 @@ import {
   Credential
 } from '@pagopa/io-react-native-wallet';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
-import { serializeError } from 'serialize-error';
 import { selectCredentials } from '../store/credentials';
 import {
   resetPresentation,
   selectOptionalCredentials,
+  setCredentialNotFound,
   setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionRequest,
@@ -17,10 +17,15 @@ import {
   setPreDefinitionRequest,
   setPreDefinitionSuccess
 } from '../store/presentation';
+import {
+  getConfigIdByVct,
+  wellKnownCredentialConfigurationIDs
+} from '../utils/credentials';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { AppListenerWithAction, AppStartListening } from './types';
 import { takeLatestEffect } from '@io-eudiw-app/commons';
+import { serializeError } from 'serialize-error';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
@@ -178,9 +183,29 @@ const presentationListener: AppListenerWithAction<
     if (error instanceof TaskAbortError) {
       return;
     }
-    const serializedError = serializeError(error);
-    listenerApi.dispatch(setPostDefinitionError({ error: serializedError }));
-    listenerApi.dispatch(setPreDefinitionError({ error: serializedError }));
+    const serialized = serializeError(error);
+    // Handle the case where a credential required by the DCQL query is not in the wallet
+    if (
+      error instanceof Credential.Presentation.Errors.CredentialsNotFoundError
+    ) {
+      const firstMissingNonPid = error.details.find(
+        ({ vctValues }) =>
+          getConfigIdByVct(vctValues ?? []) !==
+          wellKnownCredentialConfigurationIDs.PID
+      );
+      const firstMissing = firstMissingNonPid ?? error.details[0];
+      const configId = firstMissing?.vctValues?.length
+        ? getConfigIdByVct(firstMissing.vctValues)
+        : undefined;
+      if (configId) {
+        listenerApi.dispatch(setCredentialNotFound(configId));
+      }
+      listenerApi.dispatch(setPreDefinitionError({ error: serialized }));
+      return;
+    }
+    // We don't know which step is failed thus we set the same error for both
+    listenerApi.dispatch(setPostDefinitionError({ error: serialized }));
+    listenerApi.dispatch(setPreDefinitionError({ error: serialized }));
   }
 };
 
