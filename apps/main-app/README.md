@@ -239,7 +239,7 @@ Run `pnpm install` to link the package.
 
 Add the miniapp's exported ID type to the `miniAppRegistry` under `apps/main-app/src/utils/miniapp.ts`:
 
-**`apps/main-app/src/types/miniapp.ts`**
+**`apps/main-app/src/utils/miniapp.ts`**
 ```ts
 import type { MyFeature } from '@io-eudiw-app/my-feature-2';
 import type { MyFeature2 } from '@io-eudiw-app/my-feature';
