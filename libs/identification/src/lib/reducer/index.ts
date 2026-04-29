@@ -6,13 +6,7 @@ import {
   UnknownAction
 } from '@reduxjs/toolkit';
 import { pinReducer, PinState } from './pin';
-import {
-  PreferenceRootState,
-  preferencesReset,
-  preferencesSetIsFirstStartupFalse
-} from '@io-eudiw-app/preferences';
-import { initialState as identificationInitialState } from './identification';
-import { initialState as pinInitialState } from './pin';
+import { PreferenceRootState } from '@io-eudiw-app/preferences';
 
 export type IdentificationCombinedRootState = {
   identification: {
@@ -32,36 +26,14 @@ export type IdentificationDispatch = ThunkDispatch<
   UnknownAction
 >;
 
-const combinedReducer = combineReducers({
+/**
+ * Combine all slices into a single base reducer.
+ * Each slice handles its own reset logic via extraReducers.
+ */
+export const identificationRootReducer = combineReducers({
   identification: identificationReducer,
   pin: pinReducer
 });
-
-/**
- * Root Reducer with Global Reset Logic
- * We intercept 'preferencesReset' and 'preferencesSetIsFirstStartupFalse'.
- * When these actions are dispatched this forces all slices to return to their initial state.
- */
-export const identificationRootReducer = (
-  state: ReturnType<typeof combinedReducer> | undefined,
-  action: UnknownAction
-) => {
-  if (
-    action.type === preferencesReset.type ||
-    action.type === preferencesSetIsFirstStartupFalse.type
-  ) {
-    state = state
-      ? {
-          pin: {
-            ...pinInitialState,
-            _persist: state.pin._persist
-          },
-          identification: identificationInitialState
-        }
-      : state;
-  }
-  return combinedReducer(state, action);
-};
 
 /**
  * A typed selector hook for internal use within the wallet submodule.

@@ -10,6 +10,11 @@ import {
   setSuccess,
   setLoading
 } from '@io-eudiw-app/commons';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
+import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the pidIssuance slice
  * issuanceCreation - Async status for the instance creation
@@ -22,7 +27,7 @@ type PidIssuanceStatusSlice = {
 };
 
 // Initial state for the pidIssuance slice
-export const initialState: PidIssuanceStatusSlice = {
+const initialState: PidIssuanceStatusSlice = {
   instanceCreation: setInitial(),
   issuance: setInitial(),
   pendingCredential: undefined
@@ -78,6 +83,10 @@ const pidIssuanceStatusSlice = createSlice({
         state.issuance = setError(action.error);
       }
     });
+    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 

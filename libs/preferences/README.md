@@ -23,6 +23,8 @@ combineReducers({
 | `preferencesSetIsOnboardingDone()` | Marks the onboarding flow as completed |
 | `preferencesSetIsBiometricEnabled(boolean)` | Enables or disables biometric unlock |
 | `preferencesFontSet(TypefaceChoice)` | Sets the font size preference |
+| `preferencesSetSelectedMiniAppId(string \| undefined)` | Sets the currently selected miniapp identifier |
+| `preferencesResetMiniAppSelection` | Resets the selected miniapp to `undefined` |
 | `preferencesReset()` | Resets the entire app state |
 
 ### Selectors
@@ -33,5 +35,6 @@ combineReducers({
 | `selectIsBiometricEnabled(state)` | `boolean` |
 | `selectSessionId(state)` | `string` |
 | `selectFontPreference(state)` | `TypefaceChoice` |
+| `selectSelectedMiniAppId(state)` | `string \| undefined` |
 
 ---

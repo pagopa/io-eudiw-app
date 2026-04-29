@@ -12,7 +12,7 @@ Exposed as a single `itWalletFeature` object that satisfies the [`MiniApp`](../c
 import { itWalletFeature } from '@io-eudiw-app/it-wallet';
 ```
 
-`itWalletFeature` satisfies `MiniApp<'wallet', MainNavigatorParamsList>` and is the only export consumed by the host app. See the `main-app` [README](../../apps/main-app/README.md) for integration instructions.
+`itWalletFeature` satisfies `MiniApp<'it-wallet', 'wallet', MainNavigatorParamsList>` and is the only export consumed by the host app. See the `main-app` [README](../../apps/main-app/README.md) for integration instructions.
 
 ---
 

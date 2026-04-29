@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IdentificationCombinedRootState } from '.';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
 
 /**
  * The identification state.
@@ -40,6 +44,11 @@ const identificationSlice = createSlice({
     setIdentificationUnidentified: state => {
       state.status = 'unidentified';
     }
+  },
+  extraReducers: builder => {
+    // Reset the state when the preferences are reset or if it's the first startup.
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 

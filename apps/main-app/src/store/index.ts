@@ -2,8 +2,7 @@ import {
   configureStore,
   EnhancedStore,
   isAnyOf,
-  combineReducers,
-  UnknownAction
+  combineReducers
 } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -16,7 +15,11 @@ import {
   REHYDRATE
 } from 'redux-persist';
 import reactotron from '../config/reactotron';
-import { listenerMiddleware, startAppListening } from '../middleware/listener';
+import {
+  listenerMiddleware,
+  miniAppListenerMiddleware,
+  startAppListening
+} from '../middleware/listener';
 import { startupListener } from '../middleware/listener/startup';
 import { deepLinkingReducer } from './reducers/deeplinking';
 import { startupSetLoading, startupSlice } from './reducers/startup';
@@ -33,7 +36,6 @@ import {
   IdentificationRootState
 } from '@io-eudiw-app/identification';
 import { takeLatestEffect } from '@io-eudiw-app/commons';
-
 // 1. Explicitly type the combined state of all your reducers.
 export type AppRootState = DebugRootState &
   IdentificationRootState & {
@@ -47,7 +49,7 @@ export type AppRootState = DebugRootState &
  * Combine all reducers into a single object.
  * This makes it easy to pass them to the rootReducer wrapper.
  */
-const combinedReducer = combineReducers({
+const rootReducer = combineReducers({
   startup: startupSlice.reducer,
   ...preferencesReducer,
   ...debugReducer,
@@ -55,19 +57,6 @@ const combinedReducer = combineReducers({
   ...itWalletFeature.reducer,
   deepLinking: deepLinkingReducer
 });
-
-/**
- * Intercepts the reset action to clear the entire state tree.
- */
-const rootReducer = (
-  state: ReturnType<typeof combinedReducer> | undefined,
-  action: UnknownAction
-) => {
-  if (action.type === preferencesReset.type) {
-    state = undefined;
-  }
-  return combinedReducer(state, action);
-};
 
 /**
  * Redux store configuration.
@@ -80,7 +69,10 @@ export const store: EnhancedStore<AppRootState> = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
       }
-    }).prepend(listenerMiddleware.middleware),
+    }).prepend(
+      listenerMiddleware.middleware,
+      miniAppListenerMiddleware.middleware
+    ),
   enhancers: getDefaultEnhancers =>
     __DEV__
       ? getDefaultEnhancers().concat(reactotron.createEnhancer())

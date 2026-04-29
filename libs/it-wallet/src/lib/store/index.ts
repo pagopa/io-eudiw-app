@@ -9,31 +9,20 @@ import { attestationReducer } from './attestation';
 import { credentialIssuanceStatusReducer } from './credentialIssuance';
 import { credentialsReducer } from './credentials';
 import { instanceReducer } from './instance';
-import { lifecycleReducer, resetLifecycle } from './lifecycle';
+import { lifecycleReducer } from './lifecycle';
 import { pidIssuanceStatusReducer } from './pidIssuance';
 import { presentationReducer } from './presentation';
 import { proximityReducer } from './proximity';
 
 // External State Types
 import { DebugRootState } from '@io-eudiw-app/debug-info';
-import {
-  PreferenceRootState,
-  preferencesReset,
-  preferencesSetIsFirstStartupFalse
-} from '@io-eudiw-app/preferences';
-import { initialState as lifeCycleInitialState } from './lifecycle';
-import { initialState as instanceInitialState } from './instance';
-import { initialState as attestationInitialState } from './attestation';
-import { initialState as credentialIssuanceInitialState } from './credentialIssuance';
-import { initialState as credentialInitialState } from './credentials';
-import { initialState as pidIssuanceInitialState } from './pidIssuance';
-import { initialState as presentationInitialState } from './presentation';
-import { initialState as proximityInitialState } from './proximity';
+import { PreferenceRootState } from '@io-eudiw-app/preferences';
 
 /**
- * Combine all slices into a single base reducer
+ * Combine all slices into a single base reducer.
+ * Each slice handles its own reset logic via extraReducers.
  */
-const combinedReducer = combineReducers({
+export const walletRootReducer = combineReducers({
   lifecycle: lifecycleReducer,
   instance: instanceReducer,
   attestation: attestationReducer,
@@ -44,49 +33,7 @@ const combinedReducer = combineReducers({
   proximity: proximityReducer
 });
 
-/**
- * Root Reducer with Global Reset Logic
- * We intercept 'preferencesReset', 'preferencesSetIsFirstStartupFalse' and 'resetLifecycle'.
- * When these actions are dispatched this forces all slices to return to their initial state.
- */
-export const walletRootReducer = (
-  state: ReturnType<typeof combinedReducer> | undefined,
-  action: UnknownAction
-) => {
-  if (
-    action.type === resetLifecycle.type ||
-    action.type === preferencesReset.type ||
-    action.type === preferencesSetIsFirstStartupFalse.type
-  ) {
-    state = state
-      ? {
-          lifecycle: {
-            ...lifeCycleInitialState,
-            _persist: state.lifecycle._persist
-          },
-          instance: {
-            ...instanceInitialState,
-            _persist: state.instance._persist
-          },
-          attestation: {
-            ...attestationInitialState,
-            _persist: state.attestation._persist
-          },
-          credentialIssuanceStatus: credentialIssuanceInitialState,
-          credentials: {
-            ...credentialInitialState,
-            _persist: state.credentials._persist
-          },
-          pidIssuanceStatus: pidIssuanceInitialState,
-          presentation: presentationInitialState,
-          proximity: proximityInitialState
-        }
-      : state;
-  }
-  return combinedReducer(state, action);
-};
-
-type WalletRootState = ReturnType<typeof combinedReducer>;
+type WalletRootState = ReturnType<typeof walletRootReducer>;
 
 /**
  * This type is required for selectors and middleware in order to correctly type the state of the wallet submodule.

@@ -23,12 +23,17 @@ import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse,
   preferencesSetIsOnboardingDone,
+  preferencesSetSelectedMiniAppId,
   selectIsFirstStartup,
-  selectIsOnboardingComplete
+  selectIsOnboardingComplete,
+  selectSelectedMiniAppId
 } from '@io-eudiw-app/preferences';
-import { itWalletFeature } from '@io-eudiw-app/it-wallet';
-import { startAppListening } from '.';
 import { isNavigationReady } from '@io-eudiw-app/navigation';
+import {
+  changeMiniAppSelectionListener,
+  mountSelectedMiniAppListeners
+} from './miniapp';
+import { handlePendingDeepLink } from './common';
 
 /**
  * Utility function to wait for the navigation to be ready before dispatching a navigation event.
@@ -46,16 +51,6 @@ const waitForNavigationToBeReady = async (listenerApi: AppListener) => {
     }
     await listenerApi.delay(navigatorPollingTime);
     isMainNavReady = isNavigationReady();
-  }
-};
-
-/**
- * Handles the pending deep link by opening the URL if it exists in the deep linking store.
- */
-const handlePendingDeepLink = async (listenerApi: AppListener) => {
-  const url = selectUrl(listenerApi.getState());
-  if (url) {
-    await Linking.openURL(url);
   }
 };
 
@@ -79,21 +74,6 @@ const startIdentification = async (listenerApi: AppListener) => {
   } else if (setIdentificationUnidentified.match(action[0])) {
     throw new Error('Identification failed');
   }
-};
-
-/**
- * Starts the onboarding process by setting the status which will be taken by the navigator to render the onboarding navigation stack.
- */
-const startOnboarding = async (listenerApi: AppListener) => {
-  await listenerApi.take(isAnyOf(preferencesSetIsOnboardingDone));
-};
-
-/**
- * Mount mini app listeners.
- * @param startAppListening
- */
-const mountListeners = () => {
-  itWalletFeature.addListeners(startAppListening);
 };
 
 /**
@@ -142,13 +122,25 @@ export const startupListener: AppListenerWithAction<
     if (isOnboardingCompleted) {
       await startIdentification(listenerApi);
     } else {
-      await startOnboarding(listenerApi);
+      // Starts the onboarding process by setting the status which will be taken by the navigator to render the onboarding navigation stack.
+      await listenerApi.take(isAnyOf(preferencesSetIsOnboardingDone));
     }
 
-    // If the action is the startupSetLoading we must mount the listeners, otherwise we don't need to mount them again.
-    if (action.type === startupSetLoading.type) {
-      mountListeners();
+    // If no mini-app has been selected yet, show the selection screen and wait
+    const selectedMiniAppId = selectSelectedMiniAppId(listenerApi.getState());
+    if (!selectedMiniAppId) {
+      // Waits for the user to select a mini-app by dispatching preferencesSetSelectedMiniAppId.
+      listenerApi.dispatch(startupSetStatus('WAIT_MINI_APP_SELECTION'));
+      await listenerApi.take(isAnyOf(preferencesSetSelectedMiniAppId));
     }
+
+    // We mount this listener only if the app is starting otherwise we would end with mutliple listeners.
+    if (action.type === startupSetLoading.type) {
+      changeMiniAppSelectionListener();
+    }
+
+    // Mount the listeners for the selected mini-app.
+    mountSelectedMiniAppListeners(listenerApi);
 
     // Handle deep linking
     await waitForNavigationToBeReady(listenerApi);

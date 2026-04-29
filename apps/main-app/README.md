@@ -40,14 +40,16 @@ packages:
 
 ### 2. Implement the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface
 
-Every miniapp must export a single object that satisfies [`MiniApp<TReducerKey, TNavigatorParamsList>`](../../libs/commons/src/lib/interfaces/miniapp.ts) from `@io-eudiw-app/commons`.
+Every miniapp must export a single object that satisfies [`MiniApp<TId, TReducerKey, TNavigatorParamsList>`](../../libs/commons/src/lib/interfaces/miniapp.ts) from `@io-eudiw-app/commons`.
 
 ```ts
 // libs/my-feature/src/lib/interfaces/miniapp.ts (for reference)
 export interface MiniApp<
+  TId extends string,
   TReducerKey extends string,
   TNavigatorParamsList extends Record<string, object | undefined>
 > {
+  id: TId;                                     // Unique miniapp identifier
   reducer: Record<TReducerKey, Reducer>;       // Redux slice(s)
   resource: LocaleResource;                    // i18n bundles
   Navigator: ComponentType;                    // Root navigator component
@@ -186,7 +188,7 @@ export const addMyFeatureListeners = (
 
 #### 2f. Public barrel export
 
-Assemble all pieces in `src/index.ts` using the `satisfies` keyword to get compile-time verification against the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface:
+Assemble all pieces in `src/index.ts` using the `satisfies` keyword to get compile-time verification against the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface. Each miniapp must provide a unique `id`:
 
 ```ts
 // libs/my-feature/src/index.ts
@@ -202,20 +204,23 @@ import {
 import { addMyFeatureListeners } from './lib/middleware';
 
 export const myFeature = {
+  id: 'my-feature',
   reducer: { myFeature: myFeatureRootReducer },
   resource,
   Navigator: MainStackNavigator,
   linkingSchemes: LINKING_SCHEMES,
   linkingConfig: myFeatureLinkingConfig,
   addListeners: addMyFeatureListeners,
-} satisfies MiniApp<'myFeature', MainNavigatorParamsList>;
+} satisfies MiniApp<'my-feature', 'myFeature', MainNavigatorParamsList>;
+
+export type MyFeatureMiniAppId = typeof myFeature.id;
 ```
 
 ---
 
 ### 3. Integrate into `main-app`
 
-There are five integration points, each in a different file.
+There are six integration points, each in a different file.
 
 #### 3a. Add the workspace dependency
 
@@ -230,7 +235,30 @@ There are five integration points, each in a different file.
 
 Run `pnpm install` to link the package.
 
-#### 3b. Inject the reducer into the Redux store
+#### 3b. Register the miniapp ID
+
+Add the miniapp's exported ID type to the `miniAppRegistry` under `apps/main-app/src/utils/miniapp.ts`:
+
+**`apps/main-app/src/utils/miniapp.ts`**
+```ts
+import { MyFeature } from '@io-eudiw-app/my-feature-2';
+import { MyFeature2 } from '@io-eudiw-app/my-feature';
+
+/**
+ * Registry that maps each available mini-app ID to its feature object.
+ * Used by the startup listener and root navigator to dynamically resolve
+ * the selected mini-app's Navigator, listeners, and linking config.
+ *
+ * When adding a new mini-app, add an entry here.
+ */
+export const miniAppRegistry: Record<string, MiniApp> = {
+  [MyFeature.id]: MyFeature,
+  [MyFeature2.id]: MyFeature2,
+  [...]
+};
+```
+
+#### 3c. Inject the reducer into the Redux store
 
 **`apps/main-app/src/store/index.ts`**
 ```ts
@@ -248,7 +276,7 @@ const combinedReducer = combineReducers({
 });
 ```
 
-#### 3c. Register i18n resources
+#### 3d. Register i18n resources
 
 **`apps/main-app/src/i18n/index.ts`**
 ```ts
@@ -279,75 +307,38 @@ declare module 'i18next' {
 }
 ```
 
-#### 3d. Mount the navigator and wire deep-linking
+#### 3e. Add the miniapp to the selection screen
 
-Add a new root route constant and mount the miniapp's Navigator in `RootStackNavigator`.
+Register the new miniapp in the `availableMiniApps` array inside **`apps/main-app/src/screens/MiniAppSelection.tsx`** so it appears in the app's home selection UI. Each entry requires three fields:
 
-**`apps/main-app/src/navigation/routes.tsx`**
-```ts
-const ROOT_ROUTES = {
-  // …existing routes…
-  MY_FEATURE_NAV: 'ROOT_MY_FEATURE_NAV',
-} as const;
-```
+| Field   | Type                                     | Description                                                             |
+|---------|------------------------------------------|-------------------------------------------------------------------------|
+| `id`    | `string`                                 | Must match the miniapp's exported `id` (use `myFeature.id`)            |
+| `label` | `string`                                 | Display name — reference a translation key from the `global` namespace |
+| `image` | `ImageURISource \| ImageSourcePropType`  | Icon shown in the list — place the asset under `apps/main-app/assets/icons/` |
 
-**`apps/main-app/src/navigation/RootStacknavigator.tsx`**
-```ts
+```tsx
+// apps/main-app/src/screens/MiniAppSelection.tsx
 import { myFeature } from '@io-eudiw-app/my-feature';
 
-// 1. Add the route to RootStackParamList
-export type RootStackParamList = {
-  // …existing routes…
-  [ROOT_ROUTES.MY_FEATURE_NAV]: undefined;
-};
-
-// 2. Merge deep-link schemes and config
-const linking: LinkingOptions<RootStackParamList> = {
-  prefixes: [
-    ...itWalletFeature.linkingSchemes,
-    ...myFeature.linkingSchemes,       // ← add
-  ],
-  config: {
-    screens: {
-      // …existing screens…
-      ROOT_MY_FEATURE_NAV: {
-        screens: { ...myFeature.linkingConfig },  // ← add
-      },
-    },
-  },
-};
-
-// TODO: decide which screens to mount inside getInitialScreen based on the
-// startup flow for this miniapp.
-const getInitialScreen = (): Screens => {
-  switch (startupStatus) {
-    case 'DONE':
-      return {
-        name: ROOT_ROUTES.MY_FEATURE_NAV,
-        component: myFeature.Navigator,
-      };
-    // …other cases unchanged…
+const availableMiniApps: Array<MiniAppOption> = [
+  // …existing entries…
+  {
+    id: myFeature.id,
+    label: t('global:miniAppSelection.miniApps.my-feature'),
+    image: require('../../assets/icons/my-feature-mini-app.png')
   }
-};
+];
 ```
 
-#### 3e. Register Redux listeners during startup
+Also add the corresponding translation key to the global locale files (e.g. `apps/main-app/src/locales/it/global.json`):
 
-**`apps/main-app/src/middleware/listener/startup.ts`**
-```ts
-import { myFeature } from '@io-eudiw-app/my-feature';
-
-export const startupListener: AppListenerWithAction<UnknownAction> = async (
-  _,
-  listenerApi
-) => {
-  try {
-    // …existing startup logic…
-
-    itWalletFeature.addListeners(startAppListening);
-    myFeature.addListeners(startAppListening);   // ← add
-  } catch {
-    // …
+```json
+{
+  "miniAppSelection": {
+    "miniApps": {
+      "my-feature": "My Feature"
+    }
   }
-};
+}
 ```

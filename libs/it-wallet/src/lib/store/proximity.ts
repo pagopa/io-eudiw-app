@@ -2,6 +2,11 @@ import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProximityDetails } from '../screens/proximity/ItwProximityPresentationDetails';
 import { WalletCombinedRootState } from '.';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
+import { resetLifecycle } from './lifecycle';
 
 /**
  * The application-internal statuses used to control the proximity listener
@@ -44,7 +49,7 @@ type ProximitySlice = {
 };
 
 // Initial state for the proximity slice
-export const initialState: ProximitySlice = {
+const initialState: ProximitySlice = {
   qrCode: undefined,
   status: ProximityStatus.PROXIMITY_STATUS_STOPPED,
   errorDetails: undefined,
@@ -117,6 +122,12 @@ const proximitySlice = createSlice({
     },
     resetProximityQrCode: state => (state.qrCode = undefined),
     resetProximity: _ => initialState
+  },
+  extraReducers: builder => {
+    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 

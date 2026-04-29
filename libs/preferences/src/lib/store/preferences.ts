@@ -16,6 +16,7 @@ export type PreferencesSlice = {
   isOnboardingComplete: boolean;
   isBiometricEnabled: boolean;
   isFirstStartup: boolean;
+  selectedMiniAppId?: string;
   fontPreference: TypefaceChoice;
 };
 
@@ -29,6 +30,7 @@ const initialState: PreferencesSlice = {
   isOnboardingComplete: false,
   isBiometricEnabled: false,
   isFirstStartup: true,
+  selectedMiniAppId: undefined,
   fontPreference: 'comfortable'
 };
 
@@ -57,6 +59,15 @@ const preferencesSlice = createSlice({
     preferencesFontSet: (state, action: PayloadAction<TypefaceChoice>) => {
       state.fontPreference = action.payload;
     },
+    preferencesResetMiniAppSelection: state => {
+      state.selectedMiniAppId = undefined;
+    },
+    preferencesSetSelectedMiniAppId: (
+      state,
+      action: PayloadAction<string | undefined>
+    ) => {
+      state.selectedMiniAppId = action.payload;
+    },
     preferencesReset: () => initialState
   }
 });
@@ -68,6 +79,8 @@ export const {
   preferencesSetIsOnboardingDone,
   preferencesSetIsBiometricEnabled,
   preferencesSetIsFirstStartupFalse,
+  preferencesSetSelectedMiniAppId,
+  preferencesResetMiniAppSelection,
   preferencesFontSet,
   preferencesReset
 } = preferencesSlice.actions;
@@ -125,3 +138,6 @@ export const selectSessionId = (state: PreferencesPartialRootState) =>
 export const selectFontPreference = (
   state: PreferencesPartialRootState
 ): TypefaceChoice => state.preferences.fontPreference;
+
+export const selectSelectedMiniAppId = (state: PreferencesPartialRootState) =>
+  state.preferences.selectedMiniAppId;

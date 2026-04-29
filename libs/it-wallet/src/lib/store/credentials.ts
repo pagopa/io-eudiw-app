@@ -6,6 +6,11 @@ import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import { WalletCombinedRootState } from '.';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
+import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the credentials slice.
  * This is stored as an array to avoid overhead due to map not being serializable,
@@ -19,7 +24,7 @@ type CredentialsSlice = {
 };
 
 // Initial state for the credential slice
-export const initialState: CredentialsSlice = {
+const initialState: CredentialsSlice = {
   credentials: [],
   valuesHidden: false
 };
@@ -81,6 +86,12 @@ const credentialsSlice = createSlice({
     itwSetClaimValuesHidden: (state, action: PayloadAction<boolean>) => {
       state.valuesHidden = action.payload;
     }
+  },
+  extraReducers: builder => {
+    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 

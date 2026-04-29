@@ -28,6 +28,14 @@
   "settings": {
     "version": "Versione"
   },
+  "miniAppSelection": {
+    "title": "Seleziona il tipo di app che vuoi utilizzare per i test",
+    "subtitle": "In questa sezione puoi scegliere un caso d’uso per testare l’integrazione con la tua piattaforma.",
+    "available": "App disponibili",
+    "miniApps": {
+      "it-wallet": "App IT-Wallet"
+    }
+  },
   "onboarding": {
     "carousel": {
       "first": {

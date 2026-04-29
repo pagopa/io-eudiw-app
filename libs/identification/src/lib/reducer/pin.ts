@@ -2,6 +2,10 @@ import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { IdentificationCombinedRootState } from '.';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
 
 /*
  * State type definition for the pin slice
@@ -27,6 +31,11 @@ const pinSlice = createSlice({
     pinSet: (state, action: PayloadAction<string>) => {
       state.pin = action.payload;
     }
+  },
+  extraReducers: builder => {
+    // Reset the state when the preferences are reset or if it's the first startup. This is required to clear the persisted storage.
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 
@@ -37,7 +46,6 @@ export const { pinSet } = pinSlice.actions;
 
 /**
  * Redux persist configuration for the pin slice.
- * Currently it uses `io-react-native-secure-storage` as the storage engine which stores it encrypted.
  */
 const pinPersist: PersistConfig<PinState> = {
   key: 'pin',

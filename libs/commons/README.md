@@ -13,7 +13,10 @@ The contract every miniapp library must satisfy. See [`src/lib/interfaces/miniap
 ```ts
 import type { MiniApp } from '@io-eudiw-app/commons';
 
-export const myFeature = { … } satisfies MiniApp<'myFeature', MyNavigatorParamsList>;
+export const myFeature = {
+  id: 'my-feature',
+  // …
+} satisfies MiniApp<'my-feature', 'myFeature', MyNavigatorParamsList>;
 ```
 
 ### `LocaleResource`

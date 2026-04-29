@@ -11,6 +11,11 @@ import {
   setSuccess
 } from '@io-eudiw-app/commons';
 import { WalletCombinedRootState } from '.';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
+import { resetLifecycle } from './lifecycle';
 
 /**
  * Type for the description which contains the requested claims during the presentation.
@@ -45,7 +50,7 @@ type PresentationSlice = {
 };
 
 // Initial state for the presentation slice
-export const initialState: PresentationSlice = {
+const initialState: PresentationSlice = {
   preDefinition: setInitial(),
   postDefinition: setInitial(),
   optionalCredentials: [],
@@ -108,6 +113,12 @@ const presentationSlice = createSlice({
       state.optionalCredentials = [];
       state.credentialNotFound = undefined;
     }
+  },
+  extraReducers: builder => {
+    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 

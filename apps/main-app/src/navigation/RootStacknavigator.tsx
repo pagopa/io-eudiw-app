@@ -5,15 +5,15 @@ import {
   NavigatorScreenParams
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useStoredFontPreference } from '../context/DSTypeFaceContext';
 import OnboardingNavigator, {
   OnboardingNavigatorParamsList
 } from './OnboardingNavigator';
+import MiniAppSelection from '../screens/MiniAppSelection';
 import { useAppDispatch, useAppSelector } from '../store';
 import ROOT_ROUTES from './routes';
 import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
-import { itWalletFeature } from '@io-eudiw-app/it-wallet';
 import { navigationRef } from '@io-eudiw-app/navigation';
 import {
   selectStartupStatus,
@@ -23,6 +23,8 @@ import {
   LoadingScreenContent,
   OperationResultScreenContent
 } from '@io-eudiw-app/commons';
+import { selectSelectedMiniAppId } from '@io-eudiw-app/preferences';
+import { getMiniAppById } from '../utils/miniapp';
 import { Linking } from 'react-native';
 import { setUrl } from '../store/reducers/deeplinking';
 import { t } from 'i18next';
@@ -36,8 +38,11 @@ export type RootStackParamList = {
   // Onboarding
   [ROOT_ROUTES.ONBOARDING_NAV]: NavigatorScreenParams<OnboardingNavigatorParamsList>;
 
-  // Features
-  [ROOT_ROUTES.IT_WALLET_NAV]: undefined;
+  // Mini-app selection
+  [ROOT_ROUTES.MINI_APP_SELECTION]: undefined;
+
+  // Selected mini-app
+  [ROOT_ROUTES.MINI_APP_NAV]: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -47,6 +52,7 @@ const Stack = createStackNavigator<RootStackParamList>();
  */
 type Screens = {
   name: keyof RootStackParamList;
+
   component: React.ComponentType<unknown>;
 };
 
@@ -65,8 +71,14 @@ const LoadingScreen = () => (
 export const RootStackNavigator = () => {
   useStoredFontPreference();
   const startupStatus = useAppSelector(selectStartupStatus);
+  const selectedMiniAppId = useAppSelector(selectSelectedMiniAppId);
   const { themeType } = useIOThemeContext();
   const dispatch = useAppDispatch();
+
+  const selectedMiniApp = useMemo(
+    () => getMiniAppById(selectedMiniAppId),
+    [selectedMiniAppId]
+  );
 
   const GenericError = () => {
     // Title and body are hardcoded to minimize the risk of errors while displaying the error screen
@@ -89,14 +101,20 @@ export const RootStackNavigator = () => {
     switch (startupStatus) {
       case 'DONE':
         return {
-          name: ROOT_ROUTES.IT_WALLET_NAV,
-          component: itWalletFeature.Navigator
+          name: ROOT_ROUTES.MINI_APP_NAV,
+          component: selectedMiniApp?.Navigator ?? LoadingScreen
         };
 
       case 'WAIT_ONBOARDING':
         return {
           name: ROOT_ROUTES.ONBOARDING_NAV,
           component: OnboardingNavigator
+        };
+
+      case 'WAIT_MINI_APP_SELECTION':
+        return {
+          name: ROOT_ROUTES.MINI_APP_SELECTION,
+          component: MiniAppSelection
         };
 
       case 'ERROR':
@@ -109,15 +127,17 @@ export const RootStackNavigator = () => {
       default:
         return { name: ROOT_ROUTES.LOADING, component: LoadingScreen };
     }
-  }, [startupStatus]);
+  }, [startupStatus, selectedMiniApp]);
 
   const linking: LinkingOptions<RootStackParamList> = {
-    prefixes: [...itWalletFeature.linkingSchemes],
+    prefixes: selectedMiniApp ? [...selectedMiniApp.linkingSchemes] : [],
     config: {
       screens: {
-        ROOT_IT_WALLET_NAV: {
-          screens: { ...itWalletFeature.linkingConfig }
-        }
+        ...(selectedMiniApp && {
+          [ROOT_ROUTES.MINI_APP_NAV]: {
+            screens: { ...selectedMiniApp.linkingConfig }
+          }
+        })
       }
     },
     async getInitialURL() {
@@ -131,9 +151,12 @@ export const RootStackNavigator = () => {
       const onReceiveURL = ({ url }: { url: string }) => {
         listener(url);
         if (
-          ['WAIT_IDENTIFICATION', 'LOADING', 'NOT_STARTED'].includes(
-            startupStatus
-          )
+          [
+            'WAIT_IDENTIFICATION',
+            'WAIT_MINI_APP_SELECTION',
+            'LOADING',
+            'NOT_STARTED'
+          ].includes(startupStatus)
         ) {
           dispatch(setUrl({ url }));
         }
