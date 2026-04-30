@@ -4,10 +4,10 @@ import { memo } from 'react';
 import { View } from 'react-native';
 import { useItwRemoveCredentialWithConfirm } from '../../hooks/useItwRemoveCredentialWithConfirm';
 import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 
 type ItwPresentationDetailFooterProps = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
 };
 
 const ItwPresentationDetailsFooter = ({

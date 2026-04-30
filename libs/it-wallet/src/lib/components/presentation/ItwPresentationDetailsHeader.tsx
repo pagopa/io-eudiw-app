@@ -13,13 +13,13 @@ import {
 } from '../../utils/credentials';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 import { ItwPresentationCredentialCard } from './ItwPresentationCredentialCard';
 import { useAppSelector } from '../../store';
 import { FocusAwareStatusBar } from '@io-eudiw-app/commons';
 
 type ItwPresentationDetailsHeaderProps = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
   parsedClaims: ParsedClaimsRecord;
 };
 

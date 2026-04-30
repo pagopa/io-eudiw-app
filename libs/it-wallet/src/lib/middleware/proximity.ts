@@ -17,6 +17,7 @@ import {
   setProximityStatusStopped
 } from '../store/proximity';
 import { CredentialFormat } from '../utils/itwTypesUtils';
+import { itwCredentialVault } from '../utils/itwCredentialVault';
 import { requestBlePermissions } from '../utils/permissions';
 import {
   generateAcceptedFields,
@@ -180,11 +181,19 @@ const responseHandler = async (listenerApi: AppListener) => {
   );
 
   if (setProximityStatusAuthorizationSend.match(choice[0])) {
-    const documents: Array<ISO18013_5.RequestedDocument> = mdocCredentials.map(
-      credential => ({
-        issuerSignedContent: credential.credential,
-        alias: credential.keyTag,
-        docType: credential.credentialType
+    const documents: Array<ISO18013_5.RequestedDocument> = await Promise.all(
+      mdocCredentials.map(async credential => {
+        const encoded = await itwCredentialVault.get(credential.credentialType);
+        if (!encoded) {
+          throw new Error(
+            `Encoded credential missing in vault for ${credential.credentialType}`
+          );
+        }
+        return {
+          issuerSignedContent: encoded,
+          alias: credential.keyTag,
+          docType: credential.credentialType
+        };
       })
     );
 

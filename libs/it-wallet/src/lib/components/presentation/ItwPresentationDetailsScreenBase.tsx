@@ -11,13 +11,13 @@ import {
 } from '@io-eudiw-app/commons';
 import { lifecycleIsValidSelector } from '../../store/lifecycle';
 import { useHeaderPropsByCredentialType } from '../../utils/itwStyleUtils';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 import { useAppSelector } from '../../store';
 
 export type CredentialCtaProps = ButtonBlockProps;
 
 type ItwPresentationDetailsScreenBaseProps = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
   children?: ReactNode;
   ctaProps?: CredentialCtaProps;
 };

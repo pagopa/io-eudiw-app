@@ -12,7 +12,7 @@ import {
   isDefined,
   ParsedCredential,
   PresentationDetails,
-  StoredCredential
+  StoredCredentialMetadata
 } from './itwTypesUtils';
 
 /**
@@ -140,7 +140,7 @@ export const getCredentialExpireDays = (
  */
 export const enrichPresentationDetails = (
   presentationDetails: PresentationDetails,
-  credentialsByType: Array<StoredCredential>
+  credentialsByType: Array<StoredCredentialMetadata>
 ): EnrichedPresentationDetails =>
   presentationDetails.map(details => {
     const { cryptoContext, ...restDetails } = details;

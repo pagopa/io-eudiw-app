@@ -23,7 +23,7 @@ import {
 import { ParsedClaimsRecord } from '../../utils/claims';
 import {
   ItwCredentialStatus,
-  StoredCredential
+  StoredCredentialMetadata
 } from '../../utils/itwTypesUtils';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
@@ -34,7 +34,7 @@ import { selectIsDebugModeEnabled } from '@io-eudiw-app/debug-info';
 import { useTranslation } from 'react-i18next';
 
 export type ItwPresentationCredentialCardModalNavigationParams = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
   parsedClaims: ParsedClaimsRecord;
   status: ItwCredentialStatus;
 };

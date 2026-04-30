@@ -1,9 +1,14 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { serializeError } from 'serialize-error';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
 import { wellKnownCredential } from '../utils/credentials';
 import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
-import { StoredCredential } from '../utils/itwTypesUtils';
+import {
+  StoredCredential,
+  StoredCredentialMetadata
+} from '../utils/itwTypesUtils';
+import { itwCredentialVault } from '../utils/itwCredentialVault';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import { WalletCombinedRootState } from '.';
 import {
@@ -11,15 +16,15 @@ import {
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
 import { resetLifecycle } from './lifecycle';
+import { createAppAsyncThunk } from '../middleware/thunk';
 
 /* State type definition for the credentials slice.
- * This is stored as an array to avoid overhead due to map not being serializable,
- * thus needing to be converted to an array with a transformation.
- * pid - The PID credential
- * credentials - A map of all the stored credentials
+ * Only credential metadata is kept here. The encoded SD-JWT/MDOC of each
+ * credential is persisted separately by `itwCredentialVault` to keep the
+ * size of the persisted slice bounded.
  */
 type CredentialsSlice = {
-  credentials: Array<StoredCredential>;
+  credentials: Array<StoredCredentialMetadata>;
   valuesHidden: boolean;
 };
 
@@ -39,7 +44,7 @@ const credentialsSlice = createSlice({
   reducers: {
     addCredential: (
       state,
-      action: PayloadAction<{ credential: StoredCredential }>
+      action: PayloadAction<{ credential: StoredCredentialMetadata }>
     ) => {
       const { credential } = action.payload;
       const existingIndex = state.credentials.findIndex(
@@ -122,6 +127,30 @@ export const {
   addPidWithIdentification,
   itwSetClaimValuesHidden
 } = credentialsSlice.actions;
+
+/**
+ * Persists a credential bundle: writes the encoded SD-JWT/MDOC to the
+ * vault first, and only on success commits the metadata to the Redux
+ * slice. If the vault write fails, Redux is left untouched and the error
+ * is propagated via `rejectWithValue` so the caller can surface it.
+ */
+export const persistCredential = createAppAsyncThunk<
+  StoredCredentialMetadata,
+  { credential: StoredCredential },
+  { rejectValue: string }
+>(
+  'credentials/persist',
+  async ({ credential }, { dispatch, rejectWithValue }) => {
+    const { credential: encoded, ...metadata } = credential;
+    try {
+      await itwCredentialVault.put(metadata.credentialType, encoded);
+    } catch (error) {
+      return rejectWithValue(JSON.stringify(serializeError(error)));
+    }
+    dispatch(addCredential({ credential: metadata }));
+    return metadata;
+  }
+);
 
 export const selectCredentials = (state: WalletCombinedRootState) =>
   state.wallet.credentials.credentials;
