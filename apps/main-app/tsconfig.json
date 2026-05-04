@@ -4,6 +4,9 @@
   "include": [".expo/types/**/*.ts", "expo-env.d.ts"],
   "references": [
     {
+      "path": "../../libs/it-wallet-133"
+    },
+    {
       "path": "../../libs/navigation"
     },
     {

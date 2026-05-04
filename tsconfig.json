@@ -26,6 +26,9 @@
     },
     {
       "path": "./libs/navigation"
+    },
+    {
+      "path": "./libs/it-wallet-133"
     }
   ]
 }

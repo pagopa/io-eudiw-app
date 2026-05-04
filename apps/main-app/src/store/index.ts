@@ -36,10 +36,12 @@ import {
   IdentificationRootState
 } from '@io-eudiw-app/identification';
 import { takeLatestEffect } from '@io-eudiw-app/commons';
+import { itWalletFeature133 } from '@io-eudiw-app/it-wallet-133';
 // 1. Explicitly type the combined state of all your reducers.
 export type AppRootState = DebugRootState &
   IdentificationRootState & {
     wallet: ReturnType<typeof itWalletFeature.reducer.wallet>;
+    wallet133: ReturnType<typeof itWalletFeature133.reducer.wallet133>;
   } & PreferenceRootState & {
     deepLinking: ReturnType<typeof deepLinkingReducer>;
     startup: ReturnType<typeof startupSlice.reducer>;
@@ -55,6 +57,7 @@ const rootReducer = combineReducers({
   ...debugReducer,
   ...identificationReducer,
   ...itWalletFeature.reducer,
+  ...itWalletFeature133.reducer,
   deepLinking: deepLinkingReducer
 });
 

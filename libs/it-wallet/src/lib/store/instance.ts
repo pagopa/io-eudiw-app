@@ -7,16 +7,19 @@ import {
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
 import { resetLifecycle } from './lifecycle';
+import * as Crypto from 'expo-crypto';
 
 /* State type definition for the instance slice
  * keyTag - The keytag bound to the wallet instance
  */
 type InstanceSlice = {
+  sessionId: string;
   keyTag: string | undefined;
 };
 
 // Initial state for the instance slice
 const initialState: InstanceSlice = {
+  sessionId: Crypto.randomUUID().toString(),
   keyTag: undefined
 };
 
@@ -68,3 +71,11 @@ export const { setInstanceKeyTag } = instanceSlice.actions;
  */
 export const selectInstanceKeyTag = (state: WalletCombinedRootState) =>
   state.wallet.instance.keyTag;
+
+/**
+ * Selects the session id of the wallet
+ * @param state - The root state of the Redux store
+ * @returns a randomly generated uuid
+ */
+export const selectSessionId = (state: WalletCombinedRootState) =>
+  state.wallet.instance.sessionId;

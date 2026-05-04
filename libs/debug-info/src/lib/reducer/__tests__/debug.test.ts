@@ -1,5 +1,5 @@
 import {
-  debugReducer,
+  debugRootReducer,
   resetDebugData,
   setDebugData,
   selectDebugData
@@ -10,12 +10,12 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 );
 
 const internalSelectDebugData: (
-  state: ReturnType<typeof debugReducer>
+  state: ReturnType<typeof debugRootReducer>
 ) => ReturnType<typeof selectDebugData> = state => state.debugData;
 
 describe('debug', () => {
   it('should return the debug data without the undefined values', () => {
-    const state = debugReducer(
+    const state = debugRootReducer(
       {
         isDebugModeEnabled: true,
         debugData: {}
@@ -26,7 +26,7 @@ describe('debug', () => {
     expect(internalSelectDebugData(state)).toEqual({ visible: 'visible' });
   });
   it('should remove the debug data when resetDebugData is called', () => {
-    const state = debugReducer(
+    const state = debugRootReducer(
       {
         isDebugModeEnabled: true,
         debugData: { A: 'A', B: 'B', C: 'C' }
@@ -37,7 +37,7 @@ describe('debug', () => {
     expect(internalSelectDebugData(state)).toEqual({ C: 'C' });
   });
   it('should merge and/or override data', () => {
-    const state = debugReducer(
+    const state = debugRootReducer(
       {
         isDebugModeEnabled: true,
         debugData: { A: 'A', B: 'B', C: 'C' }
@@ -54,7 +54,7 @@ describe('debug', () => {
     });
   });
   it('should remove undefined values', () => {
-    const state = debugReducer(
+    const state = debugRootReducer(
       {
         isDebugModeEnabled: true,
         debugData: { A: 'A', B: 'B', C: 'C' } // <- C has a value

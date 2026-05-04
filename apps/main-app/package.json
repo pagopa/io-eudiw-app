@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@io-eudiw-app/it-wallet": "workspace:*",
+    "@io-eudiw-app/it-wallet-133": "workspace:*",
     "@io-eudiw-app/commons": "workspace:*",
     "@io-eudiw-app/preferences": "workspace:*",
     "@io-eudiw-app/debug-info": "workspace:*",
@@ -44,7 +45,6 @@
     "expo-splash-screen": "~31.0.11",
     "expo-camera": "~17.0.10",
     "expo-clipboard": "~8.0.8",
-    "expo-crypto": "^15.0.8",
     "expo-font": "~14.0.11",
     "expo-image-picker": "~17.0.10",
     "expo-local-authentication": "~17.0.8",

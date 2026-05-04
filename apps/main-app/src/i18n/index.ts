@@ -4,6 +4,7 @@ import global from '../../locales/it/global.json';
 import { resource as commonResource } from '@io-eudiw-app/commons';
 import { itWalletFeature } from '@io-eudiw-app/it-wallet';
 import { forEach } from 'lodash';
+import { itWalletFeature133 } from '@io-eudiw-app/it-wallet-133';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const addResources = (resourceMap: Record<string, any>) => {
@@ -29,6 +30,7 @@ const initI18n = async () => {
 
   addResources(commonResource);
   addResources(itWalletFeature.resource);
+  addResources(itWalletFeature133.resource);
 
   return i18n;
 };

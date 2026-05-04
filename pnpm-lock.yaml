@@ -42,6 +42,9 @@ catalogs:
     expo:
       specifier: ~54.0.33
       version: 54.0.33
+    expo-crypto:
+      specifier: 15.0.8
+      version: 15.0.8
     expo-status-bar:
       specifier: ~3.0.8
       version: 3.0.9
@@ -229,6 +232,9 @@ importers:
       '@io-eudiw-app/it-wallet':
         specifier: workspace:*
         version: link:../../libs/it-wallet
+      '@io-eudiw-app/it-wallet-133':
+        specifier: workspace:*
+        version: link:../../libs/it-wallet-133
       '@io-eudiw-app/navigation':
         specifier: workspace:*
         version: link:../../libs/navigation
@@ -274,9 +280,6 @@ importers:
       expo-clipboard:
         specifier: ~8.0.8
         version: 8.0.8(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      expo-crypto:
-        specifier: ^15.0.8
-        version: 15.0.8(expo@54.0.33)
       expo-font:
         specifier: ~14.0.11
         version: 14.0.11(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
@@ -425,6 +428,9 @@ importers:
       '@reduxjs/toolkit':
         specifier: 'catalog:'
         version: 2.11.1(react-redux@9.2.0(@types/react@19.2.14)(react@19.1.0)(redux@5.0.1))(react@19.1.0)
+      expo-crypto:
+        specifier: 'catalog:'
+        version: 15.0.8(expo@54.0.33)
       react:
         specifier: ^19.1.0
         version: 19.1.0
@@ -506,6 +512,73 @@ importers:
         version: 54.0.17(@babel/core@7.29.0)(expo@54.0.33)(jest@30.3.0(@types/node@20.19.9)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.15.21(@swc/helpers@0.5.20))(@types/node@20.19.9)(typescript@5.9.3)))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
 
   libs/it-wallet:
+    dependencies:
+      '@io-eudiw-app/commons':
+        specifier: workspace:*
+        version: link:../commons
+      '@io-eudiw-app/debug-info':
+        specifier: workspace:*
+        version: link:../debug-info
+      '@io-eudiw-app/env':
+        specifier: workspace:*
+        version: link:../env
+      '@io-eudiw-app/identification':
+        specifier: workspace:*
+        version: link:../identification
+      '@io-eudiw-app/navigation':
+        specifier: workspace:*
+        version: link:../navigation
+      '@io-eudiw-app/preferences':
+        specifier: workspace:*
+        version: link:../preferences
+      '@pagopa/io-react-native-crypto':
+        specifier: ^1.2.3
+        version: 1.2.4(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
+      '@pagopa/io-react-native-iso18013':
+        specifier: ^0.7.0
+        version: 0.7.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
+      '@pagopa/io-react-native-jwt':
+        specifier: 2.1.0
+        version: 2.1.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
+      '@pagopa/io-react-native-wallet':
+        specifier: 2.5.0
+        version: 2.5.0(patch_hash=0a2031bd9d9cb8dd3d90ae884e46a49e7e10919c107a33121a6e8489eb4f452e)(@pagopa/io-react-native-crypto@1.2.4(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(@pagopa/io-react-native-iso18013@0.7.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(@pagopa/io-react-native-jwt@2.1.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native-quick-crypto@0.7.17(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
+      '@react-navigation/bottom-tabs':
+        specifier: 'catalog:'
+        version: 7.4.0(@react-navigation/native@7.2.1(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
+      '@react-navigation/stack':
+        specifier: 'catalog:'
+        version: 7.6.11(@react-navigation/native@7.2.1(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native-gesture-handler@2.30.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
+      '@types/color':
+        specifier: ^4.2.0
+        version: 4.2.1
+      expo-crypto:
+        specifier: 'catalog:'
+        version: 15.0.8(expo@54.0.33)
+      react:
+        specifier: ^19.1.0
+        version: 19.1.0
+      react-native:
+        specifier: 0.81.5
+        version: 0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0)
+      serialize-error:
+        specifier: 'catalog:'
+        version: 13.0.1
+    devDependencies:
+      '@testing-library/react-native':
+        specifier: 'catalog:'
+        version: 13.3.3(jest@30.3.0(@types/node@20.19.9)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.15.21(@swc/helpers@0.5.20))(@types/node@20.19.9)(typescript@5.9.3)))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react-test-renderer@19.1.0(react@19.1.0))(react@19.1.0)
+      babel-preset-expo:
+        specifier: 'catalog:'
+        version: 54.0.10(@babel/core@7.29.0)(@babel/runtime@7.29.2)(expo@54.0.33)(react-refresh@0.14.2)
+      jest-expo:
+        specifier: 'catalog:'
+        version: 54.0.17(@babel/core@7.29.0)(expo@54.0.33)(jest@30.3.0(@types/node@20.19.9)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.15.21(@swc/helpers@0.5.20))(@types/node@20.19.9)(typescript@5.9.3)))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
+      react-test-renderer:
+        specifier: 'catalog:'
+        version: 19.1.0(react@19.1.0)
+
+  libs/it-wallet-133:
     dependencies:
       '@io-eudiw-app/commons':
         specifier: workspace:*

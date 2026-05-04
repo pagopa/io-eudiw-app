@@ -1,6 +1,7 @@
 packages:
   - 'apps/*'
   - 'libs/it-wallet'
+  - 'libs/it-wallet-133'
   - 'libs/commons'
   - 'libs/env'
   - 'libs/preferences'
@@ -33,6 +34,7 @@ catalog:
   'jest-expo': ~54.0.13
   '@testing-library/react-native': 13.3.3
   'react-test-renderer': 19.1.0
+  'expo-crypto': 15.0.8
 onlyBuiltDependencies:
   - '@shopify/react-native-skia'
 overrides:

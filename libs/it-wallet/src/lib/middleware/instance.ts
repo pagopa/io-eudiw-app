@@ -1,6 +1,10 @@
 import { WalletInstance } from '@pagopa/io-react-native-wallet';
 import { serializeError } from 'serialize-error';
-import { selectInstanceKeyTag, setInstanceKeyTag } from '../store/instance';
+import {
+  selectInstanceKeyTag,
+  selectSessionId,
+  setInstanceKeyTag
+} from '../store/instance';
 import { createWalletProviderFetch } from '../utils/fetch';
 import {
   generateIntegrityHardwareKeyTag,
@@ -8,7 +12,6 @@ import {
 } from '../utils/integrity';
 import { createAppAsyncThunk } from './thunk';
 import { getEnv } from '@io-eudiw-app/env';
-import { selectSessionId } from '@io-eudiw-app/preferences';
 
 export const createInstanceThunk = createAppAsyncThunk<void, void>(
   'pidIssuanceStatus/createInstance',
