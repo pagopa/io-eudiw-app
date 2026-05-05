@@ -22,3 +22,8 @@ export const itWalletFeature = {
   linkingConfig: walletLinkingConfig,
   addListeners: addWalletListeners
 } satisfies MiniApp<'it-wallet', 'wallet', MainNavigatorParamsList>;
+
+export {
+  hydrateCredentialsThunk,
+  credentialsHydratedSelector
+} from './lib/store/credentials';
