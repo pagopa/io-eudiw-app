@@ -2,7 +2,8 @@ import { IOToast } from '@pagopa/io-app-design-system';
 import { generate } from '@pagopa/io-react-native-crypto';
 import {
   createCryptoContextFor,
-  Credential
+  Credential,
+  IoWallet
 } from '@pagopa/io-react-native-wallet';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
@@ -29,7 +30,10 @@ import { createWalletProviderFetch } from '../utils/fetch';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { CredentialFormat, DcqlQuery } from '../utils/itwTypesUtils';
-import { getAttestationThunk } from './attestation';
+import {
+  getAttestationThunk,
+  getWalletUnitAttestationThunk
+} from './attestation';
 import { getEnv } from '@io-eudiw-app/env';
 import { AppListenerWithAction, AppStartListening } from './types';
 import {
@@ -66,8 +70,8 @@ const obtainCredentialListener: AppListenerWithAction<
      * Check the passed credential type and throw an error if it's not found.
      */
     const state = listenerApi.getState();
-    const credentialConfigId = selectRequestedCredential(state);
-    if (!credentialConfigId) {
+    const credentialId = selectRequestedCredential(state);
+    if (!credentialId) {
       throw new Error('Credential type not found');
     }
     // Get the wallet instance attestation and generate its crypto context
@@ -77,9 +81,12 @@ const obtainCredentialListener: AppListenerWithAction<
 
     const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
 
-    // Create credential crypto context
     const credentialKeyTag = Crypto.randomUUID().toString();
-    await generate(credentialKeyTag);
+
+    const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+    const walletUnitAttestation = await listenerApi
+      .dispatch(getWalletUnitAttestationThunk({ keyTags: [credentialKeyTag] }))
+      .unwrap();
     const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
 
     const sessionId = selectSessionId(state);
@@ -89,22 +96,15 @@ const obtainCredentialListener: AppListenerWithAction<
       sessionId
     );
 
-    // Start the issuance flow
-    const startFlow: Credential.Issuance.StartFlow = () => ({
-      issuerUrl: EXPO_PUBLIC_EAA_PROVIDER_BASE_URL,
-      credentialId: credentialConfigId
-    });
-    const { issuerUrl } = startFlow();
-
     // Evaluate issuer trust
-    const { issuerConf } =
-      await Credential.Issuance.evaluateIssuerTrust(issuerUrl);
+    const { issuerConf } = await Credential.Issuance.evaluateIssuerTrust(
+      EXPO_PUBLIC_EAA_PROVIDER_BASE_URL
+    );
 
-    // Start user authorization
     const { issuerRequestUri, clientId, codeVerifier } =
-      await Credential.Issuance.startUserAuthorization(
+      await wallet.CredentialIssuance.startUserAuthorization(
         issuerConf,
-        [credentialConfigId],
+        [credentialId],
         { proofType: 'none' },
         {
           walletInstanceAttestation,
@@ -117,7 +117,7 @@ const obtainCredentialListener: AppListenerWithAction<
     // Extract the credential type from the config
     const credentialConfig =
       issuerConf.openid_credential_issuer.credential_configurations_supported[
-        credentialConfigId
+        credentialId
       ];
     const credentialType =
       credentialConfig.format === CredentialFormat.MDOC
@@ -169,26 +169,22 @@ const obtainCredentialListener: AppListenerWithAction<
     );
     await listenerApi.take(isAnyOf(setCredentialIssuancePostAuthRequest));
 
+    // Complete the user authorization via form_post.jwt mode
     const { code } =
-      await Credential.Issuance.completeUserAuthorizationWithFormPostJwtMode(
+      await wallet.CredentialIssuance.completeUserAuthorizationWithFormPostJwtMode(
         requestObject,
-        pid.credential,
         issuerConf,
-        {
-          wiaCryptoContext,
-          pidCryptoContext: createCryptoContextFor(pid.keyTag),
-          appFetch
-        }
+        pid.credential,
+        { wiaCryptoContext, pidKeyTag: pid.keyTag }
       );
 
     // Generate the DPoP context which will be used for the whole issuance flow
     await regenerateCryptoKey(DPOP_KEYTAG);
     const dPopCryptoContext = createCryptoContextFor(DPOP_KEYTAG);
 
-    const { accessToken } = await Credential.Issuance.authorizeAccess(
+    const { accessToken } = await wallet.CredentialIssuance.authorizeAccess(
       issuerConf,
       code,
-      clientId,
       redirectUri,
       codeVerifier,
       {
@@ -203,32 +199,31 @@ const obtainCredentialListener: AppListenerWithAction<
     const { credential_configuration_id, credential_identifiers } =
       accessToken.authorization_details[0];
 
-    const { credential, format } = await Credential.Issuance.obtainCredential(
-      issuerConf,
-      accessToken,
-      clientId,
-      {
-        credential_configuration_id,
-        credential_identifier: credential_identifiers[0]
-      },
-      {
-        credentialCryptoContext,
-        dPopCryptoContext,
-        appFetch
-      }
-    );
+    // Obtain the credential
+    const { credential, format } =
+      await wallet.CredentialIssuance.obtainCredential(
+        issuerConf,
+        accessToken,
+        clientId,
+        {
+          credential_configuration_id,
+          credential_identifier: credential_identifiers[0]
+        },
+        {
+          credentialCryptoContext,
+          dPopCryptoContext,
+          walletUnitAttestation: walletUnitAttestation.attestation,
+          appFetch
+        }
+      );
 
     // Parse and verify the credential. The ignoreMissingAttributes flag must be set to false or omitted in production.
     const { parsedCredential, expiration, issuedAt } =
-      await Credential.Issuance.verifyAndParseCredential(
+      await wallet.CredentialIssuance.verifyAndParseCredential(
         issuerConf,
         credential,
         credential_configuration_id,
-        {
-          credentialCryptoContext,
-          ignoreMissingAttributes: true
-        }
-        // 'x509CertRoot'
+        { credentialCryptoContext, ignoreMissingAttributes: true }
       );
 
     listenerApi.dispatch(

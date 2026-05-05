@@ -2,7 +2,6 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
 import { wellKnownCredential } from '../utils/credentials';
-import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import { WalletCombinedRootState } from '.';
@@ -136,18 +135,6 @@ export const itwCredentialsPidSelector = selectCredential(
 );
 
 /**
- * Returns the credential status and the error message corresponding to the status assertion error, if present.
- *
- * @param state - The global state.
- * @returns The credential status and the error message corresponding to the status assertion error, if present.
- */
-export const itwCredentialsPidStatusSelector = createSelector(
-  itwCredentialsPidSelector,
-  pid =>
-    pid ? (getCredentialStatus(pid) as ItwJwtCredentialStatus) : undefined
-);
-
-/**
  * Returns the pid credential expiration date, if present.
  *
  * @param state - The global state.
@@ -170,8 +157,7 @@ export const selectWalletCards: (
     .map(cred => ({
       key: cred.keyTag,
       type: 'itw',
-      credentialType: cred.credentialType,
-      credentialStatus: getCredentialStatus(cred)
+      credentialType: cred.credentialType
     }))
 );
 

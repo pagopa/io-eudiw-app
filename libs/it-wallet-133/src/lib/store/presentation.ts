@@ -1,4 +1,3 @@
-import { Credential } from '@pagopa/io-react-native-wallet';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
 import { FederationEntity } from '../types';
@@ -16,6 +15,7 @@ import {
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
 import { resetLifecycle } from './lifecycle';
+import { RemotePresentation } from '@pagopa/io-react-native-wallet';
 
 /**
  * Type for the description which contains the requested claims during the presentation.
@@ -28,9 +28,7 @@ export type Descriptor = {
 /**
  * Response type for the authorization request which is the final step of the presentation flow.
  */
-type AuthResponse = Awaited<
-  ReturnType<typeof Credential.Presentation.sendAuthorizationResponse>
->;
+type AuthResponse = RemotePresentation.AuthorizationResponse;
 
 /**
  * Type of the optional claims names selected by the user.

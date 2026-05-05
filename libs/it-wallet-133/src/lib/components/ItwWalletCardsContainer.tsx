@@ -5,7 +5,6 @@ import { useCallback, useMemo } from 'react';
 import WALLET_ROUTES from '../navigation/wallet/routes';
 import {
   itwCredentialsPidExpirationSelector,
-  itwCredentialsPidStatusSelector,
   selectWalletCards
 } from '../store/credentials';
 import { ItwJwtCredentialStatus } from '../utils/itwTypesUtils';
@@ -28,13 +27,11 @@ export const ItwWalletCardsContainer = () => {
   const navigation =
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
   const cards = useAppSelector(selectWalletCards);
-  const pidStatus = useAppSelector(itwCredentialsPidStatusSelector);
   const pidExpiration = useAppSelector(itwCredentialsPidExpirationSelector);
   const { t } = useTranslation(['common']);
 
   useDebugInfo({
     itw: {
-      pidStatus,
       pidExpiration,
       cards
     }
@@ -50,7 +47,6 @@ export const ItwWalletCardsContainer = () => {
     (): React.ReactElement => (
       <>
         <ItwWalletIdStatus
-          pidStatus={pidStatus}
           pidExpiration={pidExpiration}
           onPress={handleNavigateToItwId}
           startButtonLabel={t('buttons.start')}
@@ -58,7 +54,7 @@ export const ItwWalletCardsContainer = () => {
         <VSpacer size={16} />
       </>
     ),
-    [pidStatus, pidExpiration, handleNavigateToItwId, t]
+    [pidExpiration, handleNavigateToItwId, t]
   );
 
   return (

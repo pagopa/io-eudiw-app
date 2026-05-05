@@ -4,7 +4,6 @@
 
 import { createSelector } from '@reduxjs/toolkit';
 import { wellKnownCredential } from '../../utils/credentials';
-import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import {
   itwCredentialsPidStatusSelector,
   selectCredentials
@@ -67,29 +66,3 @@ export const itwShouldRenderWalletReadyBannerSelector = (
   // NOTE: Online status checks not yet implemented
   itwCredentialsPidStatusSelector(state) !== 'jwtExpired' &&
   itwIsWalletEmptySelector(state);
-
-/**
- * Get the credential status and the error message corresponding to the status assertion error, if present.
- * The message is dynamic and extracted from the issuer configuration.
- *
- * Note: the credential type is passed as second argument to reuse the same selector and cache per credential type.
- *
- * @param state - The global state.
- * @param type - The credential type.
- * @returns The credential status and the error message corresponding to the status assertion error, if present.
- */
-export const itwCredentialStatusSelector = createSelector(
-  itwCredentialsSelector,
-  (_state: WalletCombinedRootState, type: string) => type,
-  (credentials, type) => {
-    const credential = credentials.find(
-      ({ credentialType }) => credentialType === type
-    );
-    // This should never happen
-    if (credential === undefined) {
-      return { status: undefined, message: undefined };
-    }
-
-    return { status: getCredentialStatus(credential), message: undefined };
-  }
-);

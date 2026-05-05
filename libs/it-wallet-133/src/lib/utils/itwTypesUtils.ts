@@ -1,37 +1,14 @@
-import { Credential, SdJwt } from '@pagopa/io-react-native-wallet';
+import {
+  CredentialIssuance,
+  RemotePresentation,
+  SdJwt
+} from '@pagopa/io-react-native-wallet';
 import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
 
 /**
  * Alias for the IssuerConfiguration type
  */
-export type IssuerConfiguration = Awaited<
-  ReturnType<Credential.Issuance.EvaluateIssuerTrust>
->['issuerConf'];
-
-/**
- * Alias for the ParsedStatusAssertion type
- */
-type ParsedStatusAssertion = Awaited<
-  ReturnType<Credential.Status.VerifyAndParseStatusAssertion>
->['parsedStatusAssertion']['payload'];
-
-/**
- * Alias for a DcqlQuery
- */
-export type DcqlQuery =
-  Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
-
-export type StoredStatusAssertion =
-  | {
-      credentialStatus: 'valid';
-      statusAssertion: string;
-      parsedStatusAssertion: ParsedStatusAssertion;
-    }
-  | {
-      credentialStatus: 'invalid' | 'unknown';
-      // Error code that might contain more details on the invalid status, provided by the issuer
-      errorCode?: string;
-    };
+export type IssuerConfiguration = CredentialIssuance.IssuerConfig;
 
 // Digital credential status
 export type ItwJwtCredentialStatus = 'valid' | 'jwtExpired' | 'jwtExpiring';
@@ -68,9 +45,7 @@ export type Only<T, U> = {
  */
 export type Either<T, U> = Only<T, U> | Only<U, T>;
 
-export type ParsedCredential = Awaited<
-  ReturnType<typeof Credential.Issuance.verifyAndParseCredential>
->['parsedCredential'];
+export type ParsedCredential = CredentialIssuance.ParsedCredential;
 
 /**
  * Type for a credential which is stored in the wallet.
@@ -84,12 +59,11 @@ export type StoredCredential = {
   expiration: string;
   issuedAt?: string;
   issuerConf: IssuerConfiguration;
-  storedStatusAssertion?: StoredStatusAssertion;
   spec_version?: string;
 };
 
 export type EnrichedPresentationDetails = Array<
-  Omit<PresentationDetails[number], 'cryptoContext'> & {
+  ParsedDcql & {
     claimsToDisplay: Array<ClaimDisplayFormat>;
   }
 >;
@@ -112,8 +86,8 @@ export function isDefined<T, O extends NonNullable<T>>(v: T): v is O {
 /**
  * Type representing the parsed DCQL query with the presentation details
  */
-export type PresentationDetails = Awaited<
-  ReturnType<Credential.Presentation.EvaluateDcqlQuery>
+export type ParsedDcql = ReturnType<
+  RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']
 >;
 
 export type ClaimDisplayResult =

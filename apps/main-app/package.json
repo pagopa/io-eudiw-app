@@ -26,6 +26,7 @@
     "react-dom": "catalog:",
     "react-native": "catalog:",
     "expo": "catalog:",
+    "zod": "catalog:",
     "@expo/metro-config": "catalog:",
     "@expo/metro-runtime": "catalog:",
     "expo-status-bar": "catalog:",
@@ -69,8 +70,7 @@
     "react-native-quick-base64": "^2.2.2",
     "react-native-quick-crypto": "0.7.17",
     "redux-persist": "^6.0.0",
-    "rn-qr-generator": "^2.0.0",
-    "zod": "^3.23.8"
+    "rn-qr-generator": "^2.0.0"
   },
   "devDependencies": {
     "@expo/cli": "catalog:",

@@ -35,10 +35,12 @@ catalog:
   '@testing-library/react-native': 13.3.3
   'react-test-renderer': 19.1.0
   'expo-crypto': 15.0.8
+  'zod': 4.3.6
 onlyBuiltDependencies:
   - '@shopify/react-native-skia'
 overrides:
   'react-native-worklets': 0.7.4 # This is required because @pagopa/io-react-native-design-system has wrong peer dependency which makes pnpm install the latest version.
+  'zod': 4.3.6
 patchedDependencies:
   '@pagopa/io-app-design-system': patches/@pagopa__io-app-design-system.patch
-  '@pagopa/io-react-native-wallet': patches/@pagopa__io-react-native-wallet.patch
+  '@pagopa/io-react-native-wallet@2.5.0': patches/@pagopa__io-react-native-wallet.patch
