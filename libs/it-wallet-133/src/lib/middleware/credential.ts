@@ -1,9 +1,8 @@
 import { IOToast } from '@pagopa/io-app-design-system';
-import { generate } from '@pagopa/io-react-native-crypto';
 import {
   createCryptoContextFor,
-  Credential,
-  IoWallet
+  IoWallet,
+  RemotePresentation
 } from '@pagopa/io-react-native-wallet';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
@@ -28,10 +27,9 @@ import { wellKnownCredential } from '../utils/credentials';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
-import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
-import { CredentialFormat, DcqlQuery } from '../utils/itwTypesUtils';
+import { CredentialFormat } from '../utils/itwTypesUtils';
 import {
-  getAttestationThunk,
+  getWalletInstanceAttestationThunk,
   getWalletUnitAttestationThunk
 } from './attestation';
 import { getEnv } from '@io-eudiw-app/env';
@@ -48,6 +46,15 @@ import {
 } from '@io-eudiw-app/identification';
 import { navigator } from '../navigation/utils';
 import { selectSessionId } from '../store/instance';
+import {
+  selectWalletInstanceAttestationAsJwt,
+  shouldRequestWalletInstanceAttestationSelector
+} from '../store/attestation';
+import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
+
+type DcqlQuery = Parameters<
+  RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']
+>[0];
 
 /**
  * Function which handles the issuance of a credential.
@@ -74,10 +81,18 @@ const obtainCredentialListener: AppListenerWithAction<
     if (!credentialId) {
       throw new Error('Credential type not found');
     }
-    // Get the wallet instance attestation and generate its crypto context
-    const walletInstanceAttestation = await listenerApi.dispatch(
-      getAttestationThunk()
+    // Checks if the wallet instance attestation needs to be requested
+    if (shouldRequestWalletInstanceAttestationSelector(state)) {
+      await listenerApi.dispatch(getWalletInstanceAttestationThunk());
+    }
+
+    // Gets the Wallet Instance Attestation from the persisted store
+    const walletInstanceAttestation = selectWalletInstanceAttestationAsJwt(
+      listenerApi.getState()
     );
+    if (!walletInstanceAttestation) {
+      throw new Error('Wallet Instance Attestation not found');
+    }
 
     const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
 
@@ -97,7 +112,7 @@ const obtainCredentialListener: AppListenerWithAction<
     );
 
     // Evaluate issuer trust
-    const { issuerConf } = await Credential.Issuance.evaluateIssuerTrust(
+    const { issuerConf } = await wallet.CredentialIssuance.evaluateIssuerTrust(
       EXPO_PUBLIC_EAA_PROVIDER_BASE_URL
     );
 
@@ -116,9 +131,7 @@ const obtainCredentialListener: AppListenerWithAction<
 
     // Extract the credential type from the config
     const credentialConfig =
-      issuerConf.openid_credential_issuer.credential_configurations_supported[
-        credentialId
-      ];
+      issuerConf.credential_configurations_supported[credentialId];
     const credentialType =
       credentialConfig.format === CredentialFormat.MDOC
         ? credentialConfig.scope
@@ -135,20 +148,28 @@ const obtainCredentialListener: AppListenerWithAction<
     }
 
     const requestObject =
-      await Credential.Issuance.getRequestedCredentialToBePresented(
+      await wallet.CredentialIssuance.getRequestedCredentialToBePresented(
         issuerRequestUri,
         clientId,
         issuerConf,
         appFetch
       );
 
-    const evaluateDcqlQuery = Credential.Presentation.evaluateDcqlQuery(
-      [[createCryptoContextFor(pid.keyTag), pid.credential]],
-      requestObject.dcql_query as DcqlQuery
-    );
+    // Using only the PID credential
+    const credentialsSdJwt = [
+      ...Object.values([pid])
+        .filter(c => c.format === 'dc+sd-jwt')
+        .map(c => [c.keyTag, c.credential])
+    ] as Array<[string, string]>;
+
+    const evaluatedDcqlQuery =
+      await wallet.RemotePresentation.evaluateDcqlQuery(
+        requestObject.dcql_query as DcqlQuery,
+        credentialsSdJwt
+      );
 
     // Check whether any of the requested credential is invalid
-    const invalidCredentials = getInvalidCredentials(evaluateDcqlQuery, [pid]);
+    const invalidCredentials = getInvalidCredentials(evaluatedDcqlQuery, [pid]);
 
     if (invalidCredentials.length > 0) {
       throw new Error(
@@ -157,7 +178,7 @@ const obtainCredentialListener: AppListenerWithAction<
     }
 
     // Add localization to the requested claims
-    const presentationDetails = enrichPresentationDetails(evaluateDcqlQuery, [
+    const presentationDetails = enrichPresentationDetails(evaluatedDcqlQuery, [
       pid
     ]);
 

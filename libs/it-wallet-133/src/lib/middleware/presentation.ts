@@ -28,6 +28,7 @@ import {
 import { IoWallet, RemotePresentation } from '@pagopa/io-react-native-wallet';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { getWalletInstanceAttestationThunk } from './attestation';
+import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 
 type DcqlQuery = Parameters<
   RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']
@@ -103,17 +104,17 @@ const presentationListener: AppListenerWithAction<
         credentialsSdJwt
       );
 
-    // // Check whether any of the requested credential is invalid
-    // const invalidCredentials = getInvalidCredentials(
-    //   evaluatedDcqlQuery,
-    //   credentials
-    // );
+    // Check whether any of the requested credential is invalid
+    const invalidCredentials = getInvalidCredentials(
+      evaluatedDcqlQuery,
+      credentials
+    );
 
-    // if (invalidCredentials.length > 0) {
-    //   throw new Error(
-    //     `No credential found for the required VC type: ${invalidCredentials}`
-    //   );
-    // }
+    if (invalidCredentials.length > 0) {
+      throw new Error(
+        `No credential found for the required VC type: ${invalidCredentials}`
+      );
+    }
 
     // Add localization to the requested claims
     const presentationDetails = enrichPresentationDetails(

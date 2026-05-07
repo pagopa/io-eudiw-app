@@ -42,6 +42,7 @@ type ItwSkeumorphicCardProps = {
 
 export const ItwSkeumorphicCard = ({
   credential,
+  status,
   isFlipped = false,
   valuesHidden,
   claims,
@@ -49,7 +50,7 @@ export const ItwSkeumorphicCard = ({
 }: ItwSkeumorphicCardProps) => {
   const FrontSide = useMemo(
     () => (
-      <>
+      <CardSideBase status={status}>
         <CardBackground
           credentialType={credential.credentialType}
           side="front"
@@ -61,9 +62,9 @@ export const ItwSkeumorphicCard = ({
           mode={mode}
           valuesHidden={valuesHidden}
         />
-      </>
+      </CardSideBase>
     ),
-    [credential, valuesHidden, claims, mode]
+    [credential, status, valuesHidden, claims, mode]
   );
 
   const BackSide = useMemo(

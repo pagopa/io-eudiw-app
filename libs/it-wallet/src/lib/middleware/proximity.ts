@@ -38,11 +38,10 @@ const {
   addListener,
   close,
   generateResponse,
-  getQrCodeString,
   parseVerifierRequest,
   sendErrorResponse,
   sendResponse,
-  start
+  startEngagement
 } = ISO18013_5;
 
 const removeProximityListeners = async (
@@ -58,6 +57,9 @@ const proximityListener: AppListenerWithAction<
   ReturnType<typeof setProximityStatusStarted>
 > = async (_, listenerApi) => {
   const listeners = [
+    addListener('onQrCodeString', qrCode => {
+      listenerApi.dispatch(setProximityQrCode(qrCode.data));
+    }),
     addListener('onDeviceConnecting', () => null),
     addListener('onDeviceConnected', () => {
       listenerApi.dispatch(setProximityStatusConnected());
@@ -97,13 +99,9 @@ const proximityListener: AppListenerWithAction<
 
     // Provide the verifiers certificates
     const certificates = verifierCertificates.map(cert => cert.certificate);
-    await start({
+    await startEngagement({
       certificates: [certificates]
     });
-
-    // Set QR Code
-    const qrCode = await getQrCodeString();
-    listenerApi.dispatch(setProximityQrCode(qrCode));
 
     /**
      * Being that the device can be disconnected or the connection be lost

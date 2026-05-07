@@ -12,6 +12,7 @@ import {
 } from '../../store/credentials';
 import { ParsedClaimsRecord } from '../../utils/claims';
 import { WellKnownClaim } from '../../utils/itwClaimsUtils';
+import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import { StoredCredential } from '../../utils/itwTypesUtils';
 import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
 import { ItwQrCodeClaimImage } from '../credential/ItwQrCodeClaimImage';
@@ -30,6 +31,11 @@ export const ItwPresentationClaimsSection = ({
 }: ItwPresentationClaimsSectionProps) => {
   const theme = useIOTheme();
   const { t } = useTranslation(['common']);
+
+  const credentialStatus = useMemo(
+    () => getCredentialStatus(credential),
+    [credential]
+  );
 
   const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
   const dispatch = useAppDispatch();
@@ -114,6 +120,7 @@ export const ItwPresentationClaimsSection = ({
               claim={claim}
               isPreview={false}
               hidden={valuesHidden}
+              credentialStatus={credentialStatus}
               clipboardSuccessMessage={t('clipboard.copyFeedback')}
               showLabel={t('buttons.show')}
             />

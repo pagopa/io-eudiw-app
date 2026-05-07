@@ -14,6 +14,7 @@ import WALLET_ROUTES from '../../navigation/wallet/routes';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { itwIsClaimValueHiddenSelector } from '../../store/credentials';
 import { ParsedClaimsRecord } from '../../utils/claims';
+import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
 import { StoredCredential } from '../../utils/itwTypesUtils';
 import { ItwSkeumorphicCard } from '../credential/ItwSkeumorphicCard';
@@ -34,6 +35,9 @@ const ItwPresentationCredentialCard = ({ credential, parsedClaims }: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<WalletNavigatorParamsList>>();
   const [isFlipped, setIsFlipped] = useState(false);
+  const credentialStatus = getCredentialStatus(credential);
+  const status = useItwDisplayCredentialStatus(credentialStatus);
+
   const handleFlipButtonPress = useCallback(() => {
     setIsFlipped(_ => !_);
   }, []);
@@ -66,6 +70,7 @@ const ItwPresentationCredentialCard = ({ credential, parsedClaims }: Props) => {
             claims={parsedClaims}
             mode="vertical"
             isFlipped={isFlipped}
+            status={status}
             valuesHidden={valuesHidden}
           />
         </FlipGestureDetector>

@@ -144,7 +144,7 @@ const CredentialTrust = () => {
   const requiredClaimsByCredential = presentationDetails.map(detail =>
     detail.claimsToDisplay.map(claim => ({
       claim,
-      source: getCredentialNameFromType(detail.vct, '')
+      source: getCredentialNameFromType(detail.id, '')
     }))
   );
 

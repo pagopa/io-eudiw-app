@@ -20,11 +20,11 @@
     "@io-eudiw-app/navigation": "workspace:*",
     "@react-navigation/stack": "catalog:",
     "@react-navigation/bottom-tabs": "catalog:",
+    "@pagopa/io-react-native-iso18013": "catalog:",
     "expo-crypto": "catalog:",
     "zod": "catalog:",
     "serialize-error": "catalog:",
     "@pagopa/io-react-native-crypto": "^1.2.3",
-    "@pagopa/io-react-native-iso18013": "^0.7.0",
     "@pagopa/io-react-native-jwt": "2.1.0",
     "@pagopa/io-react-native-wallet": "2.5.0",
     "@types/color": "^4.2.0"

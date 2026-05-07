@@ -10,6 +10,7 @@ import {
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
 import { resetLifecycle } from './lifecycle';
+import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 
 /* State type definition for the credentials slice.
  * This is stored as an array to avoid overhead due to map not being serializable,
@@ -146,6 +147,18 @@ export const itwCredentialsPidExpirationSelector = createSelector(
 );
 
 /**
+ * Returns the credential status and the error message corresponding to the status assertion error, if present.
+ *
+ * @param state - The global state.
+ * @returns The credential status and the error message corresponding to the status assertion error, if present.
+ */
+export const itwCredentialsPidStatusSelector = createSelector(
+  itwCredentialsPidSelector,
+  pid =>
+    pid ? (getCredentialStatus(pid) as ItwJwtCredentialStatus) : undefined
+);
+
+/**
  * Selects all the credentials beside the PID and transforms them
  * into {@link ItwCredentialCardProps}
  */
@@ -157,7 +170,8 @@ export const selectWalletCards: (
     .map(cred => ({
       key: cred.keyTag,
       type: 'itw',
-      credentialType: cred.credentialType
+      credentialType: cred.credentialType,
+      credentialStatus: getCredentialStatus(cred)
     }))
 );
 

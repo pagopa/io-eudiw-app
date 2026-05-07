@@ -63,7 +63,7 @@ export type StoredCredential = {
 };
 
 export type EnrichedPresentationDetails = Array<
-  ParsedDcql & {
+  Extract<ParsedDcql[number], { format: 'dc+sd-jwt' }> & {
     claimsToDisplay: Array<ClaimDisplayFormat>;
   }
 >;
@@ -86,8 +86,8 @@ export function isDefined<T, O extends NonNullable<T>>(v: T): v is O {
 /**
  * Type representing the parsed DCQL query with the presentation details
  */
-export type ParsedDcql = ReturnType<
-  RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']
+export type ParsedDcql = Awaited<
+  ReturnType<RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']>
 >;
 
 export type ClaimDisplayResult =
