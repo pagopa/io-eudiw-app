@@ -1,5 +1,11 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PersistConfig, persistReducer } from 'redux-persist';
 import { serializeError } from 'serialize-error';
+import { secureStoragePersistor } from '@io-eudiw-app/commons';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
 import { wellKnownCredential } from '../utils/credentials';
 import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
@@ -8,45 +14,26 @@ import {
   StoredCredentialMetadata
 } from '../utils/itwTypesUtils';
 import { itwCredentialVault } from '../utils/itwCredentialVault';
-import { WalletCombinedRootState } from '.';
-import {
-  preferencesReset,
-  preferencesSetIsFirstStartupFalse
-} from '@io-eudiw-app/preferences';
-import { resetLifecycle } from './lifecycle';
 import { createAppAsyncThunk } from '../middleware/thunk';
+import { WalletCombinedRootState } from '.';
+import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the credentials slice.
  * Only credential metadata is kept here. The encoded SD-JWT/MDOC of each
- * credential is persisted separately by `itwCredentialVault` to keep the
- * size of the persisted slice bounded. The slice itself is not wired into
- * redux-persist: it is hydrated at boot via `hydrateCredentialsThunk` and
- * mirrored to secure storage by a write-through listener.
+ * credential is persisted separately by `itwCredentialVault`, so this
+ * slice can keep using redux-persist without bloating secure storage with
+ * the raw credential payloads.
  */
 type CredentialsSlice = {
   credentials: Array<StoredCredentialMetadata>;
   valuesHidden: boolean;
-  /**
-   * Set to `true` once the slice has been loaded from secure storage at
-   * app startup. Consumers that require credentials to be ready (e.g.
-   * the wallet UI) should gate on this flag.
-   */
-  credentialsHydrated: boolean;
 };
 
 // Initial state for the credential slice
 const initialState: CredentialsSlice = {
   credentials: [],
-  valuesHidden: false,
-  credentialsHydrated: false
+  valuesHidden: false
 };
-
-// On reset we wipe the user data but keep the hydration flag, otherwise the
-// UI gate would re-trigger and block the screens after a logout/reset.
-const resetState = (state: CredentialsSlice): CredentialsSlice => ({
-  ...initialState,
-  credentialsHydrated: state.credentialsHydrated
-});
 
 /**
  * Redux slice for the credential state. It allows to store the PID and other credentials.
@@ -100,41 +87,33 @@ const credentialsSlice = createSlice({
     },
     itwSetClaimValuesHidden: (state, action: PayloadAction<boolean>) => {
       state.valuesHidden = action.payload;
-    },
-    /**
-     * Replaces the slice contents with the snapshot loaded from the
-     * vault at boot. Always flips `credentialsHydrated` to `true` so the
-     * UI gate can lift once the dispatch goes through.
-     */
-    hydrateCredentials: (
-      _,
-      action: PayloadAction<{
-        credentials: Array<StoredCredentialMetadata>;
-        valuesHidden: boolean;
-      }>
-    ) => ({
-      credentials: action.payload.credentials,
-      valuesHidden: action.payload.valuesHidden,
-      credentialsHydrated: true
-    })
+    }
   },
   extraReducers: builder => {
-    // Reset the user data when preferences are reset, on first startup or
-    // on wallet lifecycle reset. The hydration flag is preserved so that
-    // the UI gate stays open.
-    builder.addCase(preferencesReset, resetState);
-    builder.addCase(resetLifecycle, resetState);
-    builder.addCase(preferencesSetIsFirstStartupFalse, resetState);
+    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 
 /**
- * Plain reducer for the credentials slice. The slice is intentionally
- * NOT wrapped with `persistReducer`: persistence is handled directly via
- * `itwCredentialVault.putMetadata` so that the rehydration step never
- * touches the encoded SD-JWT/MDOC payloads.
+ * Redux persist configuration for the credential slice.
+ * The slice now stores only credential metadata: the encoded SD-JWT/MDOC
+ * payloads live in `itwCredentialVault` and never flow through redux-persist.
  */
-export const credentialsReducer = credentialsSlice.reducer;
+const credentialsPersistor: PersistConfig<CredentialsSlice> = {
+  key: 'credentials',
+  storage: secureStoragePersistor()
+};
+
+/**
+ * Persisted reducer for the credential slice.
+ */
+export const credentialsReducer = persistReducer(
+  credentialsPersistor,
+  credentialsSlice.reducer
+);
 
 /**
  * Exports the actions for the credentials slice.
@@ -144,8 +123,7 @@ export const {
   removeCredential,
   addCredentialWithIdentification,
   addPidWithIdentification,
-  itwSetClaimValuesHidden,
-  hydrateCredentials
+  itwSetClaimValuesHidden
 } = credentialsSlice.actions;
 
 /**
@@ -226,105 +204,3 @@ export const selectWalletCards: (
 
 export const itwIsClaimValueHiddenSelector = (state: WalletCombinedRootState) =>
   state.wallet.credentials.valuesHidden;
-
-export const credentialsHydratedSelector = (state: WalletCombinedRootState) =>
-  state.wallet.credentials.credentialsHydrated;
-
-/**
- * Loads the credentials slice from secure storage at app startup,
- * bypassing redux-persist entirely. The thunk performs three steps:
- *
- * 1. Migration from the legacy redux-persist payload (if present): the
- *    encoded SD-JWT/MDOC of each entry is moved to the per-credential
- *    vault, the metadata is normalized, and the legacy key is purged.
- * 2. Coherence check: metadata entries without a matching vault entry
- *    are dropped, and orphan vault entries are removed.
- * 3. Dispatch of `hydrateCredentials` with the cleaned snapshot, which
- *    flips `credentialsHydrated` to `true` and unlocks the UI.
- *
- * Subsequent state mutations are mirrored to the vault by the
- * write-through listener in `middleware/credentialVault.ts`.
- */
-export const hydrateCredentialsThunk = createAppAsyncThunk<void>(
-  'credentials/hydrate',
-  async (_, { dispatch }) => {
-    let snapshot = await itwCredentialVault.getMetadata();
-
-    // First-boot migration from the previous redux-persist layout.
-    if (!snapshot) {
-      const legacy = await itwCredentialVault.readLegacyPersistPayload();
-      if (legacy) {
-        const migrated: Array<StoredCredentialMetadata> = [];
-        for (const entry of legacy.credentials) {
-          const { credential: encoded, ...metadata } = entry;
-          if (encoded) {
-            try {
-              await itwCredentialVault.put(metadata.credentialType, encoded);
-            } catch {
-              // Skip entries that cannot be migrated; they will be
-              // surfaced to the user as missing credentials.
-              continue;
-            }
-          }
-          migrated.push(metadata);
-        }
-        snapshot = {
-          credentials: migrated,
-          valuesHidden: legacy.valuesHidden
-        };
-        // Best-effort cleanup of the legacy payload. Failure is non-fatal:
-        // the next boot will read from the new metadata key first.
-        try {
-          await itwCredentialVault.clearLegacyPersistPayload();
-        } catch {
-          /* swallow */
-        }
-      }
-    }
-
-    const credentials = snapshot?.credentials ?? [];
-    const valuesHidden = snapshot?.valuesHidden ?? false;
-
-    // Coherence check: drop metadata whose encoded credential is missing.
-    const reconciled: Array<StoredCredentialMetadata> = [];
-    for (const meta of credentials) {
-      const encoded = await itwCredentialVault.get(meta.credentialType);
-      if (encoded) {
-        reconciled.push(meta);
-      }
-    }
-
-    // Drop vault entries that no longer have matching metadata.
-    const knownTypes = new Set(reconciled.map(m => m.credentialType));
-    const vaultTypes = await itwCredentialVault.getAllKeys();
-    await Promise.all(
-      vaultTypes
-        .filter(t => !knownTypes.has(t))
-        .map(async t => {
-          try {
-            await itwCredentialVault.remove(t);
-          } catch {
-            /* swallow individual failure */
-          }
-        })
-    );
-
-    dispatch(
-      hydrateCredentials({
-        credentials: reconciled,
-        valuesHidden
-      })
-    );
-
-    // Persist the reconciled snapshot so subsequent boots can skip the
-    // migration / coherence path entirely.
-    try {
-      await itwCredentialVault.putMetadata({
-        credentials: reconciled,
-        valuesHidden
-      });
-    } catch {
-      /* swallow: write-through listener will retry on next mutation */
-    }
-  }
-);
