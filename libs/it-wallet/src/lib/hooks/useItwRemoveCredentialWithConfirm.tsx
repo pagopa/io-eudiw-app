@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { t } from 'i18next';
 import { Alert } from 'react-native';
 import { removeCredential } from '../store/credentials';
-import { StoredCredential } from '../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../utils/itwTypesUtils';
 import { useAppDispatch } from '../store';
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
 
@@ -12,7 +12,7 @@ import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
  * Hook that shows a confirmation dialog and, if confirmed, removes a credential from the wallet
  */
 export const useItwRemoveCredentialWithConfirm = (
-  credential: StoredCredential
+  credential: StoredCredentialMetadata
 ) => {
   const dispatch = useAppDispatch();
   const toast = useIOToast();

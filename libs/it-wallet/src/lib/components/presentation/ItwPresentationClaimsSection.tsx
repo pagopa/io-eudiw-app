@@ -13,7 +13,7 @@ import {
 import { ParsedClaimsRecord } from '../../utils/claims';
 import { WellKnownClaim } from '../../utils/itwClaimsUtils';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
 import { ItwQrCodeClaimImage } from '../credential/ItwQrCodeClaimImage';
 import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
@@ -21,7 +21,7 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import { useTranslation } from 'react-i18next';
 
 type ItwPresentationClaimsSectionProps = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
   parsedClaims: ParsedClaimsRecord;
 };
 

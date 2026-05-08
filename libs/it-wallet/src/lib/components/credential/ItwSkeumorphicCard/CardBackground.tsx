@@ -2,12 +2,12 @@ import { IOColors } from '@pagopa/io-app-design-system';
 import { memo } from 'react';
 import { ImageSourcePropType, StyleSheet, View } from 'react-native';
 import { wellKnownCredential } from '../../../utils/credentials';
-import { StoredCredential } from '../../../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../../../utils/itwTypesUtils';
 import { CardSide } from './types';
 import { AnimatedImage } from '@io-eudiw-app/commons';
 
 type CardBackgroundProps = {
-  credentialType: StoredCredential['credentialType'];
+  credentialType: StoredCredentialMetadata['credentialType'];
   side: CardSide;
 };
 

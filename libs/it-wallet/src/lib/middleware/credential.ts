@@ -18,12 +18,13 @@ import {
   setCredentialIssuancePreAuthSuccess
 } from '../store/credentialIssuance';
 import {
-  addCredential,
   addCredentialWithIdentification,
+  persistCredential,
   selectCredential
 } from '../store/credentials';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredential } from '../utils/credentials';
+import { itwCredentialVault } from '../utils/itwCredentialVault';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
@@ -130,8 +131,15 @@ const obtainCredentialListener: AppListenerWithAction<
       );
     }
 
-    if (!pid || !pid.credential || !pid.keyTag) {
+    if (!pid || !pid.keyTag) {
       throw new Error('PID required for EAA issuance but missing.');
+    }
+
+    // Retrieve the encoded PID from the vault for the DCQL evaluation
+    // and the user authorization step.
+    const pidEncoded = await itwCredentialVault.get(pid.credentialType);
+    if (!pidEncoded) {
+      throw new Error('PID encoded credential missing in vault.');
     }
 
     const requestObject =
@@ -143,7 +151,7 @@ const obtainCredentialListener: AppListenerWithAction<
       );
 
     const evaluateDcqlQuery = Credential.Presentation.evaluateDcqlQuery(
-      [[createCryptoContextFor(pid.keyTag), pid.credential]],
+      [[createCryptoContextFor(pid.keyTag), pidEncoded]],
       requestObject.dcql_query as DcqlQuery
     );
 
@@ -172,7 +180,7 @@ const obtainCredentialListener: AppListenerWithAction<
     const { code } =
       await Credential.Issuance.completeUserAuthorizationWithFormPostJwtMode(
         requestObject,
-        pid.credential,
+        pidEncoded,
         issuerConf,
         {
           wiaCryptoContext,
@@ -277,7 +285,13 @@ const addCredentialWithAuthListener: AppListenerWithAction<
     isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
   );
   if (setIdentificationIdentified.match(resAction[0])) {
-    listenerApi.dispatch(addCredential(action.payload));
+    const persistResult = await listenerApi.dispatch(
+      persistCredential(action.payload)
+    );
+    if (persistCredential.rejected.match(persistResult)) {
+      IOToast.error(t('errors.generic', { ns: 'common' }));
+      return;
+    }
     listenerApi.dispatch(resetCredentialIssuance());
     navigator.navigateWithReset('MAIN_TAB_NAV');
     IOToast.success(t('buttons.done', { ns: 'common' }));

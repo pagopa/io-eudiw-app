@@ -1,25 +1,31 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
-import { ItwJwtCredentialStatus, WalletCard } from '../types';
-import { wellKnownCredential } from '../utils/credentials';
-import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
-import { StoredCredential } from '../utils/itwTypesUtils';
+import { serializeError } from 'serialize-error';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
-import { WalletCombinedRootState } from '.';
 import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
+import { ItwJwtCredentialStatus, WalletCard } from '../types';
+import { wellKnownCredential } from '../utils/credentials';
+import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
+import {
+  StoredCredential,
+  StoredCredentialMetadata
+} from '../utils/itwTypesUtils';
+import { itwCredentialVault } from '../utils/itwCredentialVault';
+import { createAppAsyncThunk } from '../middleware/thunk';
+import { WalletCombinedRootState } from '.';
 import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the credentials slice.
- * This is stored as an array to avoid overhead due to map not being serializable,
- * thus needing to be converted to an array with a transformation.
- * pid - The PID credential
- * credentials - A map of all the stored credentials
+ * Only credential metadata is kept here. The encoded SD-JWT/MDOC of each
+ * credential is persisted separately by `itwCredentialVault`, so this
+ * slice can keep using redux-persist without bloating secure storage with
+ * the raw credential payloads.
  */
 type CredentialsSlice = {
-  credentials: Array<StoredCredential>;
+  credentials: Array<StoredCredentialMetadata>;
   valuesHidden: boolean;
 };
 
@@ -39,7 +45,7 @@ const credentialsSlice = createSlice({
   reducers: {
     addCredential: (
       state,
-      action: PayloadAction<{ credential: StoredCredential }>
+      action: PayloadAction<{ credential: StoredCredentialMetadata }>
     ) => {
       const { credential } = action.payload;
       const existingIndex = state.credentials.findIndex(
@@ -74,14 +80,10 @@ const credentialsSlice = createSlice({
       // If the credential is the PID, ignore it as it is not removable without resetting the lifecycle
       const { credentialType } = action.payload;
       if (credentialType !== wellKnownCredential.PID) {
-        return {
-          credentials: state.credentials.filter(
-            c => c.credentialType !== credentialType
-          ),
-          valuesHidden: state.valuesHidden
-        };
+        state.credentials = state.credentials.filter(
+          c => c.credentialType !== credentialType
+        );
       }
-      return state;
     },
     itwSetClaimValuesHidden: (state, action: PayloadAction<boolean>) => {
       state.valuesHidden = action.payload;
@@ -97,7 +99,8 @@ const credentialsSlice = createSlice({
 
 /**
  * Redux persist configuration for the credential slice.
- * Currently it uses `io-react-native-secure-storage` as the storage engine which stores it encrypted.
+ * The slice now stores only credential metadata: the encoded SD-JWT/MDOC
+ * payloads live in `itwCredentialVault` and never flow through redux-persist.
  */
 const credentialsPersistor: PersistConfig<CredentialsSlice> = {
   key: 'credentials',
@@ -122,6 +125,30 @@ export const {
   addPidWithIdentification,
   itwSetClaimValuesHidden
 } = credentialsSlice.actions;
+
+/**
+ * Persists a credential bundle: writes the encoded SD-JWT/MDOC to the
+ * vault first, and only on success commits the metadata to the Redux
+ * slice. If the vault write fails, Redux is left untouched and the error
+ * is propagated via `rejectWithValue` so the caller can surface it.
+ */
+export const persistCredential = createAppAsyncThunk<
+  StoredCredentialMetadata,
+  { credential: StoredCredential },
+  { rejectValue: string }
+>(
+  'credentials/persist',
+  async ({ credential }, { dispatch, rejectWithValue }) => {
+    const { credential: encoded, ...metadata } = credential;
+    try {
+      await itwCredentialVault.put(metadata.credentialType, encoded);
+    } catch (error) {
+      return rejectWithValue(JSON.stringify(serializeError(error)));
+    }
+    dispatch(addCredential({ credential: metadata }));
+    return metadata;
+  }
+);
 
 export const selectCredentials = (state: WalletCombinedRootState) =>
   state.wallet.credentials.credentials;

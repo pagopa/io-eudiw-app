@@ -5,12 +5,12 @@ import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
 import { wellKnownCredential } from '../../utils/credentials';
 import {
   ItwCredentialStatus,
-  StoredCredential
+  StoredCredentialMetadata
 } from '../../utils/itwTypesUtils';
 import { useAppSelector } from '../../store';
 
 type Props = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
 };
 
 const validStates: Array<ItwCredentialStatus | undefined> = [

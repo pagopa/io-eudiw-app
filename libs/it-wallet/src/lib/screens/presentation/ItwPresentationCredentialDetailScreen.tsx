@@ -29,7 +29,10 @@ import {
 import { parseClaimsToRecord } from '../../utils/claims';
 import { wellKnownCredential } from '../../utils/credentials';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
-import { CredentialFormat, StoredCredential } from '../../utils/itwTypesUtils';
+import {
+  CredentialFormat,
+  StoredCredentialMetadata
+} from '../../utils/itwTypesUtils';
 import { useAppDispatch, useAppSelector } from '../../store';
 import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
 import { PresentationProximityQrCode } from '../../components/proximity/PresentationProximityQRCode';
@@ -112,7 +115,7 @@ export const ItwPresentationCredentialDetailScreen = ({ route }: Props) => {
 };
 
 type ItwPresentationCredentialDetailProps = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
 };
 
 /**

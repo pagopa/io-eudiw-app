@@ -23,6 +23,7 @@ import {
 } from '../utils/credentials';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
+import { itwCredentialVault } from '../utils/itwCredentialVault';
 import { AppListenerWithAction, AppStartListening } from './types';
 import { takeLatestEffect } from '@io-eudiw-app/commons';
 import { serializeError } from 'serialize-error';
@@ -76,13 +77,21 @@ const presentationListener: AppListenerWithAction<
     const credentials = selectCredentials(listenerApi.getState());
 
     /**
-     * Array of tuples containg the credential keytag and its raw value
+     * Array of tuples containg the credential keytag and its raw value.
+     * The encoded SD-JWT is retrieved from the secure vault on demand.
      */
-    const credentialsSdJwt = [
-      ...Object.values(credentials)
-        .filter(c => c.format === 'dc+sd-jwt')
-        .map(c => [createCryptoContextFor(c.keyTag), c.credential])
-    ] as Array<[CryptoContext, string]>;
+    const sdJwtMetadata = credentials.filter(c => c.format === 'dc+sd-jwt');
+    const credentialsSdJwt: Array<[CryptoContext, string]> = await Promise.all(
+      sdJwtMetadata.map(async c => {
+        const encoded = await itwCredentialVault.get(c.credentialType);
+        if (!encoded) {
+          throw new Error(
+            `Encoded credential missing in vault for ${c.credentialType}`
+          );
+        }
+        return [createCryptoContextFor(c.keyTag), encoded];
+      })
+    );
 
     if (!requestObject.dcql_query) {
       throw new Error('Only DCQL presentations are supported at the moment');
