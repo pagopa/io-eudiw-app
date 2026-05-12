@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@io-eudiw-app/it-wallet": "workspace:*",
-    "@io-eudiw-app/it-wallet-133": "workspace:*",
     "@io-eudiw-app/commons": "workspace:*",
     "@io-eudiw-app/preferences": "workspace:*",
     "@io-eudiw-app/debug-info": "workspace:*",

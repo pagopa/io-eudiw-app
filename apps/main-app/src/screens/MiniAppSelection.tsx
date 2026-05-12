@@ -1,7 +1,6 @@
 import {
   Body,
   H2,
-  IOStyles,
   IOVisualCostants,
   ListItemHeader,
   ModuleCredential,
@@ -16,8 +15,7 @@ import {
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import { itWalletFeature } from '@io-eudiw-app/it-wallet';
-import { itWalletFeature133 } from '@io-eudiw-app/it-wallet-133';
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { ImageSourcePropType, ImageURISource } from 'react-native';
 
 type MiniAppOption = {
@@ -45,11 +43,6 @@ const MiniAppSelection = () => {
     {
       id: itWalletFeature.id,
       label: t('global:miniAppSelection.miniApps.it-wallet'),
-      image: require('../../assets/icons/it-wallet-mini-app.png')
-    },
-    {
-      id: itWalletFeature133.id,
-      label: t('global:miniAppSelection.miniApps.it-wallet-133'),
       image: require('../../assets/icons/it-wallet-mini-app.png')
     }
   ];

@@ -1,7 +1,7 @@
 import { generate } from '@pagopa/io-react-native-crypto';
 import {
   createCryptoContextFor,
-  Credential
+  IoWallet
 } from '@pagopa/io-react-native-wallet';
 import { isAnyOf } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
@@ -16,8 +16,7 @@ import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
-import { CredentialFormat, StoredCredential } from '../utils/itwTypesUtils';
-import { getAttestationThunk } from './attestation';
+import { StoredCredential } from '../utils/itwTypesUtils';
 import { createAppAsyncThunk } from './thunk';
 import {
   isAndroid,
@@ -34,74 +33,69 @@ import {
 import MAIN_ROUTES from '../navigation/main/routes';
 import { navigator } from '../navigation/utils';
 import { selectSessionId } from '../store/instance';
+import {
+  getWalletInstanceAttestationThunk,
+  getWalletUnitAttestationThunk
+} from './attestation';
+import { selectWalletInstanceAttestationAsJwt } from '../store/attestation';
 
 /**
  * Thunk to obtain the PID credential.
  * Replaces the obtainPidListener logic.
  */
 export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
-  'pidIssuanceStatus/obtainPid',
+  'pidIssuance/obtainPid',
   async (_, { getState, dispatch, rejectWithValue }) => {
     try {
+      const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
       const {
         EXPO_PUBLIC_PID_PROVIDER_BASE_URL,
         EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri,
         EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl
       } = getEnv();
-      const state = getState();
 
-      const walletInstanceAttestation = await dispatch(getAttestationThunk());
+      await dispatch(getWalletInstanceAttestationThunk());
+
+      const walletInstanceAttestation =
+        selectWalletInstanceAttestationAsJwt(getState());
+
+      if (!walletInstanceAttestation) {
+        throw new Error('Wallet Instance Attestation not found');
+      }
 
       const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
 
       // Start the issuance flow
-      const sessionId = selectSessionId(state);
+      const sessionId = selectSessionId(getState());
       const appFetch = createWalletProviderFetch(
         walletProviderBaseUrl,
         sessionId
       );
 
       const issuerUrl = EXPO_PUBLIC_PID_PROVIDER_BASE_URL;
-      const credentialConfigId = wellKnownCredentialConfigurationIDs.PID;
 
       // Evaluate issuer trust
-      const { issuerConf } = await Credential.Issuance.evaluateIssuerTrust(
-        issuerUrl,
-        { appFetch }
-      );
+      const { issuerConf } =
+        await wallet.CredentialIssuance.evaluateIssuerTrust(issuerUrl, {
+          appFetch
+        });
 
       // Start user authorization
-      const { issuerRequestUri, clientId, codeVerifier } =
-        await Credential.Issuance.startUserAuthorization(
+      const { issuerRequestUri, clientId, codeVerifier, credentialDefinition } =
+        await wallet.CredentialIssuance.startUserAuthorization(
           issuerConf,
-          [credentialConfigId],
+          ['dc_sd_jwt_PersonIdentificationData'],
           { proofType: 'none' },
           {
             walletInstanceAttestation,
-            redirectUri,
+            redirectUri: redirectUri,
             wiaCryptoContext,
             appFetch
           }
         );
 
-      // Extract the credential type from the config
-      const credentialConfig =
-        issuerConf.openid_credential_issuer.credential_configurations_supported[
-          credentialConfigId
-        ];
-      const credentialType =
-        credentialConfig.format === CredentialFormat.MDOC
-          ? credentialConfig.scope
-          : credentialConfig.vct;
-
-      if (!credentialType) {
-        throw new Error(
-          "The selected credential config doesn't have a credentialType"
-        );
-      }
-
       // Obtain the Authorization URL
-      const { authUrl } = await Credential.Issuance.buildAuthorizationUrl(
+      const { authUrl } = await wallet.CredentialIssuance.buildAuthorizationUrl(
         issuerRequestUri,
         clientId,
         issuerConf
@@ -134,7 +128,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
       }
 
       const { code } =
-        await Credential.Issuance.completeUserAuthorizationWithQueryMode(
+        await wallet.CredentialIssuance.completeUserAuthorizationWithQueryMode(
           authRedirectUrl.url
         );
 
@@ -147,10 +141,9 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
       await regenerateCryptoKey(DPOP_KEYTAG);
       const dPopCryptoContext = createCryptoContextFor(DPOP_KEYTAG);
 
-      const { accessToken } = await Credential.Issuance.authorizeAccess(
+      const { accessToken } = await wallet.CredentialIssuance.authorizeAccess(
         issuerConf,
         code,
-        clientId,
         redirectUri,
         codeVerifier,
         {
@@ -160,38 +153,61 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
         }
       );
 
-      // Obtain the credential
-      // # TODO: WLEO-727 - rework to support multiple credentials issuance
-      const { credential_configuration_id, credential_identifiers } =
-        accessToken.authorization_details[0];
+      const [pidCredentialDefinition] = credentialDefinition;
+      // Get the credential configuration ID for PID
+      const pidCredentialConfigId =
+        pidCredentialDefinition?.type === 'openid_credential' &&
+        pidCredentialDefinition?.credential_configuration_id;
 
-      const { credential, format } = await Credential.Issuance.obtainCredential(
-        issuerConf,
-        accessToken,
-        clientId,
-        {
-          credential_configuration_id,
-          credential_identifier: credential_identifiers[0]
-        },
-        {
-          credentialCryptoContext,
-          dPopCryptoContext,
-          appFetch
-        }
-      );
+      const { credential_configuration_id, credential_identifiers } =
+        accessToken.authorization_details.find(
+          authDetails =>
+            authDetails.credential_configuration_id === pidCredentialConfigId
+        ) ?? {};
+
+      // Get the first credential_identifier from the access token's authorization details
+      const [credential_identifier] = credential_identifiers ?? [];
+
+      if (!credential_configuration_id) {
+        throw new Error('No credential configuration ID found for PID');
+      }
+
+      const walletUnitAttestation = await dispatch(
+        getWalletUnitAttestationThunk({
+          keyTags: [credentialKeyTag]
+        })
+      ).unwrap();
+
+      // Get the credential identifier that was authorized
+      const { credential, format } =
+        await wallet.CredentialIssuance.obtainCredential(
+          issuerConf,
+          accessToken,
+          clientId,
+          {
+            credential_configuration_id,
+            credential_identifier
+          },
+          {
+            credentialCryptoContext,
+            dPopCryptoContext,
+            walletUnitAttestation: walletUnitAttestation.attestation,
+            appFetch
+          }
+        );
 
       const { parsedCredential, expiration, issuedAt } =
-        await Credential.Issuance.verifyAndParseCredential(
+        await wallet.CredentialIssuance.verifyAndParseCredential(
           issuerConf,
           credential,
           credential_configuration_id,
-          { credentialCryptoContext }
+          { credentialCryptoContext, ignoreMissingAttributes: true }
         );
 
       return {
         parsedCredential,
         credential,
-        credentialType,
+        credentialType: wellKnownCredentialConfigurationIDs.PID,
         keyTag: credentialKeyTag,
         format,
         expiration: expiration.toISOString(),

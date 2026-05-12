@@ -1,7 +1,6 @@
 packages:
   - 'apps/*'
   - 'libs/it-wallet'
-  - 'libs/it-wallet-133'
   - 'libs/commons'
   - 'libs/env'
   - 'libs/preferences'
@@ -51,4 +50,3 @@ overrides:
   'zod': 4.3.6
 patchedDependencies:
   '@pagopa/io-app-design-system': patches/@pagopa__io-app-design-system.patch
-  '@pagopa/io-react-native-wallet@2.5.0': patches/@pagopa__io-react-native-wallet.patch

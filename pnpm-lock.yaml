@@ -93,9 +93,6 @@ patchedDependencies:
   '@pagopa/io-app-design-system':
     hash: 81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4
     path: patches/@pagopa__io-app-design-system.patch
-  '@pagopa/io-react-native-wallet@2.5.0':
-    hash: 0a2031bd9d9cb8dd3d90ae884e46a49e7e10919c107a33121a6e8489eb4f452e
-    path: patches/@pagopa__io-react-native-wallet.patch
 
 importers:
 
@@ -236,9 +233,6 @@ importers:
       '@io-eudiw-app/it-wallet':
         specifier: workspace:*
         version: link:../../libs/it-wallet
-      '@io-eudiw-app/it-wallet-133':
-        specifier: workspace:*
-        version: link:../../libs/it-wallet-133
       '@io-eudiw-app/navigation':
         specifier: workspace:*
         version: link:../../libs/navigation
@@ -519,76 +513,6 @@ importers:
         version: 54.0.17(@babel/core@7.29.0)(expo@54.0.33)(jest@30.3.0(@types/node@20.19.9)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.15.21(@swc/helpers@0.5.20))(@types/node@20.19.9)(typescript@5.9.3)))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
 
   libs/it-wallet:
-    dependencies:
-      '@io-eudiw-app/commons':
-        specifier: workspace:*
-        version: link:../commons
-      '@io-eudiw-app/debug-info':
-        specifier: workspace:*
-        version: link:../debug-info
-      '@io-eudiw-app/env':
-        specifier: workspace:*
-        version: link:../env
-      '@io-eudiw-app/identification':
-        specifier: workspace:*
-        version: link:../identification
-      '@io-eudiw-app/navigation':
-        specifier: workspace:*
-        version: link:../navigation
-      '@io-eudiw-app/preferences':
-        specifier: workspace:*
-        version: link:../preferences
-      '@pagopa/io-react-native-crypto':
-        specifier: ^1.2.3
-        version: 1.2.4(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      '@pagopa/io-react-native-iso18013':
-        specifier: 'catalog:'
-        version: 0.8.2(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      '@pagopa/io-react-native-jwt':
-        specifier: 2.1.0
-        version: 2.1.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      '@pagopa/io-react-native-wallet':
-        specifier: 2.5.0
-        version: 2.5.0(patch_hash=0a2031bd9d9cb8dd3d90ae884e46a49e7e10919c107a33121a6e8489eb4f452e)(@pagopa/io-react-native-crypto@1.2.4(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(@pagopa/io-react-native-iso18013@0.8.2(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(@pagopa/io-react-native-jwt@2.1.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native-quick-crypto@0.7.17(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
-      '@react-navigation/bottom-tabs':
-        specifier: 'catalog:'
-        version: 7.4.0(@react-navigation/native@7.2.1(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      '@react-navigation/stack':
-        specifier: 'catalog:'
-        version: 7.6.11(@react-navigation/native@7.2.1(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native-gesture-handler@2.30.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      '@types/color':
-        specifier: ^4.2.0
-        version: 4.2.1
-      expo-crypto:
-        specifier: 'catalog:'
-        version: 15.0.8(expo@54.0.33)
-      react:
-        specifier: ^19.1.0
-        version: 19.1.0
-      react-native:
-        specifier: 0.81.5
-        version: 0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0)
-      serialize-error:
-        specifier: 'catalog:'
-        version: 13.0.1
-      zod:
-        specifier: 4.3.6
-        version: 4.3.6
-    devDependencies:
-      '@testing-library/react-native':
-        specifier: 'catalog:'
-        version: 13.3.3(jest@30.3.0(@types/node@20.19.9)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.15.21(@swc/helpers@0.5.20))(@types/node@20.19.9)(typescript@5.9.3)))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react-test-renderer@19.1.0(react@19.1.0))(react@19.1.0)
-      babel-preset-expo:
-        specifier: 'catalog:'
-        version: 54.0.10(@babel/core@7.29.0)(@babel/runtime@7.29.2)(expo@54.0.33)(react-refresh@0.14.2)
-      jest-expo:
-        specifier: 'catalog:'
-        version: 54.0.17(@babel/core@7.29.0)(expo@54.0.33)(jest@30.3.0(@types/node@20.19.9)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.15.21(@swc/helpers@0.5.20))(@types/node@20.19.9)(typescript@5.9.3)))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      react-test-renderer:
-        specifier: 'catalog:'
-        version: 19.1.0(react@19.1.0)
-
-  libs/it-wallet-133:
     dependencies:
       '@io-eudiw-app/commons':
         specifier: workspace:*
@@ -2018,18 +1942,6 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@jsep-plugin/assignment@1.3.0':
-    resolution: {integrity: sha512-VVgV+CXrhbMI3aSusQyclHkenWSAm95WaiKrMxRFam3JSUiIaQjoMIw2sEs/OX4XifnqeQUN4DYbJjlA8EfktQ==}
-    engines: {node: '>= 10.16.0'}
-    peerDependencies:
-      jsep: ^0.4.0||^1.0.0
-
-  '@jsep-plugin/regex@1.0.4':
-    resolution: {integrity: sha512-q7qL4Mgjs1vByCaTnDFcBnV9HS7GVPJX5vyVoCgZHNSC9rjwIlmbXG5sUuorR5ndfHAIlJ8pVStxvjXHbNvtUg==}
-    engines: {node: '>= 10.16.0'}
-    peerDependencies:
-      jsep: ^0.4.0||^1.0.0
-
   '@module-federation/bridge-react-webpack-plugin@0.21.6':
     resolution: {integrity: sha512-lJMmdhD4VKVkeg8RHb+Jwe6Ou9zKVgjtb1inEURDG/sSS2ksdZA8pVKLYbRPRbdmjr193Y8gJfqFbI2dqoyc/g==}
 
@@ -2516,17 +2428,6 @@ packages:
       react: '*'
       react-native: '*'
 
-  '@pagopa/io-react-native-wallet@2.5.0':
-    resolution: {integrity: sha512-40gT0a4o9yOtiCrCadMBUP+JsKUPz2nDYF3pTkrD3rNC/VMldCbhrsqQg2PBeLaVVe4YZcMmy9dURe5q1CbSyQ==}
-    engines: {node: '>= 16.0.0'}
-    peerDependencies:
-      '@pagopa/io-react-native-crypto': '*'
-      '@pagopa/io-react-native-iso18013': '*'
-      '@pagopa/io-react-native-jwt': '*'
-      react: '*'
-      react-native: '*'
-      react-native-quick-crypto: '*'
-
   '@pagopa/io-react-native-wallet@3.1.2':
     resolution: {integrity: sha512-vTkeHgnEMQh1XWA5nSsKR7TTzc5kt5M7nJcgaCWzyA9lSxAKJloGR7rwz3yCvB+wAoT85zyHDVjnWdFWR1lR6g==}
     engines: {node: '>= 16.0.0'}
@@ -2541,14 +2442,14 @@ packages:
   '@pagopa/io-wallet-oauth2@1.2.1':
     resolution: {integrity: sha512-p2bycN6sReT8sbGky9/8HWtfVnKyXCl1+BBCnw3UoMXPSKulctIVyWAMIe6QtVg0uNEF9AQ+F5UlWW6cb8Aesw==}
 
-  '@pagopa/io-wallet-oauth2@1.3.0':
-    resolution: {integrity: sha512-4rroPfsAQji2IW1bm5ab2bn7npm2O9JZxnQNBHSMkY1yUyWIu+W4tahHcI5b01gie6hFdHq1Xa15FAPsWV3gGA==}
+  '@pagopa/io-wallet-oauth2@1.4.0':
+    resolution: {integrity: sha512-QMVF01+QthaUhfrWOz0Y4FxY0tkm8lyx3aSZF6wYdqoJXKUvd0a1pZTRy/hScKpvV9bZtDF5AfEbNHcFHe3jUA==}
 
   '@pagopa/io-wallet-oid-federation@1.2.1':
     resolution: {integrity: sha512-Q4nnqeEuQcnVJct9lUvomon+IW+buuGv2h/vVboScOY4R4y++7+Vv3Sr8+jlCEyZybzy0+ZLmmUQXe/8Z01YNw==}
 
-  '@pagopa/io-wallet-oid-federation@1.3.0':
-    resolution: {integrity: sha512-XD82GtGkMfThouYR84bRmFofDz17p05q4b7q20ZvSrPX8ADKeYXuyR7yRDkg9VXmDPU8VnvvzL8owE0N14cDcA==}
+  '@pagopa/io-wallet-oid-federation@1.4.0':
+    resolution: {integrity: sha512-hFikVt9pI4q3QeIPefKFyHyNJWAoQfepPstJpGApHPstkSTluA8W5MgaXsAvMUSkzdCuCrdpzzqk7g4vOQekhg==}
 
   '@pagopa/io-wallet-oid4vci@1.2.1':
     resolution: {integrity: sha512-D9YMuNuuX/KoeT3i28NCKqf6hgw7jEotTs2cZgsI4bZQws0MqWZDx5AuJa7tNE7ajHW8VVj5BvsaklYaOXSCeQ==}
@@ -2559,8 +2460,8 @@ packages:
   '@pagopa/io-wallet-utils@1.2.1':
     resolution: {integrity: sha512-GCTW/a6Yva7VaInZMg3Ddp/gMnQYV639OPOa8UuUoQVZNH6tx9q5vovajDvkyJR+UEXF8OlQktMpcqhpbHJGyQ==}
 
-  '@pagopa/io-wallet-utils@1.3.0':
-    resolution: {integrity: sha512-LMZ+SzDfcsli5NfRahuUVFKETDMbChJuoa9QNNiVN4LtAdb4R5QYZyzZwNG18qXJ3+/fW9T+T6QXRSzsRsyj3g==}
+  '@pagopa/io-wallet-utils@1.4.0':
+    resolution: {integrity: sha512-NbKzMa2l+X9JMPJ0VhkoaWF8w0KugSAWbdfGy7KDRZy7krpYiw4t93ICM/szZx2zonPCo4zXnqtAafmhVbCglA==}
 
   '@pagopa/react-native-nodelibs@0.1.0':
     resolution: {integrity: sha512-OfWzgDFEK+SfXdywhkLg0Y04A10FJ0HAZihHA5G45qiVnCg3jGEalHC57hpThKcAqvL7s+sCLmKM5Y/cLaSJRQ==}
@@ -3026,24 +2927,12 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sd-jwt/core@0.18.1':
-    resolution: {integrity: sha512-Efpko+1N9bGO+r/cn0f21mgS/FdP6kTApqz7De1BJz8KX3W81JB0Hg2EzvRtaJ+tfKsbG5n0JdlXAEw5OEXRjw==}
-    engines: {node: '>=20'}
-
   '@sd-jwt/core@0.19.0':
     resolution: {integrity: sha512-/FeuQjzQFtnxDsHF64Bw+3uixVogNkXlMGBo1CKWrxB/OLNqtGXQZplKBRZMJWgnOJEqDwD6750wrOxsVly6mg==}
     engines: {node: '>=20'}
 
-  '@sd-jwt/crypto-nodejs@0.18.0':
-    resolution: {integrity: sha512-3gdAKFTWOjzf0Y+wPnk6i7uIby0wSwt1fWqeCKIhMGBuuVn3b0LExnDHh367I+bCZ9cXT+6xtDJyfvlOiVvWnQ==}
-    engines: {node: '>=20'}
-
   '@sd-jwt/crypto-nodejs@0.19.0':
     resolution: {integrity: sha512-mRUZ5pgMBqisXIJyq9vzNH0p4szHV7Dg87Mzm7mI7pgPjIkx9g8R1gRBWaRNzy6mblrTvEpcziPe6bnTY04Lqw==}
-    engines: {node: '>=20'}
-
-  '@sd-jwt/decode@0.18.1':
-    resolution: {integrity: sha512-HLHP8zVL/NmAS2Ljvk8bUs4hGyerpPRF+RMCL4MFYV6gF4VIVkYViPWJZkvR2tdo7F0mWTkSLl/OtSo0cd/lOQ==}
     engines: {node: '>=20'}
 
   '@sd-jwt/decode@0.19.0':
@@ -3054,24 +2943,12 @@ packages:
     resolution: {integrity: sha512-Xhh0n0DKe3paEtNNQSScy4dtA0ZVKF2OrmDcIB2jm77Doh4xsSs1pOseGEWBs9fmAe5Y0m082wgkmQnWEV53IQ==}
     engines: {node: '>=20'}
 
-  '@sd-jwt/present@0.18.1':
-    resolution: {integrity: sha512-jiddudfO3qbOcRpNzBMTSR18/F3Cgrv1nZPJ7t6vAvQ8eHMAUBuLiBbrUk3co8n/k1QR8J0AXUUmtdheFNXgmQ==}
-    engines: {node: '>=20'}
-
   '@sd-jwt/present@0.19.0':
     resolution: {integrity: sha512-WXDwqwUXmtyj7YZ5c+wb26ZBeVOsKXCbCI7s1pRH9ngIjFNDGgAZoVCOmLq8pPgWSJzOTgJe3ErO2k63ZwhyeQ==}
     engines: {node: '>=20'}
 
-  '@sd-jwt/types@0.18.1':
-    resolution: {integrity: sha512-LSUY2vtmJg9naZspH3Xw9ZU8uufPdpuhhmko3Z3Ki/aafQqvFVxhhD2bhqYNrSBY9469qjSQk62rO2/4rHN2+g==}
-    engines: {node: '>=20'}
-
   '@sd-jwt/types@0.19.0':
     resolution: {integrity: sha512-nfuC9zRLKe7o4HSvc+N4ojWRAxo4JGfgcNWpR7bJloLUlnE9eQuu9h9pEaJZht7KRwMpGorNTIdYpoi1btuiew==}
-    engines: {node: '>=20'}
-
-  '@sd-jwt/utils@0.18.1':
-    resolution: {integrity: sha512-SFSWuNVxyp/xI0bAcrq/oV/s+l3oLL4qFZ+VPdXmipq1oQPOwJYNmTUy0PQnBiMlEyWZ7c9iHIGe5zIUZarr1A==}
     engines: {node: '>=20'}
 
   '@sd-jwt/utils@0.19.0':
@@ -3428,10 +3305,6 @@ packages:
 
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
-
-  '@types/parse-path@7.1.0':
-    resolution: {integrity: sha512-EULJ8LApcVEPbrfND0cRQqutIOdiIgJ1Mgrhpy755r14xMohPTEpkV/k28SJvuOs9bHRFW8x+KeDAEPiGQPB9Q==}
-    deprecated: This is a stub types definition. parse-path provides its own type definitions, so you do not need this installed.
 
   '@types/react@19.2.14':
     resolution: {integrity: sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w==}
@@ -4644,9 +4517,6 @@ packages:
   date-format@4.0.14:
     resolution: {integrity: sha512-39BOQLs9ZjKh0/patS9nrT8wc3ioX3/eA/zgbKNopnF2wCqJEoxywwwElATYvRsXdnOxA/OQeQoFZ3rFjVajhg==}
     engines: {node: '>=4.0'}
-
-  dcql@0.2.22:
-    resolution: {integrity: sha512-4CfuUoJ1/dfj4aOMwCGF3HEHsPpRUyALbst5Dx3qcNkIXNFpVqebKVYd58X9/ZlKN/wWJxPS34S7uQ0fcbzS5A==}
 
   dcql@3.0.0:
     resolution: {integrity: sha512-Z1Iq+tDQqPCqWzQVevUVOaYa+NfoplwrwSPvV0JINZpniiN5jq32C4CXsrmELAgSa5Ja7hBKiuYkpZjQFkeHyw==}
@@ -6432,9 +6302,6 @@ packages:
   js-sha256@0.11.1:
     resolution: {integrity: sha512-o6WSo/LUvY2uC4j7mO50a2ms7E/EAdbP0swigLV+nzHKTTaYnaLIWJ02VdXrsJX0vGedDESQnLsOekr94ryfjg==}
 
-  js-sha256@0.9.0:
-    resolution: {integrity: sha512-sga3MHh9sgQN2+pJ9VYZ+1LPwXOxuBJBA5nrR5/ofPfuiJBE2hnjsaN8se8JznOmGLN2p49Pe5U/ttafcs/apA==}
-
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -6466,10 +6333,6 @@ packages:
     peerDependenciesMeta:
       canvas:
         optional: true
-
-  jsep@1.4.0:
-    resolution: {integrity: sha512-B7qPcEVE3NVkmSJbaYxvv4cHkVW7DQsZz13pUMrfS8z8Q/BuShN+gcTXrUlPiGqM2/t/EEaI030bpxMqY8gMlw==}
-    engines: {node: '>= 10.16.0'}
 
   jsesc@3.1.0:
     resolution: {integrity: sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==}
@@ -6520,11 +6383,6 @@ packages:
 
   jsonfile@6.2.0:
     resolution: {integrity: sha512-FGuPw30AdOIUTRMC2OMRtQV+jkVj2cfPqSeWXv1NEAJ1qZ5zb1X6z1mFhbfOB/iy3ssJCD+3KuZ8r8C3uVFlAg==}
-
-  jsonpath-plus@10.4.0:
-    resolution: {integrity: sha512-T92WWatJXmhBbKsgH/0hl+jxjdXrifi5IKeMY02DWggRxX0UElcbVzPlmgLTbvsPeW1PasQ6xE2Q75stkhGbsA==}
-    engines: {node: '>=18.0.0'}
-    hasBin: true
 
   jsrsasign@11.1.1:
     resolution: {integrity: sha512-6w95OOXH8DNeGxakqLndBEqqwQ6A70zGaky1oxfg8WVLWOnghTfJsc5Tknx+Z88MHSb1bGLcqQHImOF8Lk22XA==}
@@ -7382,10 +7240,6 @@ packages:
     resolution: {integrity: sha512-RvldzLvNE0DtOO1loukZsYcHCzHVUnHe7GNyrKIkavp7fNWs5ueX3kUzY/hXS8uRqDWwtaRKDcAmLEVouPIxIw==}
     engines: {node: '>=14.13.0'}
 
-  parse-url@9.2.0:
-    resolution: {integrity: sha512-bCgsFI+GeGWPAvAiUv63ZorMeif3/U0zaXABGJbOWt5OH2KCaPHF6S+0ok4aqM9RuIPGyZdx9tR9l13PsW4AYQ==}
-    engines: {node: '>=14.13.0'}
-
   parse5@7.3.0:
     resolution: {integrity: sha512-IInvU7fabl34qmi9gY8XOVxhYyMyuH2xUNpb2q8/Y+7552KlejkRvqvD19nMoUW/uQGGbqNpA6Tufu5FL5BZgw==}
 
@@ -7825,10 +7679,6 @@ packages:
     resolution: {integrity: sha512-aA5CiuUCUb/lbrliVCJ6lZ17/RpNJzvTO/C7gC/YmDQhTUoRD5q5HlJfwLWcxz4VgAhHwXKzhxH+wUN24tAdqg==}
     peerDependencies:
       react-native: '*'
-
-  react-native-uuid@2.0.4:
-    resolution: {integrity: sha512-LSJNeh559qC17fgVPBsWuTSW/OygFp2dwTcf94IQBLYft5FzIQS9pCsuT36OPvyvDOMb6yiGr6TafaJDnz9PPQ==}
-    engines: {node: '>=18.0.0', npm: '>=9.0.0'}
 
   react-native-worklets@0.7.4:
     resolution: {integrity: sha512-NYOdM1MwBb3n+AtMqy1tFy3Mn8DliQtd8sbzAVRf9Gc+uvQ0zRfxN7dS8ZzoyX7t6cyQL5THuGhlnX+iFlQTag==}
@@ -8928,14 +8778,6 @@ packages:
   v8-to-istanbul@9.3.0:
     resolution: {integrity: sha512-kiGUalWN+rgBJ/1OHZsBtU4rXZOfj/7rKQxULKlIzwzQSvMJUUNgPwJEEh7gU6xEVxC0ahoOBvN2YI8GH6FNgA==}
     engines: {node: '>=10.12.0'}
-
-  valibot@1.0.0-beta.8:
-    resolution: {integrity: sha512-OPAwJZtowb0j91b+bd77+ny7D1VVzsCzD7Jl9waLUlMprTsfI9Y3HHbW3hAQD7wKDKHsmGEesuiYWaYvcZL2wg==}
-    peerDependencies:
-      typescript: '>=5'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
 
   valibot@1.2.0:
     resolution: {integrity: sha512-mm1rxUsmOxzrwnX5arGS+U4T25RdvpPjPN4yR0u9pUBov9+zGVtO84tif1eY4r6zWxVxu3KzIyknJy3rxfRZZg==}
@@ -11113,14 +10955,6 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@jsep-plugin/assignment@1.3.0(jsep@1.4.0)':
-    dependencies:
-      jsep: 1.4.0
-
-  '@jsep-plugin/regex@1.0.4(jsep@1.4.0)':
-    dependencies:
-      jsep: 1.4.0
-
   '@module-federation/bridge-react-webpack-plugin@0.21.6':
     dependencies:
       '@module-federation/sdk': 0.21.6
@@ -12052,30 +11886,6 @@ snapshots:
       react-native: 0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0)
       zod: 4.3.6
 
-  '@pagopa/io-react-native-wallet@2.5.0(patch_hash=0a2031bd9d9cb8dd3d90ae884e46a49e7e10919c107a33121a6e8489eb4f452e)(@pagopa/io-react-native-crypto@1.2.4(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(@pagopa/io-react-native-iso18013@0.8.2(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(@pagopa/io-react-native-jwt@2.1.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native-quick-crypto@0.7.17(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)':
-    dependencies:
-      '@pagopa/io-react-native-crypto': 1.2.4(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      '@pagopa/io-react-native-iso18013': 0.8.2(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      '@pagopa/io-react-native-jwt': 2.1.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      '@sd-jwt/core': 0.18.1
-      '@sd-jwt/crypto-nodejs': 0.18.0
-      '@sd-jwt/types': 0.18.1
-      dcql: 0.2.22(typescript@5.9.3)
-      js-base64: 3.7.8
-      js-sha256: 0.9.0
-      jsonpath-plus: 10.4.0
-      jsrsasign: 11.1.1
-      parse-url: 9.2.0
-      react: 19.1.0
-      react-native: 0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0)
-      react-native-quick-crypto: 0.7.17(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      react-native-url-polyfill: 2.0.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))
-      react-native-uuid: 2.0.4
-      uuid: 11.1.0
-      zod: 4.3.6
-    transitivePeerDependencies:
-      - typescript
-
   '@pagopa/io-react-native-wallet@3.1.2(@pagopa/io-react-native-crypto@1.2.4(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(@pagopa/io-react-native-iso18013@0.8.2(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(@pagopa/io-react-native-jwt@2.1.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native-quick-crypto@0.7.17(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)':
     dependencies:
       '@pagopa/io-react-native-crypto': 1.2.4(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
@@ -12112,25 +11922,25 @@ snapshots:
       js-base64: 3.7.8
       zod: 4.3.6
 
-  '@pagopa/io-wallet-oauth2@1.3.0':
+  '@pagopa/io-wallet-oauth2@1.4.0':
     dependencies:
       '@openid4vc/oauth2': 0.4.3
       '@openid4vc/utils': 0.4.3
-      '@pagopa/io-wallet-oid-federation': 1.3.0
-      '@pagopa/io-wallet-utils': 1.3.0
+      '@pagopa/io-wallet-oid-federation': 1.4.0
+      '@pagopa/io-wallet-utils': 1.4.0
       js-base64: 3.7.8
       zod: 4.3.6
 
   '@pagopa/io-wallet-oid-federation@1.2.1':
     dependencies:
-      '@pagopa/io-wallet-oauth2': 1.3.0
-      '@pagopa/io-wallet-utils': 1.3.0
+      '@pagopa/io-wallet-oauth2': 1.4.0
+      '@pagopa/io-wallet-utils': 1.4.0
       buffer: 6.0.3
       zod: 4.3.6
 
-  '@pagopa/io-wallet-oid-federation@1.3.0':
+  '@pagopa/io-wallet-oid-federation@1.4.0':
     dependencies:
-      '@pagopa/io-wallet-utils': 1.3.0
+      '@pagopa/io-wallet-utils': 1.4.0
       buffer: 6.0.3
       zod: 4.3.6
 
@@ -12150,9 +11960,9 @@ snapshots:
       '@openid4vc/oauth2': 0.4.3
       '@openid4vc/openid4vp': 0.4.3
       '@openid4vc/utils': 0.4.3
-      '@pagopa/io-wallet-oauth2': 1.3.0
-      '@pagopa/io-wallet-oid-federation': 1.3.0
-      '@pagopa/io-wallet-utils': 1.3.0
+      '@pagopa/io-wallet-oauth2': 1.4.0
+      '@pagopa/io-wallet-oid-federation': 1.4.0
+      '@pagopa/io-wallet-utils': 1.4.0
       zod: 4.3.6
 
   '@pagopa/io-wallet-utils@1.2.1':
@@ -12160,7 +11970,7 @@ snapshots:
       '@openid4vc/utils': 0.4.3
       zod: 4.3.6
 
-  '@pagopa/io-wallet-utils@1.3.0':
+  '@pagopa/io-wallet-utils@1.4.0':
     dependencies:
       '@openid4vc/oauth2': 0.4.3
       '@openid4vc/utils': 0.4.3
@@ -12709,13 +12519,6 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sd-jwt/core@0.18.1':
-    dependencies:
-      '@sd-jwt/decode': 0.18.1
-      '@sd-jwt/present': 0.18.1
-      '@sd-jwt/types': 0.18.1
-      '@sd-jwt/utils': 0.18.1
-
   '@sd-jwt/core@0.19.0':
     dependencies:
       '@sd-jwt/decode': 0.19.0
@@ -12723,14 +12526,7 @@ snapshots:
       '@sd-jwt/types': 0.19.0
       '@sd-jwt/utils': 0.19.0
 
-  '@sd-jwt/crypto-nodejs@0.18.0': {}
-
   '@sd-jwt/crypto-nodejs@0.19.0': {}
-
-  '@sd-jwt/decode@0.18.1':
-    dependencies:
-      '@sd-jwt/types': 0.18.1
-      '@sd-jwt/utils': 0.18.1
 
   '@sd-jwt/decode@0.19.0':
     dependencies:
@@ -12743,26 +12539,13 @@ snapshots:
       '@sd-jwt/utils': 0.19.0
       pako: 2.1.0
 
-  '@sd-jwt/present@0.18.1':
-    dependencies:
-      '@sd-jwt/decode': 0.18.1
-      '@sd-jwt/types': 0.18.1
-      '@sd-jwt/utils': 0.18.1
-
   '@sd-jwt/present@0.19.0':
     dependencies:
       '@sd-jwt/decode': 0.19.0
       '@sd-jwt/types': 0.19.0
       '@sd-jwt/utils': 0.19.0
 
-  '@sd-jwt/types@0.18.1': {}
-
   '@sd-jwt/types@0.19.0': {}
-
-  '@sd-jwt/utils@0.18.1':
-    dependencies:
-      '@sd-jwt/types': 0.18.1
-      js-base64: 3.7.8
 
   '@sd-jwt/utils@0.19.0':
     dependencies:
@@ -13143,10 +12926,6 @@ snapshots:
       undici-types: 6.21.0
 
   '@types/parse-json@4.0.2': {}
-
-  '@types/parse-path@7.1.0':
-    dependencies:
-      parse-path: 7.1.0
 
   '@types/react@19.2.14':
     dependencies:
@@ -14539,12 +14318,6 @@ snapshots:
   date-fns@1.30.1: {}
 
   date-format@4.0.14: {}
-
-  dcql@0.2.22(typescript@5.9.3):
-    dependencies:
-      valibot: 1.0.0-beta.8(typescript@5.9.3)
-    transitivePeerDependencies:
-      - typescript
 
   dcql@3.0.0(typescript@5.9.3):
     dependencies:
@@ -16919,8 +16692,6 @@ snapshots:
 
   js-sha256@0.11.1: {}
 
-  js-sha256@0.9.0: {}
-
   js-tokens@4.0.0: {}
 
   js-yaml@3.14.2:
@@ -16994,8 +16765,6 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  jsep@1.4.0: {}
-
   jsesc@3.1.0: {}
 
   json-buffer@3.0.1: {}
@@ -17041,12 +16810,6 @@ snapshots:
       universalify: 2.0.1
     optionalDependencies:
       graceful-fs: 4.2.11
-
-  jsonpath-plus@10.4.0:
-    dependencies:
-      '@jsep-plugin/assignment': 1.3.0(jsep@1.4.0)
-      '@jsep-plugin/regex': 1.0.4(jsep@1.4.0)
-      jsep: 1.4.0
 
   jsrsasign@11.1.1: {}
 
@@ -18238,11 +18001,6 @@ snapshots:
     dependencies:
       parse-path: 7.1.0
 
-  parse-url@9.2.0:
-    dependencies:
-      '@types/parse-path': 7.1.0
-      parse-path: 7.1.0
-
   parse5@7.3.0:
     dependencies:
       entities: 6.0.1
@@ -18679,8 +18437,6 @@ snapshots:
     dependencies:
       react-native: 0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0)
       whatwg-url-without-unicode: 8.0.0-3
-
-  react-native-uuid@2.0.4: {}
 
   react-native-worklets@0.7.4(@babel/core@7.29.0)(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0):
     dependencies:
@@ -19957,10 +19713,6 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
       '@types/istanbul-lib-coverage': 2.0.6
       convert-source-map: 2.0.0
-
-  valibot@1.0.0-beta.8(typescript@5.9.3):
-    optionalDependencies:
-      typescript: 5.9.3
 
   valibot@1.2.0(typescript@5.9.3):
     optionalDependencies:

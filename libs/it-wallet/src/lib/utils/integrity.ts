@@ -32,7 +32,7 @@ const getHardwareSignatureWithAuthData = async (
    * Client data should be hashed however it is not done in this implementation.
    */
   const signature = await sign(clientData, hardwareKeyTag);
-  return { signature, authenticatorData: 'NOT_NEEDED' };
+  return { signature, authenticatorData: 'NOT_IMPLEMENTED' };
 };
 
 /**

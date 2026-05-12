@@ -40,9 +40,6 @@
   ],
   "references": [
     {
-      "path": "../../libs/it-wallet-133/tsconfig.lib.json"
-    },
-    {
       "path": "../../libs/navigation/tsconfig.lib.json"
     },
     {

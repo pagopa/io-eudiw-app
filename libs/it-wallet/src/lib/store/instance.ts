@@ -47,7 +47,7 @@ const instanceSlice = createSlice({
  * Currently it uses AsyncStorage as the storage engine.
  */
 const instancePersist: PersistConfig<InstanceSlice> = {
-  key: 'attestation',
+  key: 'instance',
   storage: AsyncStorage
 };
 
