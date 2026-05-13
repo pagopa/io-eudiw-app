@@ -97,43 +97,6 @@ patchedDependencies:
 importers:
 
   .:
-    dependencies:
-      '@expo/metro-config':
-        specifier: ~54.0.9
-        version: 54.0.14(expo@54.0.33)
-      '@expo/metro-runtime':
-        specifier: ~6.1.2
-        version: 6.1.2(expo@54.0.33)(react-dom@19.1.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      expo:
-        specifier: ~54.0.0
-        version: 54.0.33(@babel/core@7.29.0)(@expo/metro-runtime@6.1.2)(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      expo-splash-screen:
-        specifier: ~31.0.11
-        version: 31.0.13(expo@54.0.33)
-      expo-status-bar:
-        specifier: ~3.0.8
-        version: 3.0.9(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      expo-system-ui:
-        specifier: ~6.0.8
-        version: 6.0.9(expo@54.0.33)(react-native-web@0.21.2(encoding@0.1.13)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))
-      react:
-        specifier: ^19.1.0
-        version: 19.1.0
-      react-dom:
-        specifier: ^19.1.0
-        version: 19.1.0(react@19.1.0)
-      react-native:
-        specifier: 0.81.5
-        version: 0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0)
-      react-native-svg:
-        specifier: 15.12.1
-        version: 15.12.1(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-      react-native-svg-transformer:
-        specifier: ~1.5.1
-        version: 1.5.1(react-native-svg@15.12.1(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(typescript@5.9.3)
-      react-native-web:
-        specifier: ~0.21.0
-        version: 0.21.2(encoding@0.1.13)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     devDependencies:
       '@babel/runtime':
         specifier: ~7.27.6
@@ -8090,12 +8053,6 @@ packages:
       react-native: '>=0.59.0'
       react-native-svg: '>=12.0.0'
 
-  react-native-svg@15.12.1:
-    resolution: {integrity: sha512-vCuZJDf8a5aNC2dlMovEv4Z0jjEUET53lm/iILFnFewa15b4atjVxU6Wirm6O9y6dEsdjDZVD7Q3QM4T1wlI8g==}
-    peerDependencies:
-      react: '*'
-      react-native: '*'
-
   react-native-svg@15.15.3:
     resolution: {integrity: sha512-/k4KYwPBLGcx2f5d4FjE+vCScK7QOX14cl2lIASJ28u4slHHtIhL0SZKU7u9qmRBHxTCKPoPBtN6haT1NENJNA==}
     peerDependencies:
@@ -12885,7 +12842,8 @@ snapshots:
       - utf-8-validate
     optional: true
 
-  '@react-native/normalize-colors@0.74.89': {}
+  '@react-native/normalize-colors@0.74.89':
+    optional: true
 
   '@react-native/normalize-colors@0.81.5': {}
 
@@ -14978,6 +14936,7 @@ snapshots:
       node-fetch: 2.7.0(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
+    optional: true
 
   cross-spawn@7.0.6:
     dependencies:
@@ -14988,6 +14947,7 @@ snapshots:
   css-in-js-utils@3.1.0:
     dependencies:
       hyphenate-style-name: 1.1.0
+    optional: true
 
   css-select@5.2.2:
     dependencies:
@@ -16127,7 +16087,8 @@ snapshots:
     dependencies:
       bser: 2.1.1
 
-  fbjs-css-vars@1.0.2: {}
+  fbjs-css-vars@1.0.2:
+    optional: true
 
   fbjs@3.0.5(encoding@0.1.13):
     dependencies:
@@ -16140,6 +16101,7 @@ snapshots:
       ua-parser-js: 1.0.41
     transitivePeerDependencies:
       - encoding
+    optional: true
 
   fdir@6.5.0(picomatch@4.0.4):
     optionalDependencies:
@@ -16650,7 +16612,8 @@ snapshots:
 
   human-signals@2.1.0: {}
 
-  hyphenate-style-name@1.1.0: {}
+  hyphenate-style-name@1.1.0:
+    optional: true
 
   i18next@23.16.8:
     dependencies:
@@ -16724,6 +16687,7 @@ snapshots:
   inline-style-prefixer@7.0.1:
     dependencies:
       css-in-js-utils: 3.1.0
+    optional: true
 
   internal-slot@1.1.0:
     dependencies:
@@ -17954,7 +17918,8 @@ snapshots:
 
   memoize-one@5.2.1: {}
 
-  memoize-one@6.0.0: {}
+  memoize-one@6.0.0:
+    optional: true
 
   merge-descriptors@1.0.3: {}
 
@@ -19041,6 +19006,7 @@ snapshots:
   promise@7.3.1:
     dependencies:
       asap: 2.0.6
+    optional: true
 
   promise@8.3.0:
     dependencies:
@@ -19289,18 +19255,6 @@ snapshots:
       react-native-is-edge-to-edge: 1.3.1(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
       warn-once: 0.1.1
 
-  react-native-svg-transformer@1.5.1(react-native-svg@15.12.1(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(typescript@5.9.3):
-    dependencies:
-      '@svgr/core': 8.1.0(typescript@5.9.3)
-      '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@5.9.3))
-      '@svgr/plugin-svgo': 8.1.0(@svgr/core@8.1.0(typescript@5.9.3))(typescript@5.9.3)
-      path-dirname: 1.0.2
-      react-native: 0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0)
-      react-native-svg: 15.12.1(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
-
   react-native-svg-transformer@1.5.1(react-native-svg@15.15.3(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(typescript@5.9.3):
     dependencies:
       '@svgr/core': 8.1.0(typescript@5.9.3)
@@ -19312,14 +19266,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
       - typescript
-
-  react-native-svg@15.12.1(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0):
-    dependencies:
-      css-select: 5.2.2
-      css-tree: 1.1.3
-      react: 19.1.0
-      react-native: 0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0)
-      warn-once: 0.1.1
 
   react-native-svg@15.15.3(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0):
     dependencies:
@@ -19353,6 +19299,7 @@ snapshots:
       styleq: 0.1.3
     transitivePeerDependencies:
       - encoding
+    optional: true
 
   react-native-worklets@0.7.4(@babel/core@7.29.0)(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0):
     dependencies:
@@ -20163,7 +20110,8 @@ snapshots:
     dependencies:
       boundary: 2.0.0
 
-  styleq@0.1.3: {}
+  styleq@0.1.3:
+    optional: true
 
   sucrase@3.35.1:
     dependencies:
@@ -20530,7 +20478,8 @@ snapshots:
 
   typescript@5.9.3: {}
 
-  ua-parser-js@1.0.41: {}
+  ua-parser-js@1.0.41:
+    optional: true
 
   uglify-js@3.19.3:
     optional: true

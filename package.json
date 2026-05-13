@@ -49,19 +49,5 @@
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.40.0"
   },
-  "packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be",
-  "dependencies": {
-    "@expo/metro-config": "~54.0.9",
-    "@expo/metro-runtime": "~6.1.2",
-    "expo": "~54.0.0",
-    "expo-splash-screen": "~31.0.11",
-    "expo-status-bar": "~3.0.8",
-    "expo-system-ui": "~6.0.8",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-native": "0.81.5",
-    "react-native-svg": "15.12.1",
-    "react-native-svg-transformer": "~1.5.1",
-    "react-native-web": "~0.21.0"
-  }
+  "packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be"
 }
