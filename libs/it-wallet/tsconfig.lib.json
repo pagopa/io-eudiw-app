@@ -30,6 +30,9 @@
   "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx", "**/*.json"],
   "references": [
     {
+      "path": "../io-react-native-wallet/tsconfig.lib.json"
+    },
+    {
       "path": "../navigation/tsconfig.lib.json"
     },
     {

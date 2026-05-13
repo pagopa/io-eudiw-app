@@ -3,7 +3,7 @@ import {
   createCryptoContextFor,
   IoWallet,
   RemotePresentation
-} from '@pagopa/io-react-native-wallet';
+} from '@io-eudiw-app/io-react-native-wallet';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import { t } from 'i18next';

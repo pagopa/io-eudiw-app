@@ -7,46 +7,47 @@ packages:
   - 'libs/identification'
   - 'libs/debug-info'
   - 'libs/navigation'
+  - 'libs/io-react-native-wallet'
 catalog:
-  '@expo/cli': ~54.0.16
-  '@expo/metro-config': ~54.0.9
-  '@expo/metro-runtime': ~6.1.2
-  '@pagopa/io-app-design-system': 5.12.1
+  '@expo/cli': '~54.0.16'
+  '@expo/metro-config': '~54.0.9'
+  '@expo/metro-runtime': '~6.1.2'
+  '@pagopa/io-app-design-system': '5.12.1'
   '@pagopa/io-react-native-iso18013': '0.8.2'
-  '@react-navigation/bottom-tabs': 7.4.0
-  '@react-navigation/native': 7.1.8
-  '@react-navigation/stack': 7.6.11
-  '@reduxjs/toolkit': 2.11.1
-  '@shopify/react-native-skia': 2.4.18
-  '@testing-library/react-native': 13.3.3
-  'babel-preset-expo': ~54.0.7
-  'expo': ~54.0.33
-  'expo-crypto': 15.0.8
-  'expo-status-bar': ~3.0.8
-  'expo-system-ui': ~6.0.8
-  'jest-expo': ~54.0.13
-  'react': 19.1.0
-  'react-dom': 19.1.0
-  'react-native': 0.81.5
-  'react-native-reanimated': 4.2.2
-  'react-native-svg': 15.15.3
-  'react-native-svg-transformer': 1.5.1
-  'react-native-worklets': 0.7.4
-  'react-redux': 9.2.0
-  'react-test-renderer': 19.1.0
-  'serialize-error': 13.0.1
-  'zod': 4.3.6
+  '@react-navigation/bottom-tabs': '7.4.0'
+  '@react-navigation/native': '7.1.8'
+  '@react-navigation/stack': '7.6.11'
+  '@reduxjs/toolkit': '2.11.1'
+  '@shopify/react-native-skia': '2.4.18'
+  '@testing-library/react-native': '13.3.3'
+  babel-preset-expo: '~54.0.7'
+  expo: '~54.0.33'
+  expo-crypto: '15.0.8'
+  expo-status-bar: '~3.0.8'
+  expo-system-ui: '~6.0.8'
+  jest-expo: '~54.0.13'
+  react: '19.1.0'
+  react-dom: '19.1.0'
+  react-native: '0.81.5'
+  react-native-reanimated: '4.2.2'
+  react-native-svg: '15.15.3'
+  react-native-svg-transformer: '1.5.1'
+  react-native-worklets: '0.7.4'
+  react-redux: '9.2.0'
+  react-test-renderer: '19.1.0'
+  serialize-error: '13.0.1'
+  zod: '4.3.6'
 ignoredBuiltDependencies:
   - '@swc/core'
-  - detox
-  - dtrace-provider
-  - esbuild
-  - nx
-  - unrs-resolver
+  - 'detox'
+  - 'dtrace-provider'
+  - 'esbuild'
+  - 'nx'
+  - 'unrs-resolver'
 onlyBuiltDependencies:
   - '@shopify/react-native-skia'
 overrides:
-  'react-native-worklets': 0.7.4 # This is required because @pagopa/io-react-native-design-system has wrong peer dependency which makes pnpm install the latest version.
-  'zod': 4.3.6
+  react-native-worklets: '0.7.4'
+  zod: '4.3.6'
 patchedDependencies:
-  '@pagopa/io-app-design-system': patches/@pagopa__io-app-design-system.patch
+  '@pagopa/io-app-design-system': 'patches/@pagopa__io-app-design-system.patch'

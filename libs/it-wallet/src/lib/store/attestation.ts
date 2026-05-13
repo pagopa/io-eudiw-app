@@ -7,7 +7,7 @@ import {
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
 import { resetLifecycle } from './lifecycle';
-import { IoWallet } from '@pagopa/io-react-native-wallet';
+import { IoWallet } from '@io-eudiw-app/io-react-native-wallet';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 
 /* State type definition for the attestation slice

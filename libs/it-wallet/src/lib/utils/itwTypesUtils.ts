@@ -2,7 +2,7 @@ import {
   CredentialIssuance,
   RemotePresentation,
   SdJwt
-} from '@pagopa/io-react-native-wallet';
+} from '@io-eudiw-app/io-react-native-wallet';
 import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
 
 /**

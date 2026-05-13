@@ -2,7 +2,7 @@ import { generate, getPublicKey, sign } from '@pagopa/io-react-native-crypto';
 import {
   fixBase64EncodingOnKey,
   type IntegrityContext
-} from '@pagopa/io-react-native-wallet';
+} from '@io-eudiw-app/io-react-native-wallet';
 import * as Crypto from 'expo-crypto';
 import { encode } from 'js-base64';
 

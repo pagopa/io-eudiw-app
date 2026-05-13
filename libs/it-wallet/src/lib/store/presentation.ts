@@ -15,7 +15,7 @@ import {
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
 import { resetLifecycle } from './lifecycle';
-import { RemotePresentation } from '@pagopa/io-react-native-wallet';
+import { RemotePresentation } from '@io-eudiw-app/io-react-native-wallet';
 
 /**
  * Type for the description which contains the requested claims during the presentation.

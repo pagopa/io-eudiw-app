@@ -2,7 +2,7 @@ import { generate } from '@pagopa/io-react-native-crypto';
 import {
   createCryptoContextFor,
   IoWallet
-} from '@pagopa/io-react-native-wallet';
+} from '@io-eudiw-app/io-react-native-wallet';
 import { isAnyOf } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import * as WebBrowser from 'expo-web-browser';

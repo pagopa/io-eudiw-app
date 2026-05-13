@@ -3,7 +3,7 @@ import {
   IoWallet,
   type WalletUnitAttestation as Wua,
   type KeyAttestationCryptoContext
-} from '@pagopa/io-react-native-wallet';
+} from '@io-eudiw-app/io-react-native-wallet';
 import { selectInstanceKeyTag, selectSessionId } from '../store/instance';
 import { WIA_KEYTAG } from '../utils/crypto';
 import { createWalletProviderFetch } from '../utils/fetch';
