@@ -1,45 +1,39 @@
+import { createClientAttestationPopJwt, createPushedAuthorizationRequest, fetchPushedAuthorizationResponse, type JwtSignerJwk } from "@pagopa/io-wallet-oauth2";
+import { v4 as uuidv4 } from "uuid";
+import { LogLevel, Logger } from "../../../utils/logging";
+import type { IssuanceApi } from "../api";
 import {
-  createPushedAuthorizationRequest,
-  fetchPushedAuthorizationResponse,
-  createClientAttestationPopJwt
-} from '@pagopa/io-wallet-oauth2';
-import type { CallbackContext } from '@pagopa/io-wallet-oauth2';
-import { LogLevel, Logger } from '../../../utils/logging';
-import type { IssuanceApi } from '../api';
-import { SignJWT } from '@pagopa/io-react-native-jwt';
-import { partialCallbacks } from '../../../utils/callbacks';
-import { IoWalletError } from '../../../utils/errors';
-import {
-  selectCredentialDefinition,
-  selectResponseMode
-} from '../common/authorization';
+  createSignJwtFromCryptoContext,
+  partialCallbacks,
+} from "../../../utils/callbacks";
+import { IoWalletError } from "../../../utils/errors";
+import { sdkConfigV1_3 } from "../../../utils/config";
+import { selectCredentialDefinition } from "../common/02-start-user-authorization";
 
-export const startUserAuthorization: IssuanceApi['startUserAuthorization'] =
+export const startUserAuthorization: IssuanceApi["startUserAuthorization"] =
   async (issuerConf, credentialIds, proof, ctx) => {
     const {
       wiaCryptoContext,
       walletInstanceAttestation,
       redirectUri,
-      appFetch = fetch
+      appFetch = fetch,
     } = ctx;
 
-    const clientId = await wiaCryptoContext.getPublicKey().then(_ => _.kid);
+    const clientId = await wiaCryptoContext.getPublicKey().then((_) => _.kid);
 
     if (!clientId) {
       Logger.log(
         LogLevel.ERROR,
         `Public key associated with kid ${clientId} not found in the device`
       );
-      throw new IoWalletError('No public key found');
+      throw new IoWalletError("No public key found");
     }
 
-    const responseMode = selectResponseMode(issuerConf, credentialIds);
-
-    const credentialDefinition = credentialIds.map(c =>
+    const credentialDefinition = credentialIds.map((c) =>
       selectCredentialDefinition(issuerConf, c)
     );
 
-    if (proof.proofType === 'mrtd-pop') {
+    if (proof.proofType === "mrtd-pop") {
       /**
        * When we requests a PID using eID Substantial Authentication with MRTD Verification, we must include
        * an additional Authorization Details Object in the authorization_details
@@ -47,64 +41,74 @@ export const startUserAuthorization: IssuanceApi['startUserAuthorization'] =
        * See https://italia.github.io/eid-wallet-it-docs/versione-corrente/en/credential-issuance-endpoint.html#pushed-authorization-request-endpoint
        */
       credentialDefinition.push({
-        type: 'it_l2+document_proof',
+        type: "it_l2+document_proof",
         idphinting: proof.idpHinting,
-        challenge_method: 'mrtd+ias',
-        challenge_redirect_uri: redirectUri
+        challenge_method: "mrtd+ias",
+        challenge_redirect_uri: redirectUri,
       });
     }
 
-    const signerJwk = await wiaCryptoContext.getPublicKey();
-    const signJwt: CallbackContext['signJwt'] = async (_, payload) => ({
-      jwt: await new SignJWT(wiaCryptoContext).setPayload(payload).sign(),
-      signerJwk
-    });
+    const wiaSigner: JwtSignerJwk = {
+      method: "jwk",
+      alg: "ES256",
+      publicJwk: await wiaCryptoContext.getPublicKey(),
+    };
+
+    const signJwt = createSignJwtFromCryptoContext(wiaCryptoContext);
 
     const parRequest = await createPushedAuthorizationRequest({
+      config: sdkConfigV1_3,
       callbacks: {
         ...partialCallbacks,
-        signJwt
+        signJwt,
       },
       authorizationServerMetadata: {
-        require_signed_request_object: true
+        require_signed_request_object: true,
       },
+      jti: uuidv4(),
       clientId,
       audience: issuerConf.credential_issuer,
       authorization_details: credentialDefinition,
-      codeChallengeMethodsSupported: ['S256'],
-      responseMode,
-      redirectUri
+      codeChallengeMethodsSupported: ["S256"],
+      redirectUri,
+      dpop: {
+        signer: wiaSigner,
+      },
     });
 
+    console.log(JSON.stringify(issuerConf))
     const clientAttestationPoP = await createClientAttestationPopJwt({
+      config: sdkConfigV1_3,
       callbacks: {
-        signJwt
+        generateRandom: partialCallbacks.generateRandom,
+        signJwt,
       },
       clientAttestation: walletInstanceAttestation,
-      authorizationServer: issuerConf.authorization_endpoint,
-      signer: {
-        method: 'jwk',
-        alg: 'ES256',
-        publicJwk: signerJwk
-      }
+      authorizationServer: issuerConf.credential_issuer,
+      signer: wiaSigner,
+      jti: uuidv4(),
     });
+
+    console.log('created client attestation PoP JWT', clientAttestationPoP);
 
     const { request_uri } = await fetchPushedAuthorizationResponse({
       callbacks: {
-        //@ts-expect-error - temp
-        fetch: appFetch
+        //@ts-expect-error fetch broken
+        fetch: appFetch,
       },
       pushedAuthorizationRequestEndpoint:
         issuerConf.pushed_authorization_request_endpoint,
       pushedAuthorizationRequest: parRequest,
       clientAttestationDPoP: clientAttestationPoP,
-      walletAttestation: walletInstanceAttestation
+      walletAttestation: walletInstanceAttestation,
     });
+
+    console.log('received request_uri from PAR endpoint', request_uri);
 
     return {
       issuerRequestUri: request_uri,
       clientId,
       codeVerifier: parRequest.pkceCodeVerifier,
-      credentialDefinition
+      credentialDefinition,
     };
   };

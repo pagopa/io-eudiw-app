@@ -25,7 +25,7 @@ import {
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredential } from '../utils/credentials';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
-import { createWalletProviderFetch } from '../utils/fetch';
+import { createWalletFetch } from '../utils/fetch';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { CredentialFormat } from '../utils/itwTypesUtils';
 import {
@@ -69,8 +69,7 @@ const obtainCredentialListener: AppListenerWithAction<
   try {
     const {
       EXPO_PUBLIC_EAA_PROVIDER_BASE_URL,
-      EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri,
-      EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl
+      EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri
     } = getEnv();
 
     /**
@@ -106,8 +105,7 @@ const obtainCredentialListener: AppListenerWithAction<
 
     const sessionId = selectSessionId(state);
     const pid = selectCredential(wellKnownCredential.PID)(state);
-    const appFetch = createWalletProviderFetch(
-      walletProviderBaseUrl,
+    const appFetch = createWalletFetch(
       sessionId
     );
 

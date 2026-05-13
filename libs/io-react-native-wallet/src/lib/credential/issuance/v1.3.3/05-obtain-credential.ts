@@ -1,38 +1,42 @@
-import { type CryptoContext, SignJWT } from '@pagopa/io-react-native-jwt';
+import { type CryptoContext, SignJWT } from "@pagopa/io-react-native-jwt";
 import {
   createTokenDPoP,
   type CallbackContext,
-  type JwtSignerJwk
-} from '@pagopa/io-wallet-oauth2';
+  type JwtSignerJwk,
+} from "@pagopa/io-wallet-oauth2";
 import {
   fetchCredentialResponse,
-  createCredentialRequest
-} from '@pagopa/io-wallet-oid4vci';
-import { UnexpectedStatusCodeError as SdkUnexpectedStatusCodeError } from '@pagopa/io-wallet-utils';
-import { hasStatusOrThrow, type Out } from '../../../utils/misc';
+  createCredentialRequest,
+} from "@pagopa/io-wallet-oid4vci";
+import { UnexpectedStatusCodeError as SdkUnexpectedStatusCodeError } from "@pagopa/io-wallet-utils";
+import { v4 as uuidv4 } from "uuid";
+import { hasStatusOrThrow, type Out } from "../../../utils/misc";
 import {
   IoWalletError,
   IssuerResponseError,
   IssuerResponseErrorCodes,
   ResponseErrorBuilder,
-  ValidationFailed
-} from '../../../utils/errors';
-import { LogLevel, Logger } from '../../../utils/logging';
-import { sdkConfigV1_3 } from '../../../utils/config';
-import { partialCallbacks } from '../../../utils/callbacks';
-import type { IssuanceApi, IssuerConfig } from '../api';
-import { NonceResponse } from './types';
-import type { AuthorizeAccessApi } from '../api/04-authorize-access';
+  ValidationFailed,
+} from "../../../utils/errors";
+import { LogLevel, Logger } from "../../../utils/logging";
+import { sdkConfigV1_3 } from "../../../utils/config";
+import {
+  createSignJwtFromCryptoContext,
+  partialCallbacks,
+} from "../../../utils/callbacks";
+import type { IssuanceApi, IssuerConfig } from "../api";
+import { NonceResponse } from "./types";
+import type { AuthorizeAccessApi } from "../api/04-authorize-access";
 
 type CreateRequestParams = {
   clientId: string;
   credentialIdentifier: string;
-  accessToken: Out<AuthorizeAccessApi['authorizeAccess']>['accessToken'];
+  accessToken: Out<AuthorizeAccessApi["authorizeAccess"]>["accessToken"];
   issuerConf: IssuerConfig;
   dPopCryptoContext: CryptoContext;
   credentialCryptoContexts: CryptoContext[];
   keyAttestationJwt: string;
-  appFetch?: GlobalFetch['fetch'];
+  appFetch?: GlobalFetch["fetch"];
 };
 
 /**
@@ -50,28 +54,28 @@ export const requestCredentials = async ({
   keyAttestationJwt,
   credentialCryptoContexts,
   dPopCryptoContext,
-  appFetch = fetch
+  appFetch = fetch,
 }: CreateRequestParams) => {
   const { c_nonce } = await appFetch(issuerConf.nonce_endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' }
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
   })
     .then(hasStatusOrThrow(200))
-    .then(res => res.json())
+    .then((res) => res.json())
     .then(NonceResponse.parse);
 
   const keys = await Promise.all(
-    credentialCryptoContexts.map(async ctx => {
+    credentialCryptoContexts.map(async (ctx) => {
       const publicJwk = await ctx.getPublicKey();
       return { publicJwk, cryptoContext: ctx };
     })
   );
 
-  const signJwt: CallbackContext['signJwt'] = async (
+  const signJwt: CallbackContext["signJwt"] = async (
     jwtSigner,
     { header, payload }
   ) => {
-    if (jwtSigner.method !== 'jwk') {
+    if (jwtSigner.method !== "jwk") {
       throw new IoWalletError(`Unsupported signer method: ${jwtSigner.method}`);
     }
 
@@ -90,21 +94,21 @@ export const requestCredentials = async ({
         .setProtectedHeader(header)
         .setPayload(payload)
         .sign(),
-      signerJwk: jwtSigner.publicJwk
+      signerJwk: jwtSigner.publicJwk,
     };
   };
 
   const signers = keys.map<JwtSignerJwk>(({ publicJwk }) => ({
-    alg: 'ES256',
-    method: 'jwk',
-    publicJwk
+    alg: "ES256",
+    method: "jwk",
+    publicJwk,
   }));
 
   const credentialRequest = await createCredentialRequest({
     config: sdkConfigV1_3,
     callbacks: {
       hash: partialCallbacks.hash,
-      signJwt
+      signJwt,
     },
     clientId,
     credential_identifier: credentialIdentifier,
@@ -112,44 +116,40 @@ export const requestCredentials = async ({
     maxBatchSize: issuerConf.credential_issuance_batch_size,
     nonce: c_nonce,
     keyAttestation: keyAttestationJwt,
-    signers
+    signers,
   });
-
-  const dPopSignerJwk = await dPopCryptoContext.getPublicKey();
 
   const credentialDPoP = await createTokenDPoP({
     callbacks: {
       ...partialCallbacks,
-      signJwt: async (_, payload) => ({
-        jwt: await new SignJWT(dPopCryptoContext).setPayload(payload).sign(),
-        signerJwk: dPopSignerJwk
-      })
+      signJwt: createSignJwtFromCryptoContext(dPopCryptoContext),
     },
     signer: {
-      method: 'jwk',
-      alg: 'ES256',
-      publicJwk: dPopSignerJwk
+      method: "jwk",
+      alg: "ES256",
+      publicJwk: await dPopCryptoContext.getPublicKey(),
     },
+    jti: uuidv4(),
     tokenRequest: {
-      method: 'POST',
-      url: issuerConf.credential_endpoint
+      method: "POST",
+      url: issuerConf.credential_endpoint,
     },
-    accessToken: accessToken.access_token
+    accessToken: accessToken.access_token,
   });
 
   return await fetchCredentialResponse({
     callbacks: {
-      //@ts-expect-error - temp
-      fetch: appFetch
+      //@ts-expect-error fetch broken
+      fetch: appFetch,
     },
     credentialEndpoint: issuerConf.credential_endpoint,
     credentialRequest: credentialRequest,
     accessToken: accessToken.access_token,
-    dPoP: credentialDPoP.jwt
+    dPoP: credentialDPoP.jwt,
   }).catch(handleObtainCredentialError);
 };
 
-export const obtainCredential: IssuanceApi['obtainCredential'] = async (
+export const obtainCredential: IssuanceApi["obtainCredential"] = async (
   issuerConf,
   accessToken,
   clientId,
@@ -160,12 +160,12 @@ export const obtainCredential: IssuanceApi['obtainCredential'] = async (
     credentialCryptoContext,
     dPopCryptoContext,
     walletUnitAttestation,
-    appFetch = fetch
+    appFetch = fetch,
   } = context;
   if (!walletUnitAttestation) {
     throw new ValidationFailed({
       message:
-        'The Wallet Unit Attestation is required to obtain the credential'
+        "The Wallet Unit Attestation is required to obtain the credential",
     });
   }
 
@@ -174,7 +174,7 @@ export const obtainCredential: IssuanceApi['obtainCredential'] = async (
 
   // Validation of accessTokenResponse.authorization_details if contain credentialDefinition
   const containsCredentialDefinition = accessToken.authorization_details.some(
-    c =>
+    (c) =>
       c.credential_configuration_id === credential_configuration_id &&
       (credential_identifier
         ? c.credential_identifiers.includes(credential_identifier)
@@ -188,7 +188,7 @@ export const obtainCredential: IssuanceApi['obtainCredential'] = async (
     );
     throw new ValidationFailed({
       message:
-        'The access token response does not contain the requested credential'
+        "The access token response does not contain the requested credential",
     });
   }
 
@@ -200,7 +200,7 @@ export const obtainCredential: IssuanceApi['obtainCredential'] = async (
     credentialIdentifier: credential_identifier!,
     dPopCryptoContext,
     keyAttestationJwt: walletUnitAttestation,
-    appFetch
+    appFetch,
   });
 
   Logger.log(
@@ -212,29 +212,29 @@ export const obtainCredential: IssuanceApi['obtainCredential'] = async (
   const issuerCredentialConfig =
     issuerConf.credential_configurations_supported[credential_configuration_id];
 
-  if ('transaction_id' in credentialRes) {
-    throw new IoWalletError('Deferred issuance is not supported');
+  if ("transaction_id" in credentialRes) {
+    throw new IoWalletError("Deferred issuance is not supported");
   }
 
   // TODO: [SIW-2264] Handle multiple credentials
   return {
     credential: credentialRes.credentials.at(0)!.credential,
-    format: issuerCredentialConfig!.format
+    format: issuerCredentialConfig!.format,
   };
 };
 
-export const obtainCredentialsBatch: IssuanceApi['obtainCredentialsBatch'] =
+export const obtainCredentialsBatch: IssuanceApi["obtainCredentialsBatch"] =
   async (issuerConf, accessToken, clientId, credentialDefinition, context) => {
     const {
       credentialCryptoContexts,
       dPopCryptoContext,
       walletUnitAttestation,
-      appFetch = fetch
+      appFetch = fetch,
     } = context;
     if (!walletUnitAttestation) {
       throw new ValidationFailed({
         message:
-          'The Wallet Unit Attestation is required to obtain the credential'
+          "The Wallet Unit Attestation is required to obtain the credential",
       });
     }
 
@@ -249,7 +249,7 @@ export const obtainCredentialsBatch: IssuanceApi['obtainCredentialsBatch'] =
       credentialIdentifier: credential_identifier,
       dPopCryptoContext,
       keyAttestationJwt: walletUnitAttestation,
-      appFetch
+      appFetch,
     });
 
     // Extract the format corresponding to the credential_configuration_id used
@@ -258,13 +258,13 @@ export const obtainCredentialsBatch: IssuanceApi['obtainCredentialsBatch'] =
         credential_configuration_id
       ];
 
-    if ('transaction_id' in credentialRes) {
-      throw new IoWalletError('Deferred issuance is not currently supported');
+    if ("transaction_id" in credentialRes) {
+      throw new IoWalletError("Deferred issuance is not currently supported");
     }
 
     return credentialRes.credentials.map(({ credential }) => ({
       credential,
-      format: issuerCredentialConfig!.format
+      format: issuerCredentialConfig!.format,
     }));
   };
 
@@ -284,15 +284,15 @@ const handleObtainCredentialError = (e: unknown) => {
   throw new ResponseErrorBuilder(IssuerResponseError)
     .handle(403, {
       code: IssuerResponseErrorCodes.CredentialInvalidStatus,
-      message: 'Invalid status found for the given credential'
+      message: "Invalid status found for the given credential",
     })
     .handle(404, {
       code: IssuerResponseErrorCodes.CredentialInvalidStatus,
-      message: 'Invalid status found for the given credential'
+      message: "Invalid status found for the given credential",
     })
-    .handle('*', {
+    .handle("*", {
       code: IssuerResponseErrorCodes.CredentialRequestFailed,
-      message: 'Unable to obtain the requested credential'
+      message: "Unable to obtain the requested credential",
     })
     .buildFrom(e);
 };

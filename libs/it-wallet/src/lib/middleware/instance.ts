@@ -5,7 +5,7 @@ import {
   selectSessionId,
   setInstanceKeyTag
 } from '../store/instance';
-import { createWalletProviderFetch } from '../utils/fetch';
+import { createWalletFetch } from '../utils/fetch';
 import {
   generateIntegrityHardwareKeyTag,
   getIntegrityContext
@@ -26,8 +26,7 @@ export const createInstanceThunk = createAppAsyncThunk<void, void>(
         const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
           getEnv();
         const sessionId = selectSessionId(state);
-        const appFetch = createWalletProviderFetch(
-          walletProviderBaseUrl,
+        const appFetch = createWalletFetch(
           sessionId
         );
         const keyTag = await generateIntegrityHardwareKeyTag();

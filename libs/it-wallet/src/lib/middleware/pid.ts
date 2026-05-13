@@ -15,7 +15,6 @@ import { selectPendingCredential } from '../store/selectors/pidIssuance';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
-import { createWalletProviderFetch } from '../utils/fetch';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { createAppAsyncThunk } from './thunk';
 import {
@@ -38,6 +37,7 @@ import {
   getWalletUnitAttestationThunk
 } from './attestation';
 import { selectWalletInstanceAttestationAsJwt } from '../store/attestation';
+import { createWalletFetch } from '../utils/fetch';
 
 /**
  * Thunk to obtain the PID credential.
@@ -50,8 +50,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
       const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
       const {
         EXPO_PUBLIC_PID_PROVIDER_BASE_URL,
-        EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri,
-        EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl
+        EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri
       } = getEnv();
 
       await dispatch(getWalletInstanceAttestationThunk());
@@ -67,8 +66,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
 
       // Start the issuance flow
       const sessionId = selectSessionId(getState());
-      const appFetch = createWalletProviderFetch(
-        walletProviderBaseUrl,
+      const appFetch = createWalletFetch(
         sessionId
       );
 
@@ -134,8 +132,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
 
       // Create credential crypto context
       const credentialKeyTag = Crypto.randomUUID().toString();
-      await generate(credentialKeyTag);
-      const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
+      
 
       // Create DPoP context for the whole issuance flow
       await regenerateCryptoKey(DPOP_KEYTAG);
@@ -149,7 +146,8 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
         {
           walletInstanceAttestation,
           wiaCryptoContext,
-          dPopCryptoContext
+          dPopCryptoContext,
+          appFetch
         }
       );
 
@@ -177,6 +175,9 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
           keyTags: [credentialKeyTag]
         })
       ).unwrap();
+
+
+      const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
 
       // Get the credential identifier that was authorized
       const { credential, format } =
@@ -217,6 +218,8 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
       };
     } catch (error) {
       const serialized = serializeError(error);
+      console.log(error)
+      console.log(serialized)
       return rejectWithValue(serialized);
     }
   }

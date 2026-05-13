@@ -5,7 +5,7 @@ import {
 } from '@io-eudiw-app/io-react-native-wallet';
 import { selectInstanceKeyTag, selectSessionId } from '../store/instance';
 import { WIA_KEYTAG } from '../utils/crypto';
-import { createWalletProviderFetch } from '../utils/fetch';
+import { createWalletFetch } from '../utils/fetch';
 import { getIntegrityContext } from '../utils/integrity';
 import { regenerateCryptoKey } from '@io-eudiw-app/commons';
 import { getEnv } from '@io-eudiw-app/env';
@@ -39,8 +39,7 @@ export const getWalletInstanceAttestationThunk =
       const sessionId = selectSessionId(state);
       const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
         getEnv();
-      const appFetch = createWalletProviderFetch(
-        walletProviderBaseUrl,
+      const appFetch = createWalletFetch(
         sessionId
       );
 
@@ -85,6 +84,9 @@ export const getWalletUnitAttestationThunk = createAppAsyncThunk<
   GetWalletUnitAttestationThunkInput
 >('walletinstance/walletunitattestation', async ({ keyTags }, { getState }) => {
   const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+  const sessionId = selectSessionId(getState());
+
+  const appFetch = createWalletFetch(sessionId)
 
   if (!wallet.WalletUnitAttestation.isSupported) {
     throw new Error(
@@ -111,7 +113,8 @@ export const getWalletUnitAttestationThunk = createAppAsyncThunk<
     },
     {
       integrityContext,
-      keysToAttest: keyTags.map(createKeyAttestationCryptoContextFor)
+      keysToAttest: keyTags.map(createKeyAttestationCryptoContextFor),
+      appFetch
     }
   );
 });
