@@ -61,6 +61,7 @@ export const validateChallenge: MRTDPoPApi['validateChallenge'] = async (
     mrtdValidationJwt,
     walletAttestation: walletInstanceAttestation,
     callbacks: {
+      //@ts-expect-error - temp
       fetch: appFetch,
       ...partialCallbacks
     }

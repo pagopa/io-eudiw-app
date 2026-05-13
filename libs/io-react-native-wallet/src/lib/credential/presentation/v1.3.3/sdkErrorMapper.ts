@@ -11,7 +11,7 @@ import {
 import { Oauth2JwtParseError as SdkOauth2JwtParseError } from '@pagopa/io-wallet-oauth2';
 import { InvalidRequestObjectError } from '../common/errors';
 import { UnexpectedStatusCodeError as SdkUnexpectedStatusCodeError } from '@pagopa/io-wallet-utils';
-import type { RelyingPartyResponseErrorCode } from 'src/utils/error-codes';
+import type { RelyingPartyResponseErrorCode } from '../../../utils/error-codes';
 
 /**
  * Helper to create a generic RelyingPartyResponseError

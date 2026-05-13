@@ -45,7 +45,8 @@ export const getVerification = async (token: string) => {
   const issuerSigned = await CBOR.decodeIssuerSigned(token);
   const namespace = issuerSigned.nameSpaces[`${MDOC_DEFAULT_NAMESPACE}.IT`];
   const verification = namespace?.find(
-    x => x.elementIdentifier === 'verification'
+    (x: { elementIdentifier: string; elementValue: unknown }) =>
+      x.elementIdentifier === 'verification'
   )?.elementValue;
 
   return verification ? Verification.parse(verification) : undefined;

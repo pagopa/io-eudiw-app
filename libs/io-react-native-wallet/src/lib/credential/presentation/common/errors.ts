@@ -7,7 +7,7 @@ export { DcqlError } from 'dcql';
  *
  */
 export class AuthRequestDecodeError extends IoWalletError {
-  code = 'ERR_IO_WALLET_AUTHENTICATION_REQUEST_DECODE_FAILED';
+  override code = 'ERR_IO_WALLET_AUTHENTICATION_REQUEST_DECODE_FAILED';
 
   /** The Claim for which the validation failed. */
   claim: string;
@@ -27,7 +27,7 @@ export class AuthRequestDecodeError extends IoWalletError {
  *
  */
 export class NoSuitableKeysFoundInEntityConfiguration extends IoWalletError {
-  code = 'ERR_NO_SUITABLE_KEYS_NOT_FOUND';
+  override code = 'ERR_NO_SUITABLE_KEYS_NOT_FOUND';
 
   /**
    * @param scenario describe the scenario in which the error arise
@@ -43,7 +43,7 @@ export class NoSuitableKeysFoundInEntityConfiguration extends IoWalletError {
  *
  */
 export class InvalidQRCodeError extends IoWalletError {
-  code = 'ERR_INVALID_QR_CODE';
+  override code = 'ERR_INVALID_QR_CODE';
 
   /** Detailed reason for the QR code validation failure. */
   reason: string;
@@ -58,7 +58,7 @@ export class InvalidQRCodeError extends IoWalletError {
  * When the Request Object sent by the Relying Party is not valid
  */
 export class InvalidRequestObjectError extends IoWalletError {
-  code = 'ERR_INVALID_REQUEST_OBJECT';
+  override code = 'ERR_INVALID_REQUEST_OBJECT';
 
   /** Detailed reason for the Request Object validation failure. */
   reason: string;
@@ -74,7 +74,7 @@ export class InvalidRequestObjectError extends IoWalletError {
  *
  */
 export class MissingDataError extends IoWalletError {
-  code = 'ERR_MISSING_DATA';
+  override code = 'ERR_MISSING_DATA';
 
   /**
    * @param missingAttributes An array or description of the attributes that are missing.
@@ -99,7 +99,7 @@ export type NotFoundDetail = (
  * and the presentation request cannot be satisfied.
  */
 export class CredentialsNotFoundError extends IoWalletError {
-  code = 'ERR_CREDENTIALS_NOT_FOUND';
+  override code = 'ERR_CREDENTIALS_NOT_FOUND';
   details: NotFoundDetail[];
 
   /**

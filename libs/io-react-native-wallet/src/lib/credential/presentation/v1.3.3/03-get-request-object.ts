@@ -18,6 +18,7 @@ export const getRequestObject: RemotePresentationApi['getRequestObject'] =
 
     const result = await sdkFetchAuthorizationRequest({
       authorizeRequestUrl: authorizationRequestUrl,
+      //@ts-expect-error - temp
       callbacks: { fetch: appFetch },
       ...walletParams
     }).catch(mapSdkFetchAuthRequestError);

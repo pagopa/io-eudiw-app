@@ -139,6 +139,7 @@ export const requestCredentials = async ({
 
   return await fetchCredentialResponse({
     callbacks: {
+      //@ts-expect-error - temp
       fetch: appFetch
     },
     credentialEndpoint: issuerConf.credential_endpoint,

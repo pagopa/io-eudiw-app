@@ -1,7 +1,6 @@
 import {
   createCryptoContextFor,
   IoWallet,
-  type WalletUnitAttestation as Wua,
   type KeyAttestationCryptoContext
 } from '@io-eudiw-app/io-react-native-wallet';
 import { selectInstanceKeyTag, selectSessionId } from '../store/instance';
@@ -76,9 +75,10 @@ export const getWalletInstanceAttestationThunk =
 type GetWalletUnitAttestationThunkInput = {
   keyTags: string[];
 };
-type GetWalletUnitAttestationThunkOutput = Awaited<
-  ReturnType<Wua.WalletUnitAttestationSupportedApi['getAttestation']>
->;
+type GetWalletUnitAttestationThunkOutput = {
+  format: string;
+  attestation: string;
+};
 
 export const getWalletUnitAttestationThunk = createAppAsyncThunk<
   GetWalletUnitAttestationThunkOutput,

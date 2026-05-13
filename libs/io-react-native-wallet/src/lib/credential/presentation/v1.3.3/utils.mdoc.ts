@@ -29,8 +29,13 @@ export const mapCredentialsToObj = async (
 
       const namespaces = Object.entries(issuerSigned.nameSpaces).reduce(
         (acc, [ns, nsClaims]) => {
-          const flattenNsClaims = Object.entries(nsClaims).reduce(
-            (ac, [, el]) => ({
+          const flattenNsClaims = (
+            nsClaims as Array<{
+              elementIdentifier: string;
+              elementValue: unknown;
+            }>
+          ).reduce(
+            (ac, el) => ({
               ...ac,
               [el.elementIdentifier]: el.elementValue
             }),

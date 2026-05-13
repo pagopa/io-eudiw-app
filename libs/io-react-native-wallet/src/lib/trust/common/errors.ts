@@ -111,7 +111,7 @@ export class MissingFederationFetchEndpointError extends FederationError {
  * Error thrown when the X.509 certificate chain is missing in an entity's configuration.
  */
 export class MissingX509CertsError extends FederationError {
-  code = 'ERR_FED_MISSING_X509_CERTS';
+  override code = 'ERR_FED_MISSING_X509_CERTS';
   constructor(message: string) {
     super(message, undefined);
   }

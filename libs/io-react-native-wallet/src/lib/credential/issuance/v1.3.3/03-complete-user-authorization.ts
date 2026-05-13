@@ -100,6 +100,7 @@ export const getRequestedCredentialToBePresented: IssuanceApi['getRequestedCrede
     const authRequest = await fetchAuthorizationRequest({
       authorizeRequestUrl: `${authzRequestEndpoint}?${params.toString()}`,
       callbacks: {
+        //@ts-expect-error - temp
         fetch: appFetch
       }
     }).catch(sdkUnexpectedStatusCodeToIssuerError);
@@ -166,6 +167,7 @@ export const completeUserAuthorizationWithFormPostJwtMode: IssuanceApi['complete
       authorizationResponseJarm: authzResponsePayload,
       callbacks: {
         ...partialCallbacks,
+        //@ts-expect-error - temp
         fetch: appFetch
       },
       iss: requestObject.iss,

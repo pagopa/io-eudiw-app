@@ -91,6 +91,7 @@ export const startUserAuthorization: IssuanceApi['startUserAuthorization'] =
 
     const { request_uri } = await fetchPushedAuthorizationResponse({
       callbacks: {
+        //@ts-expect-error - temp
         fetch: appFetch
       },
       pushedAuthorizationRequestEndpoint:

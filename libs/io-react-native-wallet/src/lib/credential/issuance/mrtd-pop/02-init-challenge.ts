@@ -45,6 +45,7 @@ export const initChallenge: MRTDPoPApi['initChallenge'] = async (
     clientAttestationDPoP: signedWiaPoP,
     callbacks: {
       verifyJwt: createVerifyJwtFromJwks(issuerConf.keys),
+      //@ts-expect-error - temp
       fetch: appFetch
     }
   }).catch(handleInitChallengeError);

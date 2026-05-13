@@ -137,6 +137,7 @@ export const sendAuthorizationResponse: RemotePresentationApi['sendAuthorization
       return await sdkFetchAuthorizationResponse({
         authorizationResponseJarm: jarm.responseJwe,
         presentationResponseUri: requestObject.response_uri,
+        //@ts-expect-error - temp
         callbacks: { fetch: appFetch }
       });
     } catch (err) {

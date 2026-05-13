@@ -57,6 +57,7 @@ export const authorizeAccess: IssuanceApi['authorizeAccess'] = async (
     accessTokenEndpoint: issuerConf.token_endpoint,
     callbacks: {
       ...partialCallbacks,
+      //@ts-expect-error - temp
       fetch: appFetch
     },
     walletAttestation: walletInstanceAttestation,

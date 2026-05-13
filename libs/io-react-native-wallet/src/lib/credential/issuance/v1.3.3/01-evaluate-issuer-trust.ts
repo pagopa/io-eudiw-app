@@ -16,6 +16,7 @@ export const evaluateIssuerTrust: IssuanceApi['evaluateIssuerTrust'] = async (
     credentialIssuerUrl: issuerUrl,
     callbacks: {
       ...partialCallbacks,
+      //@ts-expect-error - temp
       fetch: context.appFetch
     }
   })) as MetadataResponseV1_3;

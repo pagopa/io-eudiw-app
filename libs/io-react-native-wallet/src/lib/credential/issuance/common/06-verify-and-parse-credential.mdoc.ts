@@ -91,7 +91,9 @@ const parseCredentialMDoc = (
 
   const flatNamespaces = Object.entries(issuerSigned.nameSpaces).flatMap(
     ([namespace, values]) =>
-      values.map<[string, string, string]>(v => [
+      (
+        values as Array<{ elementIdentifier: string; elementValue: string }>
+      ).map<[string, string, string]>(v => [
         namespace,
         v.elementIdentifier,
         v.elementValue

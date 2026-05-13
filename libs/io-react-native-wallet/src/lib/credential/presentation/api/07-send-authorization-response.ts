@@ -6,7 +6,7 @@ import type {
 } from './types';
 import type { RelyingPartyConfig } from './RelyingPartyConfig';
 import type { EvaluateDcqlQueryApi } from './06-evaluate-dcql-query';
-import type { Out } from '../../../../src/utils/misc';
+import type { Out } from '../../../utils/misc';
 type FetchContext = { appFetch?: GlobalFetch['fetch'] };
 
 export interface SendAuthorizationResponseApi {

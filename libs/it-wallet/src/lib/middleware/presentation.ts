@@ -151,16 +151,22 @@ const presentationListener: AppListenerWithAction<
         isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
       );
       if (setIdentificationIdentified.match(resAction[0])) {
-        const credentialsToPresent = evaluatedDcqlQuery
-          .filter(
-            c =>
-              c.purposes.some(({ required }) => required) ||
-              optionalCredentials?.includes(c.id)
-          )
-          .map(({ requiredDisclosures, ...rest }) => ({
-            ...rest,
-            requestedClaims: requiredDisclosures.map(({ name }) => name)
-          }));
+        // const credentialsToPresent = evaluatedDcqlQuery
+        //   .filter(
+        //     c =>
+        //       c.purposes.some(({ required }) => required) ||
+        //       optionalCredentials?.includes(c.id)
+        //   )
+        //   .map(({ requiredDisclosures, ...rest }) => ({
+        //     ...rest,
+        //     requestedClaims: requiredDisclosures.map(({ name }) => name)
+        //   }));
+
+        const credentialsToPresent = presentationDetails.filter(
+          c =>
+            c.purposes.some(({ required }) => required) ||
+            optionalCredentials?.includes(c.id)
+        );
 
         const authRequestObject = {
           nonce: requestObject.nonce,

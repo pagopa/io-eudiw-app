@@ -38,6 +38,7 @@ export const resolveCredentialOffer: OfferApi['resolveCredentialOffer'] =
     // Parse the URI and fetch the offer when transmitted by reference
     const resolved = await sdkResolveCredentialOffer({
       credentialOffer,
+      //@ts-expect-error - temp
       callbacks: { fetch: fetchFn }
     }).catch((e: unknown) => {
       if (e instanceof CredentialOfferError) {

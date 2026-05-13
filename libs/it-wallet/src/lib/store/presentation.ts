@@ -15,7 +15,6 @@ import {
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
 import { resetLifecycle } from './lifecycle';
-import { RemotePresentation } from '@io-eudiw-app/io-react-native-wallet';
 
 /**
  * Type for the description which contains the requested claims during the presentation.
@@ -28,7 +27,9 @@ export type Descriptor = {
 /**
  * Response type for the authorization request which is the final step of the presentation flow.
  */
-type AuthResponse = RemotePresentation.AuthorizationResponse;
+type AuthResponse = {
+  redirect_uri?: string;
+};
 
 /**
  * Type of the optional claims names selected by the user.
