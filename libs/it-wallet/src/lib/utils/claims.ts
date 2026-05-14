@@ -17,7 +17,8 @@ export const claimType = {
   boolean: 'boolean',
   image: 'image',
   stringArray: 'stringArray',
-  placeOfBirth: 'placeOfBirth'
+  placeOfBirth: 'placeOfBirth',
+  verification: 'verification'
 } as const;
 
 /**
@@ -237,16 +238,44 @@ const dateThatCanExpireSchema = z
 /**
  * Schema to validate claims representing places of birth
  */
-export const placeofBirthSchema = z
-  .object({
-    country: z.string(),
-    locality: z.string()
-  })
-  .transform(claim => ({
-    value: claim,
+export const placeofBirthSchema = z.object({
+  locality: z.object({
+    name: z.record(z.string(), z.string()),
+    value: z.string()
+  }),
+  region: z.object({
+    name: z.record(z.string(), z.string()),
+    value: z.string()
+  }),
+  country: z.object({
+    name: z.record(z.string(), z.string()),
+    value: z.string()
+  }),
+}).transform((data) => {
+  const values = data.country.value + ' ' + data.region.value + ' ' + data.locality.value;
+  return {
+    value: values,
     type: claimType.placeOfBirth
-  }));
+  }
+});
 export type PlaceOfBirthClaimType = z.infer<typeof placeofBirthSchema>;
+
+export const verificationScheme = z.object({
+  assurance_level: z.object({
+    name: z.record(z.string(), z.string()),
+    value: z.string()
+  }),
+  trust_framework: z.object({
+    name: z.record(z.string(), z.string()),
+    value: z.string()
+  })
+}).transform((data) => {
+  const values = data.assurance_level.value + ' ' + data.trust_framework.value;
+  return {
+    value: values,
+    type: claimType.verification
+  }
+})
 
 /**
  * Schema to validate a claim which is a union of the previous defined schemas.
@@ -265,6 +294,7 @@ export const claimScheme = z.union([
       booleanSchema,
       numberSchema,
       emptyStringSchema,
+      verificationScheme,
       stringSchema
     ])
   )
@@ -274,8 +304,9 @@ export type ClaimScheme = z.infer<typeof claimScheme>;
 
 export type ParsedClaimsRecord = Record<
   string,
-  { label: string; parsed: ClaimScheme | undefined }
+  { label: string; parsed: ClaimScheme | undefined | ParsedClaimsRecord }
 >;
+
 /**
  * Parses the credential claims and transforms them into an indexed record.
  * For each entry in the credential, it maps the key and the attribute to a label and a processed value.

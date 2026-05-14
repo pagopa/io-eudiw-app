@@ -1,4 +1,3 @@
-import { generate } from '@pagopa/io-react-native-crypto';
 import {
   createCryptoContextFor,
   IoWallet
@@ -13,7 +12,7 @@ import { addCredential, addPidWithIdentification } from '../store/credentials';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
 import { selectPendingCredential } from '../store/selectors/pidIssuance';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
-import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
+import { wellKnownCredential } from '../utils/credentials';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { createAppAsyncThunk } from './thunk';
@@ -205,10 +204,12 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
           { credentialCryptoContext, ignoreMissingAttributes: true }
         );
 
+      console.log(JSON.stringify({ parsedCredential }, null, 2));
+
       return {
         parsedCredential,
         credential,
-        credentialType: wellKnownCredentialConfigurationIDs.PID,
+        credentialType: wellKnownCredential.PID,
         keyTag: credentialKeyTag,
         format,
         expiration: expiration.toISOString(),

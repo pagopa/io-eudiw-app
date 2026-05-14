@@ -92,10 +92,14 @@ export const getRequestedCredentialToBePresented: IssuanceApi['getRequestedCrede
       request_uri: issuerRequestUri
     });
 
+    console.log('PARAMS', params.toString());
+
     Logger.log(
       LogLevel.DEBUG,
       `Requesting the request object to ${authzRequestEndpoint}?${params.toString()}`
     );
+
+    console.log(`${authzRequestEndpoint}?${params.toString()}`);
 
     const authRequest = await fetchAuthorizationRequest({
       authorizeRequestUrl: `${authzRequestEndpoint}?${params.toString()}`,
@@ -105,6 +109,8 @@ export const getRequestedCredentialToBePresented: IssuanceApi['getRequestedCrede
       }
     }).catch(sdkUnexpectedStatusCodeToIssuerError);
 
+    console.log('AUTH REQUEST', authRequest);
+
     const parsedAuthRequest = await parseAuthorizeRequest({
       config: new IoWalletSdkConfig({
         itWalletSpecsVersion: ItWalletSpecsVersion.V1_3
@@ -112,6 +118,8 @@ export const getRequestedCredentialToBePresented: IssuanceApi['getRequestedCrede
       requestObjectJwt: authRequest.requestObjectJwt,
       callbacks: partialCallbacks
     });
+
+    console.log('PARSED AUTH REQUEST', parsedAuthRequest);
 
     return mapToRequestObject(parsedAuthRequest);
   };

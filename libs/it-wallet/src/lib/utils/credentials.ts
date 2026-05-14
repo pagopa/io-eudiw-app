@@ -12,7 +12,7 @@ export type CredentialsKeys = 'DRIVING_LICENSE' | 'PID' | 'DISABILITY_CARD';
  */
 export const wellKnownCredential = {
   DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
-  PID: 'urn:eu.europa.ec.eudi:pid:1',
+  PID: 'urn:eudi:pid:it:1',
   DISABILITY_CARD: 'urn:eu.europa.ec.eudi:edc:1'
 } as const satisfies Record<CredentialsKeys, string>;
 

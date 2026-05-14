@@ -68,7 +68,7 @@ const obtainCredentialListener: AppListenerWithAction<
 > = async (_, listenerApi) => {
   try {
     const {
-      EXPO_PUBLIC_EAA_PROVIDER_BASE_URL,
+      EXPO_PUBLIC_EAA_PROVIDER_BASE_URL: issuerUrl,
       EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri
     } = getEnv();
 
@@ -97,22 +97,25 @@ const obtainCredentialListener: AppListenerWithAction<
 
     const credentialKeyTag = Crypto.randomUUID().toString();
 
+    // Start the issuance flow
+    const sessionId = selectSessionId(listenerApi.getState());
+    const appFetch = createWalletFetch(
+      sessionId
+    );
+
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
     const walletUnitAttestation = await listenerApi
       .dispatch(getWalletUnitAttestationThunk({ keyTags: [credentialKeyTag] }))
       .unwrap();
     const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
 
-    const sessionId = selectSessionId(state);
     const pid = selectCredential(wellKnownCredential.PID)(state);
-    const appFetch = createWalletFetch(
-      sessionId
-    );
 
     // Evaluate issuer trust
-    const { issuerConf } = await wallet.CredentialIssuance.evaluateIssuerTrust(
-      EXPO_PUBLIC_EAA_PROVIDER_BASE_URL
-    );
+      const { issuerConf } =
+        await wallet.CredentialIssuance.evaluateIssuerTrust(issuerUrl, {
+          appFetch
+        });
 
     const { issuerRequestUri, clientId, codeVerifier } =
       await wallet.CredentialIssuance.startUserAuthorization(
@@ -194,7 +197,7 @@ const obtainCredentialListener: AppListenerWithAction<
         requestObject,
         issuerConf,
         pid.credential,
-        { wiaCryptoContext, pidKeyTag: pid.keyTag }
+        { wiaCryptoContext, pidKeyTag: pid.keyTag, appFetch }
       );
 
     // Generate the DPoP context which will be used for the whole issuance flow
@@ -209,7 +212,8 @@ const obtainCredentialListener: AppListenerWithAction<
       {
         walletInstanceAttestation,
         wiaCryptoContext,
-        dPopCryptoContext
+        dPopCryptoContext,
+        appFetch
       }
     );
 
@@ -261,6 +265,8 @@ const obtainCredentialListener: AppListenerWithAction<
       })
     );
   } catch (error) {
+    console.log(error)
+    console.log(JSON.stringify(error))
     // Ignore if the task was aborted
     if (error instanceof TaskAbortError) {
       return;

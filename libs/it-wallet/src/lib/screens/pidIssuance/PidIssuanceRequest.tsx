@@ -81,6 +81,7 @@ const PidIssuanceRequest = () => {
 
   const PidPreview = ({ credential }: { credential: StoredCredential }) => {
     const parsedClaims = parseClaimsToRecord(credential.parsedCredential);
+    console.log(JSON.stringify(parsedClaims, null, 2));
 
     return (
       <ForceScrollDownView

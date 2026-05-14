@@ -51,6 +51,8 @@ const presentationListener: AppListenerWithAction<
     const { request_uri, client_id, state, request_uri_method } =
       action.payload;
 
+    console.log(request_uri, client_id, state, request_uri_method);
+
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
 
     await listenerApi.dispatch(getWalletInstanceAttestationThunk());
@@ -62,10 +64,10 @@ const presentationListener: AppListenerWithAction<
       request_uri_method: request_uri_method as 'get' | 'post'
     });
 
-    const { rpConf } =
-      await wallet.RemotePresentation.evaluateRelyingPartyTrust(
-        qrParams.client_id
-      );
+    // const { rpConf } =
+    //   await wallet.RemotePresentation.evaluateRelyingPartyTrust(
+    //     qrParams.client_id
+    //   );
 
     if (!qrParams.request_uri) {
       throw new Error(
@@ -80,7 +82,6 @@ const presentationListener: AppListenerWithAction<
       await wallet.RemotePresentation.verifyRequestObject(
         requestObjectEncodedJwt,
         {
-          rpConf,
           clientId: qrParams.client_id,
           state: qrParams.state
         }
@@ -127,8 +128,7 @@ const presentationListener: AppListenerWithAction<
 
     listenerApi.dispatch(
       setPreDefinitionSuccess({
-        descriptor: presentationDetails,
-        rpConfig: rpConf.federation_entity
+        descriptor: presentationDetails
       })
     );
 
@@ -183,8 +183,7 @@ const presentationListener: AppListenerWithAction<
         const authResponse =
           await wallet.RemotePresentation.sendAuthorizationResponse(
             requestObject,
-            remotePresentations,
-            rpConf
+            remotePresentations
           );
         listenerApi.dispatch(setPostDefinitionSuccess(authResponse));
       } else {
@@ -203,6 +202,8 @@ const presentationListener: AppListenerWithAction<
         });
     }
   } catch (error) {
+    console.log(error)
+    console.log(JSON.stringify(error))
     if (error instanceof TaskAbortError) {
       return;
     }
