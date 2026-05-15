@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import * as Crypto from 'expo-crypto';
 import { persistReducer, type PersistConfig } from 'redux-persist';
 
 export type TypefaceChoice = 'comfortable' | 'standard';
@@ -12,7 +11,6 @@ export type TypefaceChoice = 'comfortable' | 'standard';
  * isBiometricEnabled - Indicates if the biometric is enabled for the user.
  */
 export type PreferencesSlice = {
-  sessionId: string;
   isOnboardingComplete: boolean;
   isBiometricEnabled: boolean;
   isFirstStartup: boolean;
@@ -26,7 +24,6 @@ export type PreferencesPartialRootState = {
 
 // Initial state for the preferences slice
 const initialState: PreferencesSlice = {
-  sessionId: Crypto.randomUUID().toString(),
   isOnboardingComplete: false,
   isBiometricEnabled: false,
   isFirstStartup: true,
@@ -126,14 +123,6 @@ export const selectIsBiometricEnabled = (state: PreferencesPartialRootState) =>
  */
 export const selectIsFirstStartup = (state: PreferencesPartialRootState) =>
   state.preferences.isFirstStartup;
-
-/**
- * Selects the session id of the wallet
- * @param state - The root state of the Redux store
- * @returns a randomly generated uuid
- */
-export const selectSessionId = (state: PreferencesPartialRootState) =>
-  state.preferences.sessionId;
 
 export const selectFontPreference = (
   state: PreferencesPartialRootState

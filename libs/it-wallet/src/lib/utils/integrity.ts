@@ -2,7 +2,7 @@ import { generate, getPublicKey, sign } from '@pagopa/io-react-native-crypto';
 import {
   fixBase64EncodingOnKey,
   type IntegrityContext
-} from '@pagopa/io-react-native-wallet';
+} from '@io-eudiw-app/io-react-native-wallet';
 import * as Crypto from 'expo-crypto';
 import { encode } from 'js-base64';
 
@@ -32,7 +32,7 @@ const getHardwareSignatureWithAuthData = async (
    * Client data should be hashed however it is not done in this implementation.
    */
   const signature = await sign(clientData, hardwareKeyTag);
-  return { signature, authenticatorData: 'NOT_NEEDED' };
+  return { signature, authenticatorData: 'NOT_IMPLEMENTED' };
 };
 
 /**

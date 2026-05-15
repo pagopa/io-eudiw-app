@@ -1,4 +1,3 @@
-import { Credential } from '@pagopa/io-react-native-wallet';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
 import { FederationEntity } from '../types';
@@ -28,9 +27,9 @@ export type Descriptor = {
 /**
  * Response type for the authorization request which is the final step of the presentation flow.
  */
-type AuthResponse = Awaited<
-  ReturnType<typeof Credential.Presentation.sendAuthorizationResponse>
->;
+type AuthResponse = {
+  redirect_uri?: string;
+};
 
 /**
  * Type of the optional claims names selected by the user.

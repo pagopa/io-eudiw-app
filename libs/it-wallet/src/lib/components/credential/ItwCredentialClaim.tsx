@@ -43,11 +43,10 @@ const PlaceOfBirthClaimItem = ({
   hidden?: boolean;
   reversed: boolean;
 }) => {
-  const realValue = `${claim.value.locality} (${claim.value.country})`;
-  const displayValue = hidden ? HIDDEN_CLAIM_TEXT : realValue;
+  const displayValue = hidden ? HIDDEN_CLAIM_TEXT : claim.value;
   const accessibilityStateText = hidden
     ? getHiddenClaimAccessibilityText()
-    : realValue;
+    : claim.value;
 
   return (
     <ListItemInfo
@@ -469,7 +468,7 @@ const VerificationEvidenceClaimItem = ({
  * @param credentialStatus - the status of the credential, used for expiration date claims
  * @param credentialType - the type of the credential, used for analytics tracking
  */
-export const ItwCredentialClaim = ({
+export const ItwCredentialClaim =  ({
   claim,
   clipboardSuccessMessage,
   showLabel,
@@ -585,6 +584,12 @@ export const ItwCredentialClaim = ({
             reversed={reversed}
           />
         );
+      case 'verification': 
+        return (
+          <PlainTextClaimItem
+            claim={claim.parsed.value}
+            label={claim.label} reversed={false} clipboardSuccessMessage={clipboardSuccessMessage}            />
+        )
     }
   }
   return (

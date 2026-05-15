@@ -1,19 +1,24 @@
-import { WalletInstance } from '@pagopa/io-react-native-wallet';
+import { IoWallet } from '@io-eudiw-app/io-react-native-wallet';
 import { serializeError } from 'serialize-error';
-import { selectInstanceKeyTag, setInstanceKeyTag } from '../store/instance';
-import { createWalletProviderFetch } from '../utils/fetch';
+import {
+  selectInstanceKeyTag,
+  selectSessionId,
+  setInstanceKeyTag
+} from '../store/instance';
+import { createWalletFetch } from '../utils/fetch';
 import {
   generateIntegrityHardwareKeyTag,
   getIntegrityContext
 } from '../utils/integrity';
 import { createAppAsyncThunk } from './thunk';
 import { getEnv } from '@io-eudiw-app/env';
-import { selectSessionId } from '@io-eudiw-app/preferences';
+import { WALLET_SPEC_VERSION } from '../utils/constants';
 
 export const createInstanceThunk = createAppAsyncThunk<void, void>(
-  'pidIssuanceStatus/createInstance',
+  'instance/createInstance',
   async (_, { getState, dispatch, rejectWithValue }) => {
     try {
+      const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
       const state = getState();
       const instanceKeyTag = selectInstanceKeyTag(state);
 
@@ -21,14 +26,13 @@ export const createInstanceThunk = createAppAsyncThunk<void, void>(
         const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
           getEnv();
         const sessionId = selectSessionId(state);
-        const appFetch = createWalletProviderFetch(
-          walletProviderBaseUrl,
+        const appFetch = createWalletFetch(
           sessionId
         );
         const keyTag = await generateIntegrityHardwareKeyTag();
         const integrityContext = getIntegrityContext(keyTag);
 
-        await WalletInstance.createWalletInstance({
+        await wallet.WalletInstance.createWalletInstance({
           integrityContext,
           walletProviderBaseUrl,
           appFetch

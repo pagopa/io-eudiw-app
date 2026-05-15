@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "@react-navigation/native": "catalog:",
-    "@reduxjs/toolkit": "catalog:"
+    "@reduxjs/toolkit": "catalog:",
+    "expo-crypto": "catalog:"
   },
   "peerDependencies": {
     "react": "^19.1.0",

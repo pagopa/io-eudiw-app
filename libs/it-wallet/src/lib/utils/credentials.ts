@@ -1,5 +1,7 @@
 import { t } from 'i18next';
 import { ItwCredentialStatus, ItwJwtCredentialStatus } from '../types';
+import { ParsedDcql } from './itwTypesUtils';
+import { CredentialType } from './itwMocksUtils';
 
 export type CredentialsKeys = 'DRIVING_LICENSE' | 'PID' | 'DISABILITY_CARD';
 
@@ -10,7 +12,7 @@ export type CredentialsKeys = 'DRIVING_LICENSE' | 'PID' | 'DISABILITY_CARD';
  */
 export const wellKnownCredential = {
   DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
-  PID: 'urn:eu.europa.ec.eudi:pid:1',
+  PID: 'urn:eudi:pid:it:1',
   DISABILITY_CARD: 'urn:eu.europa.ec.eudi:edc:1'
 } as const satisfies Record<CredentialsKeys, string>;
 
@@ -125,4 +127,36 @@ export const getItwDisplayCredentialStatus = (
 
   // Default: pid valid and online → keep real status
   return credentialStatus;
+};
+
+// TODO: [SIW-3998] Remove when MDOC remote presentation will be supported
+export const isPresentationDetailSdJwt = <T extends ParsedDcql[number]>(
+  input: T
+): input is Extract<T, { format: 'dc+sd-jwt' }> => input.format === 'dc+sd-jwt';
+
+/**
+ * Maps a vct name to the corresponding credential type, used in UI contexts
+ * Note: although this list is unlikely to change, you should ensure to have
+ * a fallback when dealing with this list to prevent unwanted behaviours
+ */
+const credentialTypesByVct: { [vct: string]: CredentialType } = {
+  personidentificationdata: CredentialType.PID,
+  mdl: CredentialType.DRIVING_LICENSE,
+  europeandisabilitycard: CredentialType.EUROPEAN_DISABILITY_CARD
+};
+
+/**
+ * Utility function which returns the credentila type associated to the provided vct
+ * @param vct credential vct
+ * @returns credential type as string, undefine if not found
+ */
+export const getCredentialTypeByVct = (vct: string): string | undefined => {
+  // Extracts the name from the vct. For example:
+  // From "https://pre.ta.wallet.ipzs.it/vct/v1.0.0/personidentificationdata"
+  // Gets "/vct/v1.0.0/personidentificationdata"
+  const match = vct.match(/\/vct(.*)\/([^/]+)$/);
+  // Extracts "personidentificationdata"
+  const name = match ? match[2] : null;
+  // Tries to match the extracted value to a credential type
+  return name ? credentialTypesByVct[name] : undefined;
 };

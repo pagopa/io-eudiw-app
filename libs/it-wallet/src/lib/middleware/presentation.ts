@@ -1,8 +1,3 @@
-import { CryptoContext } from '@pagopa/io-react-native-jwt';
-import {
-  createCryptoContextFor,
-  Credential
-} from '@pagopa/io-react-native-wallet';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import { selectCredentials } from '../store/credentials';
 import {
@@ -22,17 +17,25 @@ import {
   wellKnownCredentialConfigurationIDs
 } from '../utils/credentials';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
-import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { AppListenerWithAction, AppStartListening } from './types';
 import { takeLatestEffect } from '@io-eudiw-app/commons';
-import { serializeError } from 'serialize-error';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '@io-eudiw-app/identification';
+import {
+  IoWallet,
+  RemotePresentation
+} from '@io-eudiw-app/io-react-native-wallet';
+import { WALLET_SPEC_VERSION } from '../utils/constants';
+import { getWalletInstanceAttestationThunk } from './attestation';
+import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
+import { serializeErrorOrUnknown } from '../utils/errors';
 
-type DcqlQuery = Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
+type DcqlQuery = Parameters<
+  RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']
+>[0];
 
 /**
  * Listener for the credential presentation.
@@ -48,30 +51,43 @@ const presentationListener: AppListenerWithAction<
     const { request_uri, client_id, state, request_uri_method } =
       action.payload;
 
-    const qrParameters = Credential.Presentation.startFlowFromQR({
+    console.log(request_uri, client_id, state, request_uri_method);
+
+    const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+
+    await listenerApi.dispatch(getWalletInstanceAttestationThunk());
+
+    const qrParams = wallet.RemotePresentation.startFlowFromQR({
       request_uri,
       client_id,
       state,
-      request_uri_method
+      request_uri_method: 'get'
     });
 
-    const { requestObjectEncodedJwt } =
-      await Credential.Presentation.getRequestObject(qrParameters.request_uri);
+    // const { rpConf } =
+    //   await wallet.RemotePresentation.evaluateRelyingPartyTrust(
+    //     qrParams.client_id
+    //   );
 
-    const { rpConf, subject } =
-      await Credential.Presentation.evaluateRelyingPartyTrust(
-        qrParameters.client_id
+    if (!qrParams.request_uri) {
+      throw new Error(
+        'Only request_uri based Remote Presentation Requests are supported'
       );
+    }
 
-    const { requestObject } = await Credential.Presentation.verifyRequestObject(
-      requestObjectEncodedJwt,
-      {
-        rpConf,
-        clientId: qrParameters.client_id,
-        rpSubject: subject,
-        state: qrParameters.state
-      }
-    );
+    const authRequestUrl = `haip://presentation?${new URLSearchParams(qrParams)}`
+
+    const { requestObjectEncodedJwt } =
+      await wallet.RemotePresentation.getRequestObject(authRequestUrl);
+
+    const { requestObject } =
+      await wallet.RemotePresentation.verifyRequestObject(
+        requestObjectEncodedJwt,
+        {
+          clientId: qrParams.client_id,
+          state: qrParams.state
+        }
+      );
 
     const credentials = selectCredentials(listenerApi.getState());
 
@@ -81,21 +97,22 @@ const presentationListener: AppListenerWithAction<
     const credentialsSdJwt = [
       ...Object.values(credentials)
         .filter(c => c.format === 'dc+sd-jwt')
-        .map(c => [createCryptoContextFor(c.keyTag), c.credential])
-    ] as Array<[CryptoContext, string]>;
+        .map(c => [c.keyTag, c.credential])
+    ] as Array<[string, string]>;
 
     if (!requestObject.dcql_query) {
       throw new Error('Only DCQL presentations are supported at the moment');
     }
 
-    const evaluateDcqlQuery = Credential.Presentation.evaluateDcqlQuery(
-      credentialsSdJwt,
-      requestObject.dcql_query as DcqlQuery
-    );
+    const evaluatedDcqlQuery =
+      await wallet.RemotePresentation.evaluateDcqlQuery(
+        requestObject.dcql_query as DcqlQuery,
+        credentialsSdJwt
+      );
 
     // Check whether any of the requested credential is invalid
     const invalidCredentials = getInvalidCredentials(
-      evaluateDcqlQuery,
+      evaluatedDcqlQuery,
       credentials
     );
 
@@ -107,14 +124,13 @@ const presentationListener: AppListenerWithAction<
 
     // Add localization to the requested claims
     const presentationDetails = enrichPresentationDetails(
-      evaluateDcqlQuery,
+      evaluatedDcqlQuery,
       credentials
     );
 
     listenerApi.dispatch(
       setPreDefinitionSuccess({
-        descriptor: presentationDetails,
-        rpConfig: rpConf.federation_entity
+        descriptor: presentationDetails
       })
     );
 
@@ -137,31 +153,39 @@ const presentationListener: AppListenerWithAction<
         isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
       );
       if (setIdentificationIdentified.match(resAction[0])) {
-        const credentialsToPresent = evaluateDcqlQuery
-          .filter(
-            c =>
-              c.purposes.some(({ required }) => required) ||
-              optionalCredentials?.includes(c.id)
-          )
-          .map(({ requiredDisclosures, ...rest }) => ({
-            ...rest,
-            requestedClaims: requiredDisclosures.map(
-              ([, claimName]) => claimName
-            )
-          }));
+        // const credentialsToPresent = evaluatedDcqlQuery
+        //   .filter(
+        //     c =>
+        //       c.purposes.some(({ required }) => required) ||
+        //       optionalCredentials?.includes(c.id)
+        //   )
+        //   .map(({ requiredDisclosures, ...rest }) => ({
+        //     ...rest,
+        //     requestedClaims: requiredDisclosures.map(({ name }) => name)
+        //   }));
+
+        const credentialsToPresent = presentationDetails.filter(
+          c =>
+            c.purposes.some(({ required }) => required) ||
+            optionalCredentials?.includes(c.id)
+        );
+
+        const authRequestObject = {
+          nonce: requestObject.nonce,
+          clientId: requestObject.client_id,
+          responseUri: requestObject.response_uri
+        };
 
         const remotePresentations =
-          await Credential.Presentation.prepareRemotePresentations(
+          await wallet.RemotePresentation.prepareRemotePresentations(
             credentialsToPresent,
-            requestObject.nonce,
-            requestObject.client_id
+            authRequestObject
           );
 
         const authResponse =
-          await Credential.Presentation.sendAuthorizationResponse(
+          await wallet.RemotePresentation.sendAuthorizationResponse(
             requestObject,
-            remotePresentations,
-            rpConf
+            remotePresentations
           );
         listenerApi.dispatch(setPostDefinitionSuccess(authResponse));
       } else {
@@ -169,7 +193,7 @@ const presentationListener: AppListenerWithAction<
       }
     } else {
       // The result of this call is ignored for the user is not interested in any message
-      Credential.Presentation.sendAuthorizationErrorResponse(requestObject, {
+      wallet.RemotePresentation.sendAuthorizationErrorResponse(requestObject, {
         error: 'access_denied',
         errorDescription: 'The user cancelled the presentation.'
       })
@@ -180,23 +204,25 @@ const presentationListener: AppListenerWithAction<
         });
     }
   } catch (error) {
+    console.log(error)
+    console.log(JSON.stringify(error))
     if (error instanceof TaskAbortError) {
       return;
     }
-    const serialized = serializeError(error);
+    const serialized = serializeErrorOrUnknown(error);
     // Handle the case where a credential required by the DCQL query is not in the wallet
-    if (
-      error instanceof Credential.Presentation.Errors.CredentialsNotFoundError
-    ) {
+    if (error instanceof RemotePresentation.Errors.CredentialsNotFoundError) {
       const firstMissingNonPid = error.details.find(
-        ({ vctValues }) =>
-          getConfigIdByVct(vctValues ?? []) !==
-          wellKnownCredentialConfigurationIDs.PID
+        detail =>
+          detail.format !== 'mso_mdoc' &&
+          getConfigIdByVct(detail.vctValues ?? []) !==
+            wellKnownCredentialConfigurationIDs.PID
       );
       const firstMissing = firstMissingNonPid ?? error.details[0];
-      const configId = firstMissing?.vctValues?.length
-        ? getConfigIdByVct(firstMissing.vctValues)
-        : undefined;
+      const configId =
+        firstMissing?.format !== 'mso_mdoc' && firstMissing?.vctValues?.length
+          ? getConfigIdByVct(firstMissing.vctValues)
+          : undefined;
       if (configId) {
         listenerApi.dispatch(setCredentialNotFound(configId));
       }

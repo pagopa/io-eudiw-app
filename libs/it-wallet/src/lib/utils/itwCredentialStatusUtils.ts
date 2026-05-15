@@ -1,12 +1,12 @@
 import { differenceInCalendarDays } from 'date-fns';
-import { wellKnownCredential } from './credentials';
+import { isPresentationDetailSdJwt, wellKnownCredential } from './credentials';
 import { getCredentialExpireDate } from './itwClaimsUtils';
 import { validCredentialStatuses } from './itwCredentialUtils';
 import { CredentialType } from './itwMocksUtils';
 import {
   isDefined,
   ItwCredentialStatus,
-  PresentationDetails,
+  ParsedDcql,
   StoredCredential
 } from './itwTypesUtils';
 
@@ -86,12 +86,13 @@ const credentialTypesByVct: { [vct: string]: CredentialType } = {
  * Return a list of credential types that have an invalid status.
  */
 export const getInvalidCredentials = (
-  presentationDetails: PresentationDetails,
+  presentationDetails: ParsedDcql,
   credentialsByType: Array<StoredCredential>
 ) =>
   presentationDetails
+    .filter(isPresentationDetailSdJwt) // TODO: [SIW-3998] Support MDOC remote presentation
     // Retries the type from the VCT map
-    .map(({ vct }) => (vct ? credentialTypesByVct[vct] : undefined))
+    .map(({ vct }) => credentialTypesByVct[vct])
     // Removes undefined
     .filter(isDefined)
     // Retrieve the credential using the type from the previous step

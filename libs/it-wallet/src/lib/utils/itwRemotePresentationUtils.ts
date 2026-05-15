@@ -35,7 +35,10 @@ type PresentationDetail = EnrichedPresentationDetails[number];
  */
 export const groupCredentialsByPurpose = (
   presentationDetails: EnrichedPresentationDetails
-) => {
+): {
+  required: Array<{ purpose: string; credentials: Array<PresentationDetail> }>;
+  optional: Array<{ purpose: string; credentials: Array<PresentationDetail> }>;
+} => {
   const required = {} as Record<string, Array<PresentationDetail>>;
   const optional = {} as Record<string, Array<PresentationDetail>>;
 
