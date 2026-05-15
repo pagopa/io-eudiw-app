@@ -76,7 +76,6 @@ export const startUserAuthorization: IssuanceApi["startUserAuthorization"] =
       },
     });
 
-    console.log(JSON.stringify(issuerConf))
     const clientAttestationPoP = await createClientAttestationPopJwt({
       config: sdkConfigV1_3,
       callbacks: {
@@ -89,8 +88,6 @@ export const startUserAuthorization: IssuanceApi["startUserAuthorization"] =
       jti: uuidv4(),
     });
 
-    console.log('created client attestation PoP JWT', clientAttestationPoP);
-
     const { request_uri } = await fetchPushedAuthorizationResponse({
       callbacks: {
         //@ts-expect-error fetch broken
@@ -102,8 +99,6 @@ export const startUserAuthorization: IssuanceApi["startUserAuthorization"] =
       clientAttestationDPoP: clientAttestationPoP,
       walletAttestation: walletInstanceAttestation,
     });
-
-    console.log('received request_uri from PAR endpoint', request_uri);
 
     return {
       issuerRequestUri: request_uri,

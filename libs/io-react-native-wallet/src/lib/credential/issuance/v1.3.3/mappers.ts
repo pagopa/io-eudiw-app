@@ -41,7 +41,8 @@ export const mapToIssuerConfig = createMapper<
     const {
       oauth_authorization_server,
       openid_credential_issuer,
-      federation_entity
+      federation_entity,
+      openid_credential_verifier
     } = x.metadata;
 
     assert(
@@ -52,6 +53,10 @@ export const mapToIssuerConfig = createMapper<
       openid_credential_issuer,
       'openid_credential_issuer is required in Issuer metadata'
     );
+    assert(
+      openid_credential_verifier,
+      'openid_credential_verifier is required in Issuer metadata'
+    );
 
     return {
       authorization_endpoint: oauth_authorization_server.authorization_endpoint,
@@ -61,13 +66,15 @@ export const mapToIssuerConfig = createMapper<
         openid_credential_issuer
       ),
       keys: openid_credential_issuer.jwks.keys as JWK[],
+      verifier_keys: openid_credential_verifier.jwks.keys as JWK[],
       pushed_authorization_request_endpoint:
         oauth_authorization_server.pushed_authorization_request_endpoint,
       token_endpoint: oauth_authorization_server.token_endpoint,
       nonce_endpoint: openid_credential_issuer.nonce_endpoint!,
       federation_entity: federation_entity ?? {},
       credential_issuance_batch_size:
-        openid_credential_issuer.batch_credential_issuance?.batch_size
+        openid_credential_issuer.batch_credential_issuance?.batch_size,
+      credential_verifier_encrypted_response_enc_values_supported: openid_credential_verifier.encrypted_response_enc_values_supported
     };
   },
   { outputSchema: IssuerConfig } // Output validation for extra-safety

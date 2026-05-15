@@ -13,7 +13,7 @@ catalog:
   '@expo/metro-config': '~54.0.9'
   '@expo/metro-runtime': '~6.1.2'
   '@pagopa/io-app-design-system': '5.12.1'
-  '@pagopa/io-react-native-iso18013': '0.8.2'
+  '@pagopa/io-react-native-iso18013': '0.8.3'
   '@react-navigation/bottom-tabs': '7.4.0'
   '@react-navigation/native': '7.1.8'
   '@react-navigation/stack': '7.6.11'

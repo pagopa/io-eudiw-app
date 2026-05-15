@@ -1,23 +1,23 @@
-import { DcqlQuery, DcqlError } from 'dcql';
-import { isValiError } from 'valibot';
-import { CredentialsNotFoundError } from '../common/errors';
-import type { CredentialPurpose } from '../api/06-evaluate-dcql-query';
-import * as mdocUtils from './utils.mdoc';
-import type { Credential4Dcql, RemotePresentationApi } from '../api';
-import * as sdJwtUtils from '../common/utils/sd-jwt';
-import { getClaimsFromDcqlMatch } from './utils.mdoc';
+import { DcqlQuery, DcqlError } from "dcql";
+import { isValiError } from "valibot";
+import { CredentialsNotFoundError } from "../common/errors";
+import type { CredentialPurpose } from "../api/06-evaluate-dcql-query";
+import * as mdocUtils from "./utils.mdoc";
+import type { Credential4Dcql, RemotePresentationApi } from "../api";
+import * as sdJwtUtils from "../common/utils/sd-jwt";
 import {
   extractFailedCredentialsDetails,
+  getClaimsFromDcqlMatch,
   getDcqlQueryMatches,
-  getPresentationFrameFromDcqlMatch
-} from '../common/utils/dcql';
+  getPresentationFrameFromDcqlMatch,
+} from "../common/utils/dcql";
 
-export const evaluateDcqlQuery: RemotePresentationApi['evaluateDcqlQuery'] =
+export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
   async (query, credentialsSdJwt, credentialsMdoc = []) => {
     const credentials = (
       await Promise.all([
         sdJwtUtils.mapCredentialsToObj(credentialsSdJwt),
-        mdocUtils.mapCredentialsToObj(credentialsMdoc)
+        mdocUtils.mapCredentialsToObj(credentialsMdoc),
       ])
     ).flat();
 
@@ -25,7 +25,7 @@ export const evaluateDcqlQuery: RemotePresentationApi['evaluateDcqlQuery'] =
     const credentialsById = credentials.reduce(
       (acc, c) => ({
         ...acc,
-        ['vct' in c ? c.vct : c.doctype]: c.original_credential
+        ["vct" in c ? c.vct : c.doctype]: c.original_credential,
       }),
       {} as Record<string, Credential4Dcql>
     );
@@ -45,15 +45,15 @@ export const evaluateDcqlQuery: RemotePresentationApi['evaluateDcqlQuery'] =
 
       return getDcqlQueryMatches(queryResult).map(([id, match]) => {
         const purposes = queryResult.credential_sets
-          ?.filter(set => set.matching_options?.flat().includes(id))
-          ?.map<CredentialPurpose>(credentialSet => ({
+          ?.filter((set) => set.matching_options?.flat().includes(id))
+          ?.map<CredentialPurpose>((credentialSet) => ({
             description: credentialSet.purpose?.toString(),
-            required: Boolean(credentialSet.required)
+            required: Boolean(credentialSet.required),
           }));
 
         const matchOutput = match.valid_credentials[0]?.meta.output;
 
-        if (matchOutput?.credential_format === 'dc+sd-jwt') {
+        if (matchOutput?.credential_format === "dc+sd-jwt") {
           const { vct } = matchOutput;
           const [keyTag, credential] = credentialsById[vct]!;
 
@@ -73,11 +73,11 @@ export const evaluateDcqlQuery: RemotePresentationApi['evaluateDcqlQuery'] =
             presentationFrame,
             // When it is a match but no credential_sets are found, the credential is required by default
             // See https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-6.4.2
-            purposes: purposes ?? [{ required: true }]
+            purposes: purposes ?? [{ required: true }],
           };
         }
 
-        if (matchOutput?.credential_format === 'mso_mdoc') {
+        if (matchOutput?.credential_format === "mso_mdoc") {
           const { doctype } = matchOutput;
           const [keyTag, credential] = credentialsById[doctype]!;
 
@@ -95,7 +95,7 @@ export const evaluateDcqlQuery: RemotePresentationApi['evaluateDcqlQuery'] =
             credential,
             requiredDisclosures,
             presentationFrame,
-            purposes: purposes ?? [{ required: true }]
+            purposes: purposes ?? [{ required: true }],
           };
         }
 
@@ -107,9 +107,9 @@ export const evaluateDcqlQuery: RemotePresentationApi['evaluateDcqlQuery'] =
       // Invalid DCQL query structure. Remap to `DcqlError` for consistency.
       if (isValiError(error)) {
         throw new DcqlError({
-          message: 'Failed to parse the provided DCQL query',
-          code: 'PARSE_ERROR',
-          cause: error.issues
+          message: "Failed to parse the provided DCQL query",
+          code: "PARSE_ERROR",
+          cause: error.issues,
         });
       }
 

@@ -6,27 +6,27 @@ import {
 import parseUrl from 'parse-url';
 import type { DcqlQuery } from 'dcql';
 import {
-  fetchAuthorizationRequest,
   parseAuthorizeRequest
 } from '@pagopa/io-wallet-oid4vp';
 import { sendAuthorizationResponseAndExtractCode } from '@pagopa/io-wallet-oid4vci';
 import { parseMrtdChallenge } from '@pagopa/io-wallet-oauth2';
-import { SignJWT, type CryptoContext } from '@pagopa/io-react-native-jwt';
+import { EncryptJwe, type CryptoContext } from '@pagopa/io-react-native-jwt';
 import { AuthorizationError, AuthorizationIdpError } from '../common/errors';
 import { LogLevel, Logger } from '../../../utils/logging';
 import { RemotePresentation as RemotePresentationFlow } from '../../presentation/v1.3.3';
-import { partialCallbacks } from '../../../utils/callbacks';
+import { createVerifyJwtFromJwks, partialCallbacks } from '../../../utils/callbacks';
 import {
   IoWalletError,
-  sdkUnexpectedStatusCodeToIssuerError
+  IssuerResponseError,
 } from '../../../utils/errors';
-import type { IssuanceApi } from '../api';
+import type { IssuanceApi, IssuerConfig } from '../api';
 import { mapToRequestObject } from './mappers';
 import type { RemotePresentation } from '../../presentation';
 import {
-  IoWalletSdkConfig,
-  ItWalletSpecsVersion
+  hasStatusOrThrow
 } from '@pagopa/io-wallet-utils';
+import { sdkConfigV1_3 } from '../../../utils/config';
+import { choosePublicKeyToEncrypt } from '../../presentation/v1.0.0/07-send-authorization-response';
 
 export const continueUserAuthorizationWithMRTDPoPChallenge: IssuanceApi['continueUserAuthorizationWithMRTDPoPChallenge'] =
   async authRedirectUrl => {
@@ -79,7 +79,7 @@ export const completeUserAuthorizationWithQueryMode: IssuanceApi['completeUserAu
     return parseAuthorizationResponse(query);
   };
 
-export const getRequestedCredentialToBePresented: IssuanceApi['getRequestedCredentialToBePresented'] =
+export const getRequestedCredentialToBePresented: IssuanceApi["getRequestedCredentialToBePresented"] =
   async (issuerRequestUri, clientId, issuerConf, appFetch = fetch) => {
     Logger.log(
       LogLevel.DEBUG,
@@ -89,37 +89,28 @@ export const getRequestedCredentialToBePresented: IssuanceApi['getRequestedCrede
     const authzRequestEndpoint = issuerConf.authorization_endpoint;
     const params = new URLSearchParams({
       client_id: clientId,
-      request_uri: issuerRequestUri
+      request_uri: issuerRequestUri,
     });
-
-    console.log('PARAMS', params.toString());
 
     Logger.log(
       LogLevel.DEBUG,
       `Requesting the request object to ${authzRequestEndpoint}?${params.toString()}`
     );
 
-    console.log(`${authzRequestEndpoint}?${params.toString()}`);
-
-    const authRequest = await fetchAuthorizationRequest({
-      authorizeRequestUrl: `${authzRequestEndpoint}?${params.toString()}`,
-      callbacks: {
-        //@ts-expect-error - temp
-        fetch: appFetch
-      }
-    }).catch(sdkUnexpectedStatusCodeToIssuerError);
-
-    console.log('AUTH REQUEST', authRequest);
+    const requestObjectJwt = await appFetch(
+      `${authzRequestEndpoint}?${params.toString()}`,
+      { method: "GET" }
+    )
+      .then(hasStatusOrThrow(200, IssuerResponseError))
+      .then((res) => res.text());
 
     const parsedAuthRequest = await parseAuthorizeRequest({
-      config: new IoWalletSdkConfig({
-        itWalletSpecsVersion: ItWalletSpecsVersion.V1_3
-      }) as IoWalletSdkConfig<ItWalletSpecsVersion>,
-      requestObjectJwt: authRequest.requestObjectJwt,
-      callbacks: partialCallbacks
+      config: sdkConfigV1_3,
+      requestObjectJwt,
+      callbacks: {
+        verifyJwt: createVerifyJwtFromJwks(issuerConf.keys),
+      },
     });
-
-    console.log('PARSED AUTH REQUEST', parsedAuthRequest);
 
     return mapToRequestObject(parsedAuthRequest);
   };
@@ -153,11 +144,16 @@ export const completeUserAuthorizationWithFormPostJwtMode: IssuanceApi['complete
         authRequestObject
       );
 
+    console.log(`Remote presentation: ${JSON.stringify(remotePresentation, null, 2)}`);
+
     const authzResponsePayload = await createAuthzResponsePayload({
       state: requestObject.state,
       remotePresentation,
-      wiaCryptoContext
+      wiaCryptoContext,
+      issuerConf : issuerConfig
     });
+
+    console.log(`Authz response payload (JWT): ${JSON.stringify(authzResponsePayload, null, 2)}`);
 
     Logger.log(
       LogLevel.DEBUG,
@@ -170,6 +166,8 @@ export const completeUserAuthorizationWithFormPostJwtMode: IssuanceApi['complete
       Logger.log(LogLevel.ERROR, errorMessage);
       throw new IoWalletError(errorMessage);
     }
+
+    console.log('sending auth response')
 
     return sendAuthorizationResponseAndExtractCode({
       authorizationResponseJarm: authzResponsePayload,
@@ -232,20 +230,44 @@ export const parseAuthorizationResponse = (
 const createAuthzResponsePayload = async ({
   state,
   remotePresentation,
-  wiaCryptoContext
+  wiaCryptoContext,
+  issuerConf
 }: {
   state?: string;
   remotePresentation: RemotePresentation;
   wiaCryptoContext: CryptoContext;
+  issuerConf: IssuerConfig;
 }): Promise<string> => {
-  const { kid } = await wiaCryptoContext.getPublicKey();
+  // const { kid } = await wiaCryptoContext.getPublicKey();
 
-  return new SignJWT(wiaCryptoContext)
-    .setProtectedHeader({
-      typ: 'jwt',
-      kid
-    })
-    .setPayload({
+  // return new SignJWT(wiaCryptoContext)
+  //   .setProtectedHeader({
+  //     typ: 'jwt',
+  //     kid
+  //   })
+  //   .setPayload({
+  //     /**
+  //      * TODO [SIW-2264]: `state` coming from `requestObject` is marked as `optional`
+  //      * At the moment, it is not entirely clear whether this value can indeed be omitted
+  //      * and, if so, what the consequences of its absence might be.
+  //      */
+  //     ...(state ? { state } : {}),
+  //     vp_token: remotePresentation.presentations.reduce(
+  //       (vp_token, { credentialId, vpToken }) => ({
+  //         ...vp_token,
+  //         [credentialId]: [vpToken]
+  //       }),
+  //       {},
+  //     ),
+  //   })
+  //   .setIssuedAt()
+  //   .setExpirationTime('1h')
+  //   .sign();
+  type Jwe = ConstructorParameters<typeof EncryptJwe>[1];
+
+  const encPublicJwk = choosePublicKeyToEncrypt(issuerConf.verifier_keys);
+
+  const authzResponsePayload = JSON.stringify({
       /**
        * TODO [SIW-2264]: `state` coming from `requestObject` is marked as `optional`
        * At the moment, it is not entirely clear whether this value can indeed be omitted
@@ -257,10 +279,24 @@ const createAuthzResponsePayload = async ({
           ...vp_token,
           [credentialId]: [vpToken]
         }),
-        {}
-      )
+        {},
+      ),
     })
-    .setIssuedAt()
-    .setExpirationTime('1h')
-    .sign();
+
+    if(!issuerConf.credential_verifier_encrypted_response_enc_values_supported){
+      throw new IoWalletError('The issuer does not support encrypted response, which is required to complete the authorization with form_post.jwt mode');
+    }
+
+
+   const defaultAlg: Jwe["alg"] = encPublicJwk.kty === "EC" ? "ECDH-ES" : "RSA-OAEP-256";
+
+   const encryptedResponse = await new EncryptJwe(authzResponsePayload, {
+     alg: defaultAlg,
+     enc:
+       (issuerConf.credential_verifier_encrypted_response_enc_values_supported[0] as Jwe["enc"]) || "A256CBC-HS512",
+     kid: encPublicJwk.kid,
+   }).encrypt(encPublicJwk);
+
+ return encryptedResponse;
+ 
 };

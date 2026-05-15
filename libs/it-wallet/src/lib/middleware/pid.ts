@@ -204,8 +204,6 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
           { credentialCryptoContext, ignoreMissingAttributes: true }
         );
 
-      console.log(JSON.stringify({ parsedCredential }, null, 2));
-
       return {
         parsedCredential,
         credential,

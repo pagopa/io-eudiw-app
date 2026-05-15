@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@pagopa/io-react-native-crypto": "^1.2.3",
-    "@pagopa/io-react-native-iso18013": "^0.7.0",
+    "@pagopa/io-react-native-iso18013": "catalog:",
     "@pagopa/io-react-native-jwt": "^2.1.0",
     "typed-openapi": "^0.4.1",
     "@types/jsrsasign": "^10.5.15"

@@ -19,7 +19,6 @@ import {
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { AppListenerWithAction, AppStartListening } from './types';
 import { takeLatestEffect } from '@io-eudiw-app/commons';
-import { serializeError } from 'serialize-error';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
@@ -32,6 +31,7 @@ import {
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { getWalletInstanceAttestationThunk } from './attestation';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
+import { serializeErrorOrUnknown } from '../utils/errors';
 
 type DcqlQuery = Parameters<
   RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']
@@ -61,7 +61,7 @@ const presentationListener: AppListenerWithAction<
       request_uri,
       client_id,
       state,
-      request_uri_method: request_uri_method as 'get' | 'post'
+      request_uri_method: 'get'
     });
 
     // const { rpConf } =
@@ -75,8 +75,10 @@ const presentationListener: AppListenerWithAction<
       );
     }
 
+    const authRequestUrl = `haip://presentation?${new URLSearchParams(qrParams)}`
+
     const { requestObjectEncodedJwt } =
-      await wallet.RemotePresentation.getRequestObject(qrParams.request_uri);
+      await wallet.RemotePresentation.getRequestObject(authRequestUrl);
 
     const { requestObject } =
       await wallet.RemotePresentation.verifyRequestObject(
@@ -207,7 +209,7 @@ const presentationListener: AppListenerWithAction<
     if (error instanceof TaskAbortError) {
       return;
     }
-    const serialized = serializeError(error);
+    const serialized = serializeErrorOrUnknown(error);
     // Handle the case where a credential required by the DCQL query is not in the wallet
     if (error instanceof RemotePresentation.Errors.CredentialsNotFoundError) {
       const firstMissingNonPid = error.details.find(

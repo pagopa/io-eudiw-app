@@ -100,6 +100,7 @@ export const sendAuthorizationResponse: RemotePresentationApi['sendAuthorization
     rpConf,
     { appFetch = fetch } = {}
   ) => {
+    console.log('SONO QUI CIAO');
     try {
       if (!rpConf && !requestObject.client_metadata) {
         throw new IoWalletError(
@@ -123,6 +124,8 @@ export const sendAuthorizationResponse: RemotePresentationApi['sendAuthorization
         },
         {} as Record<string, string[]>
       );
+
+      console.log(`VP TOKEN: ${JSON.stringify(vp_token)}`);
 
       const { jarm } = await sdkCreateAuthorizationResponse({
         requestObject,

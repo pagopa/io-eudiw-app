@@ -51,6 +51,7 @@ import {
   shouldRequestWalletInstanceAttestationSelector
 } from '../store/attestation';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
+import { serializeErrorOrUnknown } from '../utils/errors';
 
 type DcqlQuery = Parameters<
   RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']
@@ -249,6 +250,7 @@ const obtainCredentialListener: AppListenerWithAction<
         { credentialCryptoContext, ignoreMissingAttributes: true }
       );
 
+    console.log("GOT OUT OF VERIFY AND PARSE")
     listenerApi.dispatch(
       setCredentialIssuancePostAuthSuccess({
         credential: {
@@ -272,12 +274,12 @@ const obtainCredentialListener: AppListenerWithAction<
       return;
     }
     // We put the error in both the pre and post auth status as we are unsure where the error occurred.
-    const serializableError = JSON.stringify(error);
+    const serialized = serializeErrorOrUnknown(error)
     listenerApi.dispatch(
-      setCredentialIssuancePostAuthError({ error: serializableError })
+      setCredentialIssuancePostAuthError({ error: serialized })
     );
     listenerApi.dispatch(
-      setCredentialIssuancePreAuthError({ error: serializableError })
+      setCredentialIssuancePreAuthError({ error: serialized })
     );
   }
 };

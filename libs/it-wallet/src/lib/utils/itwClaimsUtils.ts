@@ -187,7 +187,7 @@ export const getClaimDisplayValue = (
       case 'placeOfBirth':
         return {
           type: 'text',
-          value: `${parsed.value.country} ${parsed.value.locality}`.trim()
+          value: `${parsed.value}`
         };
 
       case 'date':

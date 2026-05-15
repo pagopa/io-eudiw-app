@@ -32,7 +32,6 @@ const getJwkFromSigner = async (signer: JwtSigner, jwt: Parameters<PartialCallba
     case "federation": 
       const parsed = itWalletEntityStatementClaimsSchema.parse(jwt.payload)
       const found = parsed.jwks.keys.find(key => key.kid === signer.kid)
-      console.log(found)
       if (found) return found as JWK ;
       throw new IoWalletError("Requested key not found inside EC")
     case "jwk":
@@ -60,8 +59,6 @@ export const partialCallbacks: PartialCallbackContext = {
       const signerJwk = await getJwkFromSigner(jwtSigner, jwt);
       return { verified: true, signerJwk };
     } catch (e) {
-      console.log(e)
-      console.log
       return { verified: false };
     }
   },

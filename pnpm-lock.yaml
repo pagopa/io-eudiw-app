@@ -19,8 +19,8 @@ catalogs:
       specifier: 5.12.1
       version: 5.12.1
     '@pagopa/io-react-native-iso18013':
-      specifier: 0.8.2
-      version: 0.8.2
+      specifier: 0.8.3
+      version: 0.8.3
     '@react-navigation/bottom-tabs':
       specifier: 7.4.0
       version: 7.4.0
@@ -594,8 +594,8 @@ importers:
         specifier: ^1.2.3
         version: 1.2.4(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
       '@pagopa/io-react-native-iso18013':
-        specifier: ^0.7.0
-        version: 0.7.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
+        specifier: 'catalog:'
+        version: 0.8.3(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
       '@pagopa/io-react-native-jwt':
         specifier: ^2.1.0
         version: 2.1.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
@@ -634,7 +634,7 @@ importers:
         version: 1.2.4(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
       '@pagopa/io-react-native-iso18013':
         specifier: 'catalog:'
-        version: 0.8.2(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
+        version: 0.8.3(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
       '@pagopa/io-react-native-jwt':
         specifier: 2.1.0
         version: 2.1.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
@@ -2615,14 +2615,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  '@pagopa/io-react-native-iso18013@0.7.0':
-    resolution: {integrity: sha512-QB5/ZV9rtBPXu9rxVEtS1F5ERL20vwfToGPnxZyGMbS3X7SfFq5eR1eX16miJ+bbiUlvbENkGWtw7r5IFhc9zw==}
-    peerDependencies:
-      react: '*'
-      react-native: '*'
-
-  '@pagopa/io-react-native-iso18013@0.8.2':
-    resolution: {integrity: sha512-w8gTOMzh1YD2H32wo7qDmlHs0DlZo2FZaA8LRRktao/UKsp5+ErI3nxVbodoYZ2aVyp3fn0q+n38dPx8Ol6WCQ==}
+  '@pagopa/io-react-native-iso18013@0.8.3':
+    resolution: {integrity: sha512-sDmOcMtWJRSNfKKPeO4lg3Lzafl9G5/R4oiUaOjPx0oJb2R+OVqiKnUXZPKiH/4m2XUrd+w8KLQ0j6Nvjtlvmw==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -12502,13 +12496,7 @@ snapshots:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0)
 
-  '@pagopa/io-react-native-iso18013@0.7.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)':
-    dependencies:
-      react: 19.1.0
-      react-native: 0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0)
-      zod: 4.3.6
-
-  '@pagopa/io-react-native-iso18013@0.8.2(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)':
+  '@pagopa/io-react-native-iso18013@0.8.3(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0)

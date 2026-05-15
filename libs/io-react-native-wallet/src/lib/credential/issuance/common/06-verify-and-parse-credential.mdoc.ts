@@ -35,14 +35,14 @@ type DecodedMDocCredential = Out<typeof verifyMdoc> & {
  */
 async function verifyCredentialMDoc(
   rawCredential: string,
-  x509CertRoot: string,
   holderBindingContext: CryptoContext
 ): Promise<DecodedMDocCredential> {
-  const [decodedCredential, holderBindingKey] =
+  const [holderBindingKey, decodedCredential] =
     // parallel for optimization
     await Promise.all([
-      verifyMdoc(rawCredential, x509CertRoot),
-      holderBindingContext.getPublicKey()
+      // verifyMdoc(rawCredential, x509CertRoot),
+      holderBindingContext.getPublicKey(),
+      verifyMdoc(rawCredential),
     ]);
 
   if (!decodedCredential) {
@@ -188,15 +188,15 @@ export const verifyAndParseCredentialMDoc: IssuanceApi['verifyAndParseCredential
     credential,
     credentialConfigurationId,
     { credentialCryptoContext, ignoreMissingAttributes },
-    x509CertRoot
+    // x509CertRoot
   ) => {
-    if (!x509CertRoot) {
-      throw new IoWalletError('Missing x509CertRoot');
-    }
+    // if (!x509CertRoot) {
+    //   throw new IoWalletError('Missing x509CertRoot');
+    // }
 
     const decoded = await verifyCredentialMDoc(
       credential,
-      x509CertRoot,
+      // x509CertRoot,
       credentialCryptoContext
     );
 

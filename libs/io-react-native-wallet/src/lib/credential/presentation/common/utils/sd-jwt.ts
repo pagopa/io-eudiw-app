@@ -1,11 +1,11 @@
-import { SDJwtInstance, type SDJwt } from '@sd-jwt/core';
-import { getClaims } from '@sd-jwt/decode';
-import { digest } from '@sd-jwt/crypto-nodejs';
-import type { DcqlSdJwtVcCredential } from 'dcql';
-import { IoWalletError } from '../../../../utils/errors';
-import { LEGACY_SD_JWT } from '../../../../sd-jwt/types';
-import { fixLegacyCredentialSdJwt } from '../../../../utils/credentials';
-import type { Credential4Dcql } from '../../api';
+import { SDJwtInstance, type SDJwt } from "@sd-jwt/core";
+import { getClaims } from "@sd-jwt/decode";
+import { digest } from "@sd-jwt/crypto-nodejs";
+import type { DcqlSdJwtVcCredential } from "dcql";
+import { IoWalletError } from "../../../../utils/errors";
+import { LEGACY_SD_JWT } from "../../../../sd-jwt/types";
+import { fixLegacyCredentialSdJwt } from "../../../../utils/credentials";
+import type { Credential4Dcql } from "../../api";
 
 type CustomDcqlSdJwtVcCredential = DcqlSdJwtVcCredential & {
   original_credential: Credential4Dcql;
@@ -14,7 +14,7 @@ type CustomDcqlSdJwtVcCredential = DcqlSdJwtVcCredential & {
 /**
  * List of claims to remove from the SD-JWT before evaluating the DCQL query.
  */
-const NON_DISCLOSABLE_CLAIMS = ['status', 'cnf', 'exp'];
+const NON_DISCLOSABLE_CLAIMS = ["status", "cnf", "exp"];
 
 /**
  * Extract claims from disclosures for use in `dcql` library.
@@ -24,7 +24,7 @@ const getClaimsFromDecodedSdJwt = async (decodedRawSdJwt: SDJwt) => {
     throw new IoWalletError("Can't decode SD-JWT");
   }
 
-  const claims = await getClaims<DcqlSdJwtVcCredential['claims']>(
+  const claims = await getClaims<DcqlSdJwtVcCredential["claims"]>(
     decodedRawSdJwt.jwt.payload,
     decodedRawSdJwt.disclosures ?? [],
     digest
@@ -47,11 +47,11 @@ export const mapCredentialsToObj = async (
   credentials: Credential4Dcql[]
 ): Promise<CustomDcqlSdJwtVcCredential[]> => {
   const sdJwt = new SDJwtInstance({
-    hasher: digest
+    hasher: digest,
   });
 
   return Promise.all(
-    credentials.map(async credential => {
+    credentials.map(async (credential) => {
       const decodedRawSdJwt = await sdJwt.decode(
         fixLegacyCredentialSdJwt(credential[1])
       );
@@ -61,10 +61,10 @@ export const mapCredentialsToObj = async (
         credential_format:
           decodedRawSdJwt.jwt?.header?.typ === LEGACY_SD_JWT
             ? LEGACY_SD_JWT
-            : 'dc+sd-jwt',
+            : "dc+sd-jwt",
         cryptographic_holder_binding: true,
         claims,
-        original_credential: credential
+        original_credential: credential,
       } satisfies CustomDcqlSdJwtVcCredential;
     })
   );

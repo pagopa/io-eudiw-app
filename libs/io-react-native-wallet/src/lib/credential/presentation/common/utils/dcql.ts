@@ -1,9 +1,9 @@
-import { DcqlClaimsQuery, DcqlQuery, DcqlQueryResult } from 'dcql';
-import { isObject } from '../../../../utils/object';
-import type { EvaluatedDisclosure, PresentationFrame } from '../../api/types';
-import { IoWalletError } from '../../../../utils/errors';
-import { LEGACY_SD_JWT } from '../../../../sd-jwt/types';
-import type { NotFoundDetail } from '../errors';
+import { DcqlClaimsQuery, DcqlQuery, DcqlQueryResult } from "dcql";
+import { isObject } from "../../../../utils/object";
+import type { EvaluatedDisclosure, PresentationFrame } from "../../api/types";
+import { IoWalletError } from "../../../../utils/errors";
+import { LEGACY_SD_JWT } from "../../../../sd-jwt/types";
+import type { NotFoundDetail } from "../errors";
 
 type DcqlMatchSuccess = Extract<
   DcqlQueryResult.CredentialMatch,
@@ -38,31 +38,31 @@ export const extractFailedCredentialsDetails = (
   queryResult: DcqlQueryResult
 ): NotFoundDetail[] => {
   return getDcqlQueryFailedMatches(queryResult).map(([id, match]) => {
-    const credential = queryResult.credentials.find(c => c.id === id);
+    const credential = queryResult.credentials.find((c) => c.id === id);
 
-    const issues = match.failed_credentials?.flatMap(c => {
-      if ('issues' in c.meta) {
+    const issues = match.failed_credentials?.flatMap((c) => {
+      if ("issues" in c.meta) {
         return Object.values(c.meta.issues).flat() as string[];
       }
       if (c.claims.failed_claim_sets) {
         return c.claims.failed_claim_sets.flatMap(
-          cs => Object.values(cs.issues).flat() as string[]
+          (cs) => Object.values(cs.issues).flat() as string[]
         );
       }
       return [];
     });
 
-    if (credential?.format === 'mso_mdoc') {
+    if (credential?.format === "mso_mdoc") {
       return {
         id,
         issues,
         format: credential.format,
-        doctypeValue: credential.meta?.doctype_value
+        doctypeValue: credential.meta?.doctype_value,
       };
     }
 
     if (
-      credential?.format === 'dc+sd-jwt' ||
+      credential?.format === "dc+sd-jwt" ||
       credential?.format === LEGACY_SD_JWT
     ) {
       return {
@@ -70,9 +70,9 @@ export const extractFailedCredentialsDetails = (
         issues,
         format: credential.format,
         vctValues:
-          credential.meta && 'vct_values' in credential.meta
+          credential.meta && "vct_values" in credential.meta
             ? credential.meta.vct_values
-            : []
+            : [],
       };
     }
     throw new IoWalletError(`Unsupported format: ${credential?.format}`);
@@ -87,7 +87,7 @@ export const extractFailedCredentialsDetails = (
 export const getClaimsFromDcqlMatch = (
   match: DcqlQueryResult.CredentialMatch
 ): EvaluatedDisclosure[] =>
-  getValidDcqlClaims(match).flatMap(c =>
+  getValidDcqlClaims(match).flatMap((c) =>
     Object.entries(c.output).map(([name, value]) => ({ name, value }))
   );
 
@@ -123,7 +123,7 @@ export const pathToPresentationFrame = (
   }
 
   return {
-    [segment]: pathToPresentationFrame(rest, claim)
+    [segment]: pathToPresentationFrame(rest, claim),
   };
 };
 
@@ -179,7 +179,7 @@ export const getValidDcqlClaims = (match: DcqlQueryResult.CredentialMatch) => {
   if (validClaimSet) {
     return (
       validClaimSet.valid_claim_indexes?.map(
-        i => validClaims.find(c => c.claim_index === i)!
+        (i) => validClaims.find((c) => c.claim_index === i)!
       ) ?? []
     );
   }
