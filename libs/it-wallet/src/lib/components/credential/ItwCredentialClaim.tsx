@@ -468,7 +468,7 @@ const VerificationEvidenceClaimItem = ({
  * @param credentialStatus - the status of the credential, used for expiration date claims
  * @param credentialType - the type of the credential, used for analytics tracking
  */
-export const ItwCredentialClaim =  ({
+export const ItwCredentialClaim = ({
   claim,
   clipboardSuccessMessage,
   showLabel,
@@ -584,12 +584,15 @@ export const ItwCredentialClaim =  ({
             reversed={reversed}
           />
         );
-      case 'verification': 
+      case 'verification':
         return (
           <PlainTextClaimItem
             claim={claim.parsed.value}
-            label={claim.label} reversed={false} clipboardSuccessMessage={clipboardSuccessMessage}            />
-        )
+            label={claim.label}
+            reversed={false}
+            clipboardSuccessMessage={clipboardSuccessMessage}
+          />
+        );
     }
   }
   return (

@@ -100,9 +100,7 @@ const obtainCredentialListener: AppListenerWithAction<
 
     // Start the issuance flow
     const sessionId = selectSessionId(listenerApi.getState());
-    const appFetch = createWalletFetch(
-      sessionId
-    );
+    const appFetch = createWalletFetch(sessionId);
 
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
     const walletUnitAttestation = await listenerApi
@@ -113,10 +111,12 @@ const obtainCredentialListener: AppListenerWithAction<
     const pid = selectCredential(wellKnownCredential.PID)(state);
 
     // Evaluate issuer trust
-      const { issuerConf } =
-        await wallet.CredentialIssuance.evaluateIssuerTrust(issuerUrl, {
-          appFetch
-        });
+    const { issuerConf } = await wallet.CredentialIssuance.evaluateIssuerTrust(
+      issuerUrl,
+      {
+        appFetch
+      }
+    );
 
     const { issuerRequestUri, clientId, codeVerifier } =
       await wallet.CredentialIssuance.startUserAuthorization(
@@ -250,7 +250,6 @@ const obtainCredentialListener: AppListenerWithAction<
         { credentialCryptoContext, ignoreMissingAttributes: true }
       );
 
-    console.log("GOT OUT OF VERIFY AND PARSE")
     listenerApi.dispatch(
       setCredentialIssuancePostAuthSuccess({
         credential: {
@@ -267,14 +266,12 @@ const obtainCredentialListener: AppListenerWithAction<
       })
     );
   } catch (error) {
-    console.log(error)
-    console.log(JSON.stringify(error))
     // Ignore if the task was aborted
     if (error instanceof TaskAbortError) {
       return;
     }
     // We put the error in both the pre and post auth status as we are unsure where the error occurred.
-    const serialized = serializeErrorOrUnknown(error)
+    const serialized = serializeErrorOrUnknown(error);
     listenerApi.dispatch(
       setCredentialIssuancePostAuthError({ error: serialized })
     );

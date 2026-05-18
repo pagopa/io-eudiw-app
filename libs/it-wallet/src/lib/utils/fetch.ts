@@ -26,12 +26,16 @@ const addAuthHeaders = (authHeaders: AuthHeaders, init?: RequestInit) => ({
  * @returns A fetch function that can be used to make requests to the wallet provider.
  * @throws ItwSessionExpiredError
  */
-export function createWalletFetch(
-  sessionId: string
-): typeof fetch {
+export function createWalletFetch(sessionId: string): typeof fetch {
   return (input: RequestInfo | URL, init?: RequestInit) =>
-    fetch(input, addAuthHeaders({
-      'x-user-id': sessionId,
-      'x-spec-version': '1.3'
-    }, init));
+    fetch(
+      input,
+      addAuthHeaders(
+        {
+          'x-user-id': sessionId,
+          'x-spec-version': '1.3'
+        },
+        init
+      )
+    );
 }

@@ -238,44 +238,50 @@ const dateThatCanExpireSchema = z
 /**
  * Schema to validate claims representing places of birth
  */
-export const placeofBirthSchema = z.object({
-  locality: z.object({
-    name: z.record(z.string(), z.string()),
-    value: z.string()
-  }),
-  region: z.object({
-    name: z.record(z.string(), z.string()),
-    value: z.string()
-  }),
-  country: z.object({
-    name: z.record(z.string(), z.string()),
-    value: z.string()
-  }),
-}).transform((data) => {
-  const values = data.country.value + ' ' + data.region.value + ' ' + data.locality.value;
-  return {
-    value: values,
-    type: claimType.placeOfBirth
-  }
-});
+export const placeofBirthSchema = z
+  .object({
+    locality: z.object({
+      name: z.record(z.string(), z.string()),
+      value: z.string()
+    }),
+    region: z.object({
+      name: z.record(z.string(), z.string()),
+      value: z.string()
+    }),
+    country: z.object({
+      name: z.record(z.string(), z.string()),
+      value: z.string()
+    })
+  })
+  .transform(data => {
+    const values =
+      data.country.value + ' ' + data.region.value + ' ' + data.locality.value;
+    return {
+      value: values,
+      type: claimType.placeOfBirth
+    };
+  });
 export type PlaceOfBirthClaimType = z.infer<typeof placeofBirthSchema>;
 
-export const verificationScheme = z.object({
-  assurance_level: z.object({
-    name: z.record(z.string(), z.string()),
-    value: z.string()
-  }),
-  trust_framework: z.object({
-    name: z.record(z.string(), z.string()),
-    value: z.string()
+export const verificationScheme = z
+  .object({
+    assurance_level: z.object({
+      name: z.record(z.string(), z.string()),
+      value: z.string()
+    }),
+    trust_framework: z.object({
+      name: z.record(z.string(), z.string()),
+      value: z.string()
+    })
   })
-}).transform((data) => {
-  const values = data.assurance_level.value + ' ' + data.trust_framework.value;
-  return {
-    value: values,
-    type: claimType.verification
-  }
-})
+  .transform(data => {
+    const values =
+      data.assurance_level.value + ' ' + data.trust_framework.value;
+    return {
+      value: values,
+      type: claimType.verification
+    };
+  });
 
 /**
  * Schema to validate a claim which is a union of the previous defined schemas.

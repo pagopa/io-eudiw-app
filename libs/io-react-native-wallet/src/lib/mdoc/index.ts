@@ -1,11 +1,7 @@
 import { CBOR, COSE, ISO18013_7 } from '@pagopa/io-react-native-iso18013';
 import { b64utob64 } from 'jsrsasign';
-import {
-  type PublicKey,
-} from '@pagopa/io-react-native-crypto';
-import {
-  MissingX509CertsError,
-} from '../trust/common/errors';
+import { type PublicKey } from '@pagopa/io-react-native-crypto';
+import { MissingX509CertsError } from '../trust/common/errors';
 import { IoWalletError } from '../utils/errors';
 import { convertBase64DerToPem, getSigninJwkFromCert } from '../utils/crypto';
 import { removePadding } from '@pagopa/io-react-native-jwt';
@@ -13,7 +9,7 @@ import { Presentation } from '../credential/presentation';
 export * from './utils';
 
 export const verify = async (
-  token: string,
+  token: string
   // x509CertRoot: string
 ): Promise<{ issuerSigned: CBOR.IssuerSigned }> => {
   // get decoded data

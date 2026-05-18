@@ -74,7 +74,8 @@ export const mapToIssuerConfig = createMapper<
       federation_entity: federation_entity ?? {},
       credential_issuance_batch_size:
         openid_credential_issuer.batch_credential_issuance?.batch_size,
-      credential_verifier_encrypted_response_enc_values_supported: openid_credential_verifier.encrypted_response_enc_values_supported
+      credential_verifier_encrypted_response_enc_values_supported:
+        openid_credential_verifier.encrypted_response_enc_values_supported
     };
   },
   { outputSchema: IssuerConfig } // Output validation for extra-safety

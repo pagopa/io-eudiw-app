@@ -1,17 +1,22 @@
-import { CryptoContext, EncryptJwe, getJwkFromHeader, SignJWT } from "@pagopa/io-react-native-jwt";
-import { verify } from "@pagopa/io-react-native-jwt";
-import { type CallbackContext, type JwtSigner } from "@pagopa/io-wallet-oauth2";
-import { digest } from "@sd-jwt/crypto-nodejs";
-import { X509 } from "jsrsasign";
-import { IoWalletError } from "./errors";
-import { generateRandomBytes } from "./misc";
-import type { JWK } from "./jwk";
-import { getJwkFromCertificateChain } from "./crypto";
-import { itWalletEntityStatementClaimsSchema } from '@pagopa/io-wallet-oid-federation'
+import {
+  CryptoContext,
+  EncryptJwe,
+  getJwkFromHeader,
+  SignJWT
+} from '@pagopa/io-react-native-jwt';
+import { verify } from '@pagopa/io-react-native-jwt';
+import { type CallbackContext, type JwtSigner } from '@pagopa/io-wallet-oauth2';
+import { digest } from '@sd-jwt/crypto-nodejs';
+import { X509 } from 'jsrsasign';
+import { IoWalletError } from './errors';
+import { generateRandomBytes } from './misc';
+import type { JWK } from './jwk';
+import { getJwkFromCertificateChain } from './crypto';
+import { itWalletEntityStatementClaimsSchema } from '@pagopa/io-wallet-oid-federation';
 
 type PartialCallbackContext = Omit<
   CallbackContext,
-  "signJwt" | "clientAuthentication"
+  'signJwt' | 'clientAuthentication'
 >;
 
 // Fix incompatibility between ArrayBuffer types
@@ -25,16 +30,20 @@ type DigestFixed = (
  * @param signer - The JWT signer.
  * @returns The JWK for signature verification.
  */
-const getJwkFromSigner = async (signer: JwtSigner, jwt: Parameters<PartialCallbackContext['verifyJwt']>[1]): Promise<JWK> => {
+const getJwkFromSigner = async (
+  signer: JwtSigner,
+  jwt: Parameters<PartialCallbackContext['verifyJwt']>[1]
+): Promise<JWK> => {
   switch (signer.method) {
-    case "x5c":
+    case 'x5c':
       return getJwkFromCertificateChain(signer.x5c);
-    case "federation": 
-      const parsed = itWalletEntityStatementClaimsSchema.parse(jwt.payload)
-      const found = parsed.jwks.keys.find(key => key.kid === signer.kid)
-      if (found) return found as JWK ;
-      throw new IoWalletError("Requested key not found inside EC")
-    case "jwk":
+    case 'federation': {
+      const parsed = itWalletEntityStatementClaimsSchema.parse(jwt.payload);
+      const found = parsed.jwks.keys.find(key => key.kid === signer.kid);
+      if (found) return found as JWK;
+      throw new IoWalletError('Requested key not found inside EC');
+    }
+    case 'jwk':
       return signer.publicJwk as JWK;
     default:
       throw new IoWalletError(`Unsupported signer method: ${signer.method}`);
@@ -52,7 +61,7 @@ export const partialCallbacks: PartialCallbackContext = {
   encryptJwe: async ({ publicJwk, alg, enc, kid }, data) => ({
     // @ts-expect-error `alg` and `enc` are strings, but EncryptJwe expects specific string literals
     jwe: await new EncryptJwe(data, { alg, enc, kid }).encrypt(publicJwk),
-    encryptionJwk: publicJwk,
+    encryptionJwk: publicJwk
   }),
   verifyJwt: async (jwtSigner, jwt) => {
     try {
@@ -63,9 +72,9 @@ export const partialCallbacks: PartialCallbackContext = {
     }
   },
   decryptJwe: () => {
-    throw new IoWalletError("decryptJwe is not implemented");
+    throw new IoWalletError('decryptJwe is not implemented');
   },
-  getX509CertificateMetadata: (certificate) => {
+  getX509CertificateMetadata: certificate => {
     const x509 = new X509();
     x509.readCertPEM(certificate);
     const sanExt = x509.getExtSubjectAltName(certificate);
@@ -75,12 +84,12 @@ export const partialCallbacks: PartialCallbackContext = {
 
     for (const item of sanExt.array) {
       if (!item) continue;
-      if ("dns" in item) sanDnsNames.push(item.dns);
-      if ("uri" in item) sanUriNames.push(item.uri);
+      if ('dns' in item) sanDnsNames.push(item.dns);
+      if ('uri' in item) sanUriNames.push(item.uri);
     }
 
     return { sanDnsNames, sanUriNames };
-  },
+  }
 };
 
 type JWSHeader = Parameters<typeof getJwkFromHeader>[0];
@@ -96,7 +105,7 @@ type JWSHeader = Parameters<typeof getJwkFromHeader>[0];
  */
 export const createVerifyJwtFromJwks = (
   jwks: JWK[]
-): CallbackContext["verifyJwt"] => {
+): CallbackContext['verifyJwt'] => {
   return async function verifyJwt(_, jwt) {
     try {
       const signerJwk = getJwkFromHeader(jwt.header as JWSHeader, jwks);
@@ -108,7 +117,6 @@ export const createVerifyJwtFromJwks = (
   };
 };
 
-
 /**
  * Create a signJwt implementation that signs a JWT using the provided CryptoContext.
  * @param cryptoContext The CryptoContext to use for signing the JWT
@@ -116,7 +124,7 @@ export const createVerifyJwtFromJwks = (
  */
 export const createSignJwtFromCryptoContext = (
   cryptoContext: CryptoContext
-): CallbackContext["signJwt"] => {
+): CallbackContext['signJwt'] => {
   return async function signJwt(jwtSigner, { header, payload }) {
     return {
       jwt: await new SignJWT(cryptoContext)
@@ -124,9 +132,9 @@ export const createSignJwtFromCryptoContext = (
         .setPayload(payload)
         .sign(),
       signerJwk:
-        jwtSigner.method === "jwk"
+        jwtSigner.method === 'jwk'
           ? jwtSigner.publicJwk
-          : await cryptoContext.getPublicKey(),
+          : await cryptoContext.getPublicKey()
     };
   };
 };

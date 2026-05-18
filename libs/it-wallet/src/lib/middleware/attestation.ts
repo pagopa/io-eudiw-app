@@ -39,9 +39,7 @@ export const getWalletInstanceAttestationThunk =
       const sessionId = selectSessionId(state);
       const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
         getEnv();
-      const appFetch = createWalletFetch(
-        sessionId
-      );
+      const appFetch = createWalletFetch(sessionId);
 
       const integrityContext = getIntegrityContext(instanceKeyTag);
 
@@ -86,7 +84,7 @@ export const getWalletUnitAttestationThunk = createAppAsyncThunk<
   const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
   const sessionId = selectSessionId(getState());
 
-  const appFetch = createWalletFetch(sessionId)
+  const appFetch = createWalletFetch(sessionId);
 
   if (!wallet.WalletUnitAttestation.isSupported) {
     throw new Error(

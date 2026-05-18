@@ -65,9 +65,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
 
       // Start the issuance flow
       const sessionId = selectSessionId(getState());
-      const appFetch = createWalletFetch(
-        sessionId
-      );
+      const appFetch = createWalletFetch(sessionId);
 
       const issuerUrl = EXPO_PUBLIC_PID_PROVIDER_BASE_URL;
 
@@ -131,7 +129,6 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
 
       // Create credential crypto context
       const credentialKeyTag = Crypto.randomUUID().toString();
-      
 
       // Create DPoP context for the whole issuance flow
       await regenerateCryptoKey(DPOP_KEYTAG);
@@ -175,7 +172,6 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
         })
       ).unwrap();
 
-
       const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
 
       // Get the credential identifier that was authorized
@@ -217,8 +213,6 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
       };
     } catch (error) {
       const serialized = serializeError(error);
-      console.log(error)
-      console.log(serialized)
       return rejectWithValue(serialized);
     }
   }

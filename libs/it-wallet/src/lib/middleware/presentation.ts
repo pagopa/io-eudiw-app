@@ -51,8 +51,6 @@ const presentationListener: AppListenerWithAction<
     const { request_uri, client_id, state, request_uri_method } =
       action.payload;
 
-    console.log(request_uri, client_id, state, request_uri_method);
-
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
 
     await listenerApi.dispatch(getWalletInstanceAttestationThunk());
@@ -75,7 +73,7 @@ const presentationListener: AppListenerWithAction<
       );
     }
 
-    const authRequestUrl = `haip://presentation?${new URLSearchParams(qrParams)}`
+    const authRequestUrl = `haip://presentation?${new URLSearchParams(qrParams)}`;
 
     const { requestObjectEncodedJwt } =
       await wallet.RemotePresentation.getRequestObject(authRequestUrl);
@@ -204,8 +202,6 @@ const presentationListener: AppListenerWithAction<
         });
     }
   } catch (error) {
-    console.log(error)
-    console.log(JSON.stringify(error))
     if (error instanceof TaskAbortError) {
       return;
     }

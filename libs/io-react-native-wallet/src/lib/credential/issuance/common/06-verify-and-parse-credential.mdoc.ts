@@ -42,7 +42,7 @@ async function verifyCredentialMDoc(
     await Promise.all([
       // verifyMdoc(rawCredential, x509CertRoot),
       holderBindingContext.getPublicKey(),
-      verifyMdoc(rawCredential),
+      verifyMdoc(rawCredential)
     ]);
 
   if (!decodedCredential) {
@@ -187,7 +187,7 @@ export const verifyAndParseCredentialMDoc: IssuanceApi['verifyAndParseCredential
     issuerConf,
     credential,
     credentialConfigurationId,
-    { credentialCryptoContext, ignoreMissingAttributes },
+    { credentialCryptoContext, ignoreMissingAttributes }
     // x509CertRoot
   ) => {
     // if (!x509CertRoot) {

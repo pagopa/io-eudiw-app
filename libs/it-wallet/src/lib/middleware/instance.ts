@@ -26,9 +26,7 @@ export const createInstanceThunk = createAppAsyncThunk<void, void>(
         const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
           getEnv();
         const sessionId = selectSessionId(state);
-        const appFetch = createWalletFetch(
-          sessionId
-        );
+        const appFetch = createWalletFetch(sessionId);
         const keyTag = await generateIntegrityHardwareKeyTag();
         const integrityContext = getIntegrityContext(keyTag);
 

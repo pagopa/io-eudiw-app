@@ -24,6 +24,7 @@ export const mapToIssuerConfig = createMapper<
     status_assertion_endpoint:
       openid_credential_issuer.status_attestation_endpoint,
     nonce_endpoint: openid_credential_issuer.nonce_endpoint,
+    verifier_keys: x.payload.jwks.keys,
     federation_entity
   };
 });

@@ -5,26 +5,22 @@ import {
 } from '../../../utils/auth';
 import parseUrl from 'parse-url';
 import type { DcqlQuery } from 'dcql';
-import {
-  parseAuthorizeRequest
-} from '@pagopa/io-wallet-oid4vp';
+import { parseAuthorizeRequest } from '@pagopa/io-wallet-oid4vp';
 import { sendAuthorizationResponseAndExtractCode } from '@pagopa/io-wallet-oid4vci';
 import { parseMrtdChallenge } from '@pagopa/io-wallet-oauth2';
 import { EncryptJwe, type CryptoContext } from '@pagopa/io-react-native-jwt';
 import { AuthorizationError, AuthorizationIdpError } from '../common/errors';
 import { LogLevel, Logger } from '../../../utils/logging';
 import { RemotePresentation as RemotePresentationFlow } from '../../presentation/v1.3.3';
-import { createVerifyJwtFromJwks, partialCallbacks } from '../../../utils/callbacks';
 import {
-  IoWalletError,
-  IssuerResponseError,
-} from '../../../utils/errors';
+  createVerifyJwtFromJwks,
+  partialCallbacks
+} from '../../../utils/callbacks';
+import { IoWalletError, IssuerResponseError } from '../../../utils/errors';
 import type { IssuanceApi, IssuerConfig } from '../api';
 import { mapToRequestObject } from './mappers';
 import type { RemotePresentation } from '../../presentation';
-import {
-  hasStatusOrThrow
-} from '@pagopa/io-wallet-utils';
+import { hasStatusOrThrow } from '@pagopa/io-wallet-utils';
 import { sdkConfigV1_3 } from '../../../utils/config';
 import { choosePublicKeyToEncrypt } from '../../presentation/v1.0.0/07-send-authorization-response';
 
@@ -79,7 +75,7 @@ export const completeUserAuthorizationWithQueryMode: IssuanceApi['completeUserAu
     return parseAuthorizationResponse(query);
   };
 
-export const getRequestedCredentialToBePresented: IssuanceApi["getRequestedCredentialToBePresented"] =
+export const getRequestedCredentialToBePresented: IssuanceApi['getRequestedCredentialToBePresented'] =
   async (issuerRequestUri, clientId, issuerConf, appFetch = fetch) => {
     Logger.log(
       LogLevel.DEBUG,
@@ -89,7 +85,7 @@ export const getRequestedCredentialToBePresented: IssuanceApi["getRequestedCrede
     const authzRequestEndpoint = issuerConf.authorization_endpoint;
     const params = new URLSearchParams({
       client_id: clientId,
-      request_uri: issuerRequestUri,
+      request_uri: issuerRequestUri
     });
 
     Logger.log(
@@ -99,17 +95,17 @@ export const getRequestedCredentialToBePresented: IssuanceApi["getRequestedCrede
 
     const requestObjectJwt = await appFetch(
       `${authzRequestEndpoint}?${params.toString()}`,
-      { method: "GET" }
+      { method: 'GET' }
     )
       .then(hasStatusOrThrow(200, IssuerResponseError))
-      .then((res) => res.text());
+      .then(res => res.text());
 
     const parsedAuthRequest = await parseAuthorizeRequest({
       config: sdkConfigV1_3,
       requestObjectJwt,
       callbacks: {
-        verifyJwt: createVerifyJwtFromJwks(issuerConf.keys),
-      },
+        verifyJwt: createVerifyJwtFromJwks(issuerConf.keys)
+      }
     });
 
     return mapToRequestObject(parsedAuthRequest);
@@ -144,16 +140,12 @@ export const completeUserAuthorizationWithFormPostJwtMode: IssuanceApi['complete
         authRequestObject
       );
 
-    console.log(`Remote presentation: ${JSON.stringify(remotePresentation, null, 2)}`);
-
     const authzResponsePayload = await createAuthzResponsePayload({
       state: requestObject.state,
       remotePresentation,
       wiaCryptoContext,
-      issuerConf : issuerConfig
+      issuerConf: issuerConfig
     });
-
-    console.log(`Authz response payload (JWT): ${JSON.stringify(authzResponsePayload, null, 2)}`);
 
     Logger.log(
       LogLevel.DEBUG,
@@ -166,8 +158,6 @@ export const completeUserAuthorizationWithFormPostJwtMode: IssuanceApi['complete
       Logger.log(LogLevel.ERROR, errorMessage);
       throw new IoWalletError(errorMessage);
     }
-
-    console.log('sending auth response')
 
     return sendAuthorizationResponseAndExtractCode({
       authorizationResponseJarm: authzResponsePayload,
@@ -268,35 +258,38 @@ const createAuthzResponsePayload = async ({
   const encPublicJwk = choosePublicKeyToEncrypt(issuerConf.verifier_keys);
 
   const authzResponsePayload = JSON.stringify({
-      /**
-       * TODO [SIW-2264]: `state` coming from `requestObject` is marked as `optional`
-       * At the moment, it is not entirely clear whether this value can indeed be omitted
-       * and, if so, what the consequences of its absence might be.
-       */
-      ...(state ? { state } : {}),
-      vp_token: remotePresentation.presentations.reduce(
-        (vp_token, { credentialId, vpToken }) => ({
-          ...vp_token,
-          [credentialId]: [vpToken]
-        }),
-        {},
-      ),
-    })
+    /**
+     * TODO [SIW-2264]: `state` coming from `requestObject` is marked as `optional`
+     * At the moment, it is not entirely clear whether this value can indeed be omitted
+     * and, if so, what the consequences of its absence might be.
+     */
+    ...(state ? { state } : {}),
+    vp_token: remotePresentation.presentations.reduce(
+      (vp_token, { credentialId, vpToken }) => ({
+        ...vp_token,
+        [credentialId]: [vpToken]
+      }),
+      {}
+    )
+  });
 
-    if(!issuerConf.credential_verifier_encrypted_response_enc_values_supported){
-      throw new IoWalletError('The issuer does not support encrypted response, which is required to complete the authorization with form_post.jwt mode');
-    }
+  if (!issuerConf.credential_verifier_encrypted_response_enc_values_supported) {
+    throw new IoWalletError(
+      'The issuer does not support encrypted response, which is required to complete the authorization with form_post.jwt mode'
+    );
+  }
 
+  const defaultAlg: Jwe['alg'] =
+    encPublicJwk.kty === 'EC' ? 'ECDH-ES' : 'RSA-OAEP-256';
 
-   const defaultAlg: Jwe["alg"] = encPublicJwk.kty === "EC" ? "ECDH-ES" : "RSA-OAEP-256";
+  const encryptedResponse = await new EncryptJwe(authzResponsePayload, {
+    alg: defaultAlg,
+    enc:
+      (issuerConf
+        .credential_verifier_encrypted_response_enc_values_supported[0] as Jwe['enc']) ||
+      'A256CBC-HS512',
+    kid: encPublicJwk.kid
+  }).encrypt(encPublicJwk);
 
-   const encryptedResponse = await new EncryptJwe(authzResponsePayload, {
-     alg: defaultAlg,
-     enc:
-       (issuerConf.credential_verifier_encrypted_response_enc_values_supported[0] as Jwe["enc"]) || "A256CBC-HS512",
-     kid: encPublicJwk.kid,
-   }).encrypt(encPublicJwk);
-
- return encryptedResponse;
- 
+  return encryptedResponse;
 };
