@@ -1,8 +1,5 @@
 import { REHYDRATE } from 'redux-persist';
-import {
-  removeCredential,
-  selectCredentials
-} from '../store/credentials';
+import { removeCredential, selectCredentials } from '../store/credentials';
 import { wellKnownCredential } from '../utils/credentials';
 import { itwCredentialVault } from '../utils/itwCredentialVault';
 import { AppStartListening } from './types';
