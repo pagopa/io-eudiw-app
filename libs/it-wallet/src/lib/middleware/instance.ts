@@ -1,10 +1,10 @@
 import { IoWallet } from '@io-eudiw-app/io-react-native-wallet';
-import { serializeError } from 'serialize-error';
 import {
   selectInstanceKeyTag,
   selectSessionId,
   setInstanceKeyTag
 } from '../store/instance';
+import { serializeErrorOrUnknown } from '../utils/errors';
 import { createWalletFetch } from '../utils/fetch';
 import {
   generateIntegrityHardwareKeyTag,
@@ -39,7 +39,7 @@ export const createInstanceThunk = createAppAsyncThunk<void, void>(
       }
       return;
     } catch (err: unknown) {
-      return rejectWithValue({ error: serializeError(err) });
+      return rejectWithValue({ error: serializeErrorOrUnknown(err) });
     }
   }
 );

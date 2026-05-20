@@ -26,7 +26,7 @@ import {
 } from '../utils/proximity';
 import { takeLatestEffect } from '@io-eudiw-app/commons';
 import { AppListener, AppListenerWithAction, AppStartListening } from './types';
-import { serializeError } from 'serialize-error';
+import { serializeErrorOrUnknown } from '../utils/errors';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
@@ -125,7 +125,9 @@ const proximityListener: AppListenerWithAction<
     if (error instanceof TaskAbortError) {
       return;
     }
-    listenerApi.dispatch(setProximityStatusError(`${serializeError(error)}`));
+    listenerApi.dispatch(
+      setProximityStatusError(JSON.stringify(serializeErrorOrUnknown(error)))
+    );
     await closeFlow(listenerApi); // We can ignore this error in this particular case as we don't even know if the flow started successfully.
   } finally {
     await removeProximityListeners(listeners);

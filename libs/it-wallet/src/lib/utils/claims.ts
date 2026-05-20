@@ -310,7 +310,7 @@ export type ClaimScheme = z.infer<typeof claimScheme>;
 
 export type ParsedClaimsRecord = Record<
   string,
-  { label: string; parsed: ClaimScheme | undefined | ParsedClaimsRecord }
+  { label: string; parsed: ClaimScheme | undefined }
 >;
 
 /**

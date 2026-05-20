@@ -5,8 +5,8 @@ import {
 import { isAnyOf } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import * as WebBrowser from 'expo-web-browser';
-import { serializeError } from 'serialize-error';
 import WALLET_ROUTES from '../navigation/wallet/routes';
+import { serializeErrorOrUnknown } from '../utils/errors';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
 import { addCredential, addPidWithIdentification } from '../store/credentials';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
@@ -212,7 +212,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
         spec_version: WALLET_SPEC_VERSION
       };
     } catch (error) {
-      const serialized = serializeError(error);
+      const serialized = serializeErrorOrUnknown(error);
       return rejectWithValue(serialized);
     }
   }
