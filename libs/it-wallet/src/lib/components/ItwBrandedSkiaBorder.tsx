@@ -67,7 +67,6 @@ export const ItwBrandedSkiaBorder = ({
           r={cornerRadius}
           strokeWidth={thickness}
           strokeJoin={'round'}
-          // eslint-disable-next-line react/style-prop-object
           style={'stroke'}
         />
       </SkiaGroup>

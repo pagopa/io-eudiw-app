@@ -1,8 +1,6 @@
 import { isAnyOf } from '@reduxjs/toolkit';
 import * as SplashScreen from 'expo-splash-screen';
-import { Linking } from 'react-native';
 import { isPinOrFingerprintSet } from 'react-native-device-info';
-import { selectUrl } from '../../store/reducers/deeplinking';
 
 import {
   startupSetAttributes,
