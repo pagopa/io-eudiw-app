@@ -11,7 +11,6 @@ import { join } from 'path';
 const [workspaceRoot, projectRoot] = process.argv.slice(2);
 
 if (existsSync(join(workspaceRoot, 'node_modules'))) {
-  // eslint-disable-next-line no-console
   console.log('Symlink already exists');
   process.exit(0);
 }
@@ -23,7 +22,6 @@ symlink(
   err => {
     if (err) console.log(err);
     else {
-      // eslint-disable-next-line no-console
       console.log('Symlink created');
     }
   }

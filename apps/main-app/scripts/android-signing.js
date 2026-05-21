@@ -10,7 +10,6 @@ module.exports = function withAndroidSigning(config) {
       !contents.includes('signingConfigs') ||
       !contents.includes('release {')
     ) {
-      // eslint-disable-next-line no-console
       console.warn('Could not find signingConfigs block');
     }
 

@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
-  "files": ["jest.config.ts"],
+  "files": [],
   "references": [
     {
       "path": "./apps/main-app"
