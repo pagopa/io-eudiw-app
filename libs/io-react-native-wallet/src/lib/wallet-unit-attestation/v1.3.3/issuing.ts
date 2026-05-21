@@ -27,12 +27,6 @@ const createKeyAttestationRequest = async (
     );
   }
 
-  if (Platform.OS === 'android' && !attestation) {
-    throw new IoWalletError(
-      'Missing key attestation: on Android the generated key must have a key attestation to request a Wallet Unit Attestation'
-    );
-  }
-
   const publicKey = JWK.parse(await cryptoContext.getPublicKey());
 
   const requestJwt = await new SignJWT(cryptoContext)
