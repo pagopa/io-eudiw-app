@@ -48,7 +48,8 @@ const presentationListener: AppListenerWithAction<
   ReturnType<typeof setPreDefinitionRequest>
 > = async (action, listenerApi) => {
   try {
-    const { request_uri, client_id, state } = action.payload;
+    const { request_uri, client_id, state, request_uri_method } =
+      action.payload;
 
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
 
@@ -58,13 +59,8 @@ const presentationListener: AppListenerWithAction<
       request_uri,
       client_id,
       state,
-      request_uri_method: 'get' // should be fetched from the action payload
+      request_uri_method: request_uri_method ?? 'get'
     });
-
-    // const { rpConf } =
-    //   await wallet.RemotePresentation.evaluateRelyingPartyTrust(
-    //     qrParams.client_id
-    //   );
 
     if (!qrParams.request_uri) {
       throw new Error(
