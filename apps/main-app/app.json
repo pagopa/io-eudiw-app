@@ -2,7 +2,7 @@
   "expo": {
     "name": "DWalletLab",
     "slug": "dwalletlab",
-    "version": "3.4.0",
+    "version": "3.5.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -33,7 +33,7 @@
     },
     "android": {
       "package": "it.pagopa.io.app.poc.eudiw",
-      "versionCode": 66,
+      "versionCode": 67,
       "permissions": [
         "android.permission.BLUETOOTH_SCAN",
         "android.permission.BLUETOOTH_CONNECT",
