@@ -106,7 +106,6 @@ jobs:
           bundle exec fastlane android alpha_playstore
         shell: bash
         env:
-          RUBYOPT: '-rostruct'
           APP_VERSION: ${{ needs.bump-app-version.outputs.newAppVersion }}
           ENCODED_IOAPP_GOOGLE_SERVICES_JSON_FILE: ${{secrets.ENCODED_IOAPP_GOOGLE_SERVICES_JSON_FILE}}
           ENCODED_IOAPP_JSON_KEY_FILE: ${{secrets.ENCODED_IOAPP_JSON_KEY_FILE}}
@@ -124,7 +123,6 @@ jobs:
           cd ../fastlane
           bundle exec fastlane android download_apk
         env:
-          RUBYOPT: '-rostruct'
           ENCODED_IOAPP_JSON_KEY_FILE: ${{secrets.ENCODED_IOAPP_JSON_KEY_FILE}}
           VERSION_CODE: ${{ env.VERSION_CODE }}
       - id: upload-universal-apk
@@ -193,7 +191,6 @@ jobs:
         env:
           LC_ALL: en_US.UTF-8
           LANG: en_US.UTF-8
-          RUBYOPT: '-rostruct'
           APP_VERSION: ${{ needs.bump-app-version.outputs.newAppVersion }}
           APP_STORE_API_KEY_ID: ${{secrets.APP_STORE_API_KEY_ID}}
           APP_STORE_API_PRIVATE_KEY: ${{secrets.APP_STORE_API_PRIVATE_KEY}}
