@@ -1,6 +1,8 @@
 name: Build and publish internal release
 permissions:
   contents: write
+  actions: read
+  pull-requests: read
 on:
   workflow_dispatch:
     inputs:
