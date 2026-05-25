@@ -74,7 +74,7 @@ const presentationSlice = createSlice({
     },
     setPreDefinitionError: (
       state,
-      action: PayloadAction<{ error: unknown } | void>
+      action: PayloadAction<{ error: unknown } | undefined>
     ) => {
       state.preDefinition = setError(action.payload?.error);
     },
