@@ -65,6 +65,9 @@ const itwGetCredentialNameByCredentialType = (): Record<string, string> => ({
   }),
   [wellKnownCredential.PID]: t('credentials.names.pid', {
     ns: 'wallet'
+  }),
+  [wellKnownCredential.BONUS_PARI]: t('credentials.names.bonusPari', {
+    ns: 'wallet'
   })
 });
 

@@ -55,6 +55,9 @@ export enum WellKnownClaim {
   /**
    * Claims that contains the document number, if applicable for the credential
    */
+
+  fiscal_code = 'fiscal_code',
+
   document_number = 'document_number',
   /**
    * Claim that contains the first name, if applicable for the credential
@@ -75,7 +78,11 @@ export enum WellKnownClaim {
   /**
    * Claim that contains signature usual mark
    */
-  signature_usual_mark = 'signature_usual_mark'
+  signature_usual_mark = 'signature_usual_mark',
+  /**
+   *  Claim that contains the barcode
+   */
+  barcode = 'barcode'
 }
 
 /**

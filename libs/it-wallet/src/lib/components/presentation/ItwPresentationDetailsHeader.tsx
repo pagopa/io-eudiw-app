@@ -5,6 +5,7 @@ import {
 } from '@pagopa/io-app-design-system';
 import { memo, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { BonusCard } from '../BonusCard/BonusCard';
 import { lifecycleIsValidSelector } from '../../store/lifecycle';
 import { ParsedClaimsRecord } from '../../utils/claims';
 import {
@@ -47,6 +48,9 @@ const ItwPresentationDetailsHeader = ({
       credential.credentialType as WellKnownCredentialTypes,
       itwFeaturesEnabled
     );
+  const organizationName =
+    credential.issuerConf.federation_entity.organization_name;
+  const logoUri = credential.issuerConf.federation_entity.logo_uri;
 
   const headerContent = useMemo(() => {
     if (credentialsWithSkeumorphicCard.includes(credential.credentialType)) {
@@ -55,6 +59,24 @@ const ItwPresentationDetailsHeader = ({
           credential={credential}
           parsedClaims={parsedClaims}
         />
+      );
+    }
+
+    if (credential.credentialType === wellKnownCredential.BONUS_PARI) {
+      return (
+        <View style={styles.header}>
+          <BonusCard
+            name={getCredentialNameFromType(credential.credentialType)}
+            organizationName={organizationName || ''}
+            logoUris={logoUri ? [{ uri: logoUri }] : undefined}
+            status={<></>}
+            cardColorSchemeValues={{
+              background: '#7AC1FA',
+              foreground: '#6EA8FF',
+              text: 'black'
+            }}
+          />
+        </View>
       );
     }
 
@@ -75,7 +97,15 @@ const ItwPresentationDetailsHeader = ({
         </ContentWrapper>
       </View>
     );
-  }, [credential, backgroundColor, textColor, isExperimental, parsedClaims]);
+  }, [
+    credential,
+    logoUri,
+    organizationName,
+    parsedClaims,
+    backgroundColor,
+    textColor,
+    isExperimental
+  ]);
 
   return (
     <View>

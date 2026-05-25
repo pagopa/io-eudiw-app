@@ -3,7 +3,11 @@ import { ItwCredentialStatus, ItwJwtCredentialStatus } from '../types';
 import { ParsedDcql } from './itwTypesUtils';
 import { CredentialType } from './itwMocksUtils';
 
-export type CredentialsKeys = 'DRIVING_LICENSE' | 'PID' | 'DISABILITY_CARD';
+export type CredentialsKeys =
+  | 'DRIVING_LICENSE'
+  | 'PID'
+  | 'DISABILITY_CARD'
+  | 'BONUS_PARI';
 
 /**
  * Map which, for each wallet available credential, stores its corresponding
@@ -13,7 +17,8 @@ export type CredentialsKeys = 'DRIVING_LICENSE' | 'PID' | 'DISABILITY_CARD';
 export const wellKnownCredential = {
   DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
   PID: 'urn:eudi:pid:it:1',
-  DISABILITY_CARD: 'urn:eu.europa.ec.eudi:edc:1'
+  DISABILITY_CARD: 'urn:eu.europa.ec.eudi:edc:1',
+  BONUS_PARI: 'urn:pagopa:pari-bonus:1'
 } as const satisfies Record<CredentialsKeys, string>;
 
 /**
@@ -33,7 +38,8 @@ export const wellKnownCredentialConfigurationIDs: Record<
 > = {
   DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
   PID: 'dc_sd_jwt_PersonIdentificationData',
-  DISABILITY_CARD: 'dc_sd_jwt_EuropeanDisabilityCard'
+  DISABILITY_CARD: 'dc_sd_jwt_EuropeanDisabilityCard',
+  BONUS_PARI: 'dc_sd_jwt_PariBonus'
 };
 
 /**
@@ -82,6 +88,8 @@ export const getCredentialNameByType = (type?: string): string => {
       return t(['credentials.names.pid'], { ns: 'wallet' });
     case wellKnownCredential.DISABILITY_CARD:
       return t(['credentials.names.disabilityCard'], { ns: 'wallet' });
+    case wellKnownCredential.BONUS_PARI:
+      return t(['credentials.names.bonusPari'], { ns: 'wallet' });
     default:
       return t(['credentials.names.unknown'], { ns: 'wallet' });
   }

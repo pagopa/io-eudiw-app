@@ -27,6 +27,7 @@ import {
   setProximityStatusStopped
 } from '../../store/proximity';
 import { parseClaimsToRecord } from '../../utils/claims';
+import { WellKnownClaim } from '../../utils/itwClaimsUtils';
 import { wellKnownCredential } from '../../utils/credentials';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import { CredentialFormat, StoredCredential } from '../../utils/itwTypesUtils';
@@ -49,6 +50,7 @@ import {
   useDebugInfo
 } from '@io-eudiw-app/debug-info';
 import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
+import { ItwBarcodeCard } from '../../components/ItwBarcodeCard';
 
 export type ItwPresentationCredentialDetailNavigationParams = {
   credentialType: string;
@@ -191,11 +193,19 @@ const ItwPresentationCredentialDetail = ({
     }
 
     return undefined;
-  }, [credential.credentialType, t, dispatch, QrCodeModal]);
+  }, [QrCodeModal, credential.credentialType, dispatch, t]);
 
   const parsedClaims = useMemo(
     () => parseClaimsToRecord(credential.parsedCredential),
     [credential.parsedCredential]
+  );
+
+  const barcodeClaim = useMemo(
+    () =>
+      Object.entries(parsedClaims).find(
+        ([id]) => id === WellKnownClaim.barcode
+      )?.[1],
+    [parsedClaims]
   );
 
   if (status === 'unknown') {
@@ -211,10 +221,16 @@ const ItwPresentationCredentialDetail = ({
         credential={credential}
         parsedClaims={parsedClaims}
       />
-      <VSpacer size={24} />
+      {credential.credentialType !== wellKnownCredential.BONUS_PARI && (
+        <VSpacer size={24} />
+      )}
       <ContentWrapper>
         <VStack space={24}>
           <ItwPresentationCredentialStatusAlert credential={credential} />
+          {barcodeClaim?.parsed?.value &&
+            typeof barcodeClaim.parsed.value === 'string' && (
+              <ItwBarcodeCard value={barcodeClaim.parsed.value} />
+            )}
           <ItwPresentationCredentialInfoAlert credential={credential} />
           <ItwPresentationClaimsSection
             credential={credential}

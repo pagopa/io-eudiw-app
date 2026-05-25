@@ -18,7 +18,8 @@ export const claimType = {
   image: 'image',
   stringArray: 'stringArray',
   placeOfBirth: 'placeOfBirth',
-  verification: 'verification'
+  verification: 'verification',
+  barcode: 'barcode'
 } as const;
 
 /**
@@ -263,6 +264,14 @@ export const placeofBirthSchema = z
   });
 export type PlaceOfBirthClaimType = z.infer<typeof placeofBirthSchema>;
 
+/**
+ * Schema to validate a barcode claim value (e.g. discount code for PARI_BONUS)
+ */
+const barcodeSchema = z.string().transform(str => ({
+  value: str,
+  type: claimType.barcode
+}));
+
 export const verificationScheme = z
   .object({
     assurance_level: z.object({
@@ -301,7 +310,8 @@ export const claimScheme = z.union([
       numberSchema,
       emptyStringSchema,
       verificationScheme,
-      stringSchema
+      stringSchema,
+      barcodeSchema
     ])
   )
 ]);

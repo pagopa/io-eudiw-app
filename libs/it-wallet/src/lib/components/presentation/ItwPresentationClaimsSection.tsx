@@ -72,7 +72,11 @@ export const ItwPresentationClaimsSection = ({
 
   const claims = Object.entries(parsedClaims);
   const filteredClaims = useMemo(
-    () => claims.filter(([id]) => id !== WellKnownClaim.link_qr_code),
+    () =>
+      claims.filter(
+        ([id]) =>
+          id !== WellKnownClaim.link_qr_code && id !== WellKnownClaim.barcode
+      ),
     [claims]
   );
 
