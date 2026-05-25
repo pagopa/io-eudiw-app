@@ -4,6 +4,7 @@
       "mdl": "Patente di guida",
       "pid": "IT-Wallet ID",
       "disabilityCard": "Carta Europea della Disabilità",
+      "bonusPari": "Bonus Elettrodomestici",
       "unknown": "Credenziale Sconosciuta"
     },
     "status": {
@@ -299,6 +300,11 @@
       "primaryAction": "Ho capito"
     },
     "authSource": "PagoPa S.p.A."
+  },
+  "bonusPari": {
+    "barcode": {
+      "copyButton": "Copia codice sconto"
+    }
   },
   "proximity": {
     "showQr": {
