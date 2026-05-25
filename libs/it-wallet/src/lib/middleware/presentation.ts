@@ -10,7 +10,8 @@ import {
   setPostDefinitionSuccess,
   setPreDefinitionError,
   setPreDefinitionRequest,
-  setPreDefinitionSuccess
+  setPreDefinitionSuccess,
+  setWalletNotActive
 } from '../store/presentation';
 import {
   getConfigIdByVct,
@@ -32,6 +33,7 @@ import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { getWalletInstanceAttestationThunk } from './attestation';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { serializeErrorOrUnknown } from '../utils/errors';
+import { lifecycleIsOperationalSelector } from '../store/lifecycle';
 
 type DcqlQuery = Parameters<
   RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']
@@ -50,6 +52,12 @@ const presentationListener: AppListenerWithAction<
   try {
     const { request_uri, client_id, state, request_uri_method } =
       action.payload;
+
+    if (lifecycleIsOperationalSelector(listenerApi.getState())) {
+      listenerApi.dispatch(setWalletNotActive());
+      listenerApi.dispatch(setPreDefinitionError());
+      return;
+    }
 
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
 
@@ -146,17 +154,6 @@ const presentationListener: AppListenerWithAction<
         isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
       );
       if (setIdentificationIdentified.match(resAction[0])) {
-        // const credentialsToPresent = evaluatedDcqlQuery
-        //   .filter(
-        //     c =>
-        //       c.purposes.some(({ required }) => required) ||
-        //       optionalCredentials?.includes(c.id)
-        //   )
-        //   .map(({ requiredDisclosures, ...rest }) => ({
-        //     ...rest,
-        //     requestedClaims: requiredDisclosures.map(({ name }) => name)
-        //   }));
-
         const credentialsToPresent = presentationDetails.filter(
           c =>
             c.purposes.some(({ required }) => required) ||

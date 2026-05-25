@@ -1,4 +1,10 @@
 {
+  "notActive": {
+    "title": "Ottieni IT-Wallet per continuare",
+    "body": "Per accedere ai servizi online è necessario attivare IT-Wallet utilizzando la tua Carta di Identità Elettronica (CIE).",
+    "confirm": "Ottieni IT-Wallet",
+    "notNow": "Non ora"
+  },
   "credentials": {
     "names": {
       "mdl": "Patente di guida",
