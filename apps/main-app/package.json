@@ -1,6 +1,6 @@
 {
   "name": "@io-eudiw-app/main-app",
-  "version": "2.6.2.0",
+  "version": "3.9.0.0",
   "private": true,
   "scripts": {
     "eas-build-post-install": "cd ../../ && node tools/scripts/eas-build-post-install.mjs . apps/main-app",
