@@ -120,16 +120,11 @@ const presentationSlice = createSlice({
     setCredentialNotFound: (state, action: PayloadAction<string>) => {
       state.credentialNotFound = action.payload;
     },
-    setWalletNotActive: state => {
-      state.walletNotActive = true;
-      state.preDefinition = setError('Wallet is not active');
-    },
     resetPresentation: state => {
       state.preDefinition = setInitial();
       state.postDefinition = setInitial();
       state.optionalCredentials = [];
       state.credentialNotFound = undefined;
-      state.walletNotActive = false;
     }
   },
   extraReducers: builder => {
