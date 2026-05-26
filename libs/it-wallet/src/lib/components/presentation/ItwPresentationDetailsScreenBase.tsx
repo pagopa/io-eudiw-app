@@ -9,9 +9,7 @@ import {
   IOScrollViewActions,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
-import { useScreenReaderEnabled } from '../../hooks/useScreenReaderEnabled';
 import { lifecycleIsValidSelector } from '../../store/lifecycle';
-import { wellKnownCredential } from '../../utils/credentials';
 import { useHeaderPropsByCredentialType } from '../../utils/itwStyleUtils';
 import { StoredCredential } from '../../utils/itwTypesUtils';
 import { useAppSelector } from '../../store';
@@ -35,14 +33,11 @@ const ItwPresentationDetailsScreenBase = ({
   const animatedScrollViewRef = useAnimatedRef<Animated.ScrollView>();
   const itwFeaturesEnabled = useAppSelector(lifecycleIsValidSelector);
   const scrollTranslationY = useSharedValue(0);
-  const screenReaderEnabled = useScreenReaderEnabled();
 
   const headerProps = useHeaderPropsByCredentialType(
     credential.credentialType,
     itwFeaturesEnabled
   );
-  const isBonusCardHeader =
-    credential.credentialType === wellKnownCredential.BONUS_PARI;
 
   // TODO add support toast?
 
@@ -55,7 +50,6 @@ const ItwPresentationDetailsScreenBase = ({
     enableDiscreteTransition: true,
     animatedRef: animatedScrollViewRef,
     ...headerProps,
-    transparent: isBonusCardHeader ? !screenReaderEnabled : undefined,
     variant: 'neutral'
   });
 

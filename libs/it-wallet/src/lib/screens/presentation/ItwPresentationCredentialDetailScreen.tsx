@@ -221,9 +221,7 @@ const ItwPresentationCredentialDetail = ({
         credential={credential}
         parsedClaims={parsedClaims}
       />
-      {credential.credentialType !== wellKnownCredential.BONUS_PARI && (
-        <VSpacer size={24} />
-      )}
+      <VSpacer size={24} />
       <ContentWrapper>
         <VStack space={24}>
           <ItwPresentationCredentialStatusAlert credential={credential} />
