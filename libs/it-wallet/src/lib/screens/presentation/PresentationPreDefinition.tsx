@@ -9,7 +9,6 @@ import {
   selectCredentialNotFound,
   selectPreDefinitionStatus,
   selectPreDefitionResult,
-  selectWalletNotActive,
   setPreDefinitionRequest
 } from '../../store/presentation';
 import { wellKnownCredential } from '../../utils/credentials';
@@ -46,7 +45,6 @@ const PresentationPreDefinition = ({ route }: Props) => {
   const preDefinitionStatus = useAppSelector(selectPreDefinitionStatus);
   const preDefinitionResult = useAppSelector(selectPreDefitionResult);
   const credentialNotFound = useAppSelector(selectCredentialNotFound);
-  const walletNotActive = useAppSelector(selectWalletNotActive);
   const pid = useAppSelector(selectCredential(wellKnownCredential.PID));
 
   // Disable the back gesture navigation and the hardware back button
@@ -70,30 +68,36 @@ const PresentationPreDefinition = ({ route }: Props) => {
         }
       });
     } else if (preDefinitionStatus.error.status) {
-      if (walletNotActive) {
-        navigation.navigate('MAIN_WALLET_NAV', {
-          screen: 'PRESENTATION_WALLET_NOT_ACTIVE'
-        });
-        return;
+      switch (preDefinitionStatus.error.type) {
+        case 'WALLET_NOT_ACTIVE':
+          navigation.navigate('MAIN_WALLET_NAV', {
+            screen: 'PRESENTATION_WALLET_NOT_ACTIVE'
+          });
+          break;
+        case 'CREDENTIAL_NOT_FOUND':
+          if (credentialNotFound) {
+            navigation.navigate('MAIN_WALLET_NAV', {
+              screen: 'PRESENTATION_CREDENTIAL_NOT_FOUND',
+              params: { credentialType: credentialNotFound }
+            });
+          } else {
+            navigation.navigate('MAIN_WALLET_NAV', {
+              screen: 'PRESENTATION_FAILURE'
+            });
+          }
+          break;
+        default:
+          navigation.navigate('MAIN_WALLET_NAV', {
+            screen: 'PRESENTATION_FAILURE'
+          });
       }
-      if (credentialNotFound) {
-        navigation.navigate('MAIN_WALLET_NAV', {
-          screen: 'PRESENTATION_CREDENTIAL_NOT_FOUND',
-          params: { credentialType: credentialNotFound }
-        });
-        return;
-      }
-      navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PRESENTATION_FAILURE'
-      });
     }
   }, [
     credentialNotFound,
     navigation,
     pid,
     preDefinitionResult,
-    preDefinitionStatus,
-    walletNotActive
+    preDefinitionStatus
   ]);
 
   useHeaderSecondLevel({

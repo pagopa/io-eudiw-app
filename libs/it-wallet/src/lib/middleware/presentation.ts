@@ -10,8 +10,7 @@ import {
   setPostDefinitionSuccess,
   setPreDefinitionError,
   setPreDefinitionRequest,
-  setPreDefinitionSuccess,
-  setWalletNotActive
+  setPreDefinitionSuccess
 } from '../store/presentation';
 import {
   getConfigIdByVct,
@@ -54,8 +53,12 @@ const presentationListener: AppListenerWithAction<
       action.payload;
 
     if (lifecycleIsOperationalSelector(listenerApi.getState())) {
-      listenerApi.dispatch(setWalletNotActive());
-      listenerApi.dispatch(setPreDefinitionError());
+      listenerApi.dispatch(
+        setPreDefinitionError({
+          type: 'WALLET_NOT_ACTIVE',
+          error: new Error('Wallet is not active')
+        })
+      );
       return;
     }
 
@@ -214,12 +217,21 @@ const presentationListener: AppListenerWithAction<
       if (configId) {
         listenerApi.dispatch(setCredentialNotFound(configId));
       }
-      listenerApi.dispatch(setPreDefinitionError({ error: serialized }));
+      listenerApi.dispatch(
+        setPreDefinitionError({
+          type: 'CREDENTIAL_NOT_FOUND',
+          error: serialized
+        })
+      );
       return;
     }
     // We don't know which step is failed thus we set the same error for both
-    listenerApi.dispatch(setPostDefinitionError({ error: serialized }));
-    listenerApi.dispatch(setPreDefinitionError({ error: serialized }));
+    listenerApi.dispatch(
+      setPostDefinitionError({ type: 'PRESENTATION_ERROR', error: serialized })
+    );
+    listenerApi.dispatch(
+      setPreDefinitionError({ type: 'PRESENTATION_ERROR', error: serialized })
+    );
   }
 };
 
