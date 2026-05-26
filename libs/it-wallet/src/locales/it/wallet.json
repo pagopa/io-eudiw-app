@@ -1,4 +1,10 @@
 {
+  "notActive": {
+    "title": "Ottieni IT-Wallet per continuare",
+    "body": "Per accedere ai servizi online è necessario attivare IT-Wallet utilizzando la tua Carta di Identità Elettronica (CIE).",
+    "confirm": "Ottieni IT-Wallet",
+    "notNow": "Non ora"
+  },
   "credentials": {
     "names": {
       "mdl": "Patente di guida",
@@ -10,11 +16,9 @@
     "status": {
       "expired": "Scaduta",
       "expiring": "In scadenza",
-      "pending": "In lavorazione",
       "invalid": "Non valida",
       "verificationExpiring": "Azione richiesta",
       "verificationExpired": "Azione richiesta",
-      "upgradePending": "Da aggiornare",
       "unknown": "Non disponibile"
     },
     "pidStatusAlert": {
@@ -30,9 +34,7 @@
         "features": {
           "1": "Un'app di test compatibile con le ultime regole tecniche europee",
           "2": "Attivazione ed autenticazione simulate per focalizzarsi sulle funzionalità",
-          "3": "Testa facilmente le funzionalità su un'app compatibile con EUDIW",
-          "4": "I nuovi documenti digitali ufficiali, solo sull’app IO",
-          "5": "Accedi in pochi tocchi ai servizi digitali della PA"
+          "3": "Testa facilmente le funzionalità su un'app compatibile con EUDIW"
         },
         "details": {
           "1": {
@@ -52,7 +54,6 @@
             "content": "DWallet Lab è compatibile con EUDIW Wallet: se i test avranno esito positivo, potrebbero essere implementati nell'app di produzione e resi disponibili per un gran numero di cittadini dell'Unione Europea."
           }
         },
-        "tos": "Premendo **Continua** dichiari di aver letto e compreso l'Informativa Privacy e i Termini e Condizioni d'uso.",
         "actions": {
           "primary": "Continua",
           "anchor": "Scopri di più"
@@ -100,15 +101,9 @@
       "title": "Ci siamo quasi!",
       "subtitle": "Hai verificato la tua identità.\nIl tuo portafoglio IT-Wallet sarà associato a questi dati:"
     },
-    "success": {
-      "title": "Il tuo IT-Wallet è pronto!",
-      "subtitle": "Ora hai accesso ai vantaggi del nuovo portafoglio digitale di Stato.",
-      "button": "Esplora IT-Wallet"
-    },
     "failure": {
       "title": "An unexpected error occurred",
-      "subtitle": "Your request to the issuing entity was not successful.",
-      "button": "I understand"
+      "subtitle": "Your request to the issuing entity was not successful."
     }
   },
   "presentation": {
@@ -124,8 +119,7 @@
         "content": "Puoi usare la tua Carta Europea della Disabilità su IO per accedere ai servizi sul territorio italiano, negli stessi contesti d'uso del tuo documento fisico."
       },
       "expired": {
-        "content": "Il documento non è più valido. Se sei già in possesso del nuovo documento valido, puoi aggiornare la versione digitale nel Portafoglio",
-        "action": "Aggiorna il documento"
+        "content": "Il documento non è più valido. Se sei già in possesso del nuovo documento valido, puoi aggiornare la versione digitale nel Portafoglio"
       },
       "expiring": {
         "content": "Mancano {{days}} giorni alla scadenza del documento."
@@ -138,10 +132,6 @@
         "action": "Inizia"
       }
     },
-    "credentialNotFound": {
-      "title": "Aggiungi il documento al Portafoglio",
-      "subtitle": "Per usare i documenti su IO, prima aggiungili al Portafoglio. È facile e veloce."
-    },
     "credentialDetails": {
       "card": {
         "front": "Fronte",
@@ -151,30 +141,21 @@
         "hideValues": "Nascondi dati",
         "showValues": "Mostra dati"
       },
-      "personalDataTitle": "Dati personali",
       "documentDataTitle": "Dati del documento",
-      "lastUpdated": "Dati aggiornati al {{lastUpdateTime}}",
       "boolClaim": {
         "true": "Sì",
         "false": "No"
       },
       "hiddenClaim": "Nascosto",
-      "fiscalCode": {
-        "label": "Il tuo Codice Fiscale",
-        "action": "Premi per ingrandire e visualizzare il codice a barre a tutto schermo"
-      },
       "status": {
         "valid": "Valida",
         "invalid": "Non valida",
-        "expired": "Scaduta",
-        "expiring": "In scadenza"
+        "expired": "Scaduta"
       },
       "actions": {
         "removeFromWallet": "Rimuovi dal Portafoglio",
         "requestAssistance": "Qualcosa non torna?",
-        "showClaimValues": "Mostra gli attributi del documento",
-        "hideClaimValues": "Nascondi gli attributi del documento",
-        "openIPatente": "Vai al saldo punti patente"
+        "hideClaimValues": "Nascondi gli attributi del documento"
       },
       "dialogs": {
         "remove": {
@@ -185,25 +166,6 @@
       },
       "toast": {
         "removed": "Fatto!"
-      },
-      "verificationExpired": {
-        "title": "Verifica la versione digitale del documento",
-        "content": "È un passaggio di sicurezza necessario per continuare ad usare la tua {{credentialName}} su IO.",
-        "primaryAction": "Inizia"
-      },
-      "mdl": {
-        "walletUpgradeBanner": {
-          "title": "Novità IT-Wallet",
-          "content": "Ottieni IT-Wallet per usare la tua Patente anche come documento d'identità!",
-          "action": "Ottieni IT-Wallet"
-        }
-      },
-      "newCredentialValidityAlert": {
-        "content": {
-          "education_degree": "I tuoi titoli accademici digitali hanno piena validità ufficiale.",
-          "education_enrollment": "Le tue iscrizioni accademiche digitali hanno piena validità ufficiale.",
-          "residency": "Il tuo attestato di residenza digitale ha piena validità ufficiale."
-        }
       },
       "discoverItWallet": "Scopri IT-Wallet",
       "partOf": "Parte di"
@@ -221,8 +183,7 @@
       "disclaimer": {
         "0": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
         "1": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento"
-      },
-      "tos": "Premendo **Continua** dichiari di aver letto e compreso l'[Informativa Privacy]({{privacyUrl}})."
+      }
     },
     "success": {
       "title": "Fatto!",
@@ -240,19 +201,7 @@
     },
     "bottomSheets": {
       "pidInfo": {
-        "title": "Documenti su IO:\nidentità verificata",
-        "titleExpired": "Documenti su IO:\nverifica la tua identità",
-        "contentTop": "Con **Documenti su IO** salvi nel Portafoglio di IO le versioni digitali dei tuoi documenti.",
-        "contentBottom": "###### Come funziona?\n\nLa tua **identità è verificata** in fase di attivazione tramite SPID o CIE.",
-        "triggerLabel": "Cos'è?",
         "alert": {
-          "documents": {
-            "valid": "L'ultima verifica è del {{date}}.",
-            "expiring": "Conferma la tua identità con CIE o SPID entro il {{date}} per continuare a usare Documenti su IO senza limitazioni.",
-            "expired": "Conferma la tua identità con CIE o SPID per continuare a usare Documenti su IO senza limitazioni.",
-            "action": "Inizia",
-            "offline": "Torna online e conferma la tua identità con CIE o SPID per continuare a usare Documenti su IO senza limitazioni."
-          },
           "itw": {
             "valid": "Hai attivato il tuo ID con CIE il {{date}}.",
             "expiring": "Rinnova il tuo ID per continuare ad usare IT-Wallet entro il {{date}}.",
@@ -263,15 +212,7 @@
       },
       "org.iso.18013.5.1.mDL": {
         "expiring": {
-          "title": "Patente su IO: documento in scadenza",
-          "content": "Rinnova la tua Patente di guida presso gli uffici della Motorizzazione Civile o un ente abilitato del tuo territorio.\n\nÈ necessaria una visita medica con un medico autorizzato e provvedere al pagamento dei bollettini che ti saranno indicati.\n\n###### Quali documenti devo preparare?\n\nLa Patente di guida (in scadenza o scaduta), un documento di identità, il Codice Fiscale e una foto recente (formato tessera).",
           "cta": "Scopri di più"
-        }
-      },
-      "urn:eu.europa.ec.eudi:edc:1": {
-        "expiring": {
-          "title": "Carta europea della disabilità su IO: documento in scadenza",
-          "content": "Puoi richiedere il rinnovo della tua Carta europea della disabilità (CED) contattando l'ente che l'ha emessa.\n\nVerifica le modalità e i documenti richiesti sul sito ufficiale dell'INPS, oppure contattando la tua ASL locale, poiché il rinnovo può variare in base al tipo di disabilità e alle normative del tuo territorio."
         }
       }
     },
@@ -279,7 +220,6 @@
       "description": "È il tuo pass digitale per dimostrare chi sei, accedere ai servizi online e ottenere nuovi documenti.",
       "listItemHeader": "Dati del mio IT-Wallet ID",
       "cta": {
-        "info": "Parte di IT-Wallet",
         "revoke": "Disattiva IT-Wallet"
       },
       "dialog": {
@@ -317,11 +257,6 @@
     "connected": {
       "body": "Verification in progress. Please wait a few seconds..."
     },
-    "disconnected": {
-      "title": "Disconnection",
-      "body": "The device has been disconnected. Please check the verifier app for more details."
-    },
-    "log": "Debug log",
     "isAuthenticated": {
       "true": "The verifier is authenticated",
       "false": "The verifier is not authenticated"
@@ -335,17 +270,13 @@
       "title": "An error has occurred",
       "subtitle": "Your data has been sent, but there has been an error. Check the verifier app for more information.",
       "subtitleFatal": "We were unable to complete the verification of your document.",
-      "retry": "Try again",
-      "understand": "I understand",
-      "close": "Close"
+      "understand": "I understand"
     }
   },
   "verifiableCredentials": {
     "generic": {
       "placeholders": {
-        "claimNotAvailable": "Attributo non riconosciuto",
-        "claimLabelNotAvailable": "Etichetta attributo non presente",
-        "organizationName": "Nome ente non disponibile"
+        "claimNotAvailable": "Attributo non riconosciuto"
       }
     },
     "claims": {
@@ -376,10 +307,6 @@
     }
   },
   "home": {
-    "addCredential": "Add document",
-    "badges": {
-      "saved": "Saved"
-    },
     "screen": {
       "emptyMessage": "La tua Patente di guida, la tua Tessera Sanitaria e altri documenti digitali appariranno qui!",
       "cta": "Aggiungi un documento"
@@ -388,15 +315,6 @@
   "credentialIssuance": {
     "badges": {
       "saved": "Saved"
-    },
-    "addcredential": {
-      "homebuttonlabel": "Add Document",
-      "choosecredentialtoadd": {
-        "title": "What would you like to add to the Wallet?",
-        "headers": {
-          "documents": "Documents"
-        }
-      }
     },
     "list": {
       "title": "Cosa vorresti aggiungere al Portafoglio?",
@@ -410,13 +328,11 @@
         "store": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
         "retention": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento."
       },
-      "tos": "Premendo **Continua** dichiari di aver letto e compreso l'[Informativa Privacy]({{privacyUrl}}).",
       "dataSource": "Forniti da {{source}}"
     },
     "failure": {
       "title": "An unexpected error occurred",
-      "subtitle": "Your request to the issuing entity was not successful.",
-      "button": "I understand"
+      "subtitle": "Your request to the issuing entity was not successful."
     }
   },
   "issuance": {
@@ -427,8 +343,6 @@
       }
     },
     "credentialPreview": {
-      "loading": "Attendi ancora qualche secondo, senza uscire dall’app",
-      "title": "{{credential}}: ecco l'anteprima dei tuoi dati",
       "bottomSheet": {
         "about": {
           "title": "Chi è?",
@@ -438,10 +352,6 @@
           "title": "Chi è",
           "subtitle": "È l’ente o la banca dati digitale che detiene i dati contenuti all'interno del tuo documento."
         }
-      },
-      "actions": {
-        "primary": "Aggiungi al Portafoglio",
-        "secondary": "Annulla"
       }
     },
     "credentialNotFound": {
@@ -464,7 +374,6 @@
     "preferences": {
       "title": "Preferenze",
       "description": "Gestisci le preferenze dell'applicazione",
-      "body": "Queste impostazioni ti permettono di personalizzare la tua esperienza con l'app",
       "appearance": {
         "title": "Aspetto dell'app",
         "description": "Personalizza l'app in base alle tue esigenze",
@@ -506,12 +415,7 @@
     "error": "Unrecognized QR code",
     "flash": "Flash",
     "tabs": {
-      "scan": "Scan",
       "upload": "Upload"
-    },
-    "upload": {
-      "image": "Upload an image",
-      "file": "Upload a file"
     },
     "permissions": {
       "undefined": {
@@ -523,15 +427,6 @@
         "title": "You denied access to the camera",
         "label": "To allow access to the camera, go to the settings of your device",
         "action": "Open settings"
-      }
-    },
-    "imagePicker": {
-      "settingsAlert": {
-        "title": "It seems access to Photos has been denied",
-        "message": "We need access to your gallery in addition to upload QR codes",
-        "buttonText": {
-          "enable": "Enable permissions"
-        }
       }
     },
     "multipleResultsAlert": {

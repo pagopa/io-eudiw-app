@@ -39,6 +39,7 @@ type OptionalClaims = Descriptor['descriptor']; // The optional claims selected 
 /* State type definition for the presentation slice
  * preDefinition - Async status for the prestation before receiving the descriptor
  * postDefinition - Async status for the presentation afetr receiving the descriptor
+ * walletNotActive - True when presentation was attempted with a non-activated wallet
  */
 type PresentationSlice = {
   preDefinition: AsyncStatusValues<Descriptor>;
@@ -46,6 +47,7 @@ type PresentationSlice = {
   relyingPartyData?: FederationEntity;
   optionalCredentials?: Array<string>;
   credentialNotFound?: string;
+  walletNotActive: boolean;
 };
 
 // Initial state for the presentation slice
@@ -53,7 +55,8 @@ const initialState: PresentationSlice = {
   preDefinition: setInitial(),
   postDefinition: setInitial(),
   optionalCredentials: [],
-  credentialNotFound: undefined
+  credentialNotFound: undefined,
+  walletNotActive: false
 };
 
 /**
@@ -71,9 +74,9 @@ const presentationSlice = createSlice({
     },
     setPreDefinitionError: (
       state,
-      action: PayloadAction<{ error: unknown }>
+      action: PayloadAction<{ error: unknown } | undefined>
     ) => {
-      state.preDefinition = setError(action.payload.error);
+      state.preDefinition = setError(action.payload?.error);
     },
     setPreDefinitionSuccess: (state, action: PayloadAction<Descriptor>) => {
       state.preDefinition = setSuccess(action.payload);
@@ -93,7 +96,7 @@ const presentationSlice = createSlice({
     },
     setPostDefinitionError: (
       state,
-      action: PayloadAction<{ error: unknown }>
+      action: PayloadAction<{ error?: unknown }>
     ) => {
       state.postDefinition = setError(action.payload.error);
     },
@@ -106,11 +109,16 @@ const presentationSlice = createSlice({
     setCredentialNotFound: (state, action: PayloadAction<string>) => {
       state.credentialNotFound = action.payload;
     },
+    setWalletNotActive: state => {
+      state.walletNotActive = true;
+      state.preDefinition = setError('Wallet is not active');
+    },
     resetPresentation: state => {
       state.preDefinition = setInitial();
       state.postDefinition = setInitial();
       state.optionalCredentials = [];
       state.credentialNotFound = undefined;
+      state.walletNotActive = false;
     }
   },
   extraReducers: builder => {
@@ -134,6 +142,7 @@ export const {
   setPostDefinitionSuccess,
   setOptionalCredentials,
   setCredentialNotFound,
+  setWalletNotActive,
   resetPresentation
 } = presentationSlice.actions;
 
@@ -196,3 +205,11 @@ export const selectOptionalCredentials = (state: WalletCombinedRootState) =>
  */
 export const selectCredentialNotFound = (state: WalletCombinedRootState) =>
   state.wallet.presentation.credentialNotFound;
+
+/**
+ * Selects whether the presentation was attempted with a non-activated wallet.
+ * @param state - The root state
+ * @returns true if the wallet was not active when the presentation was attempted
+ */
+export const selectWalletNotActive = (state: WalletCombinedRootState) =>
+  state.wallet.presentation.walletNotActive;

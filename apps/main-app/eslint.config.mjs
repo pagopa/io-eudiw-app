@@ -17,7 +17,8 @@ export default [
       'dist',
       '**/out-tsc',
       'scripts',
-      'expo-env.d.ts'
+      'expo-env.d.ts',
+      'app.json'
     ]
   }
 ];

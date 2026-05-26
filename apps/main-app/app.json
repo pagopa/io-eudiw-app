@@ -2,7 +2,7 @@
   "expo": {
     "name": "DWalletLab",
     "slug": "dwalletlab",
-    "version": "2.8.0",
+    "version": "3.10.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -33,7 +33,7 @@
     },
     "android": {
       "package": "it.pagopa.io.app.poc.eudiw",
-      "versionCode": 61,
+      "versionCode": 72,
       "permissions": [
         "android.permission.BLUETOOTH_SCAN",
         "android.permission.BLUETOOTH_CONNECT",
@@ -42,7 +42,9 @@
         "android.permission.BLUETOOTH_ADMIN",
         "android.permission.ACCESS_FINE_LOCATION"
       ],
-      "blockedPermissions": ["android.permission.READ_MEDIA_IMAGES"],
+      "blockedPermissions": [
+        "android.permission.READ_MEDIA_IMAGES"
+      ],
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "intentFilters": [
@@ -66,7 +68,10 @@
               "scheme": "iowallet"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ],
       "adaptiveIcon": {
@@ -130,7 +135,9 @@
       [
         "react-native-permissions",
         {
-          "iosPermissions": ["Bluetooth"]
+          "iosPermissions": [
+            "Bluetooth"
+          ]
         }
       ],
       [

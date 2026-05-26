@@ -1,6 +1,8 @@
 name: Build and publish internal release
 permissions:
   contents: write
+  actions: read
+  pull-requests: read
 on:
   workflow_dispatch:
     inputs:
@@ -45,12 +47,12 @@ jobs:
         run: pnpm nx run main-app:increment-version ${{ github.event.inputs.releaseLevel }}
       - id: get-current-version
         run: |
-          NEW_APP_VERSION=$(node -p -e "require('./package.json').version")
+          NEW_APP_VERSION=$(node -p -e "require('./apps/main-app/package.json').version")
           echo "Current app version: $NEW_APP_VERSION"
           echo "NEW_APP_VERSION=$NEW_APP_VERSION" >> $GITHUB_OUTPUT
       - id: commit-version-changes
         run: |
-          git add package.json app.json
+          git add apps/main-app/package.json apps/main-app/app.json
           git commit -m "chore: Release ${{ steps.get-current-version.outputs.NEW_APP_VERSION }}" || echo "No changes to commit"
           git push origin HEAD:${GITHUB_REF#refs/heads/}
       - id: create-tag
@@ -90,20 +92,20 @@ jobs:
       - id: setup-android-sdk
         uses: android-actions/setup-android@00854ea68c109d98c75d956347303bf7c45b0277 #v3.2.1
       - id: setup-ruby
-        uses: ruby/setup-ruby@401c19e14f474b54450cd3905bb8b86e2c8509cf #v1.204.0
+        uses: ruby/setup-ruby@afeafc3d1ab54a631816aba4c914a0081c12ff2f #v1.310.0
         with:
           bundler-cache: true
+          working-directory: apps/main-app
       - name: Prebuild Android
-        run: pnpm nx prebuild main-app --platform android --clean
+        run: pnpm nx run main-app:prebuild --platform android --clean
       - id: build-android
         name: Build and submit to Play Store
         run: |
-          ./scripts/android-release.sh ./android/app
-          cd fastlane
+          ./apps/main-app/scripts/android-release.sh ./apps/main-app/android/app
+          cd apps/main-app/fastlane
           bundle exec fastlane android alpha_playstore
         shell: bash
         env:
-          RUBYOPT: '-rostruct'
           APP_VERSION: ${{ needs.bump-app-version.outputs.newAppVersion }}
           ENCODED_IOAPP_GOOGLE_SERVICES_JSON_FILE: ${{secrets.ENCODED_IOAPP_GOOGLE_SERVICES_JSON_FILE}}
           ENCODED_IOAPP_JSON_KEY_FILE: ${{secrets.ENCODED_IOAPP_JSON_KEY_FILE}}
@@ -115,13 +117,12 @@ jobs:
       - id: download-universal-apk-from-store
         continue-on-error: true
         run: |
-          cd android
+          cd apps/main-app/android
           VERSION_CODE=$(sed -n 's/.*versionCode \(.*\)/\1/p' "app/build.gradle")
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
-          cd .. && cd fastlane
+          cd ../fastlane
           bundle exec fastlane android download_apk
         env:
-          RUBYOPT: '-rostruct'
           ENCODED_IOAPP_JSON_KEY_FILE: ${{secrets.ENCODED_IOAPP_JSON_KEY_FILE}}
           VERSION_CODE: ${{ env.VERSION_CODE }}
       - id: upload-universal-apk
@@ -129,29 +130,29 @@ jobs:
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
           name: DWalletLab-universal.apk
-          path: android/DWalletLab-universal.apk
+          path: apps/main-app/android/DWalletLab-universal.apk
       - id: upload-aab
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
           name: app-release.aab
-          path: android/app/build/outputs/bundle/release/app-release.aab
+          path: apps/main-app/android/app/build/outputs/bundle/release/app-release.aab
       - id: upload-android-assets-release
         continue-on-error: true
         run: |
           gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} \
-            android/app/build/outputs/bundle/release/app-release.aab#android-app-release.aab \
-            android/DWalletLab-universal.apk#DWalletLab-universal.apk
+            apps/main-app/android/app/build/outputs/bundle/release/app-release.aab#android-app-release.aab \
+            apps/main-app/android/DWalletLab-universal.apk#DWalletLab-universal.apk
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release-ios:
     needs: bump-app-version
     environment: prod
-    runs-on: macos-15-xlarge
+    runs-on: macos-26-xlarge
     steps:
       - id: set-xcode-version
-        run: sudo xcode-select -s '/Applications/Xcode_16.4.0.app/Contents/Developer'
+        run: sudo xcode-select -s '/Applications/Xcode_26.2.0.app/Contents/Developer'
         shell: bash
       - id: checkout
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
@@ -165,9 +166,10 @@ jobs:
       - id: setup
         uses: ./.github/actions/setup-composite
       - id: setup-ruby
-        uses: ruby/setup-ruby@401c19e14f474b54450cd3905bb8b86e2c8509cf #v1.204.0
+        uses: ruby/setup-ruby@afeafc3d1ab54a631816aba4c914a0081c12ff2f #v1.310.0
         with:
           bundler-cache: true
+          working-directory: apps/main-app
       - id: add-ssh-deploy-key
         run: |
           echo -e "Host github.com
@@ -179,17 +181,16 @@ jobs:
         env:
           SSH_DEPLOY_KEY: ${{secrets.SSH_CERTS_DEPLOY_KEY}}
       - name: Prebuild iOS
-        run: pnpm nx prebuild main-app --platform ios --clean
+        run: pnpm nx run main-app:prebuild --platform ios --clean
       - id: build-ios
         name: Build and submit to App Store
         run: |
-          ./scripts/ios-release.sh
-          cd fastlane
+          ./apps/main-app/scripts/ios-release.sh
+          cd apps/main-app/fastlane
           bundle exec fastlane ios beta_testflight
         env:
           LC_ALL: en_US.UTF-8
           LANG: en_US.UTF-8
-          RUBYOPT: '-rostruct'
           APP_VERSION: ${{ needs.bump-app-version.outputs.newAppVersion }}
           APP_STORE_API_KEY_ID: ${{secrets.APP_STORE_API_KEY_ID}}
           APP_STORE_API_PRIVATE_KEY: ${{secrets.APP_STORE_API_PRIVATE_KEY}}
@@ -202,16 +203,16 @@ jobs:
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.0.3
         with:
           name: DWalletLab.app.dSYM.zip
-          path: ios/DWalletLab.app.dSYM.zip
+          path: apps/main-app/ios/DWalletLab.app.dSYM.zip
       - id: upload-ipa
         continue-on-error: true
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
         with:
           name: DWalletLab.ipa
-          path: ios/DWalletLab.ipa
+          path: apps/main-app/ios/DWalletLab.ipa
       - id: upload-ipa-release
         continue-on-error: true
         run: |
-          gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} ios/DWalletLab.ipa#DWalletLab.ipa
+          gh release upload ${{ needs.bump-app-version.outputs.newAppVersion }} apps/main-app/ios/DWalletLab.ipa#DWalletLab.ipa
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

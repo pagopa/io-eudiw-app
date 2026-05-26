@@ -38,6 +38,7 @@ import { createInstanceThunk } from '../../middleware/instance';
 import { resetInstanceCreation } from '../../store/pidIssuance';
 import { selectInstanceStatus } from '../../store/selectors/pidIssuance';
 import { useAppDispatch, useAppSelector } from '../../store';
+import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
 // Offset to avoid to scroll to the block without margins
 const scrollOffset = 12;
@@ -53,6 +54,7 @@ export const WalletInstanceCreation = () => {
   const navigation = useNavigation();
   const { error, success, loading } = useAppSelector(selectInstanceStatus);
   const dispatch = useAppDispatch();
+  const { navigateToWallet } = useNavigateToWalletWithReset();
 
   const thunkRef = useRef<CreateInstancePromise | null>(null);
 
@@ -69,7 +71,7 @@ export const WalletInstanceCreation = () => {
     },
     handleDismiss: () => {
       thunkRef.current?.abort();
-      navigation.goBack();
+      navigateToWallet();
     }
   });
 
