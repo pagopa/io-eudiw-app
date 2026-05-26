@@ -30,19 +30,22 @@ export const LINKING_SCHEMES = [
   'haip://',
   'openid4vp://',
   'eudi-openid4vp://',
-  'mdoc-openid4vp://'
+  'mdoc-openid4vp://',
+  'openid-credential-offer://',
+  'haip-vci://'
 ];
 
+/**
+ * All supported deep link schemes resolve to the centralized {@link DeepLinkHandler}
+ * screen. React Navigation strips the scheme before matching, so routing per
+ * scheme (presentation vs. credential offer) is decided inside the handler by
+ * reading the full URL from the deep linking slice.
+ */
 export const walletLinkingConfig: PathConfigMap<MainNavigatorParamsList> = {
   [MAIN_ROUTES.WALLET_NAV]: {
     screens: {
-      PRESENTATION_PRE_DEFINITION: {
-        path: '',
-        parse: {
-          client_id: (value: string) => decodeURIComponent(value),
-          request_uri: (value: string) => decodeURIComponent(value),
-          state: (value: string) => value
-        }
+      DEEP_LINK_HANDLER: {
+        path: ''
       }
     }
   }

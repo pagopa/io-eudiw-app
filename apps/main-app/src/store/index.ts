@@ -21,7 +21,7 @@ import {
   startAppListening
 } from '../middleware/listener';
 import { startupListener } from '../middleware/listener/startup';
-import { deepLinkingReducer } from './reducers/deeplinking';
+import { deepLinkingReducer } from '@io-eudiw-app/navigation';
 import { startupSetLoading, startupSlice } from './reducers/startup';
 import { AppDispatch, RootState } from './types';
 import { itWalletFeature } from '@io-eudiw-app/it-wallet';

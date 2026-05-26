@@ -17,6 +17,7 @@ import { proximityReducer } from './proximity';
 // External State Types
 import { DebugRootState } from '@io-eudiw-app/debug-info';
 import { PreferenceRootState } from '@io-eudiw-app/preferences';
+import { DeepLinkingRootState } from '@io-eudiw-app/navigation';
 
 /**
  * Combine all slices into a single base reducer.
@@ -43,7 +44,8 @@ type WalletRootState = ReturnType<typeof walletRootReducer>;
 export type WalletCombinedRootState = {
   wallet: WalletRootState;
 } & DebugRootState &
-  PreferenceRootState;
+  PreferenceRootState &
+  DeepLinkingRootState;
 
 export type WalletDispatch = ThunkDispatch<
   WalletCombinedRootState,

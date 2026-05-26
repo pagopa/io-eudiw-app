@@ -326,7 +326,13 @@
     },
     "failure": {
       "title": "An unexpected error occurred",
-      "subtitle": "Your request to the issuing entity was not successful."
+      "subtitle": "Your request to the issuing entity was not successful.",
+      "button": "I understand"
+    },
+    "alreadyObtained": {
+      "title": "Documento già presente",
+      "subtitle": "Hai già aggiunto questo documento al tuo Portafoglio.",
+      "button": "Vai al Portafoglio"
     }
   },
   "issuance": {
@@ -400,10 +406,29 @@
       }
     }
   },
+  "credentialOffer": {
+    "loading": {
+      "title": "Stiamo elaborando l'offerta",
+      "subtitle": "Attendi qualche istante."
+    }
+  },
   "tabNavigator": {
     "wallet": "Portafoglio",
     "scanQr": "Inquadra",
     "showQr": "Mostra QR"
+  },
+  "deepLink": {
+    "error": {
+      "qr": {
+        "title": "QR code non valido",
+        "subtitle": "Il codice QR che hai inquadrato non è valido o non è supportato. Riprova con un altro codice."
+      },
+      "link": {
+        "title": "Link non valido",
+        "subtitle": "Il link che hai aperto non è valido o non è supportato. Riprova con un altro link."
+      },
+      "button": "Vai al Portafoglio"
+    }
   },
   "qr": {
     "error": "Unrecognized QR code",

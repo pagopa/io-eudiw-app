@@ -29,6 +29,11 @@ type ObtainCredentialPreAuthResult = EnrichedPresentationDetails | undefined;
 type CredentialIssuanceStatusSlice = {
   requestedCredential: RequestedCredential;
   requestedCredentialType: RequestedCredentialType;
+  /**
+   * Issuer URL to use for the issuance. When set (e.g. coming from a credential
+   * offer) it overrides the default EAA provider configured via env.
+   */
+  requestedCredentialIssuerUrl: string | undefined;
   statusPreAuth: AsyncStatusValues<ObtainCredentialPreAuthResult>;
   statusPostAuth: AsyncStatusValues<StoredCredential>;
 };
@@ -37,6 +42,7 @@ type CredentialIssuanceStatusSlice = {
 const initialState: CredentialIssuanceStatusSlice = {
   requestedCredential: undefined,
   requestedCredentialType: undefined,
+  requestedCredentialIssuerUrl: undefined,
   statusPreAuth: setInitial(),
   statusPostAuth: setInitial()
 };
@@ -51,9 +57,13 @@ const credentialIssuanceStatusSlice = createSlice({
   reducers: {
     setCredentialIssuancePreAuthRequest: (
       state,
-      action: PayloadAction<{ credential: RequestedCredential }>
+      action: PayloadAction<{
+        credential: RequestedCredential;
+        issuerUrl?: string;
+      }>
     ) => {
       state.requestedCredential = action.payload.credential;
+      state.requestedCredentialIssuerUrl = action.payload.issuerUrl;
       state.statusPreAuth = setLoading();
     },
     setCredentialIssuancePreAuthError: (
@@ -126,6 +136,10 @@ export const selectCredentialIssuancePostAuthStatus = (
 
 export const selectRequestedCredential = (state: WalletCombinedRootState) =>
   state.wallet.credentialIssuanceStatus.requestedCredential;
+
+export const selectRequestedCredentialIssuerUrl = (
+  state: WalletCombinedRootState
+) => state.wallet.credentialIssuanceStatus.requestedCredentialIssuerUrl;
 
 export const selectRequestedCredentialType = (state: WalletCombinedRootState) =>
   state.wallet.credentialIssuanceStatus.requestedCredentialType;

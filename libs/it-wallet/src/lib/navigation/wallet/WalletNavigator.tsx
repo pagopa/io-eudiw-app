@@ -1,4 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import CredentialAlreadyObtained from '../../screens/credentialIssuance/CredentialAlreadyObtained';
 import CredentialFailure from '../../screens/credentialIssuance/CredentialFailure';
 import { CredentialPreview } from '../../screens/credentialIssuance/CredentialIssuancePreview';
 import CredentialsList from '../../screens/credentialIssuance/CredentialsList';
@@ -27,7 +28,18 @@ import PresentationPreDefinition, {
   PresentationPreDefinitionParams
 } from '../../screens/presentation/PresentationPreDefinition';
 import PresentationSuccess from '../../screens/presentation/PresentationSuccess';
-import PresentationWalletNotActive from '../../screens/presentation/PresentationWalletNotActive';
+import PresentationWalletNotActive, {
+  PresentationWalletNotActiveParams
+} from '../../screens/presentation/PresentationWalletNotActive';
+import DeepLinkHandler, {
+  DeepLinkHandlerParams
+} from '../../screens/deeplink/DeepLinkHandler';
+import DeepLinkError, {
+  DeepLinkErrorParams
+} from '../../screens/deeplink/DeepLinkError';
+import CredentialOffer, {
+  CredentialOfferParams
+} from '../../screens/deeplink/CredentialOffer';
 import PresentationProximityFailure, {
   PresentationProximityFailureProps
 } from '../../screens/proximity/PresentationProximityFailure';
@@ -42,6 +54,11 @@ import WALLET_ROUTES from './routes';
  * New screens should be added here along with their parameters.
  */
 export type WalletNavigatorParamsList = {
+  // Deep link / QR centralized entry point
+  [WALLET_ROUTES.DEEP_LINK.HANDLER]: DeepLinkHandlerParams;
+  [WALLET_ROUTES.DEEP_LINK.ERROR]: DeepLinkErrorParams;
+  [WALLET_ROUTES.CREDENTIAL_OFFER.ISSUANCE]: CredentialOfferParams;
+
   // Pid issuance
   [WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.ID_METHOD]: undefined;
@@ -58,7 +75,8 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.PRESENTATION.FAILURE]: undefined;
   [WALLET_ROUTES.PRESENTATION
     .CREDENTIAL_NOT_FOUND]: PresentationCredentialNotFoundParams;
-  [WALLET_ROUTES.PRESENTATION.WALLET_NOT_ACTIVE]: undefined;
+  [WALLET_ROUTES.PRESENTATION
+    .WALLET_NOT_ACTIVE]: PresentationWalletNotActiveParams;
   [WALLET_ROUTES.PRESENTATION
     .POST_DEFINITION]: PresentationPostDefinitionParams;
   [WALLET_ROUTES.PRESENTATION.SUCCESS]: undefined;
@@ -68,6 +86,7 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST]: undefined;
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.PREVIEW]: undefined;
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE]: undefined;
+  [WALLET_ROUTES.CREDENTIAL_ISSUANCE.ALREADY_OBTAINED]: undefined;
 
   // Proximity
   [WALLET_ROUTES.PROXIMITY.PREVIEW]: PresentationProximityPreviewProps;
@@ -85,6 +104,23 @@ const WalletNavigator = () => (
   <Stack.Navigator
     initialRouteName={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
   >
+    <Stack.Group>
+      <Stack.Screen
+        name={WALLET_ROUTES.DEEP_LINK.HANDLER}
+        component={DeepLinkHandler}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.DEEP_LINK.ERROR}
+        component={DeepLinkError}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.CREDENTIAL_OFFER.ISSUANCE}
+        component={CredentialOffer}
+        options={{ headerShown: false }}
+      />
+    </Stack.Group>
     <Stack.Group>
       <Stack.Screen
         name={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
@@ -162,6 +198,11 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE}
         component={CredentialFailure}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.ALREADY_OBTAINED}
+        component={CredentialAlreadyObtained}
         options={{ headerShown: false }}
       />
     </Stack.Group>

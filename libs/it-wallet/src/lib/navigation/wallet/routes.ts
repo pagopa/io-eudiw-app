@@ -2,6 +2,17 @@
  * Constants for wallet routes.
  */
 const WALLET_ROUTES = {
+  // Centralized deep link / QR entry point which inspects the incoming URL
+  // scheme and dispatches to the appropriate flow.
+  DEEP_LINK: {
+    HANDLER: 'DEEP_LINK_HANDLER',
+    ERROR: 'DEEP_LINK_ERROR'
+  },
+  // Landing for credential offer (OID4VCI) deep links / QR codes: resolves the
+  // offer and starts the credential issuance flow.
+  CREDENTIAL_OFFER: {
+    ISSUANCE: 'CREDENTIAL_OFFER_ISSUANCE'
+  },
   PID_ISSUANCE: {
     INSTANCE_CREATION: 'PID_ISSUANCE_INSTANCE_CREATION',
     ID_METHOD: 'PID_ISSUANCE_ID_METHOD',
@@ -23,7 +34,8 @@ const WALLET_ROUTES = {
     LIST: 'CREDENTIAL_ISSUANCE_LIST',
     TRUST: 'CREDENTIAL_ISSUANCE_TRUST',
     PREVIEW: 'CREDENTIAL_ISSUANCE_PREVIEW',
-    FAILURE: 'CREDENTIAL_ISSUANCE_FAILURE'
+    FAILURE: 'CREDENTIAL_ISSUANCE_FAILURE',
+    ALREADY_OBTAINED: 'CREDENTIAL_ISSUANCE_ALREADY_OBTAINED'
   },
   PROXIMITY: {
     PREVIEW: 'PROXIMITY_PREVIEW',

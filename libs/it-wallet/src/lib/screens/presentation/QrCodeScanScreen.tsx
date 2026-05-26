@@ -9,7 +9,7 @@ import { Alert } from 'react-native';
 import ReactNativeHapticFeedback, {
   HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
-import { presentationLinkToUrl } from '../../utils/parsing';
+import { parseDeepLink } from '../../utils/parsing';
 import { useQrCodeFileReader } from '../../hooks/useQrCodeFileReader';
 import { QrCodeScanBaseScreenComponent } from '../../components/QrCodeScanBaseScreenComponent';
 
@@ -42,22 +42,24 @@ const QrCodeScanScreen = () => {
     );
 
   /**
-   * Handler for a single barcode result. Currently it only handles the presentation link recognized by the app.
-   * It tries to parse the URL and the necessary parameters to start the presentation flow.
-   * If successful it starts the presentation flow, otherwise it shows a toast error.
+   * Handler for a single barcode result. It validates that the scanned URL is a
+   * recognized wallet deep link (presentation or credential offer) and then
+   * delegates routing to the centralized deep link handler, which inspects the
+   * scheme and dispatches to the appropriate flow.
+   * If the URL is not recognized, it shows a toast error.
    * @param barcode - The barcode string to be parsed
    */
   const handleSingleResult = (barcode: string) => {
     try {
-      const { request_uri, client_id } = presentationLinkToUrl(barcode);
+      // Validate the scanned URL; routing is performed by the deep link handler.
+      parseDeepLink(barcode);
       ReactNativeHapticFeedback.trigger(
         HapticFeedbackTypes.notificationSuccess
       );
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PRESENTATION_PRE_DEFINITION',
+        screen: 'DEEP_LINK_HANDLER',
         params: {
-          client_id,
-          request_uri
+          url: barcode
         }
       });
     } catch {
