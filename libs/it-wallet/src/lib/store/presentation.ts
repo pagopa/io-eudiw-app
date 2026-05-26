@@ -24,6 +24,11 @@ export type Descriptor = {
   rpConfig?: FederationEntity;
 };
 
+type PresentationErrors =
+  | 'WALLET_NOT_ACTIVE'
+  | 'CREDENTIAL_NOT_FOUND'
+  | 'PRESENTATION_ERROR';
+
 /**
  * Response type for the authorization request which is the final step of the presentation flow.
  */
@@ -42,12 +47,11 @@ type OptionalClaims = Descriptor['descriptor']; // The optional claims selected 
  * walletNotActive - True when presentation was attempted with a non-activated wallet
  */
 type PresentationSlice = {
-  preDefinition: AsyncStatusValues<Descriptor>;
-  postDefinition: AsyncStatusValues<AuthResponse>;
+  preDefinition: AsyncStatusValues<Descriptor, PresentationErrors>;
+  postDefinition: AsyncStatusValues<AuthResponse, PresentationErrors>;
   relyingPartyData?: FederationEntity;
   optionalCredentials?: Array<string>;
   credentialNotFound?: string;
-  walletNotActive: boolean;
 };
 
 // Initial state for the presentation slice
@@ -55,8 +59,7 @@ const initialState: PresentationSlice = {
   preDefinition: setInitial(),
   postDefinition: setInitial(),
   optionalCredentials: [],
-  credentialNotFound: undefined,
-  walletNotActive: false
+  credentialNotFound: undefined
 };
 
 /**
@@ -74,9 +77,14 @@ const presentationSlice = createSlice({
     },
     setPreDefinitionError: (
       state,
-      action: PayloadAction<{ error: unknown } | undefined>
+      action: PayloadAction<
+        { type?: PresentationErrors; error: unknown } | undefined
+      >
     ) => {
-      state.preDefinition = setError(action.payload?.error);
+      state.preDefinition = setError(
+        action.payload?.error,
+        action.payload?.type
+      );
     },
     setPreDefinitionSuccess: (state, action: PayloadAction<Descriptor>) => {
       state.preDefinition = setSuccess(action.payload);
@@ -96,9 +104,12 @@ const presentationSlice = createSlice({
     },
     setPostDefinitionError: (
       state,
-      action: PayloadAction<{ error?: unknown }>
+      action: PayloadAction<{ type?: PresentationErrors; error: unknown }>
     ) => {
-      state.postDefinition = setError(action.payload.error);
+      state.postDefinition = setError(
+        action.payload.error,
+        action.payload.type
+      );
     },
     setPostDefinitionSuccess: (state, action: PayloadAction<AuthResponse>) => {
       state.postDefinition = setSuccess(action.payload);
@@ -142,7 +153,6 @@ export const {
   setPostDefinitionSuccess,
   setOptionalCredentials,
   setCredentialNotFound,
-  setWalletNotActive,
   resetPresentation
 } = presentationSlice.actions;
 
@@ -205,11 +215,3 @@ export const selectOptionalCredentials = (state: WalletCombinedRootState) =>
  */
 export const selectCredentialNotFound = (state: WalletCombinedRootState) =>
   state.wallet.presentation.credentialNotFound;
-
-/**
- * Selects whether the presentation was attempted with a non-activated wallet.
- * @param state - The root state
- * @returns true if the wallet was not active when the presentation was attempted
- */
-export const selectWalletNotActive = (state: WalletCombinedRootState) =>
-  state.wallet.presentation.walletNotActive;
