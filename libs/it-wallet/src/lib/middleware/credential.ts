@@ -296,9 +296,6 @@ const obtainCredentialListener: AppListenerWithAction<
         }
       );
 
-    await new Promise<void>(resolve => {
-      setTimeout(() => resolve(), 5000);
-    });
     // Parse and verify the credential. The ignoreMissingAttributes flag must be set to false or omitted in production.
     const { parsedCredential, expiration, issuedAt } =
       await wallet.CredentialIssuance.verifyAndParseCredential(
