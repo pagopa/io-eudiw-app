@@ -56,7 +56,6 @@ const removeProximityListeners = async (
 const proximityListener: AppListenerWithAction<
   ReturnType<typeof setProximityStatusStarted>
 > = async (_, listenerApi) => {
-  console.log('asd');
   const listeners = [
     addListener('onQrCodeString', qrCode => {
       listenerApi.dispatch(setProximityQrCode(qrCode.data));
@@ -83,7 +82,6 @@ const proximityListener: AppListenerWithAction<
       listenerApi.dispatch(setProximityStatusStopped());
     }),
     addListener('onError', payload => {
-      console.log(payload);
       listenerApi.dispatch(
         setProximityStatusError(payload?.error ?? 'Unknown internal error')
       );
@@ -125,8 +123,6 @@ const proximityListener: AppListenerWithAction<
       cancelHandler(listenerApi)
     ]);
   } catch (error) {
-    console.log(error);
-    console.log(JSON.stringify(error));
     // Ignore if the task was aborted
     if (error instanceof TaskAbortError) {
       return;
