@@ -255,7 +255,11 @@ export const placeofBirthSchema = z
   })
   .transform(data => {
     const values =
-      data.locality.value + ', ' + data.region.value + ', ' + data.country.value;
+      data.locality.value +
+      ', ' +
+      data.region.value +
+      ', ' +
+      data.country.value;
     return {
       value: values,
       type: claimType.placeOfBirth
