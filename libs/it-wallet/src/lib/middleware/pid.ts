@@ -83,7 +83,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
           { proofType: 'none' },
           {
             walletInstanceAttestation,
-            redirectUri: redirectUri,
+            redirectUri,
             wiaCryptoContext,
             appFetch
           }
