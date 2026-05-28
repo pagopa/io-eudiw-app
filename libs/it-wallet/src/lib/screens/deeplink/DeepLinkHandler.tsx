@@ -34,7 +34,7 @@ type Props = StackScreenProps<WalletNavigatorParamsList, 'DEEP_LINK_HANDLER'>;
  * cannot route by scheme. This screen instead reads the full URL (including its
  * scheme) and dispatches to the appropriate flow:
  * - presentation schemes -> {@link PresentationPreDefinition}
- * - credential offer schemes -> the credential offer placeholder
+ * - credential offer schemes -> {@link CredentialOffer}
  *
  * The URL comes from the navigation params (QR flow) or, for deep links, from
  * the deep linking slice, which is always populated when a URL is received.
