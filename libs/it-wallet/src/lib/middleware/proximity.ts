@@ -26,7 +26,7 @@ import {
 } from '../utils/proximity';
 import { takeLatestEffect } from '@io-eudiw-app/commons';
 import { AppListener, AppListenerWithAction, AppStartListening } from './types';
-import { serializeError } from 'serialize-error';
+import { serializeErrorOrUnknown } from '../utils/errors';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
@@ -38,11 +38,10 @@ const {
   addListener,
   close,
   generateResponse,
-  getQrCodeString,
   parseVerifierRequest,
   sendErrorResponse,
   sendResponse,
-  start
+  startEngagement
 } = ISO18013_5;
 
 const removeProximityListeners = async (
@@ -58,6 +57,9 @@ const proximityListener: AppListenerWithAction<
   ReturnType<typeof setProximityStatusStarted>
 > = async (_, listenerApi) => {
   const listeners = [
+    addListener('onQrCodeString', qrCode => {
+      listenerApi.dispatch(setProximityQrCode(qrCode.data));
+    }),
     addListener('onDeviceConnecting', () => null),
     addListener('onDeviceConnected', () => {
       listenerApi.dispatch(setProximityStatusConnected());
@@ -97,13 +99,11 @@ const proximityListener: AppListenerWithAction<
 
     // Provide the verifiers certificates
     const certificates = verifierCertificates.map(cert => cert.certificate);
-    await start({
-      certificates: [certificates]
+    await startEngagement({
+      certificates: [certificates],
+      engagementModes: ['qrcode'],
+      retrievalMethods: ['ble']
     });
-
-    // Set QR Code
-    const qrCode = await getQrCodeString();
-    listenerApi.dispatch(setProximityQrCode(qrCode));
 
     /**
      * Being that the device can be disconnected or the connection be lost
@@ -127,7 +127,9 @@ const proximityListener: AppListenerWithAction<
     if (error instanceof TaskAbortError) {
       return;
     }
-    listenerApi.dispatch(setProximityStatusError(`${serializeError(error)}`));
+    listenerApi.dispatch(
+      setProximityStatusError(JSON.stringify(serializeErrorOrUnknown(error)))
+    );
     await closeFlow(listenerApi); // We can ignore this error in this particular case as we don't even know if the flow started successfully.
   } finally {
     await removeProximityListeners(listeners);

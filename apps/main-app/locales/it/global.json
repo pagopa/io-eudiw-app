@@ -25,15 +25,12 @@
       "sensorDescription": "Accedi velocemente"
     }
   },
-  "settings": {
-    "version": "Versione"
-  },
   "miniAppSelection": {
     "title": "Seleziona il tipo di app che vuoi utilizzare per i test",
     "subtitle": "In questa sezione puoi scegliere un caso d’uso per testare l’integrazione con la tua piattaforma.",
     "available": "App disponibili",
     "miniApps": {
-      "it-wallet": "App IT-Wallet"
+      "it-wallet": "App IT-Wallet (1.3.3)"
     }
   },
   "onboarding": {
@@ -50,10 +47,6 @@
         "title": "Un accesso simulato",
         "content": "L'attivazione e l'autenticazione sono simulate a scopo di test, in piena conformità con gli standard di sicurezza dell'UE"
       }
-    },
-    "start": {
-      "title": "Start with Wallet",
-      "subtitle": "Store your documents securely."
     },
     "pin": {
       "title": "Crea un codice di sblocco",

@@ -43,11 +43,10 @@ const PlaceOfBirthClaimItem = ({
   hidden?: boolean;
   reversed: boolean;
 }) => {
-  const realValue = `${claim.value.locality} (${claim.value.country})`;
-  const displayValue = hidden ? HIDDEN_CLAIM_TEXT : realValue;
+  const displayValue = hidden ? HIDDEN_CLAIM_TEXT : claim.value;
   const accessibilityStateText = hidden
     ? getHiddenClaimAccessibilityText()
-    : realValue;
+    : claim.value;
 
   return (
     <ListItemInfo
@@ -583,6 +582,15 @@ export const ItwCredentialClaim = ({
             claim={claim.parsed.value}
             detailsButtonVisible={!isPreview}
             reversed={reversed}
+          />
+        );
+      case 'verification':
+        return (
+          <PlainTextClaimItem
+            claim={claim.parsed.value}
+            label={claim.label}
+            reversed={false}
+            clipboardSuccessMessage={clipboardSuccessMessage}
           />
         );
     }

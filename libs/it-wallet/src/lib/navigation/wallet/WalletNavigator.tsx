@@ -27,6 +27,7 @@ import PresentationPreDefinition, {
   PresentationPreDefinitionParams
 } from '../../screens/presentation/PresentationPreDefinition';
 import PresentationSuccess from '../../screens/presentation/PresentationSuccess';
+import PresentationWalletNotActive from '../../screens/presentation/PresentationWalletNotActive';
 import PresentationProximityFailure, {
   PresentationProximityFailureProps
 } from '../../screens/proximity/PresentationProximityFailure';
@@ -57,6 +58,7 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.PRESENTATION.FAILURE]: undefined;
   [WALLET_ROUTES.PRESENTATION
     .CREDENTIAL_NOT_FOUND]: PresentationCredentialNotFoundParams;
+  [WALLET_ROUTES.PRESENTATION.WALLET_NOT_ACTIVE]: undefined;
   [WALLET_ROUTES.PRESENTATION
     .POST_DEFINITION]: PresentationPostDefinitionParams;
   [WALLET_ROUTES.PRESENTATION.SUCCESS]: undefined;
@@ -127,6 +129,11 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_NOT_FOUND}
         component={PresentationCredentialNotFound}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PRESENTATION.WALLET_NOT_ACTIVE}
+        component={PresentationWalletNotActive}
         options={{ headerShown: false }}
       />
       <Stack.Screen
