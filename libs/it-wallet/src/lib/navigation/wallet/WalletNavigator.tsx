@@ -75,7 +75,6 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.PRESENTATION.FAILURE]: undefined;
   [WALLET_ROUTES.PRESENTATION
     .CREDENTIAL_NOT_FOUND]: PresentationCredentialNotFoundParams;
-  [WALLET_ROUTES.PRESENTATION.WALLET_NOT_ACTIVE]: undefined;
   [WALLET_ROUTES.PRESENTATION
     .WALLET_NOT_ACTIVE]: PresentationWalletNotActiveParams;
   [WALLET_ROUTES.PRESENTATION
