@@ -1,4 +1,3 @@
-import { Credential } from '@pagopa/io-react-native-wallet';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
 import { FederationEntity } from '../types';
@@ -25,12 +24,17 @@ export type Descriptor = {
   rpConfig?: FederationEntity;
 };
 
+type PresentationErrors =
+  | 'WALLET_NOT_ACTIVE'
+  | 'CREDENTIAL_NOT_FOUND'
+  | 'PRESENTATION_ERROR';
+
 /**
  * Response type for the authorization request which is the final step of the presentation flow.
  */
-type AuthResponse = Awaited<
-  ReturnType<typeof Credential.Presentation.sendAuthorizationResponse>
->;
+type AuthResponse = {
+  redirect_uri?: string;
+};
 
 /**
  * Type of the optional claims names selected by the user.
@@ -40,10 +44,11 @@ type OptionalClaims = Descriptor['descriptor']; // The optional claims selected 
 /* State type definition for the presentation slice
  * preDefinition - Async status for the prestation before receiving the descriptor
  * postDefinition - Async status for the presentation afetr receiving the descriptor
+ * walletNotActive - True when presentation was attempted with a non-activated wallet
  */
 type PresentationSlice = {
-  preDefinition: AsyncStatusValues<Descriptor>;
-  postDefinition: AsyncStatusValues<AuthResponse>;
+  preDefinition: AsyncStatusValues<Descriptor, PresentationErrors>;
+  postDefinition: AsyncStatusValues<AuthResponse, PresentationErrors>;
   relyingPartyData?: FederationEntity;
   optionalCredentials?: Array<string>;
   credentialNotFound?: string;
@@ -72,9 +77,14 @@ const presentationSlice = createSlice({
     },
     setPreDefinitionError: (
       state,
-      action: PayloadAction<{ error: unknown }>
+      action: PayloadAction<
+        { type?: PresentationErrors; error: unknown } | undefined
+      >
     ) => {
-      state.preDefinition = setError(action.payload.error);
+      state.preDefinition = setError(
+        action.payload?.error,
+        action.payload?.type
+      );
     },
     setPreDefinitionSuccess: (state, action: PayloadAction<Descriptor>) => {
       state.preDefinition = setSuccess(action.payload);
@@ -94,9 +104,12 @@ const presentationSlice = createSlice({
     },
     setPostDefinitionError: (
       state,
-      action: PayloadAction<{ error: unknown }>
+      action: PayloadAction<{ type?: PresentationErrors; error: unknown }>
     ) => {
-      state.postDefinition = setError(action.payload.error);
+      state.postDefinition = setError(
+        action.payload.error,
+        action.payload.type
+      );
     },
     setPostDefinitionSuccess: (state, action: PayloadAction<AuthResponse>) => {
       state.postDefinition = setSuccess(action.payload);

@@ -26,6 +26,9 @@
     },
     {
       "path": "./libs/navigation"
+    },
+    {
+      "path": "./libs/io-react-native-wallet"
     }
   ]
 }

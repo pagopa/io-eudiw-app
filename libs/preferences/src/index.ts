@@ -4,7 +4,6 @@ export {
   preferencesFontSet,
   type TypefaceChoice,
   selectIsBiometricEnabled,
-  selectSessionId,
   selectFontPreference,
   selectSelectedMiniAppId,
   preferencesSetIsBiometricEnabled,

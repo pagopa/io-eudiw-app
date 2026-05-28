@@ -68,16 +68,29 @@ const PresentationPreDefinition = ({ route }: Props) => {
         }
       });
     } else if (preDefinitionStatus.error.status) {
-      if (credentialNotFound) {
-        navigation.navigate('MAIN_WALLET_NAV', {
-          screen: 'PRESENTATION_CREDENTIAL_NOT_FOUND',
-          params: { credentialType: credentialNotFound }
-        });
-        return;
+      switch (preDefinitionStatus.error.type) {
+        case 'WALLET_NOT_ACTIVE':
+          navigation.navigate('MAIN_WALLET_NAV', {
+            screen: 'PRESENTATION_WALLET_NOT_ACTIVE'
+          });
+          break;
+        case 'CREDENTIAL_NOT_FOUND':
+          if (credentialNotFound) {
+            navigation.navigate('MAIN_WALLET_NAV', {
+              screen: 'PRESENTATION_CREDENTIAL_NOT_FOUND',
+              params: { credentialType: credentialNotFound }
+            });
+          } else {
+            navigation.navigate('MAIN_WALLET_NAV', {
+              screen: 'PRESENTATION_FAILURE'
+            });
+          }
+          break;
+        default:
+          navigation.navigate('MAIN_WALLET_NAV', {
+            screen: 'PRESENTATION_FAILURE'
+          });
       }
-      navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PRESENTATION_FAILURE'
-      });
     }
   }, [
     credentialNotFound,

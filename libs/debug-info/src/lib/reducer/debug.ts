@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
-import { DebugRootState } from '.';
+import { DebugCombinedRootState } from '.';
 
 /*
  * State type definition for the debug  slice
@@ -61,14 +61,17 @@ const debugPersist: PersistConfig<DebugSlice> = {
 /**
  * Persisted reducer for the debug slice.
  */
-export const debugReducer = persistReducer(debugPersist, debugSlice.reducer);
+export const debugRootReducer = persistReducer(
+  debugPersist,
+  debugSlice.reducer
+);
 
 /**
  * Selects the debug mode state.
  * @param state - The root state of the Redux store
  * @returns a boolean indicating if the debug mode is enabled
  */
-export const selectIsDebugModeEnabled = (state: DebugRootState) =>
+export const selectIsDebugModeEnabled = (state: DebugCombinedRootState) =>
   state.debug.isDebugModeEnabled;
 
 /**
@@ -76,4 +79,5 @@ export const selectIsDebugModeEnabled = (state: DebugRootState) =>
  * @param state - The root state of the Redux store
  * @returns a record with the debug data
  */
-export const selectDebugData = (state: DebugRootState) => state.debug.debugData;
+export const selectDebugData = (state: DebugCombinedRootState) =>
+  state.debug.debugData;
