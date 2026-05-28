@@ -27,7 +27,7 @@ const CredentialAlreadyObtained = () => {
 
   return (
     <OperationResultScreenContent
-      pictogram="success"
+      pictogram="attention"
       title={t('wallet:credentialIssuance.alreadyObtained.title')}
       subtitle={t('wallet:credentialIssuance.alreadyObtained.subtitle')}
       action={{
@@ -35,6 +35,13 @@ const CredentialAlreadyObtained = () => {
           'wallet:credentialIssuance.alreadyObtained.button'
         ),
         label: t('wallet:credentialIssuance.alreadyObtained.button'),
+        onPress
+      }}
+      secondaryAction={{
+        accessibilityLabel: t(
+          'wallet:credentialIssuance.alreadyObtained.close'
+        ),
+        label: t('wallet:credentialIssuance.alreadyObtained.close'),
         onPress
       }}
     />

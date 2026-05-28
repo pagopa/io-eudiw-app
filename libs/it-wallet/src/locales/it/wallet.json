@@ -3,7 +3,13 @@
     "title": "Ottieni IT-Wallet per continuare",
     "body": "Per accedere ai servizi online è necessario attivare IT-Wallet utilizzando la tua Carta di Identità Elettronica (CIE).",
     "confirm": "Ottieni IT-Wallet",
-    "notNow": "Non ora"
+    "notNow": "Non ora",
+    "credentialOffer": {
+      "title": "Attiva IT-Wallet per aggiungere {{credentialName}}",
+      "body": "Potrai aggiungere anche altri documenti digitali e usarli online e dal vivo, ti basta il tuo telefono!",
+      "confirm": "Inizia",
+      "cancel": "Annulla"
+    }
   },
   "credentials": {
     "names": {
@@ -331,8 +337,9 @@
     },
     "alreadyObtained": {
       "title": "Documento già presente",
-      "subtitle": "Hai già aggiunto questo documento al tuo Portafoglio.",
-      "button": "Vai al Portafoglio"
+      "subtitle": "Il documento che stai cercando di aggiungere è già presente nel tuo portafoglio.",
+      "button": "Vai al portafoglio",
+      "close": "Chiudi"
     }
   },
   "issuance": {

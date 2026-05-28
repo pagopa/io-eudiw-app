@@ -15,6 +15,10 @@ import {
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import WALLET_ROUTES from '../../navigation/wallet/routes';
+import {
+  getCredentialNameByType,
+  getCredentialTypeByConfigId
+} from '../../utils/credentials';
 
 /**
  * Navigation params for the wallet-not-active screen.
@@ -71,17 +75,38 @@ const PresentationWalletNotActive = ({ route }: Props) => {
     navigateToWallet();
   };
 
+  // When reached from a credential offer the screen invites the user to
+  // activate the wallet to add the requested credential; otherwise (pure
+  // presentation flow) it keeps the generic activation copy.
+  const isCredentialOffer = pendingCredential !== undefined;
+
+  const credentialName = getCredentialNameByType(
+    getCredentialTypeByConfigId(pendingCredential?.credential ?? '')
+  );
+
   return (
     <OperationResultScreenContent
       pictogram="itWallet"
-      title={t('notActive.title')}
-      subtitle={t('notActive.body')}
+      title={
+        isCredentialOffer
+          ? t('notActive.credentialOffer.title', { credentialName })
+          : t('notActive.title')
+      }
+      subtitle={
+        isCredentialOffer
+          ? t('notActive.credentialOffer.body')
+          : t('notActive.body')
+      }
       action={{
-        label: t('notActive.confirm'),
+        label: isCredentialOffer
+          ? t('notActive.credentialOffer.confirm')
+          : t('notActive.confirm'),
         onPress: onActivate
       }}
       secondaryAction={{
-        label: t('notActive.notNow'),
+        label: isCredentialOffer
+          ? t('notActive.credentialOffer.cancel')
+          : t('notActive.notNow'),
         onPress: onDismiss
       }}
     />
