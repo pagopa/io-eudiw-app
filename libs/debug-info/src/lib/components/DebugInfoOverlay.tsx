@@ -11,6 +11,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { DebugDataIndicator } from './DebugDataIndicator';
 import { DebugDataOverlay } from './DebugDataOverlay';
 import { getAppVersion } from '@io-eudiw-app/commons';
+import { selectSelectedMiniAppId } from '@io-eudiw-app/preferences';
+import { useAppSelector } from '../reducer';
 
 const debugItemBgColor = hexToRgba(IOColors.white, 0.4);
 const debugItemBorderColor = hexToRgba(IOColors.black, 0.1);
@@ -27,9 +29,10 @@ export const DebugInfoOverlay = ({
 }: DebugInfoOverlayProps) => {
   const theme = useIOTheme();
   const appVersion = getAppVersion();
+  const miniApp = useAppSelector(selectSelectedMiniAppId);
   const [isDebugDataVisibile, showDebugData] = useState(false);
 
-  const appVersionText = `DEBUG ENABLED: v${appVersion}`;
+  const appVersionText = `DEBUG ENABLED: v${appVersion}\nMINI APP: ${miniApp}`;
 
   return (
     <>

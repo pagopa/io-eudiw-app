@@ -11,9 +11,11 @@ import {
   EnrichedPresentationDetails,
   isDefined,
   ParsedCredential,
-  PresentationDetails,
-  StoredCredentialMetadata
+  StoredCredentialMetadata,
+  ParsedDcql,
+  StoredCredential
 } from './itwTypesUtils';
+import { isPresentationDetailSdJwt } from './credentials';
 
 /**
  *
@@ -141,9 +143,10 @@ export const getCredentialExpireDays = (
 export const enrichPresentationDetails = (
   presentationDetails: PresentationDetails,
   credentialsByType: Array<StoredCredentialMetadata>
+  presentationDetails: ParsedDcql,
+  credentialsByType: Array<StoredCredential>
 ): EnrichedPresentationDetails =>
-  presentationDetails.map(details => {
-    const { cryptoContext, ...restDetails } = details;
+  presentationDetails.filter(isPresentationDetailSdJwt).map(details => {
     const credentialType = details.vct;
     const credential =
       credentialType &&
@@ -153,8 +156,8 @@ export const enrichPresentationDetails = (
     // The raw credential is still used for the presentation. Currently this only happens for the Wallet Attestation.
     if (!credential) {
       return {
-        ...restDetails,
-        claimsToDisplay: [] // Hide from userv gq
+        ...details,
+        claimsToDisplay: []
       };
     }
 
@@ -163,15 +166,16 @@ export const enrichPresentationDetails = (
     });
 
     return {
-      ...restDetails,
+      ...details,
       // Only include claims that are part of the parsed credential
       // This ensures that technical claims like `iat` are not displayed to the user
       claimsToDisplay: details.requiredDisclosures
-        .map(([, claimName]) => parsedClaims.find(({ id }) => id === claimName))
+        .map(({ name: claimName }) =>
+          parsedClaims.find(({ id }) => id === claimName)
+        )
         .filter(isDefined)
     };
   });
-
 /**
  * Get the display value of a claim, handling both flat and nested formats.
  */
@@ -186,7 +190,7 @@ export const getClaimDisplayValue = (
       case 'placeOfBirth':
         return {
           type: 'text',
-          value: `${parsed.value.country} ${parsed.value.locality}`.trim()
+          value: `${parsed.value}`
         };
 
       case 'date':

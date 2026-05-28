@@ -1,37 +1,14 @@
-import { Credential, SdJwt } from '@pagopa/io-react-native-wallet';
+import {
+  CredentialIssuance,
+  RemotePresentation,
+  SdJwt
+} from '@io-eudiw-app/io-react-native-wallet';
 import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
 
 /**
  * Alias for the IssuerConfiguration type
  */
-export type IssuerConfiguration = Awaited<
-  ReturnType<Credential.Issuance.EvaluateIssuerTrust>
->['issuerConf'];
-
-/**
- * Alias for the ParsedStatusAssertion type
- */
-type ParsedStatusAssertion = Awaited<
-  ReturnType<Credential.Status.VerifyAndParseStatusAssertion>
->['parsedStatusAssertion']['payload'];
-
-/**
- * Alias for a DcqlQuery
- */
-export type DcqlQuery =
-  Parameters<Credential.Presentation.EvaluateDcqlQuery>[1];
-
-export type StoredStatusAssertion =
-  | {
-      credentialStatus: 'valid';
-      statusAssertion: string;
-      parsedStatusAssertion: ParsedStatusAssertion;
-    }
-  | {
-      credentialStatus: 'invalid' | 'unknown';
-      // Error code that might contain more details on the invalid status, provided by the issuer
-      errorCode?: string;
-    };
+export type IssuerConfiguration = CredentialIssuance.IssuerConfig;
 
 // Digital credential status
 export type ItwJwtCredentialStatus = 'valid' | 'jwtExpired' | 'jwtExpiring';
@@ -68,9 +45,7 @@ export type Only<T, U> = {
  */
 export type Either<T, U> = Only<T, U> | Only<U, T>;
 
-export type ParsedCredential = Awaited<
-  ReturnType<typeof Credential.Issuance.verifyAndParseCredential>
->['parsedCredential'];
+export type ParsedCredential = CredentialIssuance.ParsedCredential;
 
 /**
  * Metadata for a credential stored in the wallet. This is the portion that
@@ -85,7 +60,6 @@ export type StoredCredentialMetadata = {
   expiration: string;
   issuedAt?: string;
   issuerConf: IssuerConfiguration;
-  storedStatusAssertion?: StoredStatusAssertion;
   spec_version?: string;
 };
 
@@ -99,7 +73,7 @@ export type StoredCredential = StoredCredentialMetadata & {
 };
 
 export type EnrichedPresentationDetails = Array<
-  Omit<PresentationDetails[number], 'cryptoContext'> & {
+  Extract<ParsedDcql[number], { format: 'dc+sd-jwt' }> & {
     claimsToDisplay: Array<ClaimDisplayFormat>;
   }
 >;
@@ -122,8 +96,8 @@ export function isDefined<T, O extends NonNullable<T>>(v: T): v is O {
 /**
  * Type representing the parsed DCQL query with the presentation details
  */
-export type PresentationDetails = Awaited<
-  ReturnType<Credential.Presentation.EvaluateDcqlQuery>
+export type ParsedDcql = Awaited<
+  ReturnType<RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']>
 >;
 
 export type ClaimDisplayResult =

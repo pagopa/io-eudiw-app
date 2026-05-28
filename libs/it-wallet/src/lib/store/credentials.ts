@@ -1,22 +1,20 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { serializeError } from 'serialize-error';
+import { ItwJwtCredentialStatus, WalletCard } from '../types';
+import { wellKnownCredential } from '../utils/credentials';
+import { StoredCredential } from '../utils/itwTypesUtils';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
-import { ItwJwtCredentialStatus, WalletCard } from '../types';
-import { wellKnownCredential } from '../utils/credentials';
-import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
-import {
-  StoredCredential,
-  StoredCredentialMetadata
-} from '../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../utils/itwTypesUtils';
 import { itwCredentialVault } from '../utils/itwCredentialVault';
 import { createAppAsyncThunk } from '../middleware/thunk';
 import { WalletCombinedRootState } from '.';
 import { resetLifecycle } from './lifecycle';
+import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 
 /* State type definition for the credentials slice.
  * Only credential metadata is kept here. The encoded SD-JWT/MDOC of each
@@ -163,6 +161,17 @@ export const itwCredentialsPidSelector = selectCredential(
 );
 
 /**
+ * Returns the pid credential expiration date, if present.
+ *
+ * @param state - The global state.
+ * @returns The pid credential expiration date.
+ */
+export const itwCredentialsPidExpirationSelector = createSelector(
+  itwCredentialsPidSelector,
+  pid => pid?.expiration
+);
+
+/**
  * Returns the credential status and the error message corresponding to the status assertion error, if present.
  *
  * @param state - The global state.
@@ -172,17 +181,6 @@ export const itwCredentialsPidStatusSelector = createSelector(
   itwCredentialsPidSelector,
   pid =>
     pid ? (getCredentialStatus(pid) as ItwJwtCredentialStatus) : undefined
-);
-
-/**
- * Returns the pid credential expiration date, if present.
- *
- * @param state - The global state.
- * @returns The pid credential expiration date.
- */
-export const itwCredentialsPidExpirationSelector = createSelector(
-  itwCredentialsPidSelector,
-  pid => pid?.expiration
 );
 
 /**

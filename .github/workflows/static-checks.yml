@@ -2,6 +2,7 @@ name: "Code Review"
 
 on:
   workflow_dispatch:
+  workflow_call:
   pull_request:
     types: [opened, synchronize]
 
@@ -33,7 +34,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Cache Nx
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: .nx
           key: ${{ runner.os }}-nx-cache-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -41,7 +42,7 @@ jobs:
             ${{ runner.os }}-nx-cache-
 
       - name: Sets the base and head SHAs required for `nx affected` command
-        uses: nrwl/nx-set-shas@3e9ad7370203c1e93d109be57f3b72eb0eb511b1
+        uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
 
       - name: Run code quality checks on affected projects
         run: pnpm validate
