@@ -5,7 +5,8 @@ import {
 } from '@io-eudiw-app/preferences';
 import { removeCredential } from '../store/credentials';
 import { resetLifecycle } from '../store/lifecycle';
-import { itwCredentialVault } from '../utils/itwCredentialVault';
+import { wellKnownCredential } from '../utils/credentials';
+import { CredentialsVault } from '../utils/itwCredentialVault';
 import { AppStartListening } from './types';
 
 /**
@@ -27,8 +28,12 @@ export const addCredentialVaultListeners = (
   startAppListening({
     actionCreator: removeCredential,
     effect: async action => {
+      // Match the reducer: the PID is never removed via this action
+      if (action.payload.credentialType === wellKnownCredential.PID) {
+        return;
+      }
       try {
-        await itwCredentialVault.remove(action.payload.credentialType);
+        await CredentialsVault.remove(action.payload.credentialType);
       } catch {
         /* swallow: Redux state has already been updated */
       }
@@ -43,7 +48,7 @@ export const addCredentialVaultListeners = (
     ),
     effect: async () => {
       try {
-        await itwCredentialVault.clear();
+        await CredentialsVault.clear();
       } catch {
         /* swallow: Redux state has already been reset */
       }

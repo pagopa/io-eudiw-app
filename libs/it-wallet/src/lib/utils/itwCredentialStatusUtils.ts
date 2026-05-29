@@ -86,8 +86,6 @@ const credentialTypesByVct: { [vct: string]: CredentialType } = {
  * Return a list of credential types that have an invalid status.
  */
 export const getInvalidCredentials = (
-  presentationDetails: PresentationDetails,
-  credentialsByType: Array<StoredCredential>,
   presentationDetails: ParsedDcql,
   credentialsByType: Array<StoredCredential>
 ) =>

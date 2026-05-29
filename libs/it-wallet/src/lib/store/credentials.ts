@@ -1,16 +1,18 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { serializeError } from 'serialize-error';
-import { ItwJwtCredentialStatus, WalletCard } from '../types';
-import { wellKnownCredential } from '../utils/credentials';
-import { StoredCredential } from '../utils/itwTypesUtils';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
-import { StoredCredentialMetadata } from '../utils/itwTypesUtils';
-import { itwCredentialVault } from '../utils/itwCredentialVault';
+import { ItwJwtCredentialStatus, WalletCard } from '../types';
+import { wellKnownCredential } from '../utils/credentials';
+import {
+  StoredCredential,
+  StoredCredentialMetadata
+} from '../utils/itwTypesUtils';
+import { CredentialsVault } from '../utils/itwCredentialVault';
 import { createAppAsyncThunk } from '../middleware/thunk';
 import { WalletCombinedRootState } from '.';
 import { resetLifecycle } from './lifecycle';
@@ -18,7 +20,7 @@ import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 
 /* State type definition for the credentials slice.
  * Only credential metadata is kept here. The encoded SD-JWT/MDOC of each
- * credential is persisted separately by `itwCredentialVault`, so this
+ * credential is persisted separately by `CredentialsVault`, so this
  * slice can keep using redux-persist without bloating secure storage with
  * the raw credential payloads.
  */
@@ -98,7 +100,7 @@ const credentialsSlice = createSlice({
 /**
  * Redux persist configuration for the credential slice.
  * The slice now stores only credential metadata: the encoded SD-JWT/MDOC
- * payloads live in `itwCredentialVault` and never flow through redux-persist.
+ * payloads live in `CredentialsVault` and never flow through redux-persist.
  */
 const credentialsPersistor: PersistConfig<CredentialsSlice> = {
   key: 'credentials',
@@ -139,7 +141,7 @@ export const persistCredential = createAppAsyncThunk<
   async ({ credential }, { dispatch, rejectWithValue }) => {
     const { credential: encoded, ...metadata } = credential;
     try {
-      await itwCredentialVault.put(metadata.credentialType, encoded);
+      await CredentialsVault.store(metadata.credentialType, encoded);
     } catch (error) {
       return rejectWithValue(JSON.stringify(serializeError(error)));
     }

@@ -50,7 +50,7 @@ export type ParsedCredential = CredentialIssuance.ParsedCredential;
 /**
  * Metadata for a credential stored in the wallet. This is the portion that
  * lives in the Redux slice — it omits the encoded SD-JWT/MDOC, which is
- * persisted separately by `itwCredentialVault`.
+ * persisted separately by `CredentialsVault`.
  */
 export type StoredCredentialMetadata = {
   parsedCredential: ParsedCredential;

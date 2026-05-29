@@ -24,13 +24,15 @@ type PidIssuanceStatusSlice = {
   instanceCreation: AsyncStatusValues;
   issuance: AsyncStatusValues<StoredCredential>;
   pendingCredential: RequestedCredential;
+  persistError: unknown;
 };
 
 // Initial state for the pidIssuance slice
 const initialState: PidIssuanceStatusSlice = {
   instanceCreation: setInitial(),
   issuance: setInitial(),
-  pendingCredential: undefined
+  pendingCredential: undefined,
+  persistError: undefined
 };
 
 /**
@@ -46,12 +48,16 @@ const pidIssuanceStatusSlice = createSlice({
     },
     resetPidIssuance: state => {
       state.issuance = setInitial();
+      state.persistError = undefined;
     },
     setPendingCredential: (
       state,
       action: PayloadAction<{ credential: RequestedCredential }>
     ) => {
       state.pendingCredential = action.payload.credential;
+    },
+    setPidPersistError: (state, action: PayloadAction<unknown>) => {
+      state.persistError = action.payload;
     }
   },
   extraReducers: builder => {
@@ -93,8 +99,12 @@ const pidIssuanceStatusSlice = createSlice({
 /**
  * Exports the actions for the pidIssuance slice.
  */
-export const { resetInstanceCreation, resetPidIssuance, setPendingCredential } =
-  pidIssuanceStatusSlice.actions;
+export const {
+  resetInstanceCreation,
+  resetPidIssuance,
+  setPendingCredential,
+  setPidPersistError
+} = pidIssuanceStatusSlice.actions;
 
 /**
  * Exports the reducer for the pidIssuance slice.

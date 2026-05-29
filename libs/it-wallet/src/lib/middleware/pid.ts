@@ -1,4 +1,3 @@
-import { IOToast } from '@pagopa/io-app-design-system';
 import {
   createCryptoContextFor,
   IoWallet
@@ -6,7 +5,6 @@ import {
 import { isAnyOf } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import * as WebBrowser from 'expo-web-browser';
-import { t } from 'i18next';
 import WALLET_ROUTES from '../navigation/wallet/routes';
 import { serializeErrorOrUnknown } from '../utils/errors';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
@@ -15,6 +13,7 @@ import {
   persistCredential
 } from '../store/credentials';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
+import { setPidPersistError } from '../store/pidIssuance';
 import { selectPendingCredential } from '../store/selectors/pidIssuance';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredential } from '../utils/credentials';
@@ -243,7 +242,10 @@ const addPidWithAuthListener: AppListenerWithAction<
     );
     if (persistCredential.rejected.match(persistResult)) {
       // Vault write failed: keep Redux untouched and surface the error
-      IOToast.error(t('errors.generic', { ns: 'common' }));
+      listenerApi.dispatch(setPidPersistError(persistResult.payload));
+      navigator.navigate(MAIN_ROUTES.WALLET_NAV, {
+        screen: WALLET_ROUTES.PID_ISSUANCE.FAILURE
+      });
       return;
     }
     listenerApi.dispatch(

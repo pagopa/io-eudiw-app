@@ -24,7 +24,7 @@ import {
 } from '../store/credentials';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredential } from '../utils/credentials';
-import { itwCredentialVault } from '../utils/itwCredentialVault';
+import { CredentialsVault } from '../utils/itwCredentialVault';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { createWalletFetch } from '../utils/fetch';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
@@ -152,7 +152,7 @@ const obtainCredentialListener: AppListenerWithAction<
 
     // Retrieve the encoded PID from the vault for the DCQL evaluation
     // and the user authorization step.
-    const pidEncoded = await itwCredentialVault.get(pid.credentialType);
+    const pidEncoded = await CredentialsVault.get(pid.credentialType);
     if (!pidEncoded) {
       throw new Error('PID encoded credential missing in vault.');
     }
@@ -166,11 +166,10 @@ const obtainCredentialListener: AppListenerWithAction<
       );
 
     // Using only the PID credential
-    const credentialsSdJwt = [
-      ...Object.values([pid])
-        .filter(c => c.format === 'dc+sd-jwt')
-        .map(c => [c.keyTag, c.credential])
-    ] as Array<[string, string]>;
+    const credentialsSdJwt: Array<[string, string]> =
+      pid.format === 'dc+sd-jwt' && pidEncoded
+        ? [[pid.keyTag, pidEncoded]]
+        : [];
 
     const evaluatedDcqlQuery =
       await wallet.RemotePresentation.evaluateDcqlQuery(
@@ -204,9 +203,8 @@ const obtainCredentialListener: AppListenerWithAction<
     const { code } =
       await wallet.CredentialIssuance.completeUserAuthorizationWithFormPostJwtMode(
         requestObject,
-        pidEncoded,
         issuerConf,
-        pid.credential,
+        pidEncoded,
         { wiaCryptoContext, pidKeyTag: pid.keyTag, appFetch }
       );
 
@@ -309,7 +307,9 @@ const addCredentialWithAuthListener: AppListenerWithAction<
       persistCredential(action.payload)
     );
     if (persistCredential.rejected.match(persistResult)) {
-      IOToast.error(t('errors.generic', { ns: 'common' }));
+      listenerApi.dispatch(
+        setCredentialIssuancePostAuthError({ error: persistResult.payload })
+      );
       return;
     }
     listenerApi.dispatch(resetCredentialIssuance());

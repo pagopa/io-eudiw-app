@@ -11,9 +11,8 @@ import {
   EnrichedPresentationDetails,
   isDefined,
   ParsedCredential,
-  StoredCredentialMetadata,
   ParsedDcql,
-  StoredCredential
+  StoredCredentialMetadata
 } from './itwTypesUtils';
 import { isPresentationDetailSdJwt } from './credentials';
 
@@ -141,10 +140,8 @@ export const getCredentialExpireDays = (
  * @returns The enriched presentation details
  */
 export const enrichPresentationDetails = (
-  presentationDetails: PresentationDetails,
-  credentialsByType: Array<StoredCredentialMetadata>
   presentationDetails: ParsedDcql,
-  credentialsByType: Array<StoredCredential>
+  credentialsByType: Array<StoredCredentialMetadata>
 ): EnrichedPresentationDetails =>
   presentationDetails.filter(isPresentationDetailSdJwt).map(details => {
     const credentialType = details.vct;

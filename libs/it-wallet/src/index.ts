@@ -8,10 +8,13 @@ import {
   walletLinkingConfig
 } from './lib/navigation/main/MainStackNavigator';
 import { addWalletListeners } from './lib/middleware/index';
+import { reconcileCredentialVaultCoherence } from './lib/middleware/credentialVaultCoherence';
 
 const walletReducer = {
   wallet: walletRootReducer
 };
+
+export { reconcileCredentialVaultCoherence };
 
 export const itWalletFeature = {
   id: 'it-wallet',

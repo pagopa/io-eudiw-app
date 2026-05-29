@@ -41,3 +41,11 @@ export const selectPidIssuanceError = (state: WalletCombinedRootState) =>
  */
 export const selectPendingCredential = (state: WalletCombinedRootState) =>
   state.wallet.pidIssuanceStatus.pendingCredential;
+
+/**
+ * Selects the error occurred during the persist phase of the PID issuance flow.
+ * @param state - The root state
+ * @returns The error occurred during the persist phase
+ */
+export const selectPidPersistError = (state: WalletCombinedRootState) =>
+  state.wallet.pidIssuanceStatus.persistError;

@@ -19,10 +19,10 @@ symlink(
   join(projectRoot, 'node_modules'),
   join(workspaceRoot, 'node_modules'),
   'dir',
-  err => {
+  (err) => {
     if (err) console.log(err);
     else {
       console.log('Symlink created');
     }
-  }
+  },
 );
