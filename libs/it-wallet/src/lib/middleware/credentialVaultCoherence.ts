@@ -36,6 +36,17 @@ export const reconcileCredentialVaultCoherence = async (
     }
     if (!vaultSet.has(meta.credentialType)) {
       dispatch(removeCredential({ credentialType: meta.credentialType }));
+    } else {
+      try {
+        const credential = await CredentialsVault.get(meta.credentialType);
+        if (!credential) {
+          dispatch(removeCredential({ credentialType: meta.credentialType }));
+          await CredentialsVault.remove(meta.credentialType);
+        }
+      } catch {
+        dispatch(removeCredential({ credentialType: meta.credentialType }));
+        await CredentialsVault.remove(meta.credentialType);
+      }
     }
   }
 
