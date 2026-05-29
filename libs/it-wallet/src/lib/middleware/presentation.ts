@@ -56,7 +56,7 @@ const presentationListener: AppListenerWithAction<
       listenerApi.dispatch(
         setPreDefinitionError({
           type: 'WALLET_NOT_ACTIVE',
-          error: new Error('Wallet is not active')
+          error: serializeErrorOrUnknown(new Error('Wallet is not active'))
         })
       );
       return;

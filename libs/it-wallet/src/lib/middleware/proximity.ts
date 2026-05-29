@@ -100,7 +100,9 @@ const proximityListener: AppListenerWithAction<
     // Provide the verifiers certificates
     const certificates = verifierCertificates.map(cert => cert.certificate);
     await startEngagement({
-      certificates: [certificates]
+      certificates: [certificates],
+      engagementModes: ['qrcode'],
+      retrievalMethods: ['ble']
     });
 
     /**

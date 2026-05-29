@@ -256,21 +256,17 @@ export const placeofBirthSchema = z
   })
   .transform(data => {
     const values =
-      data.country.value + ' ' + data.region.value + ' ' + data.locality.value;
+      data.locality.value +
+      ', ' +
+      data.region.value +
+      ', ' +
+      data.country.value;
     return {
       value: values,
       type: claimType.placeOfBirth
     };
   });
 export type PlaceOfBirthClaimType = z.infer<typeof placeofBirthSchema>;
-
-/**
- * Schema to validate a barcode claim value (e.g. discount code for PARI_BONUS)
- */
-const barcodeSchema = z.string().transform(str => ({
-  value: str,
-  type: claimType.barcode
-}));
 
 export const verificationScheme = z
   .object({
@@ -291,6 +287,14 @@ export const verificationScheme = z
       type: claimType.verification
     };
   });
+
+/**
+ * Schema to validate a barcode claim value (e.g. discount code for PARI_BONUS)
+ */
+const barcodeSchema = z.string().transform(str => ({
+  value: str,
+  type: claimType.barcode
+}));
 
 /**
  * Schema to validate a claim which is a union of the previous defined schemas.
