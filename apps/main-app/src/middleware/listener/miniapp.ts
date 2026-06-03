@@ -14,7 +14,7 @@ import {
 import { takeLatestEffect } from '@io-eudiw-app/commons';
 import { getMiniAppById } from '../../utils/miniapp';
 import { handlePendingDeepLink } from './common';
-import { reconcileCredentialVaultCoherence } from '@io-eudiw-app/it-wallet';
+import { reconcileCredentialVaultCoherence } from '../../../../../libs/it-wallet/src/lib/middleware/credentialVaultCoherence';
 
 export const mountSelectedMiniAppListeners = (listenerApi: AppListener) => {
   miniAppListenerMiddleware.clearListeners();
