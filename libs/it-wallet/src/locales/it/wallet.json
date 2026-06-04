@@ -332,7 +332,11 @@
     },
     "failure": {
       "title": "An unexpected error occurred",
-      "subtitle": "Your request to the issuing entity was not successful."
+      "subtitle": "Your request to the issuing entity was not successful.",
+      "credentialInvalidStatus": {
+        "title": "Credenziale non ottenibile",
+        "subtitle": "La credenziale che stai cercando di ottenere in questo momento non è disponibile."
+      }
     }
   },
   "issuance": {

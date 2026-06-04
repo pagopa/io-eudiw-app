@@ -297,11 +297,25 @@ const barcodeSchema = z.string().transform(str => ({
 }));
 
 /**
+ * Schema to validate an amount claim by appending the euro sign suffix.
+ */
+const amountSchema = z
+  .object({
+    id: z.enum(['amount']),
+    value: z.union([z.string(), z.number()])
+  })
+  .transform(obj => ({
+    value: `${obj.value} €`,
+    type: claimType.string
+  }));
+
+/**
  * Schema to validate a claim which is a union of the previous defined schemas.
  */
 export const claimScheme = z.union([
   base64ImageSchema,
   dateThatCanExpireSchema,
+  amountSchema,
   // In case there isn't a schema for a specific label, we fallback to simply parsing the value
   baseClaimSchemaExtracted.pipe(
     z.union([
