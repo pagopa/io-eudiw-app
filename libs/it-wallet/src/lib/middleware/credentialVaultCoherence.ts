@@ -2,6 +2,7 @@ import { removeCredential, selectCredentials } from '../store/credentials';
 import { wellKnownCredential } from '../utils/credentials';
 import { CredentialsVault } from '../utils/itwCredentialVault';
 import { WalletCombinedRootState, WalletDispatch } from '../store';
+import { AppStartListening } from './types';
 
 /**
  * Reconciles the Redux credentials slice with the vault after redux-persist
@@ -20,7 +21,7 @@ import { WalletCombinedRootState, WalletDispatch } from '../store';
  * This must be called once at startup, after the store has been fully
  * rehydrated by redux-persist (PersistGate guarantees this).
  */
-export const reconcileCredentialVaultCoherence = async (
+const reconcileCredentialVaultCoherence = async (
   dispatch: WalletDispatch,
   getState: () => WalletCombinedRootState
 ) => {
@@ -61,4 +62,30 @@ export const reconcileCredentialVaultCoherence = async (
         }
       })
   );
+};
+
+/**
+ * Registers a one-shot listener that runs the vault/Redux reconciliation
+ * on the first action dispatched after the wallet listeners are mounted,
+ * then unsubscribes itself. This is the single entry-point the host app
+ * uses (via `addWalletListeners`) to wire reconciliation; the function
+ * itself stays private to the wallet library.
+ */
+export const addCredentialVaultCoherenceListener = (
+  startAppListening: AppStartListening
+) => {
+  const unsubscribe = startAppListening({
+    predicate: () => true,
+    effect: async (_action, listenerApi) => {
+      unsubscribe();
+      try {
+        await reconcileCredentialVaultCoherence(
+          listenerApi.dispatch,
+          listenerApi.getState
+        );
+      } catch {
+        /* swallow: drift will be retried at the next app boot */
+      }
+    }
+  });
 };
