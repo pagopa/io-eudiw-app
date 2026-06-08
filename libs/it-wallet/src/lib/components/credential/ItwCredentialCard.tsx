@@ -4,7 +4,10 @@ import { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredentialStatus';
 import { CardColorScheme, ItwCredentialStatus } from '../../types';
-import { getCredentialNameByType } from '../../utils/credentials';
+import {
+  getCredentialNameByType,
+  wellKnownCredential
+} from '../../utils/credentials';
 import {
   tagPropsByStatus,
   useBorderColorByStatus,
@@ -128,7 +131,11 @@ export const ItwCredentialCard = ({
         credentialType={credentialType}
         colorScheme={colorScheme}
       />
-      <View style={[styles.border, { borderColor: borderColorMap[status] }]} />
+      {credentialType !== wellKnownCredential.BONUS_PARI && (
+        <View
+          style={[styles.border, { borderColor: borderColorMap[status] }]}
+        />
+      )}
     </View>
   );
 };
