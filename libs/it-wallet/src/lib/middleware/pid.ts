@@ -8,10 +8,8 @@ import * as WebBrowser from 'expo-web-browser';
 import WALLET_ROUTES from '../navigation/wallet/routes';
 import { serializeErrorOrUnknown } from '../utils/errors';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
-import {
-  addPidWithIdentification,
-  persistCredential
-} from '../store/credentials';
+import { addPidWithIdentification } from '../store/credentials';
+import { persistCredential } from './credential';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
 import { setPidPersistError } from '../store/pidIssuance';
 import { selectPendingCredential } from '../store/selectors/pidIssuance';

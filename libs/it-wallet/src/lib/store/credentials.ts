@@ -1,6 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
-import { serializeError } from 'serialize-error';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import {
   preferencesReset,
@@ -12,8 +11,6 @@ import {
   StoredCredential,
   StoredCredentialMetadata
 } from '../utils/itwTypesUtils';
-import { CredentialsVault } from '../utils/itwCredentialVault';
-import { createAppAsyncThunk } from '../middleware/thunk';
 import { WalletCombinedRootState } from '.';
 import { resetLifecycle } from './lifecycle';
 import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
@@ -125,30 +122,6 @@ export const {
   addPidWithIdentification,
   itwSetClaimValuesHidden
 } = credentialsSlice.actions;
-
-/**
- * Persists a credential bundle: writes the encoded SD-JWT/MDOC to the
- * vault first, and only on success commits the metadata to the Redux
- * slice. If the vault write fails, Redux is left untouched and the error
- * is propagated via `rejectWithValue` so the caller can surface it.
- */
-export const persistCredential = createAppAsyncThunk<
-  StoredCredentialMetadata,
-  { credential: StoredCredential },
-  { rejectValue: string }
->(
-  'credentials/persist',
-  async ({ credential }, { dispatch, rejectWithValue }) => {
-    const { credential: encoded, ...metadata } = credential;
-    try {
-      await CredentialsVault.store(metadata.credentialType, encoded);
-    } catch (error) {
-      return rejectWithValue(JSON.stringify(serializeError(error)));
-    }
-    dispatch(addCredential({ credential: metadata }));
-    return metadata;
-  }
-);
 
 export const selectCredentials = (state: WalletCombinedRootState) =>
   state.wallet.credentials.credentials;

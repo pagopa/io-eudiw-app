@@ -7,6 +7,7 @@ import {
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import { t } from 'i18next';
+import { serializeError } from 'serialize-error';
 import {
   resetCredentialIssuance,
   selectRequestedCredential,
@@ -18,8 +19,8 @@ import {
   setCredentialIssuancePreAuthSuccess
 } from '../store/credentialIssuance';
 import {
+  addCredential,
   addCredentialWithIdentification,
-  persistCredential,
   selectCredential
 } from '../store/credentials';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
@@ -28,12 +29,17 @@ import { CredentialsVault } from '../utils/itwCredentialVault';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { createWalletFetch } from '../utils/fetch';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
-import { CredentialFormat } from '../utils/itwTypesUtils';
+import {
+  CredentialFormat,
+  StoredCredential,
+  StoredCredentialMetadata
+} from '../utils/itwTypesUtils';
 import {
   getWalletInstanceAttestationThunk,
   getWalletUnitAttestationThunk
 } from './attestation';
 import { getEnv } from '@io-eudiw-app/env';
+import { createAppAsyncThunk } from './thunk';
 import { AppListenerWithAction, AppStartListening } from './types';
 import {
   raceEffect,
@@ -57,6 +63,30 @@ import { serializeErrorOrUnknown } from '../utils/errors';
 type DcqlQuery = Parameters<
   RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']
 >[0];
+
+/**
+ * Persists a credential bundle: writes the encoded SD-JWT/MDOC to the
+ * vault first, and only on success commits the metadata to the Redux
+ * slice. If the vault write fails, Redux is left untouched and the error
+ * is propagated via `rejectWithValue` so the caller can surface it.
+ */
+export const persistCredential = createAppAsyncThunk<
+  StoredCredentialMetadata,
+  { credential: StoredCredential },
+  { rejectValue: string }
+>(
+  'credentials/persist',
+  async ({ credential }, { dispatch, rejectWithValue }) => {
+    const { credential: encoded, ...metadata } = credential;
+    try {
+      await CredentialsVault.store(metadata.credentialType, encoded);
+    } catch (error) {
+      return rejectWithValue(JSON.stringify(serializeError(error)));
+    }
+    dispatch(addCredential({ credential: metadata }));
+    return metadata;
+  }
+);
 
 /**
  * Function which handles the issuance of a credential.
