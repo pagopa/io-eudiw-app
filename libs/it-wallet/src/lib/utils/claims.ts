@@ -297,17 +297,25 @@ const barcodeSchema = z.string().transform(str => ({
 }));
 
 /**
- * Schema to validate an amount claim by appending the euro sign suffix.
+ * Schema to validate an amount claim. The raw value is expressed in euro cents
+ * and is converted to a localized euro currency string.
  */
 const amountSchema = z
   .object({
     id: z.enum(['amount']),
     value: z.union([z.string(), z.number()])
   })
-  .transform(obj => ({
-    value: `${obj.value} €`,
-    type: claimType.string
-  }));
+  .transform(obj => {
+    const cents = typeof obj.value === 'string' ? Number(obj.value) : obj.value;
+    const euros = cents / 100;
+    return {
+      value: new Intl.NumberFormat(getClaimsFullLocale(), {
+        style: 'currency',
+        currency: 'EUR'
+      }).format(euros),
+      type: claimType.string
+    };
+  });
 
 /**
  * Schema to validate a claim which is a union of the previous defined schemas.

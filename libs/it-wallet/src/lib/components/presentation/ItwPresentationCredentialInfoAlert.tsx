@@ -52,6 +52,16 @@ const ItwPresentationCredentialInfoAlert = ({ credential }: Props) => {
     );
   }
 
+  if (credentialType === wellKnownCredential.BONUS_PARI) {
+    return (
+      <Alert
+        testID="itwBonusPariBannerTestID"
+        content={t('presentation.alerts.bonusPari.content', { ns: 'wallet' })}
+        variant="info"
+      />
+    );
+  }
+
   return null;
 };
 

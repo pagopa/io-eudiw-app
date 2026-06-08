@@ -118,6 +118,9 @@
       "edc": {
         "content": "Puoi usare la tua Carta Europea della Disabilità su IO per accedere ai servizi sul territorio italiano, negli stessi contesti d'uso del tuo documento fisico."
       },
+      "bonusPari": {
+        "content": "Il Bonus ha una validità di 15gg. Sarà possibile richiedere un nuovo bonus. L'ottenimento del nuovo bonus è vincolato al monte totale e alle priorità di richiesta."
+      },
       "expired": {
         "content": "Il documento non è più valido. Se sei già in possesso del nuovo documento valido, puoi aggiornare la versione digitale nel Portafoglio"
       },

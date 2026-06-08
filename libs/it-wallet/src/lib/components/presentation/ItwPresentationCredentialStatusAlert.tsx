@@ -34,7 +34,8 @@ type Props = {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const excludedCredentialTypes = [
-  wellKnownCredential.PID
+  wellKnownCredential.PID,
+  wellKnownCredential.BONUS_PARI
 ] satisfies Array<WellKnownCredentialTypes>;
 
 type ExcludedCredentialTypes = (typeof excludedCredentialTypes)[number];
@@ -125,6 +126,12 @@ const ItwPresentationCredentialStatusAlert = ({ credential }: Props) => {
   const { status, message } = useAppSelector(state =>
     itwCredentialStatusSelector(state, credential.credentialType)
   );
+
+  // Bonus Pari uses a dedicated info banner (rendered by ItwPresentationCredentialInfoAlert)
+  // because its 15-day validity would otherwise trigger the generic expiring banner.
+  if (credential.credentialType === wellKnownCredential.BONUS_PARI) {
+    return null;
+  }
 
   const alertType = deriveCredentialAlertType({
     eidStatus,
