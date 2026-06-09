@@ -3,10 +3,23 @@ import { t } from 'i18next';
 import { wellKnownCredential } from './credentials';
 import { ItwCredentialStatus } from './itwTypesUtils';
 
-export const useBorderColorByStatus: () => {
-  [key in ItwCredentialStatus]: string;
-} = () => {
+export const useBorderColorByStatus = (
+  credentialType?: string
+): { [key in ItwCredentialStatus]: string } => {
   const theme = useIOTheme();
+
+  if (credentialType === wellKnownCredential.BONUS_PARI) {
+    const transparent = 'transparent';
+    return {
+      valid: transparent,
+      invalid: transparent,
+      expired: transparent,
+      expiring: transparent,
+      jwtExpired: transparent,
+      jwtExpiring: transparent,
+      unknown: transparent
+    };
+  }
 
   return {
     valid: IOColors[theme['appBackground-primary']],

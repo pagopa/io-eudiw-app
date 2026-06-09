@@ -21,6 +21,7 @@ import {
   itwSetClaimValuesHidden
 } from '../../store/credentials';
 import { ParsedClaimsRecord } from '../../utils/claims';
+import { wellKnownCredential } from '../../utils/credentials';
 import {
   ItwCredentialStatus,
   StoredCredential
@@ -94,6 +95,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
         isFlipped={isFlipped}
         setIsFlipped={setFlipped}
         direction={'updown'}
+        disabled={credential.credentialType === wellKnownCredential.BONUS_PARI}
       >
         <View
           style={[

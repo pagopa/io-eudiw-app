@@ -18,6 +18,7 @@ import {
   useBorderColorByStatus,
   validCredentialStatuses
 } from '../../../utils/itwCredentialUtils';
+import { wellKnownCredential } from '../../../utils/credentials';
 import {
   ItwCredentialStatus,
   StoredCredential
@@ -50,7 +51,7 @@ export const ItwSkeumorphicCard = ({
 }: ItwSkeumorphicCardProps) => {
   const FrontSide = useMemo(
     () => (
-      <CardSideBase status={status}>
+      <CardSideBase status={status} credentialType={credential.credentialType}>
         <CardBackground
           credentialType={credential.credentialType}
           side="front"
@@ -69,7 +70,7 @@ export const ItwSkeumorphicCard = ({
 
   const BackSide = useMemo(
     () => (
-      <CardSideBase status={status}>
+      <CardSideBase status={status} credentialType={credential.credentialType}>
         <CardBackground
           credentialType={credential.credentialType}
           side="back"
@@ -139,18 +140,24 @@ const gradientVariantByStatus: Record<
 
 type CardSideBaseProps = {
   status: ItwCredentialStatus;
+  credentialType: string;
   children: ReactNode;
 };
 
-const CardSideBase = ({ status, children }: CardSideBaseProps) => {
-  const borderColorMap = useBorderColorByStatus();
+const CardSideBase = ({
+  status,
+  credentialType,
+  children
+}: CardSideBaseProps) => {
+  const borderColorMap = useBorderColorByStatus(credentialType);
 
   const [size, setSize] = useState<{ width: number; height: number }>({
     width: 0,
     height: 0
   });
 
-  const statusTagProps = tagPropsByStatus[status];
+  const isBonusPari = credentialType === wellKnownCredential.BONUS_PARI;
+  const statusTagProps = isBonusPari ? undefined : tagPropsByStatus[status];
   const borderColor = borderColorMap[status];
   // Include "jwtExpired" as a valid status because the credential skeumorphic card with this state
   // should not appear faded. Only the "expired" status should be displayed with reduced opacity.
@@ -182,23 +189,25 @@ const CardSideBase = ({ status, children }: CardSideBaseProps) => {
       <View style={[styles.faded, dynamicStyle]} />
 
       {/* Skia Canvas for border and light effect, only displayed if IT-Wallet enabled */}
-      <Canvas
-        style={{
-          position: 'absolute',
-          width: size.width,
-          height: size.height
-        }}
-        testID="itWalletBrandBorderTestID"
-      >
-        {/* Animated gradient border */}
-        <ItwBrandedSkiaBorder
-          width={size.width}
-          height={size.height}
-          variant={gradientVariantByStatus[status]}
-          thickness={4}
-          cornerRadius={8}
-        />
-      </Canvas>
+      {!isBonusPari && (
+        <Canvas
+          style={{
+            position: 'absolute',
+            width: size.width,
+            height: size.height
+          }}
+          testID="itWalletBrandBorderTestID"
+        >
+          {/* Animated gradient border */}
+          <ItwBrandedSkiaBorder
+            width={size.width}
+            height={size.height}
+            variant={gradientVariantByStatus[status]}
+            thickness={4}
+            cornerRadius={8}
+          />
+        </Canvas>
+      )}
     </View>
   );
 };

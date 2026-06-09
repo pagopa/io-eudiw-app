@@ -58,11 +58,14 @@ export const ItwCredentialCard = ({
   const typefacePreference = useAppSelector(selectFontPreference);
   const status = useItwDisplayCredentialStatus(credentialStatus);
   const theme = useThemeColorByCredentialType(credentialType);
-  const borderColorMap = useBorderColorByStatus();
+  const borderColorMap = useBorderColorByStatus(credentialType);
 
   const statusTagProps = useMemo<Tag | undefined>(
-    () => tagPropsByStatus[status],
-    [status]
+    () =>
+      credentialType === wellKnownCredential.BONUS_PARI
+        ? undefined
+        : tagPropsByStatus[status],
+    [status, credentialType]
   );
 
   const { titleColor, titleOpacity, colorScheme } = useMemo<StyleProps>(() => {
@@ -131,11 +134,7 @@ export const ItwCredentialCard = ({
         credentialType={credentialType}
         colorScheme={colorScheme}
       />
-      {credentialType !== wellKnownCredential.BONUS_PARI && (
-        <View
-          style={[styles.border, { borderColor: borderColorMap[status] }]}
-        />
-      )}
+      <View style={[styles.border, { borderColor: borderColorMap[status] }]} />
     </View>
   );
 };

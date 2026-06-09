@@ -339,6 +339,11 @@
       "credentialInvalidStatus": {
         "title": "Credenziale non ottenibile",
         "subtitle": "La credenziale che stai cercando di ottenere in questo momento non è disponibile."
+      },
+      "bonusPariNotRequested": {
+        "title": "Per ottenere il documento devi prima richiedere il bonus sul portale PARI",
+        "subtitle": "Per ottenere il Bonus Elettrodomestici come documento su IT-Wallet, effettua la procedura sul portale PARI.",
+        "action": "Effettua la richiesta"
       }
     }
   },

@@ -14,6 +14,7 @@ import WALLET_ROUTES from '../../navigation/wallet/routes';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { itwIsClaimValueHiddenSelector } from '../../store/credentials';
 import { ParsedClaimsRecord } from '../../utils/claims';
+import { wellKnownCredential } from '../../utils/credentials';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
 import { StoredCredential } from '../../utils/itwTypesUtils';
@@ -44,6 +45,9 @@ const ItwPresentationCredentialCard = ({ credential, parsedClaims }: Props) => {
 
   const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
 
+  const isBonusPari =
+    credential.credentialType === wellKnownCredential.BONUS_PARI;
+
   const handleCardPress = () => {
     navigation.navigate(WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_MODAL, {
       credential,
@@ -63,7 +67,8 @@ const ItwPresentationCredentialCard = ({ credential, parsedClaims }: Props) => {
         <FlipGestureDetector
           isFlipped={isFlipped}
           setIsFlipped={setIsFlipped}
-          onPress={handleCardPress}
+          onPress={isBonusPari ? undefined : handleCardPress}
+          disabled={isBonusPari}
         >
           <ItwSkeumorphicCard
             credential={credential}
@@ -76,12 +81,14 @@ const ItwPresentationCredentialCard = ({ credential, parsedClaims }: Props) => {
         </FlipGestureDetector>
       </CardContainer>
       <VSpacer size={8} />
-      <ContentWrapper style={styles.centeredLayout}>
-        <ItwPresentationCredentialCardFlipButton
-          isFlipped={isFlipped}
-          handleOnPress={handleFlipButtonPress}
-        />
-      </ContentWrapper>
+      {!isBonusPari && (
+        <ContentWrapper style={styles.centeredLayout}>
+          <ItwPresentationCredentialCardFlipButton
+            isFlipped={isFlipped}
+            handleOnPress={handleFlipButtonPress}
+          />
+        </ContentWrapper>
+      )}
     </VStack>
   );
 };
