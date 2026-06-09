@@ -69,7 +69,8 @@
     "react-native-quick-base64": "^2.2.2",
     "react-native-quick-crypto": "0.7.17",
     "redux-persist": "^6.0.0",
-    "rn-qr-generator": "^2.0.0"
+    "rn-qr-generator": "^2.0.0",
+    "react-native-worklets": "catalog:"
   },
   "devDependencies": {
     "@expo/cli": "catalog:",
