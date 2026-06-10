@@ -172,6 +172,7 @@ const obtainCredentialListener: AppListenerWithAction<
     const authorizationServer = authorizationCodeGrant?.authorizationServer;
     // `scope` is REQUIRED in v1.3 offers and absent in v1.4 ones; both grant
     // shapes are assignable to `{ scope?: string }`, so read it structurally.
+    // This will be solved with a new SDK patch version
     const offerScope = (
       authorizationCodeGrant as { scope?: string } | undefined
     )?.scope;
