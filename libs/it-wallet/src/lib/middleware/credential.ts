@@ -164,7 +164,8 @@ const obtainCredentialListener: AppListenerWithAction<
     // more than one), as well as the `scope` and `issuer_state` that must be
     // forwarded to the PAR.
     const authorizationCodeGrant = offer
-      ? wallet.CredentialsOffer.extractGrantDetails(offer).authorizationCodeGrant
+      ? wallet.CredentialsOffer.extractGrantDetails(offer)
+          .authorizationCodeGrant
       : undefined;
 
     // Forwarded to the Issuer metadata discovery (fetchMetadata).
