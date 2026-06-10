@@ -21,7 +21,9 @@ export const startUserAuthorization: IssuanceApi['startUserAuthorization'] =
       wiaCryptoContext,
       walletInstanceAttestation,
       redirectUri,
-      appFetch = fetch
+      appFetch = fetch,
+      scope,
+      issuerState
     } = ctx;
 
     const clientId = await wiaCryptoContext.getPublicKey().then(_ => _.kid);
@@ -76,6 +78,11 @@ export const startUserAuthorization: IssuanceApi['startUserAuthorization'] =
       authorization_details: credentialDefinition,
       codeChallengeMethodsSupported: ['S256'],
       redirectUri,
+      // When the issuance is started from a Credential Offer, the `scope` and
+      // `issuer_state` carried by the authorization_code grant are forwarded to
+      // the PAR. They are `undefined` (and thus omitted) for the regular flow.
+      scope,
+      issuerState,
       dpop: {
         signer: wiaSigner
       }

@@ -159,13 +159,22 @@ const obtainCredentialListener: AppListenerWithAction<
 
     const pid = selectCredential(wellKnownCredential.PID)(state);
 
-    // When started from a credential offer, the offer may select a specific
-    // authorization server (required when the Issuer relies on more than one).
-    // It is forwarded to the Issuer metadata discovery (fetchMetadata).
-    const authorizationServer = offer
-      ? wallet.CredentialsOffer.extractGrantDetails(offer)
-          .authorizationCodeGrant.authorizationServer
+    // When started from a credential offer, the authorization_code grant may
+    // carry a specific authorization server (required when the Issuer relies on
+    // more than one), as well as the `scope` and `issuer_state` that must be
+    // forwarded to the PAR.
+    const authorizationCodeGrant = offer
+      ? wallet.CredentialsOffer.extractGrantDetails(offer).authorizationCodeGrant
       : undefined;
+
+    // Forwarded to the Issuer metadata discovery (fetchMetadata).
+    const authorizationServer = authorizationCodeGrant?.authorizationServer;
+    // `scope` is REQUIRED in v1.3 offers and absent in v1.4 ones; both grant
+    // shapes are assignable to `{ scope?: string }`, so read it structurally.
+    const offerScope = (
+      authorizationCodeGrant as { scope?: string } | undefined
+    )?.scope;
+    const issuerState = authorizationCodeGrant?.issuerState;
 
     // Evaluate issuer trust
     const { issuerConf } = await wallet.CredentialIssuance.evaluateIssuerTrust(
@@ -197,7 +206,9 @@ const obtainCredentialListener: AppListenerWithAction<
           walletInstanceAttestation,
           redirectUri,
           wiaCryptoContext,
-          appFetch
+          appFetch,
+          scope: offerScope,
+          issuerState
         }
       );
 
