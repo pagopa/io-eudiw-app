@@ -8,6 +8,7 @@ import {
   InvalidCredentialOfferError
 } from '../common/errors';
 import type { OfferApi } from '../api';
+import { sdkConfigV1_3 } from '../../../utils/config';
 
 /**
  * v1.3.3 implementation — first step of the User Request Flow
@@ -37,22 +38,13 @@ export const resolveCredentialOffer: OfferApi['resolveCredentialOffer'] =
 
     // Parse the URI and fetch the offer when transmitted by reference
     const resolved = await sdkResolveCredentialOffer({
+      config : sdkConfigV1_3,
       credentialOffer,
       //@ts-expect-error - temp
       callbacks: { fetch: fetchFn }
     }).catch((e: unknown) => {
       if (e instanceof CredentialOfferError) {
         throw new InvalidQRCodeError(e.message);
-      }
-      throw e;
-    });
-
-    // Structural validation (no metadata cross-checks at this stage)
-    await validateCredentialOffer({
-      credentialOffer: resolved
-    }).catch((e: unknown) => {
-      if (e instanceof CredentialOfferError) {
-        throw new InvalidCredentialOfferError(e.message);
       }
       throw e;
     });

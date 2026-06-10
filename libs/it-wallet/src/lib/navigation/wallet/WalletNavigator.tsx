@@ -37,7 +37,7 @@ import DeepLinkHandler, {
 import DeepLinkError, {
   DeepLinkErrorParams
 } from '../../screens/deeplink/DeepLinkError';
-import CredentialOffer, {
+import ResolvedCredentialOffer, {
   CredentialOfferParams
 } from '../../screens/deeplink/CredentialOffer';
 import PresentationProximityFailure, {
@@ -117,7 +117,7 @@ const WalletNavigator = () => (
       />
       <Stack.Screen
         name={WALLET_ROUTES.CREDENTIAL_OFFER.ISSUANCE}
-        component={CredentialOffer}
+        component={ResolvedCredentialOffer}
         options={{ headerShown: false }}
       />
     </Stack.Group>

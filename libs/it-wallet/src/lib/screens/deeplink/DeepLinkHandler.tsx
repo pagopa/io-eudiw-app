@@ -76,12 +76,11 @@ const DeepLinkHandler = ({ route, navigation }: Props) => {
         if (parsed.kind === 'presentation') {
           navigation.replace('PRESENTATION_PRE_DEFINITION', parsed.params);
         } else {
-          const { issuerUrl, credentialConfigId } = await dispatch(
+          const offer = await dispatch(
             resolveCredentialOfferThunk({ url })
           ).unwrap();
           navigation.replace('CREDENTIAL_OFFER_ISSUANCE', {
-            issuerUrl,
-            credentialConfigId
+            offer
           });
         }
       } catch {

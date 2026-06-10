@@ -72,13 +72,17 @@ export type RemotePresentationDetails = {
 type ClientMetadata = {
   jwks: jsonWebKeySet;
   encrypted_response_enc_values_supported: string[];
-  client_id: string;
-  client_name: string;
-  logo_uri: string;
-  application_type: 'web';
-  request_uris: string[];
-  response_uris: string[];
   vp_formats_supported: Record<string, { 'sd-jwt_alg_values'?: string[] }>;
+  // Optional in the @pagopa/io-wallet-oid4vp request schema
+  // (zOpenid4vpAuthorizationRequestPayload). Only jwks,
+  // encrypted_response_enc_values_supported and vp_formats_supported are
+  // guaranteed by that schema; the rest may be absent.
+  client_id?: string;
+  client_name?: string;
+  logo_uri?: string;
+  application_type?: 'web';
+  request_uris?: string[];
+  response_uris?: string[];
 };
 
 /**

@@ -17,10 +17,10 @@ import {
 } from '../../store/credentialIssuance';
 import { selectCredentials } from '../../store/credentials';
 import { getCredentialTypeByConfigId } from '../../utils/credentials';
+import { ResolvedCredentialOffer } from '../../types';
 
 export type CredentialOfferParams = {
-  issuerUrl: string;
-  credentialConfigId: string;
+  offer: ResolvedCredentialOffer;
 };
 
 type Props = StackScreenProps<
@@ -63,7 +63,8 @@ const CredentialOffer = ({ route, navigation }: Props) => {
     handledRef.current = true;
 
     try {
-      const { issuerUrl, credentialConfigId } = route.params;
+      const { offer } = route.params;
+      const [credentialConfigId] = offer.credential_configuration_ids;
 
       // If the offered credential is already in the wallet, there is nothing
       // to issue: inform the user and let them go back to the Wallet Home.
@@ -78,12 +79,13 @@ const CredentialOffer = ({ route, navigation }: Props) => {
 
       if (shouldIssuePidFirst) {
         // The wallet is not active yet: prompt the user to activate it,
-        // carrying the offered credential so its issuance resumes once the
-        // PID has been obtained.
+        // carrying the whole offer so its issuance resumes against the right
+        // issuer once the PID has been obtained.
         navigation.replace(WALLET_ROUTES.PRESENTATION.WALLET_NOT_ACTIVE, {
           pendingCredential: {
             credential: credentialConfigId,
-            issuerUrl
+            issuerUrl: offer.credential_issuer,
+            offer
           }
         });
         return;
@@ -93,8 +95,7 @@ const CredentialOffer = ({ route, navigation }: Props) => {
       // until the required claims are available.
       dispatch(
         setCredentialIssuancePreAuthRequest({
-          credential: credentialConfigId,
-          issuerUrl
+          offer
         })
       );
       navigation.replace(WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST);

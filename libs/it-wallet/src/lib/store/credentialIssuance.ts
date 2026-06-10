@@ -16,6 +16,7 @@ import {
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
 import { resetLifecycle } from './lifecycle';
+import { ResolvedCredentialOffer } from '../types';
 
 export type RequestedCredential = string | undefined;
 type RequestedCredentialType = string | undefined;
@@ -34,6 +35,13 @@ type CredentialIssuanceStatusSlice = {
    * offer) it overrides the default EAA provider configured via env.
    */
   requestedCredentialIssuerUrl: string | undefined;
+  /**
+   * The resolved credential offer that originated the issuance, when the flow
+   * was started from one. The issuance listener needs the whole offer (not just
+   * the derived config id/issuer URL) to validate it and to forward the selected
+   * `authorization_server` to the Issuer metadata discovery.
+   */
+  requestedCredentialOffer: ResolvedCredentialOffer | undefined;
   statusPreAuth: AsyncStatusValues<ObtainCredentialPreAuthResult>;
   statusPostAuth: AsyncStatusValues<StoredCredential>;
 };
@@ -43,6 +51,7 @@ const initialState: CredentialIssuanceStatusSlice = {
   requestedCredential: undefined,
   requestedCredentialType: undefined,
   requestedCredentialIssuerUrl: undefined,
+  requestedCredentialOffer: undefined,
   statusPreAuth: setInitial(),
   statusPostAuth: setInitial()
 };
@@ -57,13 +66,23 @@ const credentialIssuanceStatusSlice = createSlice({
   reducers: {
     setCredentialIssuancePreAuthRequest: (
       state,
-      action: PayloadAction<{
-        credential: RequestedCredential;
-        issuerUrl?: string;
-      }>
+      action: PayloadAction<
+        | { offer: ResolvedCredentialOffer }
+        | { credential: RequestedCredential; issuerUrl?: string }
+      >
     ) => {
-      state.requestedCredential = action.payload.credential;
-      state.requestedCredentialIssuerUrl = action.payload.issuerUrl;
+      if ('offer' in action.payload) {
+        // Issuance started from a credential offer: keep the whole offer around
+        // and derive the credential config id and issuer URL from it.
+        const { offer } = action.payload;
+        state.requestedCredentialOffer = offer;
+        state.requestedCredential = offer.credential_configuration_ids[0];
+        state.requestedCredentialIssuerUrl = offer.credential_issuer;
+      } else {
+        state.requestedCredentialOffer = undefined;
+        state.requestedCredential = action.payload.credential;
+        state.requestedCredentialIssuerUrl = action.payload.issuerUrl;
+      }
       state.statusPreAuth = setLoading();
     },
     setCredentialIssuancePreAuthError: (
@@ -140,6 +159,10 @@ export const selectRequestedCredential = (state: WalletCombinedRootState) =>
 export const selectRequestedCredentialIssuerUrl = (
   state: WalletCombinedRootState
 ) => state.wallet.credentialIssuanceStatus.requestedCredentialIssuerUrl;
+
+export const selectRequestedCredentialOffer = (
+  state: WalletCombinedRootState
+) => state.wallet.credentialIssuanceStatus.requestedCredentialOffer;
 
 export const selectRequestedCredentialType = (state: WalletCombinedRootState) =>
   state.wallet.credentialIssuanceStatus.requestedCredentialType;

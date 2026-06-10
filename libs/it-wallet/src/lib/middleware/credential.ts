@@ -11,6 +11,7 @@ import {
   resetCredentialIssuance,
   selectRequestedCredential,
   selectRequestedCredentialIssuerUrl,
+  selectRequestedCredentialOffer,
   setCredentialIssuancePostAuthError,
   setCredentialIssuancePostAuthRequest,
   setCredentialIssuancePostAuthSuccess,
@@ -54,18 +55,11 @@ import {
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { serializeErrorOrUnknown } from '../utils/errors';
 import { createAppAsyncThunk } from './thunk';
+import { ResolvedCredentialOffer } from '../types';
 
 type DcqlQuery = Parameters<
   RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']
 >[0];
-
-/**
- * Resolved credential offer data needed to start the issuance flow.
- */
-type ResolvedCredentialOffer = {
-  issuerUrl: string;
-  credentialConfigId: string;
-};
 
 /**
  * Thunk which resolves and validates a credential offer received via deep link
@@ -97,10 +91,7 @@ export const resolveCredentialOfferThunk = createAppAsyncThunk<
         );
       }
 
-      return {
-        issuerUrl: offer.credential_issuer,
-        credentialConfigId
-      };
+      return offer;
     } catch (error) {
       return rejectWithValue(serializeErrorOrUnknown(error));
     }
@@ -136,6 +127,9 @@ const obtainCredentialListener: AppListenerWithAction<
     // provided alongside the request and overrides the default EAA provider.
     const issuerUrl =
       selectRequestedCredentialIssuerUrl(state) ?? defaultIssuerUrl;
+    // The whole resolved offer, when the issuance was started from one. It is
+    // needed to validate the offer and to select the authorization server.
+    const offer = selectRequestedCredentialOffer(state);
     // Checks if the wallet instance attestation needs to be requested
     if (shouldRequestWalletInstanceAttestationSelector(state)) {
       await listenerApi.dispatch(getWalletInstanceAttestationThunk());
@@ -165,13 +159,34 @@ const obtainCredentialListener: AppListenerWithAction<
 
     const pid = selectCredential(wellKnownCredential.PID)(state);
 
+    // When started from a credential offer, the offer may select a specific
+    // authorization server (required when the Issuer relies on more than one).
+    // It is forwarded to the Issuer metadata discovery (fetchMetadata).
+    const authorizationServer = offer
+      ? wallet.CredentialsOffer.extractGrantDetails(offer)
+          .authorizationCodeGrant.authorizationServer
+      : undefined;
+
     // Evaluate issuer trust
     const { issuerConf } = await wallet.CredentialIssuance.evaluateIssuerTrust(
       issuerUrl,
       {
-        appFetch
+        appFetch,
+        authorizationServer
       }
     );
+
+    // Validate the credential offer against the resolved Issuer metadata,
+    // enforcing the authorization_server requirement for Issuers relying on
+    // multiple authorization servers.
+    if (offer) {
+      wallet.CredentialsOffer.validateCredentialOffer({
+        offer,
+        credentialIssuerMetadata: issuerConf.authorization_servers
+          ? { authorization_servers: issuerConf.authorization_servers }
+          : undefined
+      });
+    }
 
     const { issuerRequestUri, clientId, codeVerifier } =
       await wallet.CredentialIssuance.startUserAuthorization(
