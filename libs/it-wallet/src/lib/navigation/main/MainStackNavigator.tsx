@@ -26,15 +26,6 @@ export type MainNavigatorParamsList = {
   [MAIN_ROUTES.SHOW_QR]: undefined;
 };
 
-export const LINKING_SCHEMES = [
-  'haip://',
-  'openid4vp://',
-  'eudi-openid4vp://',
-  'mdoc-openid4vp://',
-  'openid-credential-offer://',
-  'haip-vci://'
-];
-
 /**
  * All supported deep link schemes resolve to the centralized {@link DeepLinkHandler}
  * screen. React Navigation strips the scheme before matching, so routing per

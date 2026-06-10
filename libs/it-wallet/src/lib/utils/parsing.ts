@@ -38,8 +38,8 @@ export const presentationLinkToUrl = (
     throw new Error('Invalid presentation link');
   }
   return {
-    request_uri: decodeURIComponent(request_uri),
-    client_id: decodeURIComponent(client_id),
+    request_uri: request_uri,
+    client_id: client_id,
     state: state ?? undefined,
     request_uri_method
   };

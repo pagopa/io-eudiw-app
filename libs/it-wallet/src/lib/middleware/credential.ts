@@ -170,12 +170,7 @@ const obtainCredentialListener: AppListenerWithAction<
 
     // Forwarded to the Issuer metadata discovery (fetchMetadata).
     const authorizationServer = authorizationCodeGrant?.authorizationServer;
-    // `scope` is REQUIRED in v1.3 offers and absent in v1.4 ones; both grant
-    // shapes are assignable to `{ scope?: string }`, so read it structurally.
-    // This will be solved with a new SDK patch version
-    const offerScope = (
-      authorizationCodeGrant as { scope?: string } | undefined
-    )?.scope;
+    const offerScope = authorizationCodeGrant?.scope;
     const issuerState = authorizationCodeGrant?.issuerState;
 
     // Evaluate issuer trust
@@ -195,7 +190,7 @@ const obtainCredentialListener: AppListenerWithAction<
         offer,
         credentialIssuerMetadata: issuerConf.authorization_servers
           ? { authorization_servers: issuerConf.authorization_servers }
-          : undefined
+          : {}
       });
     }
 
