@@ -38,7 +38,7 @@ export const resolveCredentialOffer: OfferApi['resolveCredentialOffer'] =
 
     // Parse the URI and fetch the offer when transmitted by reference
     const resolved = await sdkResolveCredentialOffer({
-      config : sdkConfigV1_3,
+      config: sdkConfigV1_3,
       credentialOffer,
       //@ts-expect-error - temp
       callbacks: { fetch: fetchFn }

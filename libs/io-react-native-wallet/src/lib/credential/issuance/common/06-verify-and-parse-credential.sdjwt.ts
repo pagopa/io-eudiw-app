@@ -180,7 +180,7 @@ async function verifyCredentialSdJwt(
   });
 
   const [verifiedCredential, holderBindingKey] = await Promise.all([
-    sdJwtInstance.verify(rawCredential, {skewSeconds : 30}),
+    sdJwtInstance.verify(rawCredential, { skewSeconds: 30 }),
     holderBindingContext.getPublicKey()
   ]);
 
