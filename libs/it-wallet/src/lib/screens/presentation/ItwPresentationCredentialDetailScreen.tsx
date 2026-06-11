@@ -229,11 +229,11 @@ const ItwPresentationCredentialDetail = ({
         <VStack space={24}>
           <ItwPresentationCredentialStatusAlert
             credential={credential}
-            capabilities={capabilities}
+            suppressStatusAlert={capabilities.suppressStatusAlert}
           />
           <ItwPresentationCredentialInfoAlert
             credential={credential}
-            capabilities={capabilities}
+            infoAlert={capabilities.infoAlert}
           />
           {barcodeClaim?.parsed?.value &&
             typeof barcodeClaim.parsed.value === 'string' && (

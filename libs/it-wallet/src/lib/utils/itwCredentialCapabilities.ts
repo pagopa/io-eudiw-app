@@ -1,7 +1,7 @@
 import type { ParseKeys } from 'i18next';
 import { wellKnownCredential } from './credentials';
 
-type CredentialInfoAlert = {
+export type CredentialInfoAlert = {
   testID: string;
   contentI18nKey: ParseKeys<'wallet'>;
 };
@@ -31,6 +31,20 @@ const DEFAULT_CAPABILITIES: ItwCredentialCapabilities = {
 };
 
 const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
+  [wellKnownCredential.DRIVING_LICENSE]: {
+    ...DEFAULT_CAPABILITIES,
+    infoAlert: {
+      testID: 'itwMdlBannerTestID',
+      contentI18nKey: 'presentation.alerts.mdl.content'
+    }
+  },
+  [wellKnownCredential.DISABILITY_CARD]: {
+    ...DEFAULT_CAPABILITIES,
+    infoAlert: {
+      testID: 'itwEdcBannerTestID',
+      contentI18nKey: 'presentation.alerts.edc.content'
+    }
+  },
   [wellKnownCredential.BONUS_PARI]: {
     showStatusTag: false,
     showAnimatedBorder: false,

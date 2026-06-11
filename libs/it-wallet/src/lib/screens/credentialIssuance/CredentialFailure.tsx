@@ -14,8 +14,10 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
+import { Errors } from '@io-eudiw-app/io-react-native-wallet';
 
-const CREDENTIAL_INVALID_STATUS_CODE = 'ERR_CREDENTIAL_INVALID_STATUS';
+const CREDENTIAL_INVALID_STATUS_CODE =
+  Errors.IssuerResponseErrorCodes.CredentialInvalidStatus;
 
 const isCredentialInvalidStatusError = (error: unknown): boolean =>
   typeof error === 'object' &&
@@ -58,7 +60,11 @@ const CredentialFailure = () => {
         action={{
           accessibilityLabel: t(invalidStatusFailure.actionI18nKey),
           label: t(invalidStatusFailure.actionI18nKey),
-          onPress: () => openWebUrl(invalidStatusFailure.actionUrl, () => null)
+          onPress: () => {
+            openWebUrl(invalidStatusFailure.actionUrl, () => null);
+            dispatch(resetCredentialIssuance());
+            navigateToWallet();
+          }
         }}
         secondaryAction={{
           accessibilityLabel: t('common:buttons.close'),

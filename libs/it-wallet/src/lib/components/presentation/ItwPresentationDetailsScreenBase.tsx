@@ -49,8 +49,7 @@ const ItwPresentationDetailsScreenBase = ({
     supportRequest: true,
     enableDiscreteTransition: true,
     animatedRef: animatedScrollViewRef,
-    ...headerProps,
-    variant: 'neutral'
+    ...headerProps
   });
 
   const actions: IOScrollViewActions | undefined = ctaProps

@@ -7,10 +7,7 @@ import { View } from 'react-native';
 import { useItwRemoveCredentialWithConfirm } from '../../hooks/useItwRemoveCredentialWithConfirm';
 import { itwCredentialsPidStatusSelector } from '../../store/credentials';
 import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
-import {
-  wellKnownCredential,
-  WellKnownCredentialTypes
-} from '../../utils/credentials';
+import { wellKnownCredential } from '../../utils/credentials';
 import { format } from '../../utils/dates';
 import { getCredentialExpireDays } from '../../utils/itwClaimsUtils';
 import {
@@ -20,7 +17,6 @@ import {
 } from '../../utils/itwTypesUtils';
 import { ClaimsLocales, getClaimsFullLocale } from '../../utils/locale';
 import { ItwPidLifecycleAlert } from '../ItwPidLifecycleAlert';
-import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { useAppSelector } from '../../store';
 import {
   IOMarkdown,
@@ -31,16 +27,8 @@ import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigato
 
 type Props = {
   credential: StoredCredential;
-  capabilities: ItwCredentialCapabilities;
+  suppressStatusAlert: boolean;
 };
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const excludedCredentialTypes = [
-  wellKnownCredential.PID,
-  wellKnownCredential.BONUS_PARI
-] satisfies Array<WellKnownCredentialTypes>;
-
-type ExcludedCredentialTypes = (typeof excludedCredentialTypes)[number];
 
 const LICENSE_RENEWAL_URL = 'https://www.mit.gov.it/rinnovo-patente';
 
@@ -123,7 +111,7 @@ const deriveCredentialAlertType = (
  */
 const ItwPresentationCredentialStatusAlert = ({
   credential,
-  capabilities
+  suppressStatusAlert
 }: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
@@ -135,7 +123,7 @@ const ItwPresentationCredentialStatusAlert = ({
   // Credentials with a dedicated info banner (e.g. Bonus Pari, whose 15-day
   // validity would otherwise trigger the generic expiring banner) suppress
   // the generic status alert.
-  if (capabilities.suppressStatusAlert) {
+  if (suppressStatusAlert) {
     return null;
   }
 
@@ -210,12 +198,7 @@ const DocumentExpiringAlert = ({ credential }: CredentialStatusAlertProps) => {
   const showCta =
     credential.credentialType === wellKnownCredential.DRIVING_LICENSE;
 
-  const bottomSheetNs = `presentation.bottomSheets.${
-    credential.credentialType as Exclude<
-      WellKnownCredentialTypes,
-      ExcludedCredentialTypes
-    >
-  }.expiring` as const;
+  const bottomSheetNs = `presentation.bottomSheets.${credential.credentialType}.expiring`;
 
   const handleCtaPress = useCallback(() => {
     openWebUrl(LICENSE_RENEWAL_URL, () =>
