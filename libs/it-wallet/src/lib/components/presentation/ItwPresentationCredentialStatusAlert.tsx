@@ -131,7 +131,9 @@ const ItwPresentationCredentialStatusAlert = ({ credential }: Props) => {
   // Credentials with a dedicated info banner (e.g. Bonus Pari, whose 15-day
   // validity would otherwise trigger the generic expiring banner) suppress
   // the generic status alert.
-  if (getCredentialCapabilities(credential.credentialType).suppressStatusAlert) {
+  if (
+    getCredentialCapabilities(credential.credentialType).suppressStatusAlert
+  ) {
     return null;
   }
 
