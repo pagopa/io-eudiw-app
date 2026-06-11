@@ -18,7 +18,7 @@ import {
   useBorderColorByStatus,
   validCredentialStatuses
 } from '../../../utils/itwCredentialUtils';
-import { getCredentialCapabilities } from '../../../utils/itwCredentialCapabilities';
+import { ItwCredentialCapabilities } from '../../../utils/itwCredentialCapabilities';
 import {
   ItwCredentialStatus,
   StoredCredential
@@ -36,6 +36,7 @@ type ItwSkeumorphicCardProps = {
   credential: StoredCredential;
   status: ItwCredentialStatus;
   valuesHidden: boolean;
+  capabilities: ItwCredentialCapabilities;
   isFlipped?: boolean;
   claims: ParsedClaimsRecord;
   mode: CardMode;
@@ -46,12 +47,17 @@ export const ItwSkeumorphicCard = ({
   status,
   isFlipped = false,
   valuesHidden,
+  capabilities,
   claims,
   mode
 }: ItwSkeumorphicCardProps) => {
   const FrontSide = useMemo(
     () => (
-      <CardSideBase status={status} credentialType={credential.credentialType}>
+      <CardSideBase
+        status={status}
+        credentialType={credential.credentialType}
+        capabilities={capabilities}
+      >
         <CardBackground
           credentialType={credential.credentialType}
           side="front"
@@ -65,12 +71,16 @@ export const ItwSkeumorphicCard = ({
         />
       </CardSideBase>
     ),
-    [credential, status, valuesHidden, claims, mode]
+    [credential, status, valuesHidden, capabilities, claims, mode]
   );
 
   const BackSide = useMemo(
     () => (
-      <CardSideBase status={status} credentialType={credential.credentialType}>
+      <CardSideBase
+        status={status}
+        credentialType={credential.credentialType}
+        capabilities={capabilities}
+      >
         <CardBackground
           credentialType={credential.credentialType}
           side="back"
@@ -84,7 +94,7 @@ export const ItwSkeumorphicCard = ({
         />
       </CardSideBase>
     ),
-    [credential, status, valuesHidden, claims, mode]
+    [credential, status, valuesHidden, capabilities, claims, mode]
   );
 
   const accessibilityProps = useMemo(
@@ -141,12 +151,14 @@ const gradientVariantByStatus: Record<
 type CardSideBaseProps = {
   status: ItwCredentialStatus;
   credentialType: string;
+  capabilities: ItwCredentialCapabilities;
   children: ReactNode;
 };
 
 const CardSideBase = ({
   status,
   credentialType,
+  capabilities,
   children
 }: CardSideBaseProps) => {
   const borderColorMap = useBorderColorByStatus(credentialType);
@@ -156,8 +168,7 @@ const CardSideBase = ({
     height: 0
   });
 
-  const { showStatusTag, showAnimatedBorder } =
-    getCredentialCapabilities(credentialType);
+  const { showStatusTag, showAnimatedBorder } = capabilities;
   const statusTagProps = showStatusTag ? tagPropsByStatus[status] : undefined;
   const borderColor = borderColorMap[status];
   // Include "jwtExpired" as a valid status because the credential skeumorphic card with this state

@@ -20,7 +20,7 @@ import {
 } from '../../utils/itwTypesUtils';
 import { ClaimsLocales, getClaimsFullLocale } from '../../utils/locale';
 import { ItwPidLifecycleAlert } from '../ItwPidLifecycleAlert';
-import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
+import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { useAppSelector } from '../../store';
 import {
   IOMarkdown,
@@ -31,6 +31,7 @@ import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigato
 
 type Props = {
   credential: StoredCredential;
+  capabilities: ItwCredentialCapabilities;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -120,7 +121,10 @@ const deriveCredentialAlertType = (
  * It contains messages that are statically defined in the app's locale or
  * dynamically extracted from the issuer configuration.
  */
-const ItwPresentationCredentialStatusAlert = ({ credential }: Props) => {
+const ItwPresentationCredentialStatusAlert = ({
+  credential,
+  capabilities
+}: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
   const eidStatus = useAppSelector(itwCredentialsPidStatusSelector);
@@ -131,9 +135,7 @@ const ItwPresentationCredentialStatusAlert = ({ credential }: Props) => {
   // Credentials with a dedicated info banner (e.g. Bonus Pari, whose 15-day
   // validity would otherwise trigger the generic expiring banner) suppress
   // the generic status alert.
-  if (
-    getCredentialCapabilities(credential.credentialType).suppressStatusAlert
-  ) {
+  if (capabilities.suppressStatusAlert) {
     return null;
   }
 

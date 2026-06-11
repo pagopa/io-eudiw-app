@@ -14,7 +14,7 @@ import WALLET_ROUTES from '../../navigation/wallet/routes';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { itwIsClaimValueHiddenSelector } from '../../store/credentials';
 import { ParsedClaimsRecord } from '../../utils/claims';
-import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
+import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
 import { StoredCredential } from '../../utils/itwTypesUtils';
@@ -26,13 +26,18 @@ import { useAppSelector } from '../../store';
 type Props = {
   credential: StoredCredential;
   parsedClaims: ParsedClaimsRecord;
+  capabilities: ItwCredentialCapabilities;
 };
 
 /**
  * This component renders the credential card in the presentation screen.
  * If the credential supports the skeumorphic card, it also renders it with the flip button and If L3 is enabled, it shows the badge.
  */
-const ItwPresentationCredentialCard = ({ credential, parsedClaims }: Props) => {
+const ItwPresentationCredentialCard = ({
+  credential,
+  parsedClaims,
+  capabilities
+}: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<WalletNavigatorParamsList>>();
   const [isFlipped, setIsFlipped] = useState(false);
@@ -45,7 +50,7 @@ const ItwPresentationCredentialCard = ({ credential, parsedClaims }: Props) => {
 
   const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
 
-  const { flippable } = getCredentialCapabilities(credential.credentialType);
+  const { flippable } = capabilities;
 
   const handleCardPress = () => {
     navigation.navigate(WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_MODAL, {
@@ -76,6 +81,7 @@ const ItwPresentationCredentialCard = ({ credential, parsedClaims }: Props) => {
             isFlipped={isFlipped}
             status={status}
             valuesHidden={valuesHidden}
+            capabilities={capabilities}
           />
         </FlipGestureDetector>
       </CardContainer>

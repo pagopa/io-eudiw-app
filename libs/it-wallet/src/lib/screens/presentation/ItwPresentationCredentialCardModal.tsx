@@ -57,6 +57,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
   const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
   const isDebugEnabled = useAppSelector(selectIsDebugModeEnabled);
   const { t } = useTranslation(['common', 'wallet']);
+  const capabilities = getCredentialCapabilities(credential.credentialType);
 
   usePreventScreenCapture(isDebugEnabled);
   useMaxBrightness({ useSmoothTransition: true });
@@ -95,9 +96,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
         isFlipped={isFlipped}
         setIsFlipped={setFlipped}
         direction={'updown'}
-        disabled={
-          !getCredentialCapabilities(credential.credentialType).flippable
-        }
+        disabled={!capabilities.flippable}
       >
         <View
           style={[
@@ -115,6 +114,7 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
               status={status}
               isFlipped={isFlipped}
               valuesHidden={valuesHidden}
+              capabilities={capabilities}
             />
           </View>
         </View>

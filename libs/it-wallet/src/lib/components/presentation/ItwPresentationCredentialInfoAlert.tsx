@@ -2,7 +2,7 @@ import { Alert } from '@pagopa/io-app-design-system';
 import { t } from 'i18next';
 import { memo } from 'react';
 import { wellKnownCredential } from '../../utils/credentials';
-import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
+import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import {
   ItwCredentialStatus,
   StoredCredential
@@ -12,6 +12,7 @@ import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
 
 type Props = {
   credential: StoredCredential;
+  capabilities: ItwCredentialCapabilities;
 };
 
 const validStates: Array<ItwCredentialStatus | undefined> = [
@@ -23,7 +24,10 @@ const validStates: Array<ItwCredentialStatus | undefined> = [
 /**
  * Informative alert that is only visible when a credential is in a valid state.
  */
-const ItwPresentationCredentialInfoAlert = ({ credential }: Props) => {
+const ItwPresentationCredentialInfoAlert = ({
+  credential,
+  capabilities
+}: Props) => {
   const { credentialType } = credential;
   const { status } = useAppSelector(state =>
     itwCredentialStatusSelector(state, credential.credentialType)
@@ -53,7 +57,7 @@ const ItwPresentationCredentialInfoAlert = ({ credential }: Props) => {
     );
   }
 
-  const { infoAlert } = getCredentialCapabilities(credentialType);
+  const { infoAlert } = capabilities;
   if (infoAlert) {
     return (
       <Alert
