@@ -65,6 +65,27 @@ const vctToConfigId: Record<string, string> = Object.fromEntries(
 );
 
 /**
+ * Reverse map from credential configuration ID to its corresponding credential
+ * type (VCT / scope). Used to check whether a credential advertised by an offer
+ * has already been obtained.
+ */
+const configIdToCredentialType: Record<string, string> = Object.fromEntries(
+  (Object.keys(wellKnownCredential) as Array<CredentialsKeys>).map(key => [
+    wellKnownCredentialConfigurationIDs[key],
+    wellKnownCredential[key]
+  ])
+);
+
+/**
+ * Given a credential configuration ID (as advertised in a credential offer),
+ * returns the corresponding credential type, or undefined when the configuration
+ * ID does not match any of the well known credentials.
+ */
+export const getCredentialTypeByConfigId = (
+  configId: string
+): string | undefined => configIdToCredentialType[configId];
+
+/**
  * Given a list of VCT values, returns the first matching credential configuration ID.
  * Returns undefined if no match is found.
  */

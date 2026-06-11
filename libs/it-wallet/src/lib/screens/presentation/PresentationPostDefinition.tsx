@@ -231,7 +231,6 @@ const PresentationPostDefinition = ({ route }: Props) => {
             <RequestedCredentialsBlock credentials={credentials} />
           </View>
         ))}
-        <VSpacer size={48} />
         {optional.map(({ purpose, credentials }) => (
           <View key={`optional:${purpose}`}>
             <ListItemCheckbox

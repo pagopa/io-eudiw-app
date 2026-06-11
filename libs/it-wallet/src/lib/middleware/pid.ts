@@ -241,9 +241,19 @@ const addPidWithAuthListener: AppListenerWithAction<
     );
     // Get the pending required credential to be obtained after the Pid
     const pendingCredential = selectPendingCredential(listenerApi.getState());
-    if (pendingCredential) {
+    if (pendingCredential?.credential) {
       listenerApi.dispatch(
-        setCredentialIssuancePreAuthRequest({ credential: pendingCredential })
+        // When the pending credential comes from a credential offer, forward the
+        // whole offer so the issuance can validate it and select the right
+        // authorization server; otherwise fall back to the minimal data.
+        setCredentialIssuancePreAuthRequest(
+          pendingCredential.offer
+            ? { offer: pendingCredential.offer }
+            : {
+                credential: pendingCredential.credential,
+                issuerUrl: pendingCredential.issuerUrl
+              }
+        )
       );
       navigator.navigate(MAIN_ROUTES.WALLET_NAV, {
         screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST

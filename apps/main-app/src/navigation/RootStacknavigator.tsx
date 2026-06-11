@@ -14,7 +14,7 @@ import MiniAppSelection from '../screens/MiniAppSelection';
 import { useAppDispatch, useAppSelector } from '../store';
 import ROOT_ROUTES from './routes';
 import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
-import { navigationRef } from '@io-eudiw-app/navigation';
+import { navigationRef, setUrl } from '@io-eudiw-app/navigation';
 import {
   selectStartupStatus,
   startupSetLoading
@@ -26,7 +26,6 @@ import {
 import { selectSelectedMiniAppId } from '@io-eudiw-app/preferences';
 import { getMiniAppById } from '../utils/miniapp';
 import { Linking } from 'react-native';
-import { setUrl } from '../store/reducers/deeplinking';
 import { t } from 'i18next';
 
 export type RootStackParamList = {
@@ -149,17 +148,12 @@ export const RootStackNavigator = () => {
     },
     subscribe(listener) {
       const onReceiveURL = ({ url }: { url: string }) => {
+        // Always persist the full URL (including its scheme) before letting
+        // React Navigation handle it. The centralized deep link handler reads
+        // this value via `selectUrl` to decide the routing, so it must be set
+        // regardless of the startup state (i.e. also when navigation is ready).
+        dispatch(setUrl({ url }));
         listener(url);
-        if (
-          [
-            'WAIT_IDENTIFICATION',
-            'WAIT_MINI_APP_SELECTION',
-            'LOADING',
-            'NOT_STARTED'
-          ].includes(startupStatus)
-        ) {
-          dispatch(setUrl({ url }));
-        }
       };
 
       const subscription = Linking.addEventListener('url', onReceiveURL);

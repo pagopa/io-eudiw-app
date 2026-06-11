@@ -1,3 +1,4 @@
+import { ioWalletApiByVersion } from '@io-eudiw-app/io-react-native-wallet';
 import { ItwCredentialCardProps } from '../components/credential/ItwCredentialCard';
 import { Prettify } from '../utils/itwTypesUtils';
 
@@ -46,3 +47,12 @@ export interface FederationEntity {
   logo_uri?: string;
   contacts?: Array<string>;
 }
+
+/**
+ * Type alias of `io-react-native-wallet`'s CredentialOffer
+ */
+export type ResolvedCredentialOffer = Awaited<
+  ReturnType<
+    (typeof ioWalletApiByVersion)['1.3.3']['CredentialsOffer']['resolveCredentialOffer']
+  >
+>;

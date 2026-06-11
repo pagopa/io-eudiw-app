@@ -1,7 +1,7 @@
-import { ExtractGrantDetailsOptions } from '@pagopa/io-wallet-oid4vci';
+import { ValidateCredentialOfferOptions } from '@pagopa/io-wallet-oid4vci';
 import type { CredentialOffer, ExtractGrantDetailsResult } from './types';
 
-export interface ExtractGrantDetailsApi {
+export interface ValidateCredentialOfferApi {
   /**
    * Extract grant details from a resolved Credential Offer.
    *
@@ -10,7 +10,8 @@ export interface ExtractGrantDetailsApi {
    *   the grant type and its parameters.
    * @throws {InvalidCredentialOfferError} If no supported grant type is found.
    */
-  extractGrantDetails(
-    offer: ExtractGrantDetailsOptions['credentialOffer']
-  ): ExtractGrantDetailsResult;
+  validateCredentialOffer(options: {
+    offer: ValidateCredentialOfferOptions['credentialOffer'];
+    credentialIssuerMetadata: ValidateCredentialOfferOptions['credentialIssuerMetadata'];
+  }): void;
 }
