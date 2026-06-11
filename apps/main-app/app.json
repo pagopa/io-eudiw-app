@@ -17,7 +17,9 @@
               "haip",
               "openid4vp",
               "eudi-openid4vp",
-              "mdoc-openid4vp"
+              "mdoc-openid4vp",
+              "openid-credential-offer",
+              "haip-vci"
             ]
           }
         ],
@@ -63,6 +65,12 @@
             },
             {
               "scheme": "mdoc-openid4vp"
+            },
+            {
+              "scheme": "openid-credential-offer"
+            },
+            {
+              "scheme": "haip-vci"
             },
             {
               "scheme": "iowallet"

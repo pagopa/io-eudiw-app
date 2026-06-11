@@ -7,3 +7,16 @@ export const PRESENTATION_INTERNAL_LINKS = [
   'eudi-openid4vp://',
   'mdoc-openid4vp://'
 ];
+
+/**
+ * Deep link schema for the credential offer (OID4VCI).
+ */
+export const CREDENTIAL_OFFER_INTERNAL_LINKS = [
+  'openid-credential-offer://',
+  'haip-vci://'
+];
+
+export const LINKING_SCHEMES = [
+  ...PRESENTATION_INTERNAL_LINKS,
+  ...CREDENTIAL_OFFER_INTERNAL_LINKS
+];

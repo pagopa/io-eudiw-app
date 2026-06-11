@@ -4,6 +4,7 @@ import {
 } from '@pagopa/io-wallet-oid4vp';
 import type { RemotePresentationApi } from '../api';
 import { partialCallbacks } from '../../../utils/callbacks';
+import { sdkConfigV1_3 } from '../../../utils/config';
 import { mapSdkAuthorizationResponseError } from './sdkErrorMapper';
 import {
   generateRandomAlphaNumericString,
@@ -125,6 +126,7 @@ export const sendAuthorizationResponse: RemotePresentationApi['sendAuthorization
       );
 
       const { jarm } = await sdkCreateAuthorizationResponse({
+        config: sdkConfigV1_3,
         requestObject,
         rpJwks,
         vp_token,

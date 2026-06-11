@@ -5,6 +5,7 @@ import { createMapper } from '../../../utils/mappers';
 import type { JWK } from '../../../utils/jwk';
 import type { RequestObject } from '../../../credential/presentation';
 import { IssuerConfig } from '../api/IssuerConfig';
+import { InvalidRequestObjectError } from '../../presentation/common/errors';
 
 type CredentialConfigurations =
   IssuerConfig['credential_configurations_supported'];
@@ -45,8 +46,17 @@ export const mapToIssuerConfig = createMapper<
       openid_credential_verifier
     } = x.metadata;
 
+    // The Issuer's own `oauth_authorization_server` always describes the Issuer
+    // itself. When a credential offer selected a *different* Authorization
+    // Server, its metadata is surfaced separately through that server's
+    // federation claims, and the Authorization Server endpoints must be taken
+    // from there. Fall back to the Issuer's own server otherwise.
+    const oauthAuthorizationServer =
+      x.authorization_server_federation_claims?.metadata
+        ?.oauth_authorization_server ?? oauth_authorization_server;
+
     assert(
-      oauth_authorization_server,
+      oauthAuthorizationServer,
       'oauth_authorization_server is required in Issuer metadata'
     );
     assert(
@@ -59,17 +69,18 @@ export const mapToIssuerConfig = createMapper<
     );
 
     return {
-      authorization_endpoint: oauth_authorization_server.authorization_endpoint,
+      authorization_endpoint: oauthAuthorizationServer.authorization_endpoint,
       credential_endpoint: openid_credential_issuer.credential_endpoint,
       credential_issuer: openid_credential_issuer.credential_issuer,
+      authorization_servers: openid_credential_issuer.authorization_servers,
       credential_configurations_supported: mapCredentialConfigurationsSupported(
         openid_credential_issuer
       ),
       keys: openid_credential_issuer.jwks.keys as JWK[],
       verifier_keys: openid_credential_verifier.jwks.keys as JWK[],
       pushed_authorization_request_endpoint:
-        oauth_authorization_server.pushed_authorization_request_endpoint,
-      token_endpoint: oauth_authorization_server.token_endpoint,
+        oauthAuthorizationServer.pushed_authorization_request_endpoint,
+      token_endpoint: oauthAuthorizationServer.token_endpoint,
       nonce_endpoint: openid_credential_issuer.nonce_endpoint!,
       federation_entity: federation_entity ?? {},
       credential_issuance_batch_size:
@@ -84,13 +95,23 @@ export const mapToIssuerConfig = createMapper<
 export const mapToRequestObject = createMapper<
   ParsedAuthorizeRequestResult,
   RequestObject
->(({ payload }) => ({
-  iss: payload.iss ?? 'UNKNOWN_ISSUER',
-  client_id: payload.client_id,
-  dcql_query: payload.dcql_query,
-  nonce: payload.nonce,
-  response_uri: payload.response_uri,
-  state: payload.state,
-  response_mode: payload.response_mode,
-  response_type: payload.response_type
-}));
+>(({ payload }) => {
+  const state = payload.state;
+
+  if (!state) {
+    throw new InvalidRequestObjectError(
+      'The Request Object is missing the required Wstate" claim'
+    );
+  }
+
+  return {
+    iss: payload.iss ?? 'UNKNOWN_ISSUER',
+    client_id: payload.client_id,
+    dcql_query: payload.dcql_query,
+    nonce: payload.nonce,
+    response_uri: payload.response_uri,
+    state,
+    response_mode: payload.response_mode,
+    response_type: payload.response_type
+  };
+});

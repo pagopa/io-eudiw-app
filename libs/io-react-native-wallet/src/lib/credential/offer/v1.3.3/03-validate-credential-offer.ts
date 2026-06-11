@@ -1,7 +1,7 @@
 import {
-  extractGrantDetails as sdkExtractGrantDetails,
+  validateCredentialOffer as sdkValidateCredentialOffer,
   CredentialOfferError,
-  ExtractGrantDetailsOptionsV1_3
+  ValidateCredentialOfferOptionsV1_3
 } from '@pagopa/io-wallet-oid4vci';
 import { InvalidCredentialOfferError } from '../common/errors';
 import { withMappedErrors } from '../../../utils/errors';
@@ -21,13 +21,17 @@ import { sdkConfigV1_3 } from '../../../utils/config';
  * Delegates directly to the SDK's {@link sdkExtractGrantDetails} — no local
  * mapping is needed because the SDK already returns `ExtractGrantDetailsResult`.
  */
-export const extractGrantDetails: OfferApi['extractGrantDetails'] = offer =>
+export const validateCredentialOffer: OfferApi['validateCredentialOffer'] = ({
+  offer,
+  credentialIssuerMetadata
+}) =>
   withMappedErrors(
     () =>
-      sdkExtractGrantDetails({
+      sdkValidateCredentialOffer({
         config: sdkConfigV1_3,
         credentialOffer:
-          offer as ExtractGrantDetailsOptionsV1_3['credentialOffer']
+          offer as ValidateCredentialOfferOptionsV1_3['credentialOffer'],
+        credentialIssuerMetadata: credentialIssuerMetadata
       }),
     CredentialOfferError,
     e => new InvalidCredentialOfferError(e.message)

@@ -50,4 +50,3 @@ overrides:
   zod: '4.3.6'
 patchedDependencies:
   '@pagopa/io-app-design-system': 'patches/@pagopa__io-app-design-system.patch'
-  '@pagopa/io-wallet-oid4vp': patches/@pagopa__io-wallet-oid4vp.patch

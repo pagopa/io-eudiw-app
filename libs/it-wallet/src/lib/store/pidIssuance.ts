@@ -3,6 +3,7 @@ import { createInstanceThunk } from '../middleware/instance';
 import { obtainPidThunk } from '../middleware/pid';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { RequestedCredential } from './credentialIssuance';
+import { ResolvedCredentialOffer } from '../types';
 import {
   AsyncStatusValues,
   setInitial,
@@ -16,6 +17,21 @@ import {
 } from '@io-eudiw-app/preferences';
 import { resetLifecycle } from './lifecycle';
 
+/**
+ * A credential whose issuance is deferred until the PID has been obtained.
+ * Besides the credential configuration id, it optionally carries the issuer URL
+ * and, when the issuance was started from a credential offer, the whole resolved
+ * offer (e.g. coming from a credential offer) so the issuance can resume against
+ * the right issuer once the PID is available.
+ */
+export type PendingCredential =
+  | {
+      credential: RequestedCredential;
+      issuerUrl?: string;
+      offer?: ResolvedCredentialOffer;
+    }
+  | undefined;
+
 /* State type definition for the pidIssuance slice
  * issuanceCreation - Async status for the instance creation
  * issuance - Async status for the PID issuance
@@ -23,7 +39,7 @@ import { resetLifecycle } from './lifecycle';
 type PidIssuanceStatusSlice = {
   instanceCreation: AsyncStatusValues;
   issuance: AsyncStatusValues<StoredCredential>;
-  pendingCredential: RequestedCredential;
+  pendingCredential: PendingCredential;
 };
 
 // Initial state for the pidIssuance slice
@@ -49,9 +65,13 @@ const pidIssuanceStatusSlice = createSlice({
     },
     setPendingCredential: (
       state,
-      action: PayloadAction<{ credential: RequestedCredential }>
+      action: PayloadAction<{
+        credential: RequestedCredential;
+        issuerUrl?: string;
+        offer?: ResolvedCredentialOffer;
+      }>
     ) => {
-      state.pendingCredential = action.payload.credential;
+      state.pendingCredential = action.payload;
     }
   },
   extraReducers: builder => {
