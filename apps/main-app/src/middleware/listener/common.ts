@@ -1,5 +1,5 @@
 import { Linking } from 'react-native';
-import { selectUrl } from '../../store/reducers/deeplinking';
+import { selectUrl } from '@io-eudiw-app/navigation';
 import { AppListener } from './types';
 
 /**

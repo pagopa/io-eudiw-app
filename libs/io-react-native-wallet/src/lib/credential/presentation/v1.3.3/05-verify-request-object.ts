@@ -25,7 +25,7 @@ export const verifyRequestObject: RemotePresentationApi['verifyRequestObject'] =
 
     const rawRequestObject = parsedRequestObject as RawRequestObject;
 
-    const clientIdPrefix = extractClientIdPrefix(clientId);
+    const { prefix: clientIdPrefix } = extractClientIdPrefix(clientId);
 
     if (clientIdPrefix === ClientIdPrefix.X509_HASH) {
       validateX509HashClient(rawRequestObject.header.x5c, clientId);

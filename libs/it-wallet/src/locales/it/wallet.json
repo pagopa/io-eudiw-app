@@ -3,7 +3,13 @@
     "title": "Ottieni IT-Wallet per continuare",
     "body": "Per accedere ai servizi online è necessario attivare IT-Wallet utilizzando la tua Carta di Identità Elettronica (CIE).",
     "confirm": "Ottieni IT-Wallet",
-    "notNow": "Non ora"
+    "notNow": "Non ora",
+    "credentialOffer": {
+      "title": "Attiva IT-Wallet per aggiungere {{credentialName}}",
+      "body": "Potrai aggiungere anche altri documenti digitali e usarli online e dal vivo, ti basta il tuo telefono!",
+      "confirm": "Inizia",
+      "cancel": "Annulla"
+    }
   },
   "credentials": {
     "names": {
@@ -326,7 +332,14 @@
     },
     "failure": {
       "title": "An unexpected error occurred",
-      "subtitle": "Your request to the issuing entity was not successful."
+      "subtitle": "Your request to the issuing entity was not successful.",
+      "button": "I understand"
+    },
+    "alreadyObtained": {
+      "title": "Documento già presente",
+      "subtitle": "Il documento che stai cercando di aggiungere è già presente nel tuo portafoglio.",
+      "button": "Vai al portafoglio",
+      "close": "Chiudi"
     }
   },
   "issuance": {
@@ -400,10 +413,29 @@
       }
     }
   },
+  "credentialOffer": {
+    "loading": {
+      "title": "Stiamo elaborando l'offerta",
+      "subtitle": "Attendi qualche istante."
+    }
+  },
   "tabNavigator": {
     "wallet": "Portafoglio",
     "scanQr": "Inquadra",
     "showQr": "Mostra QR"
+  },
+  "deepLink": {
+    "error": {
+      "qr": {
+        "title": "QR code non valido",
+        "subtitle": "Il codice QR che hai inquadrato non è valido o non è supportato. Riprova con un altro codice."
+      },
+      "link": {
+        "title": "Link non valido",
+        "subtitle": "Il link che hai aperto non è valido o non è supportato. Riprova con un altro link."
+      },
+      "button": "Vai al Portafoglio"
+    }
   },
   "qr": {
     "error": "Unrecognized QR code",
