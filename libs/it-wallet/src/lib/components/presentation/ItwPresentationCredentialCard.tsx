@@ -14,7 +14,7 @@ import WALLET_ROUTES from '../../navigation/wallet/routes';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { itwIsClaimValueHiddenSelector } from '../../store/credentials';
 import { ParsedClaimsRecord } from '../../utils/claims';
-import { wellKnownCredential } from '../../utils/credentials';
+import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
 import { StoredCredential } from '../../utils/itwTypesUtils';
@@ -45,8 +45,7 @@ const ItwPresentationCredentialCard = ({ credential, parsedClaims }: Props) => {
 
   const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
 
-  const isBonusPari =
-    credential.credentialType === wellKnownCredential.BONUS_PARI;
+  const { flippable } = getCredentialCapabilities(credential.credentialType);
 
   const handleCardPress = () => {
     navigation.navigate(WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_MODAL, {
@@ -67,8 +66,8 @@ const ItwPresentationCredentialCard = ({ credential, parsedClaims }: Props) => {
         <FlipGestureDetector
           isFlipped={isFlipped}
           setIsFlipped={setIsFlipped}
-          onPress={isBonusPari ? undefined : handleCardPress}
-          disabled={isBonusPari}
+          onPress={flippable ? handleCardPress : undefined}
+          disabled={!flippable}
         >
           <ItwSkeumorphicCard
             credential={credential}
@@ -81,7 +80,7 @@ const ItwPresentationCredentialCard = ({ credential, parsedClaims }: Props) => {
         </FlipGestureDetector>
       </CardContainer>
       <VSpacer size={8} />
-      {!isBonusPari && (
+      {flippable && (
         <ContentWrapper style={styles.centeredLayout}>
           <ItwPresentationCredentialCardFlipButton
             isFlipped={isFlipped}

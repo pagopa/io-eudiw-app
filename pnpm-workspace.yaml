@@ -51,4 +51,3 @@ overrides:
 patchedDependencies:
   '@pagopa/io-app-design-system': 'patches/@pagopa__io-app-design-system.patch'
   'react-native-barcode-builder': 'patches/react-native-barcode-builder__svg.patch'
-  '@pagopa/io-wallet-oid4vp': patches/@pagopa__io-wallet-oid4vp.patch

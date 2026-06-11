@@ -18,7 +18,7 @@ import {
   useBorderColorByStatus,
   validCredentialStatuses
 } from '../../../utils/itwCredentialUtils';
-import { wellKnownCredential } from '../../../utils/credentials';
+import { getCredentialCapabilities } from '../../../utils/itwCredentialCapabilities';
 import {
   ItwCredentialStatus,
   StoredCredential
@@ -156,8 +156,9 @@ const CardSideBase = ({
     height: 0
   });
 
-  const isBonusPari = credentialType === wellKnownCredential.BONUS_PARI;
-  const statusTagProps = isBonusPari ? undefined : tagPropsByStatus[status];
+  const { showStatusTag, showAnimatedBorder } =
+    getCredentialCapabilities(credentialType);
+  const statusTagProps = showStatusTag ? tagPropsByStatus[status] : undefined;
   const borderColor = borderColorMap[status];
   // Include "jwtExpired" as a valid status because the credential skeumorphic card with this state
   // should not appear faded. Only the "expired" status should be displayed with reduced opacity.
@@ -189,7 +190,7 @@ const CardSideBase = ({
       <View style={[styles.faded, dynamicStyle]} />
 
       {/* Skia Canvas for border and light effect, only displayed if IT-Wallet enabled */}
-      {!isBonusPari && (
+      {showAnimatedBorder && (
         <Canvas
           style={{
             position: 'absolute',

@@ -20,6 +20,7 @@ import {
 } from '../../utils/itwTypesUtils';
 import { ClaimsLocales, getClaimsFullLocale } from '../../utils/locale';
 import { ItwPidLifecycleAlert } from '../ItwPidLifecycleAlert';
+import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { useAppSelector } from '../../store';
 import {
   IOMarkdown,
@@ -127,9 +128,10 @@ const ItwPresentationCredentialStatusAlert = ({ credential }: Props) => {
     itwCredentialStatusSelector(state, credential.credentialType)
   );
 
-  // Bonus Pari uses a dedicated info banner (rendered by ItwPresentationCredentialInfoAlert)
-  // because its 15-day validity would otherwise trigger the generic expiring banner.
-  if (credential.credentialType === wellKnownCredential.BONUS_PARI) {
+  // Credentials with a dedicated info banner (e.g. Bonus Pari, whose 15-day
+  // validity would otherwise trigger the generic expiring banner) suppress
+  // the generic status alert.
+  if (getCredentialCapabilities(credential.credentialType).suppressStatusAlert) {
     return null;
   }
 

@@ -13,10 +13,9 @@ import {
 import { useAppDispatch, useAppSelector } from '../../store';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
-import { wellKnownCredential } from '../../utils/credentials';
+import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 
 const CREDENTIAL_INVALID_STATUS_CODE = 'ERR_CREDENTIAL_INVALID_STATUS';
-const BONUS_PARI_REQUEST_URL = 'https://dev.bonuselettrodomestici.it/utente';
 
 const isCredentialInvalidStatusError = (error: unknown): boolean =>
   typeof error === 'object' &&
@@ -36,9 +35,10 @@ const CredentialFailure = () => {
     isCredentialInvalidStatusError(postError) ||
     isCredentialInvalidStatusError(preError);
 
-  const isBonusPariNotRequested =
-    isInvalidStatus &&
-    requestedCredentialType === wellKnownCredential.BONUS_PARI;
+  const invalidStatusFailure =
+    isInvalidStatus && requestedCredentialType
+      ? getCredentialCapabilities(requestedCredentialType).invalidStatusFailure
+      : undefined;
 
   useHardwareBackButton(() => true);
 
@@ -49,24 +49,16 @@ const CredentialFailure = () => {
     navigateToWallet();
   };
 
-  if (isBonusPariNotRequested) {
+  if (invalidStatusFailure) {
     return (
       <OperationResultScreenContent
-        pictogram="accessDenied"
-        title={t(
-          'wallet:credentialIssuance.failure.bonusPariNotRequested.title'
-        )}
-        subtitle={t(
-          'wallet:credentialIssuance.failure.bonusPariNotRequested.subtitle'
-        )}
+        pictogram={invalidStatusFailure.pictogram}
+        title={t(invalidStatusFailure.titleI18nKey)}
+        subtitle={t(invalidStatusFailure.subtitleI18nKey)}
         action={{
-          accessibilityLabel: t(
-            'wallet:credentialIssuance.failure.bonusPariNotRequested.action'
-          ),
-          label: t(
-            'wallet:credentialIssuance.failure.bonusPariNotRequested.action'
-          ),
-          onPress: () => openWebUrl(BONUS_PARI_REQUEST_URL, () => null)
+          accessibilityLabel: t(invalidStatusFailure.actionI18nKey),
+          label: t(invalidStatusFailure.actionI18nKey),
+          onPress: () => openWebUrl(invalidStatusFailure.actionUrl, () => null)
         }}
         secondaryAction={{
           accessibilityLabel: t('common:buttons.close'),

@@ -4,15 +4,13 @@ import { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredentialStatus';
 import { CardColorScheme, ItwCredentialStatus } from '../../types';
-import {
-  getCredentialNameByType,
-  wellKnownCredential
-} from '../../utils/credentials';
+import { getCredentialNameByType } from '../../utils/credentials';
 import {
   tagPropsByStatus,
   useBorderColorByStatus,
   validCredentialStatuses
 } from '../../utils/itwCredentialUtils';
+import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
 import { CardBackground } from './CardBackground';
 import { DigitalVersionBadge } from './DigitalVersionBadge';
@@ -62,9 +60,9 @@ export const ItwCredentialCard = ({
 
   const statusTagProps = useMemo<Tag | undefined>(
     () =>
-      credentialType === wellKnownCredential.BONUS_PARI
-        ? undefined
-        : tagPropsByStatus[status],
+      getCredentialCapabilities(credentialType).showStatusTag
+        ? tagPropsByStatus[status]
+        : undefined,
     [status, credentialType]
   );
 

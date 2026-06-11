@@ -2,6 +2,7 @@ import { Alert } from '@pagopa/io-app-design-system';
 import { t } from 'i18next';
 import { memo } from 'react';
 import { wellKnownCredential } from '../../utils/credentials';
+import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import {
   ItwCredentialStatus,
   StoredCredential
@@ -52,11 +53,12 @@ const ItwPresentationCredentialInfoAlert = ({ credential }: Props) => {
     );
   }
 
-  if (credentialType === wellKnownCredential.BONUS_PARI) {
+  const { infoAlert } = getCredentialCapabilities(credentialType);
+  if (infoAlert) {
     return (
       <Alert
-        testID="itwBonusPariBannerTestID"
-        content={t('presentation.alerts.bonusPari.content', { ns: 'wallet' })}
+        testID={infoAlert.testID}
+        content={t(infoAlert.contentI18nKey, { ns: 'wallet' })}
         variant="info"
       />
     );
