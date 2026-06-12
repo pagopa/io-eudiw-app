@@ -27,7 +27,6 @@ import {
   setProximityStatusStopped
 } from '../../store/proximity';
 import { parseClaimsToRecord } from '../../utils/claims';
-import { WellKnownClaim } from '../../utils/itwClaimsUtils';
 import { wellKnownCredential } from '../../utils/credentials';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
@@ -51,7 +50,6 @@ import {
   useDebugInfo
 } from '@io-eudiw-app/debug-info';
 import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
-import { ItwBarcodeCard } from '../../components/ItwBarcodeCard';
 
 export type ItwPresentationCredentialDetailNavigationParams = {
   credentialType: string;
@@ -202,14 +200,6 @@ const ItwPresentationCredentialDetail = ({
     [credential.parsedCredential]
   );
 
-  const barcodeClaim = useMemo(
-    () =>
-      Object.entries(parsedClaims).find(
-        ([id]) => id === WellKnownClaim.barcode
-      )?.[1],
-    [parsedClaims]
-  );
-
   if (status === 'unknown') {
     return <ItwPresentationCredentialUnknownStatus credential={credential} />;
   }
@@ -235,10 +225,6 @@ const ItwPresentationCredentialDetail = ({
             credential={credential}
             infoAlert={capabilities.infoAlert}
           />
-          {barcodeClaim?.parsed?.value &&
-            typeof barcodeClaim.parsed.value === 'string' && (
-              <ItwBarcodeCard value={barcodeClaim.parsed.value} />
-            )}
           <ItwPresentationClaimsSection
             credential={credential}
             parsedClaims={parsedClaims}
