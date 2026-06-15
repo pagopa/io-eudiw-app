@@ -50,4 +50,3 @@ overrides:
   zod: '4.3.6'
 patchedDependencies:
   '@pagopa/io-app-design-system': 'patches/@pagopa__io-app-design-system.patch'
-  'react-native-barcode-builder': 'patches/react-native-barcode-builder__svg.patch'

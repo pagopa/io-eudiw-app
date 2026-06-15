@@ -46,20 +46,4 @@ This patch fixes the touch issue on SVG buttons. It's caused by SVG stealing tou
 
 - This should be removed once the patch gets applied to the design system library.
 
-### react-native-barcode-builder__svg.patch
-
-Created on: **25/05/2026**
-
-#### Reason
-
-- The `@react-native-community/art` library is deprecated and causes build/compatibility issues in newer React Native environments.
-- This patch replaces `@react-native-community/art` (Surface, Shape) with `react-native-svg` (Svg, Path) for rendering barcodes.
-- It refactors the component to use dedicated `renderSvg`, `renderBars`, and `renderBar` methods, binding them in the constructor.
-- The SVG `d` path commands in `drawRect` are also normalized to use spaces instead of commas for better SVG compatibility.
-
-### How to remove in the future:
-
-- Remove the patch once the upstream `react-native-barcode-builder` package migrates to `react-native-svg` (or resolves the `@react-native-community/art` deprecation) and the version used in the project is updated.
-- Remove the patch file from the `patches/` directory.
-- Remove this entry from `patches.md`.
 

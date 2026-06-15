@@ -27,7 +27,7 @@
     "@pagopa/io-react-native-crypto": "^1.2.3",
     "@pagopa/io-react-native-jwt": "2.1.0",
     "@types/color": "^4.2.0",
-    "react-native-barcode-builder": "^2.0.0",
+    "react-native-barcode-creator": "^0.2.0",
     "react-native-svg": "catalog:"
   },
   "peerDependencies": {
