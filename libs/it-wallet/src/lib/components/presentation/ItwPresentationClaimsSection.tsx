@@ -16,6 +16,7 @@ import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
 import { ItwQrCodeClaimImage } from '../credential/ItwQrCodeClaimImage';
+import { ItwBarcodeCard } from '../ItwBarcodeCard';
 import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { useTranslation } from 'react-i18next';
@@ -72,7 +73,11 @@ export const ItwPresentationClaimsSection = ({
 
   const claims = Object.entries(parsedClaims);
   const filteredClaims = useMemo(
-    () => claims.filter(([id]) => id !== WellKnownClaim.link_qr_code),
+    () =>
+      claims.filter(
+        ([id]) =>
+          id !== WellKnownClaim.link_qr_code && id !== WellKnownClaim.barcode
+      ),
     [claims]
   );
 
@@ -86,6 +91,21 @@ export const ItwPresentationClaimsSection = ({
     }
 
     return <ItwQrCodeClaimImage claim={linkQrCodeClaim} />;
+  }, [claims]);
+
+  const BarcodeCard = useCallback(() => {
+    const barcodeClaim = claims.find(
+      ([id]) => id === WellKnownClaim.barcode
+    )?.[1];
+
+    if (
+      !barcodeClaim?.parsed?.value ||
+      typeof barcodeClaim.parsed.value !== 'string'
+    ) {
+      return null;
+    }
+
+    return <ItwBarcodeCard value={barcodeClaim.parsed.value} />;
   }, [claims]);
 
   return (
@@ -106,6 +126,7 @@ export const ItwPresentationClaimsSection = ({
         )
       }
       <LinkQrCode />
+      <BarcodeCard />
       {filteredClaims.map(([id, claim], index) => {
         if (id === WellKnownClaim.link_qr_code) {
           // Since the `link_qr_code` claim  difficult to distinguish from a generic image claim, we need to manually

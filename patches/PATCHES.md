@@ -46,3 +46,4 @@ This patch fixes the touch issue on SVG buttons. It's caused by SVG stealing tou
 
 - This should be removed once the patch gets applied to the design system library.
 
+

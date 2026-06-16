@@ -33,6 +33,7 @@ import {
   CredentialFormat,
   StoredCredentialMetadata
 } from '../../utils/itwTypesUtils';
+import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { useAppDispatch, useAppSelector } from '../../store';
 import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
 import { PresentationProximityQrCode } from '../../components/proximity/PresentationProximityQRCode';
@@ -128,6 +129,7 @@ const ItwPresentationCredentialDetail = ({
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
   const isDebugEnabled = useAppSelector(selectIsDebugModeEnabled);
   const status = getCredentialStatus(credential);
+  const capabilities = getCredentialCapabilities(credential.credentialType);
 
   const { t } = useTranslation(['wallet', 'common']);
 
@@ -194,7 +196,7 @@ const ItwPresentationCredentialDetail = ({
     }
 
     return undefined;
-  }, [credential.credentialType, t, dispatch, QrCodeModal]);
+  }, [QrCodeModal, credential.credentialType, dispatch, t]);
 
   const parsedClaims = useMemo(
     () => parseClaimsToRecord(credential.parsedCredential),
@@ -213,12 +215,19 @@ const ItwPresentationCredentialDetail = ({
       <ItwPresentationDetailsHeader
         credential={credential}
         parsedClaims={parsedClaims}
+        capabilities={capabilities}
       />
       <VSpacer size={24} />
       <ContentWrapper>
         <VStack space={24}>
-          <ItwPresentationCredentialStatusAlert credential={credential} />
-          <ItwPresentationCredentialInfoAlert credential={credential} />
+          <ItwPresentationCredentialStatusAlert
+            credential={credential}
+            suppressStatusAlert={capabilities.suppressStatusAlert}
+          />
+          <ItwPresentationCredentialInfoAlert
+            credential={credential}
+            infoAlert={capabilities.infoAlert}
+          />
           <ItwPresentationClaimsSection
             credential={credential}
             parsedClaims={parsedClaims}

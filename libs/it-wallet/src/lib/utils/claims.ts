@@ -18,7 +18,8 @@ export const claimType = {
   image: 'image',
   stringArray: 'stringArray',
   placeOfBirth: 'placeOfBirth',
-  verification: 'verification'
+  verification: 'verification',
+  barcode: 'barcode'
 } as const;
 
 /**
@@ -288,11 +289,41 @@ export const verificationScheme = z
   });
 
 /**
+ * Schema to validate a barcode claim value (e.g. discount code for PARI_BONUS)
+ */
+const barcodeSchema = z.string().transform(str => ({
+  value: str,
+  type: claimType.barcode
+}));
+
+/**
+ * Schema to validate an amount claim. The raw value is expressed in euro cents
+ * and is converted to a localized euro currency string.
+ */
+const amountSchema = z
+  .object({
+    id: z.enum(['amount']),
+    value: z.union([z.string(), z.number()])
+  })
+  .transform(obj => {
+    const cents = typeof obj.value === 'string' ? Number(obj.value) : obj.value;
+    const euros = cents / 100;
+    return {
+      value: new Intl.NumberFormat(getClaimsFullLocale(), {
+        style: 'currency',
+        currency: 'EUR'
+      }).format(euros),
+      type: claimType.string
+    };
+  });
+
+/**
  * Schema to validate a claim which is a union of the previous defined schemas.
  */
 export const claimScheme = z.union([
   base64ImageSchema,
   dateThatCanExpireSchema,
+  amountSchema,
   // In case there isn't a schema for a specific label, we fallback to simply parsing the value
   baseClaimSchemaExtracted.pipe(
     z.union([
@@ -305,7 +336,8 @@ export const claimScheme = z.union([
       numberSchema,
       emptyStringSchema,
       verificationScheme,
-      stringSchema
+      stringSchema,
+      barcodeSchema
     ])
   )
 ]);

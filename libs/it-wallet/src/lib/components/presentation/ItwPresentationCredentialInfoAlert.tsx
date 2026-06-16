@@ -1,7 +1,7 @@
 import { Alert } from '@pagopa/io-app-design-system';
 import { t } from 'i18next';
 import { memo } from 'react';
-import { wellKnownCredential } from '../../utils/credentials';
+import { CredentialInfoAlert } from '../../utils/itwCredentialCapabilities';
 import {
   ItwCredentialStatus,
   StoredCredentialMetadata
@@ -11,6 +11,7 @@ import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
 
 type Props = {
   credential: StoredCredentialMetadata;
+  infoAlert?: CredentialInfoAlert;
 };
 
 const validStates: Array<ItwCredentialStatus | undefined> = [
@@ -22,8 +23,10 @@ const validStates: Array<ItwCredentialStatus | undefined> = [
 /**
  * Informative alert that is only visible when a credential is in a valid state.
  */
-const ItwPresentationCredentialInfoAlert = ({ credential }: Props) => {
-  const { credentialType } = credential;
+const ItwPresentationCredentialInfoAlert = ({
+  credential,
+  infoAlert
+}: Props) => {
   const { status } = useAppSelector(state =>
     itwCredentialStatusSelector(state, credential.credentialType)
   );
@@ -32,21 +35,11 @@ const ItwPresentationCredentialInfoAlert = ({ credential }: Props) => {
     return null;
   }
 
-  if (credentialType === wellKnownCredential.DRIVING_LICENSE) {
+  if (infoAlert) {
     return (
       <Alert
-        testID="itwMdlBannerTestID"
-        content={t('presentation.alerts.mdl.content', { ns: 'wallet' })}
-        variant="info"
-      />
-    );
-  }
-
-  if (credentialType === wellKnownCredential.DISABILITY_CARD) {
-    return (
-      <Alert
-        testID="itwMdlBannerTestID"
-        content={t('presentation.alerts.edc.content', { ns: 'wallet' })}
+        testID={infoAlert.testID}
+        content={t(infoAlert.contentI18nKey, { ns: 'wallet' })}
         variant="info"
       />
     );

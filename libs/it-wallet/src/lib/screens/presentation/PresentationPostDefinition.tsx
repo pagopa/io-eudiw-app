@@ -130,28 +130,35 @@ const PresentationPostDefinition = ({ route }: Props) => {
   const mapClaims = (
     claims: Array<ClaimDisplayFormat>
   ): ComponentProps<typeof ClaimsSelector>['items'] =>
-    claims.map(c => {
-      const displayResult = getClaimDisplayValue(c);
+    claims
+      // Deduplicate by id so the ClaimsSelector never receives two items with
+      // the same React key (the key is derived from the claim id)
+      .filter(
+        (claim, index, all) =>
+          all.findIndex(({ id }) => id === claim.id) === index
+      )
+      .map(c => {
+        const displayResult = getClaimDisplayValue(c);
 
-      if (displayResult.type === 'image') {
+        if (displayResult.type === 'image') {
+          return {
+            id: c.id,
+            value: displayResult.value, // This is always a string for images
+            description: c.label,
+            type: 'image'
+          };
+        }
+
+        const textValue = Array.isArray(displayResult.value)
+          ? displayResult.value.map(getSafeText).join(', ')
+          : getSafeText(displayResult.value);
+
         return {
           id: c.id,
-          value: displayResult.value, // This is always a string for images
-          description: c.label,
-          type: 'image'
+          value: textValue,
+          description: c.label
         };
-      }
-
-      const textValue = Array.isArray(displayResult.value)
-        ? displayResult.value.map(getSafeText).join(', ')
-        : getSafeText(displayResult.value);
-
-      return {
-        id: c.id,
-        value: textValue,
-        description: c.label
-      };
-    });
+      });
 
   /**
    * Renders the block of credentials requested during the presentation flow.

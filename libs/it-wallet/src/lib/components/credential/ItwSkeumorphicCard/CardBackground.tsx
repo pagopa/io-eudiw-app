@@ -41,6 +41,10 @@ const assetsMap: Record<string, CardAssets> = {
   [wellKnownCredential.DISABILITY_CARD]: {
     front: require('../../../../assets/img/credential/dc_front.png'),
     back: require('../../../../assets/img/credential/dc_back.png')
+  },
+  [wellKnownCredential.BONUS_PARI]: {
+    front: require('../../../../assets/img/cards/bonus.png'),
+    back: require('../../../../assets/img/cards/bonus.png')
   }
 };
 

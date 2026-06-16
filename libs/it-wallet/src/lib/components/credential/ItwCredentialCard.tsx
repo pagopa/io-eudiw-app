@@ -10,6 +10,7 @@ import {
   useBorderColorByStatus,
   validCredentialStatuses
 } from '../../utils/itwCredentialUtils';
+import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
 import { CardBackground } from './CardBackground';
 import { DigitalVersionBadge } from './DigitalVersionBadge';
@@ -55,11 +56,14 @@ export const ItwCredentialCard = ({
   const typefacePreference = useAppSelector(selectFontPreference);
   const status = useItwDisplayCredentialStatus(credentialStatus);
   const theme = useThemeColorByCredentialType(credentialType);
-  const borderColorMap = useBorderColorByStatus();
+  const borderColorMap = useBorderColorByStatus(credentialType);
 
   const statusTagProps = useMemo<Tag | undefined>(
-    () => tagPropsByStatus[status],
-    [status]
+    () =>
+      getCredentialCapabilities(credentialType).showStatusTag
+        ? tagPropsByStatus[status]
+        : undefined,
+    [status, credentialType]
   );
 
   const { titleColor, titleOpacity, colorScheme } = useMemo<StyleProps>(() => {
