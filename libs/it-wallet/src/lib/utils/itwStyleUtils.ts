@@ -42,6 +42,11 @@ export const useThemeColorByCredentialType = (
           backgroundColor: '#315B76',
           textColor: '#17406F'
         };
+      case wellKnownCredential.BONUS_PARI:
+        return {
+          backgroundColor: '#7AC1FA',
+          textColor: '#000000'
+        };
     }
   }, [credentialType, theme, withL3Design]);
 

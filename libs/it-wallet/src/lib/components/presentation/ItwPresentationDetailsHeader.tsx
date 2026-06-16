@@ -17,10 +17,12 @@ import { StoredCredential } from '../../utils/itwTypesUtils';
 import { ItwPresentationCredentialCard } from './ItwPresentationCredentialCard';
 import { useAppSelector } from '../../store';
 import { FocusAwareStatusBar } from '@io-eudiw-app/commons';
+import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 
 type ItwPresentationDetailsHeaderProps = {
   credential: StoredCredential;
   parsedClaims: ParsedClaimsRecord;
+  capabilities: ItwCredentialCapabilities;
 };
 
 /**
@@ -28,7 +30,8 @@ type ItwPresentationDetailsHeaderProps = {
  */
 const credentialsWithSkeumorphicCard: ReadonlyArray<string> = [
   wellKnownCredential.DRIVING_LICENSE,
-  wellKnownCredential.DISABILITY_CARD
+  wellKnownCredential.DISABILITY_CARD,
+  wellKnownCredential.BONUS_PARI
 ];
 
 /**
@@ -37,7 +40,8 @@ const credentialsWithSkeumorphicCard: ReadonlyArray<string> = [
  */
 const ItwPresentationDetailsHeader = ({
   credential,
-  parsedClaims
+  parsedClaims,
+  capabilities
 }: ItwPresentationDetailsHeaderProps) => {
   const { isExperimental } = useIOExperimentalDesign();
   const itwFeaturesEnabled = useAppSelector(lifecycleIsValidSelector);
@@ -54,6 +58,7 @@ const ItwPresentationDetailsHeader = ({
         <ItwPresentationCredentialCard
           credential={credential}
           parsedClaims={parsedClaims}
+          capabilities={capabilities}
         />
       );
     }
@@ -75,7 +80,14 @@ const ItwPresentationDetailsHeader = ({
         </ContentWrapper>
       </View>
     );
-  }, [credential, backgroundColor, textColor, isExperimental, parsedClaims]);
+  }, [
+    credential,
+    parsedClaims,
+    capabilities,
+    backgroundColor,
+    textColor,
+    isExperimental
+  ]);
 
   return (
     <View>

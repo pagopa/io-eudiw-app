@@ -18,6 +18,7 @@ import {
   useBorderColorByStatus,
   validCredentialStatuses
 } from '../../../utils/itwCredentialUtils';
+import { ItwCredentialCapabilities } from '../../../utils/itwCredentialCapabilities';
 import {
   ItwCredentialStatus,
   StoredCredential
@@ -35,6 +36,7 @@ type ItwSkeumorphicCardProps = {
   credential: StoredCredential;
   status: ItwCredentialStatus;
   valuesHidden: boolean;
+  capabilities: ItwCredentialCapabilities;
   isFlipped?: boolean;
   claims: ParsedClaimsRecord;
   mode: CardMode;
@@ -45,12 +47,17 @@ export const ItwSkeumorphicCard = ({
   status,
   isFlipped = false,
   valuesHidden,
+  capabilities,
   claims,
   mode
 }: ItwSkeumorphicCardProps) => {
   const FrontSide = useMemo(
     () => (
-      <CardSideBase status={status}>
+      <CardSideBase
+        status={status}
+        credentialType={credential.credentialType}
+        capabilities={capabilities}
+      >
         <CardBackground
           credentialType={credential.credentialType}
           side="front"
@@ -64,12 +71,16 @@ export const ItwSkeumorphicCard = ({
         />
       </CardSideBase>
     ),
-    [credential, status, valuesHidden, claims, mode]
+    [credential, status, valuesHidden, capabilities, claims, mode]
   );
 
   const BackSide = useMemo(
     () => (
-      <CardSideBase status={status}>
+      <CardSideBase
+        status={status}
+        credentialType={credential.credentialType}
+        capabilities={capabilities}
+      >
         <CardBackground
           credentialType={credential.credentialType}
           side="back"
@@ -83,7 +94,7 @@ export const ItwSkeumorphicCard = ({
         />
       </CardSideBase>
     ),
-    [credential, status, valuesHidden, claims, mode]
+    [credential, status, valuesHidden, capabilities, claims, mode]
   );
 
   const accessibilityProps = useMemo(
@@ -139,18 +150,26 @@ const gradientVariantByStatus: Record<
 
 type CardSideBaseProps = {
   status: ItwCredentialStatus;
+  credentialType: string;
+  capabilities: ItwCredentialCapabilities;
   children: ReactNode;
 };
 
-const CardSideBase = ({ status, children }: CardSideBaseProps) => {
-  const borderColorMap = useBorderColorByStatus();
+const CardSideBase = ({
+  status,
+  credentialType,
+  capabilities,
+  children
+}: CardSideBaseProps) => {
+  const borderColorMap = useBorderColorByStatus(credentialType);
 
   const [size, setSize] = useState<{ width: number; height: number }>({
     width: 0,
     height: 0
   });
 
-  const statusTagProps = tagPropsByStatus[status];
+  const { showStatusTag, showAnimatedBorder } = capabilities;
+  const statusTagProps = showStatusTag ? tagPropsByStatus[status] : undefined;
   const borderColor = borderColorMap[status];
   // Include "jwtExpired" as a valid status because the credential skeumorphic card with this state
   // should not appear faded. Only the "expired" status should be displayed with reduced opacity.
@@ -182,23 +201,25 @@ const CardSideBase = ({ status, children }: CardSideBaseProps) => {
       <View style={[styles.faded, dynamicStyle]} />
 
       {/* Skia Canvas for border and light effect, only displayed if IT-Wallet enabled */}
-      <Canvas
-        style={{
-          position: 'absolute',
-          width: size.width,
-          height: size.height
-        }}
-        testID="itWalletBrandBorderTestID"
-      >
-        {/* Animated gradient border */}
-        <ItwBrandedSkiaBorder
-          width={size.width}
-          height={size.height}
-          variant={gradientVariantByStatus[status]}
-          thickness={4}
-          cornerRadius={8}
-        />
-      </Canvas>
+      {showAnimatedBorder && (
+        <Canvas
+          style={{
+            position: 'absolute',
+            width: size.width,
+            height: size.height
+          }}
+          testID="itWalletBrandBorderTestID"
+        >
+          {/* Animated gradient border */}
+          <ItwBrandedSkiaBorder
+            width={size.width}
+            height={size.height}
+            variant={gradientVariantByStatus[status]}
+            thickness={4}
+            cornerRadius={8}
+          />
+        </Canvas>
+      )}
     </View>
   );
 };

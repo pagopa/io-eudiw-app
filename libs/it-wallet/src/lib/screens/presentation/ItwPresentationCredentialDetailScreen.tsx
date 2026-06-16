@@ -29,6 +29,7 @@ import {
 import { parseClaimsToRecord } from '../../utils/claims';
 import { wellKnownCredential } from '../../utils/credentials';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
+import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { CredentialFormat, StoredCredential } from '../../utils/itwTypesUtils';
 import { useAppDispatch, useAppSelector } from '../../store';
 import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
@@ -125,6 +126,7 @@ const ItwPresentationCredentialDetail = ({
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
   const isDebugEnabled = useAppSelector(selectIsDebugModeEnabled);
   const status = getCredentialStatus(credential);
+  const capabilities = getCredentialCapabilities(credential.credentialType);
 
   const { t } = useTranslation(['wallet', 'common']);
 
@@ -191,7 +193,7 @@ const ItwPresentationCredentialDetail = ({
     }
 
     return undefined;
-  }, [credential.credentialType, t, dispatch, QrCodeModal]);
+  }, [QrCodeModal, credential.credentialType, dispatch, t]);
 
   const parsedClaims = useMemo(
     () => parseClaimsToRecord(credential.parsedCredential),
@@ -210,12 +212,19 @@ const ItwPresentationCredentialDetail = ({
       <ItwPresentationDetailsHeader
         credential={credential}
         parsedClaims={parsedClaims}
+        capabilities={capabilities}
       />
       <VSpacer size={24} />
       <ContentWrapper>
         <VStack space={24}>
-          <ItwPresentationCredentialStatusAlert credential={credential} />
-          <ItwPresentationCredentialInfoAlert credential={credential} />
+          <ItwPresentationCredentialStatusAlert
+            credential={credential}
+            suppressStatusAlert={capabilities.suppressStatusAlert}
+          />
+          <ItwPresentationCredentialInfoAlert
+            credential={credential}
+            infoAlert={capabilities.infoAlert}
+          />
           <ItwPresentationClaimsSection
             credential={credential}
             parsedClaims={parsedClaims}

@@ -658,6 +658,12 @@ importers:
       react-native:
         specifier: 0.81.5
         version: 0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0)
+      react-native-barcode-creator:
+        specifier: ^0.2.0
+        version: 0.2.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
+      react-native-svg:
+        specifier: 'catalog:'
+        version: 15.15.3(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0)
       serialize-error:
         specifier: 'catalog:'
         version: 13.0.1
@@ -7907,6 +7913,13 @@ packages:
 
   react-is@19.2.4:
     resolution: {integrity: sha512-W+EWGn2v0ApPKgKKCy/7s7WHXkboGcsrXE+2joLyVxkbyVQfO3MUEaUQDHoSmb8TFFrSKYa9mw64WZHNHSDzYA==}
+
+  react-native-barcode-creator@0.2.0:
+    resolution: {integrity: sha512-c3bsM+Uat7yg4Z5/LyquZN8Hpb5NICzOGfJLWoE3cX7LXZrOt/yvV1Rj82a653lkwfDTe+As4H7SJEzkSpjugA==}
+    engines: {node: '>= 18.0.0'}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
 
   react-native-device-info@15.0.2:
     resolution: {integrity: sha512-dd71eXG2l3Cwp66IvKNadMTB8fhU3PEjyVddI97sYan+D4bgIAUmgGDhbSOFvHcGavksb2U17kiQYaDiK2WK2g==}
@@ -19044,6 +19057,11 @@ snapshots:
   react-is@18.3.1: {}
 
   react-is@19.2.4: {}
+
+  react-native-barcode-creator@0.2.0(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-native: 0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0)
 
   react-native-device-info@15.0.2(react-native@0.81.5(@babel/core@7.29.0)(@react-native/metro-config@0.84.1(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.1.0)):
     dependencies:

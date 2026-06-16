@@ -17,6 +17,7 @@ type FlipsGestureDetectorProps = {
   children: ReactNode;
   direction?: keyof typeof directions;
   onPress?: () => void;
+  disabled?: boolean;
 };
 
 /**
@@ -27,17 +28,19 @@ export const FlipGestureDetector = ({
   setIsFlipped,
   children,
   direction = 'leftright',
-  onPress
+  onPress,
+  disabled = false
 }: FlipsGestureDetectorProps) => {
-  const flipGesture = Gesture.Fling()
-    .direction(directions[direction])
-    .onEnd(() => scheduleOnRN(setIsFlipped, !isFlipped));
-
   const tapGesture = Gesture.Tap().onEnd(() => {
     if (onPress) {
       scheduleOnRN(onPress);
     }
   });
+
+  const flipGesture = Gesture.Fling()
+    .direction(directions[direction])
+    .enabled(!disabled)
+    .onEnd(() => scheduleOnRN(setIsFlipped, !isFlipped));
 
   const composed = Gesture.Exclusive(flipGesture, tapGesture);
 
