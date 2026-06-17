@@ -38,8 +38,8 @@ const ItwRequiredClaimsList = ({ items }: ItwRequiredClaimsListProps) => {
             <View>
               <ClaimText claim={claim} />
               <BodySmall weight="Regular" color={theme['textBody-tertiary']}>
-                {t('credentialIssuance.trust.dataSource', {
-                  source,
+                {t('credentialIssuance.trust.dataSource.single', {
+                  credentialSource: source,
                   ns: 'wallet'
                 })}
               </BodySmall>
