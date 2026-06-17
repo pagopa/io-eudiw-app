@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createInstanceThunk } from '../middleware/instance';
-import { obtainPidThunk } from '../middleware/pid';
+import { obtainPidThunk, persistPidThunk } from '../middleware/pid';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { RequestedCredential } from './credentialIssuance';
 import { ResolvedCredentialOffer } from '../types';
@@ -36,11 +36,15 @@ export type PendingCredential =
  * issuanceCreation - Async status for the instance creation
  * issuance - Async status for the PID issuance
  */
+/**
+ * Discriminates the phase of the PID issuance flow an error originates from:
+ * `issuance` for the OID4VCI exchange, `persist` for the vault write.
+ */
+export type PidIssuanceErrorType = 'issuance' | 'persist';
+
 type PidIssuanceStatusSlice = {
   instanceCreation: AsyncStatusValues;
-  issuance: AsyncStatusValues<StoredCredential>;
-  // pendingCredential: RequestedCredential;
-  persistError: unknown;
+  issuance: AsyncStatusValues<StoredCredential, PidIssuanceErrorType>;
   pendingCredential: PendingCredential;
 };
 
@@ -48,8 +52,7 @@ type PidIssuanceStatusSlice = {
 const initialState: PidIssuanceStatusSlice = {
   instanceCreation: setInitial(),
   issuance: setInitial(),
-  pendingCredential: undefined,
-  persistError: undefined
+  pendingCredential: undefined
 };
 
 /**
@@ -65,7 +68,6 @@ const pidIssuanceStatusSlice = createSlice({
     },
     resetPidIssuance: state => {
       state.issuance = setInitial();
-      state.persistError = undefined;
     },
     setPendingCredential: (
       state,
@@ -76,9 +78,6 @@ const pidIssuanceStatusSlice = createSlice({
       }>
     ) => {
       state.pendingCredential = action.payload;
-    },
-    setPidPersistError: (state, action: PayloadAction<unknown>) => {
-      state.persistError = action.payload;
     }
   },
   extraReducers: builder => {
@@ -107,8 +106,13 @@ const pidIssuanceStatusSlice = createSlice({
       if (action.meta.aborted) {
         state.issuance = setInitial();
       } else {
-        state.issuance = setError(action.error);
+        state.issuance = setError(action.error, 'issuance');
       }
+    });
+    // Persist phase: a vault write failure rejects with the serialized error,
+    // which populates the same issuance error state tagged as `persist`.
+    builder.addCase(persistPidThunk.rejected, (state, action) => {
+      state.issuance = setError(action.payload ?? action.error, 'persist');
     });
     // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
     builder.addCase(preferencesReset, () => initialState);
@@ -120,12 +124,8 @@ const pidIssuanceStatusSlice = createSlice({
 /**
  * Exports the actions for the pidIssuance slice.
  */
-export const {
-  resetInstanceCreation,
-  resetPidIssuance,
-  setPendingCredential,
-  setPidPersistError
-} = pidIssuanceStatusSlice.actions;
+export const { resetInstanceCreation, resetPidIssuance, setPendingCredential } =
+  pidIssuanceStatusSlice.actions;
 
 /**
  * Exports the reducer for the pidIssuance slice.

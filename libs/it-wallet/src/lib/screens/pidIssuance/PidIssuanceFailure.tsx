@@ -9,7 +9,7 @@ import {
 } from '../../store/pidIssuance';
 import {
   selectPidIssuanceError,
-  selectPidPersistError
+  selectPidIssuanceErrorType
 } from '../../store/selectors/pidIssuance';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
@@ -23,12 +23,12 @@ const PidIssuanceFailure = () => {
   const { t } = useTranslation(['common', 'wallet']);
   const dispatch = useAppDispatch();
   const error = useAppSelector(selectPidIssuanceError);
-  const persistError = useAppSelector(selectPidPersistError);
+  const errorType = useAppSelector(selectPidIssuanceErrorType);
   const { navigateToWallet } = useNavigateToWalletWithReset();
 
   useHardwareBackButton(() => true);
 
-  useDebugInfo({ error, persistError });
+  useDebugInfo({ error, errorType });
 
   const onPress = () => {
     dispatch(resetInstanceCreation());

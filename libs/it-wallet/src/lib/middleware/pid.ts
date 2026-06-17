@@ -11,7 +11,6 @@ import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance
 import { addPidWithIdentification } from '../store/credentials';
 import { persistCredential } from './credential';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
-import { setPidPersistError } from '../store/pidIssuance';
 import { selectPendingCredential } from '../store/selectors/pidIssuance';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredential } from '../utils/credentials';
@@ -221,6 +220,27 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
 );
 
 /**
+ * Persists the obtained PID after PIN validation. Wraps the shared
+ * {@link persistCredential} thunk so a vault write failure is surfaced through
+ * `rejectWithValue`, letting the pidIssuance slice populate the error state via
+ * its extraReducers instead of a dedicated action.
+ */
+export const persistPidThunk = createAppAsyncThunk<
+  void,
+  { credential: StoredCredential },
+  { rejectValue: unknown }
+>(
+  'pidIssuance/persist',
+  async ({ credential }, { dispatch, rejectWithValue }) => {
+    const result = await dispatch(persistCredential({ credential }));
+    if (persistCredential.rejected.match(result)) {
+      return rejectWithValue(result.payload);
+    }
+    return undefined;
+  }
+);
+
+/**
  * Listener to store the credential after pin validation.
  * It dispatches the action which shows the pin validation modal and awaits for the result.
  * If the pin is correct, the credential is stored, the issuance state is resetted and the user is navigated to the main screen.
@@ -236,11 +256,10 @@ const addPidWithAuthListener: AppListenerWithAction<
   );
   if (setIdentificationIdentified.match(resAction[0])) {
     const persistResult = await listenerApi.dispatch(
-      persistCredential({ credential: action.payload.credential })
+      persistPidThunk({ credential: action.payload.credential })
     );
-    if (persistCredential.rejected.match(persistResult)) {
-      // Vault write failed: keep Redux untouched and surface the error
-      listenerApi.dispatch(setPidPersistError(persistResult.payload));
+    if (persistPidThunk.rejected.match(persistResult)) {
+      // Vault write failed: the error is set by the pidIssuance extraReducers
       navigator.navigate(MAIN_ROUTES.WALLET_NAV, {
         screen: WALLET_ROUTES.PID_ISSUANCE.FAILURE
       });
