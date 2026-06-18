@@ -39,7 +39,7 @@ const ItwRequiredClaimsList = ({ items }: ItwRequiredClaimsListProps) => {
               <ClaimText claim={claim} />
               <BodySmall weight="Regular" color={theme['textBody-tertiary']}>
                 {t('credentialIssuance.trust.dataSource', {
-                  source,
+                  credentialSource: source,
                   ns: 'wallet'
                 })}
               </BodySmall>
