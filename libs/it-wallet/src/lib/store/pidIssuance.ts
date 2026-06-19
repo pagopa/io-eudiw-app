@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createInstanceThunk } from '../middleware/instance';
-import { obtainPidThunk, persistPidThunk } from '../middleware/pid';
+import { obtainPidThunk } from '../middleware/pid';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { RequestedCredential } from './credentialIssuance';
 import { ResolvedCredentialOffer } from '../types';
@@ -78,6 +78,15 @@ const pidIssuanceStatusSlice = createSlice({
       }>
     ) => {
       state.pendingCredential = action.payload;
+    },
+    // Sets the issuance error from a flow phase handled imperatively (e.g. the
+    // vault persistence in the addPidWithIdentification listener) instead of a
+    // thunk lifecycle, so the UI can surface it through selectPidIssuanceStatus.
+    setPidIssuanceError: (
+      state,
+      action: PayloadAction<{ error: unknown; type: PidIssuanceErrorType }>
+    ) => {
+      state.issuance = setError(action.payload.error, action.payload.type);
     }
   },
   extraReducers: builder => {
@@ -109,11 +118,6 @@ const pidIssuanceStatusSlice = createSlice({
         state.issuance = setError(action.error, 'issuance');
       }
     });
-    // Persist phase: a vault write failure rejects with the serialized error,
-    // which populates the same issuance error state tagged as `persist`.
-    builder.addCase(persistPidThunk.rejected, (state, action) => {
-      state.issuance = setError(action.payload ?? action.error, 'persist');
-    });
     // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
     builder.addCase(preferencesReset, () => initialState);
     builder.addCase(resetLifecycle, () => initialState);
@@ -124,8 +128,12 @@ const pidIssuanceStatusSlice = createSlice({
 /**
  * Exports the actions for the pidIssuance slice.
  */
-export const { resetInstanceCreation, resetPidIssuance, setPendingCredential } =
-  pidIssuanceStatusSlice.actions;
+export const {
+  resetInstanceCreation,
+  resetPidIssuance,
+  setPendingCredential,
+  setPidIssuanceError
+} = pidIssuanceStatusSlice.actions;
 
 /**
  * Exports the reducer for the pidIssuance slice.

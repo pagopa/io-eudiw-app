@@ -8,6 +8,7 @@ import * as WebBrowser from 'expo-web-browser';
 import WALLET_ROUTES from '../navigation/wallet/routes';
 import { serializeErrorOrUnknown } from '../utils/errors';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
+import { setPidIssuanceError } from '../store/pidIssuance';
 import { addPidWithIdentification } from '../store/credentials';
 import { persistCredential } from './credential';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
@@ -220,27 +221,6 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
 );
 
 /**
- * Persists the obtained PID after PIN validation. Wraps the shared
- * {@link persistCredential} thunk so a vault write failure is surfaced through
- * `rejectWithValue`, letting the pidIssuance slice populate the error state via
- * its extraReducers instead of a dedicated action.
- */
-export const persistPidThunk = createAppAsyncThunk<
-  void,
-  { credential: StoredCredential },
-  { rejectValue: unknown }
->(
-  'pidIssuance/persist',
-  async ({ credential }, { dispatch, rejectWithValue }) => {
-    const result = await dispatch(persistCredential({ credential }));
-    if (persistCredential.rejected.match(result)) {
-      return rejectWithValue(result.payload);
-    }
-    return undefined;
-  }
-);
-
-/**
  * Listener to store the credential after pin validation.
  * It dispatches the action which shows the pin validation modal and awaits for the result.
  * If the pin is correct, the credential is stored, the issuance state is resetted and the user is navigated to the main screen.
@@ -256,13 +236,18 @@ const addPidWithAuthListener: AppListenerWithAction<
   );
   if (setIdentificationIdentified.match(resAction[0])) {
     const persistResult = await listenerApi.dispatch(
-      persistPidThunk({ credential: action.payload.credential })
+      persistCredential({ credential: action.payload.credential })
     );
-    if (persistPidThunk.rejected.match(persistResult)) {
-      // Vault write failed: the error is set by the pidIssuance extraReducers
-      navigator.navigate(MAIN_ROUTES.WALLET_NAV, {
-        screen: WALLET_ROUTES.PID_ISSUANCE.FAILURE
-      });
+    if (persistCredential.rejected.match(persistResult)) {
+      // Vault write failed: surface the error through the issuance state so the
+      // PidIssuanceRequest screen reacts to selectPidIssuanceStatus and routes
+      // to the failure screen, like the OID4VCI issuance error path does.
+      listenerApi.dispatch(
+        setPidIssuanceError({
+          error: persistResult.payload ?? persistResult.error,
+          type: 'persist'
+        })
+      );
       return;
     }
     listenerApi.dispatch(
