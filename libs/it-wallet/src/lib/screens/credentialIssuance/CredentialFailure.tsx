@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
-import { Errors } from '@io-eudiw-app/io-react-native-wallet';
+import { Errors } from '@pagopa/io-react-native-wallet';
 
 const CREDENTIAL_INVALID_STATUS_CODE =
   Errors.IssuerResponseErrorCodes.CredentialInvalidStatus;

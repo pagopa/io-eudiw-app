@@ -1,7 +1,7 @@
 import {
   createCryptoContextFor,
   IoWallet
-} from '@io-eudiw-app/io-react-native-wallet';
+} from '@pagopa/io-react-native-wallet';
 import { isAnyOf } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import * as WebBrowser from 'expo-web-browser';
@@ -123,7 +123,7 @@ export const obtainPidThunk = createAppAsyncThunk<StoredCredential>(
       }
 
       const { code } =
-        await wallet.CredentialIssuance.completeUserAuthorizationWithQueryMode(
+        await wallet.CredentialIssuance.completePidUserAuthorizationWithQueryMode(
           authRedirectUrl.url
         );
 

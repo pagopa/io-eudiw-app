@@ -3,7 +3,7 @@ import {
   createCryptoContextFor,
   IoWallet,
   RemotePresentation
-} from '@io-eudiw-app/io-react-native-wallet';
+} from '@pagopa/io-react-native-wallet';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import { t } from 'i18next';
@@ -186,7 +186,7 @@ const obtainCredentialListener: AppListenerWithAction<
     // enforcing the authorization_server requirement for Issuers relying on
     // multiple authorization servers.
     if (offer) {
-      wallet.CredentialsOffer.validateCredentialOffer({
+      await wallet.CredentialsOffer.validateCredentialOffer({
         offer,
         credentialIssuerMetadata: issuerConf.authorization_servers
           ? { authorization_servers: issuerConf.authorization_servers }
@@ -275,8 +275,8 @@ const obtainCredentialListener: AppListenerWithAction<
       await wallet.CredentialIssuance.completeUserAuthorizationWithFormPostJwtMode(
         requestObject,
         issuerConf,
-        pid.credential,
-        { wiaCryptoContext, pidKeyTag: pid.keyTag, appFetch }
+        [pid.keyTag, pid.credential],
+        { wiaCryptoContext, appFetch }
       );
 
     // Generate the DPoP context which will be used for the whole issuance flow

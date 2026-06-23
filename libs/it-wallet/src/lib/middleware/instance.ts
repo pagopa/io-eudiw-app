@@ -1,4 +1,4 @@
-import { IoWallet } from '@io-eudiw-app/io-react-native-wallet';
+import { IoWallet } from '@pagopa/io-react-native-wallet';
 import {
   selectInstanceKeyTag,
   selectSessionId,

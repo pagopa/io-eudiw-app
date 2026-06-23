@@ -1,4 +1,4 @@
-import { ioWalletApiByVersion } from '@io-eudiw-app/io-react-native-wallet';
+import { ioWalletApiByVersion } from '@pagopa/io-react-native-wallet';
 import { ItwCredentialCardProps } from '../components/credential/ItwCredentialCard';
 import { Prettify } from '../utils/itwTypesUtils';
 

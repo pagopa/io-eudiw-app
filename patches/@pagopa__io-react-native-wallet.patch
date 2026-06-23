@@ -1,0 +1,131 @@
+diff --git a/lib/typescript/mdoc/index.d.ts b/lib/typescript/mdoc/index.d.ts
+index 35ede9f712c88570bf1af8529542c43a99ea25f3..ee6bd2e8a014b9939327de4ba12aeb515dcd0604 100644
+--- a/lib/typescript/mdoc/index.d.ts
++++ b/lib/typescript/mdoc/index.d.ts
+@@ -1,7 +1,7 @@
+ import { CBOR } from "@pagopa/io-react-native-iso18013";
+ import type { Presentation } from "../credential/presentation";
+ export * from "./utils";
+-export declare const verify: (token: string, x509CertRoot: string) => Promise<{
++export declare const verify: (token: string/*, x509CertRoot: string*/) => Promise<{
+     issuerSigned: CBOR.IssuerSigned;
+ }>;
+ export declare const prepareVpTokenMdoc: (requestNonce: string, generatedNonce: string, clientId: string, responseUri: string, docType: string, keyTag: string, [verifiableCredential, presentationFrame]: Presentation) => Promise<{
+diff --git a/src/credential/issuance/common/06-verify-and-parse-credential.mdoc.ts b/src/credential/issuance/common/06-verify-and-parse-credential.mdoc.ts
+index 756d5facd4460ec1e0dfd2752fd4c969d98e2c44..421cd4a9e91d6eb6989f6e301b48c181b0a95a93 100644
+--- a/src/credential/issuance/common/06-verify-and-parse-credential.mdoc.ts
++++ b/src/credential/issuance/common/06-verify-and-parse-credential.mdoc.ts
+@@ -33,13 +33,14 @@ type DecodedMDocCredential = Out<typeof verifyMdoc> & {
+  */
+ async function verifyCredentialMDoc(
+   rawCredential: string,
+-  x509CertRoot: string,
++  //x509CertRoot: string,
+   holderBindingContext: CryptoContext
+ ): Promise<DecodedMDocCredential> {
+   const [decodedCredential, holderBindingKey] =
+     // parallel for optimization
+     await Promise.all([
+-      verifyMdoc(rawCredential, x509CertRoot),
++      //verifyMdoc(rawCredential, x509CertRoot),
++      verifyMdoc(rawCredential),
+       holderBindingContext.getPublicKey(),
+     ]);
+ 
+@@ -186,13 +187,13 @@ export const verifyAndParseCredentialMDoc: IssuanceApi["verifyAndParseCredential
+     { credentialCryptoContext, ignoreMissingAttributes },
+     x509CertRoot
+   ) => {
+-    if (!x509CertRoot) {
+-      throw new IoWalletError("Missing x509CertRoot");
+-    }
++    //if (!x509CertRoot) {
++    //  throw new IoWalletError("Missing x509CertRoot");
++    //}
+ 
+     const decoded = await verifyCredentialMDoc(
+       credential,
+-      x509CertRoot,
++      //x509CertRoot,
+       credentialCryptoContext
+     );
+ 
+diff --git a/src/credential/issuance/common/06-verify-and-parse-credential.sdjwt.ts b/src/credential/issuance/common/06-verify-and-parse-credential.sdjwt.ts
+index 3504d05b3b59de747aed543a675e9568d112816d..16b90906922ca1fd16979e5a92baa90cdaa7a280 100644
+--- a/src/credential/issuance/common/06-verify-and-parse-credential.sdjwt.ts
++++ b/src/credential/issuance/common/06-verify-and-parse-credential.sdjwt.ts
+@@ -243,14 +243,14 @@ export const verifyAndParseCredentialSdJwt: IssuanceApi["verifyAndParseCredentia
+     );
+ 
+     if (validateCertificateChain) {
+-      if (!x509CertRoot) {
+-        throw new IoWalletError("Missing x509CertRoot");
+-      }
++      //if (!x509CertRoot) {
++      //  throw new IoWalletError("Missing x509CertRoot");
++      //}
+       const x5c = decoded.jwt?.header?.x5c as string[] | undefined;
+       if (!x5c || !Array.isArray(x5c) || x5c.length === 0) {
+         throw new MissingX509CertsError("Missing x509 certificates");
+       }
+-      await verifyX509Chain(x5c, x509CertRoot);
++      //await verifyX509Chain(x5c, x509CertRoot);
+     }
+ 
+     const credentialConfig =
+diff --git a/src/credential/issuance/v1.3.3/05-obtain-credential.ts b/src/credential/issuance/v1.3.3/05-obtain-credential.ts
+index 745f91411e5f8003f21ed4ed0d359d9ca3fed5ee..88695fbc41bd9e9bf6e104f74f4b8594d68dc0b1 100644
+--- a/src/credential/issuance/v1.3.3/05-obtain-credential.ts
++++ b/src/credential/issuance/v1.3.3/05-obtain-credential.ts
+@@ -112,7 +112,7 @@ export const requestCredentials = async ({
+     },
+     clientId,
+     credential_identifier: credentialIdentifier,
+-    issuerIdentifier: issuerConf.credential_endpoint,
++    issuerIdentifier: issuerConf.credential_issuer,
+     maxBatchSize: issuerConf.credential_issuance_batch_size,
+     nonce: c_nonce,
+     keyAttestation: keyAttestationJwt,
+diff --git a/src/mdoc/index.ts b/src/mdoc/index.ts
+index abb4258205f31b3ffe3201cb0db994f025637ca7..887936e21aaff4e3a677c9dad52052bff827ceaf 100644
+--- a/src/mdoc/index.ts
++++ b/src/mdoc/index.ts
+@@ -11,7 +11,7 @@ export * from "./utils";
+ 
+ export const verify = async (
+   token: string,
+-  x509CertRoot: string
++  //x509CertRoot: string
+ ): Promise<{ issuerSigned: CBOR.IssuerSigned }> => {
+   // get decoded data
+   const issuerSigned = await CBOR.decodeIssuerSigned(token);
+@@ -30,7 +30,7 @@ export const verify = async (
+   const x5chain =
+     issuerSigned.issuerAuth.unprotectedHeader.x5chain.map(b64utob64);
+   // Verify the x5chain
+-  await verifyX509Chain(x5chain, x509CertRoot);
++  //await verifyX509Chain(x5chain, x509CertRoot);
+ 
+   const coseSign1 = issuerSigned.issuerAuth.rawValue;
+ 
+diff --git a/src/wallet-unit-attestation/v1.3.3/issuing.ts b/src/wallet-unit-attestation/v1.3.3/issuing.ts
+index e9b5e5d3486ae856a79db69686f4fab160c0c163..ef90d9fa7b1f7b1fed4820f44cbc2fe5e321745a 100644
+--- a/src/wallet-unit-attestation/v1.3.3/issuing.ts
++++ b/src/wallet-unit-attestation/v1.3.3/issuing.ts
+@@ -27,11 +27,11 @@ const createKeyAttestationRequest = async (
+     );
+   }
+ 
+-  if (Platform.OS === "android" && !attestation) {
+-    throw new IoWalletError(
+-      "Missing key attestation: on Android the generated key must have a key attestation to request a Wallet Unit Attestation"
+-    );
+-  }
++  //if (Platform.OS === "android" && !attestation) {
++  //  throw new IoWalletError(
++  //    "Missing key attestation: on Android the generated key must have a key attestation to request a Wallet Unit Attestation"
++  //  );
++  //}
+ 
+   const publicKey = JWK.parse(await cryptoContext.getPublicKey());
+ 
