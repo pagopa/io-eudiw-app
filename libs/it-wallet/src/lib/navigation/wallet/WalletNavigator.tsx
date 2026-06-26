@@ -48,6 +48,10 @@ import PresentationProximityPreview, {
 } from '../../screens/proximity/PresentationProximityPreview';
 import PresentationProximitySuccess from '../../screens/proximity/PresentationProximitySuccess';
 import WALLET_ROUTES from './routes';
+import {
+  ItwPresentationCredentialCardScreen,
+  ItwPresentationCredentialCardScreenNavigationParams
+} from '../../screens/presentation/ItwPresentationCredentialCardScreen';
 
 /**
  * Screen parameters for the wallet navigator.
@@ -71,6 +75,8 @@ export type WalletNavigatorParamsList = {
     .CREDENTIAL_DETAILS]: ItwPresentationCredentialDetailNavigationParams;
   [WALLET_ROUTES.PRESENTATION
     .CREDENTIAL_CARD_MODAL]: ItwPresentationCredentialCardModalNavigationParams;
+  [WALLET_ROUTES.PRESENTATION
+    .CREDENTIAL_CARD_SCREEN]: ItwPresentationCredentialCardScreenNavigationParams;
   [WALLET_ROUTES.PRESENTATION.PRE_DEFINITION]: PresentationPreDefinitionParams;
   [WALLET_ROUTES.PRESENTATION.FAILURE]: undefined;
   [WALLET_ROUTES.PRESENTATION
@@ -150,6 +156,10 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_MODAL}
         component={ItwPresentationCredentialCardModal}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_SCREEN}
+        component={ItwPresentationCredentialCardScreen}
       />
     </Stack.Group>
     <Stack.Group>

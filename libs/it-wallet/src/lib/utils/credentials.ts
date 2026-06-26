@@ -189,3 +189,13 @@ export const getCredentialTypeByVct = (vct: string): string | undefined => {
   // Tries to match the extracted value to a credential type
   return name ? credentialTypesByVct[name] : undefined;
 };
+
+export const wellKnownCredentialToCredentialType: Partial<
+  Record<string, CredentialType>
+> = {
+  [wellKnownCredential.PID]: CredentialType.PID,
+  [wellKnownCredential.DRIVING_LICENSE]: CredentialType.DRIVING_LICENSE,
+  [wellKnownCredential.DISABILITY_CARD]:
+    CredentialType.EUROPEAN_DISABILITY_CARD,
+  [wellKnownCredential.BONUS_PARI]: CredentialType.BONUS_PARI
+} satisfies Partial<Record<WellKnownCredentialTypes, CredentialType>>;

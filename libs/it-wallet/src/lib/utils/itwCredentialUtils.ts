@@ -2,6 +2,7 @@ import { IOColors, Tag, useIOTheme } from '@pagopa/io-app-design-system';
 import { t } from 'i18next';
 import { wellKnownCredential } from './credentials';
 import { ItwCredentialStatus } from './itwTypesUtils';
+import { ItwIridescentBorderVariant } from '../components/ItwBrandedSkiaBorder';
 
 export const useBorderColorByStatus = (
   credentialType?: string
@@ -91,3 +92,45 @@ export const getCredentialNameFromType = (
   credentialType !== undefined
     ? itwGetCredentialNameByCredentialType()[credentialType]
     : withDefault;
+
+export const borderVariantByStatus: {
+  [key in ItwCredentialStatus]: ItwIridescentBorderVariant;
+} = {
+  valid: 'default',
+  expiring: 'warning',
+  jwtExpiring: 'warning',
+  expired: 'error',
+  jwtExpired: 'error',
+  invalid: 'error',
+  unknown: 'default'
+};
+
+export const useTagPropsByStatus = (): {
+  [key in ItwCredentialStatus]?: Tag;
+} => ({
+  invalid: {
+    variant: 'error',
+    text: t('wallet', 'credentials.status.invalid')
+  },
+  expired: {
+    variant: 'error',
+    text: t('wallet', 'credentials.status.expired')
+  },
+  jwtExpired: {
+    variant: 'error',
+    text: t('wallet', 'credentials.status.verificationExpired')
+  },
+  expiring: {
+    variant: 'warning',
+    text: t('wallet', 'credentials.status.expiring')
+  },
+  jwtExpiring: {
+    variant: 'warning',
+    text: t('wallet', 'credentials.status.verificationExpiring')
+  },
+  unknown: {
+    variant: 'custom',
+    icon: { name: 'infoFilled', color: 'grey-450' },
+    text: t('wallet', 'credentials.status.unknown')
+  }
+});

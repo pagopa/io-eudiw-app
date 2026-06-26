@@ -20,6 +20,7 @@ type ItwPresentationDetailsScreenBaseProps = {
   credential: StoredCredential;
   children?: ReactNode;
   ctaProps?: CredentialCtaProps;
+  headerTransparent?: boolean;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-inferrable-types
@@ -28,7 +29,8 @@ const scrollTriggerOffsetValue: number = 88;
 const ItwPresentationDetailsScreenBase = ({
   credential,
   children,
-  ctaProps
+  ctaProps,
+  headerTransparent = false
 }: ItwPresentationDetailsScreenBaseProps) => {
   const animatedScrollViewRef = useAnimatedRef<Animated.ScrollView>();
   const itwFeaturesEnabled = useAppSelector(lifecycleIsValidSelector);
@@ -49,6 +51,7 @@ const ItwPresentationDetailsScreenBase = ({
     supportRequest: true,
     enableDiscreteTransition: true,
     animatedRef: animatedScrollViewRef,
+    transparent: headerTransparent,
     ...headerProps
   });
 
