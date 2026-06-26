@@ -29,8 +29,8 @@ import {
 } from '../../ItwBrandedSkiaBorder';
 import { CardBackground } from './CardBackground';
 import { CardData } from './CardData';
+import { CardWidthContext } from './CardWidthContext';
 import { FlippableCard } from './FlippableCard';
-import { CardMode } from './types';
 
 type ItwSkeumorphicCardProps = {
   credential: StoredCredential;
@@ -39,7 +39,6 @@ type ItwSkeumorphicCardProps = {
   capabilities: ItwCredentialCapabilities;
   isFlipped?: boolean;
   claims: ParsedClaimsRecord;
-  mode: CardMode;
 };
 
 export const ItwSkeumorphicCard = ({
@@ -48,8 +47,7 @@ export const ItwSkeumorphicCard = ({
   isFlipped = false,
   valuesHidden,
   capabilities,
-  claims,
-  mode
+  claims
 }: ItwSkeumorphicCardProps) => {
   const FrontSide = useMemo(
     () => (
@@ -66,12 +64,11 @@ export const ItwSkeumorphicCard = ({
           claims={claims}
           credential={credential}
           side="front"
-          mode={mode}
           valuesHidden={valuesHidden}
         />
       </CardSideBase>
     ),
-    [credential, status, valuesHidden, capabilities, claims, mode]
+    [credential, status, valuesHidden, capabilities, claims]
   );
 
   const BackSide = useMemo(
@@ -89,12 +86,11 @@ export const ItwSkeumorphicCard = ({
           claims={claims}
           credential={credential}
           side="back"
-          mode={mode}
           valuesHidden={valuesHidden}
         />
       </CardSideBase>
     ),
-    [credential, status, valuesHidden, capabilities, claims, mode]
+    [credential, status, valuesHidden, capabilities, claims]
   );
 
   const accessibilityProps = useMemo(
@@ -187,39 +183,41 @@ const CardSideBase = ({
 
   return (
     <View onLayout={handleOnLayout} style={styles.container}>
-      {/* Status badge  */}
-      {statusTagProps && (
-        <View style={styles.tag}>
-          <Tag {...statusTagProps} />
-        </View>
-      )}
+      <CardWidthContext.Provider value={size.width}>
+        {/* Status badge  */}
+        {statusTagProps && (
+          <View style={styles.tag}>
+            <Tag {...statusTagProps} />
+          </View>
+        )}
 
-      {/* Card background and claims */}
-      {children}
+        {/* Card background and claims */}
+        {children}
 
-      {/* Displays a faded overlay if required by the credential status */}
-      <View style={[styles.faded, dynamicStyle]} />
+        {/* Displays a faded overlay if required by the credential status */}
+        <View style={[styles.faded, dynamicStyle]} />
 
-      {/* Skia Canvas for border and light effect, only displayed if IT-Wallet enabled */}
-      {showAnimatedBorder && (
-        <Canvas
-          style={{
-            position: 'absolute',
-            width: size.width,
-            height: size.height
-          }}
-          testID="itWalletBrandBorderTestID"
-        >
-          {/* Animated gradient border */}
-          <ItwBrandedSkiaBorder
-            width={size.width}
-            height={size.height}
-            variant={gradientVariantByStatus[status]}
-            thickness={4}
-            cornerRadius={8}
-          />
-        </Canvas>
-      )}
+        {/* Skia Canvas for border and light effect, only displayed if IT-Wallet enabled */}
+        {showAnimatedBorder && (
+          <Canvas
+            style={{
+              position: 'absolute',
+              width: size.width,
+              height: size.height
+            }}
+            testID="itWalletBrandBorderTestID"
+          >
+            {/* Animated gradient border */}
+            <ItwBrandedSkiaBorder
+              width={size.width}
+              height={size.height}
+              variant={gradientVariantByStatus[status]}
+              thickness={4}
+              cornerRadius={8}
+            />
+          </Canvas>
+        )}
+      </CardWidthContext.Provider>
     </View>
   );
 };

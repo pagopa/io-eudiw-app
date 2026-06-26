@@ -77,7 +77,6 @@ const ItwPresentationCredentialCard = ({
           <ItwSkeumorphicCard
             credential={credential}
             claims={parsedClaims}
-            mode="vertical"
             isFlipped={isFlipped}
             status={status}
             valuesHidden={valuesHidden}
