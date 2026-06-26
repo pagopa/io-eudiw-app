@@ -11,10 +11,8 @@ export {
   preferencesSetIsFirstStartupFalse,
   preferencesSetSelectedMiniAppId,
   preferencesResetMiniAppSelection,
-  preferencesDisablePidInfoBanner,
   selectIsOnboardingComplete,
-  selectIsFirstStartup,
-  selectPidInfoBanerActive
+  selectIsFirstStartup
 } from './lib/store/preferences';
 
 export const preferencesReducer = {

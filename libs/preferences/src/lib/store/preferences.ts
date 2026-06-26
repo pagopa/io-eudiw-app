@@ -16,7 +16,6 @@ export type PreferencesSlice = {
   isFirstStartup: boolean;
   selectedMiniAppId?: string;
   fontPreference: TypefaceChoice;
-  pidInfoBannerActive: boolean;
 };
 
 export type PreferencesPartialRootState = {
@@ -29,8 +28,7 @@ const initialState: PreferencesSlice = {
   isBiometricEnabled: false,
   isFirstStartup: true,
   selectedMiniAppId: undefined,
-  fontPreference: 'comfortable',
-  pidInfoBannerActive: true
+  fontPreference: 'comfortable'
 };
 
 /**
@@ -68,10 +66,6 @@ const preferencesSlice = createSlice({
     ) => {
       state.selectedMiniAppId = action.payload;
     },
-    // PID Info Banner
-    preferencesDisablePidInfoBanner: state => {
-      state.pidInfoBannerActive = false;
-    },
     preferencesReset: () => initialState
   }
 });
@@ -86,7 +80,6 @@ export const {
   preferencesSetSelectedMiniAppId,
   preferencesResetMiniAppSelection,
   preferencesFontSet,
-  preferencesDisablePidInfoBanner,
   preferencesReset
 } = preferencesSlice.actions;
 
@@ -135,10 +128,6 @@ export const selectIsFirstStartup = (state: PreferencesPartialRootState) =>
 export const selectFontPreference = (
   state: PreferencesPartialRootState
 ): TypefaceChoice => state.preferences.fontPreference;
-
-export const selectPidInfoBanerActive = (
-  state: PreferencesPartialRootState
-): boolean => state.preferences.pidInfoBannerActive;
 
 export const selectSelectedMiniAppId = (state: PreferencesPartialRootState) =>
   state.preferences.selectedMiniAppId;

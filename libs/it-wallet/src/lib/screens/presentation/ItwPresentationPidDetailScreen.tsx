@@ -3,7 +3,10 @@ import { PoweredByItWalletText } from '../../components/PoweredByItWalletText';
 import { ItwPresentationDetailsScreenBase } from '../../components/presentation/ItwPresentationDetailsScreenBase';
 import { ItwPresentationPidDetail } from '../../components/presentation/ItwPresentationPidDetail';
 import { ItwPresentationPidDetailFooter } from '../../components/presentation/ItwPresentationPidDetailFooter';
-import { itwCredentialsPidSelector } from '../../store/credentials';
+import {
+  itwCredentialsPidSelector,
+  selectPidInfoBannerActive
+} from '../../store/credentials';
 import { StoredCredential } from '../../utils/itwTypesUtils';
 import { useAppSelector } from '../../store';
 import { useTranslation } from 'react-i18next';
@@ -11,11 +14,10 @@ import { ItwPresentationDetailsHeader } from '../../components/presentation/ItwP
 import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { wellKnownCredential } from '../../utils/credentials';
 import { ItwDiscoveryInfoBanner } from '../../components/presentation/ItwDiscoveryInfoBanner';
-import { selectPidInfoBanerActive } from '@io-eudiw-app/preferences';
 
 export const ItwPresentationPidDetailScreen = () => {
   const pidOption = useAppSelector(itwCredentialsPidSelector);
-  const pidInfoBannerActive = useAppSelector(selectPidInfoBanerActive);
+  const pidInfoBannerActive = useAppSelector(selectPidInfoBannerActive);
   const { t } = useTranslation(['common']);
 
   const getContent = (credential: StoredCredential) => (
