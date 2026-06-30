@@ -25,10 +25,7 @@ import {
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '@io-eudiw-app/identification';
-import {
-  IoWallet,
-  RemotePresentation
-} from '@io-eudiw-app/io-react-native-wallet';
+import { IoWallet, RemotePresentation } from '@pagopa/io-react-native-wallet';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { CredentialsVault } from '../utils/itwCredentialVault';
 import { getWalletInstanceAttestationThunk } from './attestation';

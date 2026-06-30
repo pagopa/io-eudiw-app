@@ -2,7 +2,7 @@ import {
   createCryptoContextFor,
   IoWallet,
   type KeyAttestationCryptoContext
-} from '@io-eudiw-app/io-react-native-wallet';
+} from '@pagopa/io-react-native-wallet';
 import { selectInstanceKeyTag, selectSessionId } from '../store/instance';
 import { WIA_KEYTAG } from '../utils/crypto';
 import { createWalletFetch } from '../utils/fetch';
