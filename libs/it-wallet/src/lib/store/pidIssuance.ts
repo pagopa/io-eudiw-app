@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createInstanceThunk } from '../middleware/instance';
-import { obtainPidThunk } from '../middleware/pid';
 import { StoredCredential } from '../utils/itwTypesUtils';
 import { RequestedCredential } from './credentialIssuance';
 import { ResolvedCredentialOffer } from '../types';
@@ -79,9 +78,18 @@ const pidIssuanceStatusSlice = createSlice({
     ) => {
       state.pendingCredential = action.payload;
     },
-    // Sets the issuance error from a flow phase handled imperatively (e.g. the
-    // vault persistence in the addPidWithIdentification listener) instead of a
-    // thunk lifecycle, so the UI can surface it through selectPidIssuanceStatus.
+    // Triggers the PID issuance flow handled by the obtainPidListener and moves
+    // the issuance status to loading.
+    setPidIssuanceRequest: state => {
+      state.issuance = setLoading();
+    },
+    setPidIssuanceSuccess: (state, action: PayloadAction<StoredCredential>) => {
+      state.issuance = setSuccess(action.payload);
+    },
+    // Sets the issuance error, discriminated by the phase it originates from
+    // (OID4VCI exchange in the obtainPidListener or vault persistence in the
+    // addPidWithIdentification listener), so the UI can surface it through
+    // selectPidIssuanceStatus.
     setPidIssuanceError: (
       state,
       action: PayloadAction<{ error: unknown; type: PidIssuanceErrorType }>
@@ -104,20 +112,6 @@ const pidIssuanceStatusSlice = createSlice({
         state.instanceCreation = setError(action.error);
       }
     });
-    // Pid issuance thunk
-    builder.addCase(obtainPidThunk.fulfilled, (state, action) => {
-      state.issuance = setSuccess(action.payload);
-    });
-    builder.addCase(obtainPidThunk.pending, state => {
-      state.issuance = setLoading();
-    });
-    builder.addCase(obtainPidThunk.rejected, (state, action) => {
-      if (action.meta.aborted) {
-        state.issuance = setInitial();
-      } else {
-        state.issuance = setError(action.error, 'issuance');
-      }
-    });
     // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
     builder.addCase(preferencesReset, () => initialState);
     builder.addCase(resetLifecycle, () => initialState);
@@ -132,6 +126,8 @@ export const {
   resetInstanceCreation,
   resetPidIssuance,
   setPendingCredential,
+  setPidIssuanceRequest,
+  setPidIssuanceSuccess,
   setPidIssuanceError
 } = pidIssuanceStatusSlice.actions;
 

@@ -18,8 +18,11 @@ import {
 } from '@io-eudiw-app/commons';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
-import { obtainPidThunk } from '../../middleware/pid';
 import { addPidWithIdentification } from '../../store/credentials';
+import {
+  resetPidIssuance,
+  setPidIssuanceRequest
+} from '../../store/pidIssuance';
 import {
   selectPidIssuanceData,
   selectPidIssuanceStatus
@@ -47,9 +50,9 @@ const PidIssuanceRequest = () => {
   useDisableGestureNavigation();
 
   useEffect(() => {
-    const promise = dispatch(obtainPidThunk());
+    dispatch(setPidIssuanceRequest());
     return () => {
-      promise.abort();
+      dispatch(resetPidIssuance());
     };
   }, [dispatch]);
 

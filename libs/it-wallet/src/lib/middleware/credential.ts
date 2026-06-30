@@ -309,7 +309,7 @@ const obtainCredentialListener: AppListenerWithAction<
       await wallet.CredentialIssuance.completeUserAuthorizationWithFormPostJwtMode(
         requestObject,
         issuerConf,
-        [pid.keyTag, pid.credential],
+        [pid.keyTag, pidEncoded],
         { wiaCryptoContext, appFetch }
       );
 
