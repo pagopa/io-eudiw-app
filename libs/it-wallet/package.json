@@ -28,6 +28,7 @@
     "@pagopa/io-react-native-jwt": "2.1.0",
     "@types/color": "^4.2.0",
     "react-native-barcode-creator": "^0.2.0",
+    "react-native-qrcode-skia": "catalog:",
     "react-native-svg": "catalog:"
   },
   "peerDependencies": {

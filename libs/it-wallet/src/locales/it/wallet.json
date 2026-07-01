@@ -267,6 +267,33 @@
       "title": "Show QR",
       "body": "Display the QR code to verify the validity of the documents in your Wallet."
     },
+    "home": {
+      "cta": "Avvia verifica"
+    },
+    "engagement": {
+      "title": "Avvia una verifica",
+      "instruction": "Mostra il codice QR a chi verifica i tuoi documenti digitali",
+      "qrCode": {
+        "error": "Abbiamo avuto un problema nel generare il QR Code."
+      },
+      "banner": {
+        "title": "Come funziona il QR Code?",
+        "content": "Ti consente di far verificare i documenti digitali che hai aggiunto al Portafoglio.",
+        "action": "Scopri di più"
+      },
+      "nfc": {
+        "or": "oppure",
+        "action": "Avvia verifica contactless"
+      }
+    },
+    "nfcEngagement": {
+      "ready": {
+        "ios": "Pronto per la verifica",
+        "android": "Avvicina il telefono al lettore"
+      },
+      "sending": "Verifica in corso",
+      "success": "Verifica completata!"
+    },
     "trust": {
       "subtitle": "Saranno mostrati a **{{relyingParty}}** per completare la verifica dei documenti richiesti."
     },
@@ -447,7 +474,8 @@
   "tabNavigator": {
     "wallet": "Portafoglio",
     "scanQr": "Inquadra",
-    "showQr": "Mostra QR"
+    "showQr": "Mostra QR",
+    "payments": "Pagamenti"
   },
   "deepLink": {
     "error": {

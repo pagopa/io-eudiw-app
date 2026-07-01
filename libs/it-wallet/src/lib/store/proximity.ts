@@ -35,10 +35,28 @@ export type ProximityDisclosure = {
   isAuthenticated: boolean;
 };
 
+/**
+ * Engagement mode used to (re)start the native proximity session. Mirrors
+ * `ISO18013_5.EngagementMode` but is declared locally to keep the inferred
+ * reducer types portable (the library type is only exposed via a deep path).
+ */
+export type ProximityEngagementMode = 'qrcode' | 'nfc';
+
+/**
+ * Retrieval method negotiated by the verifier. Mirrors
+ * `ISO18013_5.RetrievalMethod`, declared locally for the same reason as
+ * {@link ProximityEngagementMode}.
+ */
+export type ProximityRetrievalMethod = 'ble' | 'nfc';
+
 /* State type definition for the proximity slice
  * qrCode - The qr code to be displayed for starting the proximity process
  * error - Cotains the error object if any error occurs during the proximity process
  * state - The state of the proximity process
+ * engagementMode - The active engagement mode ('qrcode' or 'nfc'). Drives the
+ *   native session configuration when (re)starting the engagement.
+ * retrievalMethod - The retrieval method negotiated by the verifier for the
+ *   current request ('ble' or 'nfc'), as reported by `onDocumentRequestReceived`.
  */
 type ProximitySlice = {
   qrCode?: string;
@@ -46,6 +64,8 @@ type ProximitySlice = {
   documentRequest?: ISO18013_5.VerifierRequest;
   proximityDisclosureDescriptor?: ProximityDisclosure;
   errorDetails?: string;
+  engagementMode: ProximityEngagementMode;
+  retrievalMethod?: ProximityRetrievalMethod;
 };
 
 // Initial state for the proximity slice
@@ -54,7 +74,9 @@ const initialState: ProximitySlice = {
   status: ProximityStatus.PROXIMITY_STATUS_STOPPED,
   errorDetails: undefined,
   documentRequest: undefined,
-  proximityDisclosureDescriptor: undefined
+  proximityDisclosureDescriptor: undefined,
+  engagementMode: 'qrcode',
+  retrievalMethod: undefined
 };
 
 /**
@@ -121,6 +143,27 @@ const proximitySlice = createSlice({
       state.qrCode = action.payload;
     },
     resetProximityQrCode: state => (state.qrCode = undefined),
+    /**
+     * Sets the engagement mode used to (re)start the native session. Switching
+     * to 'nfc' and re-dispatching {@link setProximityStatusStarted} restarts the
+     * listener with the NFC configuration (handled by `takeLatestEffect`).
+     */
+    setProximityEngagementMode: (
+      state,
+      action: PayloadAction<ProximityEngagementMode>
+    ) => {
+      state.engagementMode = action.payload;
+    },
+    /**
+     * Stores the retrieval method negotiated by the verifier for the current
+     * request, as reported by the `onDocumentRequestReceived` native event.
+     */
+    setProximityRetrievalMethod: (
+      state,
+      action: PayloadAction<ProximityRetrievalMethod | undefined>
+    ) => {
+      state.retrievalMethod = action.payload;
+    },
     resetProximity: _ => initialState
   },
   extraReducers: builder => {
@@ -146,6 +189,8 @@ export const {
   setProximityStatusAuthorizationComplete,
   setProximityQrCode,
   resetProximityQrCode,
+  setProximityEngagementMode,
+  setProximityRetrievalMethod,
   resetProximity
 } = proximitySlice.actions;
 
@@ -206,3 +251,20 @@ export const selectProximityDisclosureIsAuthenticated = createSelector(
  */
 export const selectProximityErrorDetails = (state: WalletCombinedRootState) =>
   state.wallet.proximity.errorDetails;
+
+/**
+ * Selects the active engagement mode ('qrcode' or 'nfc')
+ * @param state - The root state
+ * @returns The active engagement mode
+ */
+export const selectProximityEngagementMode = (state: WalletCombinedRootState) =>
+  state.wallet.proximity.engagementMode;
+
+/**
+ * Selects the retrieval method negotiated by the verifier for the current request
+ * @param state - The root state
+ * @returns The retrieval method ('ble' or 'nfc') if available, undefined otherwise
+ */
+export const selectProximityRetrievalMethod = (
+  state: WalletCombinedRootState
+) => state.wallet.proximity.retrievalMethod;

@@ -9,6 +9,7 @@ import WalletNavigator, {
 } from '../wallet/WalletNavigator';
 import QrCodeScanScreen from '../../screens/presentation/QrCodeScanScreen';
 import ProximityQrCode from '../../screens/proximity/ProximityQrCode';
+import ItwProximityNfcPresentment from '../../screens/proximity/ItwProximityNfcPresentment';
 import Settings from '../../screens/settings/Settings';
 import Preference from '../../screens/settings/Preferences';
 import Appearance from '../../screens/settings/Appearance';
@@ -24,6 +25,7 @@ export type MainNavigatorParamsList = {
   [MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE]: undefined;
   [MAIN_ROUTES.SCAN_QR]: undefined;
   [MAIN_ROUTES.SHOW_QR]: undefined;
+  [MAIN_ROUTES.NFC_PRESENTMENT]: undefined;
 };
 
 /**
@@ -68,6 +70,12 @@ export const MainStackNavigator = () => (
     <Stack.Screen
       name={MAIN_ROUTES.SHOW_QR}
       component={ProximityQrCode}
+      options={{ animation: 'slide_from_bottom' }}
+    />
+
+    <Stack.Screen
+      name={MAIN_ROUTES.NFC_PRESENTMENT}
+      component={ItwProximityNfcPresentment}
       options={{ animation: 'slide_from_bottom' }}
     />
 

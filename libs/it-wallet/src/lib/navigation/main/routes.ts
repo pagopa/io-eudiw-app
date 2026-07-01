@@ -13,7 +13,8 @@ const MAIN_ROUTES = {
     }
   },
   SCAN_QR: 'MAIN_SCAN_QR',
-  SHOW_QR: 'MAIN_SHOW_QR'
+  SHOW_QR: 'MAIN_SHOW_QR',
+  NFC_PRESENTMENT: 'MAIN_NFC_PRESENTMENT'
 } as const;
 
 export default MAIN_ROUTES;

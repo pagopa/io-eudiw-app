@@ -1,11 +1,14 @@
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+import { t } from 'i18next';
 import { EmitterSubscription } from 'react-native';
 import { selectCredentials } from '../store/credentials';
 import {
   resetProximityQrCode,
   selectProximityDocumentRequest,
+  selectProximityEngagementMode,
   setProximityQrCode,
+  setProximityRetrievalMethod,
   setProximityStatusAuthorizationComplete,
   setProximityStatusAuthorizationRejected,
   setProximityStatusAuthorizationSend,
@@ -41,8 +44,25 @@ const {
   parseVerifierRequest,
   sendErrorResponse,
   sendResponse,
+  setHceModalMessage,
   startEngagement
 } = ISO18013_5;
+
+/**
+ * Native engagement configuration per engagement mode, mirroring the IO-App
+ * `ENGAGEMENT_CONFIG`. QR engagement retrieves the documents over BLE, while NFC
+ * engagement allows both BLE (preferred) and NFC retrieval.
+ */
+const ENGAGEMENT_CONFIG: Record<
+  ISO18013_5.EngagementMode,
+  {
+    engagementModes: ReadonlyArray<ISO18013_5.EngagementMode>;
+    retrievalMethods: ReadonlyArray<ISO18013_5.RetrievalMethod>;
+  }
+> = {
+  qrcode: { engagementModes: ['qrcode'], retrievalMethods: ['ble'] },
+  nfc: { engagementModes: ['nfc'], retrievalMethods: ['ble', 'nfc'] }
+};
 
 const removeProximityListeners = async (
   listeners: Array<EmitterSubscription>
@@ -56,9 +76,20 @@ const removeProximityListeners = async (
 const proximityListener: AppListenerWithAction<
   ReturnType<typeof setProximityStatusStarted>
 > = async (_, listenerApi) => {
+  // The engagement mode is read from the store: switching it to 'nfc' and
+  // re-dispatching `setProximityStatusStarted` restarts this listener (via
+  // `takeLatestEffect`) with the NFC native configuration.
+  const engagementMode = selectProximityEngagementMode(listenerApi.getState());
+
   const listeners = [
     addListener('onQrCodeString', qrCode => {
       listenerApi.dispatch(setProximityQrCode(qrCode.data));
+    }),
+    addListener('onNfcStarted', () => null),
+    addListener('onNfcStopped', () => {
+      // The NFC/HCE session has ended (e.g. the user dismissed the system
+      // modal). Treat it as a stop so the cancel branch closes the flow.
+      listenerApi.dispatch(setProximityStatusStopped());
     }),
     addListener('onDeviceConnecting', () => null),
     addListener('onDeviceConnected', () => {
@@ -76,6 +107,10 @@ const proximityListener: AppListenerWithAction<
       // Parse and verify the received request with the exposed function
       const parsedJson = JSON.parse(payload.data);
       const parsedRequest = parseVerifierRequest(parsedJson);
+      // Track the retrieval method negotiated by the verifier (ble | nfc)
+      listenerApi.dispatch(
+        setProximityRetrievalMethod(payload.retrievalMethod)
+      );
       listenerApi.dispatch(setProximityStatusReceivedDocument(parsedRequest));
     }),
     addListener('onDeviceDisconnected', () => {
@@ -99,10 +134,20 @@ const proximityListener: AppListenerWithAction<
 
     // Provide the verifiers certificates
     const certificates = verifierCertificates.map(cert => cert.certificate);
+    const { engagementModes, retrievalMethods } =
+      ENGAGEMENT_CONFIG[engagementMode];
+
+    if (engagementMode === 'nfc') {
+      // iOS-only: copy displayed in the NFC HCE system modal during engagement
+      setHceModalMessage(
+        t('proximity.nfcEngagement.ready.ios', { ns: 'wallet' })
+      );
+    }
+
     await startEngagement({
       certificates: [certificates],
-      engagementModes: ['qrcode'],
-      retrievalMethods: ['ble']
+      engagementModes,
+      retrievalMethods
     });
 
     /**

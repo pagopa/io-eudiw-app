@@ -1,14 +1,22 @@
 import {
   HeaderActionProps,
-  HeaderFirstLevel
+  HeaderFirstLevel,
+  IOButton,
+  IOVisualCostants
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
 import MAIN_ROUTES from '../navigation/main/routes';
 import WALLET_ROUTES from '../navigation/wallet/routes';
 import { WalletCardsContainer } from '../components/WalletCardsContainer';
 import { IOScrollView } from '@io-eudiw-app/commons';
+import { useAppDispatch } from '../store';
+import {
+  setProximityEngagementMode,
+  setProximityStatusStarted
+} from '../store/proximity';
 
 /**
  * Wallet home to be rendered as the first page in the tab navigator.
@@ -18,6 +26,15 @@ import { IOScrollView } from '@io-eudiw-app/commons';
 const WalletHome = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+
+  // Starts a proximity presentation in QR engagement mode and opens the
+  // engagement (QR Code) screen. The flow is driven by the proximity listener.
+  const startVerification = () => {
+    dispatch(setProximityEngagementMode('qrcode'));
+    dispatch(setProximityStatusStarted());
+    navigation.navigate(MAIN_ROUTES.SHOW_QR);
+  };
 
   const actions: HeaderFirstLevel['actions'] = useMemo(
     () => [
@@ -44,6 +61,20 @@ const WalletHome = () => {
         title={t('tabNavigator.wallet', { ns: 'wallet' })}
         actions={actions}
       />
+      <View
+        style={{
+          paddingHorizontal: IOVisualCostants.appMarginDefault,
+          paddingTop: 16
+        }}
+      >
+        <IOButton
+          variant="solid"
+          fullWidth={true}
+          icon="qrCode"
+          label={t('proximity.home.cta', { ns: 'wallet' })}
+          onPress={startVerification}
+        />
+      </View>
       <IOScrollView centerContent={true} excludeSafeAreaMargins={true}>
         <WalletCardsContainer />
       </IOScrollView>
