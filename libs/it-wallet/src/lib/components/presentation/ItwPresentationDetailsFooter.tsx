@@ -5,19 +5,28 @@ import { View } from 'react-native';
 import { useItwRemoveCredentialWithConfirm } from '../../hooks/useItwRemoveCredentialWithConfirm';
 import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
 import { StoredCredential } from '../../utils/itwTypesUtils';
+import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
+import { useAppSelector } from '../../store';
 
 type ItwPresentationDetailFooterProps = {
   credential: StoredCredential;
+  capabilities: ItwCredentialCapabilities;
 };
 
 const ItwPresentationDetailsFooter = ({
-  credential
+  credential,
+  capabilities
 }: ItwPresentationDetailFooterProps) => {
   const { confirmAndRemoveCredential } =
     useItwRemoveCredentialWithConfirm(credential);
 
   return (
     <View>
+      {capabilities
+        .getExtraCredentialActions?.(useAppSelector)
+        .map(({ key, props }) => (
+          <ListItemAction key={key} {...props} />
+        ))}
       <ListItemAction
         testID="requestAssistanceActionTestID"
         variant="primary"
