@@ -82,11 +82,7 @@ export enum WellKnownClaim {
   /**
    *  Claim that contains the barcode
    */
-  barcode = 'barcode',
-  /**
-   *  Claim that contains the fiscal code
-   */
-  personal_administrative_number = 'personal_administrative_number'
+  barcode = 'barcode'
 }
 
 /**

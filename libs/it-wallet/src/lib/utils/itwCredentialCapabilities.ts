@@ -76,15 +76,13 @@ const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
     },
     getExtraCredentialActions: appSelectorHook => {
       const credential = appSelectorHook(
-        selectCredential(wellKnownCredential.PID)
+        selectCredential(wellKnownCredential.BONUS_PARI)
       );
 
       const fiscalCode = z
         .string()
         .safeParse(
-          credential?.parsedCredential[
-            WellKnownClaim.personal_administrative_number
-          ].value
+          credential?.parsedCredential[WellKnownClaim.fiscal_code]?.value
         );
 
       return [
@@ -106,9 +104,10 @@ const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
               fiscalCode.success
                 ? openWebUrl(
                     `https://dev.bonuselettrodomestici.it/utente/it-wallet/payment/${fiscalCode.data}`,
-                    () => IOToast.error('ERROR')
+                    () =>
+                      IOToast.error(I18n.t('errors.generic', { ns: 'common' }))
                   )
-                : IOToast.error('ERROR');
+                : IOToast.error(I18n.t('errors.generic', { ns: 'common' }));
             }
           }
         }
