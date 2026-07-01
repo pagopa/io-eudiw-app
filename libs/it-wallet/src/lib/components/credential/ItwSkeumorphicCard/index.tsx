@@ -164,7 +164,7 @@ const CardSideBase = ({
     height: 0
   });
 
-  const { showStatusTag, showAnimatedBorder } = capabilities;
+  const { showStatusTag } = capabilities;
   const statusTagProps = showStatusTag ? tagPropsByStatus[status] : undefined;
   const borderColor = borderColorMap[status];
   // Include "jwtExpired" as a valid status because the credential skeumorphic card with this state
@@ -198,25 +198,23 @@ const CardSideBase = ({
         <View style={[styles.faded, dynamicStyle]} />
 
         {/* Skia Canvas for border and light effect, only displayed if IT-Wallet enabled */}
-        {showAnimatedBorder && (
-          <Canvas
-            style={{
-              position: 'absolute',
-              width: size.width,
-              height: size.height
-            }}
-            testID="itWalletBrandBorderTestID"
-          >
-            {/* Animated gradient border */}
-            <ItwBrandedSkiaBorder
-              width={size.width}
-              height={size.height}
-              variant={gradientVariantByStatus[status]}
-              thickness={4}
-              cornerRadius={8}
-            />
-          </Canvas>
-        )}
+        <Canvas
+          style={{
+            position: 'absolute',
+            width: size.width,
+            height: size.height
+          }}
+          testID="itWalletBrandBorderTestID"
+        >
+          {/* Animated gradient border */}
+          <ItwBrandedSkiaBorder
+            width={size.width}
+            height={size.height}
+            variant={gradientVariantByStatus[status]}
+            thickness={4}
+            cornerRadius={8}
+          />
+        </Canvas>
       </CardWidthContext.Provider>
     </View>
   );

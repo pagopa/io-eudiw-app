@@ -16,8 +16,6 @@ type CredentialInvalidStatusFailure = {
 
 export type ItwCredentialCapabilities = {
   showStatusTag: boolean;
-  showAnimatedBorder: boolean;
-  flippable: boolean;
   suppressStatusAlert: boolean;
   infoAlert?: CredentialInfoAlert;
   invalidStatusFailure?: CredentialInvalidStatusFailure;
@@ -25,8 +23,6 @@ export type ItwCredentialCapabilities = {
 
 const DEFAULT_CAPABILITIES: ItwCredentialCapabilities = {
   showStatusTag: true,
-  showAnimatedBorder: true,
-  flippable: true,
   suppressStatusAlert: false
 };
 
@@ -47,8 +43,6 @@ const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
   },
   [wellKnownCredential.BONUS_PARI]: {
     showStatusTag: false,
-    showAnimatedBorder: false,
-    flippable: false,
     suppressStatusAlert: true,
     infoAlert: {
       testID: 'itwBonusPariBannerTestID',
