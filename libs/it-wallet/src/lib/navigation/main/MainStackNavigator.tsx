@@ -27,7 +27,7 @@ export type MainNavigatorParamsList = {
   [MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN]: undefined;
   [MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE]: undefined;
   [MAIN_ROUTES.SCAN_QR]: undefined;
-  [MAIN_ROUTES.SHOW_QR]: undefined;
+  [MAIN_ROUTES.BLE_PRESENTMENT]: undefined;
   [MAIN_ROUTES.NFC_PRESENTMENT]: undefined;
   [MAIN_ROUTES.PROXIMITY_BLUETOOTH_PERMISSIONS]: undefined;
   [MAIN_ROUTES.PROXIMITY_BLUETOOTH_ACTIVATION]: undefined;
@@ -74,7 +74,7 @@ export const MainStackNavigator = () => (
     />
 
     <Stack.Screen
-      name={MAIN_ROUTES.SHOW_QR}
+      name={MAIN_ROUTES.BLE_PRESENTMENT}
       component={ItwProximityPresentmentScreen}
       options={{ animation: 'slide_from_bottom' }}
     />

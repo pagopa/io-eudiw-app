@@ -14,7 +14,7 @@ import { requestBlePermissions } from '../utils/permissions';
  * Presentment screen shown for each proximity engagement mode.
  */
 const ENGAGEMENT_SCREEN = {
-  qrcode: MAIN_ROUTES.SHOW_QR,
+  qrcode: MAIN_ROUTES.BLE_PRESENTMENT,
   nfc: MAIN_ROUTES.NFC_PRESENTMENT
 } as const;
 
