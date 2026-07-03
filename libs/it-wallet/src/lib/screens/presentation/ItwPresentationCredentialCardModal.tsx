@@ -116,7 +116,6 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
             isFlipped={isFlipped}
             setIsFlipped={setFlipped}
             direction={Platform.OS === 'ios' ? 'leftright' : 'updown'}
-            disabled={!capabilities.flippable}
           >
             <View
               style={{
