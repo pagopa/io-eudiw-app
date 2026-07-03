@@ -2,7 +2,7 @@ import type { ParseKeys } from 'i18next';
 import I18n from 'i18next';
 import { wellKnownCredential } from './credentials';
 import { IOToast, type ListItemAction } from '@pagopa/io-app-design-system';
-import { openWebUrl } from '@io-eudiw-app/commons';
+import { openWebUrlInApp } from '@io-eudiw-app/commons';
 import { useAppSelector } from '../store';
 import { selectCredential } from '../store/credentials';
 import { WellKnownClaim } from './itwClaimsUtils';
@@ -102,7 +102,7 @@ const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
             ),
             onPress: () => {
               fiscalCode.success
-                ? openWebUrl(
+                ? openWebUrlInApp(
                     `https://dev.bonuselettrodomestici.it/utente/it-wallet/payment/${fiscalCode.data}`,
                     () =>
                       IOToast.error(I18n.t('errors.generic', { ns: 'common' }))
