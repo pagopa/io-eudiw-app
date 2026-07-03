@@ -229,7 +229,10 @@ const ItwPresentationCredentialDetail = ({
             credential={credential}
             parsedClaims={parsedClaims}
           />
-          <ItwPresentationDetailsFooter credential={credential} />
+          <ItwPresentationDetailsFooter
+            credential={credential}
+            capabilities={capabilities}
+          />
           <View style={{ alignItems: 'center' }}>
             <PoweredByItWalletText />
           </View>
