@@ -11,10 +11,11 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Platform, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 import {
   IOScrollView,
+  isIos,
   useDisableGestureNavigation,
   useHardwareBackButton,
   useMaxBrightness
@@ -132,7 +133,7 @@ const ItwProximityPresentmentScreen = () => {
   const handleContactlessPress = async () => {
     // Until an entitlement for NFC usage for this app is obtained, iOS flow
     // won't work, so we stop the action early [WLS-151]
-    if (Platform.OS === 'ios') {
+    if (isIos) {
       toast();
       return;
     }

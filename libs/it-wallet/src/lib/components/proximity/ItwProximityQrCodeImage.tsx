@@ -11,7 +11,7 @@ import { useAppSelector } from '../../store';
 import { selectProximityQrCode } from '../../store/proximity';
 import { ITW_BRANDED_BOX_PADDING } from '../ItwBrandedBox';
 
-const QR_CODE_LOGO_SIZE = 52;
+const QR_CODE_LOGO_SIZE = 84;
 
 /**
  * For the QR Code size, we start from the window width and subtract the
