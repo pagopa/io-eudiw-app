@@ -16,7 +16,7 @@
       "mdl": "Patente di guida",
       "pid": "IT-Wallet ID",
       "disabilityCard": "Carta Europea della Disabilità",
-      "bonusPari": "Bonus Elettrodomestici",
+      "bonusPari": "Bonus",
       "unknown": "Credenziale Sconosciuta"
     },
     "status": {
@@ -167,7 +167,8 @@
       "actions": {
         "removeFromWallet": "Rimuovi dal Portafoglio",
         "requestAssistance": "Qualcosa non torna?",
-        "hideClaimValues": "Nascondi gli attributi del documento"
+        "hideClaimValues": "Nascondi gli attributi del documento",
+        "pariPurchases": "Dettaglio acquisti"
       },
       "dialogs": {
         "remove": {
@@ -355,7 +356,7 @@
       },
       "bonusPariNotRequested": {
         "title": "Per ottenere il documento devi prima richiedere il bonus sul portale PARI",
-        "subtitle": "Per ottenere il Bonus Elettrodomestici come documento su IT-Wallet, effettua la procedura sul portale PARI.",
+        "subtitle": "Per ottenere il Bonus come documento su IT-Wallet, effettua la procedura sul portale PARI.",
         "action": "Effettua la richiesta"
       },
       "button": "I understand"
