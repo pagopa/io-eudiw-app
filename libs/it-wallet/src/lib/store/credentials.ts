@@ -2,7 +2,7 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
 import { wellKnownCredential } from '../utils/credentials';
-import { StoredCredential } from '../utils/itwTypesUtils';
+import { CredentialFormat, StoredCredential } from '../utils/itwTypesUtils';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import { WalletCombinedRootState } from '.';
 import {
@@ -21,14 +21,20 @@ import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 type CredentialsSlice = {
   credentials: Array<StoredCredential>;
   valuesHidden: boolean;
-  pidInfoBannerActive: boolean;
+  banners: {
+    pidInfoBannerActive: boolean;
+    proximityInfoBannerActive: boolean;
+  };
 };
 
 // Initial state for the credential slice
 const initialState: CredentialsSlice = {
   credentials: [],
   valuesHidden: false,
-  pidInfoBannerActive: true
+  banners: {
+    pidInfoBannerActive: true,
+    proximityInfoBannerActive: true
+  }
 };
 
 /**
@@ -81,7 +87,7 @@ const credentialsSlice = createSlice({
             c => c.credentialType !== credentialType
           ),
           valuesHidden: state.valuesHidden,
-          pidInfoBannerActive: state.pidInfoBannerActive
+          banners: state.banners
         };
       }
       return state;
@@ -91,7 +97,11 @@ const credentialsSlice = createSlice({
     },
     // PID Info Banner
     disablePidInfoBanner: state => {
-      state.pidInfoBannerActive = false;
+      state.banners.pidInfoBannerActive = false;
+    },
+    // Proximity Info Banner
+    disableProximityInfoBanner: state => {
+      state.banners.proximityInfoBannerActive = false;
     }
   },
   extraReducers: builder => {
@@ -128,7 +138,8 @@ export const {
   addCredentialWithIdentification,
   addPidWithIdentification,
   itwSetClaimValuesHidden,
-  disablePidInfoBanner
+  disablePidInfoBanner,
+  disableProximityInfoBanner
 } = credentialsSlice.actions;
 
 export const selectCredentials = (state: WalletCombinedRootState) =>
@@ -183,6 +194,20 @@ export const selectWalletCards: (
     }))
 );
 
+/**
+ * Selector to determine whether there are any presentable credentials.
+ * Returns `true` if there is at least one MDOC credential in the wallet,
+ * which are the ones presentable over proximity.
+ *
+ * @param state - The global state.
+ * @returns `true` if there is at least one presentable credential, `false` otherwise.
+ */
+export const hasPresentableCredentialsSelector = createSelector(
+  selectCredentials,
+  credentials =>
+    credentials.some(credential => credential.format === CredentialFormat.MDOC)
+);
+
 export const itwIsClaimValueHiddenSelector = (state: WalletCombinedRootState) =>
   state.wallet.credentials.valuesHidden;
 
@@ -192,4 +217,13 @@ export const itwIsClaimValueHiddenSelector = (state: WalletCombinedRootState) =>
  * @returns a boolean indicating whether the PID info banner is active
  */
 export const selectPidInfoBannerActive = (state: WalletCombinedRootState) =>
-  state.wallet.credentials.pidInfoBannerActive;
+  state.wallet.credentials.banners.pidInfoBannerActive;
+
+/**
+ * Selects whether the Proximity info banner is active (i.e. not yet dismissed by the user).
+ * @param state - The global state.
+ * @returns a boolean indicating whether the Proximity info banner is active
+ */
+export const selectProximityInfoBannerActive = (
+  state: WalletCombinedRootState
+) => state.wallet.credentials.banners.proximityInfoBannerActive;

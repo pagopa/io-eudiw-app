@@ -248,7 +248,7 @@
       }
     },
     "ctas": {
-      "showQRCode": "Mostra QR Code di verifica"
+      "present": "Avvia verifica"
     },
     "statusAssertionUnknown": {
       "title": "Non siamo riusciti a caricare {{credentialName}}",
@@ -263,10 +263,6 @@
     }
   },
   "proximity": {
-    "showQr": {
-      "title": "Show QR",
-      "body": "Display the QR code to verify the validity of the documents in your Wallet."
-    },
     "home": {
       "cta": "Avvia verifica"
     },
@@ -293,6 +289,99 @@
       },
       "sending": "Verifica in corso",
       "success": "Verifica completata!"
+    },
+    "bluetooth": {
+      "permissions": {
+        "title": "Consenti a DWalletLab di accedere al Bluetooth",
+        "subtitle": "Per farlo, devi modificare le preferenze nelle impostazioni di sistema del tuo dispositivo.",
+        "listItems": {
+          "title": "Ecco come:",
+          "step1": {
+            "label": "Step 1",
+            "value": "Vai su \"Impostazioni\""
+          },
+          "step2": {
+            "label": "Step 2",
+            "value": "Seleziona \"App\""
+          },
+          "step3": {
+            "label": "Step 3",
+            "value": "Seleziona \"DWalletLab\""
+          },
+          "step4": {
+            "label": "Step 4",
+            "value": "Consenti l’accesso a Bluetooth"
+          }
+        },
+        "actions": {
+          "primary": "Apri impostazioni",
+          "secondary": "Continua"
+        },
+        "alert": {
+          "title": "È richiesto l’accesso al Bluetooth per continuare",
+          "message": "Vai a Impostazioni e modifica le preferenze, poi riprova.",
+          "text": "Ho capito"
+        }
+      },
+      "activation": {
+        "title": "Attiva il Bluetooth per continuare",
+        "subtitle": "Per farlo, devi modificare le preferenze nelle impostazioni di sistema del tuo dispositivo.",
+        "listItems": {
+          "title": "Ecco come:",
+          "step1": {
+            "label": "Step 1",
+            "value": "Vai su \"Impostazioni\""
+          },
+          "step2": {
+            "label": "Step 2",
+            "value": "Seleziona \"Bluetooth\""
+          },
+          "step3": {
+            "label": "Step 3",
+            "value": "Consenti l’utilizzo del Bluetooth"
+          }
+        },
+        "actions": {
+          "primary": "Apri impostazioni",
+          "secondary": "Continua"
+        },
+        "alert": {
+          "title": "È richiesto l’utilizzo del Bluetooth per continuare",
+          "message": "Vai a Impostazioni e modifica le preferenze, poi riprova.",
+          "text": "Ho capito"
+        }
+      }
+    },
+    "nfc": {
+      "activation": {
+        "title": "Attiva l’NFC per continuare",
+        "subtitle": "Per permettere la verifica di prossimità dei tuoi documenti digitali, attiva l’NFC dalle Impostazioni del tuo dispositivo.",
+        "listItems": {
+          "title": "Ecco come:",
+          "step1": {
+            "label": "Step 1",
+            "value": "Vai su \"Impostazioni\""
+          },
+          "step2": {
+            "label": "Step 2",
+            "value": "Cerca la funzionalità \"NFC\""
+          },
+          "step3": {
+            "label": "Step 3",
+            "value": "Attiva la funzionalità"
+          }
+        },
+        "actions": {
+          "primary": "Apri impostazioni",
+          "secondary": "Continua"
+        },
+        "alert": {
+          "title": "È richiesto l’utilizzo dell’NFC per continuare",
+          "message": "Attiva l’NFC per permettere la verifica dei tuoi documenti digitali",
+          "action": "Attiva NFC",
+          "close": "Chiudi"
+        }
+      }
     },
     "trust": {
       "subtitle": "Saranno mostrati a **{{relyingParty}}** per completare la verifica dei documenti richiesti."

@@ -1,10 +1,11 @@
-import { Banner, IOToast } from '@pagopa/io-app-design-system';
-import { useState } from 'react';
+import { Banner } from '@pagopa/io-app-design-system';
 import { useTranslation } from 'react-i18next';
-import { Linking } from 'react-native';
-
-const HOW_AND_WHEN_TO_USE_IO_DOCUMENTS =
-  'https://assistenza.ioapp.it/hc/it/articles/31106401885841-Quando-e-come-usare-i-documenti-digitali';
+import { useAppDispatch, useAppSelector } from '../../store';
+import {
+  disableProximityInfoBanner,
+  selectProximityInfoBannerActive
+} from '../../store/credentials';
+import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
 
 /**
  * Informational banner shown on the proximity engagement screen explaining how
@@ -12,16 +13,18 @@ const HOW_AND_WHEN_TO_USE_IO_DOCUMENTS =
  */
 export const ItwProximityQrCodeInfoBanner = () => {
   const { t } = useTranslation(['common', 'wallet']);
-  const [hidden, setHidden] = useState(false);
+  const proximtyInfoBannerActive = useAppSelector(
+    selectProximityInfoBannerActive
+  );
+  const dispatch = useAppDispatch();
+  const toast = useNotAvailableToastGuard();
 
-  if (hidden) {
+  if (!proximtyInfoBannerActive) {
     return null;
   }
 
   const handleOnPress = () => {
-    Linking.openURL(HOW_AND_WHEN_TO_USE_IO_DOCUMENTS).catch(() =>
-      IOToast.error(t('common:errors.generic'))
-    );
+    toast();
   };
 
   return (
@@ -33,7 +36,7 @@ export const ItwProximityQrCodeInfoBanner = () => {
       action={t('wallet:proximity.engagement.banner.action')}
       onPress={handleOnPress}
       labelClose={t('common:buttons.close')}
-      onClose={() => setHidden(true)}
+      onClose={() => dispatch(disableProximityInfoBanner())}
     />
   );
 };

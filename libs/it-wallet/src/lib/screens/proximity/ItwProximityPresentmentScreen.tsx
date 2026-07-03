@@ -1,6 +1,7 @@
 import {
   BodySmall,
   H6,
+  HeaderSecondLevel,
   hexToRgba,
   IOButton,
   IOColors,
@@ -8,15 +9,14 @@ import {
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 import {
   IOScrollView,
   useDisableGestureNavigation,
   useHardwareBackButton,
-  useHeaderSecondLevel,
   useMaxBrightness
 } from '@io-eudiw-app/commons';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
@@ -31,21 +31,25 @@ import {
   selectProximityEngagementMode,
   selectProximityErrorDetails,
   selectProximityStatus,
-  setProximityEngagementMode,
-  setProximityStatusStarted,
   setProximityStatusStopped
 } from '../../store/proximity';
 import { useAppDispatch, useAppSelector } from '../../store';
+import { useProximityEngagement } from '../../hooks/useProximityEngagement';
+import MAIN_ROUTES from '../../navigation/main/routes';
+import { checkNfcActivation } from '../../utils/nfc';
+import I18n from 'i18next';
+import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
 
 /**
  * Proximity engagement screen (QR mode). Shows the IT-Wallet branded QR Code
  * used to start a proximity presentation and offers an NFC fallback.
  * The presentation business logic lives in the proximity redux listener.
  */
-const ProximityQrCode = () => {
+const ItwProximityPresentmentScreen = () => {
   const { t } = useTranslation(['common', 'wallet']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const { startEngagement } = useProximityEngagement();
 
   const proximityStatus = useAppSelector(selectProximityStatus);
   const descriptor = useAppSelector(selectProximityDisclosureDescriptor);
@@ -65,16 +69,30 @@ const ProximityQrCode = () => {
   useHardwareBackButton(() => true);
   useDisableGestureNavigation();
 
-  const close = () => {
+  const toast = useNotAvailableToastGuard();
+
+  const close = useCallback(() => {
     navigation.goBack();
     dispatch(setProximityStatusStopped());
     dispatch(resetProximity());
-  };
+  }, [dispatch, navigation]);
 
-  useHeaderSecondLevel({
-    title: '',
-    goBack: close
-  });
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      header: () => (
+        <HeaderSecondLevel
+          title={''}
+          type="singleAction"
+          firstAction={{
+            icon: 'closeLarge',
+            accessibilityLabel: I18n.t('buttons.close', { ns: 'common' }),
+            onPress: () => close()
+          }}
+        />
+      ),
+      headerShown: true
+    });
+  }, [navigation, close]);
 
   useEffect(() => {
     // Only the active QR engagement drives navigation: once the user switches to
@@ -111,13 +129,25 @@ const ProximityQrCode = () => {
     engagementMode
   ]);
 
-  const handleContactlessPress = () => {
+  const handleContactlessPress = async () => {
+    // Until an entitlement for NFC usage for this app is obtained, iOS flow
+    // won't work, so we stop the action early [WLS-151]
+    if (Platform.OS === 'ios') {
+      toast();
+      return;
+    }
+
+    // NFC activation gate: when NFC is off, route to the activation
+    // instructions screen without committing to NFC (the QR engagement keeps
+    // running underneath).
+    if (!(await checkNfcActivation())) {
+      navigation.navigate(MAIN_ROUTES.PROXIMITY_NFC_ACTIVATION);
+      return;
+    }
     // Switch the engagement to NFC and restart the proximity listener: the
     // `takeLatestEffect` cancels the running QR engagement and starts a fresh
     // one with the NFC configuration. Then move to the NFC presentment screen.
-    dispatch(setProximityEngagementMode('nfc'));
-    dispatch(setProximityStatusStarted());
-    navigation.navigate('MAIN_NFC_PRESENTMENT');
+    startEngagement('nfc');
   };
 
   return (
@@ -145,7 +175,7 @@ const ProximityQrCode = () => {
         <IOButton
           variant="link"
           label={t('wallet:proximity.engagement.nfc.action')}
-          onPress={handleContactlessPress}
+          onPress={() => void handleContactlessPress()}
           icon="contactless"
           iconPosition="end"
         />
@@ -171,4 +201,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ProximityQrCode;
+export default ItwProximityPresentmentScreen;

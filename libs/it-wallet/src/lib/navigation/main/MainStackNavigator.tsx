@@ -8,8 +8,11 @@ import WalletNavigator, {
   WalletNavigatorParamsList
 } from '../wallet/WalletNavigator';
 import QrCodeScanScreen from '../../screens/presentation/QrCodeScanScreen';
-import ProximityQrCode from '../../screens/proximity/ProximityQrCode';
+import ItwProximityPresentmentScreen from '../../screens/proximity/ItwProximityPresentmentScreen';
 import ItwProximityNfcPresentment from '../../screens/proximity/ItwProximityNfcPresentment';
+import ItwBluetoothPermissionsScreen from '../../screens/proximity/ItwBluetoothPermissionsScreen';
+import ItwBluetoothActivationScreen from '../../screens/proximity/ItwBluetoothActivationScreen';
+import ItwNfcActivationScreen from '../../screens/proximity/ItwNfcActivationScreen';
 import Settings from '../../screens/settings/Settings';
 import Preference from '../../screens/settings/Preferences';
 import Appearance from '../../screens/settings/Appearance';
@@ -26,6 +29,9 @@ export type MainNavigatorParamsList = {
   [MAIN_ROUTES.SCAN_QR]: undefined;
   [MAIN_ROUTES.SHOW_QR]: undefined;
   [MAIN_ROUTES.NFC_PRESENTMENT]: undefined;
+  [MAIN_ROUTES.PROXIMITY_BLUETOOTH_PERMISSIONS]: undefined;
+  [MAIN_ROUTES.PROXIMITY_BLUETOOTH_ACTIVATION]: undefined;
+  [MAIN_ROUTES.PROXIMITY_NFC_ACTIVATION]: undefined;
 };
 
 /**
@@ -69,7 +75,7 @@ export const MainStackNavigator = () => (
 
     <Stack.Screen
       name={MAIN_ROUTES.SHOW_QR}
-      component={ProximityQrCode}
+      component={ItwProximityPresentmentScreen}
       options={{ animation: 'slide_from_bottom' }}
     />
 
@@ -77,6 +83,21 @@ export const MainStackNavigator = () => (
       name={MAIN_ROUTES.NFC_PRESENTMENT}
       component={ItwProximityNfcPresentment}
       options={{ animation: 'slide_from_bottom' }}
+    />
+
+    <Stack.Screen
+      name={MAIN_ROUTES.PROXIMITY_BLUETOOTH_PERMISSIONS}
+      component={ItwBluetoothPermissionsScreen}
+    />
+
+    <Stack.Screen
+      name={MAIN_ROUTES.PROXIMITY_BLUETOOTH_ACTIVATION}
+      component={ItwBluetoothActivationScreen}
+    />
+
+    <Stack.Screen
+      name={MAIN_ROUTES.PROXIMITY_NFC_ACTIVATION}
+      component={ItwNfcActivationScreen}
     />
 
     <Stack.Screen name={MAIN_ROUTES.SETTINGS.MAIN} component={Settings} />

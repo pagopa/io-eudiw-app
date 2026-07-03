@@ -6,6 +6,7 @@ export * from './LoadingScreenContent';
 export * from './LoadingIndicator';
 export * from './IOScrollViewWithLargeHeader';
 export * from './IOScrollView';
+export * from './IOScrollViewWithListItems';
 export * from './utils/buttons';
 export * from './AnimatedImage';
 export * from './FocusAwareStatusBar';
