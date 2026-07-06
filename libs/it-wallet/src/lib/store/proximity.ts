@@ -27,6 +27,15 @@ export enum ProximityStatus {
 }
 
 /**
+ * Possible failure statuses of the Proximity middleware
+ */
+const PROXIMITY_FAILURE_STATUSES = [
+  ProximityStatus.PROXIMITY_STATUS_ERROR,
+  ProximityStatus.PROXIMITY_STATUS_ABORTED,
+  ProximityStatus.PRXOMIMITY_STATUS_ERROR_AUTHORIZED
+];
+
+/**
  * Type representing a descriptor containing info useful to render
  * a proximity presentation on screen and create the {@link AcceptedFields}
  */
@@ -214,6 +223,14 @@ export const selectProximityQrCode = (state: WalletCombinedRootState) =>
  */
 export const selectProximityStatus = (state: WalletCombinedRootState) =>
   state.wallet.proximity.status;
+
+/**
+ * Checks if the proximity middleware is in an error status
+ * @param state - The root state
+ * @returns true if the status is a failing one, false otherwise
+ */
+export const selectProximityFailure = (state: WalletCombinedRootState) =>
+  PROXIMITY_FAILURE_STATUSES.includes(state.wallet.proximity.status);
 
 /**
  * Selects the request sent by a Verifier App

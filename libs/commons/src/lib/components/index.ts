@@ -9,5 +9,6 @@ export * from './IOScrollView';
 export * from './IOScrollViewWithListItems';
 export * from './utils/buttons';
 export * from './AnimatedImage';
+export * from './CircularProgress';
 export * from './FocusAwareStatusBar';
 export * from './IOScrollViewWithReveal';

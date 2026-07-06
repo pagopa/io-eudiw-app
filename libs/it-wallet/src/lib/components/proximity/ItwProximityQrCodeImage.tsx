@@ -1,15 +1,29 @@
 import {
+  Body,
+  Icon,
+  IOButton,
+  IOColors,
   IOSkeleton,
   IOVisualCostants,
   useIOTheme
 } from '@pagopa/io-app-design-system';
-import { Dimensions } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import QRCode from 'react-native-qrcode-skia';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import ItwAvatar from '../../../assets/img/brand/itw_avatar.svg';
-import { useAppSelector } from '../../store';
-import { selectProximityQrCode } from '../../store/proximity';
+import { useAppDispatch, useAppSelector } from '../../store';
+import {
+  resetProximity,
+  selectProximityFailure,
+  selectProximityQrCode,
+  setProximityEngagementMode,
+  setProximityStatusStarted,
+  setProximityStatusStopped
+} from '../../store/proximity';
 import { ITW_BRANDED_BOX_PADDING } from '../ItwBrandedBox';
+import I18n from 'i18next';
+import { useCallback } from 'react';
+import { useProximityEngagement } from '../../hooks/useProximityEngagement';
 
 const QR_CODE_LOGO_SIZE = 84;
 
@@ -32,6 +46,38 @@ const QR_CODE_SIZE =
 export const ItwProximityQrCodeImage = () => {
   const theme = useIOTheme();
   const qrCode = useAppSelector(selectProximityQrCode);
+
+  const { startQrVerification } = useProximityEngagement();
+  const proximityFailure = useAppSelector(selectProximityFailure);
+  const dispatch = useAppDispatch();
+
+  const handleRetry = useCallback(async () => {
+    dispatch(setProximityStatusStopped());
+    dispatch(resetProximity());
+    dispatch(setProximityEngagementMode('qrcode'));
+    dispatch(setProximityStatusStarted());
+    await startQrVerification();
+  }, []);
+
+  if (proximityFailure) {
+    return (
+      <StatusBox
+        iconName="warningFilled"
+        description={I18n.t('proximity.engagement.qrCode.error', {
+          ns: 'wallet'
+        })}
+        action={
+          <View style={styles.retryActionContainer}>
+            <IOButton
+              variant="link"
+              label={I18n.t('buttons.retry', { ns: 'common' })}
+              onPress={handleRetry}
+            />
+          </View>
+        }
+      />
+    );
+  }
 
   if (!qrCode) {
     return <IOSkeleton shape="square" size={QR_CODE_SIZE} radius={16} />;
@@ -59,3 +105,35 @@ export const ItwProximityQrCodeImage = () => {
     </Animated.View>
   );
 };
+
+type StatusBoxProps = {
+  iconName: 'warningFilled' | 'qrCode';
+  description: string;
+  action?: React.ReactNode;
+};
+
+const StatusBox = ({ iconName, description, action }: StatusBoxProps) => (
+  <View style={styles.statusBox}>
+    <Icon name={iconName} size={24} color="grey-700" />
+    <Body style={styles.statusDescription}>{description}</Body>
+    {action}
+  </View>
+);
+
+const styles = StyleSheet.create({
+  statusBox: {
+    backgroundColor: IOColors['grey-50'],
+    alignItems: 'center',
+    justifyContent: 'center',
+    aspectRatio: 1,
+    padding: 16,
+    borderRadius: 16,
+    gap: 8
+  },
+  statusDescription: {
+    textAlign: 'center'
+  },
+  retryActionContainer: {
+    marginTop: 0
+  }
+});

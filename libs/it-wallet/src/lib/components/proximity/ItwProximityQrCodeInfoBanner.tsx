@@ -1,10 +1,7 @@
 import { Banner } from '@pagopa/io-app-design-system';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch, useAppSelector } from '../../store';
-import {
-  disableProximityInfoBanner,
-  selectProximityInfoBannerActive
-} from '../../store/credentials';
+import { useAppDispatch } from '../../store';
+import { disableProximityInfoBanner } from '../../store/credentials';
 import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
 
 /**
@@ -13,15 +10,8 @@ import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard
  */
 export const ItwProximityQrCodeInfoBanner = () => {
   const { t } = useTranslation(['common', 'wallet']);
-  const proximtyInfoBannerActive = useAppSelector(
-    selectProximityInfoBannerActive
-  );
   const dispatch = useAppDispatch();
   const toast = useNotAvailableToastGuard();
-
-  if (!proximtyInfoBannerActive) {
-    return null;
-  }
 
   const handleOnPress = () => {
     toast();

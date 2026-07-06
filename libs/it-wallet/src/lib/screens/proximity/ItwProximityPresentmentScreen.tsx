@@ -1,4 +1,5 @@
 import {
+  Alert,
   BodySmall,
   H6,
   HeaderSecondLevel,
@@ -31,6 +32,7 @@ import {
   selectProximityDisclosureIsAuthenticated,
   selectProximityEngagementMode,
   selectProximityErrorDetails,
+  selectProximityFailure,
   selectProximityStatus,
   setProximityStatusStopped
 } from '../../store/proximity';
@@ -40,6 +42,10 @@ import MAIN_ROUTES from '../../navigation/main/routes';
 import { checkNfcActivation } from '../../utils/nfc';
 import I18n from 'i18next';
 import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
+import {
+  selectProximityInfoBannerActive,
+  shouldShowExpiredProximityCredentialsBannerSelector
+} from '../../store/credentials';
 
 /**
  * Proximity engagement screen (QR mode). Shows the IT-Wallet branded QR Code
@@ -53,12 +59,19 @@ const ItwProximityPresentmentScreen = () => {
   const { startEngagement } = useProximityEngagement();
 
   const proximityStatus = useAppSelector(selectProximityStatus);
+  const proximityFailure = useAppSelector(selectProximityFailure);
   const descriptor = useAppSelector(selectProximityDisclosureDescriptor);
   const isAuthenticated = useAppSelector(
     selectProximityDisclosureIsAuthenticated
   );
   const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
   const engagementMode = useAppSelector(selectProximityEngagementMode);
+  const proximtyInfoBannerActive = useAppSelector(
+    selectProximityInfoBannerActive
+  );
+  const shouldShowExpiredCredentialsBanner = useAppSelector(
+    shouldShowExpiredProximityCredentialsBannerSelector
+  );
 
   useDebugInfo({
     proximityStatusQR: proximityStatus,
@@ -110,17 +123,6 @@ const ItwProximityPresentmentScreen = () => {
         screen: 'PROXIMITY_PREVIEW',
         params: { descriptor, isAuthenticated }
       });
-      // If we reach this state, it means that a connection has already been established but failed before
-      // reaching the preview screen, and thus the user should be informed that
-      // something went wrong by navigating to the error screen.
-    } else if (
-      proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR ||
-      proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED
-    ) {
-      navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PROXIMITY_FAILURE',
-        params: { fatal: true }
-      });
     }
   }, [
     proximityStatus,
@@ -153,17 +155,36 @@ const ItwProximityPresentmentScreen = () => {
 
   return (
     <IOScrollView>
+      {shouldShowExpiredCredentialsBanner && (
+        <Animated.View
+          layout={LinearTransition.duration(200)}
+          style={styles.expiredBanner}
+        >
+          <Alert
+            testID="itwExpiredBannerTestID"
+            variant="error"
+            content={t('wallet:proximity.engagement.invalidBanner.content')}
+            action={t('wallet:proximity.engagement.invalidBanner.action')}
+            onPress={() => toast()}
+          />
+        </Animated.View>
+      )}
       <View style={styles.qrCodeShadow}>
-        <ItwBrandedBox backgroundVariant="gradient">
+        <ItwBrandedBox
+          backgroundVariant="gradient"
+          variant={proximityFailure ? 'error' : 'default'}
+        >
           <VStack space={16}>
-            <VStack space={8} style={{ marginHorizontal: 16 }}>
-              <H6 style={{ textAlign: 'center' }}>
-                {t('wallet:proximity.engagement.title')}
-              </H6>
-              <BodySmall style={{ textAlign: 'center' }}>
-                {t('wallet:proximity.engagement.instruction')}
-              </BodySmall>
-            </VStack>
+            {!proximityFailure && (
+              <VStack space={8} style={{ marginHorizontal: 16 }}>
+                <H6 style={{ textAlign: 'center' }}>
+                  {t('wallet:proximity.engagement.title')}
+                </H6>
+                <BodySmall style={{ textAlign: 'center' }}>
+                  {t('wallet:proximity.engagement.instruction')}
+                </BodySmall>
+              </VStack>
+            )}
             <ItwProximityQrCodeImage />
           </VStack>
         </ItwBrandedBox>
@@ -182,15 +203,20 @@ const ItwProximityPresentmentScreen = () => {
         />
       </View>
 
-      <Animated.View layout={LinearTransition.duration(200)}>
-        <VSpacer size={24} />
-        <ItwProximityQrCodeInfoBanner />
-      </Animated.View>
+      {proximtyInfoBannerActive && (
+        <Animated.View layout={LinearTransition.duration(200)}>
+          <VSpacer size={24} />
+          <ItwProximityQrCodeInfoBanner />
+        </Animated.View>
+      )}
     </IOScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  expiredBanner: {
+    marginBottom: 24
+  },
   qrCodeShadow: {
     boxShadow: `0px 4px 32px ${hexToRgba(IOColors.black, 0.1)}`
   },

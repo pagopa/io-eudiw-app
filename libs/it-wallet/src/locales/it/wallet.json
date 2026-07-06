@@ -273,6 +273,10 @@
       "qrCode": {
         "error": "Abbiamo avuto un problema nel generare il QR Code."
       },
+      "invalidBanner": {
+        "content": "Conferma la tua identità per continuare a usare il tuo portafoglio IT-Wallet.",
+        "action": "Conferma identità"
+      },
       "banner": {
         "title": "Come funziona il QR Code?",
         "content": "Ti consente di far verificare i documenti digitali che hai aggiunto al Portafoglio.",

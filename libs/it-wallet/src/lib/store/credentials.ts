@@ -208,6 +208,66 @@ export const hasPresentableCredentialsSelector = createSelector(
     credentials.some(credential => credential.format === CredentialFormat.MDOC)
 );
 
+/**
+ * Checks if a given credential is expired based on its status.
+ */
+const isExpiredPresentableCredential = (credential: StoredCredential) => {
+  const status = getCredentialStatus(credential);
+  return status === 'expired' || status === 'jwtExpired';
+};
+
+/**
+ * Selector to determine whether there are any presentable credentials.
+ * Returns `true` if there is at least one MDOC credential in the wallet,
+ * which are the ones presentable over proximity.
+ *
+ * @param state - The global state.
+ * @returns `true` if there is at least one presentable credential, `false` otherwise.
+ */
+export const presentableCredentialsSelector = createSelector(
+  selectCredentials,
+  credentials =>
+    credentials.filter(
+      credential => credential.format === CredentialFormat.MDOC
+    )
+);
+
+/**
+ * Checks if all presentable credentials are expired.
+ * @param presentableCredentialsByDocType - The presentable credentials by document type.
+ * @returns `true` if all presentable credentials are expired, `false` otherwise.
+ */
+export const areAllPresentableCredentialsExpired = (
+  presentableCredentials: StoredCredential[]
+) => {
+  return (
+    presentableCredentials.length > 0 &&
+    presentableCredentials.every(isExpiredPresentableCredential)
+  );
+};
+
+/**
+ * Selector to determine whether the Proximity QR Code screen should surface the
+ * expired credentials banner.
+ * Even when the PID and all presentable credentials are expired, the wallet
+ * must still allow QR/NFC presentation so the relying party can decide whether
+ * to accept the verification.
+ *
+ * @param state - The global state.
+ * @returns `true` if the expired credentials banner should be shown.
+ */
+export const shouldShowExpiredProximityCredentialsBannerSelector =
+  createSelector(
+    itwCredentialsPidStatusSelector,
+    presentableCredentialsSelector,
+    (
+      pidStatus: ItwJwtCredentialStatus | undefined,
+      presentableCredentialsByDocType
+    ) =>
+      pidStatus === 'jwtExpired' &&
+      areAllPresentableCredentialsExpired(presentableCredentialsByDocType)
+  );
+
 export const itwIsClaimValueHiddenSelector = (state: WalletCombinedRootState) =>
   state.wallet.credentials.valuesHidden;
 
