@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import {
@@ -8,6 +8,7 @@ import {
 import { WalletCombinedRootState } from '.';
 import { ProximityDetails } from '../screens/proximity/ItwProximityPresentationDetails';
 import { resetLifecycle } from './lifecycle';
+import _ from 'lodash';
 
 /**
  * Represents the claims associated with a specific credential type within a
@@ -93,6 +94,10 @@ const proximityConsentsSlice = createSlice({
       if (!state.consents[key]) {
         state.consents[key] = action.payload;
       }
+    },
+    itwRevokeProximityConsentByKey: (state, action: PayloadAction<string>) => {
+      const key = action.payload;
+      state.consents = _.omit(state.consents, key);
     }
   },
   extraReducers: builder => {
@@ -116,7 +121,8 @@ export const proximityConsentsReducer = persistReducer(
   proximityConsentsSlice.reducer
 );
 
-export const { itwGrantProximityConsent } = proximityConsentsSlice.actions;
+export const { itwGrantProximityConsent, itwRevokeProximityConsentByKey } =
+  proximityConsentsSlice.actions;
 
 /**
  * Returns whether a consent with the exact same RP, credential types and claim
@@ -126,3 +132,18 @@ export const selectProximityConsentExists =
   (consentData: ConsentData) =>
   (state: WalletCombinedRootState): boolean =>
     generateConsentKey(consentData) in state.wallet.proximityConsents.consents;
+
+/**
+ * Returns all proximity presentation consents as a record keyed by consent key.
+ */
+export const itwProximityConsentsRecordSelector = (
+  state: WalletCombinedRootState
+) => state.wallet.proximityConsents.consents;
+
+/**
+ * Returns all proximity presentation consents with their generated keys.
+ */
+export const itwProximityConsentsEntriesSelector = createSelector(
+  itwProximityConsentsRecordSelector,
+  consents => Object.entries(consents)
+);

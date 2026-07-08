@@ -563,6 +563,15 @@
         "title": "Resetta l'app",
         "description": "Rimuove tutte le impostazioni e i dati dell'app"
       }
+    },
+    "proximity": {
+      "title": "Consensi Proximity NFC",
+      "description": "Gestisci i consensi per le presentazioni in prossimità tramite NFC",
+      "screen": {
+        "title": "Consensi approvati",
+        "empty": "Nessun consenso registrato",
+        "delete": "Cancella consenso per {{ rpId }}"
+      }
     }
   },
   "credentialOffer": {

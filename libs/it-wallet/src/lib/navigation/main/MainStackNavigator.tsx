@@ -16,6 +16,7 @@ import ItwNfcActivationScreen from '../../screens/proximity/ItwNfcActivationScre
 import Settings from '../../screens/settings/Settings';
 import Preference from '../../screens/settings/Preferences';
 import Appearance from '../../screens/settings/Appearance';
+import { ProximityConsents } from '../../screens/settings/ProximityConsents';
 
 /**
  * Screen parameters for the main navigator.
@@ -26,6 +27,7 @@ export type MainNavigatorParamsList = {
   [MAIN_ROUTES.SETTINGS.MAIN]: undefined;
   [MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN]: undefined;
   [MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE]: undefined;
+  [MAIN_ROUTES.SETTINGS.PROXIMITY]: undefined;
   [MAIN_ROUTES.SCAN_QR]: undefined;
   [MAIN_ROUTES.BLE_PRESENTMENT]: undefined;
   [MAIN_ROUTES.NFC_PRESENTMENT]: undefined;
@@ -108,6 +110,10 @@ export const MainStackNavigator = () => (
     <Stack.Screen
       name={MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE}
       component={Appearance}
+    />
+    <Stack.Screen
+      name={MAIN_ROUTES.SETTINGS.PROXIMITY}
+      component={ProximityConsents}
     />
   </Stack.Navigator>
 );
