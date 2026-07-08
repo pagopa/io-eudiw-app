@@ -31,7 +31,6 @@ import {
   setProximityStatusAuthorizationRejected,
   setProximityStatusAuthorizationSend
 } from '../../store/proximity';
-import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
 import { ItwProximityPresentationDetails } from './ItwProximityPresentationDetails';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
@@ -75,6 +74,14 @@ const PresentationProximityPreview = ({ route }: Props) => {
       if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_STOPPED) {
         navigation.navigate('MAIN_WALLET_NAV', {
           screen: 'PROXIMITY_SUCCESS'
+        });
+      } else if (
+        proximityStatus === ProximityStatus.PROXIMITY_STATUS_STORE_CONSENT
+      ) {
+        // NFC-retrieval dance: after confirming the claims the middleware asks
+        // whether to persist the consent before re-engaging.
+        navigation.navigate('MAIN_WALLET_NAV', {
+          screen: 'PROXIMITY_STORE_CONSENT'
         });
       } else if (
         proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED ||
@@ -153,7 +160,7 @@ const PresentationProximityPreview = ({ route }: Props) => {
           <H2>{t('wallet:presentation.trust.title')}</H2>
           <IOMarkdown
             content={t('wallet:proximity.trust.subtitle', {
-              relyingParty: ISSUER_MOCK_NAME
+              relyingParty: proximityDetails[0]?.rpId ?? ''
             })}
           />
         </VStack>

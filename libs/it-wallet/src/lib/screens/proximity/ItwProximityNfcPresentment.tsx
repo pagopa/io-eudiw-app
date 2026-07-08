@@ -64,7 +64,7 @@ const ItwProximityNfcPresentment = () => {
   const isSending =
     proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_SEND;
   const isSuccess =
-    proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED;
+    proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE;
 
   useDebugInfo({
     proximityStatusNfc: proximityStatus,

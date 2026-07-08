@@ -47,6 +47,7 @@ import PresentationProximityPreview, {
   PresentationProximityPreviewProps
 } from '../../screens/proximity/PresentationProximityPreview';
 import PresentationProximitySuccess from '../../screens/proximity/PresentationProximitySuccess';
+import ItwProximityStoreConsent from '../../screens/proximity/ItwProximityStoreConsent';
 import WALLET_ROUTES from './routes';
 import {
   ItwPresentationCredentialCardScreen,
@@ -96,6 +97,7 @@ export type WalletNavigatorParamsList = {
 
   // Proximity
   [WALLET_ROUTES.PROXIMITY.PREVIEW]: PresentationProximityPreviewProps;
+  [WALLET_ROUTES.PROXIMITY.STORE_CONSENT]: undefined;
   [WALLET_ROUTES.PROXIMITY.SUCCESS]: undefined;
   [WALLET_ROUTES.PROXIMITY.FAILURE]: PresentationProximityFailureProps;
 };
@@ -220,6 +222,11 @@ const WalletNavigator = () => (
       <Stack.Screen
         name={WALLET_ROUTES.PROXIMITY.PREVIEW}
         component={PresentationProximityPreview}
+      />
+      <Stack.Screen
+        name={WALLET_ROUTES.PROXIMITY.STORE_CONSENT}
+        component={ItwProximityStoreConsent}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={WALLET_ROUTES.PROXIMITY.SUCCESS}

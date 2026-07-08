@@ -14,6 +14,23 @@ import { assert } from '@io-eudiw-app/commons';
  */
 const WIA_DOC_TYPE = 'org.iso.18013.5.1.IT.WalletAttestation';
 
+/**
+ * Extracts the relying party identifier (its certificate common name) from the
+ * verifier request certificate data, as reported by the ISO 18013-5 SDK.
+ * Falls back to 'Unknown' when the verifier is not authenticated and thus does
+ * not provide certificate data.
+ */
+export const getVerifierIdentity = (
+  certificateData: ISO18013_5.VerifierRequest['request'][string]['certificateData']
+): string => {
+  // `commonName` widens through the request record catchall type, so narrow it
+  // explicitly instead of relying on the indexed type being a plain string.
+  const commonName = certificateData?.commonName;
+  return typeof commonName === 'string' && commonName.length > 0
+    ? commonName
+    : 'Unknown';
+};
+
 export const getProximityDetails = (
   request: ISO18013_5.VerifierRequest['request'],
   credentials: Array<StoredCredential>
@@ -22,7 +39,7 @@ export const getProximityDetails = (
   const { [WIA_DOC_TYPE]: _, ...rest } = request;
 
   return Object.entries(rest).map(
-    ([docType, { isAuthenticated, ...namespaces }]) => {
+    ([docType, { isAuthenticated, certificateData, ...namespaces }]) => {
       // Support multiple credentials type
       const credential = credentials.filter(
         c => c.credentialType === docType
@@ -45,6 +62,7 @@ export const getProximityDetails = (
       );
 
       return {
+        rpId: getVerifierIdentity(certificateData),
         credentialType: credential.credentialType,
         claimsToDisplay: parseClaims(parsedCredential, {
           exclude: [WellKnownClaim.unique_id]
@@ -74,7 +92,7 @@ export const generateAcceptedFields = (
   request: ISO18013_5.VerifierRequest['request']
 ): ISO18013_5.AcceptedFields =>
   Object.entries(request).reduce(
-    (acc, [docType, { isAuthenticated, ...namespaces }]) => ({
+    (acc, [docType, { isAuthenticated, certificateData, ...namespaces }]) => ({
       ...acc,
       [docType]: acceptAllFields(namespaces)
     }),

@@ -19,6 +19,7 @@ export enum ProximityStatus {
   PROXIMITY_STATUS_CONNECTED = 'connected',
   PROXIMITY_STATUS_RECEIVED_DOCUMENT = 'received-document',
   PROXIMITY_STATUS_AUTHORIZATION_STARTED = 'authorization-started',
+  PROXIMITY_STATUS_STORE_CONSENT = 'store-consent',
   PROXIMITY_STATUS_AUTHORIZATION_SEND = 'authorization-send',
   PROXIMITY_STATUS_AUTHORIZATION_REJECTED = 'authorization-rejected',
   PROXIMITY_STATUS_AUTHORIZATION_COMPLETE = 'authorization-complete',
@@ -75,6 +76,8 @@ type ProximitySlice = {
   errorDetails?: string;
   engagementMode: ProximityEngagementMode;
   retrievalMethod?: ProximityRetrievalMethod;
+  grantedConsentKey?: string;
+  isConnected: boolean;
 };
 
 // Initial state for the proximity slice
@@ -85,7 +88,9 @@ const initialState: ProximitySlice = {
   documentRequest: undefined,
   proximityDisclosureDescriptor: undefined,
   engagementMode: 'qrcode',
-  retrievalMethod: undefined
+  retrievalMethod: undefined,
+  grantedConsentKey: undefined,
+  isConnected: false
 };
 
 /**
@@ -142,6 +147,32 @@ const proximitySlice = createSlice({
     setProximityStatusAuthorizationSend: state => {
       state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_SEND;
     },
+    /**
+     * Moves the flow to the "store consent" step, used only by the NFC retrieval
+     * dance to prompt the user whether to persist the granted consent. Drives
+     * navigation to the store consent screen.
+     */
+    setProximityStoreConsentPrompt: state => {
+      state.status = ProximityStatus.PROXIMITY_STATUS_STORE_CONSENT;
+    },
+    /**
+     * Signals the user's choice on the store consent screen. Consumed by the
+     * proximity middleware; it does not alter the slice state on its own.
+     */
+    setProximityStoreConsentChosen: (
+      _state,
+      _action: PayloadAction<{ store: boolean }>
+    ) => {
+      // no-op: the middleware reacts to this action
+    },
+    /**
+     * Records, for the current session, the consent key the user has already
+     * reviewed and identified for. Survives the engagement restart (which wipes
+     * listener locals) so the re-engaged NFC session can skip the claims screen.
+     */
+    setProximityGrantedConsent: (state, action: PayloadAction<string>) => {
+      state.grantedConsentKey = action.payload;
+    },
     setProximityStatusAuthorizationRejected: state => {
       state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_REJECTED;
     },
@@ -162,6 +193,10 @@ const proximitySlice = createSlice({
       action: PayloadAction<ProximityEngagementMode>
     ) => {
       state.engagementMode = action.payload;
+      // A fresh engagement (or a QR->NFC switch) starts with no session consent.
+      // The NFC-retrieval re-engagement does not go through this action, so the
+      // consent granted mid-flow is preserved across the restart.
+      state.grantedConsentKey = undefined;
     },
     /**
      * Stores the retrieval method negotiated by the verifier for the current
@@ -172,6 +207,9 @@ const proximitySlice = createSlice({
       action: PayloadAction<ProximityRetrievalMethod | undefined>
     ) => {
       state.retrievalMethod = action.payload;
+    },
+    setProximityIsConnected: (state, action: PayloadAction<boolean>) => {
+      state.isConnected = action.payload;
     },
     resetProximity: _ => initialState
   },
@@ -194,12 +232,16 @@ export const {
   setProximityStatusReceivedDocument,
   setProximityStatusAuthorizationStarted,
   setProximityStatusAuthorizationSend,
+  setProximityStoreConsentPrompt,
+  setProximityStoreConsentChosen,
+  setProximityGrantedConsent,
   setProximityStatusAuthorizationRejected,
   setProximityStatusAuthorizationComplete,
   setProximityQrCode,
   resetProximityQrCode,
   setProximityEngagementMode,
   setProximityRetrievalMethod,
+  setProximityIsConnected,
   resetProximity
 } = proximitySlice.actions;
 
@@ -285,3 +327,19 @@ export const selectProximityEngagementMode = (state: WalletCombinedRootState) =>
 export const selectProximityRetrievalMethod = (
   state: WalletCombinedRootState
 ) => state.wallet.proximity.retrievalMethod;
+
+/**
+ * Selects the consent key already granted (reviewed + identified) in the current
+ * session, if any.
+ * @param state - The root state
+ * @returns The granted consent key, or undefined
+ */
+export const selectProximityGrantedConsentKey = (
+  state: WalletCombinedRootState
+) => state.wallet.proximity.grantedConsentKey;
+
+/**
+ * Selects whether or not the device is connected to another one
+ */
+export const selectProximityIsConnected = (state: WalletCombinedRootState) =>
+  state.wallet.proximity.isConnected;
