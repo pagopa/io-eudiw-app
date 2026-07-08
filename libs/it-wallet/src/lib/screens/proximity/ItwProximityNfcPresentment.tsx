@@ -7,7 +7,7 @@ import {
   Pictogram
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -61,10 +61,12 @@ const ItwProximityNfcPresentment = () => {
   const engagementMode = useAppSelector(selectProximityEngagementMode);
   const errorDetails = useAppSelector(selectProximityErrorDetails);
 
+  const [authorizationSent, setAuthorizationSent] = useState<boolean>(false) ;
+
   const isSending =
     proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_SEND;
   const isSuccess =
-    proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE;
+    authorizationSent && proximityStatus === ProximityStatus.PROXIMITY_STATUS_STOPPED;
 
   useDebugInfo({
     proximityStatusNfc: proximityStatus,
@@ -74,6 +76,12 @@ const ItwProximityNfcPresentment = () => {
 
   useHardwareBackButton(() => true);
   useDisableGestureNavigation();
+
+  const handleDismiss = () => {
+    dispatch(setProximityStatusStopped());
+    dispatch(resetProximity());
+    navigateToWallet();
+  };
 
   useEffect(() => {
     // Only the active NFC engagement drives navigation from this screen.
@@ -97,6 +105,10 @@ const ItwProximityNfcPresentment = () => {
         screen: 'PROXIMITY_FAILURE',
         params: { fatal: true }
       });
+    } else if (
+      proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE
+    ) {
+      setAuthorizationSent(true) ;
     }
   }, [
     proximityStatus,
@@ -105,12 +117,6 @@ const ItwProximityNfcPresentment = () => {
     isAuthenticated,
     engagementMode
   ]);
-
-  const handleDismiss = () => {
-    dispatch(setProximityStatusStopped());
-    dispatch(resetProximity());
-    navigateToWallet();
-  };
 
   const title = useMemo(() => {
     if (isSuccess) {
