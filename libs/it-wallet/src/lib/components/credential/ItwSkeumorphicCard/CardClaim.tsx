@@ -1,7 +1,7 @@
 import { WithTestID } from '@pagopa/io-app-design-system';
 import { format } from 'date-fns';
 import { memo, ReactElement, ReactNode, useMemo } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from 'react-native';
 
 import {
   ClaimScheme,
@@ -160,15 +160,21 @@ type CardClaimContainerProps = WithTestID<{
   position?: ClaimPosition;
   dimensions?: ClaimDimensions;
   children?: ReactNode;
+  onLayout?: (event: LayoutChangeEvent) => void;
 }>;
 
 const CardClaimContainer = ({
   position,
   dimensions,
   children,
+  onLayout,
   testID
 }: CardClaimContainerProps) => (
-  <View testID={testID} style={[styles.container, position, dimensions]}>
+  <View
+    testID={testID}
+    style={[styles.container, position, dimensions]}
+    onLayout={onLayout}
+  >
     {children}
   </View>
 );

@@ -1,4 +1,4 @@
-import { ElementType, Fragment, memo } from 'react';
+import { ElementType, Fragment, memo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
   claimType,
@@ -13,19 +13,13 @@ import {
 import { format } from '../../../utils/dates';
 import { StoredCredential } from '../../../utils/itwTypesUtils';
 import { QrCodeImage } from '../../QrCodeImage';
-import {
-  CardClaim,
-  CardClaimContainer,
-  CardClaimRenderer,
-  ClaimPosition
-} from './CardClaim';
+import { CardClaim, CardClaimContainer, CardClaimRenderer } from './CardClaim';
 import { ClaimLabel } from './ClaimLabel';
-import { CardMode, CardSide } from './types';
+import { CardSide } from './types';
 
 type DataComponentProps = {
   claims: ParsedClaimsRecord;
   valuesHidden: boolean;
-  mode: CardMode;
 };
 
 const getClaim = (
@@ -235,7 +229,7 @@ const DcFrontData = ({ claims, valuesHidden }: DataComponentProps) => {
   );
 };
 
-const DcBackData = ({ claims, mode }: DataComponentProps) => {
+const DcBackData = ({ claims }: DataComponentProps) => {
   const qrCodeClaim = getClaim(
     claims,
     'link_qr_code',
@@ -245,16 +239,7 @@ const DcBackData = ({ claims, mode }: DataComponentProps) => {
   const qrCodeStringClaim =
     qrCodeClaim?.type === claimType.string ? qrCodeClaim : undefined;
 
-  const position: ClaimPosition =
-    mode === 'vertical'
-      ? {
-          right: '7%',
-          top: '11%'
-        }
-      : {
-          right: '6%',
-          top: '10%'
-        };
+  const [width, setWidth] = useState(0);
 
   return (
     <View testID="dcBackDataTestID" style={styles.container}>
@@ -262,8 +247,17 @@ const DcBackData = ({ claims, mode }: DataComponentProps) => {
         claim={qrCodeStringClaim}
         type={claimType.string}
         component={claim => (
-          <CardClaimContainer position={position}>
-            <QrCodeImage value={claim.value} size={'28.5%'} />
+          <CardClaimContainer
+            position={{
+              right: '6%',
+              top: '10%'
+            }}
+            dimensions={{ width: '32%', aspectRatio: '1/1' }}
+            onLayout={ev => {
+              setWidth(ev.nativeEvent.layout.width);
+            }}
+          >
+            <QrCodeImage value={claim.value} size={width} />
           </CardClaimContainer>
         )}
       />
@@ -288,7 +282,6 @@ const dataComponentMap: Record<
 type CardDataProps = {
   credential: StoredCredential;
   side: CardSide;
-  mode: CardMode;
   valuesHidden: boolean;
   claims: ParsedClaimsRecord;
 };
@@ -296,7 +289,6 @@ type CardDataProps = {
 const CardData = ({
   credential,
   side,
-  mode,
   valuesHidden,
   claims
 }: CardDataProps) => {
@@ -311,7 +303,6 @@ const CardData = ({
       key={`credential_data_${credential.credentialType}_${side}`}
       claims={claims}
       valuesHidden={valuesHidden}
-      mode={mode}
     />
   );
 };

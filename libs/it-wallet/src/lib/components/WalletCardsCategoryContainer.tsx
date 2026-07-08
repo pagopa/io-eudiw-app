@@ -1,5 +1,4 @@
 import { WithTestID } from '@pagopa/io-app-design-system';
-import { useMemo } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import Animated, {
   FadeInDown,
@@ -11,9 +10,6 @@ import { ItwCredentialWalletCard } from './credential/ItwCredentialWalletCard';
 
 type WalletCardsCategoryContainerProps = WithTestID<{
   cards: ReadonlyArray<WalletCard>;
-  header?: React.ReactElement;
-  topElement?: React.ReactElement;
-  bottomElement?: React.ReactElement;
 }>;
 
 // The item layout animation has a bug on Android for a FlatList that doesn't have a fixed height [https://github.com/software-mansion/react-native-reanimated/issues/5728]
@@ -29,21 +25,8 @@ const itemLayoutAnimation =
  */
 export const WalletCardsCategoryContainer = ({
   cards,
-  header,
-  topElement,
-  bottomElement,
   testID
 }: WalletCardsCategoryContainerProps) => {
-  const headerComponent = useMemo(
-    () => (
-      <>
-        {header}
-        {topElement}
-      </>
-    ),
-    [header, topElement]
-  );
-
   return (
     <Animated.FlatList
       testID={testID}
@@ -66,13 +49,8 @@ export const WalletCardsCategoryContainer = ({
       itemLayoutAnimation={itemLayoutAnimation}
       layout={LinearTransition.duration(200)}
       contentContainerStyle={styles.container}
-      style={styles.cardList}
       entering={FadeInDown.duration(150)}
       exiting={FadeOutDown.duration(150)}
-      ListHeaderComponent={headerComponent}
-      ListHeaderComponentStyle={styles.listHeader}
-      ListFooterComponent={bottomElement}
-      ListFooterComponentStyle={styles.listFooter}
     />
   );
 };
@@ -82,14 +60,5 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     marginBottom: 16
-  },
-  listHeader: {
-    marginHorizontal: 8
-  },
-  listFooter: {
-    marginHorizontal: 8
-  },
-  cardList: {
-    marginHorizontal: -8
   }
 });

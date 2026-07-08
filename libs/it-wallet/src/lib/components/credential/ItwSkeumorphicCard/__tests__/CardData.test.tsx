@@ -24,7 +24,6 @@ describe('CardData', () => {
           ItwStoredCredentialsMocks.mdl.parsedCredential
         )}
         side="front"
-        mode="vertical"
         valuesHidden={false}
       />
     );
@@ -41,7 +40,6 @@ describe('CardData', () => {
           ItwStoredCredentialsMocks.mdl.parsedCredential
         )}
         side="back"
-        mode="vertical"
         valuesHidden={false}
       />
     );
@@ -58,7 +56,6 @@ describe('CardData', () => {
           ItwStoredCredentialsMocks.dc.parsedCredential
         )}
         side="front"
-        mode="vertical"
         valuesHidden={false}
       />
     );
@@ -75,7 +72,6 @@ describe('CardData', () => {
           ItwStoredCredentialsMocks.dc.parsedCredential
         )}
         side="back"
-        mode="vertical"
         valuesHidden={false}
       />
     );

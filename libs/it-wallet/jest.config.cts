@@ -23,7 +23,7 @@ module.exports = {
       require.resolve('jest-expo/src/preset/assetFileTransformer.js')
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(@react-native|react-native|@pagopa/io-app-design-system)|expo-modules-core|expo|@shopify/react-native-skia|/)'
+    'node_modules/(?!(@react-native|react-native|@react-navigation|@pagopa/io-app-design-system)|expo-modules-core|expo|@shopify/react-native-skia|/)'
   ],
   modulePathIgnorePatterns: ['<rootDir>/out-tsc/'],
   coverageDirectory: '../../coverage/libs/it-wallet'

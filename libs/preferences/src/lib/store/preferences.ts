@@ -56,6 +56,7 @@ const preferencesSlice = createSlice({
     preferencesFontSet: (state, action: PayloadAction<TypefaceChoice>) => {
       state.fontPreference = action.payload;
     },
+    // Mini App
     preferencesResetMiniAppSelection: state => {
       state.selectedMiniAppId = undefined;
     },

@@ -2,15 +2,16 @@ import { useNavigation } from '@react-navigation/native';
 import WALLET_ROUTES from '../../navigation/wallet/routes';
 import { withWalletCardBaseComponent } from '../WalletCardBaseComponent';
 import { WalletCardPressableBase } from '../WalletCardPressableBase';
-import { ItwCredentialCard, ItwCredentialCardProps } from './ItwCredentialCard';
+import { ItwCredentialCard } from './ItwCredentialCard';
 import MAIN_ROUTES from '../../navigation/main/routes';
 
-type ItwCredentialWalletCardProps = ItwCredentialCardProps & {
-  isPreview?: false; // Cards in wallet cannot be in preview mode
+type ItwCredentialWalletCardProps = ItwCredentialCard & {
+  /* Optional onPress to override press functionality */
+  onPress?: () => void;
 };
 
 const WrappedItwCredentialCard = (props: ItwCredentialWalletCardProps) => {
-  const { credentialType } = props;
+  const { credentialType, onPress } = props;
   const navigation = useNavigation();
 
   const handleOnPress = () => {
@@ -24,7 +25,7 @@ const WrappedItwCredentialCard = (props: ItwCredentialWalletCardProps) => {
 
   return (
     <WalletCardPressableBase
-      onPress={handleOnPress}
+      onPress={onPress ?? handleOnPress}
       testID="ItwCredentialWalletCardTestID"
     >
       <ItwCredentialCard {...props} />
