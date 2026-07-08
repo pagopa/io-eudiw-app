@@ -61,12 +61,13 @@ const ItwProximityNfcPresentment = () => {
   const engagementMode = useAppSelector(selectProximityEngagementMode);
   const errorDetails = useAppSelector(selectProximityErrorDetails);
 
-  const [authorizationSent, setAuthorizationSent] = useState<boolean>(false) ;
+  const [authorizationSent, setAuthorizationSent] = useState<boolean>(false);
 
   const isSending =
     proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_SEND;
   const isSuccess =
-    authorizationSent && proximityStatus === ProximityStatus.PROXIMITY_STATUS_STOPPED;
+    authorizationSent &&
+    proximityStatus === ProximityStatus.PROXIMITY_STATUS_STOPPED;
 
   useDebugInfo({
     proximityStatusNfc: proximityStatus,
@@ -106,9 +107,10 @@ const ItwProximityNfcPresentment = () => {
         params: { fatal: true }
       });
     } else if (
-      proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE
+      proximityStatus ===
+      ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE
     ) {
-      setAuthorizationSent(true) ;
+      setAuthorizationSent(true);
     }
   }, [
     proximityStatus,

@@ -57,7 +57,7 @@ export const ItwProximityQrCodeImage = () => {
     dispatch(setProximityEngagementMode('qrcode'));
     dispatch(setProximityStatusStarted());
     await startQrVerification();
-  }, []);
+  }, [dispatch, startQrVerification]);
 
   if (proximityFailure) {
     return (
