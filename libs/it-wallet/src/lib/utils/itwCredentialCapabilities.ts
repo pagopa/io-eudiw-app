@@ -1,5 +1,12 @@
 import type { ParseKeys } from 'i18next';
+import I18n from 'i18next';
 import { wellKnownCredential } from './credentials';
+import { IOToast, type ListItemAction } from '@pagopa/io-app-design-system';
+import { openWebUrlInApp } from '@io-eudiw-app/commons';
+import { useAppSelector } from '../store';
+import { selectCredential } from '../store/credentials';
+import { WellKnownClaim } from './itwClaimsUtils';
+import z from 'zod';
 
 export type CredentialInfoAlert = {
   testID: string;
@@ -16,17 +23,16 @@ type CredentialInvalidStatusFailure = {
 
 export type ItwCredentialCapabilities = {
   showStatusTag: boolean;
-  showAnimatedBorder: boolean;
-  flippable: boolean;
   suppressStatusAlert: boolean;
   infoAlert?: CredentialInfoAlert;
   invalidStatusFailure?: CredentialInvalidStatusFailure;
+  getExtraCredentialActions?: (
+    appSelectorHook: typeof useAppSelector
+  ) => { key: string; props: ListItemAction }[];
 };
 
 const DEFAULT_CAPABILITIES: ItwCredentialCapabilities = {
   showStatusTag: true,
-  showAnimatedBorder: true,
-  flippable: true,
   suppressStatusAlert: false
 };
 
@@ -47,8 +53,6 @@ const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
   },
   [wellKnownCredential.BONUS_PARI]: {
     showStatusTag: false,
-    showAnimatedBorder: false,
-    flippable: false,
     suppressStatusAlert: true,
     infoAlert: {
       testID: 'itwBonusPariBannerTestID',
@@ -63,6 +67,45 @@ const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
       actionI18nKey:
         'wallet:credentialIssuance.failure.bonusPariNotRequested.action',
       actionUrl: 'https://dev.bonuselettrodomestici.it/utente'
+    },
+    getExtraCredentialActions: appSelectorHook => {
+      const credential = appSelectorHook(
+        selectCredential(wellKnownCredential.BONUS_PARI)
+      );
+
+      const fiscalCode = z
+        .string()
+        .safeParse(
+          credential?.parsedCredential[WellKnownClaim.fiscal_code]?.value
+        );
+
+      return [
+        {
+          key: 'PARI_BONUS_CTA_1',
+          props: {
+            testID: 'PARI_BONUS_CTA_1_TESTID',
+            variant: 'primary',
+            icon: 'history',
+            label: I18n.t(
+              'presentation.credentialDetails.actions.pariPurchases',
+              { ns: 'wallet' }
+            ),
+            accessibilityLabel: I18n.t(
+              'presentation.credentialDetails.actions.pariPurchases',
+              { ns: 'wallet' }
+            ),
+            onPress: () => {
+              fiscalCode.success
+                ? openWebUrlInApp(
+                    `https://dev.bonuselettrodomestici.it/utente/it-wallet/payment/${fiscalCode.data}`,
+                    () =>
+                      IOToast.error(I18n.t('errors.generic', { ns: 'common' }))
+                  )
+                : IOToast.error(I18n.t('errors.generic', { ns: 'common' }));
+            }
+          }
+        }
+      ];
     }
   }
 };

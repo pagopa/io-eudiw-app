@@ -16,15 +16,17 @@
       "mdl": "Patente di guida",
       "pid": "IT-Wallet ID",
       "disabilityCard": "Carta Europea della Disabilità",
-      "bonusPari": "Bonus Elettrodomestici",
+      "bonusPari": "Bonus",
       "unknown": "Credenziale Sconosciuta"
     },
     "status": {
       "expired": "Scaduta",
       "expiring": "In scadenza",
-      "invalid": "Non valida",
+      "pending": "In lavorazione",
+      "invalid": "Non valido",
       "verificationExpiring": "Azione richiesta",
       "verificationExpired": "Azione richiesta",
+      "upgradePending": "Da aggiornare",
       "unknown": "Non disponibile"
     },
     "pidStatusAlert": {
@@ -150,6 +152,7 @@
         "hideValues": "Nascondi dati",
         "showValues": "Mostra dati"
       },
+      "openCardDocument": "Apri copia del documento",
       "documentDataTitle": "Dati del documento",
       "boolClaim": {
         "true": "Sì",
@@ -164,7 +167,8 @@
       "actions": {
         "removeFromWallet": "Rimuovi dal Portafoglio",
         "requestAssistance": "Qualcosa non torna?",
-        "hideClaimValues": "Nascondi gli attributi del documento"
+        "hideClaimValues": "Nascondi gli attributi del documento",
+        "pariPurchases": "Dettaglio acquisti"
       },
       "dialogs": {
         "remove": {
@@ -228,6 +232,10 @@
     "itWalletId": {
       "description": "È il tuo pass digitale per dimostrare chi sei, accedere ai servizi online e ottenere nuovi documenti.",
       "listItemHeader": "Dati del mio IT-Wallet ID",
+      "banner": {
+        "title": "Cos'è IT-Wallet ID?",
+        "content": "È il cuore del tuo Portafoglio IT-Wallet: ti consente di ottenere i documenti digitali, dimostrare chi sei e accedere ai servizi online"
+      },
       "cta": {
         "revoke": "Disattiva IT-Wallet"
       },
@@ -348,7 +356,7 @@
       },
       "bonusPariNotRequested": {
         "title": "Per ottenere il documento devi prima richiedere il bonus sul portale PARI",
-        "subtitle": "Per ottenere il Bonus Elettrodomestici come documento su IT-Wallet, effettua la procedura sul portale PARI.",
+        "subtitle": "Per ottenere il Bonus come documento su IT-Wallet, effettua la procedura sul portale PARI.",
         "action": "Effettua la richiesta"
       },
       "button": "I understand"

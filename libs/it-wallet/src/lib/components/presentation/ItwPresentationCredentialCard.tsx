@@ -50,8 +50,6 @@ const ItwPresentationCredentialCard = ({
 
   const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
 
-  const { flippable } = capabilities;
-
   const handleCardPress = () => {
     navigation.navigate(WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_MODAL, {
       credential,
@@ -71,13 +69,11 @@ const ItwPresentationCredentialCard = ({
         <FlipGestureDetector
           isFlipped={isFlipped}
           setIsFlipped={setIsFlipped}
-          onPress={flippable ? handleCardPress : undefined}
-          disabled={!flippable}
+          onPress={handleCardPress}
         >
           <ItwSkeumorphicCard
             credential={credential}
             claims={parsedClaims}
-            mode="vertical"
             isFlipped={isFlipped}
             status={status}
             valuesHidden={valuesHidden}
@@ -86,14 +82,12 @@ const ItwPresentationCredentialCard = ({
         </FlipGestureDetector>
       </CardContainer>
       <VSpacer size={8} />
-      {flippable && (
-        <ContentWrapper style={styles.centeredLayout}>
-          <ItwPresentationCredentialCardFlipButton
-            isFlipped={isFlipped}
-            handleOnPress={handleFlipButtonPress}
-          />
-        </ContentWrapper>
-      )}
+      <ContentWrapper style={styles.centeredLayout}>
+        <ItwPresentationCredentialCardFlipButton
+          isFlipped={isFlipped}
+          handleOnPress={handleFlipButtonPress}
+        />
+      </ContentWrapper>
     </VStack>
   );
 };

@@ -1,38 +1,28 @@
-import {
-  ContentWrapper,
-  makeFontStyleObject,
-  useIOExperimentalDesign
-} from '@pagopa/io-app-design-system';
+import { Body, H2, Tag } from '@pagopa/io-app-design-system';
 import { memo, useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { lifecycleIsValidSelector } from '../../store/lifecycle';
-import { ParsedClaimsRecord } from '../../utils/claims';
+import { StyleSheet, View } from 'react-native';
+import { wellKnownCredential } from '../../utils/credentials';
 import {
-  wellKnownCredential,
-  WellKnownCredentialTypes
-} from '../../utils/credentials';
-import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
-import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
+  getCredentialNameFromType,
+  useTagPropsByStatus
+} from '../../utils/itwCredentialUtils';
 import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
-import { ItwPresentationCredentialCard } from './ItwPresentationCredentialCard';
 import { useAppSelector } from '../../store';
 import { FocusAwareStatusBar } from '@io-eudiw-app/commons';
+import { useCredentialCardConfig } from '../credential/ItwCredentialCard/config';
+import { itwCredentialsPidStatusSelector } from '../../store/credentials';
+import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
+import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredentialStatus';
+import Color from 'color';
+import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
+import { ItwCredentialDetailCard } from '../ItwCredentialDetailCard';
+import ItwAvatar from '../../../assets/img/brand/itw_avatar.svg';
 import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 
 type ItwPresentationDetailsHeaderProps = {
   credential: StoredCredentialMetadata;
-  parsedClaims: ParsedClaimsRecord;
   capabilities: ItwCredentialCapabilities;
 };
-
-/**
- * Credentials that should display a skeumorphic card
- */
-const credentialsWithSkeumorphicCard: ReadonlyArray<string> = [
-  wellKnownCredential.DRIVING_LICENSE,
-  wellKnownCredential.DISABILITY_CARD,
-  wellKnownCredential.BONUS_PARI
-];
 
 /**
  * This component renders the header for the presentation details screen of a credential
@@ -40,78 +30,72 @@ const credentialsWithSkeumorphicCard: ReadonlyArray<string> = [
  */
 const ItwPresentationDetailsHeader = ({
   credential,
-  parsedClaims,
   capabilities
 }: ItwPresentationDetailsHeaderProps) => {
-  const { isExperimental } = useIOExperimentalDesign();
-  const itwFeaturesEnabled = useAppSelector(lifecycleIsValidSelector);
+  // Credential's header card is always in light mode
+  const { color } = useCredentialCardConfig(credential.credentialType, 'light');
+  const pidStatus = useAppSelector(itwCredentialsPidStatusSelector);
+  const { status: credentialRawStatus } = useAppSelector(state =>
+    itwCredentialStatusSelector(state, credential.credentialType)
+  );
+  // PID is excluded from itwCredentialStatusSelector, so read its status from eidStatus directly
+  const rawStatus =
+    credential.credentialType === wellKnownCredential.PID
+      ? (pidStatus ?? 'valid')
+      : (credentialRawStatus ?? 'valid');
+  const displayStatus = useItwDisplayCredentialStatus(rawStatus);
+  const tagPropsByStatus = useTagPropsByStatus();
+  const statusTagProps = tagPropsByStatus[displayStatus];
 
-  const { backgroundColor, textColor, statusBarStyle } =
-    useThemeColorByCredentialType(
-      credential.credentialType as WellKnownCredentialTypes,
-      itwFeaturesEnabled
-    );
+  const authSourceName = ISSUER_MOCK_NAME;
+  const credentialName = getCredentialNameFromType(credential.credentialType);
 
-  const headerContent = useMemo(() => {
-    if (credentialsWithSkeumorphicCard.includes(credential.credentialType)) {
-      return (
-        <ItwPresentationCredentialCard
-          credential={credential}
-          parsedClaims={parsedClaims}
-          capabilities={capabilities}
-        />
-      );
-    }
-
-    return (
-      <View style={[styles.header, { backgroundColor }]}>
-        <ContentWrapper>
-          <Text
-            style={[
-              isExperimental
-                ? styles.headerLabelExperimental
-                : styles.headerLabel,
-              { color: textColor }
-            ]}
-            accessibilityRole="header"
-          >
-            {getCredentialNameFromType(credential.credentialType)}
-          </Text>
-        </ContentWrapper>
-      </View>
-    );
-  }, [
-    credential,
-    parsedClaims,
-    capabilities,
-    backgroundColor,
-    textColor,
-    isExperimental
-  ]);
+  const isLight = useMemo(() => Color(color).isLight(), [color]);
 
   return (
-    <View>
+    <>
       <FocusAwareStatusBar
-        backgroundColor={backgroundColor}
-        barStyle={statusBarStyle}
+        backgroundColor={color}
+        barStyle={isLight ? 'dark-content' : 'light-content'}
       />
-      {headerContent}
-    </View>
+      <ItwCredentialDetailCard
+        credentialType={credential.credentialType}
+        credentialStatus={displayStatus}
+      >
+        <ItwAvatar width={48} height={48} />
+        <H2
+          style={styles.nameText}
+          color={isLight ? 'blueItalia-850' : 'white'}
+        >
+          {credentialName}
+        </H2>
+        {authSourceName && (
+          <Body
+            style={styles.authSourceText}
+            color={isLight ? 'blueItalia-850' : 'white'}
+          >
+            {authSourceName}
+          </Body>
+        )}
+        {capabilities.showStatusTag && statusTagProps && (
+          <View style={{ marginTop: 16 }}>
+            <Tag forceLightMode {...statusTagProps} />
+          </View>
+        )}
+      </ItwCredentialDetailCard>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  header: {
-    marginTop: -300,
-    paddingTop: 300,
-    justifyContent: 'flex-end',
-    paddingBottom: 24
+  nameText: {
+    textAlign: 'center',
+    marginTop: 16
   },
-  headerLabel: {
-    ...makeFontStyleObject(26, 'TitilliumSansPro', 30, 'Semibold')
-  },
-  headerLabelExperimental: {
-    ...makeFontStyleObject(26, 'Titillio', 30, 'Semibold')
+  authSourceText: {
+    textAlign: 'center',
+    marginHorizontal: 16,
+    paddingTop: 4
   }
 });
 

@@ -1,4 +1,6 @@
 import { Linking } from 'react-native';
+import { isAndroid } from './device';
+import * as WebBrowser from 'expo-web-browser';
 
 /**
  * Checks if the given URL is an HTTP URL.
@@ -45,4 +47,38 @@ const openWebUrl = (url: string, onError: () => void) => {
     });
 };
 
-export { openWebUrl };
+const warmUp = async () => {
+  // On Android check if there is a browser to open the authentication session and then warm it up
+  if (isAndroid) {
+    const { browserPackages } =
+      await WebBrowser.getCustomTabsSupportingBrowsersAsync();
+    if (browserPackages.length === 0) {
+      throw new Error('No browser found to open the authentication session');
+    }
+  }
+  await WebBrowser.warmUpAsync();
+};
+
+/**
+ * Opens the given URL in the default browser. If the URL cannot be opened, calls the `onError` callback.
+ * @param url - The URL to open.
+ * @param onError - The callback to call if the URL cannot be opened.
+ */
+const openWebUrlInApp = (url: string, onError: () => void) => {
+  warmUp()
+    .then(() => {
+      if (isHttp(url)) {
+        return WebBrowser.openAuthSessionAsync(url);
+      } else {
+        throw new Error('Cannot open URL');
+      }
+    })
+    .then(() => {
+      // Do nothing on success
+    })
+    .catch(_ => {
+      onError();
+    });
+};
+
+export { openWebUrl, openWebUrlInApp };

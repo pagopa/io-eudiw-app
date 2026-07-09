@@ -1,7 +1,7 @@
 import {
   ContentWrapper,
+  IOButton,
   Optional,
-  VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
@@ -53,10 +53,17 @@ import {
   useDebugInfo
 } from '@io-eudiw-app/debug-info';
 import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
+import WALLET_ROUTES from '../../navigation/wallet/routes';
+import MAIN_ROUTES from '../../navigation/main/routes';
 
 export type ItwPresentationCredentialDetailNavigationParams = {
   credentialType: string;
 };
+
+const credentialsWithSkeumorphicCard: ReadonlyArray<string> = [
+  wellKnownCredential.DRIVING_LICENSE,
+  wellKnownCredential.DISABILITY_CARD
+];
 
 type Props = StackScreenProps<
   WalletNavigatorParamsList,
@@ -179,6 +186,17 @@ const ItwPresentationCredentialDetail = ({
     }
   }, [proximityStatus, QrCodeModal, navigation]);
 
+  const hasSkeumorphicCard = credentialsWithSkeumorphicCard.includes(
+    credential.credentialType
+  );
+
+  const handleOpenCard = () => {
+    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+      screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_SCREEN,
+      params: { credentialType: credential.credentialType }
+    });
+  };
+
   const ctaProps = useMemo<Optional<CredentialCtaProps>>(() => {
     const credentialType = credential.credentialType;
 
@@ -211,13 +229,25 @@ const ItwPresentationCredentialDetail = ({
     <ItwPresentationDetailsScreenBase
       credential={credential}
       ctaProps={ctaProps}
+      headerTransparent
     >
       <ItwPresentationDetailsHeader
         credential={credential}
-        parsedClaims={parsedClaims}
         capabilities={capabilities}
       />
-      <VSpacer size={24} />
+      <View style={{ paddingVertical: 16 }}>
+        {hasSkeumorphicCard && (
+          <View style={{ alignSelf: 'center', paddingVertical: 8 }}>
+            <IOButton
+              variant="link"
+              label={t('presentation.credentialDetails.openCardDocument')}
+              icon="creditCard"
+              iconPosition="start"
+              onPress={handleOpenCard}
+            />
+          </View>
+        )}
+      </View>
       <ContentWrapper>
         <VStack space={24}>
           <ItwPresentationCredentialStatusAlert
@@ -232,7 +262,10 @@ const ItwPresentationCredentialDetail = ({
             credential={credential}
             parsedClaims={parsedClaims}
           />
-          <ItwPresentationDetailsFooter credential={credential} />
+          <ItwPresentationDetailsFooter
+            credential={credential}
+            capabilities={capabilities}
+          />
           <View style={{ alignItems: 'center' }}>
             <PoweredByItWalletText />
           </View>

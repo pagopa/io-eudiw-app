@@ -24,12 +24,14 @@ import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 type CredentialsSlice = {
   credentials: Array<StoredCredentialMetadata>;
   valuesHidden: boolean;
+  pidInfoBannerActive: boolean;
 };
 
 // Initial state for the credential slice
 const initialState: CredentialsSlice = {
   credentials: [],
-  valuesHidden: false
+  valuesHidden: false,
+  pidInfoBannerActive: true
 };
 
 /**
@@ -84,6 +86,10 @@ const credentialsSlice = createSlice({
     },
     itwSetClaimValuesHidden: (state, action: PayloadAction<boolean>) => {
       state.valuesHidden = action.payload;
+    },
+    // PID Info Banner
+    disablePidInfoBanner: state => {
+      state.pidInfoBannerActive = false;
     }
   },
   extraReducers: builder => {
@@ -120,7 +126,8 @@ export const {
   removeCredential,
   addCredentialWithIdentification,
   addPidWithIdentification,
-  itwSetClaimValuesHidden
+  itwSetClaimValuesHidden,
+  disablePidInfoBanner
 } = credentialsSlice.actions;
 
 export const selectCredentials = (state: WalletCombinedRootState) =>
@@ -177,3 +184,11 @@ export const selectWalletCards: (
 
 export const itwIsClaimValueHiddenSelector = (state: WalletCombinedRootState) =>
   state.wallet.credentials.valuesHidden;
+
+/**
+ * Selects whether the PID info banner is active (i.e. not yet dismissed by the user).
+ * @param state - The global state.
+ * @returns a boolean indicating whether the PID info banner is active
+ */
+export const selectPidInfoBannerActive = (state: WalletCombinedRootState) =>
+  state.wallet.credentials.pidInfoBannerActive;
