@@ -26,6 +26,7 @@ import {
   setProximityStatusAuthorizationStarted,
   setProximityStatusConnected,
   setProximityStatusError,
+  setProximityStatusPresentationDetails,
   setProximityStatusReceivedDocument,
   setProximityStatusStarted,
   setProximityStatusStopped,
@@ -332,6 +333,12 @@ const terminateSessionForConsent = async () => {
 
 const responseHandler = async (listenerApi: AppListener) => {
   await listenerApi.take(isAnyOf(setProximityStatusReceivedDocument));
+  const retrievalMethod = selectProximityRetrievalMethod(
+    listenerApi.getState()
+  );
+  if (retrievalMethod === 'ble') {
+    await listenerApi.take(isAnyOf(setProximityStatusPresentationDetails));
+  }
   const documentRequest = selectProximityDocumentRequest(
     listenerApi.getState()
   );
@@ -347,11 +354,13 @@ const responseHandler = async (listenerApi: AppListener) => {
     documentRequest.request,
     mdocCredentials
   );
+  if (!descriptor) {
+    await abortProximityFlow(listenerApi);
+    return;
+  }
+
   const isAuthenticated = getIsVerifierAuthenticated(documentRequest);
 
-  const retrievalMethod = selectProximityRetrievalMethod(
-    listenerApi.getState()
-  );
   const consentData = getConsentDataFromProximityDetails(descriptor);
   const consentKey = generateConsentKey(consentData);
   const hasConsent =

@@ -6,30 +6,32 @@ import {
   IOVisualCostants,
   VSpacer,
   VStack,
-  Alert as AlertDs
+  Alert as AlertDs,
+  Body
 } from '@pagopa/io-app-design-system';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, StyleSheet, Alert } from 'react-native';
 import {
   IOMarkdown,
+  LoadingScreenContent,
   useDisableGestureNavigation,
   useHardwareBackButton,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
-import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import {
-  ProximityDisclosure,
   ProximityStatus,
   resetProximity,
+  selectProximityDisclosureDescriptor,
+  selectProximityDisclosureIsAuthenticated,
   selectProximityDocumentRequest,
   selectProximityErrorDetails,
   selectProximityStatus,
   setProximityStatusAuthorizationRejected,
-  setProximityStatusAuthorizationSend
+  setProximityStatusAuthorizationSend,
+  setProximityStatusPresentationDetails
 } from '../../store/proximity';
 import { ItwProximityPresentationDetails } from './ItwProximityPresentationDetails';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -38,24 +40,25 @@ import {
   useDebugInfo
 } from '@io-eudiw-app/debug-info';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
-
-export type PresentationProximityPreviewProps = ProximityDisclosure;
-
-type Props = StackScreenProps<WalletNavigatorParamsList, 'PROXIMITY_PREVIEW'>;
+import { StackNavigationProp } from '@react-navigation/stack';
+import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
 
 /**
  * Screen that shows the claims required for a Proximity presentation
  * and handles presentation completion or cancellation
  */
-const PresentationProximityPreview = ({ route }: Props) => {
-  const proximityDetails = route.params.descriptor;
+const PresentationProximityPreview = () => {
+  const proximityDetails = useAppSelector(selectProximityDisclosureDescriptor);
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
   const { navigateToWallet } = useNavigateToWalletWithReset();
   const proximityStatus = useAppSelector(selectProximityStatus);
   const { t } = useTranslation(['common', 'wallet']);
   const isDebug = useAppSelector(selectIsDebugModeEnabled);
-  const isAuthenticated = route.params.isAuthenticated;
+  const isAuthenticated = useAppSelector(
+    selectProximityDisclosureIsAuthenticated
+  );
 
   const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
   const verifierRequest = useAppSelector(selectProximityDocumentRequest);
@@ -150,6 +153,29 @@ const PresentationProximityPreview = ({ route }: Props) => {
     title: '',
     goBack: cancelAlert
   });
+
+  /**
+   * Listener for navigation transition end to detect if the user has navigated
+   * to the barcode screen and we can request the camera permission.
+   */
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('transitionEnd', () => {
+      dispatch(setProximityStatusPresentationDetails());
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  if (!proximityDetails) {
+    return (
+      <LoadingScreenContent
+        contentTitle={t('presentation.loading.title', { ns: 'wallet' })}
+      >
+        <Body style={{ textAlign: 'center' }}>
+          {t('presentation.loading.subtitle', { ns: 'wallet' })}
+        </Body>
+      </LoadingScreenContent>
+    );
+  }
 
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>

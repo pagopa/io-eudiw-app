@@ -15,7 +15,6 @@ import WalletHome from '../../screens/WalletHome';
 type TabNavigatorParamsList = {
   [TAB_ROUTES.WALLET]: undefined;
   [TAB_ROUTES.SCAN_QR]: undefined;
-  [TAB_ROUTES.PAYMENTS]: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
@@ -85,27 +84,6 @@ export const TabNavigator = () => {
             <TabIconComponent
               iconName={'navScan'}
               iconNameFocused={'navScan'}
-              color={color}
-              focused={focused}
-            />
-          )
-        }}
-      />
-      <Tab.Screen
-        name={TAB_ROUTES.PAYMENTS}
-        component={EmptyComponent}
-        listeners={{
-          // Void tab: payments are not implemented yet, so tapping is a no-op.
-          tabPress: ({ preventDefault }) => {
-            preventDefault();
-          }
-        }}
-        options={{
-          title: t('wallet:tabNavigator.payments'),
-          tabBarIcon: ({ color, focused }) => (
-            <TabIconComponent
-              iconName={'navPsp'}
-              iconNameFocused={'navPsp'}
               color={color}
               focused={focused}
             />

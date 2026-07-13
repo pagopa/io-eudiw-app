@@ -43,9 +43,7 @@ import ResolvedCredentialOffer, {
 import PresentationProximityFailure, {
   PresentationProximityFailureProps
 } from '../../screens/proximity/PresentationProximityFailure';
-import PresentationProximityPreview, {
-  PresentationProximityPreviewProps
-} from '../../screens/proximity/PresentationProximityPreview';
+import PresentationProximityPreview from '../../screens/proximity/PresentationProximityPreview';
 import PresentationProximitySuccess from '../../screens/proximity/PresentationProximitySuccess';
 import ItwProximityStoreConsent from '../../screens/proximity/ItwProximityStoreConsent';
 import WALLET_ROUTES from './routes';
@@ -96,7 +94,7 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.ALREADY_OBTAINED]: undefined;
 
   // Proximity
-  [WALLET_ROUTES.PROXIMITY.PREVIEW]: PresentationProximityPreviewProps;
+  [WALLET_ROUTES.PROXIMITY.PREVIEW]: undefined;
   [WALLET_ROUTES.PROXIMITY.STORE_CONSENT]: undefined;
   [WALLET_ROUTES.PROXIMITY.SUCCESS]: undefined;
   [WALLET_ROUTES.PROXIMITY.FAILURE]: PresentationProximityFailureProps;

@@ -28,8 +28,6 @@ import { ItwProximityQrCodeInfoBanner } from '../../components/proximity/ItwProx
 import {
   ProximityStatus,
   resetProximity,
-  selectProximityDisclosureDescriptor,
-  selectProximityDisclosureIsAuthenticated,
   selectProximityEngagementMode,
   selectProximityErrorDetails,
   selectProximityFailure,
@@ -60,10 +58,6 @@ const ItwProximityPresentmentScreen = () => {
 
   const proximityStatus = useAppSelector(selectProximityStatus);
   const proximityFailure = useAppSelector(selectProximityFailure);
-  const descriptor = useAppSelector(selectProximityDisclosureDescriptor);
-  const isAuthenticated = useAppSelector(
-    selectProximityDisclosureIsAuthenticated
-  );
   const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
   const engagementMode = useAppSelector(selectProximityEngagementMode);
   const proximtyInfoBannerActive = useAppSelector(
@@ -115,22 +109,13 @@ const ItwProximityPresentmentScreen = () => {
       return;
     }
     if (
-      proximityStatus ===
-        ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED &&
-      descriptor
+      proximityStatus === ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PROXIMITY_PREVIEW',
-        params: { descriptor, isAuthenticated }
+        screen: 'PROXIMITY_PREVIEW'
       });
     }
-  }, [
-    proximityStatus,
-    navigation,
-    descriptor,
-    isAuthenticated,
-    engagementMode
-  ]);
+  }, [proximityStatus, navigation, engagementMode]);
 
   const handleContactlessPress = async () => {
     // Until an entitlement for NFC usage for this app is obtained, iOS flow

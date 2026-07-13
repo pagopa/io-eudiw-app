@@ -18,6 +18,7 @@ export enum ProximityStatus {
   PROXIMITY_STATUS_ABORTED = 'aborted',
   PROXIMITY_STATUS_CONNECTED = 'connected',
   PROXIMITY_STATUS_RECEIVED_DOCUMENT = 'received-document',
+  PROXIMITY_STATUS_PRESENTATION_DETAILS = 'presentation-details',
   PROXIMITY_STATUS_AUTHORIZATION_STARTED = 'authorization-started',
   PROXIMITY_STATUS_STORE_CONSENT = 'store-consent',
   PROXIMITY_STATUS_AUTHORIZATION_SEND = 'authorization-send',
@@ -137,6 +138,9 @@ const proximitySlice = createSlice({
       state.status = ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT;
       state.documentRequest = action.payload;
     },
+    setProximityStatusPresentationDetails: state => {
+      state.status = ProximityStatus.PROXIMITY_STATUS_PRESENTATION_DETAILS;
+    },
     setProximityStatusAuthorizationStarted: (
       state,
       action: PayloadAction<ProximityDisclosure>
@@ -230,6 +234,7 @@ export const {
   setProximityStatusConnected,
   setProximityStatusError,
   setProximityStatusReceivedDocument,
+  setProximityStatusPresentationDetails,
   setProximityStatusAuthorizationStarted,
   setProximityStatusAuthorizationSend,
   setProximityStoreConsentPrompt,

@@ -34,43 +34,47 @@ export const getVerifierIdentity = (
 export const getProximityDetails = (
   request: ISO18013_5.VerifierRequest['request'],
   credentials: Array<StoredCredential>
-): ProximityDetails => {
-  // Exclude the WIA document type from the request
-  const { [WIA_DOC_TYPE]: _, ...rest } = request;
+): ProximityDetails | undefined => {
+  try {
+    // Exclude the WIA document type from the request
+    const { [WIA_DOC_TYPE]: _, ...rest } = request;
 
-  return Object.entries(rest).map(
-    ([docType, { isAuthenticated, certificateData, ...namespaces }]) => {
-      // Support multiple credentials type
-      const credential = credentials.filter(
-        c => c.credentialType === docType
-      )[0];
+    return Object.entries(rest).map(
+      ([docType, { isAuthenticated, certificateData, ...namespaces }]) => {
+        // Support multiple credentials type
+        const credential = credentials.filter(
+          c => c.credentialType === docType
+        )[0];
 
-      assert(credential, `Credential not found for docType: ${docType}`);
-      // Extract required fields from the verifier request.
-      // Each field is formatted as "namespace:field" to match the structure
-      // of parsedCredential, which uses colon-separated keys.
-      const requiredFields = Object.entries(namespaces).flatMap(
-        ([namespace, fields]) =>
-          Object.keys(fields).map(field => `${namespace}:${field}`)
-      );
-      const required = new Set(requiredFields);
+        assert(credential, `Credential not found for docType: ${docType}`);
+        // Extract required fields from the verifier request.
+        // Each field is formatted as "namespace:field" to match the structure
+        // of parsedCredential, which uses colon-separated keys.
+        const requiredFields = Object.entries(namespaces).flatMap(
+          ([namespace, fields]) =>
+            Object.keys(fields).map(field => `${namespace}:${field}`)
+        );
+        const required = new Set(requiredFields);
 
-      const parsedCredential = Object.fromEntries(
-        Object.keys(credential.parsedCredential)
-          .filter(k => required.has(k))
-          .map(k => [k, credential.parsedCredential[k]])
-      );
+        const parsedCredential = Object.fromEntries(
+          Object.keys(credential.parsedCredential)
+            .filter(k => required.has(k))
+            .map(k => [k, credential.parsedCredential[k]])
+        );
 
-      return {
-        rpId: getVerifierIdentity(certificateData),
-        credentialType: credential.credentialType,
-        claimsToDisplay: parseClaims(parsedCredential, {
-          exclude: [WellKnownClaim.unique_id]
-        }),
-        isAuthenticated
-      };
-    }
-  );
+        return {
+          rpId: getVerifierIdentity(certificateData),
+          credentialType: credential.credentialType,
+          claimsToDisplay: parseClaims(parsedCredential, {
+            exclude: [WellKnownClaim.unique_id]
+          }),
+          isAuthenticated
+        };
+      }
+    );
+  } catch {
+    return undefined;
+  }
 };
 
 interface NestedBooleanMap {

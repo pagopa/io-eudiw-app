@@ -22,10 +22,9 @@ import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWit
 import {
   ProximityStatus,
   resetProximity,
-  selectProximityDisclosureDescriptor,
-  selectProximityDisclosureIsAuthenticated,
   selectProximityEngagementMode,
   selectProximityErrorDetails,
+  selectProximityRetrievalMethod,
   selectProximityStatus,
   setProximityStatusStopped
 } from '../../store/proximity';
@@ -54,11 +53,8 @@ const ItwProximityNfcPresentment = () => {
   const { navigateToWallet } = useNavigateToWalletWithReset();
 
   const proximityStatus = useAppSelector(selectProximityStatus);
-  const descriptor = useAppSelector(selectProximityDisclosureDescriptor);
-  const isAuthenticated = useAppSelector(
-    selectProximityDisclosureIsAuthenticated
-  );
   const engagementMode = useAppSelector(selectProximityEngagementMode);
+  const retrievalMethod = useAppSelector(selectProximityRetrievalMethod);
   const errorDetails = useAppSelector(selectProximityErrorDetails);
 
   const [authorizationSent, setAuthorizationSent] = useState<boolean>(false);
@@ -89,14 +85,24 @@ const ItwProximityNfcPresentment = () => {
     if (engagementMode !== 'nfc') {
       return;
     }
+
+    // BLE retrieval method needs to react differently
+    if (retrievalMethod === 'ble') {
+      if (
+        proximityStatus === ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT
+      ) {
+        navigation.navigate('MAIN_WALLET_NAV', {
+          screen: 'PROXIMITY_PREVIEW'
+        });
+        return;
+      }
+    }
+
     if (
-      proximityStatus ===
-        ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED &&
-      descriptor
+      proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PROXIMITY_PREVIEW',
-        params: { descriptor, isAuthenticated }
+        screen: 'PROXIMITY_PREVIEW'
       });
     } else if (
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR ||
@@ -112,13 +118,7 @@ const ItwProximityNfcPresentment = () => {
     ) {
       setAuthorizationSent(true);
     }
-  }, [
-    proximityStatus,
-    navigation,
-    descriptor,
-    isAuthenticated,
-    engagementMode
-  ]);
+  }, [proximityStatus, navigation, engagementMode]);
 
   const title = useMemo(() => {
     if (isSuccess) {

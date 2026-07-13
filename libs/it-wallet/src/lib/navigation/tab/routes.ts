@@ -4,8 +4,7 @@
 const TAB_ROUTES = {
   // Main section
   WALLET: 'TAB_WALLET',
-  SCAN_QR: 'TAB_SCAN_QR',
-  PAYMENTS: 'TAB_PAYMENTS'
+  SCAN_QR: 'TAB_SCAN_QR'
 } as const;
 
 export default TAB_ROUTES;
