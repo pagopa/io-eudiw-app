@@ -73,24 +73,58 @@ const writeIndex = async (types: Array<string>): Promise<void> => {
 };
 
 /**
+ * Serializes access to the credential index.
+ *
+ * `updateIndex` performs a read-modify-write on the index, so concurrent
+ * callers (e.g. `storeAll`/`removeAll`/`clear`, which fan out over
+ * `Promise.all`, or the vault coherence listener) could read the same snapshot
+ * and clobber each other's changes: the last write wins and every interleaved
+ * update is lost. Chaining every mutation onto a single promise forces them to
+ * run one after another.
+ *
+ * @param task The index mutation to run once the lock is free
+ * @returns A promise that resolves with the task's result
+ */
+let indexLock: Promise<unknown> = Promise.resolve();
+
+const withIndexLock = <T>(task: () => Promise<T>): Promise<T> => {
+  const result = indexLock.then(() => task());
+  // Keep the chain alive even if `task` rejects, so a single failure does not
+  // wedge every subsequent index mutation.
+  indexLock = result.then(
+    () => undefined,
+    () => undefined
+  );
+  return result;
+};
+
+/**
  * Updates the credential index by adding or removing a credential type.
+ * The read-modify-write is serialized through {@link withIndexLock} so
+ * concurrent callers cannot overwrite each other's changes.
  *
  * @param credentialType The credential type to add or remove
  * @param operation The operation to perform ('add' or 'remove')
+ * @returns A promise that resolves to `true` if the index was actually changed,
+ * `false` if it was already in the requested state (no-op)
  */
 const updateIndex = async (
   credentialType: string,
   operation: 'add' | 'remove'
-): Promise<void> => {
-  const index = await readIndex();
-  const hasEntry = index.includes(credentialType);
+): Promise<boolean> =>
+  withIndexLock(async () => {
+    const index = await readIndex();
+    const hasEntry = index.includes(credentialType);
 
-  if (operation === 'add' && !hasEntry) {
-    await writeIndex([...index, credentialType]);
-  } else if (operation === 'remove' && hasEntry) {
-    await writeIndex(index.filter(t => t !== credentialType));
-  }
-};
+    if (operation === 'add' && !hasEntry) {
+      await writeIndex([...index, credentialType]);
+      return true;
+    } else if (operation === 'remove' && hasEntry) {
+      await writeIndex(index.filter(t => t !== credentialType));
+      return true;
+    }
+    return false;
+  });
 
 /**
  * Stores a credential's SD-JWT/MDOC in the Secure Storage.
@@ -102,12 +136,28 @@ const store = async (
   credentialType: string,
   credential: string
 ): Promise<void> => {
-  await SecureStore.setItemAsync(
-    storageKey(credentialType),
-    credential,
-    options
-  );
-  await updateIndex(credentialType, 'add');
+  // Add the index entry *before* writing the credential. If we wrote the
+  // credential first and the index update then failed, the credential would be
+  // invisible to the coherence listener (which reconciles from the index) and
+  // would leak in secure storage until the app is uninstalled. Writing the
+  // index first means a failed credential write is recoverable via rollback.
+  const indexAdded = await updateIndex(credentialType, 'add');
+  try {
+    await SecureStore.setItemAsync(
+      storageKey(credentialType),
+      credential,
+      options
+    );
+  } catch (e) {
+    // Roll back on a (non-crash) write failure so we never advertise a
+    // credential that was never stored. Only undo the entry if *we* added it:
+    // when overwriting an already-indexed credential, the previous one is still
+    // stored and must stay in the index.
+    if (indexAdded) {
+      await updateIndex(credentialType, 'remove');
+    }
+    throw e;
+  }
 };
 
 /**
