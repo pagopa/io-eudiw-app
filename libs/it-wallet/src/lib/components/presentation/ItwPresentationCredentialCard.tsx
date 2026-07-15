@@ -17,14 +17,14 @@ import { ParsedClaimsRecord } from '../../utils/claims';
 import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import { useThemeColorByCredentialType } from '../../utils/itwStyleUtils';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 import { ItwSkeumorphicCard } from '../credential/ItwSkeumorphicCard';
 import { FlipGestureDetector } from '../credential/ItwSkeumorphicCard/FlipGestureDetector';
 import { ItwPresentationCredentialCardFlipButton } from './ItwPresentationCredentialCardFlipButton';
 import { useAppSelector } from '../../store';
 
 type Props = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
   parsedClaims: ParsedClaimsRecord;
   capabilities: ItwCredentialCapabilities;
 };

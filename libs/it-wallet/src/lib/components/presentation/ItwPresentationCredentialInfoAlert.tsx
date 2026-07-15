@@ -4,13 +4,13 @@ import { memo } from 'react';
 import { CredentialInfoAlert } from '../../utils/itwCredentialCapabilities';
 import {
   ItwCredentialStatus,
-  StoredCredential
+  StoredCredentialMetadata
 } from '../../utils/itwTypesUtils';
 import { useAppSelector } from '../../store';
 import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
 
 type Props = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
   infoAlert?: CredentialInfoAlert;
 };
 

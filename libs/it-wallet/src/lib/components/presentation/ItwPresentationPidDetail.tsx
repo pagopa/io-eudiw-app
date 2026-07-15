@@ -6,7 +6,7 @@ import { Fragment } from 'react/jsx-runtime';
 import { View } from 'react-native';
 import { parseClaimsToRecord } from '../../utils/claims';
 import { WellKnownClaim } from '../../utils/itwClaimsUtils';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
 import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
 import { ItwPidLifecycleAlert } from '../ItwPidLifecycleAlert';
@@ -14,7 +14,7 @@ import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigato
 import { useTranslation } from 'react-i18next';
 
 type Props = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
 };
 
 export const ItwPresentationPidDetail = ({ credential }: Props) => {

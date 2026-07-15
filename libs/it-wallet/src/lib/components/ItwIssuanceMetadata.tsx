@@ -3,10 +3,10 @@ import { t } from 'i18next';
 import { useMemo } from 'react';
 import { useItwInfoBottomSheet } from '../hooks/useItwInfoBottomSheet';
 import { wellKnownCredential } from '../utils/credentials';
-import { StoredCredential } from '../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../utils/itwTypesUtils';
 
 type ItwIssuanceMetadataProps = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
   isPreview?: boolean;
 };
 

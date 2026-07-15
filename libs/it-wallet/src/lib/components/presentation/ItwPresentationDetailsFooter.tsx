@@ -4,12 +4,12 @@ import { memo } from 'react';
 import { View } from 'react-native';
 import { useItwRemoveCredentialWithConfirm } from '../../hooks/useItwRemoveCredentialWithConfirm';
 import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { useAppSelector } from '../../store';
 
 type ItwPresentationDetailFooterProps = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
   capabilities: ItwCredentialCapabilities;
 };
 

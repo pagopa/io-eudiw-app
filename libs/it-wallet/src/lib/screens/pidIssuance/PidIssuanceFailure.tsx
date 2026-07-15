@@ -7,7 +7,10 @@ import {
   resetInstanceCreation,
   resetPidIssuance
 } from '../../store/pidIssuance';
-import { selectPidIssuanceError } from '../../store/selectors/pidIssuance';
+import {
+  selectPidIssuanceError,
+  selectPidIssuanceErrorType
+} from '../../store/selectors/pidIssuance';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
@@ -20,11 +23,12 @@ const PidIssuanceFailure = () => {
   const { t } = useTranslation(['common', 'wallet']);
   const dispatch = useAppDispatch();
   const error = useAppSelector(selectPidIssuanceError);
+  const errorType = useAppSelector(selectPidIssuanceErrorType);
   const { navigateToWallet } = useNavigateToWalletWithReset();
 
   useHardwareBackButton(() => true);
 
-  useDebugInfo({ error });
+  useDebugInfo({ error, errorType });
 
   const onPress = () => {
     dispatch(resetInstanceCreation());

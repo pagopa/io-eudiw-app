@@ -27,12 +27,23 @@ export const selectPidIssuanceData = (state: WalletCombinedRootState) =>
     : undefined;
 
 /**
- * Selects the error occurred during the issuance flow.
+ * Selects the error occurred during the issuance flow, regardless of the phase
+ * (OID4VCI issuance or vault persistence).
  * @param state - The root state
  * @returns The error occurred during the issuance flow
  */
 export const selectPidIssuanceError = (state: WalletCombinedRootState) =>
   state.wallet.pidIssuanceStatus.issuance.error.error;
+
+/**
+ * Selects the phase the issuance error originates from, when present.
+ * @param state - The root state
+ * @returns `'issuance'` or `'persist'` when an error is set, otherwise undefined
+ */
+export const selectPidIssuanceErrorType = (state: WalletCombinedRootState) => {
+  const { error } = state.wallet.pidIssuanceStatus.issuance;
+  return error.status ? error.type : undefined;
+};
 
 /**
  * Selects the pending credential to issue after the Wallet Pid has been obtained

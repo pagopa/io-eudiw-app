@@ -1,25 +1,28 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
-import { ItwJwtCredentialStatus, WalletCard } from '../types';
-import { wellKnownCredential } from '../utils/credentials';
-import { StoredCredential } from '../utils/itwTypesUtils';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
-import { WalletCombinedRootState } from '.';
 import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
+import { ItwJwtCredentialStatus, WalletCard } from '../types';
+import { wellKnownCredential } from '../utils/credentials';
+import {
+  StoredCredential,
+  StoredCredentialMetadata
+} from '../utils/itwTypesUtils';
+import { WalletCombinedRootState } from '.';
 import { resetLifecycle } from './lifecycle';
 import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 
 /* State type definition for the credentials slice.
- * This is stored as an array to avoid overhead due to map not being serializable,
- * thus needing to be converted to an array with a transformation.
- * pid - The PID credential
- * credentials - A map of all the stored credentials
+ * Only credential metadata is kept here. The encoded SD-JWT/MDOC of each
+ * credential is persisted separately by `CredentialsVault`, so this
+ * slice can keep using redux-persist without bloating secure storage with
+ * the raw credential payloads.
  */
 type CredentialsSlice = {
-  credentials: Array<StoredCredential>;
+  credentials: Array<StoredCredentialMetadata>;
   valuesHidden: boolean;
   pidInfoBannerActive: boolean;
 };
@@ -41,7 +44,7 @@ const credentialsSlice = createSlice({
   reducers: {
     addCredential: (
       state,
-      action: PayloadAction<{ credential: StoredCredential }>
+      action: PayloadAction<{ credential: StoredCredentialMetadata }>
     ) => {
       const { credential } = action.payload;
       const existingIndex = state.credentials.findIndex(
@@ -76,15 +79,10 @@ const credentialsSlice = createSlice({
       // If the credential is the PID, ignore it as it is not removable without resetting the lifecycle
       const { credentialType } = action.payload;
       if (credentialType !== wellKnownCredential.PID) {
-        return {
-          credentials: state.credentials.filter(
-            c => c.credentialType !== credentialType
-          ),
-          valuesHidden: state.valuesHidden,
-          pidInfoBannerActive: state.pidInfoBannerActive
-        };
+        state.credentials = state.credentials.filter(
+          c => c.credentialType !== credentialType
+        );
       }
-      return state;
     },
     itwSetClaimValuesHidden: (state, action: PayloadAction<boolean>) => {
       state.valuesHidden = action.payload;
@@ -104,7 +102,8 @@ const credentialsSlice = createSlice({
 
 /**
  * Redux persist configuration for the credential slice.
- * Currently it uses `io-react-native-secure-storage` as the storage engine which stores it encrypted.
+ * The slice now stores only credential metadata: the encoded SD-JWT/MDOC
+ * payloads live in `CredentialsVault` and never flow through redux-persist.
  */
 const credentialsPersistor: PersistConfig<CredentialsSlice> = {
   key: 'credentials',

@@ -3,10 +3,10 @@ import { t } from 'i18next';
 import { OperationResultScreenContent } from '@io-eudiw-app/commons';
 import { useHeaderSecondLevel } from '@io-eudiw-app/commons';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 
 type Props = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
 };
 
 /**

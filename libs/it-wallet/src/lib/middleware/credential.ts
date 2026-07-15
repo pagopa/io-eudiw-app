@@ -7,6 +7,7 @@ import {
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import { t } from 'i18next';
+import { serializeError } from 'serialize-error';
 import {
   resetCredentialIssuance,
   selectRequestedCredential,
@@ -26,15 +27,21 @@ import {
 } from '../store/credentials';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredential } from '../utils/credentials';
+import { CredentialsVault } from '../utils/itwCredentialVault';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { createWalletFetch } from '../utils/fetch';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
-import { CredentialFormat } from '../utils/itwTypesUtils';
+import {
+  CredentialFormat,
+  StoredCredential,
+  StoredCredentialMetadata
+} from '../utils/itwTypesUtils';
 import {
   getWalletInstanceAttestationThunk,
   getWalletUnitAttestationThunk
 } from './attestation';
 import { getEnv } from '@io-eudiw-app/env';
+import { createAppAsyncThunk } from './thunk';
 import { AppListenerWithAction, AppStartListening } from './types';
 import {
   raceEffect,
@@ -54,7 +61,6 @@ import {
 } from '../store/attestation';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { serializeErrorOrUnknown } from '../utils/errors';
-import { createAppAsyncThunk } from './thunk';
 import { ResolvedCredentialOffer } from '../types';
 
 type DcqlQuery = Parameters<
@@ -62,7 +68,29 @@ type DcqlQuery = Parameters<
 >[0];
 
 /**
- * Thunk which resolves and validates a credential offer received via deep link
+ * Persists a credential bundle: writes the encoded SD-JWT/MDOC to the
+ * vault first, and only on success commits the metadata to the Redux
+ * slice. If the vault write fails, Redux is left untouched and the error
+ * is propagated via `rejectWithValue` so the caller can surface it.
+ */
+export const persistCredential = createAppAsyncThunk<
+  StoredCredentialMetadata,
+  { credential: StoredCredential },
+  { rejectValue: string }
+>(
+  'credentials/persist',
+  async ({ credential }, { dispatch, rejectWithValue }) => {
+    const { credential: encoded, ...metadata } = credential;
+    try {
+      await CredentialsVault.store(metadata.credentialType, encoded);
+    } catch (error) {
+      return rejectWithValue(JSON.stringify(serializeError(error)));
+    }
+    dispatch(addCredential({ credential: metadata }));
+    return metadata;
+  }
+);
+/* Thunk which resolves and validates a credential offer received via deep link
  * or QR code (OID4VCI, see the IT-Wallet credential offer flow). It supports
  * both by-value and by-reference offers and returns the issuer URL and the
  * first advertised credential configuration id, which are then used to drive
@@ -223,8 +251,15 @@ const obtainCredentialListener: AppListenerWithAction<
       );
     }
 
-    if (!pid || !pid.credential || !pid.keyTag) {
+    if (!pid || !pid.keyTag) {
       throw new Error('PID required for EAA issuance but missing.');
+    }
+
+    // Retrieve the encoded PID from the vault for the DCQL evaluation
+    // and the user authorization step.
+    const pidEncoded = await CredentialsVault.get(pid.credentialType);
+    if (!pidEncoded) {
+      throw new Error('PID encoded credential missing in vault.');
     }
 
     const requestObject =
@@ -236,11 +271,10 @@ const obtainCredentialListener: AppListenerWithAction<
       );
 
     // Using only the PID credential
-    const credentialsSdJwt = [
-      ...Object.values([pid])
-        .filter(c => c.format === 'dc+sd-jwt')
-        .map(c => [c.keyTag, c.credential])
-    ] as Array<[string, string]>;
+    const credentialsSdJwt: Array<[string, string]> =
+      pid.format === 'dc+sd-jwt' && pidEncoded
+        ? [[pid.keyTag, pidEncoded]]
+        : [];
 
     const evaluatedDcqlQuery =
       await wallet.RemotePresentation.evaluateDcqlQuery(
@@ -275,7 +309,7 @@ const obtainCredentialListener: AppListenerWithAction<
       await wallet.CredentialIssuance.completeUserAuthorizationWithFormPostJwtMode(
         requestObject,
         issuerConf,
-        [pid.keyTag, pid.credential],
+        [pid.keyTag, pidEncoded],
         { wiaCryptoContext, appFetch }
       );
 
@@ -374,7 +408,15 @@ const addCredentialWithAuthListener: AppListenerWithAction<
     isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
   );
   if (setIdentificationIdentified.match(resAction[0])) {
-    listenerApi.dispatch(addCredential(action.payload));
+    const persistResult = await listenerApi.dispatch(
+      persistCredential(action.payload)
+    );
+    if (persistCredential.rejected.match(persistResult)) {
+      listenerApi.dispatch(
+        setCredentialIssuancePostAuthError({ error: persistResult.payload })
+      );
+      return;
+    }
     listenerApi.dispatch(resetCredentialIssuance());
     navigator.navigateWithReset('MAIN_TAB_NAV');
     IOToast.success(t('buttons.done', { ns: 'common' }));

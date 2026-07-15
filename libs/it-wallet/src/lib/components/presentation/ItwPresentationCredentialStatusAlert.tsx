@@ -13,7 +13,7 @@ import { getCredentialExpireDays } from '../../utils/itwClaimsUtils';
 import {
   ItwCredentialStatus,
   ItwJwtCredentialStatus,
-  StoredCredential
+  StoredCredentialMetadata
 } from '../../utils/itwTypesUtils';
 import { ClaimsLocales, getClaimsFullLocale } from '../../utils/locale';
 import { ItwPidLifecycleAlert } from '../ItwPidLifecycleAlert';
@@ -26,14 +26,14 @@ import {
 import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
 
 type Props = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
   suppressStatusAlert: boolean;
 };
 
 const LICENSE_RENEWAL_URL = 'https://www.mit.gov.it/rinnovo-patente';
 
 type CredentialStatusAlertProps = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
   status?: ItwCredentialStatus;
 };
 
@@ -260,7 +260,7 @@ const DocumentExpiringAlert = ({ credential }: CredentialStatusAlertProps) => {
 
 type IssuerDynamicErrorAlertProps = {
   message: Record<string, { title: string; description: string }>;
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
 };
 
 const IssuerDynamicErrorAlert = ({
