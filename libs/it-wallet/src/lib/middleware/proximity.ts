@@ -40,6 +40,7 @@ import {
   selectProximityConsentExists
 } from '../store/proximityConsents';
 import { CredentialFormat } from '../utils/itwTypesUtils';
+import { CredentialsVault } from '../utils/itwCredentialVault';
 import { requestBlePermissions } from '../utils/permissions';
 import {
   generateAcceptedFields,
@@ -306,11 +307,19 @@ const transmit = async (
     return;
   }
 
-  const documents: Array<ISO18013_5.RequestedDocument> = mdocCredentials.map(
-    credential => ({
-      issuerSignedContent: credential.credential,
-      alias: credential.keyTag,
-      docType: credential.credentialType
+  const documents: Array<ISO18013_5.RequestedDocument> = await Promise.all(
+    mdocCredentials.map(async credential => {
+      const encoded = await CredentialsVault.get(credential.credentialType);
+      if (!encoded) {
+        throw new Error(
+          `Encoded credential missing in vault for ${credential.credentialType}`
+        );
+      }
+      return {
+        issuerSignedContent: encoded,
+        alias: credential.keyTag,
+        docType: credential.credentialType
+      };
     })
   );
 

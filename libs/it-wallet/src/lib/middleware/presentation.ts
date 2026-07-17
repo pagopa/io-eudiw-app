@@ -17,6 +17,7 @@ import {
   wellKnownCredentialConfigurationIDs
 } from '../utils/credentials';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
+import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { AppListenerWithAction, AppStartListening } from './types';
 import { takeLatestEffect } from '@io-eudiw-app/commons';
 import {
@@ -26,8 +27,8 @@ import {
 } from '@io-eudiw-app/identification';
 import { IoWallet, RemotePresentation } from '@pagopa/io-react-native-wallet';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
+import { CredentialsVault } from '../utils/itwCredentialVault';
 import { getWalletInstanceAttestationThunk } from './attestation';
-import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { serializeErrorOrUnknown } from '../utils/errors';
 import { lifecycleIsOperationalSelector } from '../store/lifecycle';
 
@@ -93,13 +94,19 @@ const presentationListener: AppListenerWithAction<
     const credentials = selectCredentials(listenerApi.getState());
 
     /**
-     * Array of tuples containg the credential keytag and its raw value
+     * Array of tuples containing the credential keytag and its raw value.
+     * The encoded SD-JWT is retrieved from the secure vault on demand.
      */
-    const credentialsSdJwt = [
-      ...Object.values(credentials)
-        .filter(c => c.format === 'dc+sd-jwt')
-        .map(c => [c.keyTag, c.credential])
-    ] as Array<[string, string]>;
+    const credentialsSdJwt: Array<[string, string]> = (
+      await Promise.all(
+        credentials
+          .filter(c => c.format === 'dc+sd-jwt')
+          .map(async c => {
+            const encoded = await CredentialsVault.get(c.credentialType);
+            return encoded ? ([c.keyTag, encoded] as [string, string]) : null;
+          })
+      )
+    ).filter((x): x is [string, string] => x !== null);
 
     if (!requestObject.dcql_query) {
       throw new Error('Only DCQL presentations are supported at the moment');

@@ -12,7 +12,7 @@ import {
 } from '../store/credentials';
 import {
   ItwJwtCredentialStatus,
-  StoredCredential
+  StoredCredentialMetadata
 } from '../utils/itwTypesUtils';
 import { useAppSelector } from '../store';
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
@@ -54,7 +54,7 @@ export const ItwPidLifecycleAlert = ({
     pidCredential,
     pidStatus
   }: {
-    pidCredential: StoredCredential;
+    pidCredential: StoredCredentialMetadata;
     pidStatus: ItwJwtCredentialStatus;
   }) => {
     const nameSpace = 'itw';

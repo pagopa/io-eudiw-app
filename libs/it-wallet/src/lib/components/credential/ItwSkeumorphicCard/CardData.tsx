@@ -11,7 +11,7 @@ import {
   wellKnownCredentialNamespaces
 } from '../../../utils/credentials';
 import { format } from '../../../utils/dates';
-import { StoredCredential } from '../../../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../../../utils/itwTypesUtils';
 import { QrCodeImage } from '../../QrCodeImage';
 import { CardClaim, CardClaimContainer, CardClaimRenderer } from './CardClaim';
 import { ClaimLabel } from './ClaimLabel';
@@ -280,7 +280,7 @@ const dataComponentMap: Record<
 };
 
 type CardDataProps = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
   side: CardSide;
   valuesHidden: boolean;
   claims: ParsedClaimsRecord;

@@ -19,8 +19,11 @@ import { lifecycleIsValidSelector } from '../../store/lifecycle';
 import { parseClaimsToRecord } from '../../utils/claims';
 import { wellKnownCredential } from '../../utils/credentials';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
+import {
+  CredentialFormat,
+  StoredCredentialMetadata
+} from '../../utils/itwTypesUtils';
 import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
-import { CredentialFormat, StoredCredential } from '../../utils/itwTypesUtils';
 import { useAppSelector } from '../../store';
 import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
 import { useProximityEngagement } from '../../hooks/useProximityEngagement';
@@ -110,7 +113,7 @@ export const ItwPresentationCredentialDetailScreen = ({ route }: Props) => {
 };
 
 type ItwPresentationCredentialDetailProps = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
 };
 
 /**

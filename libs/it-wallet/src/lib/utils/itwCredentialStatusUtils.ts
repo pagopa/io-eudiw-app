@@ -7,7 +7,7 @@ import {
   isDefined,
   ItwCredentialStatus,
   ParsedDcql,
-  StoredCredential
+  StoredCredentialMetadata
 } from './itwTypesUtils';
 
 const DEFAULT_EXPIRING_DAYS = 30;
@@ -30,7 +30,7 @@ type GetCredentialStatusOptions = {
  * @returns ItwCredentialStatus
  */
 export const getCredentialStatus = (
-  storedCredential: StoredCredential,
+  storedCredential: StoredCredentialMetadata,
   options: GetCredentialStatusOptions = {}
 ): ItwCredentialStatus => {
   // NOTE: checks on status assertion have been removed because not yet supported
@@ -89,7 +89,7 @@ const credentialTypesByVct: { [vct: string]: CredentialType } = {
  */
 export const getInvalidCredentials = (
   presentationDetails: ParsedDcql,
-  credentialsByType: Array<StoredCredential>
+  credentialsByType: Array<StoredCredentialMetadata>
 ) =>
   presentationDetails
     .filter(isPresentationDetailSdJwt) // TODO: [SIW-3998] Support MDOC remote presentation

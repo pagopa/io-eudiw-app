@@ -48,11 +48,12 @@ export type Either<T, U> = Only<T, U> | Only<U, T>;
 export type ParsedCredential = CredentialIssuance.ParsedCredential;
 
 /**
- * Type for a credential which is stored in the wallet.
+ * Metadata for a credential stored in the wallet. This is the portion that
+ * lives in the Redux slice — it omits the encoded SD-JWT/MDOC, which is
+ * persisted separately by `CredentialsVault`.
  */
-export type StoredCredential = {
+export type StoredCredentialMetadata = {
   parsedCredential: ParsedCredential;
-  credential: string;
   keyTag: string;
   credentialType: string;
   format: string;
@@ -60,6 +61,15 @@ export type StoredCredential = {
   issuedAt?: string;
   issuerConf: IssuerConfiguration;
   spec_version?: string;
+};
+
+/**
+ * Full credential bundle: metadata together with the encoded credential.
+ * Used at issuance time and whenever a consumer needs the encoded JWT/MDOC
+ * after retrieving it from the vault.
+ */
+export type StoredCredential = StoredCredentialMetadata & {
+  credential: string;
 };
 
 export type EnrichedPresentationDetails = Array<

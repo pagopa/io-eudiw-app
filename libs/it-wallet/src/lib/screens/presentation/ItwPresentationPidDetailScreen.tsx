@@ -7,7 +7,7 @@ import {
   itwCredentialsPidSelector,
   selectPidInfoBannerActive
 } from '../../store/credentials';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 import { useAppSelector } from '../../store';
 import { useTranslation } from 'react-i18next';
 import { ItwPresentationDetailsHeader } from '../../components/presentation/ItwPresentationDetailsHeader';
@@ -20,7 +20,7 @@ export const ItwPresentationPidDetailScreen = () => {
   const pidInfoBannerActive = useAppSelector(selectPidInfoBannerActive);
   const { t } = useTranslation(['common']);
 
-  const getContent = (credential: StoredCredential) => (
+  const getContent = (credential: StoredCredentialMetadata) => (
     <ItwPresentationDetailsScreenBase credential={credential} headerTransparent>
       <ItwPresentationDetailsHeader
         credential={credential}

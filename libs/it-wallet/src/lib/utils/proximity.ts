@@ -2,7 +2,7 @@ import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { ProximityDetails } from '../screens/proximity/ItwProximityPresentationDetails';
 import { parseClaims } from './claims';
 import { WellKnownClaim } from './itwClaimsUtils';
-import { StoredCredential } from './itwTypesUtils';
+import { StoredCredentialMetadata } from './itwTypesUtils';
 import { assert } from '@io-eudiw-app/commons';
 
 /**
@@ -33,7 +33,7 @@ export const getVerifierIdentity = (
 
 export const getProximityDetails = (
   request: ISO18013_5.VerifierRequest['request'],
-  credentials: Array<StoredCredential>
+  credentials: Array<StoredCredentialMetadata>
 ): ProximityDetails | undefined => {
   try {
     // Exclude the WIA document type from the request

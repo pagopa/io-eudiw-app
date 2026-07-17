@@ -6,7 +6,7 @@ import {
   getCredentialNameFromType,
   useTagPropsByStatus
 } from '../../utils/itwCredentialUtils';
-import { StoredCredential } from '../../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 import { useAppSelector } from '../../store';
 import { FocusAwareStatusBar } from '@io-eudiw-app/commons';
 import { useCredentialCardConfig } from '../credential/ItwCredentialCard/config';
@@ -20,7 +20,7 @@ import ItwAvatar from '../../../assets/img/brand/itw_avatar.svg';
 import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 
 type ItwPresentationDetailsHeaderProps = {
-  credential: StoredCredential;
+  credential: StoredCredentialMetadata;
   capabilities: ItwCredentialCapabilities;
 };
 
