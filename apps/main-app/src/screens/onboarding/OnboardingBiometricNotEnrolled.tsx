@@ -1,10 +1,12 @@
 import { ListItemInfo } from '@pagopa/io-app-design-system';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IOScrollViewWithListItems } from '../../components/IOScrollViewWithListItems';
 import { useAppDispatch } from '../../store';
 import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/preferences';
-import { useHeaderSecondLevel } from '@io-eudiw-app/commons';
+import {
+  IOScrollViewWithListItems,
+  useHeaderSecondLevel
+} from '@io-eudiw-app/commons';
 
 /**
  * Screen to be shown if the user has not enrolled in biometric authentication but the device supports it.

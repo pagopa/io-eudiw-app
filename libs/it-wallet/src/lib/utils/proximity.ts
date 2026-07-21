@@ -14,45 +14,67 @@ import { assert } from '@io-eudiw-app/commons';
  */
 const WIA_DOC_TYPE = 'org.iso.18013.5.1.IT.WalletAttestation';
 
+/**
+ * Extracts the relying party identifier (its certificate common name) from the
+ * verifier request certificate data, as reported by the ISO 18013-5 SDK.
+ * Falls back to 'Unknown' when the verifier is not authenticated and thus does
+ * not provide certificate data.
+ */
+export const getVerifierIdentity = (
+  certificateData: ISO18013_5.VerifierRequest['request'][string]['certificateData']
+): string => {
+  // `commonName` widens through the request record catchall type, so narrow it
+  // explicitly instead of relying on the indexed type being a plain string.
+  const commonName = certificateData?.commonName;
+  return typeof commonName === 'string' && commonName.length > 0
+    ? commonName
+    : 'Unknown';
+};
+
 export const getProximityDetails = (
   request: ISO18013_5.VerifierRequest['request'],
   credentials: Array<StoredCredentialMetadata>
-): ProximityDetails => {
-  // Exclude the WIA document type from the request
-  const { [WIA_DOC_TYPE]: _, ...rest } = request;
+): ProximityDetails | undefined => {
+  try {
+    // Exclude the WIA document type from the request
+    const { [WIA_DOC_TYPE]: _, ...rest } = request;
 
-  return Object.entries(rest).map(
-    ([docType, { isAuthenticated, ...namespaces }]) => {
-      // Support multiple credentials type
-      const credential = credentials.filter(
-        c => c.credentialType === docType
-      )[0];
+    return Object.entries(rest).map(
+      ([docType, { isAuthenticated, certificateData, ...namespaces }]) => {
+        // Support multiple credentials type
+        const credential = credentials.filter(
+          c => c.credentialType === docType
+        )[0];
 
-      assert(credential, `Credential not found for docType: ${docType}`);
-      // Extract required fields from the verifier request.
-      // Each field is formatted as "namespace:field" to match the structure
-      // of parsedCredential, which uses colon-separated keys.
-      const requiredFields = Object.entries(namespaces).flatMap(
-        ([namespace, fields]) =>
-          Object.keys(fields).map(field => `${namespace}:${field}`)
-      );
-      const required = new Set(requiredFields);
+        assert(credential, `Credential not found for docType: ${docType}`);
+        // Extract required fields from the verifier request.
+        // Each field is formatted as "namespace:field" to match the structure
+        // of parsedCredential, which uses colon-separated keys.
+        const requiredFields = Object.entries(namespaces).flatMap(
+          ([namespace, fields]) =>
+            Object.keys(fields).map(field => `${namespace}:${field}`)
+        );
+        const required = new Set(requiredFields);
 
-      const parsedCredential = Object.fromEntries(
-        Object.keys(credential.parsedCredential)
-          .filter(k => required.has(k))
-          .map(k => [k, credential.parsedCredential[k]])
-      );
+        const parsedCredential = Object.fromEntries(
+          Object.keys(credential.parsedCredential)
+            .filter(k => required.has(k))
+            .map(k => [k, credential.parsedCredential[k]])
+        );
 
-      return {
-        credentialType: credential.credentialType,
-        claimsToDisplay: parseClaims(parsedCredential, {
-          exclude: [WellKnownClaim.unique_id]
-        }),
-        isAuthenticated
-      };
-    }
-  );
+        return {
+          rpId: getVerifierIdentity(certificateData),
+          credentialType: credential.credentialType,
+          claimsToDisplay: parseClaims(parsedCredential, {
+            exclude: [WellKnownClaim.unique_id]
+          }),
+          isAuthenticated
+        };
+      }
+    );
+  } catch {
+    return undefined;
+  }
 };
 
 interface NestedBooleanMap {
@@ -74,7 +96,7 @@ export const generateAcceptedFields = (
   request: ISO18013_5.VerifierRequest['request']
 ): ISO18013_5.AcceptedFields =>
   Object.entries(request).reduce(
-    (acc, [docType, { isAuthenticated, ...namespaces }]) => ({
+    (acc, [docType, { isAuthenticated, certificateData, ...namespaces }]) => ({
       ...acc,
       [docType]: acceptAllFields(namespaces)
     }),

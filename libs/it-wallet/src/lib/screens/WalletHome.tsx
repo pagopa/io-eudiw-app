@@ -9,6 +9,9 @@ import MAIN_ROUTES from '../navigation/main/routes';
 import WALLET_ROUTES from '../navigation/wallet/routes';
 import { WalletCardsContainer } from '../components/WalletCardsContainer';
 import { IOScrollView } from '@io-eudiw-app/commons';
+import { useProximityEngagement } from '../hooks/useProximityEngagement';
+import { useAppSelector } from '../store';
+import { hasPresentableCredentialsSelector } from '../store/credentials';
 
 /**
  * Wallet home to be rendered as the first page in the tab navigator.
@@ -18,6 +21,10 @@ import { IOScrollView } from '@io-eudiw-app/commons';
 const WalletHome = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const { startQrVerification } = useProximityEngagement();
+  const hasPresentableCredentials = useAppSelector(
+    hasPresentableCredentialsSelector
+  );
 
   const actions: HeaderFirstLevel['actions'] = useMemo(
     () => [
@@ -44,7 +51,23 @@ const WalletHome = () => {
         title={t('tabNavigator.wallet', { ns: 'wallet' })}
         actions={actions}
       />
-      <IOScrollView centerContent={true} excludeSafeAreaMargins={true}>
+      <IOScrollView
+        centerContent={true}
+        excludeSafeAreaMargins={true}
+        actions={
+          hasPresentableCredentials
+            ? {
+                type: 'SingleButton',
+                primary: {
+                  label: t('proximity.home.cta', { ns: 'wallet' }),
+                  icon: 'productITWallet',
+                  iconPosition: 'end',
+                  onPress: () => void startQrVerification()
+                }
+              }
+            : undefined
+        }
+      >
         <WalletCardsContainer />
       </IOScrollView>
     </>

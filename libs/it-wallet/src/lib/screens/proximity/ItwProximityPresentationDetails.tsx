@@ -62,6 +62,7 @@ const mapClaims = (
  * Type representing the proximity details with localized claims
  */
 export type ProximityDetails = Array<{
+  rpId: string;
   credentialType: string;
   claimsToDisplay: Array<ClaimDisplayFormat>;
 }>;
