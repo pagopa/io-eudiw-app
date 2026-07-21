@@ -16,8 +16,6 @@ import {
   resetProximity,
   selectProximityFailure,
   selectProximityQrCode,
-  setProximityEngagementMode,
-  setProximityStatusStarted,
   setProximityStatusStopped
 } from '../../store/proximity';
 import { ITW_BRANDED_BOX_PADDING } from '../ItwBrandedBox';
@@ -51,12 +49,10 @@ export const ItwProximityQrCodeImage = () => {
   const proximityFailure = useAppSelector(selectProximityFailure);
   const dispatch = useAppDispatch();
 
-  const handleRetry = useCallback(async () => {
+  const handleRetry = useCallback(() => {
     dispatch(setProximityStatusStopped());
     dispatch(resetProximity());
-    dispatch(setProximityEngagementMode('qrcode'));
-    dispatch(setProximityStatusStarted());
-    await startQrVerification();
+    void startQrVerification();
   }, [dispatch, startQrVerification]);
 
   if (proximityFailure) {

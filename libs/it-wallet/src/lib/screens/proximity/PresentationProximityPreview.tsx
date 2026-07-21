@@ -97,7 +97,7 @@ const PresentationProximityPreview = () => {
           }
         });
       } else if (
-        proximityStatus === ProximityStatus.PRXOMIMITY_STATUS_ERROR_AUTHORIZED
+        proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR_AUTHORIZED
       ) {
         navigation.navigate('MAIN_WALLET_NAV', {
           screen: 'PROXIMITY_FAILURE',
@@ -155,15 +155,15 @@ const PresentationProximityPreview = () => {
   });
 
   /**
-   * Listener for navigation transition end to detect if the user has navigated
-   * to the barcode screen and we can request the camera permission.
+   * Listener for navigation transition end to detect that navigation
+   * to the screen has finished and so the proximity flow can go on.
    */
   useEffect(() => {
     const unsubscribe = navigation.addListener('transitionEnd', () => {
       dispatch(setProximityStatusPresentationDetails());
     });
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, dispatch]);
 
   if (!proximityDetails) {
     return (

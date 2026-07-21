@@ -99,10 +99,8 @@ const startProximityEngagement = async (appState: WalletCombinedRootState) => {
   });
 };
 
-const removeProximityListeners = async (
-  listeners: Array<EmitterSubscription>
-) => {
-  return () => listeners.forEach(listener => listener.remove());
+const removeProximityListeners = (listeners: Array<EmitterSubscription>) => {
+  listeners.forEach(listener => listener.remove());
 };
 
 const addLifecycleListeners = (listenerApi: AppListener) => {
@@ -259,7 +257,7 @@ const proximityListener: AppListenerWithAction<
     await closeFlow(listenerApi); // We can ignore this error in this particular case as we don't even know if the flow started successfully.
   } finally {
     removeLifecycleListeners(retHandle);
-    await removeProximityListeners(listeners);
+    removeProximityListeners(listeners);
   }
 };
 

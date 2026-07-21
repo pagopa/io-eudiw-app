@@ -24,7 +24,7 @@ export enum ProximityStatus {
   PROXIMITY_STATUS_AUTHORIZATION_SEND = 'authorization-send',
   PROXIMITY_STATUS_AUTHORIZATION_REJECTED = 'authorization-rejected',
   PROXIMITY_STATUS_AUTHORIZATION_COMPLETE = 'authorization-complete',
-  PRXOMIMITY_STATUS_ERROR_AUTHORIZED = 'error-authorized',
+  PROXIMITY_STATUS_ERROR_AUTHORIZED = 'error-authorized',
   PROXIMITY_STATUS_ERROR = 'error'
 }
 
@@ -34,7 +34,7 @@ export enum ProximityStatus {
 const PROXIMITY_FAILURE_STATUSES = [
   ProximityStatus.PROXIMITY_STATUS_ERROR,
   ProximityStatus.PROXIMITY_STATUS_ABORTED,
-  ProximityStatus.PRXOMIMITY_STATUS_ERROR_AUTHORIZED
+  ProximityStatus.PROXIMITY_STATUS_ERROR_AUTHORIZED
 ];
 
 /**
@@ -124,8 +124,8 @@ const proximitySlice = createSlice({
       state.status =
         state.status ===
           ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE ||
-        state.status === ProximityStatus.PRXOMIMITY_STATUS_ERROR_AUTHORIZED
-          ? ProximityStatus.PRXOMIMITY_STATUS_ERROR_AUTHORIZED
+        state.status === ProximityStatus.PROXIMITY_STATUS_ERROR_AUTHORIZED
+          ? ProximityStatus.PROXIMITY_STATUS_ERROR_AUTHORIZED
           : ProximityStatus.PROXIMITY_STATUS_ERROR;
       if (action) {
         state.errorDetails = action.payload;

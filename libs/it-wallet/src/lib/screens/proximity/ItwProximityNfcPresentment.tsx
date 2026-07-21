@@ -118,7 +118,7 @@ const ItwProximityNfcPresentment = () => {
     ) {
       setAuthorizationSent(true);
     }
-  }, [proximityStatus, navigation, engagementMode]);
+  }, [proximityStatus, navigation, engagementMode, retrievalMethod]);
 
   const title = useMemo(() => {
     if (isSuccess) {
