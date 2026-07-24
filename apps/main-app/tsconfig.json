@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "files": [],
-  "include": [".expo/types/**/*.ts", "expo-env.d.ts"],
+  "include": [],
   "references": [
     {
       "path": "../../libs/navigation"

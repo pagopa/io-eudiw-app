@@ -5,7 +5,6 @@
     "version": "3.12.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "it.pagopa.app.io.poc.eudiw",
@@ -44,10 +43,7 @@
         "android.permission.BLUETOOTH_ADMIN",
         "android.permission.ACCESS_FINE_LOCATION"
       ],
-      "blockedPermissions": [
-        "android.permission.READ_MEDIA_IMAGES"
-      ],
-      "edgeToEdgeEnabled": true,
+      "blockedPermissions": ["android.permission.READ_MEDIA_IMAGES"],
       "predictiveBackGestureEnabled": false,
       "intentFilters": [
         {
@@ -76,10 +72,7 @@
               "scheme": "iowallet"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
       "adaptiveIcon": {
@@ -143,9 +136,7 @@
       [
         "react-native-permissions",
         {
-          "iosPermissions": [
-            "Bluetooth"
-          ]
+          "iosPermissions": ["Bluetooth"]
         }
       ],
       [
@@ -180,11 +171,12 @@
           "experimentalLauncherActivity": true
         }
       ],
+      "expo-status-bar",
       "./scripts/android-fix-bouncy-castle-dependency.js",
+      "./scripts/android-fix-pagopa-codegen.js",
       "./scripts/android-signing.js"
     ],
     "experiments": {
-      "typedRoutes": true,
       "reactCompiler": true
     }
   }
