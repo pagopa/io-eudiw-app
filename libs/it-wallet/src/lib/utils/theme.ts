@@ -1,4 +1,5 @@
 import { useIOThemeContext } from '@pagopa/io-app-design-system';
+import { ColorSchemeName } from 'react-native';
 
 export const ITW_BRAND_GRADIENT = [
   'rgba(220, 227, 252, 1)',
@@ -61,10 +62,14 @@ export const ItWalletThemes = {
   dark: itWalletDarkTheme
 };
 
+export const getItWalletColorScheme = (
+  colorScheme: ColorSchemeName | null | undefined
+) => (colorScheme === 'dark' ? 'dark' : 'light');
+
 /**
  * Returns IT-Wallet specific theme colors based on the current app theme (light/dark).
  */
 export const useItWalletTheme = () => {
   const { themeType } = useIOThemeContext();
-  return ItWalletThemes[themeType ?? 'light'];
+  return ItWalletThemes[getItWalletColorScheme(themeType)];
 };

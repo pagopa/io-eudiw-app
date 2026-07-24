@@ -14,6 +14,7 @@
   "dependencies": {
     "@io-eudiw-app/commons": "workspace:*",
     "@io-eudiw-app/preferences": "workspace:*",
+    "react-native-safe-area-context": "catalog:",
     "react-redux": "catalog:"
   },
   "peerDependencies": {

@@ -12,9 +12,10 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@react-navigation/native": "7.1.8",
+    "@react-navigation/native": "catalog:",
     "@reduxjs/toolkit": "2.11.1",
-    "expo-crypto": "catalog:"
+    "expo-crypto": "catalog:",
+    "react-native-safe-area-context": "catalog:"
   },
   "peerDependencies": {
     "react": "catalog:",

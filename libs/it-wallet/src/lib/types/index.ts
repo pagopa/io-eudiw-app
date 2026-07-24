@@ -1,5 +1,5 @@
 import { ioWalletApiByVersion } from '@pagopa/io-react-native-wallet';
-import { ItwCredentialCard } from '../components/credential/ItwCredentialCard';
+import { ItwCredentialCardProps } from '../components/credential/ItwCredentialCard';
 import { Prettify } from '../utils/itwTypesUtils';
 
 // Digital credential status
@@ -32,7 +32,7 @@ type WalletCardBase = {
 export type WalletCardItw = Prettify<
   {
     type: 'itw';
-  } & ItwCredentialCard
+  } & ItwCredentialCardProps
 >;
 
 // Base WalletCard type, which includes all card types

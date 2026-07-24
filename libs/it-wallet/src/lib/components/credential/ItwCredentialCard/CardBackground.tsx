@@ -18,13 +18,10 @@ export const CardBackground = memo(({ background, color, overlay }: Props) => {
 
   return (
     <View
-      style={[
-        StyleSheet.absoluteFillObject,
-        { backgroundColor: IOColors.white }
-      ]}
+      style={[StyleSheet.absoluteFill, { backgroundColor: IOColors.white }]}
       onLayout={onLayout}
     >
-      <Canvas style={StyleSheet.absoluteFillObject} pointerEvents="none">
+      <Canvas style={StyleSheet.absoluteFill} pointerEvents="none">
         <SkiaGradientBackground bg={background} {...size} />
         {overlay?.showCornerOverlay && (
           <SkiaCardCornerOverlay color={color} {...size} />

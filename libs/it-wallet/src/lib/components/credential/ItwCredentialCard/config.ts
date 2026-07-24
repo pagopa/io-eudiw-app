@@ -6,7 +6,7 @@ import { ColorSchemeName } from 'react-native';
 import { XOR } from '../../../types/utils';
 import { fnv1a } from '../../../utils/hash';
 import { CredentialType } from '../../../utils/itwMocksUtils';
-import { ItWalletThemes } from '../../../utils/theme';
+import { getItWalletColorScheme, ItWalletThemes } from '../../../utils/theme';
 import { wellKnownCredentialToCredentialType } from '../../../utils/credentials';
 
 /**
@@ -318,11 +318,9 @@ const generateCredentialCardConfig = (
   credentialColor?: string,
   credentialDomain?: string
 ): CredentialCardConfig => {
-  const theme =
-    //Current RN version does not support "unspecified"
-    //ItWalletThemes[colorScheme !== "unspecified" ? colorScheme : "light"];
-    ItWalletThemes[colorScheme ?? 'light'];
-  const isLight = colorScheme !== 'dark';
+  const normalizedColorScheme = getItWalletColorScheme(colorScheme);
+  const theme = ItWalletThemes[normalizedColorScheme];
+  const isLight = normalizedColorScheme === 'light';
 
   const color =
     credentialColor || generateBaseColorFromCredentialType(credentialType);
@@ -387,11 +385,7 @@ export const getCredentialCardConfig = (
     if (isThemeAwareCredentialCardConfig(staticConfig)) {
       // Selects the appropriate credential card configuration based on the
       // current color scheme.
-      return staticConfig[
-        //Current RN version does not support "unspecified"
-        //colorScheme && colorScheme !== "unspecified" ? colorScheme : "light"
-        colorScheme ?? 'light'
-      ];
+      return staticConfig[getItWalletColorScheme(colorScheme)];
     }
     return staticConfig;
   }

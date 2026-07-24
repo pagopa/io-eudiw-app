@@ -4,27 +4,6 @@
   "include": [],
   "references": [
     {
-      "path": "../../libs/navigation"
-    },
-    {
-      "path": "../../libs/env"
-    },
-    {
-      "path": "../../libs/identification"
-    },
-    {
-      "path": "../../libs/debug-info"
-    },
-    {
-      "path": "../../libs/preferences"
-    },
-    {
-      "path": "../../libs/commons"
-    },
-    {
-      "path": "../../libs/it-wallet"
-    },
-    {
       "path": "./tsconfig.app.json"
     },
     {

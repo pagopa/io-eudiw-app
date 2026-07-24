@@ -18,8 +18,9 @@
     "@io-eudiw-app/env": "workspace:*",
     "@io-eudiw-app/identification": "workspace:*",
     "@io-eudiw-app/navigation": "workspace:*",
-    "@react-navigation/stack": "7.6.11",
-    "@react-navigation/bottom-tabs": "7.4.0",
+    "@react-navigation/bottom-tabs": "catalog:",
+    "@react-navigation/native": "catalog:",
+    "@react-navigation/stack": "catalog:",
     "@pagopa/io-react-native-iso18013": "0.8.3",
     "@pagopa/io-react-native-wallet": "3.4.4",
     "serialize-error": "catalog:",
@@ -28,6 +29,7 @@
     "@pagopa/io-react-native-jwt": "2.1.0",
     "@types/color": "^4.2.0",
     "react-native-barcode-creator": "^0.2.0",
+    "react-native-safe-area-context": "catalog:",
     "react-native-svg": "catalog:"
   },
   "peerDependencies": {

@@ -23,7 +23,7 @@ import { useCredentialCardConfig } from './config';
 import { ItWalletIdLogo } from '../../ItWalletIdLogo';
 import { wellKnownCredential } from '../../../utils/credentials';
 
-export type ItwCredentialCard = {
+export type ItwCredentialCardProps = {
   /**
    * Type of the credential, which is used to determine the
    * visual representation and styling of the card.
@@ -37,7 +37,7 @@ export type ItwCredentialCard = {
 };
 
 export const ItwCredentialCard = memo(
-  ({ credentialType, credentialStatus = 'valid' }: ItwCredentialCard) => {
+  ({ credentialType, credentialStatus = 'valid' }: ItwCredentialCardProps) => {
     const typefacePreference = useAppSelector(selectFontPreference);
     const { themeType, theme } = useIOThemeContext();
     const status = useItwDisplayCredentialStatus(credentialStatus);
@@ -111,7 +111,7 @@ export const ItwCredentialCard = memo(
           {!isValid && (
             <View
               style={[
-                StyleSheet.absoluteFillObject,
+                StyleSheet.absoluteFill,
                 styles.statusOverlay,
                 {
                   backgroundColor:

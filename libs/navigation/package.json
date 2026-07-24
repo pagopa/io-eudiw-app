@@ -11,6 +11,9 @@
     },
     "./package.json": "./package.json"
   },
+  "dependencies": {
+    "@react-navigation/native": "catalog:"
+  },
   "peerDependencies": {
     "react": "catalog:",
     "react-native": "catalog:"

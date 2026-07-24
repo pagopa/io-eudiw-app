@@ -9,6 +9,9 @@ packages:
   - 'libs/navigation'
 catalog:
   '@expo/cli': '56.1.21'
+  '@react-navigation/bottom-tabs': '7.18.13'
+  '@react-navigation/native': '7.3.13'
+  '@react-navigation/stack': '7.10.16'
   '@testing-library/react-native': '13.3.3'
   '@types/react': '^19.2.0'
   babel-preset-expo: '~56.0.18'
@@ -17,6 +20,7 @@ catalog:
   react: '19.2.3'
   react-dom: '19.2.3'
   react-native: '0.85.3'
+  react-native-safe-area-context: '~5.7.0'
   react-native-svg: '15.15.4'
   react-redux: '9.2.0'
   react-test-renderer: '19.2.3'
