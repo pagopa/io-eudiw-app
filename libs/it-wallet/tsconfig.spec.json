@@ -3,7 +3,9 @@
   "compilerOptions": {
     "outDir": "./out-tsc/jest",
     "jsx": "react-jsx",
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "ignoreDeprecations": "6.0",
+    "rootDir": "."
   },
   "files": ["../it-wallet/src/test-setup.ts"],
   "include": [

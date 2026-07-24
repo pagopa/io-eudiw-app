@@ -4,7 +4,9 @@
     "outDir": "./out-tsc/jest",
     "jsx": "react-jsx",
     "types": ["jest", "node"],
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "ignoreDeprecations": "6.0",
+    "rootDir": "."
   },
   "files": ["src/test-setup.ts"],
   "include": [
