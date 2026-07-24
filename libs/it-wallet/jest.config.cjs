@@ -1,5 +1,3 @@
-/// <reference types="jest" />
-/// <reference types="node" />
 module.exports = {
   displayName: '@io-eudiw-app/it-wallet',
   preset: 'jest-expo',

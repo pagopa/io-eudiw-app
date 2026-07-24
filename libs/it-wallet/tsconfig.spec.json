@@ -10,7 +10,7 @@
   "files": ["../it-wallet/src/test-setup.ts"],
   "include": [
     "jest.config.ts",
-    "../it-wallet/jest.config.cts",
+    "../it-wallet/jest.config.cjs",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.test.tsx",
