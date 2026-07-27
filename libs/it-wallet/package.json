@@ -21,7 +21,7 @@
     "@react-navigation/bottom-tabs": "catalog:",
     "@react-navigation/native": "catalog:",
     "@react-navigation/stack": "catalog:",
-    "@pagopa/io-react-native-iso18013": "0.8.3",
+    "@pagopa/io-react-native-iso18013": "0.8.4",
     "@pagopa/io-react-native-wallet": "3.4.4",
     "serialize-error": "catalog:",
     "zod": "catalog:",
@@ -30,7 +30,10 @@
     "@types/color": "^4.2.0",
     "react-native-barcode-creator": "^0.2.0",
     "react-native-safe-area-context": "catalog:",
-    "react-native-svg": "catalog:"
+    "react-native-svg": "catalog:",
+    "react-native-bluetooth-state-manager": "^1.3.5",
+    "react-native-qrcode-skia": "^0.4.0",
+    "@pagopa/io-react-native-cie": "1.3.6"
   },
   "peerDependencies": {
     "react": "catalog:",

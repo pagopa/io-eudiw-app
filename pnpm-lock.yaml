@@ -546,18 +546,21 @@ importers:
       '@io-eudiw-app/preferences':
         specifier: workspace:*
         version: link:../preferences
+      '@pagopa/io-react-native-cie':
+        specifier: 1.3.6
+        version: 1.3.6(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)
       '@pagopa/io-react-native-crypto':
         specifier: ^1.2.3
         version: 1.2.4(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)
       '@pagopa/io-react-native-iso18013':
-        specifier: 0.8.3
-        version: 0.8.3(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)
+        specifier: 0.8.4
+        version: 0.8.4(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)
       '@pagopa/io-react-native-jwt':
         specifier: 2.1.0
         version: 2.1.0(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)
       '@pagopa/io-react-native-wallet':
         specifier: 3.4.4
-        version: 3.4.4(patch_hash=1193b0f6e374578fa195b938f4d2cc6bec9aed5ac461cb274a4fbc58a651cbf4)(d91cae155a478c979179bce72def8fae)
+        version: 3.4.4(patch_hash=1193b0f6e374578fa195b938f4d2cc6bec9aed5ac461cb274a4fbc58a651cbf4)(9c82cb881b56883fa389cce202f1083f)
       '@react-navigation/bottom-tabs':
         specifier: 'catalog:'
         version: 7.18.13(@react-navigation/native@7.3.13(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3))(react-native-safe-area-context@5.7.0(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3))(react-native-screens@4.26.2(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)
@@ -579,6 +582,12 @@ importers:
       react-native-barcode-creator:
         specifier: ^0.2.0
         version: 0.2.0(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)
+      react-native-bluetooth-state-manager:
+        specifier: ^1.3.5
+        version: 1.3.5(prop-types@15.8.1)(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))
+      react-native-qrcode-skia:
+        specifier: ^0.4.0
+        version: 0.4.0(5a431461d9aabea0362658dff6c98692)
       react-native-safe-area-context:
         specifier: 'catalog:'
         version: 5.7.0(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)
@@ -2501,6 +2510,12 @@ packages:
       react-native-safe-area-context: '*'
       react-native-svg: '*'
 
+  '@pagopa/io-react-native-cie@1.3.6':
+    resolution: {integrity: sha512-3DNrCT0G5rguskrPtmhahovjmlwJd7E3uEPZmsH+mZStHs63TueNBLyK9L8fbgRLhZaZ1ZZkRp06XH+2x0lnWA==}
+    peerDependencies:
+      react: '>=19.1'
+      react-native: '>=0.81'
+
   '@pagopa/io-react-native-crypto@1.2.4':
     resolution: {integrity: sha512-g0bNLIKVeUwmO3AnReJKqUGLg3rnrtt6rF0b1fYWLtTMX6FwCXc/folxYvujtkRCeuXhCg8WmmV+o/uLiCws2Q==}
     engines: {node: '>=18'}
@@ -2508,8 +2523,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  '@pagopa/io-react-native-iso18013@0.8.3':
-    resolution: {integrity: sha512-sDmOcMtWJRSNfKKPeO4lg3Lzafl9G5/R4oiUaOjPx0oJb2R+OVqiKnUXZPKiH/4m2XUrd+w8KLQ0j6Nvjtlvmw==}
+  '@pagopa/io-react-native-iso18013@0.8.4':
+    resolution: {integrity: sha512-oKM9MaA135OliPc3Q+oqZIkDxApOmicpReHbTL7V1NxOLoZrRWygIPZgXo/jYYOmzi97nyHlRwVy2eJMXFKhcA==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -7719,6 +7734,12 @@ packages:
       react: '*'
       react-native: '*'
 
+  react-native-bluetooth-state-manager@1.3.5:
+    resolution: {integrity: sha512-yWuN67aYF/PBH47nouYSvyeSrUK8jpSz5FqzwPnWN57yewll4h3xTQXMusvY2eG+EsmBoyMwjbFJzVl38HAOwg==}
+    peerDependencies:
+      prop-types: '*'
+      react-native: '>= 0.44'
+
   react-native-device-info@15.0.2:
     resolution: {integrity: sha512-dd71eXG2l3Cwp66IvKNadMTB8fhU3PEjyVddI97sYan+D4bgIAUmgGDhbSOFvHcGavksb2U17kiQYaDiK2WK2g==}
     peerDependencies:
@@ -7776,6 +7797,13 @@ packages:
     peerDependenciesMeta:
       react-native-windows:
         optional: true
+
+  react-native-qrcode-skia@0.4.0:
+    resolution: {integrity: sha512-NyB16TM7Kz3DADkk1f0HTVXMwmNaWyXHIFKqdisfgZREQfhks/uMpg39XJwWKGwBOwEUcw5ZP30uFXdV/WiEOg==}
+    peerDependencies:
+      '@shopify/react-native-skia': '>=1.0.0'
+      react: '*'
+      react-native: '*'
 
   react-native-qrcode-svg@6.3.21:
     resolution: {integrity: sha512-6vcj4rcdpWedvphDR+NSJcudJykNuLgNGFwm2p4xYjR8RdyTzlrELKI5LkO4ANS9cQUbqsfkpippPv64Q2tUtA==}
@@ -12049,12 +12077,18 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
+  '@pagopa/io-react-native-cie@1.3.6(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      react: 19.2.3
+      react-native: 0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3)
+      zod: 4.3.6
+
   '@pagopa/io-react-native-crypto@1.2.4(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)':
     dependencies:
       react: 19.2.3
       react-native: 0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3)
 
-  '@pagopa/io-react-native-iso18013@0.8.3(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)':
+  '@pagopa/io-react-native-iso18013@0.8.4(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)':
     dependencies:
       react: 19.2.3
       react-native: 0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3)
@@ -12067,10 +12101,10 @@ snapshots:
       react-native: 0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3)
       zod: 4.3.6
 
-  '@pagopa/io-react-native-wallet@3.4.4(patch_hash=1193b0f6e374578fa195b938f4d2cc6bec9aed5ac461cb274a4fbc58a651cbf4)(d91cae155a478c979179bce72def8fae)':
+  '@pagopa/io-react-native-wallet@3.4.4(patch_hash=1193b0f6e374578fa195b938f4d2cc6bec9aed5ac461cb274a4fbc58a651cbf4)(9c82cb881b56883fa389cce202f1083f)':
     dependencies:
       '@pagopa/io-react-native-crypto': 1.2.4(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)
-      '@pagopa/io-react-native-iso18013': 0.8.3(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)
+      '@pagopa/io-react-native-iso18013': 0.8.4(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)
       '@pagopa/io-react-native-jwt': 2.1.0(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)
       '@pagopa/io-wallet-oauth2': 1.5.2
       '@pagopa/io-wallet-oid-federation': 1.5.2
@@ -18820,6 +18854,11 @@ snapshots:
       react: 19.2.3
       react-native: 0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3)
 
+  react-native-bluetooth-state-manager@1.3.5(prop-types@15.8.1)(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3)):
+    dependencies:
+      prop-types: 15.8.1
+      react-native: 0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3)
+
   react-native-device-info@15.0.2(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3)):
     dependencies:
       react-native: 0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3)
@@ -18865,6 +18904,13 @@ snapshots:
 
   react-native-permissions@5.5.1(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3):
     dependencies:
+      react: 19.2.3
+      react-native: 0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3)
+
+  react-native-qrcode-skia@0.4.0(5a431461d9aabea0362658dff6c98692):
+    dependencies:
+      '@shopify/react-native-skia': 2.6.2(react-native-reanimated@4.3.1(react-native-worklets@0.8.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)
+      qrcode: 1.5.4
       react: 19.2.3
       react-native: 0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3)
 

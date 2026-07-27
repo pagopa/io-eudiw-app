@@ -70,6 +70,11 @@ const Settings = () => {
       onPress: () => dispatch(preferencesResetMiniAppSelection())
     },
     {
+      value: t('wallet:settings.proximity.title'),
+      description: t('wallet:settings.proximity.description'),
+      onPress: () => navigation.navigate(MAIN_ROUTES.SETTINGS.PROXIMITY)
+    },
+    {
       value: t('wallet:settings.debug.wallet.title'),
       description: t('wallet:settings.debug.wallet.description'),
       onPress: () => {

@@ -13,6 +13,7 @@ import { lifecycleReducer } from './lifecycle';
 import { pidIssuanceStatusReducer } from './pidIssuance';
 import { presentationReducer } from './presentation';
 import { proximityReducer } from './proximity';
+import { proximityConsentsReducer } from './proximityConsents';
 
 // External State Types
 import { DebugRootState } from '@io-eudiw-app/debug-info';
@@ -31,7 +32,8 @@ export const walletRootReducer = combineReducers({
   credentials: credentialsReducer,
   credentialIssuanceStatus: credentialIssuanceStatusReducer,
   presentation: presentationReducer,
-  proximity: proximityReducer
+  proximity: proximityReducer,
+  proximityConsents: proximityConsentsReducer
 });
 
 type WalletRootState = ReturnType<typeof walletRootReducer>;

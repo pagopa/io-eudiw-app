@@ -2,10 +2,9 @@ import { IOColors, makeFontStyleObject } from '@pagopa/io-app-design-system';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch, useAppSelector } from '../../store';
+import { useAppSelector } from '../../store';
 import { selectFontPreference } from '@io-eudiw-app/preferences';
 import TAB_ROUTES from './routes';
-import { setProximityStatusStarted } from '../../store/proximity';
 import { TabIconComponent } from '../../components/TabIconComponent';
 import WalletHome from '../../screens/WalletHome';
 
@@ -16,7 +15,6 @@ import WalletHome from '../../screens/WalletHome';
 type TabNavigatorParamsList = {
   [TAB_ROUTES.WALLET]: undefined;
   [TAB_ROUTES.SCAN_QR]: undefined;
-  [TAB_ROUTES.SHOW_QR]: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
@@ -28,7 +26,6 @@ const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
 export const TabNavigator = () => {
   const { t } = useTranslation(['common', 'wallet']);
   const navigation = useNavigation();
-  const dispatch = useAppDispatch();
 
   const typefacePreference = useAppSelector(selectFontPreference);
 
@@ -38,8 +35,6 @@ export const TabNavigator = () => {
   const EmptyComponent = () => null;
 
   const navigateToQrCodeScanScreen = () => navigation.navigate('MAIN_SCAN_QR');
-
-  const navigateToQrCodeShowScreen = () => navigation.navigate('MAIN_SHOW_QR');
 
   return (
     <Tab.Navigator
@@ -89,28 +84,6 @@ export const TabNavigator = () => {
             <TabIconComponent
               iconName={'navScan'}
               iconNameFocused={'navScan'}
-              color={color}
-              focused={focused}
-            />
-          )
-        }}
-      />
-      <Tab.Screen
-        name={TAB_ROUTES.SHOW_QR}
-        component={EmptyComponent}
-        listeners={{
-          tabPress: ({ preventDefault }) => {
-            preventDefault();
-            dispatch(setProximityStatusStarted());
-            navigateToQrCodeShowScreen();
-          }
-        }}
-        options={{
-          title: t('wallet:tabNavigator.showQr'),
-          tabBarIcon: ({ color, focused }) => (
-            <TabIconComponent
-              iconName={'navQrWallet'}
-              iconNameFocused={'navQrWallet'}
               color={color}
               focused={focused}
             />

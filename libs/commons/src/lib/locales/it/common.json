@@ -12,7 +12,8 @@
     "skip": "Salta",
     "next": "Avanti",
     "done": "Fatto",
-    "findOutMore": "Scopri di più"
+    "findOutMore": "Scopri di più",
+    "retry": "Riprova"
   },
   "clipboard": {
     "copyFeedback": "Copied to clipboard"
