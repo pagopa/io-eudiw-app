@@ -8,10 +8,15 @@ import WalletNavigator, {
   WalletNavigatorParamsList
 } from '../wallet/WalletNavigator';
 import QrCodeScanScreen from '../../screens/presentation/QrCodeScanScreen';
-import ProximityQrCode from '../../screens/proximity/ProximityQrCode';
+import ItwProximityPresentmentScreen from '../../screens/proximity/ItwProximityPresentmentScreen';
+import ItwProximityNfcPresentment from '../../screens/proximity/ItwProximityNfcPresentment';
+import ItwBluetoothPermissionsScreen from '../../screens/proximity/ItwBluetoothPermissionsScreen';
+import ItwBluetoothActivationScreen from '../../screens/proximity/ItwBluetoothActivationScreen';
+import ItwNfcActivationScreen from '../../screens/proximity/ItwNfcActivationScreen';
 import Settings from '../../screens/settings/Settings';
 import Preference from '../../screens/settings/Preferences';
 import Appearance from '../../screens/settings/Appearance';
+import { ProximityConsents } from '../../screens/settings/ProximityConsents';
 
 /**
  * Screen parameters for the main navigator.
@@ -22,8 +27,13 @@ export type MainNavigatorParamsList = {
   [MAIN_ROUTES.SETTINGS.MAIN]: undefined;
   [MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN]: undefined;
   [MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE]: undefined;
+  [MAIN_ROUTES.SETTINGS.PROXIMITY]: undefined;
   [MAIN_ROUTES.SCAN_QR]: undefined;
-  [MAIN_ROUTES.SHOW_QR]: undefined;
+  [MAIN_ROUTES.BLE_PRESENTMENT]: undefined;
+  [MAIN_ROUTES.NFC_PRESENTMENT]: undefined;
+  [MAIN_ROUTES.PROXIMITY_BLUETOOTH_PERMISSIONS]: undefined;
+  [MAIN_ROUTES.PROXIMITY_BLUETOOTH_ACTIVATION]: undefined;
+  [MAIN_ROUTES.PROXIMITY_NFC_ACTIVATION]: undefined;
 };
 
 /**
@@ -66,9 +76,30 @@ export const MainStackNavigator = () => (
     />
 
     <Stack.Screen
-      name={MAIN_ROUTES.SHOW_QR}
-      component={ProximityQrCode}
+      name={MAIN_ROUTES.BLE_PRESENTMENT}
+      component={ItwProximityPresentmentScreen}
       options={{ animation: 'slide_from_bottom' }}
+    />
+
+    <Stack.Screen
+      name={MAIN_ROUTES.NFC_PRESENTMENT}
+      component={ItwProximityNfcPresentment}
+      options={{ animation: 'slide_from_bottom' }}
+    />
+
+    <Stack.Screen
+      name={MAIN_ROUTES.PROXIMITY_BLUETOOTH_PERMISSIONS}
+      component={ItwBluetoothPermissionsScreen}
+    />
+
+    <Stack.Screen
+      name={MAIN_ROUTES.PROXIMITY_BLUETOOTH_ACTIVATION}
+      component={ItwBluetoothActivationScreen}
+    />
+
+    <Stack.Screen
+      name={MAIN_ROUTES.PROXIMITY_NFC_ACTIVATION}
+      component={ItwNfcActivationScreen}
     />
 
     <Stack.Screen name={MAIN_ROUTES.SETTINGS.MAIN} component={Settings} />
@@ -79,6 +110,10 @@ export const MainStackNavigator = () => (
     <Stack.Screen
       name={MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE}
       component={Appearance}
+    />
+    <Stack.Screen
+      name={MAIN_ROUTES.SETTINGS.PROXIMITY}
+      component={ProximityConsents}
     />
   </Stack.Navigator>
 );

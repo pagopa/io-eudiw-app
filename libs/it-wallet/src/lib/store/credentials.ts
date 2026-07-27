@@ -8,6 +8,7 @@ import {
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
 import { wellKnownCredential } from '../utils/credentials';
 import {
+  CredentialFormat,
   StoredCredential,
   StoredCredentialMetadata
 } from '../utils/itwTypesUtils';
@@ -24,14 +25,20 @@ import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 type CredentialsSlice = {
   credentials: Array<StoredCredentialMetadata>;
   valuesHidden: boolean;
-  pidInfoBannerActive: boolean;
+  banners: {
+    pidInfoBannerActive: boolean;
+    proximityInfoBannerActive: boolean;
+  };
 };
 
 // Initial state for the credential slice
 const initialState: CredentialsSlice = {
   credentials: [],
   valuesHidden: false,
-  pidInfoBannerActive: true
+  banners: {
+    pidInfoBannerActive: true,
+    proximityInfoBannerActive: true
+  }
 };
 
 /**
@@ -89,7 +96,11 @@ const credentialsSlice = createSlice({
     },
     // PID Info Banner
     disablePidInfoBanner: state => {
-      state.pidInfoBannerActive = false;
+      state.banners.pidInfoBannerActive = false;
+    },
+    // Proximity Info Banner
+    disableProximityInfoBanner: state => {
+      state.banners.proximityInfoBannerActive = false;
     }
   },
   extraReducers: builder => {
@@ -127,7 +138,8 @@ export const {
   addCredentialWithIdentification,
   addPidWithIdentification,
   itwSetClaimValuesHidden,
-  disablePidInfoBanner
+  disablePidInfoBanner,
+  disableProximityInfoBanner
 } = credentialsSlice.actions;
 
 export const selectCredentials = (state: WalletCombinedRootState) =>
@@ -182,6 +194,82 @@ export const selectWalletCards: (
     }))
 );
 
+/**
+ * Selector to determine whether there are any presentable credentials.
+ * Returns `true` if there is at least one MDOC credential in the wallet,
+ * which are the ones presentable over proximity.
+ *
+ * @param state - The global state.
+ * @returns `true` if there is at least one presentable credential, `false` otherwise.
+ */
+export const hasPresentableCredentialsSelector = createSelector(
+  selectCredentials,
+  credentials =>
+    credentials.some(credential => credential.format === CredentialFormat.MDOC)
+);
+
+/**
+ * Checks if a given credential is expired based on its status.
+ */
+const isExpiredPresentableCredential = (
+  credential: StoredCredentialMetadata
+) => {
+  const status = getCredentialStatus(credential);
+  return status === 'expired' || status === 'jwtExpired';
+};
+
+/**
+ * Selector to determine whether there are any presentable credentials.
+ * Returns `true` if there is at least one MDOC credential in the wallet,
+ * which are the ones presentable over proximity.
+ *
+ * @param state - The global state.
+ * @returns `true` if there is at least one presentable credential, `false` otherwise.
+ */
+export const presentableCredentialsSelector = createSelector(
+  selectCredentials,
+  credentials =>
+    credentials.filter(
+      credential => credential.format === CredentialFormat.MDOC
+    )
+);
+
+/**
+ * Checks if all presentable credentials are expired.
+ * @param presentableCredentialsByDocType - The presentable credentials by document type.
+ * @returns `true` if all presentable credentials are expired, `false` otherwise.
+ */
+export const areAllPresentableCredentialsExpired = (
+  presentableCredentials: StoredCredentialMetadata[]
+) => {
+  return (
+    presentableCredentials.length > 0 &&
+    presentableCredentials.every(isExpiredPresentableCredential)
+  );
+};
+
+/**
+ * Selector to determine whether the Proximity QR Code screen should surface the
+ * expired credentials banner.
+ * Even when the PID and all presentable credentials are expired, the wallet
+ * must still allow QR/NFC presentation so the relying party can decide whether
+ * to accept the verification.
+ *
+ * @param state - The global state.
+ * @returns `true` if the expired credentials banner should be shown.
+ */
+export const shouldShowExpiredProximityCredentialsBannerSelector =
+  createSelector(
+    itwCredentialsPidStatusSelector,
+    presentableCredentialsSelector,
+    (
+      pidStatus: ItwJwtCredentialStatus | undefined,
+      presentableCredentialsByDocType
+    ) =>
+      pidStatus === 'jwtExpired' &&
+      areAllPresentableCredentialsExpired(presentableCredentialsByDocType)
+  );
+
 export const itwIsClaimValueHiddenSelector = (state: WalletCombinedRootState) =>
   state.wallet.credentials.valuesHidden;
 
@@ -191,4 +279,13 @@ export const itwIsClaimValueHiddenSelector = (state: WalletCombinedRootState) =>
  * @returns a boolean indicating whether the PID info banner is active
  */
 export const selectPidInfoBannerActive = (state: WalletCombinedRootState) =>
-  state.wallet.credentials.pidInfoBannerActive;
+  state.wallet.credentials.banners.pidInfoBannerActive;
+
+/**
+ * Selects whether the Proximity info banner is active (i.e. not yet dismissed by the user).
+ * @param state - The global state.
+ * @returns a boolean indicating whether the Proximity info banner is active
+ */
+export const selectProximityInfoBannerActive = (
+  state: WalletCombinedRootState
+) => state.wallet.credentials.banners.proximityInfoBannerActive;

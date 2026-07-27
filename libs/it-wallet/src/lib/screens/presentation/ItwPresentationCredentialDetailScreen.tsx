@@ -6,26 +6,16 @@ import {
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import {
   OperationResultScreenContent,
-  useIOBottomSheetModal,
   usePreventScreenCapture
 } from '@io-eudiw-app/commons';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { selectCredential } from '../../store/credentials';
 import { lifecycleIsValidSelector } from '../../store/lifecycle';
-import {
-  ProximityStatus,
-  resetProximity,
-  selectProximityDisclosureDescriptor,
-  selectProximityErrorDetails,
-  selectProximityStatus,
-  setProximityStatusStarted,
-  setProximityStatusStopped
-} from '../../store/proximity';
 import { parseClaimsToRecord } from '../../utils/claims';
 import { wellKnownCredential } from '../../utils/credentials';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
@@ -34,9 +24,9 @@ import {
   StoredCredentialMetadata
 } from '../../utils/itwTypesUtils';
 import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
-import { useAppDispatch, useAppSelector } from '../../store';
+import { useAppSelector } from '../../store';
 import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
-import { PresentationProximityQrCode } from '../../components/proximity/PresentationProximityQRCode';
+import { useProximityEngagement } from '../../hooks/useProximityEngagement';
 import {
   CredentialCtaProps,
   ItwPresentationDetailsScreenBase
@@ -139,52 +129,11 @@ const ItwPresentationCredentialDetail = ({
   const capabilities = getCredentialCapabilities(credential.credentialType);
 
   const { t } = useTranslation(['wallet', 'common']);
+  const { startQrVerification } = useProximityEngagement();
 
   useDebugInfo(credential);
 
   usePreventScreenCapture(isDebugEnabled);
-
-  const proximityStatus = useAppSelector(selectProximityStatus);
-  const proximityDisclosureDescriptor = useAppSelector(
-    selectProximityDisclosureDescriptor
-  );
-  const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
-
-  const dispatch = useAppDispatch();
-
-  useDebugInfo(
-    credential.format === CredentialFormat.MDOC
-      ? {
-          proximityDisclosureDescriptorQR: proximityDisclosureDescriptor,
-          proximityStatusQR: proximityStatus,
-          proximityErrorDetailsQR: proximityErrorDetails ?? 'No errors'
-        }
-      : {}
-  );
-
-  const QrCodeModal = useIOBottomSheetModal({
-    title: t('wallet:proximity.showQr.title'),
-    closeAccessibilityLabel: t('common:buttons.close'),
-    component: <PresentationProximityQrCode navigation={navigation} />,
-    onDismiss: () => {
-      // In case the flow is stopped before receiving a document
-      if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_STARTED) {
-        dispatch(setProximityStatusStopped());
-        dispatch(resetProximity());
-      }
-    }
-  });
-
-  useEffect(() => {
-    // These states indicate that the modal can be dismissed
-    if (
-      proximityStatus === ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT ||
-      proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR ||
-      proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED
-    ) {
-      QrCodeModal.dismiss();
-    }
-  }, [proximityStatus, QrCodeModal, navigation]);
 
   const hasSkeumorphicCard = credentialsWithSkeumorphicCard.includes(
     credential.credentialType
@@ -197,24 +146,20 @@ const ItwPresentationCredentialDetail = ({
     });
   };
 
+  // The proximity verification CTA is only available for mdoc credentials
+  // (currently only the mDL), which are the ones presentable over proximity.
   const ctaProps = useMemo<Optional<CredentialCtaProps>>(() => {
-    const credentialType = credential.credentialType;
-
-    if (credentialType === wellKnownCredential.DRIVING_LICENSE) {
+    if (credential.format === CredentialFormat.MDOC) {
       return {
-        label: t('wallet:presentation.ctas.showQRCode'),
-        icon: 'qrCode',
+        label: t('wallet:presentation.ctas.present'),
+        icon: 'productITWallet',
         iconPosition: 'end',
-        loading: false,
-        onPress: () => {
-          dispatch(setProximityStatusStarted());
-          QrCodeModal.present();
-        }
+        onPress: () => void startQrVerification()
       };
     }
 
     return undefined;
-  }, [QrCodeModal, credential.credentialType, dispatch, t]);
+  }, [credential.format, startQrVerification, t]);
 
   const parsedClaims = useMemo(
     () => parseClaimsToRecord(credential.parsedCredential),
@@ -269,7 +214,6 @@ const ItwPresentationCredentialDetail = ({
           <View style={{ alignItems: 'center' }}>
             <PoweredByItWalletText />
           </View>
-          {QrCodeModal.bottomSheet}
         </VStack>
       </ContentWrapper>
     </ItwPresentationDetailsScreenBase>

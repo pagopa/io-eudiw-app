@@ -1,4 +1,4 @@
-import { IOScrollView, IOScrollViewActions } from '@io-eudiw-app/commons';
+import { IOScrollView, IOScrollViewActions } from './IOScrollView';
 import {
   Body,
   BodyProps,
