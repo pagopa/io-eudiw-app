@@ -1,17 +1,18 @@
-import { useIOToast } from '@pagopa/io-app-design-system';
-import { useTranslation } from 'react-i18next';
-import {
-  resetPresentation,
-  selectPostDefinitionResult
-} from '../../store/presentation';
-import { useAppDispatch, useAppSelector } from '../../store';
 import {
   openWebUrl,
   OperationResultScreenContent,
   OperationResultScreenContentProps
 } from '@io-eudiw-app/commons';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
+import { useIOToast } from '@pagopa/io-app-design-system';
+import { useTranslation } from 'react-i18next';
+
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../store';
+import {
+  resetPresentation,
+  selectPostDefinitionResult
+} from '../../store/presentation';
 
 /**
  * Screen to be shown when the presentation of the credential is successful.
@@ -30,9 +31,6 @@ const PresentationSuccess = () => {
     const redirectUri = result?.redirect_uri;
     return redirectUri
       ? {
-          pictogram: 'success',
-          title: t('wallet:presentation.successWithRedirect.title'),
-          subtitle: t('wallet:presentation.successWithRedirect.subtitle'),
           action: {
             accessibilityLabel: t(
               'wallet:presentation.successWithRedirect.continue'
@@ -45,12 +43,12 @@ const PresentationSuccess = () => {
               navigateToWallet();
               dispatch(resetPresentation());
             }
-          }
+          },
+          pictogram: 'success',
+          subtitle: t('wallet:presentation.successWithRedirect.subtitle'),
+          title: t('wallet:presentation.successWithRedirect.title')
         }
       : {
-          pictogram: 'success',
-          title: t('wallet:presentation.success.title'),
-          subtitle: t('wallet:presentation.success.subtitle'),
           action: {
             accessibilityLabel: t('common:buttons.close'),
             label: t('common:buttons.close'),
@@ -58,7 +56,10 @@ const PresentationSuccess = () => {
               navigateToWallet();
               dispatch(resetPresentation());
             }
-          }
+          },
+          pictogram: 'success',
+          subtitle: t('wallet:presentation.success.subtitle'),
+          title: t('wallet:presentation.success.title')
         };
   };
 

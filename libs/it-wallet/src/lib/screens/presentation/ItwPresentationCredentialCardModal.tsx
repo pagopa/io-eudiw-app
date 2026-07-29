@@ -1,12 +1,19 @@
 import {
+  useMaxBrightness,
+  usePreventScreenCapture
+} from '@io-eudiw-app/commons';
+import { selectIsDebugModeEnabled } from '@io-eudiw-app/debug-info';
+import {
   HeaderSecondLevel,
   useIOTheme,
   VSpacer
 } from '@pagopa/io-app-design-system';
 import { StackScreenProps } from '@react-navigation/stack';
 import { memo, useCallback, useLayoutEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import {
   ItwSkeumorphicCard,
   SKEUMORPHIC_CARD_ASPECT_RATIO
@@ -15,6 +22,7 @@ import { FlipGestureDetector } from '../../components/credential/ItwSkeumorphicC
 import { ItwPresentationCredentialCardFlipButton } from '../../components/presentation/ItwPresentationCredentialCardFlipButton';
 import { ItwPresentationCredentialCardHideValuesButton } from '../../components/presentation/ItwPresentationCredentialCardHideValuesButton';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import { useAppDispatch, useAppSelector } from '../../store';
 import {
   itwIsClaimValueHiddenSelector,
   itwSetClaimValuesHidden
@@ -25,13 +33,6 @@ import {
   ItwCredentialStatus,
   StoredCredentialMetadata
 } from '../../utils/itwTypesUtils';
-import { useAppDispatch, useAppSelector } from '../../store';
-import {
-  useMaxBrightness,
-  usePreventScreenCapture
-} from '@io-eudiw-app/commons';
-import { selectIsDebugModeEnabled } from '@io-eudiw-app/debug-info';
-import { useTranslation } from 'react-i18next';
 
 export type ItwPresentationCredentialCardModalNavigationParams = {
   credential: StoredCredentialMetadata;
@@ -47,7 +48,7 @@ type Props = StackScreenProps<
 /**
  * Dispalys a full screen modal with the credential card.
  */
-const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
+const ItwPresentationCredentialCardModal = ({ navigation, route }: Props) => {
   const { credential, parsedClaims, status } = route.params;
   const safeAreaInsets = useSafeAreaInsets();
   const { width: screenWidth } = useWindowDimensions();
@@ -74,13 +75,13 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
     navigation.setOptions({
       header: () => (
         <HeaderSecondLevel
-          title={''}
-          type="singleAction"
           firstAction={{
-            icon: 'closeLarge',
             accessibilityLabel: t('common:buttons.close'),
+            icon: 'closeLarge',
             onPress: () => navigation.goBack()
           }}
+          title={''}
+          type="singleAction"
         />
       )
     });
@@ -95,15 +96,15 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
       style={[
         styles.contentContainer,
         {
-          paddingBottom: safeAreaInsets.bottom,
-          backgroundColor: theme['appBackground-primary']
+          backgroundColor: theme['appBackground-primary'],
+          paddingBottom: safeAreaInsets.bottom
         }
       ]}
     >
       {/* Card area fills the space between header and footer, centering the card */}
       <View
-        style={styles.cardArea}
         onLayout={e => setCardAreaHeight(e.nativeEvent.layout.height)}
+        style={styles.cardArea}
       >
         {cardAreaHeight > 0 && (
           // The card is rotated 90°, and react-native-gesture-handler evaluates the
@@ -113,32 +114,32 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
           // space (so the same swipe reads as "updown"). Pick the axis per platform
           // so the flip is always triggered by a vertical swipe on both.
           <FlipGestureDetector
+            direction={Platform.OS === 'ios' ? 'leftright' : 'updown'}
             isFlipped={isFlipped}
             setIsFlipped={setFlipped}
-            direction={Platform.OS === 'ios' ? 'leftright' : 'updown'}
           >
             <View
               style={{
-                width: cardPreRotationWidth,
-                transform: [{ rotate: '90deg' }]
+                transform: [{ rotate: '90deg' }],
+                width: cardPreRotationWidth
               }}
             >
               <ItwSkeumorphicCard
-                credential={credential}
-                claims={parsedClaims}
-                status={status}
-                isFlipped={isFlipped}
-                valuesHidden={valuesHidden}
                 capabilities={capabilities}
+                claims={parsedClaims}
+                credential={credential}
+                isFlipped={isFlipped}
+                status={status}
+                valuesHidden={valuesHidden}
               />
             </View>
           </FlipGestureDetector>
         )}
       </View>
       <ItwPresentationCredentialCardFlipButton
-        isFlipped={isFlipped}
-        handleOnPress={() => setFlipped(_ => !_)}
         fullScreen={true}
+        handleOnPress={() => setFlipped(_ => !_)}
+        isFlipped={isFlipped}
       />
       <VSpacer size={12} />
       <ItwPresentationCredentialCardHideValuesButton
@@ -151,13 +152,13 @@ const ItwPresentationCredentialCardModal = ({ route, navigation }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  cardArea: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center'
+  },
   contentContainer: {
     flex: 1
-  },
-  cardArea: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
   }
 });
 

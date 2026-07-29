@@ -1,3 +1,4 @@
+import { IOScrollView } from '@io-eudiw-app/commons';
 import {
   HeaderActionProps,
   HeaderFirstLevel
@@ -5,11 +6,11 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { WalletCardsContainer } from '../components/WalletCardsContainer';
+import { useProximityEngagement } from '../hooks/useProximityEngagement';
 import MAIN_ROUTES from '../navigation/main/routes';
 import WALLET_ROUTES from '../navigation/wallet/routes';
-import { WalletCardsContainer } from '../components/WalletCardsContainer';
-import { IOScrollView } from '@io-eudiw-app/commons';
-import { useProximityEngagement } from '../hooks/useProximityEngagement';
 import { useAppSelector } from '../store';
 import { hasPresentableCredentialsSelector } from '../store/credentials';
 
@@ -29,17 +30,17 @@ const WalletHome = () => {
   const actions: HeaderFirstLevel['actions'] = useMemo(
     () => [
       {
+        accessibilityLabel: t('settings.title', { ns: 'wallet' }),
         icon: 'add',
         onPress: () =>
           navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
             screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST
-          }),
-        accessibilityLabel: t('settings.title', { ns: 'wallet' })
+          })
       } satisfies HeaderActionProps,
       {
+        accessibilityLabel: t('settings.title', { ns: 'wallet' }),
         icon: 'coggle',
-        onPress: () => navigation.navigate('MAIN_SETTINGS'),
-        accessibilityLabel: t('settings.title', { ns: 'wallet' })
+        onPress: () => navigation.navigate('MAIN_SETTINGS')
       }
     ],
     [navigation, t]
@@ -48,25 +49,25 @@ const WalletHome = () => {
   return (
     <>
       <HeaderFirstLevel
-        title={t('tabNavigator.wallet', { ns: 'wallet' })}
         actions={actions}
+        title={t('tabNavigator.wallet', { ns: 'wallet' })}
       />
       <IOScrollView
-        centerContent={true}
-        excludeSafeAreaMargins={true}
         actions={
           hasPresentableCredentials
             ? {
-                type: 'SingleButton',
                 primary: {
-                  label: t('proximity.home.cta', { ns: 'wallet' }),
                   icon: 'productITWallet',
                   iconPosition: 'end',
+                  label: t('proximity.home.cta', { ns: 'wallet' }),
                   onPress: () => void startQrVerification()
-                }
+                },
+                type: 'SingleButton'
               }
             : undefined
         }
+        centerContent={true}
+        excludeSafeAreaMargins={true}
       >
         <WalletCardsContainer />
       </IOScrollView>

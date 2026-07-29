@@ -1,6 +1,7 @@
 import { Divider, ListItemInfo } from '@pagopa/io-app-design-system';
 import { t } from 'i18next';
 import { useMemo } from 'react';
+
 import { useItwInfoBottomSheet } from '../hooks/useItwInfoBottomSheet';
 import { wellKnownCredential } from '../utils/credentials';
 import { StoredCredentialMetadata } from '../utils/itwTypesUtils';
@@ -11,30 +12,30 @@ type ItwIssuanceMetadataProps = {
 };
 
 type ItwMetadataIssuanceListItemProps = {
-  label: string;
-  value: string;
   bottomSheet: {
-    contentTitle: string;
     contentBody: string;
+    contentTitle: string;
     onPress: () => void;
   };
   isPreview?: boolean;
+  label: string;
+  value: string;
 };
 
 const ItwMetadataIssuanceListItem = ({
-  label,
-  value,
   bottomSheet: bottomSheetProps,
-  isPreview
+  isPreview,
+  label,
+  value
 }: ItwMetadataIssuanceListItemProps) => {
   const bottomSheet = useItwInfoBottomSheet({
-    title: value,
     content: [
       {
-        title: bottomSheetProps.contentTitle,
-        body: bottomSheetProps.contentBody
+        body: bottomSheetProps.contentBody,
+        title: bottomSheetProps.contentTitle
       }
-    ]
+    ],
+    title: value
   });
 
   const endElement: ListItemInfo['endElement'] = useMemo(() => {
@@ -43,25 +44,25 @@ const ItwMetadataIssuanceListItem = ({
     }
 
     return {
-      type: 'iconButton',
       componentProps: {
-        icon: 'info',
         accessibilityLabel: `Info ${label}`,
+        icon: 'info',
         onPress: () => {
           bottomSheetProps.onPress();
           bottomSheet.present();
         }
-      }
+      },
+      type: 'iconButton'
     };
   }, [isPreview, bottomSheet, bottomSheetProps, label]);
 
   return (
     <>
       <ListItemInfo
+        accessibilityLabel={`${label} ${value}`}
         endElement={endElement}
         label={label}
         value={value}
-        accessibilityLabel={`${label} ${value}`}
       />
       {bottomSheet.bottomSheet}
     </>
@@ -95,9 +96,6 @@ export const ItwIssuanceMetadata = ({
   const releaserNameBottomSheet: ItwMetadataIssuanceListItemProps['bottomSheet'] =
     useMemo(
       () => ({
-        contentTitle: t('issuance.credentialPreview.bottomSheet.about.title', {
-          ns: 'wallet'
-        }),
         contentBody: t(
           'issuance.credentialPreview.bottomSheet.about.subtitle',
           {
@@ -105,6 +103,9 @@ export const ItwIssuanceMetadata = ({
             privacyUrl: ''
           }
         ),
+        contentTitle: t('issuance.credentialPreview.bottomSheet.about.title', {
+          ns: 'wallet'
+        }),
         onPress: () => null
       }),
       []
@@ -113,15 +114,15 @@ export const ItwIssuanceMetadata = ({
   const authSourceBottomSheet: ItwMetadataIssuanceListItemProps['bottomSheet'] =
     useMemo(
       () => ({
-        contentTitle: t(
-          'issuance.credentialPreview.bottomSheet.authSource.title',
-          { ns: 'wallet' }
-        ),
         contentBody: t(
           'issuance.credentialPreview.bottomSheet.authSource.subtitle',
           {
             ns: 'wallet'
           }
+        ),
+        contentTitle: t(
+          'issuance.credentialPreview.bottomSheet.authSource.title',
+          { ns: 'wallet' }
         ),
         onPress: () => null
       }),
@@ -132,23 +133,23 @@ export const ItwIssuanceMetadata = ({
     <>
       {authSource && (
         <ItwMetadataIssuanceListItem
+          bottomSheet={authSourceBottomSheet}
+          isPreview={isPreview}
           label={t('verifiableCredentials.claims.authenticSource', {
             ns: 'wallet'
           })}
           value={authSource}
-          isPreview={isPreview}
-          bottomSheet={authSourceBottomSheet}
         />
       )}
       {authSource && releaserName && <Divider />}
       {releaserName && (
         <ItwMetadataIssuanceListItem
+          bottomSheet={releaserNameBottomSheet}
+          isPreview={isPreview}
           label={t(`verifiableCredentials.claims.${releasedByKey}`, {
             ns: 'wallet'
           })}
           value={releaserName}
-          isPreview={isPreview}
-          bottomSheet={releaserNameBottomSheet}
         />
       )}
     </>

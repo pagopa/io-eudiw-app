@@ -1,18 +1,19 @@
-import { StackScreenProps } from '@react-navigation/stack';
-import { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { resetUrl, selectUrl } from '@io-eudiw-app/navigation';
 import {
   LoadingScreenContent,
   useDisableGestureNavigation,
   useHardwareBackButton
 } from '@io-eudiw-app/commons';
-import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
-import WALLET_ROUTES from '../../navigation/wallet/routes';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { parseDeepLink } from '../../utils/parsing';
+import { resetUrl, selectUrl } from '@io-eudiw-app/navigation';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { resolveCredentialOfferThunk } from '../../middleware/credential';
+import WALLET_ROUTES from '../../navigation/wallet/routes';
+import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { parseDeepLink } from '../../utils/parsing';
 
 /**
  * Navigation params for the deep link handler.
@@ -20,10 +21,10 @@ import { resolveCredentialOfferThunk } from '../../middleware/credential';
  * stored in the deep linking slice (read via {@link selectUrl}).
  */
 export type DeepLinkHandlerParams =
+  | undefined
   | {
       url?: string;
-    }
-  | undefined;
+    };
 
 type Props = StackScreenProps<WalletNavigatorParamsList, 'DEEP_LINK_HANDLER'>;
 
@@ -39,7 +40,7 @@ type Props = StackScreenProps<WalletNavigatorParamsList, 'DEEP_LINK_HANDLER'>;
  * The URL comes from the navigation params (QR flow) or, for deep links, from
  * the deep linking slice, which is always populated when a URL is received.
  */
-const DeepLinkHandler = ({ route, navigation }: Props) => {
+const DeepLinkHandler = ({ navigation, route }: Props) => {
   const { t } = useTranslation(['common', 'wallet']);
   const storedUrl = useAppSelector(selectUrl);
   const dispatch = useAppDispatch();

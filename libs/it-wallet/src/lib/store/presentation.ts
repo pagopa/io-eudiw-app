@@ -1,7 +1,3 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
-import { FederationEntity } from '../types';
-import { EnrichedPresentationDetails } from '../utils/itwTypesUtils';
 import {
   AsyncStatusValues,
   setError,
@@ -9,11 +5,16 @@ import {
   setLoading,
   setSuccess
 } from '@io-eudiw-app/commons';
-import { WalletCombinedRootState } from '.';
 import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { WalletCombinedRootState } from '.';
+import { PresentationPreDefinitionParams } from '../screens/presentation/PresentationPreDefinition';
+import { FederationEntity } from '../types';
+import { EnrichedPresentationDetails } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 
 /**
@@ -23,11 +24,6 @@ export type Descriptor = {
   descriptor: EnrichedPresentationDetails;
   rpConfig?: FederationEntity;
 };
-
-type PresentationErrors =
-  | 'WALLET_NOT_ACTIVE'
-  | 'CREDENTIAL_NOT_FOUND'
-  | 'PRESENTATION_ERROR';
 
 /**
  * Response type for the authorization request which is the final step of the presentation flow.
@@ -41,62 +37,56 @@ type AuthResponse = {
  */
 type OptionalClaims = Descriptor['descriptor']; // The optional claims selected by the user
 
+type PresentationErrors =
+  | 'CREDENTIAL_NOT_FOUND'
+  | 'PRESENTATION_ERROR'
+  | 'WALLET_NOT_ACTIVE';
+
 /* State type definition for the presentation slice
  * preDefinition - Async status for the prestation before receiving the descriptor
  * postDefinition - Async status for the presentation afetr receiving the descriptor
  * walletNotActive - True when presentation was attempted with a non-activated wallet
  */
 type PresentationSlice = {
-  preDefinition: AsyncStatusValues<Descriptor, PresentationErrors>;
-  postDefinition: AsyncStatusValues<AuthResponse, PresentationErrors>;
-  relyingPartyData?: FederationEntity;
-  optionalCredentials?: Array<string>;
   credentialNotFound?: string;
+  optionalCredentials?: string[];
+  postDefinition: AsyncStatusValues<AuthResponse, PresentationErrors>;
+  preDefinition: AsyncStatusValues<Descriptor, PresentationErrors>;
+  relyingPartyData?: FederationEntity;
 };
 
 // Initial state for the presentation slice
 const initialState: PresentationSlice = {
-  preDefinition: setInitial(),
-  postDefinition: setInitial(),
+  credentialNotFound: undefined,
   optionalCredentials: [],
-  credentialNotFound: undefined
+  postDefinition: setInitial(),
+  preDefinition: setInitial()
 };
 
 /**
  * Redux slice for the presetation state. It holds the status of flows related to the presentation process.
  */
 const presentationSlice = createSlice({
-  name: 'presentationSlice',
+  extraReducers: builder => {
+    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
+  },
   initialState,
+  name: 'presentationSlice',
   reducers: {
-    setPreDefinitionRequest: (
-      state,
-      _: PayloadAction<PresentationPreDefinitionParams>
-    ) => {
-      state.preDefinition = setLoading();
+    resetPresentation: state => {
+      state.preDefinition = setInitial();
+      state.postDefinition = setInitial();
+      state.optionalCredentials = [];
+      state.credentialNotFound = undefined;
     },
-    setPreDefinitionError: (
-      state,
-      action: PayloadAction<
-        { type?: PresentationErrors; error: unknown } | undefined
-      >
-    ) => {
-      state.preDefinition = setError(
-        action.payload?.error,
-        action.payload?.type
-      );
+    setCredentialNotFound: (state, action: PayloadAction<string>) => {
+      state.credentialNotFound = action.payload;
     },
-    setPreDefinitionSuccess: (state, action: PayloadAction<Descriptor>) => {
-      state.preDefinition = setSuccess(action.payload);
-    },
-    setPostDefinitionRequest: (
-      state,
-      _: PayloadAction<Array<OptionalClaims>>
-    ) => {
-      /* Payload is not used but taken from the listener
-       * The payload is an array of strings containing the optional claims selected by the user
-       */
-      state.postDefinition = setLoading();
+    setOptionalCredentials: (state, action: PayloadAction<string[]>) => {
+      state.optionalCredentials = [...new Set(action.payload)];
     },
     // Empty action which will be intercepted by the listener and trigger the identification before finishing the presentation process
     setPostDefinitionCancel: _ => {
@@ -104,34 +94,42 @@ const presentationSlice = createSlice({
     },
     setPostDefinitionError: (
       state,
-      action: PayloadAction<{ type?: PresentationErrors; error: unknown }>
+      action: PayloadAction<{ error: unknown; type?: PresentationErrors }>
     ) => {
       state.postDefinition = setError(
         action.payload.error,
         action.payload.type
       );
     },
+    setPostDefinitionRequest: (state, _: PayloadAction<OptionalClaims[]>) => {
+      /* Payload is not used but taken from the listener
+       * The payload is an array of strings containing the optional claims selected by the user
+       */
+      state.postDefinition = setLoading();
+    },
     setPostDefinitionSuccess: (state, action: PayloadAction<AuthResponse>) => {
       state.postDefinition = setSuccess(action.payload);
     },
-    setOptionalCredentials: (state, action: PayloadAction<Array<string>>) => {
-      state.optionalCredentials = [...new Set(action.payload)];
+    setPreDefinitionError: (
+      state,
+      action: PayloadAction<
+        undefined | { error: unknown; type?: PresentationErrors }
+      >
+    ) => {
+      state.preDefinition = setError(
+        action.payload?.error,
+        action.payload?.type
+      );
     },
-    setCredentialNotFound: (state, action: PayloadAction<string>) => {
-      state.credentialNotFound = action.payload;
+    setPreDefinitionRequest: (
+      state,
+      _: PayloadAction<PresentationPreDefinitionParams>
+    ) => {
+      state.preDefinition = setLoading();
     },
-    resetPresentation: state => {
-      state.preDefinition = setInitial();
-      state.postDefinition = setInitial();
-      state.optionalCredentials = [];
-      state.credentialNotFound = undefined;
+    setPreDefinitionSuccess: (state, action: PayloadAction<Descriptor>) => {
+      state.preDefinition = setSuccess(action.payload);
     }
-  },
-  extraReducers: builder => {
-    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
-    builder.addCase(preferencesReset, () => initialState);
-    builder.addCase(resetLifecycle, () => initialState);
-    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 
@@ -139,16 +137,16 @@ const presentationSlice = createSlice({
  * Exports the actions for the presentation slice.
  */
 export const {
-  setPreDefinitionRequest,
-  setPreDefinitionError,
-  setPreDefinitionSuccess,
-  setPostDefinitionRequest,
+  resetPresentation,
+  setCredentialNotFound,
+  setOptionalCredentials,
   setPostDefinitionCancel,
   setPostDefinitionError,
+  setPostDefinitionRequest,
   setPostDefinitionSuccess,
-  setOptionalCredentials,
-  setCredentialNotFound,
-  resetPresentation
+  setPreDefinitionError,
+  setPreDefinitionRequest,
+  setPreDefinitionSuccess
 } = presentationSlice.actions;
 
 /**

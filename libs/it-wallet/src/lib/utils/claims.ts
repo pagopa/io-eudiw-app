@@ -1,4 +1,5 @@
 import * as z from 'zod';
+
 import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
 import { ParsedCredential } from './itwTypesUtils';
 import { getClaimsFullLocale } from './locale';
@@ -8,18 +9,18 @@ import { getClaimsFullLocale } from './locale';
  * This can be later used to narrow the type of the claim parsed with {@link claimScheme}
  */
 export const claimType = {
-  date: 'date',
-  expireDate: 'expireDate',
-  drivingPrivileges: 'drivingPrivileges',
-  verificationEvidence: 'verificationEvidence',
-  string: 'string',
-  emptyString: 'emptyString',
+  barcode: 'barcode',
   boolean: 'boolean',
+  date: 'date',
+  drivingPrivileges: 'drivingPrivileges',
+  emptyString: 'emptyString',
+  expireDate: 'expireDate',
   image: 'image',
-  stringArray: 'stringArray',
   placeOfBirth: 'placeOfBirth',
+  string: 'string',
+  stringArray: 'stringArray',
   verification: 'verification',
-  barcode: 'barcode'
+  verificationEvidence: 'verificationEvidence'
 } as const;
 
 /**
@@ -43,16 +44,16 @@ const baseClaimSchemaExtracted = baseClaimSchema.transform(
 const dateSchema = z
   .union([z.string().date(), z.string().datetime()])
   .transform(str => ({
-    value: new Date(str),
-    type: claimType.date
+    type: claimType.date,
+    value: new Date(str)
   }));
 
 /**
  * Schema to validate a string when the base claim label is not specified.
  */
 const stringSchema = z.string().transform(str => ({
-  value: str,
-  type: claimType.string
+  type: claimType.string,
+  value: str
 }));
 
 /**
@@ -62,8 +63,8 @@ const emptyStringSchema = z
   .string()
   .refine(str => str === '')
   .transform(str => ({
-    value: str,
-    type: claimType.emptyString
+    type: claimType.emptyString,
+    value: str
   }));
 
 /**
@@ -73,24 +74,24 @@ const stringArraySchema = z
   .string()
   .array()
   .transform(array => ({
-    value: array,
-    type: claimType.stringArray
+    type: claimType.stringArray,
+    value: array
   }));
 
 /**
  * Schema to validate a boolean when the base claim label is not specified
  */
 const booleanSchema = z.boolean().transform(bool => ({
-  value: bool,
-  type: claimType.boolean
+  type: claimType.boolean,
+  value: bool
 }));
 
 /**
  * Schema to validate a number when the base claim label is not specified
  */
 const numberSchema = z.number().transform(num => ({
-  value: String(num),
-  type: claimType.string
+  type: claimType.string,
+  value: String(num)
 }));
 
 /**
@@ -98,13 +99,13 @@ const numberSchema = z.number().transform(num => ({
  */
 export const verificationEvidenceSchema = z
   .object({
+    country_code: z.string(),
     organization_id: z.string(),
-    organization_name: z.string(),
-    country_code: z.string()
+    organization_name: z.string()
   })
   .transform(obj => ({
-    value: obj,
-    type: claimType.verificationEvidence
+    type: claimType.verificationEvidence,
+    value: obj
   }));
 
 /**
@@ -113,14 +114,14 @@ export const verificationEvidenceSchema = z
 export const drivingPrivilegesSchema = z
   .array(
     z.object({
-      issue_date: z.string().date(),
       expiry_date: z.string().date(),
+      issue_date: z.string().date(),
       vehicle_category_code: z.string()
     })
   )
   .transform(arr => ({
-    value: arr,
-    type: claimType.drivingPrivileges
+    type: claimType.drivingPrivileges,
+    value: arr
   }));
 
 export type DrivingPrivilegesClaimType = z.infer<
@@ -166,7 +167,7 @@ const base64ImageSchema = z
             prev => prev + '=',
             ''
           );
-    const { width, height } = Buffer.from(b64, 'base64').reduce(
+    const { height, width } = Buffer.from(b64, 'base64').reduce(
       (prev, byte, index, buffer) => {
         if (prev.done) {
           return { ...prev };
@@ -191,9 +192,9 @@ const base64ImageSchema = z
           const imgWidth = (buffer as Buffer).readUint16BE(index + 6);
           return {
             ...prev,
+            done: true,
             height: imgHeight,
-            width: imgWidth,
-            done: true
+            width: imgWidth
           };
         } else {
           return {
@@ -202,7 +203,7 @@ const base64ImageSchema = z
           };
         }
       },
-      { height: 0, width: 0, continue: false, done: false }
+      { continue: false, done: false, height: 0, width: 0 }
     );
 
     if (width === 0 || height === 0) {
@@ -210,10 +211,10 @@ const base64ImageSchema = z
     }
 
     return {
-      value: 'data:image/jpeg;base64,' + b64,
+      height,
       type: claimType.image,
-      width,
-      height
+      value: 'data:image/jpeg;base64,' + b64,
+      width
     };
   });
 
@@ -231,8 +232,8 @@ const dateThatCanExpireSchema = z
       .string()
       .date()
       .transform(str => ({
-        value: new Date(str),
-        type: claimType.expireDate
+        type: claimType.expireDate,
+        value: new Date(str)
       }))
   );
 
@@ -241,15 +242,15 @@ const dateThatCanExpireSchema = z
  */
 export const placeofBirthSchema = z
   .object({
+    country: z.object({
+      name: z.record(z.string(), z.string()),
+      value: z.string()
+    }),
     locality: z.object({
       name: z.record(z.string(), z.string()),
       value: z.string()
     }),
     region: z.object({
-      name: z.record(z.string(), z.string()),
-      value: z.string()
-    }),
-    country: z.object({
       name: z.record(z.string(), z.string()),
       value: z.string()
     })
@@ -262,8 +263,8 @@ export const placeofBirthSchema = z
       ', ' +
       data.country.value;
     return {
-      value: values,
-      type: claimType.placeOfBirth
+      type: claimType.placeOfBirth,
+      value: values
     };
   });
 export type PlaceOfBirthClaimType = z.infer<typeof placeofBirthSchema>;
@@ -283,8 +284,8 @@ export const verificationScheme = z
     const values =
       data.assurance_level.value + ' ' + data.trust_framework.value;
     return {
-      value: values,
-      type: claimType.verification
+      type: claimType.verification,
+      value: values
     };
   });
 
@@ -292,8 +293,8 @@ export const verificationScheme = z
  * Schema to validate a barcode claim value (e.g. discount code for PARI_BONUS)
  */
 const barcodeSchema = z.string().transform(str => ({
-  value: str,
-  type: claimType.barcode
+  type: claimType.barcode,
+  value: str
 }));
 
 /**
@@ -309,11 +310,11 @@ const amountSchema = z
     const cents = typeof obj.value === 'string' ? Number(obj.value) : obj.value;
     const euros = cents / 100;
     return {
+      type: claimType.string,
       value: new Intl.NumberFormat(getClaimsFullLocale(), {
-        style: 'currency',
-        currency: 'EUR'
-      }).format(euros),
-      type: claimType.string
+        currency: 'EUR',
+        style: 'currency'
+      }).format(euros)
     };
   });
 
@@ -363,7 +364,7 @@ export type ParsedClaimsRecord = Record<
  */
 export const parseClaimsToRecord = (
   parsedCredential: ParsedCredential,
-  options: { exclude?: Array<string> } = {}
+  options: { exclude?: string[] } = {}
 ): ParsedClaimsRecord => {
   const { exclude = [] } = options;
   return Object.fromEntries(
@@ -379,7 +380,7 @@ export const parseClaimsToRecord = (
           key,
           {
             label: attributeName,
-            parsed: claimScheme.parse({ value: attribute.value, id: key })
+            parsed: claimScheme.parse({ id: key, value: attribute.value })
           }
         ];
       })
@@ -401,8 +402,8 @@ export const parseClaimsToRecord = (
  */
 export const parseClaims = (
   parsedCredential: ParsedCredential,
-  options: { exclude?: Array<string> } = {}
-): Array<ClaimDisplayFormat> => {
+  options: { exclude?: string[] } = {}
+): ClaimDisplayFormat[] => {
   const { exclude = [] } = options;
 
   return Object.entries(parsedCredential)

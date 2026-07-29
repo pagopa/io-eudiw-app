@@ -12,13 +12,13 @@
  * error - which indicates if an error occurred and carries the error object as well, with an optional typed discriminant.
  */
 type AsyncStatusValues<T = undefined, E extends string = never> = {
-  loading: boolean;
   error:
-    | { status: false; error: undefined }
     | ([E] extends [never]
-        ? { status: true; error: unknown }
-        : { status: true; error: unknown; type: E });
-  success: { status: false } | { status: true; data?: T };
+        ? { error: unknown; status: true }
+        : { error: unknown; status: true; type: E })
+    | { error: undefined; status: false };
+  loading: boolean;
+  success: { data?: T; status: true } | { status: false };
 };
 
 /**
@@ -28,8 +28,8 @@ const setInitial = <T, E extends string = never>(): AsyncStatusValues<
   T,
   E
 > => ({
+  error: { error: undefined, status: false },
   loading: false,
-  error: { status: false, error: undefined },
   success: { status: false }
 });
 
@@ -39,9 +39,9 @@ const setInitial = <T, E extends string = never>(): AsyncStatusValues<
 const setSuccess = <T, E extends string = never>(
   data?: T
 ): AsyncStatusValues<T, E> => ({
+  error: { error: undefined, status: false },
   loading: false,
-  error: { status: false, error: undefined },
-  success: { status: true, data }
+  success: { data, status: true }
 });
 
 /**
@@ -51,8 +51,8 @@ const setLoading = <T, E extends string = never>(): AsyncStatusValues<
   T,
   E
 > => ({
+  error: { error: undefined, status: false },
   loading: true,
-  error: { status: false, error: undefined },
   success: { status: false }
 });
 
@@ -66,13 +66,13 @@ const setError = <T, E extends string = never>(
   error: unknown,
   type?: E
 ): AsyncStatusValues<T, E> => ({
-  loading: false,
   error: {
-    status: true,
     error,
+    status: true,
     ...(type !== undefined ? { type } : {})
   } as AsyncStatusValues<T, E>['error'],
+  loading: false,
   success: { status: false }
 });
 
-export { setInitial, setSuccess, setLoading, setError, type AsyncStatusValues };
+export { type AsyncStatusValues, setError, setInitial, setLoading, setSuccess };

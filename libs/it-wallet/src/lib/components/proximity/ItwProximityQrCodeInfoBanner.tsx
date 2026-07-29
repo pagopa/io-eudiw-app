@@ -1,8 +1,9 @@
 import { Banner } from '@pagopa/io-app-design-system';
 import { useTranslation } from 'react-i18next';
+
+import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
 import { useAppDispatch } from '../../store';
 import { disableProximityInfoBanner } from '../../store/credentials';
-import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
 
 /**
  * Informational banner shown on the proximity engagement screen explaining how
@@ -19,14 +20,14 @@ export const ItwProximityQrCodeInfoBanner = () => {
 
   return (
     <Banner
-      color="neutral"
-      pictogramName="help"
-      title={t('wallet:proximity.engagement.banner.title')}
-      content={t('wallet:proximity.engagement.banner.content')}
       action={t('wallet:proximity.engagement.banner.action')}
-      onPress={handleOnPress}
+      color="neutral"
+      content={t('wallet:proximity.engagement.banner.content')}
       labelClose={t('common:buttons.close')}
       onClose={() => dispatch(disableProximityInfoBanner())}
+      onPress={handleOnPress}
+      pictogramName="help"
+      title={t('wallet:proximity.engagement.banner.title')}
     />
   );
 };

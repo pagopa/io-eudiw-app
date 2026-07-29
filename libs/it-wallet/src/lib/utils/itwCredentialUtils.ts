@@ -1,76 +1,80 @@
 import { IOColors, Tag, useIOTheme } from '@pagopa/io-app-design-system';
 import { t } from 'i18next';
+
+import { ItwIridescentBorderVariant } from '../components/ItwBrandedSkiaBorder';
 import { wellKnownCredential } from './credentials';
 import { ItwCredentialStatus } from './itwTypesUtils';
-import { ItwIridescentBorderVariant } from '../components/ItwBrandedSkiaBorder';
 
 export const useBorderColorByStatus = (
   credentialType?: string
-): { [key in ItwCredentialStatus]: string } => {
+): Record<ItwCredentialStatus, string> => {
   const theme = useIOTheme();
 
   if (credentialType === wellKnownCredential.BONUS_PARI) {
     const transparent = 'transparent';
     return {
-      valid: transparent,
-      invalid: transparent,
       expired: transparent,
       expiring: transparent,
+      invalid: transparent,
       jwtExpired: transparent,
       jwtExpiring: transparent,
-      unknown: transparent
+      unknown: transparent,
+      valid: transparent
     };
   }
 
   return {
-    valid: IOColors[theme['appBackground-primary']],
-    invalid: IOColors['error-600'],
     expired: IOColors['error-600'],
     expiring: IOColors['warning-700'],
+    invalid: IOColors['error-600'],
     jwtExpired: IOColors['error-600'],
     jwtExpiring: IOColors['warning-700'],
-    unknown: IOColors['grey-300']
+    unknown: IOColors['grey-300'],
+    valid: IOColors[theme['appBackground-primary']]
   };
 };
 
-export const tagPropsByStatus: { [key in ItwCredentialStatus]?: Tag } = {
-  invalid: {
-    variant: 'error',
-    text: t('credentials.status.invalid', { ns: 'wallet' })
-  },
+export const tagPropsByStatus: Partial<Record<ItwCredentialStatus, Tag>> = {
   expired: {
-    variant: 'error',
-    text: t('credentials.status.expired', { ns: 'wallet' })
-  },
-  jwtExpired: {
-    variant: 'error',
-    text: t('credentials.status.verificationExpired', { ns: 'wallet' })
+    text: t('credentials.status.expired', { ns: 'wallet' }),
+    variant: 'error'
   },
   expiring: {
-    variant: 'warning',
-    text: t('credentials.status.expiring', { ns: 'wallet' })
+    text: t('credentials.status.expiring', { ns: 'wallet' }),
+    variant: 'warning'
+  },
+  invalid: {
+    text: t('credentials.status.invalid', { ns: 'wallet' }),
+    variant: 'error'
+  },
+  jwtExpired: {
+    text: t('credentials.status.verificationExpired', { ns: 'wallet' }),
+    variant: 'error'
   },
   jwtExpiring: {
-    variant: 'warning',
-    text: t('credentials.status.verificationExpiring', { ns: 'wallet' })
+    text: t('credentials.status.verificationExpiring', { ns: 'wallet' }),
+    variant: 'warning'
   },
   unknown: {
-    variant: 'custom',
-    icon: { name: 'infoFilled', color: 'grey-450' },
-    text: t('credentials.status.unknown', { ns: 'wallet' })
+    icon: { color: 'grey-450', name: 'infoFilled' },
+    text: t('credentials.status.unknown', { ns: 'wallet' }),
+    variant: 'custom'
   }
 };
 
 /**
  * List of statuses that make a credential valid, especially for UI purposes.
  */
-export const validCredentialStatuses: Array<ItwCredentialStatus> = [
+export const validCredentialStatuses: ItwCredentialStatus[] = [
   'valid',
   'expiring',
   'jwtExpiring'
 ];
 
 const itwGetCredentialNameByCredentialType = (): Record<string, string> => ({
+  [wellKnownCredential.BONUS_PARI]: t('credentials.names.bonusPari', {
+    ns: 'wallet'
+  }),
   [wellKnownCredential.DISABILITY_CARD]: t('credentials.names.disabilityCard', {
     ns: 'wallet'
   }),
@@ -78,9 +82,6 @@ const itwGetCredentialNameByCredentialType = (): Record<string, string> => ({
     ns: 'wallet'
   }),
   [wellKnownCredential.PID]: t('credentials.names.pid', {
-    ns: 'wallet'
-  }),
-  [wellKnownCredential.BONUS_PARI]: t('credentials.names.bonusPari', {
     ns: 'wallet'
   })
 });
@@ -93,44 +94,45 @@ export const getCredentialNameFromType = (
     ? itwGetCredentialNameByCredentialType()[credentialType]
     : withDefault;
 
-export const borderVariantByStatus: {
-  [key in ItwCredentialStatus]: ItwIridescentBorderVariant;
-} = {
-  valid: 'default',
-  expiring: 'warning',
-  jwtExpiring: 'warning',
+export const borderVariantByStatus: Record<
+  ItwCredentialStatus,
+  ItwIridescentBorderVariant
+> = {
   expired: 'error',
-  jwtExpired: 'error',
+  expiring: 'warning',
   invalid: 'error',
-  unknown: 'default'
+  jwtExpired: 'error',
+  jwtExpiring: 'warning',
+  unknown: 'default',
+  valid: 'default'
 };
 
-export const useTagPropsByStatus = (): {
-  [key in ItwCredentialStatus]?: Tag;
-} => ({
-  invalid: {
-    variant: 'error',
-    text: t('wallet', 'credentials.status.invalid')
-  },
+export const useTagPropsByStatus = (): Partial<
+  Record<ItwCredentialStatus, Tag>
+> => ({
   expired: {
-    variant: 'error',
-    text: t('wallet', 'credentials.status.expired')
-  },
-  jwtExpired: {
-    variant: 'error',
-    text: t('wallet', 'credentials.status.verificationExpired')
+    text: t('wallet', 'credentials.status.expired'),
+    variant: 'error'
   },
   expiring: {
-    variant: 'warning',
-    text: t('wallet', 'credentials.status.expiring')
+    text: t('wallet', 'credentials.status.expiring'),
+    variant: 'warning'
+  },
+  invalid: {
+    text: t('wallet', 'credentials.status.invalid'),
+    variant: 'error'
+  },
+  jwtExpired: {
+    text: t('wallet', 'credentials.status.verificationExpired'),
+    variant: 'error'
   },
   jwtExpiring: {
-    variant: 'warning',
-    text: t('wallet', 'credentials.status.verificationExpiring')
+    text: t('wallet', 'credentials.status.verificationExpiring'),
+    variant: 'warning'
   },
   unknown: {
-    variant: 'custom',
-    icon: { name: 'infoFilled', color: 'grey-450' },
-    text: t('wallet', 'credentials.status.unknown')
+    icon: { color: 'grey-450', name: 'infoFilled' },
+    text: t('wallet', 'credentials.status.unknown'),
+    variant: 'custom'
   }
 });

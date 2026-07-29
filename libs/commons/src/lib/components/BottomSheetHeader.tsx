@@ -5,17 +5,17 @@ import {
   IOVisualCostants
 } from '@pagopa/io-app-design-system';
 import { createRef, isValidElement } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 const styles = StyleSheet.create({
   bottomSheetHeader: {
-    flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: IOColors.white,
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: IOVisualCostants.appMarginDefault,
-    paddingTop: IOVisualCostants.appMarginDefault,
     paddingBottom: IOVisualCostants.appMarginDefault,
-    backgroundColor: IOColors.white
+    paddingHorizontal: IOVisualCostants.appMarginDefault,
+    paddingTop: IOVisualCostants.appMarginDefault
   },
   bottomSheetHeaderContent: {
     flex: 1
@@ -23,9 +23,9 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  title: string | React.ReactNode;
   closeAccessibilityLabel: string;
   onClose: () => void;
+  title: React.ReactNode | string;
 };
 
 /**
@@ -34,31 +34,31 @@ type Props = {
  * @param onClose - The function to call when the close button is pressed.
  */
 export const BottomSheetHeader: React.FunctionComponent<Props> = ({
-  title,
   closeAccessibilityLabel,
-  onClose
+  onClose,
+  title
 }: Props) => {
   const headerRef = createRef<View>();
 
   return (
-    <View style={styles.bottomSheetHeader} ref={headerRef}>
+    <View ref={headerRef} style={styles.bottomSheetHeader}>
       {isValidElement(title) ? (
         title
       ) : (
         <View
-          style={styles.bottomSheetHeaderContent}
-          accessible={true}
-          accessibilityRole={'header'}
           accessibilityLabel={typeof title === 'string' ? title : undefined}
+          accessibilityRole={'header'}
+          accessible={true}
+          style={styles.bottomSheetHeaderContent}
         >
           <H4>{title}</H4>
         </View>
       )}
       <IconButton
-        color="neutral"
-        onPress={onClose}
-        icon="closeMedium"
         accessibilityLabel={closeAccessibilityLabel}
+        color="neutral"
+        icon="closeMedium"
+        onPress={onClose}
       />
     </View>
   );

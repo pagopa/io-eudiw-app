@@ -1,22 +1,22 @@
 import { IOMarkdown, useIOBottomSheetModal } from '@io-eudiw-app/commons';
 import { H6, VSpacer, VStack } from '@pagopa/io-app-design-system';
-import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
 
 /**
  * The type of the content of the bottom sheet.
  */
 type ItwInfoFlowContentType = {
-  title?: string;
   body: string;
+  title?: string;
 };
 
 /**
  * Type of the props of the hook.
  */
 type ItwInfoFlowProps = {
+  content: ItwInfoFlowContentType[];
   title: string;
-  content: Array<ItwInfoFlowContentType>;
 };
 
 /**
@@ -24,7 +24,7 @@ type ItwInfoFlowProps = {
  * @param title - the title of the bottom sheet.
  * @param content - the content of the bottom sheet. Consists of an array of objects with a title and a body.
  */
-export const useItwInfoBottomSheet = ({ title, content }: ItwInfoFlowProps) => {
+export const useItwInfoBottomSheet = ({ content, title }: ItwInfoFlowProps) => {
   const { t } = useTranslation(['common']);
   const BottomSheetBody = () => (
     <View style={{ flex: 1 }}>
@@ -38,15 +38,15 @@ export const useItwInfoBottomSheet = ({ title, content }: ItwInfoFlowProps) => {
     </View>
   );
 
-  const { present, bottomSheet, dismiss } = useIOBottomSheetModal({
-    title,
+  const { bottomSheet, dismiss, present } = useIOBottomSheetModal({
     closeAccessibilityLabel: t('buttons.close'),
-    component: <BottomSheetBody />
+    component: <BottomSheetBody />,
+    title
   });
 
   return {
+    bottomSheet,
     dismiss,
-    present,
-    bottomSheet
+    present
   };
 };

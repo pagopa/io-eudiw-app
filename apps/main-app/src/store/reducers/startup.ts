@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../types';
 import { BiometricState } from '@io-eudiw-app/identification';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { RootState } from '../types';
 
 /* State type definition for the startup slice
  * startUpStatus - Status of the startup process
@@ -8,38 +9,32 @@ import { BiometricState } from '@io-eudiw-app/identification';
  * biometricState - Indicates the state of the biometric on the device
  */
 export type StartupSlice = {
+  biometricState: BiometricState;
+  hasScreenLock: boolean;
   startUpStatus:
     | 'DONE'
-    | 'WAIT_ONBOARDING'
+    | 'ERROR'
+    | 'LOADING'
+    | 'NOT_STARTED'
     | 'WAIT_IDENTIFICATION'
     | 'WAIT_MINI_APP_SELECTION'
-    | 'LOADING'
-    | 'ERROR'
-    | 'NOT_STARTED';
-  hasScreenLock: boolean;
-  biometricState: BiometricState;
+    | 'WAIT_ONBOARDING';
 };
 
 // Initial state for the startup slice
 const initialState: StartupSlice = {
-  startUpStatus: 'NOT_STARTED',
+  biometricState: 'NOT_SUPPORTED',
   hasScreenLock: false,
-  biometricState: 'NOT_SUPPORTED'
+  startUpStatus: 'NOT_STARTED'
 };
 
 /**
  * Redux slice for the startup state.
  */
 export const startupSlice = createSlice({
-  name: 'startup',
   initialState,
+  name: 'startup',
   reducers: {
-    startupSetStatus: (
-      state,
-      action: PayloadAction<StartupSlice['startUpStatus']>
-    ) => {
-      state.startUpStatus = action.payload;
-    },
     startupSetAttributes: (
       state,
       action: PayloadAction<Omit<StartupSlice, 'startUpStatus'>>
@@ -52,6 +47,12 @@ export const startupSlice = createSlice({
     },
     startupSetLoading: state => {
       state.startUpStatus = 'LOADING';
+    },
+    startupSetStatus: (
+      state,
+      action: PayloadAction<StartupSlice['startUpStatus']>
+    ) => {
+      state.startUpStatus = action.payload;
     }
   }
 });
@@ -60,10 +61,10 @@ export const startupSlice = createSlice({
  * Exports the actions for the startup slice.
  */
 export const {
+  startupSetAttributes,
   startupSetError,
   startupSetLoading,
-  startupSetStatus,
-  startupSetAttributes
+  startupSetStatus
 } = startupSlice.actions;
 
 /**

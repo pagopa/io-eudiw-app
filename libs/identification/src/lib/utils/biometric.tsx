@@ -41,8 +41,8 @@ export const confirmBiometricEnabling = async (promptMessage: string) => {
   try {
     if (isIos) {
       const res = await LocalAuthentication.authenticateAsync({
-        promptMessage,
-        disableDeviceFallback: true
+        disableDeviceFallback: true,
+        promptMessage
       });
       return res.success;
     } else {
@@ -66,11 +66,11 @@ export const getBiometryAccessibilityLabel = (
   faceLabel: string
 ) => {
   switch (biometricType) {
-    case LocalAuthentication.AuthenticationType.FINGERPRINT:
-      return fingerprintLabel;
     case LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION:
     case LocalAuthentication.AuthenticationType.IRIS:
       return faceLabel;
+    case LocalAuthentication.AuthenticationType.FINGERPRINT:
+      return fingerprintLabel;
   }
 };
 
@@ -83,18 +83,18 @@ export const getBiometricDesignSystemType = (
   biometricType: LocalAuthentication.AuthenticationType
 ): BiometricsValidType => {
   switch (biometricType) {
-    case LocalAuthentication.AuthenticationType.FINGERPRINT:
-      return 'TOUCH_ID';
     case LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION:
     case LocalAuthentication.AuthenticationType.IRIS:
       return 'FACE_ID'; // Equals to 'BIOMETRICS' in IO design system as they both map to the same icon
+    case LocalAuthentication.AuthenticationType.FINGERPRINT:
+      return 'TOUCH_ID';
   }
 };
 
 interface BiometricStrings {
-  promptMessage: string;
-  promptDescription: string;
   cancelLabel: string;
+  promptDescription: string;
+  promptMessage: string;
 }
 
 /**
@@ -132,25 +132,25 @@ export const biometricAuthenticationRequest = async (
 
 export const IdentificationInstructionsComponent = (props: {
   biometricType: LocalAuthentication.AuthenticationType | undefined;
-  isBiometricIdentificationFailed: boolean;
-  instructionsUnlockCode: string;
-  instructionsFingerprint: string;
   instructionsFaceId: string;
+  instructionsFingerprint: string;
+  instructionsUnlockCode: string;
+  isBiometricIdentificationFailed: boolean;
 }) => {
   const {
     biometricType,
-    isBiometricIdentificationFailed,
-    instructionsUnlockCode,
+    instructionsFaceId,
     instructionsFingerprint,
-    instructionsFaceId
+    instructionsUnlockCode,
+    isBiometricIdentificationFailed
   } = props;
 
   const generatePragraphRule = () => ({
     Paragraph(paragraph: TxtParagraphNode, render: Renderer) {
       return (
         <Body
-          key={getTxtNodeKey(paragraph)}
           color="white"
+          key={getTxtNodeKey(paragraph)}
           style={{ textAlign: 'center' }}
         >
           {paragraph.children.map(render)}
@@ -173,21 +173,21 @@ export const IdentificationInstructionsComponent = (props: {
   }
 
   switch (biometricType) {
-    case LocalAuthentication.AuthenticationType.FINGERPRINT:
-      return (
-        <View accessible style={{ flexDirection: 'row' }}>
-          <IOMarkdown
-            content={instructionsFingerprint}
-            rules={generatePragraphRule()}
-          />
-        </View>
-      );
     case LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION:
     case LocalAuthentication.AuthenticationType.IRIS:
       return (
         <View accessible style={{ flexDirection: 'row' }}>
           <IOMarkdown
             content={instructionsFaceId}
+            rules={generatePragraphRule()}
+          />
+        </View>
+      );
+    case LocalAuthentication.AuthenticationType.FINGERPRINT:
+      return (
+        <View accessible style={{ flexDirection: 'row' }}>
+          <IOMarkdown
+            content={instructionsFingerprint}
             rules={generatePragraphRule()}
           />
         </View>

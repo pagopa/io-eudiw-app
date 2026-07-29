@@ -1,22 +1,23 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersistConfig, persistReducer } from 'redux-persist';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import _ from 'lodash';
+import { PersistConfig, persistReducer } from 'redux-persist';
+
 import { WalletCombinedRootState } from '.';
 import { ProximityDetails } from '../screens/proximity/ItwProximityPresentationDetails';
 import { resetLifecycle } from './lifecycle';
-import _ from 'lodash';
 
 /**
  * Represents the claims associated with a specific credential type within a
  * proximity presentation consent.
  */
 export type ConsentCredentialInfo = {
+  claimNames: string[];
   credentialType: string;
-  claimNames: Array<string>;
 };
 
 /**
@@ -26,8 +27,8 @@ export type ConsentCredentialInfo = {
  * names requested.
  */
 export type ConsentData = {
+  credentials: ConsentCredentialInfo[];
   rpId: string;
-  credentials: Array<ConsentCredentialInfo>;
 };
 
 /**
@@ -43,11 +44,11 @@ export type ProximityConsents = Record<string, ConsentData>;
 export const getConsentDataFromProximityDetails = (
   proximityDetails: ProximityDetails
 ): ConsentData => ({
-  rpId: proximityDetails[0]?.rpId ?? 'Unknown',
   credentials: proximityDetails.map(detail => ({
-    credentialType: detail.credentialType,
-    claimNames: detail.claimsToDisplay.map(claim => claim.id)
-  }))
+    claimNames: detail.claimsToDisplay.map(claim => claim.id),
+    credentialType: detail.credentialType
+  })),
+  rpId: proximityDetails[0]?.rpId ?? 'Unknown'
 });
 
 /**
@@ -85,8 +86,14 @@ const initialState: ProximityConsentsState = {
  * RP and claims combination skip the claims disclosure step.
  */
 const proximityConsentsSlice = createSlice({
-  name: 'proximityConsents',
+  extraReducers: builder => {
+    // Reset the persisted consents together with the rest of the wallet state.
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
+  },
   initialState,
+  name: 'proximityConsents',
   reducers: {
     itwGrantProximityConsent: (state, action: PayloadAction<ConsentData>) => {
       const key = generateConsentKey(action.payload);
@@ -99,12 +106,6 @@ const proximityConsentsSlice = createSlice({
       const key = action.payload;
       state.consents = _.omit(state.consents, key);
     }
-  },
-  extraReducers: builder => {
-    // Reset the persisted consents together with the rest of the wallet state.
-    builder.addCase(preferencesReset, () => initialState);
-    builder.addCase(resetLifecycle, () => initialState);
-    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 

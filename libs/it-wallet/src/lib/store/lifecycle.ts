@@ -1,11 +1,12 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersistConfig, persistReducer } from 'redux-persist';
-import { WalletCombinedRootState } from '.';
 import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PersistConfig, persistReducer } from 'redux-persist';
+
+import { WalletCombinedRootState } from '.';
 
 /**
  * Enum for the lifecycle state of the wallet.
@@ -35,18 +36,18 @@ const initialState: LifecycleSlice = {
  * Redux slice for the lifecycle state.
  */
 const lifecycleSlice = createSlice({
-  name: 'lifecycle',
-  initialState,
-  reducers: {
-    setLifecycle: (state, action: PayloadAction<LifecycleSlice>) => {
-      state.lifecycle = action.payload.lifecycle;
-    },
-    resetLifecycle: () => initialState
-  },
   extraReducers: builder => {
     // Reset the state when the preferences are reset, if it's the first startup. This is required to clear the persisted storage.
     builder.addCase(preferencesReset, () => initialState);
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
+  },
+  initialState,
+  name: 'lifecycle',
+  reducers: {
+    resetLifecycle: () => initialState,
+    setLifecycle: (state, action: PayloadAction<LifecycleSlice>) => {
+      state.lifecycle = action.payload.lifecycle;
+    }
   }
 });
 
@@ -70,7 +71,7 @@ export const lifecycleReducer = persistReducer(
 /**
  * Exports the actions for the lifecycle slice.
  */
-export const { setLifecycle, resetLifecycle } = lifecycleSlice.actions;
+export const { resetLifecycle, setLifecycle } = lifecycleSlice.actions;
 
 /**
  * Selects if the wallet lifecycle is valid.

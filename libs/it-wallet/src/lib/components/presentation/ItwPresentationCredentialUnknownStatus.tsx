@@ -1,7 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
-import { t } from 'i18next';
 import { OperationResultScreenContent } from '@io-eudiw-app/commons';
 import { useHeaderSecondLevel } from '@io-eudiw-app/commons';
+import { useNavigation } from '@react-navigation/native';
+import { t } from 'i18next';
+
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 
@@ -20,26 +21,26 @@ export const ItwPresentationCredentialUnknownStatus = ({
   const credentialName = getCredentialNameFromType(credential.credentialType);
 
   useHeaderSecondLevel({
-    title: '',
-    headerShown: false
+    headerShown: false,
+    title: ''
   });
 
   return (
     <OperationResultScreenContent
-      pictogram="updateOS"
-      title={t('presentation.statusAssertionUnknown.title', {
-        ns: 'wallet',
-        credentialName
-      })}
-      subtitle={t('presentation.statusAssertionUnknown.content', {
-        ns: 'wallet'
-      })}
       action={{
         label: t('presentation.statusAssertionUnknown.primaryAction', {
           ns: 'wallet'
         }),
         onPress: () => navigation.goBack()
       }}
+      pictogram="updateOS"
+      subtitle={t('presentation.statusAssertionUnknown.content', {
+        ns: 'wallet'
+      })}
+      title={t('presentation.statusAssertionUnknown.title', {
+        credentialName,
+        ns: 'wallet'
+      })}
     />
   );
 };

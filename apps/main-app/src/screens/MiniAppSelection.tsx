@@ -1,4 +1,10 @@
 import {
+  useHardwareBackButton,
+  useHeaderSecondLevel
+} from '@io-eudiw-app/commons';
+import { itWalletFeature } from '@io-eudiw-app/it-wallet';
+import { preferencesSetSelectedMiniAppId } from '@io-eudiw-app/preferences';
+import {
   Body,
   H2,
   IOVisualCostants,
@@ -6,22 +12,17 @@ import {
   ModuleCredential,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import { ListRenderItem, FlatList } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { useAppDispatch } from '../store';
-import { preferencesSetSelectedMiniAppId } from '@io-eudiw-app/preferences';
-import {
-  useHardwareBackButton,
-  useHeaderSecondLevel
-} from '@io-eudiw-app/commons';
-import { itWalletFeature } from '@io-eudiw-app/it-wallet';
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList, ListRenderItem } from 'react-native';
 import { ImageSourcePropType, ImageURISource } from 'react-native';
+
+import { useAppDispatch } from '../store';
 
 type MiniAppOption = {
   id: string;
+  image: ImageSourcePropType | ImageURISource;
   label: string;
-  image: ImageURISource | ImageSourcePropType;
 };
 
 const MiniAppSelection = () => {
@@ -35,15 +36,15 @@ const MiniAppSelection = () => {
   useHardwareBackButton(() => true);
 
   useHeaderSecondLevel({
-    title: '',
-    canGoBack: false
+    canGoBack: false,
+    title: ''
   });
 
-  const availableMiniApps: Array<MiniAppOption> = [
+  const availableMiniApps: MiniAppOption[] = [
     {
       id: itWalletFeature.id,
-      label: t('global:miniAppSelection.miniApps.it-wallet'),
-      image: require('../../assets/icons/it-wallet-mini-app.png')
+      image: require('../../assets/icons/it-wallet-mini-app.png'),
+      label: t('global:miniAppSelection.miniApps.it-wallet')
     }
   ];
 
@@ -65,8 +66,8 @@ const MiniAppSelection = () => {
   const renderItem: ListRenderItem<MiniAppOption> = ({ item }) => (
     <>
       <ModuleCredential
-        label={item.label}
         image={item.image}
+        label={item.label}
         onPress={() => onSelect(item.id)}
       />
       <VSpacer />
@@ -75,14 +76,14 @@ const MiniAppSelection = () => {
 
   return (
     <FlatList
-      data={availableMiniApps}
-      renderItem={renderItem}
-      keyExtractor={item => item.id}
-      ListHeaderComponent={ListHeader}
       contentContainerStyle={{
         flexGrow: 1,
         paddingHorizontal: IOVisualCostants.appMarginDefault
       }}
+      data={availableMiniApps}
+      keyExtractor={item => item.id}
+      ListHeaderComponent={ListHeader}
+      renderItem={renderItem}
     />
   );
 };

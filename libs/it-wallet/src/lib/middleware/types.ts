@@ -4,13 +4,14 @@ import {
   ListenerEffectAPI,
   TypedStartListening
 } from '@reduxjs/toolkit';
-import { WalletDispatch, WalletCombinedRootState } from '../store';
+
+import { WalletCombinedRootState, WalletDispatch } from '../store';
 
 /**
- * Typed version of the startListening method which includes the correct RootState and AppDispatch types.
- * It can be used to define a new listener.
+ * Type for a listener function which doesn't depend on a specific action.
+ * It can be used in helper functions which create listeners not tied to a specific action.
  */
-export type AppStartListening = TypedStartListening<
+export type AppListener = ListenerEffectAPI<
   WalletCombinedRootState,
   WalletDispatch
 >;
@@ -30,10 +31,10 @@ export type AppListenerWithAction<ActionType extends Action> = ListenerEffect<
 >;
 
 /**
- * Type for a listener function which doesn't depend on a specific action.
- * It can be used in helper functions which create listeners not tied to a specific action.
+ * Typed version of the startListening method which includes the correct RootState and AppDispatch types.
+ * It can be used to define a new listener.
  */
-export type AppListener = ListenerEffectAPI<
+export type AppStartListening = TypedStartListening<
   WalletCombinedRootState,
   WalletDispatch
 >;

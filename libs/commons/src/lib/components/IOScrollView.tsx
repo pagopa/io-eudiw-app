@@ -1,15 +1,15 @@
 import {
   HeaderSecondLevel,
+  hexToRgba,
   IOButton,
   IOButtonLinkSpecificProps,
   IOColors,
   IOSpacer,
   IOSpacingScale,
   IOVisualCostants,
+  useIOTheme,
   VSpacer,
-  WithTestID,
-  hexToRgba,
-  useIOTheme
+  WithTestID
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -41,29 +41,30 @@ import Animated, {
   useSharedValue
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ButtonBlockProps } from './utils/buttons';
 
-type ButtonLinkProps = Omit<IOButtonLinkSpecificProps, 'color' | 'variant'>;
+import { ButtonBlockProps } from './utils/buttons';
 
 export type IOScrollViewActions =
   | {
-      type: 'SingleButton';
-      primary: ButtonBlockProps;
-      secondary?: never;
-      tertiary?: never;
-    }
-  | {
-      type: 'TwoButtons';
-      primary: ButtonBlockProps;
-      secondary: ButtonLinkProps;
-      tertiary?: never;
-    }
-  | {
-      type: 'ThreeButtons';
       primary: ButtonBlockProps;
       secondary: ButtonBlockProps;
       tertiary: ButtonLinkProps;
+      type: 'ThreeButtons';
+    }
+  | {
+      primary: ButtonBlockProps;
+      secondary: ButtonLinkProps;
+      tertiary?: never;
+      type: 'TwoButtons';
+    }
+  | {
+      primary: ButtonBlockProps;
+      secondary?: never;
+      tertiary?: never;
+      type: 'SingleButton';
     };
+
+type ButtonLinkProps = Omit<IOButtonLinkSpecificProps, 'color' | 'variant'>;
 
 type IOSCrollViewHeaderScrollValues = ComponentProps<
   typeof HeaderSecondLevel
@@ -71,21 +72,21 @@ type IOSCrollViewHeaderScrollValues = ComponentProps<
 
 type IOScrollViewProps = WithTestID<
   PropsWithChildren<{
-    headerConfig?: ComponentProps<typeof HeaderSecondLevel>;
     actions?: IOScrollViewActions;
-    debugMode?: boolean;
     animatedRef?: AnimatedRef<Animated.ScrollView>;
-    snapOffset?: number;
-    /* Don't include safe area insets */
-    excludeSafeAreaMargins?: boolean;
-    /* Don't include end content margin */
-    excludeEndContentMargin?: boolean;
-    /* Include page margins */
-    includeContentMargins?: boolean;
     /* Center content in iOS without inertial scrolling */
     centerContent?: boolean;
-    refreshControlProps?: RefreshControlProps;
     contentContainerStyle?: ViewStyle;
+    debugMode?: boolean;
+    /* Don't include end content margin */
+    excludeEndContentMargin?: boolean;
+    /* Don't include safe area insets */
+    excludeSafeAreaMargins?: boolean;
+    headerConfig?: ComponentProps<typeof HeaderSecondLevel>;
+    /* Include page margins */
+    includeContentMargins?: boolean;
+    refreshControlProps?: RefreshControlProps;
+    snapOffset?: number;
   }>
 >;
 
@@ -105,25 +106,25 @@ const spaceBetweenActionAndLink: IOSpacer = 16;
 const extraSafeAreaMargin: IOSpacingScale = 8;
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    flexShrink: 0,
+    paddingHorizontal: IOVisualCostants.appMarginDefault,
+    width: '100%'
+  },
+  centerContentWrapper: {
+    alignContent: 'center',
+    alignItems: 'stretch',
+    flexGrow: 1,
+    justifyContent: 'center'
+  },
   gradientBottomActions: {
-    width: '100%',
-    position: 'absolute',
     bottom: 0,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    position: 'absolute',
+    width: '100%'
   },
   gradientContainer: {
     ...StyleSheet.absoluteFillObject
-  },
-  buttonContainer: {
-    paddingHorizontal: IOVisualCostants.appMarginDefault,
-    width: '100%',
-    flexShrink: 0
-  },
-  centerContentWrapper: {
-    flexGrow: 1,
-    alignItems: 'stretch',
-    justifyContent: 'center',
-    alignContent: 'center'
   }
 });
 
@@ -142,19 +143,20 @@ const styles = StyleSheet.create({
  * @param includeContentMargins - Include horizontal screen margins, true as default
  * @param debugMode - Enable debug mode. Only for testing purposes, false as default
  */
+// eslint-disable-next-line max-lines-per-function
 export const IOScrollView = ({
-  headerConfig,
-  children,
   actions,
-  snapOffset,
-  excludeSafeAreaMargins = false,
-  excludeEndContentMargin = false,
-  includeContentMargins = true,
   animatedRef,
-  debugMode = false,
   centerContent,
-  refreshControlProps,
+  children,
   contentContainerStyle,
+  debugMode = false,
+  excludeEndContentMargin = false,
+  excludeSafeAreaMargins = false,
+  headerConfig,
+  includeContentMargins = true,
+  refreshControlProps,
+  snapOffset,
   testID
 }: IOScrollViewProps) => {
   const theme = useIOTheme();
@@ -221,7 +223,7 @@ export const IOScrollView = ({
     bottomMargin + actionBlockHeight + contentEndMargin;
 
   const handleScroll = useAnimatedScrollHandler(
-    ({ contentOffset, layoutMeasurement, contentSize }) => {
+    ({ contentOffset, contentSize, layoutMeasurement }) => {
       const scrollPosition = contentOffset.y;
       const maxScrollHeight = contentSize.height - layoutMeasurement.height;
       const scrollPercentage = scrollPosition / maxScrollHeight;
@@ -266,14 +268,6 @@ export const IOScrollView = ({
   return (
     <Fragment>
       <Animated.ScrollView
-        ref={animatedRef}
-        testID={testID}
-        onScroll={handleScroll}
-        scrollEventThrottle={8}
-        snapToOffsets={[0, snapOffset || 0]}
-        snapToEnd={false}
-        decelerationRate="normal"
-        refreshControl={RefreshControlComponent}
         centerContent={centerContent}
         contentContainerStyle={[
           {
@@ -291,11 +285,20 @@ export const IOScrollView = ({
           `OperationResultScreenContent` component */
           centerContent ? styles.centerContentWrapper : {}
         ]}
+        decelerationRate="normal"
+        onScroll={handleScroll}
+        ref={animatedRef}
+        refreshControl={RefreshControlComponent}
+        scrollEventThrottle={8}
+        snapToEnd={false}
+        snapToOffsets={[0, snapOffset || 0]}
+        testID={testID}
       >
         {children}
       </Animated.ScrollView>
       {actions && (
         <View
+          pointerEvents="box-none"
           style={[
             styles.gradientBottomActions,
             {
@@ -303,34 +306,33 @@ export const IOScrollView = ({
               paddingBottom: bottomMargin
             }
           ]}
-          pointerEvents="box-none"
           {...(testID && { testID: `${testID}-actions` })}
         >
           <Animated.View
+            pointerEvents="none"
             style={[
               styles.gradientContainer,
               debugMode && {
                 backgroundColor: hexToRgba(IOColors['error-500'], 0.15)
               }
             ]}
-            pointerEvents="none"
           >
             <Animated.View
               style={[
                 opacityTransition,
                 debugMode && {
+                  backgroundColor: hexToRgba(IOColors['error-500'], 0.4),
                   borderTopColor: IOColors['error-500'],
-                  borderTopWidth: 1,
-                  backgroundColor: hexToRgba(IOColors['error-500'], 0.4)
+                  borderTopWidth: 1
                 }
               ]}
             >
               <LinearGradient
+                colors={colors}
+                locations={locations}
                 style={{
                   height: gradientAreaHeight - safeBackgroundBlockHeight
                 }}
-                locations={locations}
-                colors={colors}
               />
             </Animated.View>
 
@@ -339,16 +341,16 @@ export const IOScrollView = ({
                 block, the content appears glitchy. */}
             <View
               style={{
+                backgroundColor: HEADER_BG_COLOR,
                 bottom: 0,
-                height: safeBackgroundBlockHeight,
-                backgroundColor: HEADER_BG_COLOR
+                height: safeBackgroundBlockHeight
               }}
             />
           </Animated.View>
           <View
-            style={styles.buttonContainer}
             onLayout={getActionBlockHeight}
             pointerEvents="box-none"
+            style={styles.buttonContainer}
           >
             {renderActionButtons(actions, extraBottomMargin)}
           </View>
@@ -363,16 +365,16 @@ const renderActionButtons = (
   extraBottomMargin: number
 ) => {
   const {
-    type,
     primary: primaryAction,
     secondary: secondaryAction,
-    tertiary: tertiaryAction
+    tertiary: tertiaryAction,
+    type
   } = actions;
 
   return (
     <>
       {primaryAction && (
-        <IOButton variant="solid" fullWidth {...primaryAction} />
+        <IOButton fullWidth variant="solid" {...primaryAction} />
       )}
 
       {type === 'TwoButtons' && (
@@ -391,9 +393,9 @@ const renderActionButtons = (
         <Fragment>
           <VSpacer size={spaceBetweenActions} />
           <IOButton
-            variant="outline"
-            fullWidth
             color="primary"
+            fullWidth
+            variant="outline"
             {...secondaryAction}
           />
 
@@ -404,7 +406,7 @@ const renderActionButtons = (
             }}
           >
             <VSpacer size={spaceBetweenActionAndLink} />
-            <IOButton variant="link" color="primary" {...tertiaryAction} />
+            <IOButton color="primary" variant="link" {...tertiaryAction} />
           </View>
         </Fragment>
       )}

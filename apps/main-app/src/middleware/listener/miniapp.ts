@@ -1,19 +1,20 @@
+import { takeLatestEffect } from '@io-eudiw-app/commons';
 import {
   preferencesResetMiniAppSelection,
   preferencesSetSelectedMiniAppId,
   selectSelectedMiniAppId
 } from '@io-eudiw-app/preferences';
-import { AppListener, AppListenerWithAction } from './types';
-import { startupSetStatus } from '../../store/reducers/startup';
 import { isAnyOf } from '@reduxjs/toolkit';
+
 import {
   miniAppListenerMiddleware,
   startAppListening,
   startMiniAppListening
 } from '.';
-import { takeLatestEffect } from '@io-eudiw-app/commons';
+import { startupSetStatus } from '../../store/reducers/startup';
 import { getMiniAppById } from '../../utils/miniapp';
 import { handlePendingDeepLink } from './common';
+import { AppListener, AppListenerWithAction } from './types';
 
 export const mountSelectedMiniAppListeners = (listenerApi: AppListener) => {
   miniAppListenerMiddleware.clearListeners();
@@ -35,6 +36,6 @@ const changeMiniAppSelection: AppListenerWithAction<
 
 export const changeMiniAppSelectionListener = () =>
   startAppListening({
-    matcher: isAnyOf(preferencesResetMiniAppSelection),
-    effect: takeLatestEffect(changeMiniAppSelection)
+    effect: takeLatestEffect(changeMiniAppSelection),
+    matcher: isAnyOf(preferencesResetMiniAppSelection)
   });

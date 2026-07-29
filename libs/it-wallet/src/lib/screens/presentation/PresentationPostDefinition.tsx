@@ -1,4 +1,11 @@
 import {
+  getSafeText,
+  useDisableGestureNavigation,
+  useHardwareBackButton,
+  useHeaderSecondLevel
+} from '@io-eudiw-app/commons';
+import { IOMarkdown } from '@io-eudiw-app/commons';
+import {
   ClaimsSelector,
   FeatureInfo,
   FooterActions,
@@ -16,8 +23,11 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { ComponentProps, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, StyleSheet, View } from 'react-native';
+
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import { useAppDispatch, useAppSelector } from '../../store';
 import {
   Descriptor,
   selectPostDefinitionStatus,
@@ -33,15 +43,6 @@ import {
   groupCredentialsByPurpose
 } from '../../utils/itwRemotePresentationUtils';
 import { EnrichedPresentationDetails } from '../../utils/itwTypesUtils';
-import { useAppDispatch, useAppSelector } from '../../store';
-import {
-  getSafeText,
-  useDisableGestureNavigation,
-  useHardwareBackButton,
-  useHeaderSecondLevel
-} from '@io-eudiw-app/commons';
-import { IOMarkdown } from '@io-eudiw-app/commons';
-import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Description which contains the requested of the credential to be presented.
@@ -59,6 +60,7 @@ type Props = StackScreenProps<
  * Presentation for the issuance flow after the user has received the descriptor containing the requested claims.
  * It requires the descrptor containg the requested claims in order to render the screen, passed via navigation params.
  */
+// eslint-disable-next-line max-lines-per-function
 const PresentationPostDefinition = ({ route }: Props) => {
   const navigation = useNavigation();
   const { t } = useTranslation(['common', 'wallet']);
@@ -84,13 +86,13 @@ const PresentationPostDefinition = ({ route }: Props) => {
   const cancelAlert = () => {
     Alert.alert(t('common:cancelOperation.title'), '', [
       {
-        text: t('common:cancelOperation.confirm'),
         onPress: cancel,
-        style: 'destructive'
+        style: 'destructive',
+        text: t('common:cancelOperation.confirm')
       },
       {
-        text: t('common:cancelOperation.cancel'),
-        style: 'cancel'
+        style: 'cancel',
+        text: t('common:cancelOperation.cancel')
       }
     ]);
   };
@@ -120,15 +122,15 @@ const PresentationPostDefinition = ({ route }: Props) => {
   ]);
 
   useHeaderSecondLevel({
-    title: '',
-    goBack: cancelAlert
+    goBack: cancelAlert,
+    title: ''
   });
 
   /**
    * Maps claims to the format required by the ClaimsSelector component.
    */
   const mapClaims = (
-    claims: Array<ClaimDisplayFormat>
+    claims: ClaimDisplayFormat[]
   ): ComponentProps<typeof ClaimsSelector>['items'] =>
     claims
       // Deduplicate by id so the ClaimsSelector never receives two items with
@@ -142,10 +144,10 @@ const PresentationPostDefinition = ({ route }: Props) => {
 
         if (displayResult.type === 'image') {
           return {
-            id: c.id,
-            value: displayResult.value, // This is always a string for images
             description: c.label,
-            type: 'image'
+            id: c.id,
+            type: 'image',
+            value: displayResult.value // This is always a string for images
           };
         }
 
@@ -154,9 +156,9 @@ const PresentationPostDefinition = ({ route }: Props) => {
           : getSafeText(displayResult.value);
 
         return {
+          description: c.label,
           id: c.id,
-          value: textValue,
-          description: c.label
+          value: textValue
         };
       });
 
@@ -180,11 +182,11 @@ const PresentationPostDefinition = ({ route }: Props) => {
 
           return (
             <ClaimsSelector
-              key={c.id}
-              title={title}
-              items={mapClaims(c.claimsToDisplay)}
               defaultExpanded
+              items={mapClaims(c.claimsToDisplay)}
+              key={c.id}
               selectionEnabled={false}
+              title={title}
             />
           );
         })}
@@ -192,7 +194,7 @@ const PresentationPostDefinition = ({ route }: Props) => {
     );
   };
 
-  const { required, optional } = useMemo(
+  const { optional, required } = useMemo(
     () => groupCredentialsByPurpose(route.params.descriptor.descriptor ?? []),
     [route.params.descriptor]
   );
@@ -205,7 +207,7 @@ const PresentationPostDefinition = ({ route }: Props) => {
 
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>
-      <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
+      <View style={{ flexGrow: 1, margin: IOVisualCostants.appMarginDefault }}>
         <ItwDataExchangeIcons
           requesterLogoUri={
             rpConfig?.logo_uri ? { uri: rpConfig.logo_uri } : undefined
@@ -221,12 +223,9 @@ const PresentationPostDefinition = ({ route }: Props) => {
           />
         </VStack>
         <VSpacer size={24} />
-        {required.map(({ purpose, credentials }) => (
+        {required.map(({ credentials, purpose }) => (
           <View key={`required:${purpose}`}>
             <ListItemHeader
-              label={t('wallet:presentation.trust.requiredClaims')}
-              iconName="security"
-              iconColor={theme['icon-decorative']}
               description={
                 purpose
                   ? t('wallet:presentation.trust.purpose', {
@@ -234,18 +233,16 @@ const PresentationPostDefinition = ({ route }: Props) => {
                     })
                   : undefined
               }
+              iconColor={theme['icon-decorative']}
+              iconName="security"
+              label={t('wallet:presentation.trust.requiredClaims')}
             />
             <RequestedCredentialsBlock credentials={credentials} />
           </View>
         ))}
-        {optional.map(({ purpose, credentials }) => (
+        {optional.map(({ credentials, purpose }) => (
           <View key={`optional:${purpose}`}>
             <ListItemCheckbox
-              value={t('wallet:presentation.trust.optionalClaims')}
-              icon="security"
-              onValueChange={value => {
-                sendOptionalCredentials(value ? credentials : []);
-              }}
               description={
                 purpose
                   ? t('wallet:presentation.trust.purpose', {
@@ -253,6 +250,11 @@ const PresentationPostDefinition = ({ route }: Props) => {
                     })
                   : undefined
               }
+              icon="security"
+              onValueChange={value => {
+                sendOptionalCredentials(value ? credentials : []);
+              }}
+              value={t('wallet:presentation.trust.optionalClaims')}
             />
             <RequestedCredentialsBlock credentials={credentials} />
             <VSpacer size={16} />
@@ -260,29 +262,29 @@ const PresentationPostDefinition = ({ route }: Props) => {
         ))}
         <VSpacer size={48} />
         <FeatureInfo
-          iconName="fornitori"
           body={t('wallet:presentation.trust.disclaimer.0')}
+          iconName="fornitori"
         />
         <VSpacer size={24} />
         <FeatureInfo
-          iconName="trashcan"
           body={t('wallet:presentation.trust.disclaimer.1')}
+          iconName="trashcan"
         />
       </View>
       <FooterActions
-        fixed={false}
         actions={{
-          type: 'TwoButtons',
           primary: {
             label: t('buttons.continue'),
-            onPress: () => dispatch(setPostDefinitionRequest([])),
-            loading: postDefinitionStatus.loading
+            loading: postDefinitionStatus.loading,
+            onPress: () => dispatch(setPostDefinitionRequest([]))
           },
           secondary: {
             label: t('buttons.cancel'),
             onPress: cancelAlert
-          }
+          },
+          type: 'TwoButtons'
         }}
+        fixed={false}
       />
     </ForceScrollDownView>
   );

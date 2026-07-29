@@ -1,17 +1,18 @@
+import { IOScrollView, useHeaderSecondLevel } from '@io-eudiw-app/commons';
 import {
   Body,
   ListItemHeader,
   ListItemInfo,
   VStack
 } from '@pagopa/io-app-design-system';
+import I18n from 'i18next';
 import { Alert } from 'react-native';
+
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   itwProximityConsentsEntriesSelector,
   itwRevokeProximityConsentByKey
 } from '../../store/proximityConsents';
-import { IOScrollView, useHeaderSecondLevel } from '@io-eudiw-app/commons';
-import I18n from 'i18next';
 
 export const ProximityConsents = () => {
   const dispatch = useAppDispatch();
@@ -38,24 +39,24 @@ export const ProximityConsents = () => {
         <VStack space={8}>
           {consents.map(([key, consent]) => (
             <ListItemInfo
-              key={key}
-              label={consent.rpId}
-              value={key}
-              numberOfLines={1}
               endElement={{
-                type: 'iconButton',
                 componentProps: {
-                  icon: 'trashcan',
-                  onPress: () => handleRevokeConsent(key),
                   accessibilityLabel: I18n.t(
                     'settings.proximity.screen.delete',
                     { ns: 'wallet', rpId: consent.rpId }
-                  )
-                }
+                  ),
+                  icon: 'trashcan',
+                  onPress: () => handleRevokeConsent(key)
+                },
+                type: 'iconButton'
               }}
+              key={key}
+              label={consent.rpId}
+              numberOfLines={1}
               onLongPress={() =>
                 Alert.alert(consent.rpId, JSON.stringify(consent))
               }
+              value={key}
             />
           ))}
         </VStack>

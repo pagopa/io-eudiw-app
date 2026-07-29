@@ -17,6 +17,27 @@ import {
 import { ClaimImage } from './ClaimImage';
 import { ClaimLabel, ClaimLabelProps } from './ClaimLabel';
 
+export type ClaimPosition = HorizontalClaimPosition & VerticalClaimPosition;
+
+type CardClaimProps = Prettify<
+  ClaimLabelProps & {
+    // A claim that will be used to render its component
+    // Since we are passing this value by accessing the claims object by key, the value could be undefined
+    claim?: ParsedClaimsRecord[string];
+    // Optional format for dates contained in the claim component
+    dateFormat?: SimpleDateFormat;
+    // Claim dimensions
+    dimensions?: ClaimDimensions;
+    // Absolute position expressed in percentages from top-left corner
+    position?: ClaimPosition;
+  }
+>;
+
+type ClaimDimensions = Prettify<
+  Partial<Record<'height' | 'width', PercentPosition>> &
+    Pick<ViewStyle, 'aspectRatio'>
+>;
+
 type HorizontalClaimPosition = Either<
   { left: PercentPosition },
   { right: PercentPosition }
@@ -28,37 +49,16 @@ type VerticalClaimPosition = Either<
   { bottom: PercentPosition }
 >;
 
-export type ClaimPosition = HorizontalClaimPosition & VerticalClaimPosition;
-
-type ClaimDimensions = Prettify<
-  Partial<Record<'width' | 'height', PercentPosition>> &
-    Pick<ViewStyle, 'aspectRatio'>
->;
-
-type CardClaimProps = Prettify<
-  {
-    // A claim that will be used to render its component
-    // Since we are passing this value by accessing the claims object by key, the value could be undefined
-    claim?: ParsedClaimsRecord[string];
-    // Absolute position expressed in percentages from top-left corner
-    position?: ClaimPosition;
-    // Claim dimensions
-    dimensions?: ClaimDimensions;
-    // Optional format for dates contained in the claim component
-    dateFormat?: SimpleDateFormat;
-  } & ClaimLabelProps
->;
-
 /**
  * Default claim component, it decoded the provided value and renders the corresponding component
  * @returns The corresponding component if a value is correctly decoded, otherwise null
  */
 const CardClaim = ({
   claim,
-  position,
-  dimensions,
-  testID,
   dateFormat = 'DD/MM/YY',
+  dimensions,
+  position,
+  testID,
   ...labelProps
 }: WithTestID<CardClaimProps>) => {
   const claimContent = useMemo(() => {
@@ -74,6 +74,13 @@ const CardClaim = ({
           return <ClaimLabel {...labelProps}>{formattedDate}</ClaimLabel>;
         }
 
+        case claimType.drivingPrivileges: {
+          const privileges = claim.parsed.value
+            .map(p => p.vehicle_category_code)
+            .join(' ');
+          return <ClaimLabel {...labelProps}>{privileges}</ClaimLabel>;
+        }
+
         case claimType.image:
           return (
             <ClaimImage
@@ -81,13 +88,6 @@ const CardClaim = ({
               blur={labelProps.hidden ? 7 : 0}
             />
           );
-
-        case claimType.drivingPrivileges: {
-          const privileges = claim.parsed.value
-            .map(p => p.vehicle_category_code)
-            .join(' ');
-          return <ClaimLabel {...labelProps}>{privileges}</ClaimLabel>;
-        }
 
         case claimType.verificationEvidence:
           return (
@@ -118,9 +118,9 @@ const CardClaim = ({
 
   return (
     <CardClaimContainer
-      testID={testID}
-      position={position}
       dimensions={dimensions}
+      position={position}
+      testID={testID}
     >
       {claimContent}
     </CardClaimContainer>
@@ -133,21 +133,21 @@ const styles = StyleSheet.create({
   }
 });
 
+type CardClaimRendererProps<T extends ClaimScheme['type']> = {
+  claim?: ClaimScheme;
+  component: (claim: ClaimOfType<T>) => Iterable<ReactElement> | ReactElement;
+  type: T;
+};
+
 type ClaimOfType<T extends ClaimScheme['type']> = Extract<
   ClaimScheme,
   { type: T }
 >;
 
-type CardClaimRendererProps<T extends ClaimScheme['type']> = {
-  claim?: ClaimScheme;
-  type: T;
-  component: (claim: ClaimOfType<T>) => ReactElement | Iterable<ReactElement>;
-};
-
 const CardClaimRenderer = <T extends keyof typeof claimType>({
   claim,
-  type,
-  component
+  component,
+  type
 }: CardClaimRendererProps<T>) => {
   if (!claim || claim.type !== type) {
     return null;
@@ -157,23 +157,23 @@ const CardClaimRenderer = <T extends keyof typeof claimType>({
 };
 
 type CardClaimContainerProps = WithTestID<{
-  position?: ClaimPosition;
-  dimensions?: ClaimDimensions;
   children?: ReactNode;
+  dimensions?: ClaimDimensions;
   onLayout?: (event: LayoutChangeEvent) => void;
+  position?: ClaimPosition;
 }>;
 
 const CardClaimContainer = ({
-  position,
-  dimensions,
   children,
+  dimensions,
   onLayout,
+  position,
   testID
 }: CardClaimContainerProps) => (
   <View
-    testID={testID}
-    style={[styles.container, position, dimensions]}
     onLayout={onLayout}
+    style={[styles.container, position, dimensions]}
+    testID={testID}
   >
     {children}
   </View>

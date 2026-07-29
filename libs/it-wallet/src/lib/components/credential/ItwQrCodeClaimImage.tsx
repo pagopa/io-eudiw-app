@@ -1,4 +1,5 @@
 import { Appearance, StyleSheet, View } from 'react-native';
+
 import { ParsedClaimsRecord } from '../../utils/claims';
 import { QrCodeImage } from '../QrCodeImage';
 
@@ -22,9 +23,9 @@ export const ItwQrCodeClaimImage = ({ claim }: ItwQrCodeClaimImageProps) => {
   return (
     <View style={styles.qrCode}>
       <QrCodeImage
-        value={claim.parsed.value}
-        size={230}
         inverted={colorScheme === 'dark'}
+        size={230}
+        value={claim.parsed.value}
       />
     </View>
   );
@@ -33,7 +34,7 @@ export const ItwQrCodeClaimImage = ({ claim }: ItwQrCodeClaimImageProps) => {
 const styles = StyleSheet.create({
   qrCode: {
     alignItems: 'center',
-    marginTop: 12,
-    marginBottom: 24
+    marginBottom: 24,
+    marginTop: 12
   }
 });

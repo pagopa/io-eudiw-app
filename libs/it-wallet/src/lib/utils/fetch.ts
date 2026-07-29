@@ -1,6 +1,6 @@
 interface AuthHeaders {
-  'x-user-id'?: string;
   'x-spec-version'?: string;
+  'x-user-id'?: string;
 }
 
 /**
@@ -32,8 +32,8 @@ export function createWalletFetch(sessionId: string): typeof fetch {
       input,
       addAuthHeaders(
         {
-          'x-user-id': sessionId,
-          'x-spec-version': '1.3'
+          'x-spec-version': '1.3',
+          'x-user-id': sessionId
         },
         init
       )

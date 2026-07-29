@@ -17,8 +17,8 @@ export function createSafeNavigator<
     navigate: <RouteName extends keyof ParamList>(
       ...args: undefined extends ParamList[RouteName]
         ?
-            | [screen: RouteName]
             | [screen: RouteName, params: ParamList[RouteName]]
+            | [screen: RouteName]
         : [screen: RouteName, params: ParamList[RouteName]]
     ) => {
       if (navigationRef.isReady()) {
@@ -30,8 +30,8 @@ export function createSafeNavigator<
     navigateWithReset: <RouteName extends keyof ParamList>(
       ...args: undefined extends ParamList[RouteName]
         ?
-            | [screen: RouteName]
             | [screen: RouteName, params: ParamList[RouteName]]
+            | [screen: RouteName]
         : [screen: RouteName, params: ParamList[RouteName]]
     ) => {
       if (navigationRef.isReady()) {

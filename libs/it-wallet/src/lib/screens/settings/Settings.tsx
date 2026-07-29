@@ -1,4 +1,16 @@
 import {
+  IOScrollViewWithLargeHeader,
+  useHeaderSecondLevel
+} from '@io-eudiw-app/commons';
+import {
+  selectIsDebugModeEnabled,
+  setDebugModeEnabled
+} from '@io-eudiw-app/debug-info';
+import {
+  preferencesReset,
+  preferencesResetMiniAppSelection
+} from '@io-eudiw-app/preferences';
+import {
   ContentWrapper,
   Divider,
   IOVisualCostants,
@@ -6,34 +18,23 @@ import {
   ListItemSwitch,
   useIOToast
 } from '@pagopa/io-app-design-system';
+import { useNavigation } from '@react-navigation/native';
 import { ComponentProps, useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, ListRenderItemInfo } from 'react-native';
-import { useAppDispatch, useAppSelector } from '../../store';
-import {
-  selectIsDebugModeEnabled,
-  setDebugModeEnabled
-} from '@io-eudiw-app/debug-info';
-import { resetLifecycle } from '../../store/lifecycle';
-import {
-  IOScrollViewWithLargeHeader,
-  useHeaderSecondLevel
-} from '@io-eudiw-app/commons';
-import {
-  preferencesReset,
-  preferencesResetMiniAppSelection
-} from '@io-eudiw-app/preferences';
-import { useNavigation } from '@react-navigation/native';
-import MAIN_ROUTES from '../../navigation/main/routes';
-import AppVersion from '../../components/AppVersion';
 
-type ProfileNavListItem = {
-  value: string;
-  isHidden?: boolean;
-} & Pick<
+import AppVersion from '../../components/AppVersion';
+import MAIN_ROUTES from '../../navigation/main/routes';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { resetLifecycle } from '../../store/lifecycle';
+
+type ProfileNavListItem = Pick<
   ComponentProps<typeof ListItemNav>,
-  'description' | 'testID' | 'onPress'
->;
+  'description' | 'onPress' | 'testID'
+> & {
+  isHidden?: boolean;
+  value: string;
+};
 
 const DEBUG_TAP_REQUIRED = 4;
 const RESET_COUNTER_TIMEOUT = 2000;
@@ -57,57 +58,57 @@ const Settings = () => {
     title: ''
   });
 
-  const profileNavListItems: ReadonlyArray<ProfileNavListItem> = [
+  const profileNavListItems: readonly ProfileNavListItem[] = [
     {
-      // Preferences
-      value: t('wallet:settings.preferences.title'),
       description: t('wallet:settings.preferences.description'),
-      onPress: () => navigation.navigate(MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN)
+      onPress: () => navigation.navigate(MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN),
+      // Preferences
+      value: t('wallet:settings.preferences.title')
     },
     {
-      value: t('wallet:settings.changeApp.title'),
       description: t('wallet:settings.changeApp.description'),
-      onPress: () => dispatch(preferencesResetMiniAppSelection())
+      onPress: () => dispatch(preferencesResetMiniAppSelection()),
+      value: t('wallet:settings.changeApp.title')
     },
     {
-      value: t('wallet:settings.proximity.title'),
       description: t('wallet:settings.proximity.description'),
-      onPress: () => navigation.navigate(MAIN_ROUTES.SETTINGS.PROXIMITY)
+      onPress: () => navigation.navigate(MAIN_ROUTES.SETTINGS.PROXIMITY),
+      value: t('wallet:settings.proximity.title')
     },
     {
-      value: t('wallet:settings.debug.wallet.title'),
       description: t('wallet:settings.debug.wallet.description'),
+      isHidden: !isDebugModeEnabled,
       onPress: () => {
         dispatch(resetLifecycle());
         toast.success(t('common:generics.success'));
       },
-      isHidden: !isDebugModeEnabled
+      value: t('wallet:settings.debug.wallet.title')
     },
     {
-      value: t('wallet:settings.debug.app.title'),
       description: t('wallet:settings.debug.app.description'),
+      isHidden: !isDebugModeEnabled,
       onPress: () => {
         dispatch(preferencesReset());
         toast.success(t('common:generics.success'));
       },
-      isHidden: !isDebugModeEnabled
+      value: t('wallet:settings.debug.app.title')
     }
   ].filter(({ isHidden }) => !isHidden);
 
   const renderProfileNavItem = useCallback(
     ({ item }: ListRenderItemInfo<ProfileNavListItem>) => {
-      const { value, description, testID, onPress } = item;
+      const { description, onPress, testID, value } = item;
       const accessibilityLabel = description
         ? `${value}; ${description}`
         : value;
 
       return (
         <ListItemNav
-          testID={testID}
           accessibilityLabel={accessibilityLabel}
-          value={value}
           description={description}
           onPress={onPress}
+          testID={testID}
+          value={value}
         />
       );
     },
@@ -149,30 +150,30 @@ const Settings = () => {
   return (
     <IOScrollViewWithLargeHeader
       title={{
-        label: t('wallet:settings.title'),
-        accessibilityLabel: t('wallet:settings.title')
+        accessibilityLabel: t('wallet:settings.title'),
+        label: t('wallet:settings.title')
       }}
     >
       <FlatList
-        scrollEnabled={false}
-        keyExtractor={keyExtractor}
         contentContainerStyle={{
           paddingHorizontal: IOVisualCostants.appMarginDefault
         }}
         data={profileNavListItems}
-        renderItem={renderProfileNavItem}
         ItemSeparatorComponent={Divider}
+        keyExtractor={keyExtractor}
+        renderItem={renderProfileNavItem}
+        scrollEnabled={false}
       />
       <ContentWrapper>
         <AppVersion onPress={onTapAppVersion} />
         {isDebugModeEnabled && (
           <ListItemSwitch
-            testID="debugModeSwitch"
             label={t('wallet:settings.debug.mode')}
-            value={isDebugModeEnabled}
             onSwitchValueChange={enabled =>
               dispatch(setDebugModeEnabled({ state: enabled }))
             }
+            testID="debugModeSwitch"
+            value={isDebugModeEnabled}
           />
         )}
       </ContentWrapper>

@@ -43,7 +43,7 @@ export const requestBlePermissions = async (): Promise<boolean> => {
  * Helper function to get the permissions required for BLE on the current platform.
  * @returns An array of permissions to be checked.
  */
-const getPermissionsToBeChecked = (): Array<Permission> => {
+const getPermissionsToBeChecked = (): Permission[] => {
   if (Platform.OS === 'android') {
     if (Platform.Version >= 31) {
       // Android 12 and above: Request new Bluetooth permissions along with location.

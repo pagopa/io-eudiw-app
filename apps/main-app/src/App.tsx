@@ -12,12 +12,13 @@ import 'react-native-get-random-values';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { persistor, store } from './store';
-import RootContainer from './screens/RootContainer';
+
 import { IdentificationModalWrapper } from './components/IdentificationModalWrapper';
 import initI18n from './i18n';
+import RootContainer from './screens/RootContainer';
+import { persistor, store } from './store';
 
-require('@pagopa/react-native-nodelibs/globals');
+import '@pagopa/react-native-nodelibs/globals';
 
 void initI18n();
 
@@ -51,10 +52,10 @@ const styles = StyleSheet.create({
     flex: 1
   },
   loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#FFFFFF',
+    flex: 1,
+    justifyContent: 'center'
   }
 });
 

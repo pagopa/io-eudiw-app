@@ -1,11 +1,11 @@
+import { getAppVersion } from '@io-eudiw-app/commons';
 import {
   BodySmall,
   useIOTheme,
   WithTestID
 } from '@pagopa/io-app-design-system';
-import { GestureResponderEvent, Pressable, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { getAppVersion } from '@io-eudiw-app/commons';
+import { GestureResponderEvent, Pressable, View } from 'react-native';
 
 export type AppVersionProps = WithTestID<{
   onPress: (event: GestureResponderEvent) => void;
@@ -19,22 +19,22 @@ const AppVersion = ({ onPress, testID }: AppVersionProps) => {
 
   return (
     <Pressable
+      accessibilityLabel={appVersionText}
       onPress={onPress}
       testID={testID}
-      accessibilityLabel={appVersionText}
     >
       <View
         style={{
-          paddingVertical: 20,
+          alignItems: 'center',
           alignSelf: 'flex-start',
           flexDirection: 'row',
-          alignItems: 'center'
+          paddingVertical: 20
         }}
       >
         <BodySmall
+          color={theme['textBody-tertiary']}
           numberOfLines={1}
           weight="Semibold"
-          color={theme['textBody-tertiary']}
         >
           {appVersionText}
         </BodySmall>

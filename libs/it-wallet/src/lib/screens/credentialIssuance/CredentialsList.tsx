@@ -1,4 +1,8 @@
 import {
+  IOScrollViewWithLargeHeader,
+  useHeaderSecondLevel
+} from '@io-eudiw-app/commons';
+import {
   IOVisualCostants,
   ListItemHeader,
   VStack
@@ -7,11 +11,11 @@ import { useNavigation } from '@react-navigation/native';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import {
-  IOScrollViewWithLargeHeader,
-  useHeaderSecondLevel
-} from '@io-eudiw-app/commons';
+
 import { OnboardingModuleCredential } from '../../components/credential/OnboardingModuleCredential';
+import MAIN_ROUTES from '../../navigation/main/routes';
+import WALLET_ROUTES from '../../navigation/wallet/routes';
+import { useAppDispatch, useAppSelector } from '../../store';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePreAuthStatus,
@@ -26,9 +30,6 @@ import {
   wellKnownCredential,
   wellKnownCredentialConfigurationIDs
 } from '../../utils/credentials';
-import { useAppDispatch, useAppSelector } from '../../store';
-import MAIN_ROUTES from '../../navigation/main/routes';
-import WALLET_ROUTES from '../../navigation/wallet/routes';
 
 /**
  * The list of the obtainable credentias.
@@ -72,8 +73,8 @@ const CredentialsList = () => {
   }, [preAuthStatus.error, navigation, shouldIssuePidFirst]);
 
   useHeaderSecondLevel({
-    title: '',
-    goBack
+    goBack,
+    title: ''
   });
 
   return (
@@ -89,19 +90,18 @@ const CredentialsList = () => {
             .filter(([_, type]) => type !== wellKnownCredential.PID)
             .map(([credentialKey, type]) => (
               <OnboardingModuleCredential
-                key={`itw_credential_${type}`}
-                type={type}
                 configId={
                   wellKnownCredentialConfigurationIDs[
                     credentialKey as CredentialsKeys
                   ]
                 }
-                isSaved={isCredentialSaved(type)}
                 isFetching={isCredentialRequested(
                   wellKnownCredentialConfigurationIDs[
                     credentialKey as CredentialsKeys
                   ]
                 )}
+                isSaved={isCredentialSaved(type)}
+                key={`itw_credential_${type}`}
                 onPress={c => {
                   if (shouldIssuePidFirst) {
                     dispatch(setPendingCredential({ credential: c }));
@@ -114,6 +114,7 @@ const CredentialsList = () => {
                     setCredentialIssuancePreAuthRequest({ credential: c })
                   );
                 }}
+                type={type}
               />
             ))}
         </VStack>
@@ -124,9 +125,9 @@ const CredentialsList = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingVertical: 16,
+    gap: 16,
     paddingHorizontal: IOVisualCostants.appMarginDefault,
-    gap: 16
+    paddingVertical: 16
   }
 });
 

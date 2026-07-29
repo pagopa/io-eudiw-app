@@ -4,28 +4,29 @@ import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 type ItwPresentationCredentialCardHideValuesButtonProps = {
-  valuesHidden: boolean;
   handleOnPress: () => void;
+  valuesHidden: boolean;
 };
 
 /**
  * This component renders the hide values button for the skeumorphic credential card in full screen mode
  */
 const ItwPresentationCredentialCardHideValuesButton = ({
-  valuesHidden,
-  handleOnPress
+  handleOnPress,
+  valuesHidden
 }: ItwPresentationCredentialCardHideValuesButtonProps) => (
   <View
-    style={styles.button}
-    accessible={true}
     accessibilityLabel={t('presentation.credentialDetails.card.showValues', {
       ns: 'wallet'
     })}
     accessibilityRole="switch"
     accessibilityState={{ checked: !valuesHidden }}
+    accessible={true}
+    style={styles.button}
   >
     <IOButton
-      variant="link"
+      icon={valuesHidden ? 'eyeShow' : 'eyeHide'}
+      iconPosition="end"
       label={t(
         `presentation.credentialDetails.card.${
           valuesHidden ? 'showValues' : 'hideValues'
@@ -35,8 +36,7 @@ const ItwPresentationCredentialCardHideValuesButton = ({
         }
       )}
       onPress={handleOnPress}
-      icon={valuesHidden ? 'eyeShow' : 'eyeHide'}
-      iconPosition="end"
+      variant="link"
     />
   </View>
 );

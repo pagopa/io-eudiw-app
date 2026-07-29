@@ -12,6 +12,7 @@ import {
 import { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+
 import { useAppDispatch } from '../../store';
 
 /**
@@ -35,21 +36,21 @@ const Appearance = (): ReactElement => {
   // Options for typeface
   const typefaceOptions = [
     {
+      description: t(
+        'wallet:settings.preferences.appearance.typefaceStyle.comfortable.description'
+      ),
       id: 'comfortable' as TypefaceChoice,
       value: t(
         'wallet:settings.preferences.appearance.typefaceStyle.comfortable.title'
-      ),
-      description: t(
-        'wallet:settings.preferences.appearance.typefaceStyle.comfortable.description'
       )
     },
     {
+      description: t(
+        'wallet:settings.preferences.appearance.typefaceStyle.standard.description'
+      ),
       id: 'standard' as TypefaceChoice,
       value: t(
         'wallet:settings.preferences.appearance.typefaceStyle.standard.title'
-      ),
-      description: t(
-        'wallet:settings.preferences.appearance.typefaceStyle.standard.description'
       )
     }
   ];
@@ -61,11 +62,11 @@ const Appearance = (): ReactElement => {
 
   return (
     <IOScrollViewWithLargeHeader
+      description={t('wallet:settings.preferences.appearance.description')}
+      includeContentMargins
       title={{
         label: t('wallet:settings.preferences.appearance.title')
       }}
-      description={t('wallet:settings.preferences.appearance.description')}
-      includeContentMargins
     >
       <VStack space={24}>
         <View>
@@ -76,10 +77,10 @@ const Appearance = (): ReactElement => {
             )}
           />
           <RadioGroup<TypefaceChoice>
-            type="radioListItem"
             items={typefaceOptions}
-            selectedItem={selectedTypeface}
             onPress={handleTypefaceChange}
+            selectedItem={selectedTypeface}
+            type="radioListItem"
           />
         </View>
       </VStack>

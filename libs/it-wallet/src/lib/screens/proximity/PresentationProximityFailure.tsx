@@ -1,16 +1,17 @@
+import { OperationResultScreenContent } from '@io-eudiw-app/commons';
+import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
-import { OperationResultScreenContent } from '@io-eudiw-app/commons';
+
+import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import { useAppDispatch, useAppSelector } from '../../store';
 import {
   resetProximity,
   selectProximityDocumentRequest,
   selectProximityErrorDetails,
   selectProximityStatus
 } from '../../store/proximity';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { useDebugInfo } from '@io-eudiw-app/debug-info';
-import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
 export type PresentationProximityFailureProps = {
   fatal: boolean;
@@ -28,20 +29,13 @@ const PresentationProximityFailure = ({ route }: Props) => {
   const verifierRequest = useAppSelector(selectProximityDocumentRequest);
 
   useDebugInfo({
-    verifierRequest,
+    proximityErrorDetailsEnd: proximityErrorDetails,
     proximityStatusEnd: proximityStatus,
-    proximityErrorDetailsEnd: proximityErrorDetails
+    verifierRequest
   });
 
   return (
     <OperationResultScreenContent
-      pictogram="umbrella"
-      title={t('proximity.failure.title', { ns: 'wallet' })}
-      subtitle={
-        route.params.fatal
-          ? t('proximity.failure.subtitleFatal', { ns: 'wallet' })
-          : t('proximity.failure.subtitle', { ns: 'wallet' })
-      }
       action={{
         accessibilityLabel: t('proximity.failure.understand', { ns: 'wallet' }),
         label: t('proximity.failure.understand', { ns: 'wallet' }),
@@ -50,6 +44,13 @@ const PresentationProximityFailure = ({ route }: Props) => {
           dispatch(resetProximity());
         }
       }}
+      pictogram="umbrella"
+      subtitle={
+        route.params.fatal
+          ? t('proximity.failure.subtitleFatal', { ns: 'wallet' })
+          : t('proximity.failure.subtitle', { ns: 'wallet' })
+      }
+      title={t('proximity.failure.title', { ns: 'wallet' })}
     />
   );
 };

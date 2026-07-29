@@ -13,11 +13,11 @@ export const ItwBarcodeCard = ({ value }: ItwBarcodeCardProps) => (
   <View style={styles.container}>
     <VSpacer size={4} />
     <BarcodeCreatorView
-      value={value}
-      format={BarcodeFormat.CODE128}
       background={IOColors.white}
       foregroundColor={IOColors.black}
+      format={BarcodeFormat.CODE128}
       style={styles.barcode}
+      value={value}
     />
     <VSpacer size={4} />
     <H4 textStyle={StyleSheet.flatten([styles.label])}>{value}</H4>
@@ -25,15 +25,15 @@ export const ItwBarcodeCard = ({ value }: ItwBarcodeCardProps) => (
 );
 
 const styles = StyleSheet.create({
+  barcode: {
+    height: 70,
+    width: '100%'
+  },
   container: {
     borderColor: IOColors['grey-100'],
+    borderRadius: 8,
     borderWidth: 1,
-    padding: 15,
-    borderRadius: 8
-  },
-  barcode: {
-    width: '100%',
-    height: 70
+    padding: 15
   },
   label: {
     alignSelf: 'center',

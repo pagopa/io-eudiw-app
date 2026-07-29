@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Linking } from 'react-native';
 import RNQRGenerator from 'rn-qr-generator';
+
 import {
   OnBarcodeSuccess,
   OnBardCodeError
@@ -10,24 +11,24 @@ import {
 
 type QrCodeFileReader = {
   /**
-   * Shows the image picker that lets the user select an image from the library
-   */
-  showImagePicker: () => Promise<void>;
-  /**
    * Indicates that the decoder is currently reading/decoding barcodes
    */
   isLoading: boolean;
+  /**
+   * Shows the image picker that lets the user select an image from the library
+   */
+  showImagePicker: () => Promise<void>;
 };
 
 type QrCodeFileReaderConfiguration = {
-  onBarcodeSuccess: OnBarcodeSuccess;
   onBarcodeError: OnBardCodeError;
+  onBarcodeSuccess: OnBarcodeSuccess;
 };
 
 const imageLibraryOptions: ImagePicker.ImagePickerOptions = {
-  mediaTypes: ['images'],
   allowsEditing: false,
-  allowsMultipleSelection: false
+  allowsMultipleSelection: false,
+  mediaTypes: ['images']
 };
 
 /**
@@ -49,10 +50,10 @@ const useQrCodeFileReader = ({
       t('wallet:imagePicker.settingsAlert.title'),
       t('wallet:imagePicker.settingsAlert.message'),
       [
-        { text: t('common:buttons.cancel'), style: 'cancel' },
+        { style: 'cancel', text: t('common:buttons.cancel') },
         {
-          text: t('wallet:imagePicker.settingsAlert.buttonText.enable'),
-          onPress: Linking.openSettings
+          onPress: Linking.openSettings,
+          text: t('wallet:imagePicker.settingsAlert.buttonText.enable')
         }
       ],
       { cancelable: false }
@@ -109,8 +110,8 @@ const useQrCodeFileReader = ({
   ]);
 
   return {
-    showImagePicker,
-    isLoading
+    isLoading,
+    showImagePicker
   };
 };
 

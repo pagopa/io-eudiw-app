@@ -7,21 +7,21 @@ const CSSAnimatedView = createCSSAnimatedComponent(View);
 const DEFAULT_DURATION = 500;
 
 type FlippableCardProps = {
-  FrontComponent: ReactElement;
   BackComponent: ReactElement;
-  duration?: number;
-  isFlipped?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
+  duration?: number;
+  FrontComponent: ReactElement;
+  isFlipped?: boolean;
 };
 
 /**
  * Renders a component which can be flipped to show both of its sides with an animation.
  */
 const FlippableCard = ({
-  FrontComponent,
   BackComponent,
   containerStyle,
   duration = DEFAULT_DURATION,
+  FrontComponent,
   isFlipped
 }: FlippableCardProps) => (
   <View style={containerStyle}>
@@ -31,8 +31,8 @@ const FlippableCard = ({
         styles.front,
         {
           transform: [{ rotateY: isFlipped ? '180deg' : '0deg' }],
-          transitionProperty: 'transform',
-          transitionDuration: duration
+          transitionDuration: duration,
+          transitionProperty: 'transform'
         }
       ]}
     >
@@ -44,8 +44,8 @@ const FlippableCard = ({
         styles.back,
         {
           transform: [{ rotateY: isFlipped ? '360deg' : '180deg' }],
-          transitionProperty: 'transform',
-          transitionDuration: duration
+          transitionDuration: duration,
+          transitionProperty: 'transform'
         }
       ]}
     >
@@ -55,20 +55,20 @@ const FlippableCard = ({
 );
 
 const styles = StyleSheet.create({
-  card: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0
-  },
-  front: {
-    zIndex: 1,
-    backfaceVisibility: 'hidden'
-  },
   back: {
     backfaceVisibility: 'hidden',
     zIndex: 2
+  },
+  card: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0
+  },
+  front: {
+    backfaceVisibility: 'hidden',
+    zIndex: 1
   }
 });
 

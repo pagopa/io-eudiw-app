@@ -2,20 +2,21 @@ import { ListItemAction } from '@pagopa/io-app-design-system';
 import { t } from 'i18next';
 import { memo } from 'react';
 import { View } from 'react-native';
+
 import { useItwRemoveCredentialWithConfirm } from '../../hooks/useItwRemoveCredentialWithConfirm';
 import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
-import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
-import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { useAppSelector } from '../../store';
+import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
+import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 
 type ItwPresentationDetailFooterProps = {
-  credential: StoredCredentialMetadata;
   capabilities: ItwCredentialCapabilities;
+  credential: StoredCredentialMetadata;
 };
 
 const ItwPresentationDetailsFooter = ({
-  credential,
-  capabilities
+  capabilities,
+  credential
 }: ItwPresentationDetailFooterProps) => {
   const { confirmAndRemoveCredential } =
     useItwRemoveCredentialWithConfirm(credential);
@@ -28,34 +29,34 @@ const ItwPresentationDetailsFooter = ({
           <ListItemAction key={key} {...props} />
         ))}
       <ListItemAction
-        testID="requestAssistanceActionTestID"
-        variant="primary"
-        icon="message"
-        label={t('presentation.credentialDetails.actions.requestAssistance', {
-          ns: 'wallet'
-        })}
         accessibilityLabel={t(
           'presentation.credentialDetails.actions.requestAssistance',
           {
             ns: 'wallet'
           }
         )}
-        onPress={useNotAvailableToastGuard()}
-      />
-      <ListItemAction
-        testID="removeCredentialActionTestID"
-        variant="danger"
-        icon="trashcan"
-        label={t('presentation.credentialDetails.actions.removeFromWallet', {
+        icon="message"
+        label={t('presentation.credentialDetails.actions.requestAssistance', {
           ns: 'wallet'
         })}
+        onPress={useNotAvailableToastGuard()}
+        testID="requestAssistanceActionTestID"
+        variant="primary"
+      />
+      <ListItemAction
         accessibilityLabel={t(
           'presentation.credentialDetails.actions.removeFromWallet',
           {
             ns: 'wallet'
           }
         )}
+        icon="trashcan"
+        label={t('presentation.credentialDetails.actions.removeFromWallet', {
+          ns: 'wallet'
+        })}
         onPress={confirmAndRemoveCredential}
+        testID="removeCredentialActionTestID"
+        variant="danger"
       />
     </View>
   );

@@ -1,5 +1,6 @@
-import { itWalletFeature } from '@io-eudiw-app/it-wallet';
 import type { MiniApp } from '@io-eudiw-app/commons';
+
+import { itWalletFeature } from '@io-eudiw-app/it-wallet';
 
 /**
  * Registry that maps each available mini-app ID to its feature object.

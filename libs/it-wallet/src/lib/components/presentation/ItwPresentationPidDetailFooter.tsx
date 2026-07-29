@@ -3,9 +3,10 @@ import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
 import { memo } from 'react';
 import { Alert, View } from 'react-native';
+
 import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
-import { resetLifecycle } from '../../store/lifecycle';
 import { useAppDispatch } from '../../store';
+import { resetLifecycle } from '../../store/lifecycle';
 
 const ItwPresentationPidDetailFooter = ({
   successToastLabel
@@ -29,21 +30,21 @@ const ItwPresentationPidDetailFooter = ({
       t('presentation.itWalletId.dialog.revoke.message', { ns: 'wallet' }),
       [
         {
+          style: 'cancel',
           text: t('presentation.itWalletId.dialog.revoke.cancel', {
             ns: 'wallet'
-          }),
-          style: 'cancel'
+          })
         },
         {
-          text: t('presentation.itWalletId.dialog.revoke.confirm', {
-            ns: 'wallet'
-          }),
-          style: 'destructive',
           onPress: () => {
             dispatch(resetLifecycle());
             toast.success(successToastLabel);
             navigation.goBack();
-          }
+          },
+          style: 'destructive',
+          text: t('presentation.itWalletId.dialog.revoke.confirm', {
+            ns: 'wallet'
+          })
         }
       ]
     );
@@ -52,24 +53,24 @@ const ItwPresentationPidDetailFooter = ({
   return (
     <View>
       <ListItemAction
-        variant="primary"
         icon="website"
         label={t('presentation.credentialDetails.discoverItWallet', {
           ns: 'wallet'
         })}
         onPress={useNotAvailableToastGuard()}
+        variant="primary"
       />
       <ListItemAction
-        variant="primary"
         icon="message"
         label={requestAssistanceLabel}
         onPress={useNotAvailableToastGuard()}
+        variant="primary"
       />
       <ListItemAction
-        variant="danger"
         icon="trashcan"
         label={t('presentation.itWalletId.cta.revoke', { ns: 'wallet' })}
         onPress={handleRevokePress}
+        variant="danger"
       />
     </View>
   );

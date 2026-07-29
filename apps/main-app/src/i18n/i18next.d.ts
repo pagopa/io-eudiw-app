@@ -1,6 +1,7 @@
-import { itWalletFeature } from '@io-eudiw-app/it-wallet';
-import global from '../../locales/it/global.json';
 import { resource as commonResource } from '@io-eudiw-app/commons';
+import { itWalletFeature } from '@io-eudiw-app/it-wallet';
+
+import global from '../../locales/it/global.json';
 
 type DefaultResource = typeof commonResource.it &
   typeof itWalletFeature.resource.it & {

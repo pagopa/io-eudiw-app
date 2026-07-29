@@ -1,23 +1,24 @@
-import { StackScreenProps } from '@react-navigation/stack';
-import { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Body } from '@pagopa/io-app-design-system';
 import {
   LoadingScreenContent,
   useDisableGestureNavigation,
   useHardwareBackButton
 } from '@io-eudiw-app/commons';
-import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import { Body } from '@pagopa/io-app-design-system';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import WALLET_ROUTES from '../../navigation/wallet/routes';
+import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { lifecycleIsOperationalSelector } from '../../store/lifecycle';
 import {
   setCredentialIssuancePreAuthError,
   setCredentialIssuancePreAuthRequest
 } from '../../store/credentialIssuance';
 import { selectCredentials } from '../../store/credentials';
-import { getCredentialTypeByConfigId } from '../../utils/credentials';
+import { lifecycleIsOperationalSelector } from '../../store/lifecycle';
 import { ResolvedCredentialOffer } from '../../types';
+import { getCredentialTypeByConfigId } from '../../utils/credentials';
 
 export type CredentialOfferParams = {
   offer: ResolvedCredentialOffer;
@@ -43,7 +44,7 @@ type Props = StackScreenProps<
  * On resolution failure the user is taken to the credential issuance failure
  * screen.
  */
-const CredentialOffer = ({ route, navigation }: Props) => {
+const CredentialOffer = ({ navigation, route }: Props) => {
   const { t } = useTranslation(['common', 'wallet']);
   const dispatch = useAppDispatch();
   const shouldIssuePidFirst = useAppSelector(lifecycleIsOperationalSelector);

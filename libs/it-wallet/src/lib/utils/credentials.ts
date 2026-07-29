@@ -1,13 +1,14 @@
 import { t } from 'i18next';
+
 import { ItwCredentialStatus, ItwJwtCredentialStatus } from '../types';
-import { ParsedDcql } from './itwTypesUtils';
 import { CredentialType } from './itwMocksUtils';
+import { ParsedDcql } from './itwTypesUtils';
 
 export type CredentialsKeys =
-  | 'DRIVING_LICENSE'
-  | 'PID'
+  | 'BONUS_PARI'
   | 'DISABILITY_CARD'
-  | 'BONUS_PARI';
+  | 'DRIVING_LICENSE'
+  | 'PID';
 
 /**
  * Map which, for each wallet available credential, stores its corresponding
@@ -15,10 +16,10 @@ export type CredentialsKeys =
  * rendering and localization purposes.
  */
 export const wellKnownCredential = {
-  DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
-  PID: 'urn:eudi:pid:it:1',
+  BONUS_PARI: 'urn:pagopa:pari-bonus:1',
   DISABILITY_CARD: 'urn:eu.europa.ec.eudi:edc:1',
-  BONUS_PARI: 'urn:pagopa:pari-bonus:1'
+  DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
+  PID: 'urn:eudi:pid:it:1'
 } as const satisfies Record<CredentialsKeys, string>;
 
 /**
@@ -36,10 +37,10 @@ export const wellKnownCredentialConfigurationIDs: Record<
   CredentialsKeys,
   string
 > = {
-  DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
-  PID: 'dc_sd_jwt_PersonIdentificationData',
+  BONUS_PARI: 'dc_sd_jwt_PariBonus',
   DISABILITY_CARD: 'dc_sd_jwt_EuropeanDisabilityCard',
-  BONUS_PARI: 'dc_sd_jwt_PariBonus'
+  DRIVING_LICENSE: 'org.iso.18013.5.1.mDL',
+  PID: 'dc_sd_jwt_PersonIdentificationData'
 };
 
 /**
@@ -58,7 +59,7 @@ export const wellKnownCredentialNamespaces: Partial<
  * reports a missing credential by its VCT.
  */
 const vctToConfigId: Record<string, string> = Object.fromEntries(
-  (Object.keys(wellKnownCredential) as Array<CredentialsKeys>).map(key => [
+  (Object.keys(wellKnownCredential) as CredentialsKeys[]).map(key => [
     wellKnownCredential[key],
     wellKnownCredentialConfigurationIDs[key]
   ])
@@ -70,7 +71,7 @@ const vctToConfigId: Record<string, string> = Object.fromEntries(
  * has already been obtained.
  */
 const configIdToCredentialType: Record<string, string> = Object.fromEntries(
-  (Object.keys(wellKnownCredential) as Array<CredentialsKeys>).map(key => [
+  (Object.keys(wellKnownCredential) as CredentialsKeys[]).map(key => [
     wellKnownCredentialConfigurationIDs[key],
     wellKnownCredential[key]
   ])
@@ -89,9 +90,7 @@ export const getCredentialTypeByConfigId = (
  * Given a list of VCT values, returns the first matching credential configuration ID.
  * Returns undefined if no match is found.
  */
-export const getConfigIdByVct = (
-  vctValues: Array<string>
-): string | undefined => {
+export const getConfigIdByVct = (vctValues: string[]): string | undefined => {
   for (const vct of vctValues) {
     const configId = vctToConfigId[vct];
     if (configId) {
@@ -103,20 +102,20 @@ export const getConfigIdByVct = (
 
 export const getCredentialNameByType = (type?: string): string => {
   switch (type) {
+    case wellKnownCredential.BONUS_PARI:
+      return t(['credentials.names.bonusPari'], { ns: 'wallet' });
+    case wellKnownCredential.DISABILITY_CARD:
+      return t(['credentials.names.disabilityCard'], { ns: 'wallet' });
     case wellKnownCredential.DRIVING_LICENSE:
       return t(['credentials.names.mdl'], { ns: 'wallet' });
     case wellKnownCredential.PID:
       return t(['credentials.names.pid'], { ns: 'wallet' });
-    case wellKnownCredential.DISABILITY_CARD:
-      return t(['credentials.names.disabilityCard'], { ns: 'wallet' });
-    case wellKnownCredential.BONUS_PARI:
-      return t(['credentials.names.bonusPari'], { ns: 'wallet' });
     default:
       return t(['credentials.names.unknown'], { ns: 'wallet' });
   }
 };
 
-const EXCLUDED_CREDENTIAL_STATUSES: ReadonlyArray<ItwCredentialStatus> = [
+const EXCLUDED_CREDENTIAL_STATUSES: readonly ItwCredentialStatus[] = [
   'expired',
   'expiring',
   'invalid',
@@ -168,10 +167,10 @@ export const isPresentationDetailSdJwt = <T extends ParsedDcql[number]>(
  * Note: although this list is unlikely to change, you should ensure to have
  * a fallback when dealing with this list to prevent unwanted behaviours
  */
-const credentialTypesByVct: { [vct: string]: CredentialType } = {
-  personidentificationdata: CredentialType.PID,
+const credentialTypesByVct: Record<string, CredentialType> = {
+  europeandisabilitycard: CredentialType.EUROPEAN_DISABILITY_CARD,
   mdl: CredentialType.DRIVING_LICENSE,
-  europeandisabilitycard: CredentialType.EUROPEAN_DISABILITY_CARD
+  personidentificationdata: CredentialType.PID
 };
 
 /**
@@ -193,9 +192,9 @@ export const getCredentialTypeByVct = (vct: string): string | undefined => {
 export const wellKnownCredentialToCredentialType: Partial<
   Record<string, CredentialType>
 > = {
-  [wellKnownCredential.PID]: CredentialType.PID,
-  [wellKnownCredential.DRIVING_LICENSE]: CredentialType.DRIVING_LICENSE,
+  [wellKnownCredential.BONUS_PARI]: CredentialType.BONUS_PARI,
   [wellKnownCredential.DISABILITY_CARD]:
     CredentialType.EUROPEAN_DISABILITY_CARD,
-  [wellKnownCredential.BONUS_PARI]: CredentialType.BONUS_PARI
+  [wellKnownCredential.DRIVING_LICENSE]: CredentialType.DRIVING_LICENSE,
+  [wellKnownCredential.PID]: CredentialType.PID
 } satisfies Partial<Record<WellKnownCredentialTypes, CredentialType>>;

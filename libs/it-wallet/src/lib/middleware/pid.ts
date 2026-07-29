@@ -1,48 +1,49 @@
 import {
-  createCryptoContextFor,
-  IoWallet
-} from '@pagopa/io-react-native-wallet';
-import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
-import * as Crypto from 'expo-crypto';
-import * as WebBrowser from 'expo-web-browser';
-import WALLET_ROUTES from '../navigation/wallet/routes';
-import { serializeErrorOrUnknown } from '../utils/errors';
-import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
-import {
-  resetPidIssuance,
-  setPidIssuanceError,
-  setPidIssuanceRequest,
-  setPidIssuanceSuccess
-} from '../store/pidIssuance';
-import { addPidWithIdentification } from '../store/credentials';
-import { persistCredential } from './credential';
-import { Lifecycle, setLifecycle } from '../store/lifecycle';
-import { selectPendingCredential } from '../store/selectors/pidIssuance';
-import { WALLET_SPEC_VERSION } from '../utils/constants';
-import { wellKnownCredential } from '../utils/credentials';
-import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
-import {
   isAndroid,
   raceEffect,
   regenerateCryptoKey,
   takeLatestEffect
 } from '@io-eudiw-app/commons';
-import { AppListenerWithAction, AppStartListening } from './types';
 import { getEnv } from '@io-eudiw-app/env';
 import {
   setIdentificationIdentified,
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '@io-eudiw-app/identification';
+import {
+  createCryptoContextFor,
+  IoWallet
+} from '@pagopa/io-react-native-wallet';
+import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+import * as Crypto from 'expo-crypto';
+import * as WebBrowser from 'expo-web-browser';
+
 import MAIN_ROUTES from '../navigation/main/routes';
 import { navigator } from '../navigation/utils';
+import WALLET_ROUTES from '../navigation/wallet/routes';
+import { selectWalletInstanceAttestationAsJwt } from '../store/attestation';
+import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
+import { addPidWithIdentification } from '../store/credentials';
 import { selectSessionId } from '../store/instance';
+import { Lifecycle, setLifecycle } from '../store/lifecycle';
+import {
+  resetPidIssuance,
+  setPidIssuanceError,
+  setPidIssuanceRequest,
+  setPidIssuanceSuccess
+} from '../store/pidIssuance';
+import { selectPendingCredential } from '../store/selectors/pidIssuance';
+import { WALLET_SPEC_VERSION } from '../utils/constants';
+import { wellKnownCredential } from '../utils/credentials';
+import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
+import { serializeErrorOrUnknown } from '../utils/errors';
+import { createWalletFetch } from '../utils/fetch';
 import {
   getWalletInstanceAttestationThunk,
   getWalletUnitAttestationThunk
 } from './attestation';
-import { selectWalletInstanceAttestationAsJwt } from '../store/attestation';
-import { createWalletFetch } from '../utils/fetch';
+import { persistCredential } from './credential';
+import { AppListenerWithAction, AppStartListening } from './types';
 
 /**
  * Listener which obtains the PID credential.
@@ -53,7 +54,7 @@ import { createWalletFetch } from '../utils/fetch';
 const obtainPidListener: AppListenerWithAction<
   ReturnType<typeof setPidIssuanceRequest>
 > = async (_, listenerApi) => {
-  const { getState, dispatch } = listenerApi;
+  const { dispatch, getState } = listenerApi;
   try {
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
     const {
@@ -87,16 +88,16 @@ const obtainPidListener: AppListenerWithAction<
     );
 
     // Start user authorization
-    const { issuerRequestUri, clientId, codeVerifier, credentialDefinition } =
+    const { clientId, codeVerifier, credentialDefinition, issuerRequestUri } =
       await wallet.CredentialIssuance.startUserAuthorization(
         issuerConf,
         ['dc_sd_jwt_PersonIdentificationData'],
         { proofType: 'none' },
         {
-          walletInstanceAttestation,
+          appFetch,
           redirectUri: redirectUri,
-          wiaCryptoContext,
-          appFetch
+          walletInstanceAttestation,
+          wiaCryptoContext
         }
       );
 
@@ -122,8 +123,8 @@ const obtainPidListener: AppListenerWithAction<
       authUrl,
       baseRedirectUri,
       {
-        preferEphemeralSession: true,
-        createTask: false
+        createTask: false,
+        preferEphemeralSession: true
       }
     );
 
@@ -149,10 +150,10 @@ const obtainPidListener: AppListenerWithAction<
       redirectUri,
       codeVerifier,
       {
-        walletInstanceAttestation,
-        wiaCryptoContext,
+        appFetch,
         dPopCryptoContext,
-        appFetch
+        walletInstanceAttestation,
+        wiaCryptoContext
       }
     );
 
@@ -194,14 +195,14 @@ const obtainPidListener: AppListenerWithAction<
           credential_identifier
         },
         {
+          appFetch,
           credentialCryptoContext,
           dPopCryptoContext,
-          walletUnitAttestation: walletUnitAttestation.attestation,
-          appFetch
+          walletUnitAttestation: walletUnitAttestation.attestation
         }
       );
 
-    const { parsedCredential, expiration, issuedAt } =
+    const { expiration, issuedAt, parsedCredential } =
       await wallet.CredentialIssuance.verifyAndParseCredential(
         issuerConf,
         credential,
@@ -211,14 +212,14 @@ const obtainPidListener: AppListenerWithAction<
 
     dispatch(
       setPidIssuanceSuccess({
-        parsedCredential,
         credential,
         credentialType: wellKnownCredential.PID,
-        keyTag: credentialKeyTag,
-        format,
         expiration: expiration.toISOString(),
+        format,
         issuedAt: issuedAt?.toISOString(),
         issuerConf,
+        keyTag: credentialKeyTag,
+        parsedCredential,
         spec_version: WALLET_SPEC_VERSION
       })
     );

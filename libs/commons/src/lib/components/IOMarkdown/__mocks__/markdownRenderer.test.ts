@@ -1,5 +1,6 @@
 import { convertReferenceLinksToInline } from '../markdownRenderer';
 
+// eslint-disable-next-line max-lines-per-function
 describe('convertReferenceLinksToInline', () => {
   // Test 1: Basic functionality
   test('converts basic reference-style links to inline links', () => {

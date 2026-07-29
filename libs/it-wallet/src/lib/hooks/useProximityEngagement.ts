@@ -1,5 +1,6 @@
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { useCallback } from 'react';
+
 import MAIN_ROUTES from '../navigation/main/routes';
 import { useAppDispatch } from '../store';
 import {
@@ -14,8 +15,8 @@ import { requestBlePermissions } from '../utils/permissions';
  * Presentment screen shown for each proximity engagement mode.
  */
 const ENGAGEMENT_SCREEN = {
-  qrcode: MAIN_ROUTES.BLE_PRESENTMENT,
-  nfc: MAIN_ROUTES.NFC_PRESENTMENT
+  nfc: MAIN_ROUTES.NFC_PRESENTMENT,
+  qrcode: MAIN_ROUTES.BLE_PRESENTMENT
 } as const;
 
 /**

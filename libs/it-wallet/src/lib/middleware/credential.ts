@@ -1,3 +1,14 @@
+import {
+  raceEffect,
+  regenerateCryptoKey,
+  takeLatestEffect
+} from '@io-eudiw-app/commons';
+import { getEnv } from '@io-eudiw-app/env';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '@io-eudiw-app/identification';
 import { IOToast } from '@pagopa/io-app-design-system';
 import {
   createCryptoContextFor,
@@ -8,6 +19,12 @@ import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import { t } from 'i18next';
 import { serializeError } from 'serialize-error';
+
+import { navigator } from '../navigation/utils';
+import {
+  selectWalletInstanceAttestationAsJwt,
+  shouldRequestWalletInstanceAttestationSelector
+} from '../store/attestation';
 import {
   resetCredentialIssuance,
   selectRequestedCredential,
@@ -25,12 +42,16 @@ import {
   addCredentialWithIdentification,
   selectCredential
 } from '../store/credentials';
+import { selectSessionId } from '../store/instance';
+import { ResolvedCredentialOffer } from '../types';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredential } from '../utils/credentials';
-import { CredentialsVault } from '../utils/itwCredentialVault';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
+import { serializeErrorOrUnknown } from '../utils/errors';
 import { createWalletFetch } from '../utils/fetch';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
+import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
+import { CredentialsVault } from '../utils/itwCredentialVault';
 import {
   CredentialFormat,
   StoredCredential,
@@ -40,28 +61,8 @@ import {
   getWalletInstanceAttestationThunk,
   getWalletUnitAttestationThunk
 } from './attestation';
-import { getEnv } from '@io-eudiw-app/env';
 import { createAppAsyncThunk } from './thunk';
 import { AppListenerWithAction, AppStartListening } from './types';
-import {
-  raceEffect,
-  regenerateCryptoKey,
-  takeLatestEffect
-} from '@io-eudiw-app/commons';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '@io-eudiw-app/identification';
-import { navigator } from '../navigation/utils';
-import { selectSessionId } from '../store/instance';
-import {
-  selectWalletInstanceAttestationAsJwt,
-  shouldRequestWalletInstanceAttestationSelector
-} from '../store/attestation';
-import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
-import { serializeErrorOrUnknown } from '../utils/errors';
-import { ResolvedCredentialOffer } from '../types';
 
 type DcqlQuery = Parameters<
   RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']
@@ -133,8 +134,10 @@ export const resolveCredentialOfferThunk = createAppAsyncThunk<
  * Post authorization is the phase after the user has authorized the presentation of the required credentials and claims to the issuer.
  * Currently the flow is not complete and thus the authorization is mocked and asks for the whole PID.
  */
+
 const obtainCredentialListener: AppListenerWithAction<
   ReturnType<typeof setCredentialIssuancePreAuthRequest>
+  // eslint-disable-next-line max-lines-per-function, complexity
 > = async (_, listenerApi) => {
   try {
     const {
@@ -215,25 +218,25 @@ const obtainCredentialListener: AppListenerWithAction<
     // multiple authorization servers.
     if (offer) {
       await wallet.CredentialsOffer.validateCredentialOffer({
-        offer,
         credentialIssuerMetadata: issuerConf.authorization_servers
           ? { authorization_servers: issuerConf.authorization_servers }
-          : {}
+          : {},
+        offer
       });
     }
 
-    const { issuerRequestUri, clientId, codeVerifier } =
+    const { clientId, codeVerifier, issuerRequestUri } =
       await wallet.CredentialIssuance.startUserAuthorization(
         issuerConf,
         [credentialId],
         { proofType: 'none' },
         {
-          walletInstanceAttestation,
-          redirectUri,
-          wiaCryptoContext,
           appFetch,
+          issuerState,
+          redirectUri,
           scope: offerScope,
-          issuerState
+          walletInstanceAttestation,
+          wiaCryptoContext
         }
       );
 
@@ -271,7 +274,7 @@ const obtainCredentialListener: AppListenerWithAction<
       );
 
     // Using only the PID credential
-    const credentialsSdJwt: Array<[string, string]> =
+    const credentialsSdJwt: [string, string][] =
       pid.format === 'dc+sd-jwt' && pidEncoded
         ? [[pid.keyTag, pidEncoded]]
         : [];
@@ -298,8 +301,8 @@ const obtainCredentialListener: AppListenerWithAction<
 
     listenerApi.dispatch(
       setCredentialIssuancePreAuthSuccess({
-        result: presentationDetails,
-        credentialType
+        credentialType,
+        result: presentationDetails
       })
     );
     await listenerApi.take(isAnyOf(setCredentialIssuancePostAuthRequest));
@@ -310,7 +313,7 @@ const obtainCredentialListener: AppListenerWithAction<
         requestObject,
         issuerConf,
         [pid.keyTag, pidEncoded],
-        { wiaCryptoContext, appFetch }
+        { appFetch, wiaCryptoContext }
       );
 
     // Generate the DPoP context which will be used for the whole issuance flow
@@ -323,10 +326,10 @@ const obtainCredentialListener: AppListenerWithAction<
       redirectUri,
       codeVerifier,
       {
-        walletInstanceAttestation,
-        wiaCryptoContext,
+        appFetch,
         dPopCryptoContext,
-        appFetch
+        walletInstanceAttestation,
+        wiaCryptoContext
       }
     );
 
@@ -346,15 +349,15 @@ const obtainCredentialListener: AppListenerWithAction<
           credential_identifier: credential_identifiers[0]
         },
         {
+          appFetch,
           credentialCryptoContext,
           dPopCryptoContext,
-          walletUnitAttestation: walletUnitAttestation.attestation,
-          appFetch
+          walletUnitAttestation: walletUnitAttestation.attestation
         }
       );
 
     // Parse and verify the credential. The ignoreMissingAttributes flag must be set to false or omitted in production.
-    const { parsedCredential, expiration, issuedAt } =
+    const { expiration, issuedAt, parsedCredential } =
       await wallet.CredentialIssuance.verifyAndParseCredential(
         issuerConf,
         credential,
@@ -366,13 +369,13 @@ const obtainCredentialListener: AppListenerWithAction<
       setCredentialIssuancePostAuthSuccess({
         credential: {
           credential,
-          parsedCredential,
           credentialType,
-          keyTag: credentialKeyTag,
-          format,
           expiration: expiration.toISOString(),
+          format,
           issuedAt: issuedAt?.toISOString(),
           issuerConf,
+          keyTag: credentialKeyTag,
+          parsedCredential,
           spec_version: WALLET_SPEC_VERSION
         }
       })

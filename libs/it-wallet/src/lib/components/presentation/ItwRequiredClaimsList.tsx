@@ -1,21 +1,22 @@
+import { getSafeText, isStringNullyOrEmpty } from '@io-eudiw-app/commons';
 import {
+  BodySmall,
   Divider,
   H6,
+  HStack,
   Icon,
   IOColors,
-  BodySmall,
-  useIOTheme,
-  HStack
+  useIOTheme
 } from '@pagopa/io-app-design-system';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
+
 import { getClaimDisplayValue } from '../../utils/itwClaimsUtils';
 import { ClaimDisplayFormat } from '../../utils/itwRemotePresentationUtils';
 import { DisclosureClaim } from '../../utils/itwTypesUtils';
-import { getSafeText, isStringNullyOrEmpty } from '@io-eudiw-app/commons';
 
 type ItwRequiredClaimsListProps = {
-  items: ReadonlyArray<DisclosureClaim>;
+  items: readonly DisclosureClaim[];
 };
 
 const ItwRequiredClaimsList = ({ items }: ItwRequiredClaimsListProps) => {
@@ -30,14 +31,14 @@ const ItwRequiredClaimsList = ({ items }: ItwRequiredClaimsListProps) => {
           {index !== 0 && <Divider />}
           <HStack
             style={{
-              justifyContent: 'space-between',
               alignItems: 'center',
+              justifyContent: 'space-between',
               paddingVertical: 12
             }}
           >
             <View>
               <ClaimText claim={claim} />
-              <BodySmall weight="Regular" color={theme['textBody-tertiary']}>
+              <BodySmall color={theme['textBody-tertiary']} weight="Regular">
                 {t('credentialIssuance.trust.dataSource', {
                   credentialSource: source,
                   ns: 'wallet'
@@ -45,9 +46,9 @@ const ItwRequiredClaimsList = ({ items }: ItwRequiredClaimsListProps) => {
               </BodySmall>
             </View>
             <Icon
+              color={theme['icon-decorative']}
               name="checkTickBig"
               size={24}
-              color={theme['icon-decorative']}
             />
           </HStack>
         </View>
@@ -59,7 +60,7 @@ const ItwRequiredClaimsList = ({ items }: ItwRequiredClaimsListProps) => {
 const ClaimText = ({ claim }: { claim: ClaimDisplayFormat }) => {
   const displayResult = getClaimDisplayValue(claim);
 
-  const { value, type } = displayResult;
+  const { type, value } = displayResult;
 
   if (type === 'image') {
     return null;
@@ -90,8 +91,8 @@ const ClaimText = ({ claim }: { claim: ClaimDisplayFormat }) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 8,
     borderCurve: 'continuous',
+    borderRadius: 8,
     paddingHorizontal: 24
   }
 });

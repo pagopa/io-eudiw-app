@@ -24,18 +24,18 @@ type Options = {
  * @returns the rules for the markdown component
  */
 export const generateItwIOMarkdownRules = ({
-  paragraphSize,
-  linkCallback
+  linkCallback,
+  paragraphSize
 }: Options) => ({
   Link(link: TxtLinkNode, render: Renderer) {
     return linkNodeToReactNative(
       link,
       {
-        size: paragraphSize,
         onPress: () => {
           openWebUrl(link.url, () => null);
           linkCallback();
-        }
+        },
+        size: paragraphSize
       },
       render
     );

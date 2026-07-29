@@ -1,8 +1,9 @@
 import { Divider } from '@pagopa/io-app-design-system';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+
 import { ParsedClaimsRecord } from '../../utils/claims';
 import { ItwCredentialClaim } from './ItwCredentialClaim';
-import { useTranslation } from 'react-i18next';
 
 type CredentialClaimsListProps = {
   claims: ParsedClaimsRecord;
@@ -26,8 +27,8 @@ const CredentialPreviewClaimsList = ({
         <View key={index}>
           <ItwCredentialClaim
             claim={elem}
-            isPreview={isPreview}
             clipboardSuccessMessage={t('clipboard.copyFeedback')}
+            isPreview={isPreview}
             showLabel={t('buttons.show')}
           />
           {index < Object.values(claims).length - 1 && <Divider />}

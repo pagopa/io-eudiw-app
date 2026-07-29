@@ -1,14 +1,15 @@
 import {
+  hexToRgba,
   HStack,
-  IOColors,
-  IOText,
   Icon,
-  hexToRgba
+  IOColors,
+  IOText
 } from '@pagopa/io-app-design-system';
 import _ from 'lodash';
 import { Pressable, StyleSheet } from 'react-native';
-import { selectDebugData } from '../reducer/debug';
+
 import { useAppSelector } from '../reducer';
+import { selectDebugData } from '../reducer/debug';
 
 type DebugDataIndicatorProps = {
   onPress: () => void;
@@ -28,21 +29,21 @@ export const DebugDataIndicator = (props: DebugDataIndicatorProps) => {
 
   return (
     <Pressable
-      style={styles.wrapper}
       accessibilityRole="button"
       onPress={props.onPress}
+      style={styles.wrapper}
     >
       <HStack space={4} style={{ alignItems: 'center' }}>
-        <Icon name="ladybug" size={16} color="warning-850" />
+        <Icon color="warning-850" name="ladybug" size={16} />
         <IOText
-          size={14}
-          font={'TitilliumSansPro'}
-          weight={'Semibold'}
           color="warning-850"
+          font={'TitilliumSansPro'}
+          size={14}
           style={{
             letterSpacing: 0.2,
             textTransform: 'uppercase'
           }}
+          weight={'Semibold'}
         >
           {dataSize}
         </IOText>
@@ -56,14 +57,14 @@ const debugItemBorderColor = hexToRgba(IOColors['warning-850'], 0.1);
 
 const styles = StyleSheet.create({
   wrapper: {
+    alignItems: 'center',
+    backgroundColor: debugItemBgColor,
+    borderColor: debugItemBorderColor,
+    borderRadius: 8,
+    borderWidth: 1,
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'center',
-    borderColor: debugItemBorderColor,
-    borderWidth: 1,
-    paddingHorizontal: 6,
-    borderRadius: 8,
-    backgroundColor: debugItemBgColor
+    paddingHorizontal: 6
   }
 });

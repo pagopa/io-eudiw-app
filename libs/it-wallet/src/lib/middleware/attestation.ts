@@ -1,22 +1,23 @@
+import { regenerateCryptoKey } from '@io-eudiw-app/commons';
+import { getEnv } from '@io-eudiw-app/env';
+import { generate } from '@pagopa/io-react-native-crypto';
 import {
   createCryptoContextFor,
   IoWallet,
   type KeyAttestationCryptoContext
 } from '@pagopa/io-react-native-wallet';
-import { selectInstanceKeyTag, selectSessionId } from '../store/instance';
-import { WIA_KEYTAG } from '../utils/crypto';
-import { createWalletFetch } from '../utils/fetch';
-import { getIntegrityContext } from '../utils/integrity';
-import { regenerateCryptoKey } from '@io-eudiw-app/commons';
-import { getEnv } from '@io-eudiw-app/env';
-import { WALLET_SPEC_VERSION } from '../utils/constants';
-import { generate } from '@pagopa/io-react-native-crypto';
-import { createAppAsyncThunk } from './thunk';
+
 import { AppThunk } from '../store';
 import {
   setWalletInstanceAttestation,
   shouldRequestWalletInstanceAttestationSelector
 } from '../store/attestation';
+import { selectInstanceKeyTag, selectSessionId } from '../store/instance';
+import { WALLET_SPEC_VERSION } from '../utils/constants';
+import { WIA_KEYTAG } from '../utils/crypto';
+import { createWalletFetch } from '../utils/fetch';
+import { getIntegrityContext } from '../utils/integrity';
+import { createAppAsyncThunk } from './thunk';
 
 /**
  * Thunk to obtain the wallet instance attestation.
@@ -58,9 +59,9 @@ export const getWalletInstanceAttestationThunk =
             walletSolutionVersion: '3.26.0'
           },
           {
-            wiaCryptoContext,
+            appFetch,
             integrityContext,
-            appFetch
+            wiaCryptoContext
           }
         );
 
@@ -73,8 +74,8 @@ type GetWalletUnitAttestationThunkInput = {
   keyTags: string[];
 };
 type GetWalletUnitAttestationThunkOutput = {
-  format: string;
   attestation: string;
+  format: string;
 };
 
 export const getWalletUnitAttestationThunk = createAppAsyncThunk<
@@ -110,9 +111,9 @@ export const getWalletUnitAttestationThunk = createAppAsyncThunk<
       walletSolutionVersion: '3.26.0'
     },
     {
+      appFetch,
       integrityContext,
-      keysToAttest: keyTags.map(createKeyAttestationCryptoContextFor),
-      appFetch
+      keysToAttest: keyTags.map(createKeyAttestationCryptoContextFor)
     }
   );
 });
@@ -122,7 +123,7 @@ const createKeyAttestationCryptoContextFor = (
   keyTag: string
 ): KeyAttestationCryptoContext => ({
   ...createCryptoContextFor(keyTag),
-  async generateKeyWithAttestation(challenge) {
+  async generateKeyWithAttestation(_) {
     await generate(keyTag);
     return { success: true };
   }

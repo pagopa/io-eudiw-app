@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import { MainNavigatorParamsList } from '../main/MainStackNavigator';
 

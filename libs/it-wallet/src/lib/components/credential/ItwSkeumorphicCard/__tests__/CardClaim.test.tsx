@@ -1,13 +1,14 @@
 import { render } from '@testing-library/react-native';
 import { Text } from 'react-native';
+
 import { CardClaim, CardClaimRenderer } from '../CardClaim';
 
 describe('CardClaim', () => {
   it('should return null if claim is not decoded correctly', () => {
     const { queryByTestId } = render(
       <CardClaim
-        testID="claimTestID"
         claim={{ label: 'test', parsed: undefined }}
+        testID="claimTestID"
       />
     );
 
@@ -15,13 +16,13 @@ describe('CardClaim', () => {
   });
 
   it('should render correctly if claim is successfully decoded', () => {
-    const { queryByText, queryByTestId } = render(
+    const { queryByTestId, queryByText } = render(
       <CardClaim
-        testID="claimTestID"
         claim={{
           label: 'test',
           parsed: { type: 'string', value: 'Some string' }
         }}
+        testID="claimTestID"
       />
     );
 
@@ -35,8 +36,8 @@ describe('CardClaimRenderer', () => {
     const { queryByTestId, queryByText } = render(
       <CardClaimRenderer
         claim={{ type: 'string', value: 'Some string' }}
-        type={'string'}
         component={decoded => <Text testID="claimTestID">{decoded.value}</Text>}
+        type={'string'}
       />
     );
 
@@ -51,18 +52,17 @@ describe('CardClaimRenderer', () => {
           type: 'drivingPrivileges',
           value: [
             {
-              vehicle_category_code: 'AM',
+              expiry_date: '2035-02-16',
               issue_date: '1935-01-23',
-              expiry_date: '2035-02-16'
+              vehicle_category_code: 'AM'
             },
             {
-              vehicle_category_code: 'B',
+              expiry_date: '2035-02-16',
               issue_date: '1935-01-23',
-              expiry_date: '2035-02-16'
+              vehicle_category_code: 'B'
             }
           ]
         }}
-        type="drivingPrivileges"
         component={decoded =>
           decoded.value.map(p => (
             <Text
@@ -73,6 +73,7 @@ describe('CardClaimRenderer', () => {
             </Text>
           ))
         }
+        type="drivingPrivileges"
       />
     );
 
