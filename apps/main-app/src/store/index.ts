@@ -64,10 +64,6 @@ const rootReducer = combineReducers({
  * Redux store configuration.
  */
 export const store: EnhancedStore<AppRootState> = configureStore({
-  enhancers: getDefaultEnhancers =>
-    __DEV__
-      ? getDefaultEnhancers().concat(reactotron.createEnhancer())
-      : getDefaultEnhancers(),
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -77,6 +73,11 @@ export const store: EnhancedStore<AppRootState> = configureStore({
       listenerMiddleware.middleware,
       miniAppListenerMiddleware.middleware
     ),
+  // eslint-disable-next-line perfectionist/sort-objects
+  enhancers: getDefaultEnhancers =>
+    __DEV__
+      ? getDefaultEnhancers().concat(reactotron.createEnhancer())
+      : getDefaultEnhancers(),
   // Use the wrapped rootReducer instead of the reducer object
   reducer: rootReducer
 });
