@@ -1,5 +1,4 @@
 import pagopa from '@pagopa/eslint-config/jest';
-import globals from 'globals';
 
 export default [
   ...pagopa,
@@ -60,20 +59,7 @@ export default [
     }
   },
   {
-    // For Node.js scripts, set Node globals and allow require()
-    files: [
-      'tools/scripts/**/*.mjs',
-      'tools/scripts/**/*.js',
-      'apps/**/scripts/**/*.js'
-    ],
-    languageOptions: {
-      globals: {
-        ...globals.node
-      }
-    }
-  },
-  {
-    // temporarily disable require imports for reactotron.ts since it depends on package bug
+    // temporarily disable require imports rule for reactotron.ts since it depends on package's bug
     files: ['apps/main-app/src/config/reactotron.ts'],
     rules: {
       '@typescript-eslint/no-require-imports': 'off'
