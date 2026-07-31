@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@expo/metro-runtime": "~56.0.18",
-    "@expo/vector-icons": "~15.1.1",
     "@gorhom/bottom-sheet": "^5.2.8",
     "@io-eudiw-app/commons": "workspace:*",
     "@io-eudiw-app/debug-info": "workspace:*",

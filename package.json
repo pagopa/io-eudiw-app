@@ -10,6 +10,7 @@
     "@babel/runtime": "~7.27.6",
     "@eslint/js": "^9.8.0",
     "@expo/cli": "catalog:",
+    "@expo/vector-icons": "~15.1.1",
     "@nx/eslint": "23.1.0",
     "@nx/eslint-plugin": "23.1.0",
     "@nx/expo": "23.1.0",
