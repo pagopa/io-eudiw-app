@@ -5,14 +5,30 @@ export default [
   {
     ignores: [
       '**/out-tsc',
+      '**/.nx/**',
       '**/node_modules/**',
       '**/.expo/**',
       '**/*.js',
       '**/*.jsx',
       '**/babel.config.*',
-      '**/jest.config.js',
-      '**/metro.config.js'
+      '**/jest.config.*',
+      '**/metro.config.*'
     ]
+  },
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname
+      }
+    },
+    rules: {
+      '@typescript-eslint/await-thenable': 'error',
+      '@typescript-eslint/dot-notation': 'error',
+      '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/restrict-plus-operands': 'error'
+    }
   },
   {
     rules: {
