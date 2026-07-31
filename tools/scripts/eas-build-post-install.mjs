@@ -1,3 +1,7 @@
+/**
+ * we disable no-undef rule for this script since .mjs files are not ignored by default
+ * by the eslint config
+ */
 /* eslint-disable no-undef */
 
 /**

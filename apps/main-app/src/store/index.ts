@@ -73,6 +73,10 @@ export const store: EnhancedStore<AppRootState> = configureStore({
       listenerMiddleware.middleware,
       miniAppListenerMiddleware.middleware
     ),
+  /**
+   * Typescript complains about the order of middleware and enhancers props,
+   * middleware must be declared before enhancers
+   */
   // eslint-disable-next-line perfectionist/sort-objects
   enhancers: getDefaultEnhancers =>
     __DEV__

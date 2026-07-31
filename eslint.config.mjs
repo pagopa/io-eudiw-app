@@ -57,12 +57,5 @@ export default [
     rules: {
       '@typescript-eslint/no-require-imports': 'off'
     }
-  },
-  {
-    // temporarily disable require imports rule for reactotron.ts since it depends on package's bug
-    files: ['apps/main-app/src/config/reactotron.ts'],
-    rules: {
-      '@typescript-eslint/no-require-imports': 'off'
-    }
   }
 ];
