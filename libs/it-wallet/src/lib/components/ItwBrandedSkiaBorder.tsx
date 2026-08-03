@@ -10,6 +10,8 @@ import { ColorSchemeName, LayoutRectangle } from 'react-native';
 
 import { ItwBrandedSkiaGradient } from './ItwBrandedSkiaGradient';
 
+const strokePaintStyle = { style: 'stroke' as const };
+
 export type ItwIridescentBorderVariant = 'default' | 'error' | 'warning';
 
 type ItwIridescentBorderProps = {
@@ -65,7 +67,7 @@ export const ItwBrandedSkiaBorder = ({
           r={cornerRadius}
           strokeJoin={'round'}
           strokeWidth={thickness}
-          style={'stroke'}
+          {...strokePaintStyle}
           width={width}
           x={0}
           y={0}

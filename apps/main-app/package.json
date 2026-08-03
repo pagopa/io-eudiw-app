@@ -83,6 +83,7 @@
     "eslint-plugin-react": "7.35.0",
     "eslint-plugin-jest": "^29.12.1",
     "jest-expo": "catalog:",
+    "jest-mock": "29.7.0",
     "react-test-renderer": "catalog:",
     "reactotron-react-native": "^5.1.12",
     "reactotron-redux": "^3.1.10"

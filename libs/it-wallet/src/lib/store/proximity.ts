@@ -71,6 +71,7 @@ export type ProximityRetrievalMethod = 'ble' | 'nfc';
  *   current request ('ble' or 'nfc'), as reported by `onDocumentRequestReceived`.
  */
 type ProximitySlice = {
+  authorizationSent: boolean;
   documentRequest?: ISO18013_5.VerifierRequest;
   engagementMode: ProximityEngagementMode;
   errorDetails?: string;
@@ -84,6 +85,7 @@ type ProximitySlice = {
 
 // Initial state for the proximity slice
 const initialState: ProximitySlice = {
+  authorizationSent: false,
   documentRequest: undefined,
   engagementMode: 'qrcode',
   errorDetails: undefined,
@@ -119,6 +121,7 @@ const proximitySlice = createSlice({
       state,
       action: PayloadAction<ProximityEngagementMode>
     ) => {
+      state.authorizationSent = false;
       state.engagementMode = action.payload;
       // A fresh engagement (or a QR->NFC switch) starts with no session consent.
       // The NFC-retrieval re-engagement does not go through this action, so the
@@ -150,9 +153,11 @@ const proximitySlice = createSlice({
       state.retrievalMethod = action.payload;
     },
     setProximityStatusAuthorizationComplete: state => {
+      state.authorizationSent = true;
       state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE;
     },
     setProximityStatusAuthorizationRejected: state => {
+      state.authorizationSent = false;
       state.status = ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_REJECTED;
     },
     setProximityStatusAuthorizationSend: state => {
@@ -271,6 +276,10 @@ export const selectProximityQrCode = (state: WalletCombinedRootState) =>
  */
 export const selectProximityStatus = (state: WalletCombinedRootState) =>
   state.wallet.proximity.status;
+
+export const selectProximityAuthorizationSent = (
+  state: WalletCombinedRootState
+) => state.wallet.proximity.authorizationSent;
 
 /**
  * Checks if the proximity middleware is in an error status

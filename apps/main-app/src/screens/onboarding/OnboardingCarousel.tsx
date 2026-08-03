@@ -120,7 +120,7 @@ export const OnboardingCarousel = () => {
         <Carousel
           carouselCards={carouselCards}
           dotColor={IOColors.white}
-          scrollViewRef={carouselRef}
+          ref={carouselRef}
           setStep={setStep}
         />
         <FooterActions
