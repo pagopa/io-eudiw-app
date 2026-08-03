@@ -1,3 +1,6 @@
+import { isDevEnv, useHeaderSecondLevel } from '@io-eudiw-app/commons';
+import { pinSet } from '@io-eudiw-app/identification';
+import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/preferences';
 import {
   ContentWrapper,
   FooterActions,
@@ -13,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { Alert, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { CarouselFlat } from '../../components/CarouselFlat';
 import usePinValidationBottomSheet from '../../hooks/usePinValidationBottomSheet';
 import { OnboardingNavigatorParamsList } from '../../navigation/OnboardingNavigator';
@@ -21,11 +25,8 @@ import {
   selectStartupBiometricState,
   selectStartupHasScreenLock
 } from '../../store/reducers/startup';
-import { PinCarouselItem, PinCarouselItemProps } from './PinCarouselItem';
-import { isDevEnv, useHeaderSecondLevel } from '@io-eudiw-app/commons';
-import { pinSet } from '@io-eudiw-app/identification';
-import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/preferences';
 import { isValidPinNumber, PIN_LENGTH } from '../../utils/pin';
+import { PinCarouselItem, PinCarouselItemProps } from './PinCarouselItem';
 
 const CREATION_INDEX = 0;
 const CONFIRMATION_INDEX = 1;
@@ -40,13 +41,14 @@ type PinCreationScreenProps = StackScreenProps<
   'ONBOARDING_PIN_CREATION'
 >;
 
-type PinMode = 'creation' | 'confirmation';
+type PinMode = 'confirmation' | 'creation';
 
 /**
  * The Pin Creation component is used in both the onboarding
  * process and the profile settings.
  * This component will allow the user to create a new pin or change the existing one.
  */
+// eslint-disable-next-line max-lines-per-function
 export const PinCreation = ({ route }: PinCreationScreenProps) => {
   const isOnboarding = route.params.isOnboarding ?? false;
   const navigation = useNavigation();
@@ -54,11 +56,11 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
   const [pin, setPin] = useState('');
   const [pinConfirmation, setPinConfirmation] = useState('');
   const pinModeRef = useRef<PinMode>('creation');
-  const pinRef = useRef<string | null>(null);
+  const pinRef = useRef<null | string>(null);
   const carouselRef = useRef<FlatList>(null);
   const titleCreationRef = useRef<View>(null);
   const titleConfirmationRef = useRef<View>(null);
-  const { present, bottomSheet } = usePinValidationBottomSheet();
+  const { bottomSheet, present } = usePinValidationBottomSheet();
   const { t } = useTranslation(['global', 'common']);
   const biometricState = useAppSelector(selectStartupBiometricState);
   const hasDeviceScreenLock = useAppSelector(selectStartupHasScreenLock);
@@ -193,8 +195,8 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
         // trackPinError("confirm", getFlowType(isOnboarding, isFirstOnBoarding));
         Alert.alert(t('global:onboarding.pin.errors.match.title'), undefined, [
           {
-            text: t('global:onboarding.pin.errors.match.cta'),
-            onPress: scrollToCreation
+            onPress: scrollToCreation,
+            text: t('global:onboarding.pin.errors.match.cta')
           }
         ]);
       }
@@ -204,35 +206,35 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
     [handleSubmit, scrollToCreation, t]
   );
 
-  const data: Array<PinCarouselItemProps> = [
+  const data: PinCarouselItemProps[] = [
     {
+      description: t('global:onboarding.pin.subTitle'),
+      handleOnValidate: handlePinCreation,
+      maxLength: PIN_LENGTH,
+      onValueChange: setPin,
+      testID: 'create-pin-carousel-item',
       title: t('global:onboarding.pin.title'),
       titleRef: titleCreationRef,
-      description: t('global:onboarding.pin.subTitle'),
-      value: pin,
-      testID: 'create-pin-carousel-item',
-      handleOnValidate: handlePinCreation,
-      onValueChange: setPin,
-      maxLength: PIN_LENGTH
+      value: pin
     },
     {
+      handleOnValidate: handlePinConfirmation,
+      maxLength: PIN_LENGTH,
+      onValueChange: setPinConfirmation,
+      testID: 'confirm-pin-carousel-item',
       title: t('global:onboarding.pin.confirmation.title'),
       titleRef: titleConfirmationRef,
-      value: pinConfirmation,
-      testID: 'confirm-pin-carousel-item',
-      handleOnValidate: handlePinConfirmation,
-      onValueChange: setPinConfirmation,
-      maxLength: PIN_LENGTH
+      value: pinConfirmation
     }
   ];
 
   useHeaderSecondLevel({
-    title: '',
-    goBack
+    goBack,
+    title: ''
   });
 
   return (
-    <SafeAreaView testID="pin-creation-screen" style={styles.container}>
+    <SafeAreaView style={styles.container} testID="pin-creation-screen">
       <View style={styles.content}>
         <VSpacer size={8} />
         <View style={styles.pictogram}>
@@ -240,27 +242,27 @@ export const PinCreation = ({ route }: PinCreationScreenProps) => {
         </View>
         <VSpacer size={8} />
         <CarouselFlat
-          ref={carouselRef}
-          testID="pin-creation-carousel"
-          style={{ flexGrow: 0 }}
-          data={data}
           Component={PinCarouselItem}
+          data={data}
+          ref={carouselRef}
           scrollEnabled={false}
+          style={{ flexGrow: 0 }}
+          testID="pin-creation-carousel"
         />
         <VSpacer size={40} />
         <ContentWrapper>
           <NumberPad
-            onNumberPress={handlePinChange}
-            onDeletePress={onDeletePress}
-            variant="neutral"
             deleteAccessibilityLabel={t('common:buttons.delete')}
+            onDeletePress={onDeletePress}
+            onNumberPress={handlePinChange}
+            variant="neutral"
           />
           <VSpacer />
           <View style={{ alignSelf: 'center' }}>
             <IOButton
-              variant="link"
-              onPress={present}
               label={t('global:onboarding.pin.policy.title')}
+              onPress={present}
+              variant="link"
             />
           </View>
           {bottomSheet}

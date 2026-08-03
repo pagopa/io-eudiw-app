@@ -2,19 +2,19 @@
  * Routes definition for the tab navigator.
  */
 const ROOT_ROUTES = {
-  // Main section
-  MAIN_NAV: 'ROOT_MAIN_NAV',
   ERROR: 'ROOT_ERROR',
   LOADING: 'ROOT_LOADING',
+  // Main section
+  MAIN_NAV: 'ROOT_MAIN_NAV',
 
-  // Onboarding
-  ONBOARDING_NAV: 'ROOT_ONBOARDING_NAV',
+  // Selected mini-app
+  MINI_APP_NAV: 'ROOT_MINI_APP_NAV',
 
   // Mini-app selection
   MINI_APP_SELECTION: 'ROOT_MINI_APP_SELECTION',
 
-  // Selected mini-app
-  MINI_APP_NAV: 'ROOT_MINI_APP_NAV'
+  // Onboarding
+  ONBOARDING_NAV: 'ROOT_ONBOARDING_NAV'
 } as const;
 
 export default ROOT_ROUTES;

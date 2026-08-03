@@ -1,14 +1,15 @@
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
-import { useSineWaveAnimation } from '../hooks/useSineWaveAnimation';
+
 import CameraMarkerCorner from '../../assets/img/camera/camera-marker-corner.svg';
 import CameraMarkerLine from '../../assets/img/camera/camera-marker-line.svg';
+import { useSineWaveAnimation } from '../hooks/useSineWaveAnimation';
 const ANIMATION_DURATION = 1500;
 
 type Props = {
-  size?: number;
   cornerSize?: number;
   isAnimated?: boolean;
+  size?: number;
 };
 
 const defaultMarkerSize = 230;
@@ -21,28 +22,28 @@ const defaultCornerSize = 44;
  * @param isAnimated - If true, the line will be animated. Default is true.
  */
 const AnimatedCameraMarker = ({
-  size = defaultMarkerSize,
   cornerSize = defaultCornerSize,
-  isAnimated = true
+  isAnimated = true,
+  size = defaultMarkerSize
 }: Props) => {
   const lineSpan = size / 2 - cornerSize - 8;
 
   const { animatedStyle: animatedLineStyle } = useSineWaveAnimation({
-    enabled: isAnimated,
-    span: lineSpan,
+    axis: 'y',
     duration: ANIMATION_DURATION,
-    axis: 'y'
+    enabled: isAnimated,
+    span: lineSpan
   });
 
   const drawMarkerCorner = (rotation: number, markerSize: number) => (
     <View style={{ transform: [{ rotate: `${rotation}deg` }] }}>
-      <CameraMarkerCorner width={markerSize} height={markerSize} />
+      <CameraMarkerCorner height={markerSize} width={markerSize} />
     </View>
   );
 
   return (
-    <Animated.View style={styles.container} entering={FadeIn}>
-      <View style={[styles.marker, { width: size, height: size }]}>
+    <Animated.View entering={FadeIn} style={styles.container}>
+      <View style={[styles.marker, { height: size, width: size }]}>
         <View style={styles.corners}>
           <View style={styles.cornersSide}>
             {drawMarkerCorner(0, cornerSize)}
@@ -54,7 +55,7 @@ const AnimatedCameraMarker = ({
           </View>
         </View>
         <Animated.View style={animatedLineStyle}>
-          <CameraMarkerLine width={size - 10} height={size} />
+          <CameraMarkerLine height={size} width={size - 10} />
         </Animated.View>
       </View>
     </Animated.View>
@@ -63,24 +64,24 @@ const AnimatedCameraMarker = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
     height: '105%',
-    justifyContent: 'center'
-  },
-  marker: {
-    overflow: 'hidden',
     justifyContent: 'center',
-    alignItems: 'center'
+    width: '100%'
   },
   corners: {
-    width: '100%',
     height: '100%',
     justifyContent: 'space-between',
-    position: 'absolute'
+    position: 'absolute',
+    width: '100%'
   },
   cornersSide: {
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  marker: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden'
   }
 });
 

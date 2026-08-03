@@ -13,18 +13,19 @@ import {
   useDerivedValue,
   useSharedValue
 } from 'react-native-reanimated';
+
 import {
   ITW_BRAND_GRADIENT,
   ITW_BRAND_GRADIENT_ERROR,
   ITW_BRAND_GRADIENT_WARNING
 } from '../utils/theme';
 
-export type ItwSkiaBrandedGradientVariant = 'default' | 'warning' | 'error';
+export type ItwSkiaBrandedGradientVariant = 'default' | 'error' | 'warning';
 
 type ItwIridescentBorderProps = {
-  width: LayoutRectangle['width'];
   height: LayoutRectangle['height'];
   variant?: ItwSkiaBrandedGradientVariant;
+  width: LayoutRectangle['width'];
 };
 
 /**
@@ -33,9 +34,9 @@ type ItwIridescentBorderProps = {
  * Renders an animated IT-Wallet branded border using Skia and device rotation sensor data.
  */
 export const ItwBrandedSkiaGradient = ({
-  width,
   height,
-  variant = 'default'
+  variant = 'default',
+  width
 }: ItwIridescentBorderProps) => {
   /* Sensors */
   const rotationSensor = useAnimatedSensor(SensorType.ROTATION);
@@ -46,8 +47,8 @@ export const ItwBrandedSkiaGradient = ({
   /* Maps variants to gradient colors */
   const gradientByVariant = {
     default: ITW_BRAND_GRADIENT,
-    warning: ITW_BRAND_GRADIENT_WARNING,
-    error: ITW_BRAND_GRADIENT_ERROR
+    error: ITW_BRAND_GRADIENT_ERROR,
+    warning: ITW_BRAND_GRADIENT_WARNING
   };
 
   /* Makes gradient slightly bigger to handle animation overflow */
@@ -93,17 +94,17 @@ export const ItwBrandedSkiaGradient = ({
 
   return (
     <Rect
-      x={0}
-      y={gradientY}
-      width={width}
       height={gradientHeight}
       transform={skiaGradientTransform}
+      width={width}
+      x={0}
+      y={gradientY}
     >
       <SkiaLinearGradient
+        colors={gradientByVariant[variant]}
+        end={vec(width / 3, width)}
         mode="mirror"
         start={vec(0, 0)}
-        end={vec(width / 3, width)}
-        colors={gradientByVariant[variant]}
       />
     </Rect>
   );

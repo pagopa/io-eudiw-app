@@ -1,20 +1,21 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersistConfig, persistReducer } from 'redux-persist';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PersistConfig, persistReducer } from 'redux-persist';
+
+import { WalletCombinedRootState } from '.';
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
 import { wellKnownCredential } from '../utils/credentials';
+import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 import {
   CredentialFormat,
   StoredCredential,
   StoredCredentialMetadata
 } from '../utils/itwTypesUtils';
-import { WalletCombinedRootState } from '.';
 import { resetLifecycle } from './lifecycle';
-import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
 
 /* State type definition for the credentials slice.
  * Only credential metadata is kept here. The encoded SD-JWT/MDOC of each
@@ -23,22 +24,22 @@ import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
  * the raw credential payloads.
  */
 type CredentialsSlice = {
-  credentials: Array<StoredCredentialMetadata>;
-  valuesHidden: boolean;
   banners: {
     pidInfoBannerActive: boolean;
     proximityInfoBannerActive: boolean;
   };
+  credentials: StoredCredentialMetadata[];
+  valuesHidden: boolean;
 };
 
 // Initial state for the credential slice
 const initialState: CredentialsSlice = {
-  credentials: [],
-  valuesHidden: false,
   banners: {
     pidInfoBannerActive: true,
     proximityInfoBannerActive: true
-  }
+  },
+  credentials: [],
+  valuesHidden: false
 };
 
 /**
@@ -46,8 +47,14 @@ const initialState: CredentialsSlice = {
  * This must be a separate slice because the credentials are stored using a custom persistor.
  */
 const credentialsSlice = createSlice({
-  name: 'credentials',
+  extraReducers: builder => {
+    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
+  },
   initialState,
+  name: 'credentials',
   reducers: {
     addCredential: (
       state,
@@ -65,6 +72,13 @@ const credentialsSlice = createSlice({
         state.credentials.push(credential);
       }
     },
+    // Empty action which will be intercepted by the listener and trigger the identification before storing a credential
+    addCredentialWithIdentification: (
+      _,
+      __: PayloadAction<{ credential: StoredCredential }>
+    ) => {
+      /* empty */
+    },
     // Empty action which will be intercepted by the listener and trigger the identification before storing the PID
     addPidWithIdentification: (
       _,
@@ -72,12 +86,16 @@ const credentialsSlice = createSlice({
     ) => {
       /* empty */
     },
-    // Empty action which will be intercepted by the listener and trigger the identification before storing a credential
-    addCredentialWithIdentification: (
-      _,
-      __: PayloadAction<{ credential: StoredCredential }>
-    ) => {
-      /* empty */
+    // PID Info Banner
+    disablePidInfoBanner: state => {
+      state.banners.pidInfoBannerActive = false;
+    },
+    // Proximity Info Banner
+    disableProximityInfoBanner: state => {
+      state.banners.proximityInfoBannerActive = false;
+    },
+    itwSetClaimValuesHidden: (state, action: PayloadAction<boolean>) => {
+      state.valuesHidden = action.payload;
     },
     removeCredential: (
       state,
@@ -90,24 +108,7 @@ const credentialsSlice = createSlice({
           c => c.credentialType !== credentialType
         );
       }
-    },
-    itwSetClaimValuesHidden: (state, action: PayloadAction<boolean>) => {
-      state.valuesHidden = action.payload;
-    },
-    // PID Info Banner
-    disablePidInfoBanner: state => {
-      state.banners.pidInfoBannerActive = false;
-    },
-    // Proximity Info Banner
-    disableProximityInfoBanner: state => {
-      state.banners.proximityInfoBannerActive = false;
     }
-  },
-  extraReducers: builder => {
-    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
-    builder.addCase(preferencesReset, () => initialState);
-    builder.addCase(resetLifecycle, () => initialState);
-    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 
@@ -134,12 +135,12 @@ export const credentialsReducer = persistReducer(
  */
 export const {
   addCredential,
-  removeCredential,
   addCredentialWithIdentification,
   addPidWithIdentification,
-  itwSetClaimValuesHidden,
   disablePidInfoBanner,
-  disableProximityInfoBanner
+  disableProximityInfoBanner,
+  itwSetClaimValuesHidden,
+  removeCredential
 } = credentialsSlice.actions;
 
 export const selectCredentials = (state: WalletCombinedRootState) =>
@@ -183,14 +184,14 @@ export const itwCredentialsPidStatusSelector = createSelector(
  */
 export const selectWalletCards: (
   state: WalletCombinedRootState
-) => Array<WalletCard> = createSelector(selectCredentials, credentials =>
+) => WalletCard[] = createSelector(selectCredentials, credentials =>
   credentials
     .filter(cred => cred.credentialType !== wellKnownCredential.PID)
     .map(cred => ({
-      key: cred.keyTag,
-      type: 'itw',
+      credentialStatus: getCredentialStatus(cred),
       credentialType: cred.credentialType,
-      credentialStatus: getCredentialStatus(cred)
+      key: cred.keyTag,
+      type: 'itw'
     }))
 );
 
@@ -241,12 +242,9 @@ export const presentableCredentialsSelector = createSelector(
  */
 export const areAllPresentableCredentialsExpired = (
   presentableCredentials: StoredCredentialMetadata[]
-) => {
-  return (
-    presentableCredentials.length > 0 &&
-    presentableCredentials.every(isExpiredPresentableCredential)
-  );
-};
+) =>
+  presentableCredentials.length > 0 &&
+  presentableCredentials.every(isExpiredPresentableCredential);
 
 /**
  * Selector to determine whether the Proximity QR Code screen should surface the

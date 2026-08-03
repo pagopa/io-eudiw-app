@@ -1,3 +1,4 @@
+import { selectFontPreference } from '@io-eudiw-app/preferences';
 import {
   HStack,
   IOColors,
@@ -7,39 +8,39 @@ import {
 } from '@pagopa/io-app-design-system';
 import { memo, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import { useItwDisplayCredentialStatus } from '../../../hooks/useItwDisplayCredentialStatus';
+import { useAppSelector } from '../../../store';
 import { ItwCredentialStatus } from '../../../types';
+import { wellKnownCredential } from '../../../utils/credentials';
+import { getCredentialCapabilities } from '../../../utils/itwCredentialCapabilities';
 import {
   getCredentialNameFromType,
   useBorderColorByStatus,
   useTagPropsByStatus,
   validCredentialStatuses
 } from '../../../utils/itwCredentialUtils';
-import { getCredentialCapabilities } from '../../../utils/itwCredentialCapabilities';
-import { CardBackground } from './CardBackground';
-import { useAppSelector } from '../../../store';
-import { selectFontPreference } from '@io-eudiw-app/preferences';
-import { useCredentialCardConfig } from './config';
 import { ItWalletIdLogo } from '../../ItWalletIdLogo';
-import { wellKnownCredential } from '../../../utils/credentials';
+import { CardBackground } from './CardBackground';
+import { useCredentialCardConfig } from './config';
 
 export type ItwCredentialCard = {
-  /**
-   * Type of the credential, which is used to determine the
-   * visual representation and styling of the card.
-   */
-  credentialType: string;
   /**
    * Current status of the credential, used to determine the
    * visual representation and the status tag to display.
    */
   credentialStatus?: ItwCredentialStatus;
+  /**
+   * Type of the credential, which is used to determine the
+   * visual representation and styling of the card.
+   */
+  credentialType: string;
 };
 
 export const ItwCredentialCard = memo(
-  ({ credentialType, credentialStatus = 'valid' }: ItwCredentialCard) => {
+  ({ credentialStatus = 'valid', credentialType }: ItwCredentialCard) => {
     const typefacePreference = useAppSelector(selectFontPreference);
-    const { themeType, theme } = useIOThemeContext();
+    const { theme, themeType } = useIOThemeContext();
     const status = useItwDisplayCredentialStatus(credentialStatus);
     const borderColorMap = useBorderColorByStatus(credentialType);
     const cardConfig = useCredentialCardConfig(credentialType);
@@ -70,25 +71,25 @@ export const ItwCredentialCard = memo(
             <HStack space={16}>
               {credentialType === wellKnownCredential.PID ? (
                 <View style={{ flex: 1 }}>
-                  <ItWalletIdLogo width={117} height={27} />
+                  <ItWalletIdLogo height={27} width={117} />
                 </View>
               ) : (
                 <IOText
-                  size={16}
-                  lineHeight={24}
                   font={
                     typefacePreference === 'comfortable'
                       ? 'Titillio'
                       : 'TitilliumSansPro'
                   }
-                  weight="Semibold"
+                  lineHeight={24}
                   maxFontSizeMultiplier={1.25}
+                  size={16}
                   style={{
-                    letterSpacing: 0.25,
                     color: cardConfig.titleColor,
                     flex: 1,
-                    flexShrink: 1
+                    flexShrink: 1,
+                    letterSpacing: 0.25
                   }}
+                  weight="Semibold"
                 >
                   {
                     /*
@@ -135,41 +136,41 @@ export const ItwCredentialCard = memo(
 );
 
 const styles = StyleSheet.create({
+  border: {
+    borderCurve: 'continuous',
+    borderRadius: 8,
+    borderWidth: 1,
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 11
+  },
+  cardContainer: {
+    borderRadius: 8,
+    flex: 1,
+    overflow: 'hidden'
+  },
   cardWrapper: {
     aspectRatio: 16 / 10,
     borderRadius: 8
   },
-  cardContainer: {
-    flex: 1,
-    borderRadius: 8,
-    overflow: 'hidden'
-  },
-  border: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    borderRadius: 8,
-    borderCurve: 'continuous',
-    borderWidth: 1,
-    zIndex: 11
-  },
   header: {
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingTop: 12
+  },
+  statusOverlay: {
+    opacity: 0.7
   },
   statusTag: {
     position: 'absolute',
     right: 16,
     top: 10,
     zIndex: 20
-  },
-  statusOverlay: {
-    opacity: 0.7
   }
 });

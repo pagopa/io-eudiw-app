@@ -3,12 +3,13 @@ import {
   LoadingSpinner,
   WithTestID
 } from '@pagopa/io-app-design-system';
+
 import { useInteractiveElementDefaultColor } from '../hooks/theme';
 
 type LoadingIndicatorProps = WithTestID<
   Exclude<
     React.ComponentProps<typeof LoadingSpinner>,
-    'size' | 'color' | 'duration'
+    'color' | 'duration' | 'size'
   >
 >;
 
@@ -24,10 +25,10 @@ export const LoadingIndicator = ({
 
   return (
     <LoadingSpinner
-      size={48}
       accessibilityHint={accessibilityHint}
       accessibilityLabel={accessibilityLabel}
       color={IOColors[blueColor]}
+      size={48}
       testID={testID}
     />
   );

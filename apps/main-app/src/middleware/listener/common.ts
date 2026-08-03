@@ -1,5 +1,6 @@
-import { Linking } from 'react-native';
 import { selectUrl } from '@io-eudiw-app/navigation';
+import { Linking } from 'react-native';
+
 import { AppListener } from './types';
 
 /**

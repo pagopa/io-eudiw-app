@@ -1,16 +1,17 @@
-import { useMemo } from 'react';
-import { StatusBarStyle } from 'react-native';
-import { getCredentialNameByType, wellKnownCredential } from './credentials';
-import { useItWalletTheme } from './theme';
 import {
   getLuminance,
   HeaderSecondLevelHookProps
 } from '@io-eudiw-app/commons';
+import { useMemo } from 'react';
+import { StatusBarStyle } from 'react-native';
+
+import { getCredentialNameByType, wellKnownCredential } from './credentials';
+import { useItWalletTheme } from './theme';
 
 type CredentialTheme = {
   backgroundColor: string;
-  textColor: string;
   statusBarStyle: StatusBarStyle;
+  textColor: string;
   variant: HeaderSecondLevelHookProps['variant'];
 };
 
@@ -22,13 +23,15 @@ export const useThemeColorByCredentialType = (
 
   const colors = useMemo(() => {
     switch (credentialType) {
-      case wellKnownCredential.PID:
-      default:
+      case wellKnownCredential.BONUS_PARI:
         return {
-          backgroundColor: withL3Design
-            ? theme['header-background']
-            : '#295699',
-          textColor: '#032D5C'
+          backgroundColor: '#7AC1FA',
+          textColor: '#000000'
+        };
+      case wellKnownCredential.DISABILITY_CARD:
+        return {
+          backgroundColor: '#315B76',
+          textColor: '#17406F'
         };
       case wellKnownCredential.DRIVING_LICENSE:
         return {
@@ -37,15 +40,13 @@ export const useThemeColorByCredentialType = (
             : '#744C63',
           textColor: withL3Design ? '#032D5C' : '#652035'
         };
-      case wellKnownCredential.DISABILITY_CARD:
+      case wellKnownCredential.PID:
+      default:
         return {
-          backgroundColor: '#315B76',
-          textColor: '#17406F'
-        };
-      case wellKnownCredential.BONUS_PARI:
-        return {
-          backgroundColor: '#7AC1FA',
-          textColor: '#000000'
+          backgroundColor: withL3Design
+            ? theme['header-background']
+            : '#295699',
+          textColor: '#032D5C'
         };
     }
   }, [credentialType, theme, withL3Design]);
@@ -70,8 +71,8 @@ export const useHeaderPropsByCredentialType = (
   );
 
   return {
+    backgroundColor,
     title: getCredentialNameByType(credentialType),
-    variant,
-    backgroundColor
+    variant
   };
 };

@@ -7,29 +7,29 @@ import {
 import { scheduleOnRN } from 'react-native-worklets';
 
 const directions = {
-  updown: Directions.UP + Directions.DOWN,
-  leftright: Directions.LEFT + Directions.RIGHT
+  leftright: Directions.LEFT + Directions.RIGHT,
+  updown: Directions.UP + Directions.DOWN
 };
 
 type FlipsGestureDetectorProps = {
-  isFlipped: boolean;
-  setIsFlipped: (isFlipped: boolean) => void;
   children: ReactNode;
   direction?: keyof typeof directions;
-  onPress?: () => void;
   disabled?: boolean;
+  isFlipped: boolean;
+  onPress?: () => void;
+  setIsFlipped: (isFlipped: boolean) => void;
 };
 
 /**
  * This component wraps the children in a GestureDetector that flips the card when the user flicks left or right.
  */
 export const FlipGestureDetector = ({
-  isFlipped,
-  setIsFlipped,
   children,
   direction = 'leftright',
+  disabled = false,
+  isFlipped,
   onPress,
-  disabled = false
+  setIsFlipped
 }: FlipsGestureDetectorProps) => {
   const tapGesture = Gesture.Tap().onEnd(() => {
     if (onPress) {

@@ -1,5 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
+
 import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
@@ -35,9 +36,9 @@ const PresentationCredentialNotFound = ({ route }: Props) => {
 
   return (
     <ItwCredentialNotFound
-      credentialType={credentialType}
-      continueButtonLabel={t('buttons.continue')}
       cancelButtonLabel={t('buttons.cancel')}
+      continueButtonLabel={t('buttons.continue')}
+      credentialType={credentialType}
       onDismiss={onDismiss}
     />
   );

@@ -1,4 +1,3 @@
-import { IOScrollView, IOScrollViewActions } from './IOScrollView';
 import {
   Body,
   BodyProps,
@@ -11,16 +10,18 @@ import {
 } from '@pagopa/io-app-design-system';
 import { View } from 'react-native';
 
+import { IOScrollView, IOScrollViewActions } from './IOScrollView';
+
 type IOScrollViewWithListItemsProps = {
-  title?: string;
-  subtitle?: string | Array<BodyProps>;
-  renderItems: Array<ListItemInfo>;
-  listItemHeaderLabel?: string;
   actions: IOScrollViewActions;
   isHeaderVisible?: boolean;
+  listItemHeaderLabel?: string;
+  renderItems: ListItemInfo[];
+  subtitle?: BodyProps[] | string;
+  title?: string;
 };
 
-const ItemsList = ({ items }: { items: Array<ListItemInfo> }) => (
+const ItemsList = ({ items }: { items: ListItemInfo[] }) => (
   <>
     {items.map((item, index) => (
       <View key={`${item.value}-${index}`}>
@@ -44,11 +45,11 @@ const ItemsList = ({ items }: { items: Array<ListItemInfo> }) => (
  * @param isHeaderVisible- A flag indicating whether the header is visible or not
  */
 export const IOScrollViewWithListItems = ({
-  title,
-  subtitle,
   actions,
+  listItemHeaderLabel,
   renderItems,
-  listItemHeaderLabel
+  subtitle,
+  title
 }: IOScrollViewWithListItemsProps) => (
   <IOScrollView actions={actions}>
     <H2>{title}</H2>

@@ -1,34 +1,36 @@
 import type { ParseKeys } from 'i18next';
-import I18n from 'i18next';
-import { wellKnownCredential } from './credentials';
-import { IOToast, type ListItemAction } from '@pagopa/io-app-design-system';
+
 import { openWebUrlInApp } from '@io-eudiw-app/commons';
-import { useAppSelector } from '../store';
-import { selectCredential } from '../store/credentials';
-import { WellKnownClaim } from './itwClaimsUtils';
+import { IOToast, type ListItemAction } from '@pagopa/io-app-design-system';
+import I18n from 'i18next';
 import z from 'zod';
 
-export type CredentialInfoAlert = {
-  testID: string;
-  contentI18nKey: ParseKeys<'wallet'>;
-};
+import { useAppSelector } from '../store';
+import { selectCredential } from '../store/credentials';
+import { wellKnownCredential } from './credentials';
+import { WellKnownClaim } from './itwClaimsUtils';
 
-type CredentialInvalidStatusFailure = {
-  pictogram: 'accessDenied';
-  titleI18nKey: ParseKeys<['common', 'wallet']>;
-  subtitleI18nKey: ParseKeys<['common', 'wallet']>;
-  actionI18nKey: ParseKeys<['common', 'wallet']>;
-  actionUrl: string;
+export type CredentialInfoAlert = {
+  contentI18nKey: ParseKeys<'wallet'>;
+  testID: string;
 };
 
 export type ItwCredentialCapabilities = {
-  showStatusTag: boolean;
-  suppressStatusAlert: boolean;
-  infoAlert?: CredentialInfoAlert;
-  invalidStatusFailure?: CredentialInvalidStatusFailure;
   getExtraCredentialActions?: (
     appSelectorHook: typeof useAppSelector
   ) => { key: string; props: ListItemAction }[];
+  infoAlert?: CredentialInfoAlert;
+  invalidStatusFailure?: CredentialInvalidStatusFailure;
+  showStatusTag: boolean;
+  suppressStatusAlert: boolean;
+};
+
+type CredentialInvalidStatusFailure = {
+  actionI18nKey: ParseKeys<['common', 'wallet']>;
+  actionUrl: string;
+  pictogram: 'accessDenied';
+  subtitleI18nKey: ParseKeys<['common', 'wallet']>;
+  titleI18nKey: ParseKeys<['common', 'wallet']>;
 };
 
 const DEFAULT_CAPABILITIES: ItwCredentialCapabilities = {
@@ -37,37 +39,7 @@ const DEFAULT_CAPABILITIES: ItwCredentialCapabilities = {
 };
 
 const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
-  [wellKnownCredential.DRIVING_LICENSE]: {
-    ...DEFAULT_CAPABILITIES,
-    infoAlert: {
-      testID: 'itwMdlBannerTestID',
-      contentI18nKey: 'presentation.alerts.mdl.content'
-    }
-  },
-  [wellKnownCredential.DISABILITY_CARD]: {
-    ...DEFAULT_CAPABILITIES,
-    infoAlert: {
-      testID: 'itwEdcBannerTestID',
-      contentI18nKey: 'presentation.alerts.edc.content'
-    }
-  },
   [wellKnownCredential.BONUS_PARI]: {
-    showStatusTag: false,
-    suppressStatusAlert: true,
-    infoAlert: {
-      testID: 'itwBonusPariBannerTestID',
-      contentI18nKey: 'presentation.alerts.bonusPari.content'
-    },
-    invalidStatusFailure: {
-      pictogram: 'accessDenied',
-      titleI18nKey:
-        'wallet:credentialIssuance.failure.bonusPariNotRequested.title',
-      subtitleI18nKey:
-        'wallet:credentialIssuance.failure.bonusPariNotRequested.subtitle',
-      actionI18nKey:
-        'wallet:credentialIssuance.failure.bonusPariNotRequested.action',
-      actionUrl: 'https://dev.bonuselettrodomestici.it/utente'
-    },
     getExtraCredentialActions: appSelectorHook => {
       const credential = appSelectorHook(
         selectCredential(wellKnownCredential.BONUS_PARI)
@@ -83,18 +55,17 @@ const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
         {
           key: 'PARI_BONUS_CTA_1',
           props: {
-            testID: 'PARI_BONUS_CTA_1_TESTID',
-            variant: 'primary',
+            accessibilityLabel: I18n.t(
+              'presentation.credentialDetails.actions.pariPurchases',
+              { ns: 'wallet' }
+            ),
             icon: 'history',
             label: I18n.t(
               'presentation.credentialDetails.actions.pariPurchases',
               { ns: 'wallet' }
             ),
-            accessibilityLabel: I18n.t(
-              'presentation.credentialDetails.actions.pariPurchases',
-              { ns: 'wallet' }
-            ),
             onPress: () => {
+              // eslint-disable-next-line @typescript-eslint/no-unused-expressions
               fiscalCode.success
                 ? openWebUrlInApp(
                     `https://dev.bonuselettrodomestici.it/utente/it-wallet/payment/${fiscalCode.data}`,
@@ -102,10 +73,42 @@ const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
                       IOToast.error(I18n.t('errors.generic', { ns: 'common' }))
                   )
                 : IOToast.error(I18n.t('errors.generic', { ns: 'common' }));
-            }
+            },
+            testID: 'PARI_BONUS_CTA_1_TESTID',
+            variant: 'primary'
           }
         }
       ];
+    },
+    infoAlert: {
+      contentI18nKey: 'presentation.alerts.bonusPari.content',
+      testID: 'itwBonusPariBannerTestID'
+    },
+    invalidStatusFailure: {
+      actionI18nKey:
+        'wallet:credentialIssuance.failure.bonusPariNotRequested.action',
+      actionUrl: 'https://dev.bonuselettrodomestici.it/utente',
+      pictogram: 'accessDenied',
+      subtitleI18nKey:
+        'wallet:credentialIssuance.failure.bonusPariNotRequested.subtitle',
+      titleI18nKey:
+        'wallet:credentialIssuance.failure.bonusPariNotRequested.title'
+    },
+    showStatusTag: false,
+    suppressStatusAlert: true
+  },
+  [wellKnownCredential.DISABILITY_CARD]: {
+    ...DEFAULT_CAPABILITIES,
+    infoAlert: {
+      contentI18nKey: 'presentation.alerts.edc.content',
+      testID: 'itwEdcBannerTestID'
+    }
+  },
+  [wellKnownCredential.DRIVING_LICENSE]: {
+    ...DEFAULT_CAPABILITIES,
+    infoAlert: {
+      contentI18nKey: 'presentation.alerts.mdl.content',
+      testID: 'itwMdlBannerTestID'
     }
   }
 };

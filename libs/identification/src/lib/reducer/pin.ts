@@ -1,11 +1,12 @@
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersistConfig, persistReducer } from 'redux-persist';
-import { IdentificationCombinedRootState } from '.';
 import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PersistConfig, persistReducer } from 'redux-persist';
+
+import { IdentificationCombinedRootState } from '.';
 
 /*
  * State type definition for the pin slice
@@ -25,17 +26,17 @@ export const initialState: PinState = {
  * This must be a separate slice because the pin is sored using a custom persistor.
  */
 const pinSlice = createSlice({
-  name: 'pin',
-  initialState,
-  reducers: {
-    pinSet: (state, action: PayloadAction<string>) => {
-      state.pin = action.payload;
-    }
-  },
   extraReducers: builder => {
     // Reset the state when the preferences are reset or if it's the first startup. This is required to clear the persisted storage.
     builder.addCase(preferencesReset, () => initialState);
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
+  },
+  initialState,
+  name: 'pin',
+  reducers: {
+    pinSet: (state, action: PayloadAction<string>) => {
+      state.pin = action.payload;
+    }
   }
 });
 

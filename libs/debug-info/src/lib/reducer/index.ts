@@ -1,11 +1,12 @@
+import { PreferenceRootState } from '@io-eudiw-app/preferences';
 import { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
-import { debugRootReducer } from './debug';
-import { PreferenceRootState } from '@io-eudiw-app/preferences';
 
-export type DebugCombinedRootState = {
+import { debugRootReducer } from './debug';
+
+export type DebugCombinedRootState = PreferenceRootState & {
   debug: ReturnType<typeof debugRootReducer>;
-} & PreferenceRootState;
+};
 
 export type DebugDispatch = ThunkDispatch<
   DebugCombinedRootState,

@@ -1,17 +1,18 @@
-import { useTranslation } from 'react-i18next';
 import {
   OperationResultScreenContent,
   useDisableGestureNavigation,
   useHardwareBackButton
 } from '@io-eudiw-app/commons';
+import { useDebugInfo } from '@io-eudiw-app/debug-info';
+import { useTranslation } from 'react-i18next';
+
+import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../store';
 import {
   resetPresentation,
   selectPostDefinitionStatus,
   selectPreDefinitionStatus
 } from '../../store/presentation';
-import { useDebugInfo } from '@io-eudiw-app/debug-info';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Filure screen of the presentation flow.
@@ -28,7 +29,7 @@ const PresentationFailure = () => {
   useDisableGestureNavigation();
 
   // At the moment they are the same error
-  useDebugInfo({ errorPre, errorPost });
+  useDebugInfo({ errorPost, errorPre });
 
   const onPress = () => {
     dispatch(resetPresentation());
@@ -37,14 +38,14 @@ const PresentationFailure = () => {
 
   return (
     <OperationResultScreenContent
-      pictogram="umbrella"
-      title={t('wallet:presentation.failure.title')}
-      subtitle={t('wallet:presentation.failure.subtitle')}
       action={{
         accessibilityLabel: t('wallet:presentation.failure.button'),
         label: t('wallet:presentation.failure.button'),
         onPress
       }}
+      pictogram="umbrella"
+      subtitle={t('wallet:presentation.failure.subtitle')}
+      title={t('wallet:presentation.failure.title')}
     />
   );
 };

@@ -10,7 +10,7 @@ import { PresentationPreDefinitionParams } from '../screens/presentation/Present
  * @param schemes - A list of schemes in the `scheme://` form.
  * @returns true if the URL protocol matches one of the schemes.
  */
-const matchesScheme = (url: URL, schemes: ReadonlyArray<string>): boolean =>
+const matchesScheme = (url: URL, schemes: readonly string[]): boolean =>
   schemes.some(
     uri => url.protocol === uri.substring(0, uri.length - 2) // Remove last two characters ('//')
   );
@@ -38,10 +38,10 @@ export const presentationLinkToUrl = (
     throw new Error('Invalid presentation link');
   }
   return {
-    request_uri: request_uri,
     client_id: client_id,
-    state: state ?? undefined,
-    request_uri_method
+    request_uri: request_uri,
+    request_uri_method,
+    state: state ?? undefined
   };
 };
 
@@ -50,8 +50,8 @@ export const presentationLinkToUrl = (
  * Either a credential presentation request or a credential offer (OID4VCI).
  */
 export type ParsedDeepLink =
-  | { kind: 'presentation'; params: PresentationPreDefinitionParams }
-  | { kind: 'credentialOffer'; url: string };
+  | { kind: 'credentialOffer'; url: string }
+  | { kind: 'presentation'; params: PresentationPreDefinitionParams };
 
 /**
  * Classifies a wallet deep link by its scheme and parses it accordingly.

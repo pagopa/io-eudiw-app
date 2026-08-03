@@ -2,8 +2,9 @@ import {
   resource as commonResource,
   LocaleResource
 } from '@io-eudiw-app/commons';
-import wallet from '../../locales/it/wallet.json';
 import { merge } from 'lodash';
+
+import wallet from '../../locales/it/wallet.json';
 
 const walletResource = {
   it: {

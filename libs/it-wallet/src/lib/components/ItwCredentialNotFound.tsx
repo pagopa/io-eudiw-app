@@ -1,31 +1,31 @@
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { t } from 'i18next';
-import { useEffect } from 'react';
-
 import {
   OperationResultScreenContent,
   useDisableGestureNavigation,
   useHardwareBackButton
 } from '@io-eudiw-app/commons';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { t } from 'i18next';
+import { useEffect } from 'react';
+
+import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
+import MAIN_ROUTES from '../navigation/main/routes';
 import WALLET_ROUTES from '../navigation/wallet/routes';
+import { useAppDispatch, useAppSelector } from '../store';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
 import { lifecycleIsOperationalSelector } from '../store/lifecycle';
 import { setPendingCredential } from '../store/pidIssuance';
-import { useAppDispatch, useAppSelector } from '../store';
-import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
-import MAIN_ROUTES from '../navigation/main/routes';
 import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 
 const ItwCredentialNotFound = ({
-  credentialType,
-  continueButtonLabel,
   cancelButtonLabel,
+  continueButtonLabel,
+  credentialType,
   onDismiss
 }: {
-  credentialType: string;
-  continueButtonLabel: string;
   cancelButtonLabel: string;
+  continueButtonLabel: string;
+  credentialType: string;
   onDismiss?: () => void;
 }) => {
   const navigation =
@@ -78,20 +78,20 @@ const ItwCredentialNotFound = ({
 
   return (
     <OperationResultScreenContent
-      pictogram="cie"
-      title={t('issuance.credentialNotFound.title', { ns: 'wallet' })}
-      subtitle={t('issuance.credentialNotFound.subtitle', { ns: 'wallet' })}
-      isHeaderVisible={false}
       action={{
-        label: continueButtonLabel,
         accessibilityLabel: continueButtonLabel,
+        label: continueButtonLabel,
         onPress: navigateToCredential
       }}
+      isHeaderVisible={false}
+      pictogram="cie"
       secondaryAction={{
-        label: cancelButtonLabel,
         accessibilityLabel: cancelButtonLabel,
+        label: cancelButtonLabel,
         onPress: handleClose
       }}
+      subtitle={t('issuance.credentialNotFound.subtitle', { ns: 'wallet' })}
+      title={t('issuance.credentialNotFound.title', { ns: 'wallet' })}
     />
   );
 };

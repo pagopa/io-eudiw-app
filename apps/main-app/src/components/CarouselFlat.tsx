@@ -1,9 +1,9 @@
 import { IOAppMargin, WithTestID } from '@pagopa/io-app-design-system';
 import {
+  forwardRef,
   JSXElementConstructor,
   ReactElement,
   Ref,
-  forwardRef,
   useCallback,
   useMemo
 } from 'react';
@@ -17,26 +17,26 @@ import {
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
-type Nullable<T> = T | null;
+type Nullable<T> = null | T;
 
-type Props<T> = {
-  data: Array<T>;
-  Component: JSXElementConstructor<T>;
-  itemsGap?: IOAppMargin | 0;
-  itemsPerTime?: number;
-} & Pick<
+type Props<T> = Pick<
   FlatListProps<T>,
-  | 'onViewableItemsChanged'
-  | 'snapToAlignment'
-  | 'decelerationRate'
-  | 'pagingEnabled'
-  | 'viewabilityConfig'
   | 'contentContainerStyle'
+  | 'decelerationRate'
   | 'initialScrollIndex'
   | 'keyExtractor'
+  | 'onViewableItemsChanged'
+  | 'pagingEnabled'
   | 'scrollEnabled'
+  | 'snapToAlignment'
   | 'style'
->;
+  | 'viewabilityConfig'
+> & {
+  Component: JSXElementConstructor<T>;
+  data: T[];
+  itemsGap?: 0 | IOAppMargin;
+  itemsPerTime?: number;
+};
 
 /**
  * This component renders a carousel of elements from a given `data` entry and a `Component` of your choice. It's based on the `FlatList` component.
@@ -48,21 +48,21 @@ type Props<T> = {
  */
 function CarouselComponent<T extends Record<string, unknown>>(
   {
-    data,
-    snapToAlignment,
-    decelerationRate,
-    pagingEnabled,
-    viewabilityConfig,
+    Component,
     contentContainerStyle,
+    data,
+    decelerationRate,
     initialScrollIndex,
     itemsGap = 0,
     itemsPerTime = 1,
+    keyExtractor,
+    onViewableItemsChanged,
+    pagingEnabled,
     scrollEnabled = true,
+    snapToAlignment,
     style,
     testID,
-    Component,
-    onViewableItemsChanged,
-    keyExtractor
+    viewabilityConfig
   }: WithTestID<Props<T>>,
   ref: Ref<FlatList<T>>
 ) {
@@ -75,11 +75,11 @@ function CarouselComponent<T extends Record<string, unknown>>(
     ({ item }: { item: T }) => (
       <View
         style={{
+          marginRight: itemsGap,
           width:
             data.length === 1 && itemsPerTime === 1
               ? WINDOW_WIDTH
-              : WINDOW_WIDTH / itemsPerTime - itemsGap * 2,
-          marginRight: itemsGap
+              : WINDOW_WIDTH / itemsPerTime - itemsGap * 2
         }}
       >
         <Component {...item} />
@@ -90,33 +90,33 @@ function CarouselComponent<T extends Record<string, unknown>>(
 
   const getItemLayout = useCallback(
     (_: Nullable<ArrayLike<T>> | undefined, index: number) => ({
+      index,
       length: WINDOW_WIDTH,
-      offset: WINDOW_WIDTH * index,
-      index
+      offset: WINDOW_WIDTH * index
     }),
     []
   );
 
   return (
     <FlatList
-      ref={ref}
-      horizontal
-      testID={testID}
-      data={data}
-      style={[style, styles.box]}
-      snapToInterval={snapToInterval}
-      snapToAlignment={snapToAlignment}
-      decelerationRate={decelerationRate}
-      pagingEnabled={pagingEnabled}
-      viewabilityConfig={viewabilityConfig}
-      showsHorizontalScrollIndicator={false}
       contentContainerStyle={contentContainerStyle}
-      initialScrollIndex={initialScrollIndex}
-      scrollEnabled={scrollEnabled}
-      renderItem={renderItem}
+      data={data}
+      decelerationRate={decelerationRate}
       getItemLayout={getItemLayout}
+      horizontal
+      initialScrollIndex={initialScrollIndex}
       keyExtractor={keyExtractor}
       onViewableItemsChanged={onViewableItemsChanged}
+      pagingEnabled={pagingEnabled}
+      ref={ref}
+      renderItem={renderItem}
+      scrollEnabled={scrollEnabled}
+      showsHorizontalScrollIndicator={false}
+      snapToAlignment={snapToAlignment}
+      snapToInterval={snapToInterval}
+      style={[style, styles.box]}
+      testID={testID}
+      viewabilityConfig={viewabilityConfig}
     />
   );
 }

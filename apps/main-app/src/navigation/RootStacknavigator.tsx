@@ -1,3 +1,9 @@
+import {
+  LoadingScreenContent,
+  OperationResultScreenContent
+} from '@io-eudiw-app/commons';
+import { navigationRef, setUrl } from '@io-eudiw-app/navigation';
+import { selectSelectedMiniAppId } from '@io-eudiw-app/preferences';
 import { useIOThemeContext } from '@pagopa/io-app-design-system';
 import {
   LinkingOptions,
@@ -5,43 +11,38 @@ import {
   NavigatorScreenParams
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { t } from 'i18next';
 import { useCallback, useEffect, useMemo } from 'react';
+import { Linking } from 'react-native';
+
 import { useStoredFontPreference } from '../context/DSTypeFaceContext';
-import OnboardingNavigator, {
-  OnboardingNavigatorParamsList
-} from './OnboardingNavigator';
 import MiniAppSelection from '../screens/MiniAppSelection';
 import { useAppDispatch, useAppSelector } from '../store';
-import ROOT_ROUTES from './routes';
-import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
-import { navigationRef, setUrl } from '@io-eudiw-app/navigation';
 import {
   selectStartupStatus,
   startupSetLoading
 } from '../store/reducers/startup';
-import {
-  LoadingScreenContent,
-  OperationResultScreenContent
-} from '@io-eudiw-app/commons';
-import { selectSelectedMiniAppId } from '@io-eudiw-app/preferences';
 import { getMiniAppById } from '../utils/miniapp';
-import { Linking } from 'react-native';
-import { t } from 'i18next';
+import OnboardingNavigator, {
+  OnboardingNavigatorParamsList
+} from './OnboardingNavigator';
+import ROOT_ROUTES from './routes';
+import { IONavigationDarkTheme, IONavigationLightTheme } from './theme';
 
 export type RootStackParamList = {
   // Main
   [ROOT_ROUTES.ERROR]: undefined;
-  [ROOT_ROUTES.LOADING]: undefined;
   [ROOT_ROUTES.ERROR]: undefined;
+  [ROOT_ROUTES.LOADING]: undefined;
 
-  // Onboarding
-  [ROOT_ROUTES.ONBOARDING_NAV]: NavigatorScreenParams<OnboardingNavigatorParamsList>;
+  // Selected mini-app
+  [ROOT_ROUTES.MINI_APP_NAV]: undefined;
 
   // Mini-app selection
   [ROOT_ROUTES.MINI_APP_SELECTION]: undefined;
 
-  // Selected mini-app
-  [ROOT_ROUTES.MINI_APP_NAV]: undefined;
+  // Onboarding
+  [ROOT_ROUTES.ONBOARDING_NAV]: NavigatorScreenParams<OnboardingNavigatorParamsList>;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -50,9 +51,9 @@ const Stack = createStackNavigator<RootStackParamList>();
  * Type definition for the screens to be rendered based on the startup and onboarding states.
  */
 type Screens = {
-  name: keyof RootStackParamList;
-
   component: React.ComponentType<unknown>;
+
+  name: keyof RootStackParamList;
 };
 
 const Loading = ({ title }: { title: string }) => (
@@ -86,8 +87,8 @@ export const RootStackNavigator = () => {
     return (
       <OperationResultScreenContent
         pictogram="umbrella"
-        title={title}
         subtitle={body}
+        title={title}
       />
     );
   };
@@ -100,36 +101,35 @@ export const RootStackNavigator = () => {
     switch (startupStatus) {
       case 'DONE':
         return {
-          name: ROOT_ROUTES.MINI_APP_NAV,
-          component: selectedMiniApp?.Navigator ?? LoadingScreen
-        };
-
-      case 'WAIT_ONBOARDING':
-        return {
-          name: ROOT_ROUTES.ONBOARDING_NAV,
-          component: OnboardingNavigator
-        };
-
-      case 'WAIT_MINI_APP_SELECTION':
-        return {
-          name: ROOT_ROUTES.MINI_APP_SELECTION,
-          component: MiniAppSelection
+          component: selectedMiniApp?.Navigator ?? LoadingScreen,
+          name: ROOT_ROUTES.MINI_APP_NAV
         };
 
       case 'ERROR':
         // An error occurred during startup
-        return { name: ROOT_ROUTES.ERROR, component: GenericError };
+        return { component: GenericError, name: ROOT_ROUTES.ERROR };
+
+      case 'WAIT_MINI_APP_SELECTION':
+        return {
+          component: MiniAppSelection,
+          name: ROOT_ROUTES.MINI_APP_SELECTION
+        };
+
+      case 'WAIT_ONBOARDING':
+        return {
+          component: OnboardingNavigator,
+          name: ROOT_ROUTES.ONBOARDING_NAV
+        };
 
       case 'LOADING':
       case 'NOT_STARTED':
       case 'WAIT_IDENTIFICATION':
       default:
-        return { name: ROOT_ROUTES.LOADING, component: LoadingScreen };
+        return { component: LoadingScreen, name: ROOT_ROUTES.LOADING };
     }
   }, [startupStatus, selectedMiniApp]);
 
   const linking: LinkingOptions<RootStackParamList> = {
-    prefixes: selectedMiniApp ? [...selectedMiniApp.linkingSchemes] : [],
     config: {
       screens: {
         ...(selectedMiniApp && {
@@ -146,6 +146,7 @@ export const RootStackNavigator = () => {
       }
       return url;
     },
+    prefixes: selectedMiniApp ? [...selectedMiniApp.linkingSchemes] : [],
     subscribe(listener) {
       const onReceiveURL = ({ url }: { url: string }) => {
         // Always persist the full URL (including its scheme) before letting
@@ -165,16 +166,16 @@ export const RootStackNavigator = () => {
 
   return (
     <NavigationContainer
+      linking={linking}
+      ref={navigationRef}
       theme={
         themeType === 'light' ? IONavigationLightTheme : IONavigationDarkTheme
       }
-      linking={linking}
-      ref={navigationRef}
     >
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen
-          name={initialScreen.name}
           component={initialScreen.component}
+          name={initialScreen.name}
         />
       </Stack.Navigator>
     </NavigationContainer>

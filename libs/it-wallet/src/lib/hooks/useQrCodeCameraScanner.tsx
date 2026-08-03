@@ -1,20 +1,11 @@
 import { IOColors, LoadingSpinner } from '@pagopa/io-app-design-system';
-
 import { BarcodeScanningResult, CameraView } from 'expo-camera';
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
+
 import { AnimatedCameraMarker } from '../components/AnimatedCameraMarker';
 import { OnBarcodeSuccess } from '../screens/presentation/QrCodeScanScreen';
-
-/**
- * {@link useQrCodeCameraScanner} configuration
- */
-type QrCodeCameraScannerConfiguration = {
-  onBarcodeSuccess: OnBarcodeSuccess;
-  isDisabled?: boolean;
-  isLoading?: boolean;
-};
 
 type QrCodeCameraScanner = {
   /**
@@ -32,6 +23,15 @@ type QrCodeCameraScanner = {
 };
 
 /**
+ * {@link useQrCodeCameraScanner} configuration
+ */
+type QrCodeCameraScannerConfiguration = {
+  isDisabled?: boolean;
+  isLoading?: boolean;
+  onBarcodeSuccess: OnBarcodeSuccess;
+};
+
+/**
  * Delay for reactivating the QR scanner after a scan
  */
 const QRCODE_SCANNER_REACTIVATION_TIME_MS = 5000;
@@ -44,9 +44,9 @@ const QRCODE_SCANNER_REACTIVATION_TIME_MS = 5000;
  * @param isLoading - If true, the component displays a loading indicator and disables all interactions
  */
 export const useQrCodeCameraScanner = ({
-  onBarcodeSuccess,
   isDisabled,
-  isLoading = false
+  isLoading = false,
+  onBarcodeSuccess
 }: QrCodeCameraScannerConfiguration): QrCodeCameraScanner => {
   // Checks that the device has a torch
   const [enableTorch, setEnableTorch] = useState<boolean>(false);
@@ -101,13 +101,13 @@ export const useQrCodeCameraScanner = ({
   const cameraComponent = (
     <View style={styles.cameraContainer} testID="BarcodeScannerCameraTestID">
       <CameraView
+        active={!isDisabled}
         barcodeScannerSettings={{
           barcodeTypes: ['qr']
         }}
-        style={styles.camera}
-        active={!isDisabled}
         enableTorch={enableTorch}
         onBarcodeScanned={onBarcodeScanned}
+        style={styles.camera}
       />
       {!isLoading ? (
         <View style={styles.markerContainer}>
@@ -135,26 +135,26 @@ const LoadingMarkerComponent = () => (
     entering={FadeIn}
     style={{ flex: 1, justifyContent: 'center', marginTop: '15%' }}
   >
-    <LoadingSpinner size={48} color="white" />
+    <LoadingSpinner color="white" size={48} />
   </Animated.View>
 );
 
 const styles = StyleSheet.create({
-  cameraContainer: {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    backgroundColor: IOColors.black
-  },
   camera: {
+    height: '100%',
     position: 'absolute',
-    width: '100%',
-    height: '100%'
+    width: '100%'
+  },
+  cameraContainer: {
+    backgroundColor: IOColors.black,
+    height: '100%',
+    position: 'relative',
+    width: '100%'
   },
   markerContainer: {
     alignSelf: 'center',
+    bottom: 0,
     position: 'absolute',
-    top: 0,
-    bottom: 0
+    top: 0
   }
 });

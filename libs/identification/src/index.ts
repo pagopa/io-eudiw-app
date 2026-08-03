@@ -1,12 +1,12 @@
 import { identificationRootReducer } from './lib/reducer/index';
 export * from './lib/components/IdentificationModal';
-export * from './lib/utils/biometric';
-export * from './lib/reducer/pin';
 export {
-  setIdentificationUnidentified,
+  setIdentificationIdentified,
   setIdentificationStarted,
-  setIdentificationIdentified
+  setIdentificationUnidentified
 } from './lib/reducer/identification';
+export * from './lib/reducer/pin';
+export * from './lib/utils/biometric';
 
 export const identificationReducer = {
   identification: identificationRootReducer

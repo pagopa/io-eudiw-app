@@ -1,4 +1,10 @@
 import {
+  LoadingScreenContent,
+  useDisableGestureNavigation,
+  useHardwareBackButtonToDismiss,
+  useHeaderSecondLevel
+} from '@io-eudiw-app/commons';
+import {
   Body,
   ForceScrollDownView,
   H2,
@@ -10,14 +16,11 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import {
-  useDisableGestureNavigation,
-  useHeaderSecondLevel,
-  useHardwareBackButtonToDismiss,
-  LoadingScreenContent
-} from '@io-eudiw-app/commons';
+
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
+import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { addPidWithIdentification } from '../../store/credentials';
 import {
   resetPidIssuance,
@@ -29,8 +32,6 @@ import {
 } from '../../store/selectors/pidIssuance';
 import { parseClaimsToRecord } from '../../utils/claims';
 import { StoredCredential } from '../../utils/itwTypesUtils';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -42,7 +43,7 @@ const PidIssuanceRequest = () => {
   const { t } = useTranslation(['wallet', 'common']);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const { error, success, loading } = useAppSelector(selectPidIssuanceStatus);
+  const { error, loading, success } = useAppSelector(selectPidIssuanceStatus);
   const pid = useAppSelector(selectPidIssuanceData);
   const { navigateToWallet } = useNavigateToWalletWithReset();
 
@@ -65,19 +66,19 @@ const PidIssuanceRequest = () => {
   }, [error, navigation]);
 
   useHeaderSecondLevel({
-    title: '',
     canGoBack: success.status,
     goBack: () => {
       dismissalDialog.show();
-    }
+    },
+    title: ''
   });
 
   const dismissalDialog = useItwDismissalDialog({
     customLabels: {
-      title: t('discovery.screen.itw.dismissalDialog.title'),
       body: t('discovery.screen.itw.dismissalDialog.body'),
+      cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel'),
       confirmLabel: t('discovery.screen.itw.dismissalDialog.confirm'),
-      cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel')
+      title: t('discovery.screen.itw.dismissalDialog.title')
     },
     handleDismiss: () => navigateToWallet()
   });
@@ -90,13 +91,13 @@ const PidIssuanceRequest = () => {
         contentContainerStyle={styles.scroll}
         footerActions={{
           actions: {
-            type: 'SingleButton',
             primary: {
               label: t('buttons.continue', {
                 ns: 'common'
               }),
               onPress: () => dispatch(addPidWithIdentification({ credential }))
-            }
+            },
+            type: 'SingleButton'
           }
         }}
       >
@@ -127,11 +128,11 @@ const PidIssuanceRequest = () => {
 export default PidIssuanceRequest;
 
 const styles = StyleSheet.create({
-  scroll: {
-    flexGrow: 1
-  },
   contentWrapper: {
     flexGrow: 1,
     paddingHorizontal: IOVisualCostants.appMarginDefault
+  },
+  scroll: {
+    flexGrow: 1
   }
 });

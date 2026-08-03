@@ -3,13 +3,13 @@ import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
 
 type ItwDismissalDialogProps = {
-  handleDismiss?: () => void;
   customLabels: {
-    title: string;
     body: string;
-    confirmLabel: string;
     cancelLabel: string;
+    confirmLabel: string;
+    title: string;
   };
+  handleDismiss?: () => void;
 };
 
 /**
@@ -21,25 +21,25 @@ type ItwDismissalDialogProps = {
  * @returns a function that can be used to show the dialog
  */
 export const useItwDismissalDialog = ({
-  handleDismiss,
-  customLabels
+  customLabels,
+  handleDismiss
 }: ItwDismissalDialogProps) => {
   const navigation = useNavigation();
 
-  const { title, body, confirmLabel, cancelLabel } = customLabels;
+  const { body, cancelLabel, confirmLabel, title } = customLabels;
 
   const show = () => {
     Alert.alert(title, body, [
       {
-        text: cancelLabel,
-        style: 'cancel'
+        style: 'cancel',
+        text: cancelLabel
       },
       {
-        text: confirmLabel,
-        style: 'destructive',
         onPress: () => {
           (handleDismiss || navigation.goBack)();
-        }
+        },
+        style: 'destructive',
+        text: confirmLabel
       }
     ]);
   };

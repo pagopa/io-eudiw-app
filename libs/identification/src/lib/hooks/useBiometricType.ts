@@ -1,7 +1,8 @@
+import { selectIsBiometricEnabled } from '@io-eudiw-app/preferences';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { useEffect, useState } from 'react';
+
 import { useAppSelector } from '../reducer';
-import { selectIsBiometricEnabled } from '@io-eudiw-app/preferences';
 
 /**
  * Hook to get the biometric type if it's enabled.

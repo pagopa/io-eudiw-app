@@ -1,4 +1,8 @@
 import {
+  FocusAwareStatusBar,
+  useAppBackgroundAccentColorName
+} from '@io-eudiw-app/commons';
+import {
   FooterActions,
   IOButton,
   IOColors,
@@ -14,12 +18,9 @@ import {
   View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { Carousel } from '../../components/Carousel';
 import { LandingCardComponent } from '../../components/LandingCardComponent';
-import {
-  FocusAwareStatusBar,
-  useAppBackgroundAccentColorName
-} from '@io-eudiw-app/commons';
 
 const TEXT_COLOR = 'white';
 
@@ -38,8 +39,8 @@ export const OnboardingCarousel = () => {
 
   const skipCarousel = useCallback(() => {
     navigation.navigate('ROOT_ONBOARDING_NAV', {
-      screen: 'ONBOARDING_PIN_CREATION',
-      params: { isOnboarding: true }
+      params: { isOnboarding: true },
+      screen: 'ONBOARDING_PIN_CREATION'
     });
   }, [navigation]);
 
@@ -48,52 +49,51 @@ export const OnboardingCarousel = () => {
       skipCarousel();
     } else {
       carouselRef.current?.scrollTo({
-        x: windowDimensions.width * (step + 1),
-        animated: true
+        animated: true,
+        x: windowDimensions.width * (step + 1)
       });
     }
   }, [step, windowDimensions.width, skipCarousel]);
 
-  const carouselCards: ReadonlyArray<
-    ComponentProps<typeof LandingCardComponent>
-  > = useMemo(
-    () => [
-      {
-        id: 0,
-        pictogramName: 'smile',
-        title: t('global:onboarding.carousel.first.title'),
-        content: t('global:onboarding.carousel.first.content'),
-        accessibilityLabel: t('global:onboarding.carousel.first.title'),
-        accessibilityHint: t('global:onboarding.carousel.first.content'),
-        titleColor: TEXT_COLOR,
-        contentColor: TEXT_COLOR,
-        pictogramStyle: 'light-content'
-      },
-      {
-        id: 1,
-        pictogramName: 'walletDoc',
-        title: t('global:onboarding.carousel.second.title'),
-        content: t('global:onboarding.carousel.second.content'),
-        accessibilityLabel: t('global:onboarding.carousel.second.title'),
-        accessibilityHint: t('global:onboarding.carousel.second.content'),
-        titleColor: TEXT_COLOR,
-        contentColor: TEXT_COLOR,
-        pictogramStyle: 'light-content'
-      },
-      {
-        id: 2,
-        pictogramName: 'fingerprint',
-        title: t('global:onboarding.carousel.third.title'),
-        content: t('global:onboarding.carousel.third.content'),
-        accessibilityLabel: t('global:onboarding.carousel.third.title'),
-        accessibilityHint: t('global:onboarding.carousel.third.content'),
-        titleColor: TEXT_COLOR,
-        contentColor: TEXT_COLOR,
-        pictogramStyle: 'light-content'
-      }
-    ],
-    [t]
-  );
+  const carouselCards: readonly ComponentProps<typeof LandingCardComponent>[] =
+    useMemo(
+      () => [
+        {
+          accessibilityHint: t('global:onboarding.carousel.first.content'),
+          accessibilityLabel: t('global:onboarding.carousel.first.title'),
+          content: t('global:onboarding.carousel.first.content'),
+          contentColor: TEXT_COLOR,
+          id: 0,
+          pictogramName: 'smile',
+          pictogramStyle: 'light-content',
+          title: t('global:onboarding.carousel.first.title'),
+          titleColor: TEXT_COLOR
+        },
+        {
+          accessibilityHint: t('global:onboarding.carousel.second.content'),
+          accessibilityLabel: t('global:onboarding.carousel.second.title'),
+          content: t('global:onboarding.carousel.second.content'),
+          contentColor: TEXT_COLOR,
+          id: 1,
+          pictogramName: 'walletDoc',
+          pictogramStyle: 'light-content',
+          title: t('global:onboarding.carousel.second.title'),
+          titleColor: TEXT_COLOR
+        },
+        {
+          accessibilityHint: t('global:onboarding.carousel.third.content'),
+          accessibilityLabel: t('global:onboarding.carousel.third.title'),
+          content: t('global:onboarding.carousel.third.content'),
+          contentColor: TEXT_COLOR,
+          id: 2,
+          pictogramName: 'fingerprint',
+          pictogramStyle: 'light-content',
+          title: t('global:onboarding.carousel.third.title'),
+          titleColor: TEXT_COLOR
+        }
+      ],
+      [t]
+    );
   return (
     <>
       <FocusAwareStatusBar
@@ -109,12 +109,12 @@ export const OnboardingCarousel = () => {
           }}
         >
           <IOButton
-            variant="link"
-            testID="skip-button-onboarding-wallet"
             accessibilityLabel={t('common:buttons.skip')}
             color={'contrast'}
             label={t('common:buttons.skip')}
             onPress={skipCarousel}
+            testID="skip-button-onboarding-wallet"
+            variant="link"
           />
         </View>
         <Carousel
@@ -124,15 +124,15 @@ export const OnboardingCarousel = () => {
           setStep={setStep}
         />
         <FooterActions
-          fixed={false}
           actions={{
             primary: {
+              color: 'contrast',
               label: t('common:buttons.next'),
-              onPress: nextStep,
-              color: 'contrast'
+              onPress: nextStep
             },
             type: 'SingleButton'
           }}
+          fixed={false}
           transparent
         />
       </SafeAreaView>
@@ -142,7 +142,7 @@ export const OnboardingCarousel = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1,
-    backgroundColor: IOColors['blueIO-500']
+    backgroundColor: IOColors['blueIO-500'],
+    flex: 1
   }
 });

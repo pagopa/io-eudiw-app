@@ -16,38 +16,39 @@ import {
 import { useCallback, useRef } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useHardwareBackButtonToDismiss } from './useHardwareBackButton';
-import { NonEmptyArray } from '../types/utils';
+
 import { BottomSheetHeader } from '../components/BottomSheetHeader';
+import { NonEmptyArray } from '../types/utils';
+import { useHardwareBackButtonToDismiss } from './useHardwareBackButton';
 
 const screenHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   bottomSheet: {
-    borderTopRightRadius: IOBottomSheetHeaderRadius,
-    borderTopLeftRadius: IOBottomSheetHeaderRadius,
     borderCurve: 'continuous',
+    borderTopLeftRadius: IOBottomSheetHeaderRadius,
+    borderTopRightRadius: IOBottomSheetHeaderRadius,
     // Don't delete the overflow property
     // oterwise the above borderRadius won't work
     overflow: 'hidden'
   }
 });
 
-type IOBottomSheetModal = {
-  present: () => void;
-  dismiss: () => void;
-  bottomSheet: React.JSX.Element;
-};
-
 type BottomSheetOptions = {
-  component: React.ReactNode;
-  title: string | React.ReactNode;
   closeAccessibilityLabel: string;
-  snapPoint?: NonEmptyArray<number | string>;
-  maxDynamicContentSizePercent?: number;
+  component: React.ReactNode;
   footer?: React.ReactElement;
   fullScreen?: boolean;
+  maxDynamicContentSizePercent?: number;
   onDismiss?: () => void;
+  snapPoint?: NonEmptyArray<number | string>;
+  title: React.ReactNode | string;
+};
+
+type IOBottomSheetModal = {
+  bottomSheet: React.JSX.Element;
+  dismiss: () => void;
+  present: () => void;
 };
 
 /**
@@ -60,32 +61,32 @@ type BottomSheetOptions = {
  * @param onDismiss - Optional callback function to be called when the bottom sheet is dismissed
  */
 export const useIOBottomSheetModal = ({
-  component,
-  title,
   closeAccessibilityLabel,
-  snapPoint,
-  maxDynamicContentSizePercent = 1,
+  component,
   footer,
-  onDismiss
+  maxDynamicContentSizePercent = 1,
+  onDismiss,
+  snapPoint,
+  title
 }: Omit<BottomSheetOptions, 'fullScreen'>): IOBottomSheetModal => {
   const insets = useSafeAreaInsets();
   const { dismissAll } = useBottomSheetModal();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const { onOpen, onClose } = useHardwareBackButtonToDismiss(dismissAll);
+  const { onClose, onOpen } = useHardwareBackButtonToDismiss(dismissAll);
 
   const header = (
     <BottomSheetHeader
-      title={title}
-      onClose={dismissAll}
       closeAccessibilityLabel={closeAccessibilityLabel}
+      onClose={dismissAll}
+      title={title}
     />
   );
   const bottomSheetContent = (
     <BottomSheetScrollView
+      overScrollMode={'never'}
       style={{
         paddingHorizontal: IOVisualCostants.appMarginDefault
       }}
-      overScrollMode={'never'}
     >
       {component}
       {footer ? (
@@ -114,9 +115,9 @@ export const useIOBottomSheetModal = ({
     (backdropProps: BottomSheetBackdropProps) => (
       <BottomSheetBackdrop
         {...backdropProps}
-        opacity={0.2}
         appearsOnIndex={0}
         disappearsOnIndex={-1}
+        opacity={0.2}
       />
     ),
     []
@@ -124,37 +125,37 @@ export const useIOBottomSheetModal = ({
 
   const bottomSheet = (
     <BottomSheetModal
-      style={styles.bottomSheet}
+      accessible={false}
+      backdropComponent={BackdropElement}
+      enableDismissOnClose={true}
+      enableDynamicSizing={snapPoint ? false : true}
       footerComponent={(props: BottomSheetFooterProps) =>
         footer ? (
           <BottomSheetFooter
             {...props}
             // bottomInset={insets.bottom}
             style={{
-              paddingBottom: insets.bottom,
-              backgroundColor: IOColors.white
+              backgroundColor: IOColors.white,
+              paddingBottom: insets.bottom
             }}
           >
             {footer}
           </BottomSheetFooter>
         ) : null
       }
-      enableDynamicSizing={snapPoint ? false : true}
+      handleComponent={_ => header}
+      importantForAccessibility={'yes'}
       maxDynamicContentSize={
         (screenHeight - insets.top) *
         Math.min(Math.max(maxDynamicContentSizePercent, 0.25), 1)
       }
-      snapPoints={snapPoint}
-      ref={bottomSheetModalRef}
-      handleComponent={_ => header}
-      backdropComponent={BackdropElement}
-      enableDismissOnClose={true}
-      accessible={false}
-      importantForAccessibility={'yes'}
       onDismiss={handleDismiss}
+      ref={bottomSheetModalRef}
+      snapPoints={snapPoint}
+      style={styles.bottomSheet}
     >
       {bottomSheetContent}
     </BottomSheetModal>
   );
-  return { present, dismiss: dismissAll, bottomSheet };
+  return { bottomSheet, dismiss: dismissAll, present };
 };

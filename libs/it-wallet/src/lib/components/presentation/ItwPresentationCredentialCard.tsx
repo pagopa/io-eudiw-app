@@ -4,14 +4,15 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { PropsWithChildren, useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredentialStatus';
 import WALLET_ROUTES from '../../navigation/wallet/routes';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import { useAppSelector } from '../../store';
 import { itwIsClaimValueHiddenSelector } from '../../store/credentials';
 import { ParsedClaimsRecord } from '../../utils/claims';
 import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
@@ -21,12 +22,11 @@ import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 import { ItwSkeumorphicCard } from '../credential/ItwSkeumorphicCard';
 import { FlipGestureDetector } from '../credential/ItwSkeumorphicCard/FlipGestureDetector';
 import { ItwPresentationCredentialCardFlipButton } from './ItwPresentationCredentialCardFlipButton';
-import { useAppSelector } from '../../store';
 
 type Props = {
+  capabilities: ItwCredentialCapabilities;
   credential: StoredCredentialMetadata;
   parsedClaims: ParsedClaimsRecord;
-  capabilities: ItwCredentialCapabilities;
 };
 
 /**
@@ -34,9 +34,9 @@ type Props = {
  * If the credential supports the skeumorphic card, it also renders it with the flip button and If L3 is enabled, it shows the badge.
  */
 const ItwPresentationCredentialCard = ({
+  capabilities,
   credential,
-  parsedClaims,
-  capabilities
+  parsedClaims
 }: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<WalletNavigatorParamsList>>();
@@ -68,24 +68,24 @@ const ItwPresentationCredentialCard = ({
       <CardContainer backgroundColor={backgroundColor}>
         <FlipGestureDetector
           isFlipped={isFlipped}
-          setIsFlipped={setIsFlipped}
           onPress={handleCardPress}
+          setIsFlipped={setIsFlipped}
         >
           <ItwSkeumorphicCard
-            credential={credential}
+            capabilities={capabilities}
             claims={parsedClaims}
+            credential={credential}
             isFlipped={isFlipped}
             status={status}
             valuesHidden={valuesHidden}
-            capabilities={capabilities}
           />
         </FlipGestureDetector>
       </CardContainer>
       <VSpacer size={8} />
       <ContentWrapper style={styles.centeredLayout}>
         <ItwPresentationCredentialCardFlipButton
-          isFlipped={isFlipped}
           handleOnPress={handleFlipButtonPress}
+          isFlipped={isFlipped}
         />
       </ContentWrapper>
     </VStack>
@@ -97,8 +97,8 @@ type CardContainerProps = {
 };
 
 const CardContainer = ({
-  children,
-  backgroundColor
+  backgroundColor,
+  children
 }: PropsWithChildren<CardContainerProps>) => (
   <View style={styles.cardContainer}>
     {children}
@@ -109,18 +109,18 @@ const CardContainer = ({
 const cardPaddingHorizontal: IOSpacingScale = 16;
 
 const styles = StyleSheet.create({
-  cardContainer: {
-    position: 'relative',
-    paddingHorizontal: cardPaddingHorizontal,
-    paddingTop: 8 // Add top padding to prevent card clipping during flip animation
-  },
   cardBackdrop: {
     height: '200%', // Twice the card in order to avoid the white background when the scrollview bounces
-    position: 'absolute',
-    top: '-130%', // Offset by the card height + a 30%
-    right: 0,
     left: 0,
+    position: 'absolute',
+    right: 0,
+    top: '-130%', // Offset by the card height + a 30%
     zIndex: -1
+  },
+  cardContainer: {
+    paddingHorizontal: cardPaddingHorizontal,
+    paddingTop: 8, // Add top padding to prevent card clipping during flip animation
+    position: 'relative'
   },
   centeredLayout: {
     alignSelf: 'center'

@@ -32,11 +32,11 @@ export const useHardwareBackButtonToDismiss = (onDismiss: () => void) => {
   });
 
   return {
-    onOpen: () => {
-      isComponentOpened.current = true;
-    },
     onClose: () => {
       isComponentOpened.current = false;
+    },
+    onOpen: () => {
+      isComponentOpened.current = true;
     }
   };
 };

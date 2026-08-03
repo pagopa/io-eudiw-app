@@ -1,20 +1,21 @@
+import { selectFontPreference } from '@io-eudiw-app/preferences';
 import { IOColors, makeFontStyleObject } from '@pagopa/io-app-design-system';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '../../store';
-import { selectFontPreference } from '@io-eudiw-app/preferences';
-import TAB_ROUTES from './routes';
+
 import { TabIconComponent } from '../../components/TabIconComponent';
 import WalletHome from '../../screens/WalletHome';
+import { useAppSelector } from '../../store';
+import TAB_ROUTES from './routes';
 
 /**
  * Screen parameters for the tab navigator.
  * New screens should be added here along with their parameters.
  */
 type TabNavigatorParamsList = {
-  [TAB_ROUTES.WALLET]: undefined;
   [TAB_ROUTES.SCAN_QR]: undefined;
+  [TAB_ROUTES.WALLET]: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
@@ -39,6 +40,11 @@ export const TabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: IOColors['blueIO-500'],
+        tabBarAllowFontScaling: false,
+        tabBarHideOnKeyboard: true,
+        tabBarInactiveTintColor: IOColors['grey-850'],
         tabBarLabelStyle: makeFontStyleObject(
           11,
           typefacePreference === 'comfortable'
@@ -46,31 +52,25 @@ export const TabNavigator = () => {
             : 'TitilliumSansPro',
           14,
           'Regular'
-        ),
-        headerShown: false,
-        tabBarHideOnKeyboard: true,
-        tabBarAllowFontScaling: false,
-        tabBarActiveTintColor: IOColors['blueIO-500'],
-        tabBarInactiveTintColor: IOColors['grey-850']
+        )
       }}
     >
       <Tab.Screen
-        name={TAB_ROUTES.WALLET}
         component={WalletHome}
+        name={TAB_ROUTES.WALLET}
         options={{
-          title: t('wallet:tabNavigator.wallet'),
           tabBarIcon: ({ color, focused }) => (
             <TabIconComponent
-              iconName={'navWallet'}
-              iconNameFocused={'navWalletFocused'}
               color={color}
               focused={focused}
+              iconName={'navWallet'}
+              iconNameFocused={'navWalletFocused'}
             />
-          )
+          ),
+          title: t('wallet:tabNavigator.wallet')
         }}
       />
       <Tab.Screen
-        name={TAB_ROUTES.SCAN_QR}
         component={EmptyComponent}
         listeners={{
           tabPress: ({ preventDefault }) => {
@@ -78,16 +78,17 @@ export const TabNavigator = () => {
             navigateToQrCodeScanScreen();
           }
         }}
+        name={TAB_ROUTES.SCAN_QR}
         options={{
-          title: t('wallet:tabNavigator.scanQr'),
           tabBarIcon: ({ color, focused }) => (
             <TabIconComponent
-              iconName={'navScan'}
-              iconNameFocused={'navScan'}
               color={color}
               focused={focused}
+              iconName={'navScan'}
+              iconNameFocused={'navScan'}
             />
-          )
+          ),
+          title: t('wallet:tabNavigator.scanQr')
         }}
       />
     </Tab.Navigator>

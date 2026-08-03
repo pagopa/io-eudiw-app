@@ -1,11 +1,12 @@
-import { ListItemInfo } from '@pagopa/io-app-design-system';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import { Alert, Platform } from 'react-native';
 import {
   IOScrollViewWithListItems,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
+import { ListItemInfo } from '@pagopa/io-app-design-system';
+import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+import { Alert, Platform } from 'react-native';
+
 import { useProximityEngagement } from '../../hooks/useProximityEngagement';
 import {
   checkBluetoothActivation,
@@ -23,8 +24,8 @@ const ItwBluetoothActivationScreen = () => {
   const { startEngagement } = useProximityEngagement();
 
   useHeaderSecondLevel({
-    title: '',
-    goBack: () => navigation.goBack()
+    goBack: () => navigation.goBack(),
+    title: ''
   });
 
   const handleContinue = async () => {
@@ -39,42 +40,35 @@ const ItwBluetoothActivationScreen = () => {
       t('wallet:proximity.bluetooth.activation.alert.message'),
       [
         {
-          text: t('wallet:proximity.bluetooth.activation.alert.text'),
-          onPress: () => navigation.goBack()
+          onPress: () => navigation.goBack(),
+          text: t('wallet:proximity.bluetooth.activation.alert.text')
         }
       ]
     );
   };
 
-  const listItems: Array<ListItemInfo> = [
+  const listItems: ListItemInfo[] = [
     {
-      label: t('wallet:proximity.bluetooth.activation.listItems.step1.label'),
-      value: t('wallet:proximity.bluetooth.activation.listItems.step1.value'),
       icon:
-        Platform.OS === 'ios' ? 'systemSettingsiOS' : 'systemSettingsAndroid'
+        Platform.OS === 'ios' ? 'systemSettingsiOS' : 'systemSettingsAndroid',
+      label: t('wallet:proximity.bluetooth.activation.listItems.step1.label'),
+      value: t('wallet:proximity.bluetooth.activation.listItems.step1.value')
     },
     {
+      icon: 'systemAppsAndroid',
       label: t('wallet:proximity.bluetooth.activation.listItems.step2.label'),
-      value: t('wallet:proximity.bluetooth.activation.listItems.step2.value'),
-      icon: 'systemAppsAndroid'
+      value: t('wallet:proximity.bluetooth.activation.listItems.step2.value')
     },
     {
+      icon: 'systemToggleInstructions',
       label: t('wallet:proximity.bluetooth.activation.listItems.step3.label'),
-      value: t('wallet:proximity.bluetooth.activation.listItems.step3.value'),
-      icon: 'systemToggleInstructions'
+      value: t('wallet:proximity.bluetooth.activation.listItems.step3.value')
     }
   ];
 
   return (
     <IOScrollViewWithListItems
-      title={t('wallet:proximity.bluetooth.activation.title')}
-      subtitle={t('wallet:proximity.bluetooth.activation.subtitle')}
-      listItemHeaderLabel={t(
-        'wallet:proximity.bluetooth.activation.listItems.title'
-      )}
-      renderItems={listItems}
       actions={{
-        type: 'TwoButtons',
         primary: {
           label: t('wallet:proximity.bluetooth.activation.actions.primary'),
           onPress: openBluetoothPreferences
@@ -82,8 +76,15 @@ const ItwBluetoothActivationScreen = () => {
         secondary: {
           label: t('wallet:proximity.bluetooth.activation.actions.secondary'),
           onPress: () => void handleContinue()
-        }
+        },
+        type: 'TwoButtons'
       }}
+      listItemHeaderLabel={t(
+        'wallet:proximity.bluetooth.activation.listItems.title'
+      )}
+      renderItems={listItems}
+      subtitle={t('wallet:proximity.bluetooth.activation.subtitle')}
+      title={t('wallet:proximity.bluetooth.activation.title')}
     />
   );
 };

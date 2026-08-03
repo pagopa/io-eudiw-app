@@ -44,6 +44,7 @@ import {
   useState
 } from 'react';
 import { Dimensions, Image, Pressable, Text, View } from 'react-native';
+
 import { isAndroid } from '../../utils/device';
 import { openWebUrl } from '../../utils/url';
 import {
@@ -53,7 +54,7 @@ import {
 } from './markdownRenderer';
 import { IOMarkdownRenderRules, Renderer } from './types';
 
-export type ParagraphSize = 'small' | 'default';
+export type ParagraphSize = 'default' | 'small';
 
 const BULLET_ITEM_FULL = '\u2022';
 const BULLET_ITEM_EMPTY = '\u25E6';
@@ -73,10 +74,18 @@ const STARTS_WITH_PICTOGRAM = new RegExp(
 const PICTOGRAM_REGEXP_GLOB = new RegExp(PICTOGRAM_REGEXP.source, 'g');
 const HEADING_REGEXP_GLOB_MULTI = new RegExp(HEADING_REGEXP.source, 'gm');
 
-function getPictogramName(value?: Nullable<string>): IOPictogramsBleed {
-  const isValidPictogram =
-    value && Boolean(IOPictogramsBleed[value as IOPictogramsBleed]);
-  return isValidPictogram ? (value as IOPictogramsBleed) : 'notification';
+/**
+ * Used to get a valid key
+ *
+ * @param txtNode any Txt node
+ * @returns a string to be used as component key inside of map loops.
+ */
+export function getTxtNodeKey(txtNode: AnyTxtNode): string {
+  const encoded = Buffer.from(
+    `${txtNode.raw.substring(0, 10) + JSON.stringify(txtNode.loc.start)}`
+  ).toString('base64');
+
+  return `${txtNode.type}_${encoded}`;
 }
 
 /**
@@ -97,22 +106,14 @@ function getNodeNestingLevel<T extends AnyTxtNode | undefined>(
   return current + getNodeNestingLevel(node.parent, nodeType);
 }
 
-/**
- * Used to get a valid key
- *
- * @param txtNode any Txt node
- * @returns a string to be used as component key inside of map loops.
- */
-export function getTxtNodeKey(txtNode: AnyTxtNode): string {
-  const encoded = Buffer.from(
-    `${txtNode.raw.substring(0, 10) + JSON.stringify(txtNode.loc.start)}`
-  ).toString('base64');
-
-  return `${txtNode.type}_${encoded}`;
+function getPictogramName(value?: Nullable<string>): IOPictogramsBleed {
+  const isValidPictogram =
+    value && Boolean(IOPictogramsBleed[value as IOPictogramsBleed]);
+  return isValidPictogram ? (value as IOPictogramsBleed) : 'notification';
 }
 
 const generateAccesibilityLinkViewsIfNeeded = (
-  allLinkData: ReadonlyArray<LinkData>,
+  allLinkData: readonly LinkData[],
   nodeKey: string,
   onPress: (url: string) => void,
   screenReaderEnabled: boolean
@@ -122,14 +123,14 @@ const generateAccesibilityLinkViewsIfNeeded = (
   }
   return allLinkData.map((link, index) => (
     <Pressable
-      accessible={true}
       accessibilityLabel={link.text}
       accessibilityRole="link"
+      accessible={true}
       collapsable={false}
       collapsableChildren={false}
-      style={{ height: 1 }}
       key={`${nodeKey}_${index}`}
       onPress={() => onPress(link.url)}
+      style={{ height: 1 }}
     />
   ));
 };
@@ -142,6 +143,68 @@ const handleOpenLink = (url: string) => {
  * This object has as key a`TxtNodeType` and as value a render function related to the `TxtNode` element to display.
  */
 export const DEFAULT_RULES: IOMarkdownRenderRules = {
+  /**
+   *
+   * @param blockQuote The `BlockQuote` node.
+   * @returns The `Banner` component configured with the `BlockQuote` content.
+   */
+  BlockQuote: (blockQuote: TxtBlockQuoteNode) => {
+    const pictogramName = blockQuote.raw.match(STARTS_WITH_PICTOGRAM);
+    const title = HEADING_REGEXP.exec(blockQuote.raw);
+    const content = blockQuote.raw
+      .replace(PICTOGRAM_REGEXP_GLOB, '')
+      .replace(HEADING_REGEXP_GLOB_MULTI, '')
+      .replace(/^>*/gm, '')
+      .trim();
+
+    return (
+      <Banner
+        color="neutral"
+        content={content}
+        key={getTxtNodeKey(blockQuote)}
+        pictogramName={getPictogramName(pictogramName?.[1])}
+        title={title?.[1]}
+      />
+    );
+  },
+  /**
+   * @param breakNode The `Break` node.
+   * @returns A new line character.
+   */
+  Break: (breakNode: TxtBreakNode) => (
+    <Fragment key={getTxtNodeKey(breakNode)}>{'\n'}</Fragment>
+  ),
+  /**
+   * @param code The `Code` node.
+   * @returns A `Body` containing the `value` content.
+   */
+  Code: (code: TxtCodeNode) => (
+    <BodyMonospace key={getTxtNodeKey(code)}>{code.value}</BodyMonospace>
+  ),
+  /**
+   * @param codeBlock The `CodeBlock` node.
+   * @returns A `Body` containing the `raw` content.
+   */
+  CodeBlock: (codeBlock: TxtCodeBlockNode) => (
+    <Body key={getTxtNodeKey(codeBlock)}>{codeBlock.raw}</Body>
+  ),
+  /**
+   * Used to remove comments from the final output.
+   * @returns null.
+   */
+  Comment: () => null,
+  /**
+   * @param emphasis The `Emphasis` node.
+   * @param render The renderer function.
+   * @returns The rendered component.
+   */
+  Emphasis(emphasis: TxtEmphasisNode, render: Renderer) {
+    return (
+      <Text key={getTxtNodeKey(emphasis)} style={{ fontStyle: 'italic' }}>
+        {emphasis.children.map(render)}
+      </Text>
+    );
+  },
   /**
    *
    * @param header The `Header` node.
@@ -162,52 +225,63 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
     );
   },
   /**
-   * @param paragraph The `Paragraph` node.
-   * @param render The renderer function.
-   * @returns The rendered component.
+   * @param horizontalRule The `HorizontalRule` node.
+   * @returns A `Divider` component.
    */
-  Paragraph(
-    paragraph: TxtParagraphNode,
-    render: Renderer,
-    screenReaderEnabled: boolean
-  ) {
-    return paragraphNodeToReactNative(
-      paragraph,
-      { screenReaderEnabled },
-      render
-    );
+  HorizontalRule: (horizontalRule: TxtHorizontalRuleNode) => (
+    <Divider key={getTxtNodeKey(horizontalRule)} />
+  ),
+  /**
+   * @param html The `Html` node.
+   * @returns A new line character in case of `<br/>` value, otherwise `null`.
+   */
+  Html: (html: TxtHtmlNode) => {
+    const val = html.value.split(/<([^\s/>]+)\s*\/>/);
+    const [, value] = val;
+
+    if (value === 'br') {
+      htmlNodeToReactNative('\n', html, html.parent);
+    }
+
+    return null;
   },
   /**
-   * @param emphasis The `Emphasis` node.
-   * @param render The renderer function.
+   * @param image The `Image` node.
    * @returns The rendered component.
    */
-  Emphasis(emphasis: TxtEmphasisNode, render: Renderer) {
+  Image(image: TxtImageNode) {
+    const [imageSize, setImageSize] = useState({
+      aspectRatio: 1,
+      width: 0
+    });
+    const screenWidth =
+      Dimensions.get('screen').width - IOVisualCostants.appMarginDefault * 2;
+
+    useLayoutEffect(() => {
+      Image.getSize(image.url, (width, height) => {
+        const aspectRatio = width / height;
+        const maxScreenWidth = width > screenWidth ? screenWidth : width;
+
+        setImageSize({ aspectRatio, width: maxScreenWidth });
+      });
+    }, [screenWidth, image.url]);
+
+    if (image.parent?.type !== 'Paragraph') {
+      return null;
+    }
+
     return (
-      <Text key={getTxtNodeKey(emphasis)} style={{ fontStyle: 'italic' }}>
-        {emphasis.children.map(render)}
-      </Text>
+      <Image
+        accessibilityIgnoresInvertColors
+        accessibilityLabel={image.alt ?? ''}
+        key={getTxtNodeKey(image)}
+        resizeMode="contain"
+        source={{
+          uri: image.url
+        }}
+        style={imageSize}
+      />
     );
-  },
-  /**
-   * @param strong The `Strong` node.
-   * @param render The renderer function.
-   * @returns The rendered component.
-   */
-  Strong(strong: TxtStrongNode, render: Renderer) {
-    return (
-      <Text key={getTxtNodeKey(strong)} style={{ fontWeight: '600' }}>
-        {strong.children.map(render)}
-      </Text>
-    );
-  },
-  /**
-   * @param str The `Str` node.
-   * @param render The renderer function.
-   * @returns The rendered component.
-   */
-  Str(str: TxtStrNode) {
-    return strNodeToReactNative(str.value, str);
   },
   /**
    * @param link The `Link` node.
@@ -219,44 +293,6 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
       link,
       { onPress: () => handleOpenLink(link.url) },
       render
-    );
-  },
-  /**
-   * @param image The `Image` node.
-   * @returns The rendered component.
-   */
-  Image(image: TxtImageNode) {
-    const [imageSize, setImageSize] = useState({
-      width: 0,
-      aspectRatio: 1
-    });
-    const screenWidth =
-      Dimensions.get('screen').width - IOVisualCostants.appMarginDefault * 2;
-
-    useLayoutEffect(() => {
-      Image.getSize(image.url, (width, height) => {
-        const aspectRatio = width / height;
-        const maxScreenWidth = width > screenWidth ? screenWidth : width;
-
-        setImageSize({ width: maxScreenWidth, aspectRatio });
-      });
-    }, [screenWidth, image.url]);
-
-    if (image.parent?.type !== 'Paragraph') {
-      return null;
-    }
-
-    return (
-      <Image
-        key={getTxtNodeKey(image)}
-        accessibilityIgnoresInvertColors
-        style={imageSize}
-        resizeMode="contain"
-        accessibilityLabel={image.alt ?? ''}
-        source={{
-          uri: image.url
-        }}
-      />
     );
   },
   /**
@@ -289,9 +325,9 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
           <View style={{ flexDirection: 'row' }}>
             {isFirstList && <HSpacer size={12} />}
             <View
-              style={{ flex: 1, flexGrow: 1 }}
-              accessible={true}
               accessibilityRole="list"
+              accessible={true}
+              style={{ flex: 1, flexGrow: 1 }}
             >
               {list.children.map((child, i) => (
                 <View
@@ -326,89 +362,54 @@ export const DEFAULT_RULES: IOMarkdownRenderRules = {
     return (
       <View
         accessible={false}
-        style={{ flex: 1, flexShrink: 1 }}
         key={getTxtNodeKey(listItem)}
+        style={{ flex: 1, flexShrink: 1 }}
       >
         {listItem.children.map(render)}
       </View>
     );
   },
   /**
-   * Used to remove comments from the final output.
-   * @returns null.
+   * @param paragraph The `Paragraph` node.
+   * @param render The renderer function.
+   * @returns The rendered component.
    */
-  Comment: () => null,
+  Paragraph(
+    paragraph: TxtParagraphNode,
+    render: Renderer,
+    screenReaderEnabled: boolean
+  ) {
+    return paragraphNodeToReactNative(
+      paragraph,
+      { screenReaderEnabled },
+      render
+    );
+  },
   /**
    * @param props The custom `Spacer` component used to add space between the first level content.
    * @returns The rendered `VSpacer` component.
    */
   Spacer: ({ key, size }) => <VSpacer key={key} size={size} />,
   /**
-   *
-   * @param blockQuote The `BlockQuote` node.
-   * @returns The `Banner` component configured with the `BlockQuote` content.
+   * @param str The `Str` node.
+   * @param render The renderer function.
+   * @returns The rendered component.
    */
-  BlockQuote: (blockQuote: TxtBlockQuoteNode) => {
-    const pictogramName = blockQuote.raw.match(STARTS_WITH_PICTOGRAM);
-    const title = HEADING_REGEXP.exec(blockQuote.raw);
-    const content = blockQuote.raw
-      .replace(PICTOGRAM_REGEXP_GLOB, '')
-      .replace(HEADING_REGEXP_GLOB_MULTI, '')
-      .replace(/^>*/gm, '')
-      .trim();
-
+  Str(str: TxtStrNode) {
+    return strNodeToReactNative(str.value, str);
+  },
+  /**
+   * @param strong The `Strong` node.
+   * @param render The renderer function.
+   * @returns The rendered component.
+   */
+  Strong(strong: TxtStrongNode, render: Renderer) {
     return (
-      <Banner
-        key={getTxtNodeKey(blockQuote)}
-        pictogramName={getPictogramName(pictogramName?.[1])}
-        color="neutral"
-        title={title?.[1]}
-        content={content}
-      />
+      <Text key={getTxtNodeKey(strong)} style={{ fontWeight: '600' }}>
+        {strong.children.map(render)}
+      </Text>
     );
-  },
-  /**
-   * @param codeBlock The `CodeBlock` node.
-   * @returns A `Body` containing the `raw` content.
-   */
-  CodeBlock: (codeBlock: TxtCodeBlockNode) => (
-    <Body key={getTxtNodeKey(codeBlock)}>{codeBlock.raw}</Body>
-  ),
-  /**
-   * @param code The `Code` node.
-   * @returns A `Body` containing the `value` content.
-   */
-  Code: (code: TxtCodeNode) => (
-    <BodyMonospace key={getTxtNodeKey(code)}>{code.value}</BodyMonospace>
-  ),
-  /**
-   * @param breakNode The `Break` node.
-   * @returns A new line character.
-   */
-  Break: (breakNode: TxtBreakNode) => (
-    <Fragment key={getTxtNodeKey(breakNode)}>{'\n'}</Fragment>
-  ),
-  /**
-   * @param html The `Html` node.
-   * @returns A new line character in case of `<br/>` value, otherwise `null`.
-   */
-  Html: (html: TxtHtmlNode) => {
-    const val = html.value.split(/<([^\s/>]+)\s*\/>/);
-    const [, value] = val;
-
-    if (value === 'br') {
-      htmlNodeToReactNative('\n', html, html.parent);
-    }
-
-    return null;
-  },
-  /**
-   * @param horizontalRule The `HorizontalRule` node.
-   * @returns A `Divider` component.
-   */
-  HorizontalRule: (horizontalRule: TxtHorizontalRuleNode) => (
-    <Divider key={getTxtNodeKey(horizontalRule)} />
-  )
+  }
 };
 
 const headerNodeToReactNative = (
@@ -465,11 +466,11 @@ export const linkNodeToReactNative = (
   const BodyComponent = options.size === 'small' ? BodySmall : Body;
   return (
     <BodyComponent
-      weight="Semibold"
       asLink
       avoidPressable
       key={getTxtNodeKey(link)}
       onPress={options.onPress}
+      weight="Semibold"
     >
       {link.children.map(render)}
     </BodyComponent>

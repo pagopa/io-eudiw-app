@@ -1,4 +1,8 @@
 import {
+  useDisableGestureNavigation,
+  useHeaderSecondLevel
+} from '@io-eudiw-app/commons';
+import {
   FooterActions,
   ForceScrollDownView,
   H2,
@@ -8,12 +12,11 @@ import {
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import {
-  useDisableGestureNavigation,
-  useHeaderSecondLevel
-} from '@io-eudiw-app/commons';
+
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
+import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../store';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus
@@ -22,8 +25,6 @@ import { addCredentialWithIdentification } from '../../store/credentials';
 import { parseClaimsToRecord } from '../../utils/claims';
 import { getCredentialNameByType } from '../../utils/credentials';
 import { WellKnownClaim } from '../../utils/itwClaimsUtils';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
 export const CredentialPreview = () => {
   const credentialPostStatus = useAppSelector(
@@ -39,20 +40,20 @@ export const CredentialPreview = () => {
   }, [dispatch, navigateToWallet]);
 
   const dismissalDialog = useItwDismissalDialog({
-    handleDismiss: cancel,
     customLabels: {
-      title: t('common:alert.title'),
       body: t('common:alert.body'),
+      cancelLabel: t('common:alert.cancel'),
       confirmLabel: t('common:alert.confirm'),
-      cancelLabel: t('common:alert.cancel')
-    }
+      title: t('common:alert.title')
+    },
+    handleDismiss: cancel
   });
 
   useHeaderSecondLevel({
-    title: '',
     goBack: () => {
       dismissalDialog.show();
-    }
+    },
+    title: ''
   });
 
   useDisableGestureNavigation();
@@ -81,18 +82,17 @@ export const CredentialPreview = () => {
         <CredentialPreviewClaimsList claims={parsedClaims} isPreview={true} />
       </View>
       <FooterActions
-        fixed={false}
         actions={{
           primary: {
+            icon: 'add',
+            iconPosition: 'end',
             label: t('common:buttons.continue'),
             onPress: () =>
               dispatch(
                 addCredentialWithIdentification({
                   credential
                 })
-              ),
-            icon: 'add',
-            iconPosition: 'end'
+              )
           },
           secondary: {
             label: t('common:buttons.cancel'),
@@ -102,17 +102,18 @@ export const CredentialPreview = () => {
           },
           type: 'TwoButtons'
         }}
+        fixed={false}
       />
     </ForceScrollDownView>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    flexGrow: 1
-  },
   container: {
     flex: 1,
     marginHorizontal: IOVisualCostants.appMarginDefault
+  },
+  scrollView: {
+    flexGrow: 1
   }
 });

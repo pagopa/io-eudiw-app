@@ -1,5 +1,4 @@
 import { IdentificationModal } from '@io-eudiw-app/identification';
-
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -16,42 +15,42 @@ export const IdentificationModalWrapper = () => {
 
   return (
     <IdentificationModal
-      titleLabels={{
-        validation: t('global:identification.title.validation'),
-        access: t('global:identification.title.access')
-      }}
       biometricLabels={{
-        promptMessage: t('global:identification.biometric.title'),
+        cancelLabel: t('common:buttons.cancel'),
         promptDescription: t(
           'global:identification.biometric.sensorDescription'
         ),
-        cancelLabel: t('common:buttons.cancel')
+        promptMessage: t('global:identification.biometric.title')
       }}
+      closeAccessibilityLabel={t('common:buttons.close')}
+      deleteAccessibilityLabel={t('common:buttons.delete')}
+      faceAccessibilityLabel={t(
+        'global:identification.unlockCode.accessibility.faceId'
+      )}
+      fingerprintAccessibilityLabel={t(
+        'global:identification.unlockCode.accessibility.fingerprint'
+      )}
       instructionsLabels={{
-        unlockCode: t('global:identification.instructions.useUnlockCode'),
+        faceId: t('global:identification.instructions.useFaceIdOrUnlockCode'),
         fingerprint: t(
           'global:identification.instructions.useFingerPrintOrUnlockCode'
         ),
-        faceId: t('global:identification.instructions.useFaceIdOrUnlockCode')
+        unlockCode: t('global:identification.instructions.useUnlockCode')
       }}
       resetLabels={{
-        forgotButton: t('global:identification.forgot.title'),
-        title: t('global:identification.forgot.title'),
+        cancelButton: t('common:buttons.cancel'),
+        confirmButton: t('common:buttons.confirm'),
         confirmMsg: t('global:identification.forgot.confirmMsg'),
         confirmMsgWithTask: t(
           'global:identification.forgot.confirmMsgWithTask'
         ),
-        confirmButton: t('common:buttons.confirm'),
-        cancelButton: t('common:buttons.cancel')
+        forgotButton: t('global:identification.forgot.title'),
+        title: t('global:identification.forgot.title')
       }}
-      closeAccessibilityLabel={t('common:buttons.close')}
-      deleteAccessibilityLabel={t('common:buttons.delete')}
-      fingerprintAccessibilityLabel={t(
-        'global:identification.unlockCode.accessibility.fingerprint'
-      )}
-      faceAccessibilityLabel={t(
-        'global:identification.unlockCode.accessibility.faceId'
-      )}
+      titleLabels={{
+        access: t('global:identification.title.access'),
+        validation: t('global:identification.title.validation')
+      }}
     />
   );
 };

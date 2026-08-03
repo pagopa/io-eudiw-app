@@ -1,6 +1,7 @@
-import { Linking } from 'react-native';
-import { isAndroid } from './device';
 import * as WebBrowser from 'expo-web-browser';
+import { Linking } from 'react-native';
+
+import { isAndroid } from './device';
 
 /**
  * Checks if the given URL is an HTTP URL.

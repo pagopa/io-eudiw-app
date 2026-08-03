@@ -1,11 +1,12 @@
-import { useTranslation } from 'react-i18next';
 import {
   OperationResultScreenContent,
   useHardwareBackButton
 } from '@io-eudiw-app/commons';
+import { useTranslation } from 'react-i18next';
+
+import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch } from '../../store';
 import { resetCredentialIssuance } from '../../store/credentialIssuance';
-import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Screen shown when a credential offer (deep link / QR code) refers to a
@@ -27,9 +28,6 @@ const CredentialAlreadyObtained = () => {
 
   return (
     <OperationResultScreenContent
-      pictogram="attention"
-      title={t('wallet:credentialIssuance.alreadyObtained.title')}
-      subtitle={t('wallet:credentialIssuance.alreadyObtained.subtitle')}
       action={{
         accessibilityLabel: t(
           'wallet:credentialIssuance.alreadyObtained.button'
@@ -37,6 +35,7 @@ const CredentialAlreadyObtained = () => {
         label: t('wallet:credentialIssuance.alreadyObtained.button'),
         onPress
       }}
+      pictogram="attention"
       secondaryAction={{
         accessibilityLabel: t(
           'wallet:credentialIssuance.alreadyObtained.close'
@@ -44,6 +43,8 @@ const CredentialAlreadyObtained = () => {
         label: t('wallet:credentialIssuance.alreadyObtained.close'),
         onPress
       }}
+      subtitle={t('wallet:credentialIssuance.alreadyObtained.subtitle')}
+      title={t('wallet:credentialIssuance.alreadyObtained.title')}
     />
   );
 };

@@ -1,5 +1,6 @@
 import { Banner, IOToast } from '@pagopa/io-app-design-system';
 import I18n from 'i18next';
+
 import { useAppDispatch } from '../../store';
 import { disablePidInfoBanner } from '../../store/credentials';
 
@@ -16,17 +17,17 @@ const ItwDiscoveryInfoBanner = () => {
 
   return (
     <Banner
-      testID="itwDiscoveryInfoBannerTestID"
+      action={I18n.t('buttons.findOutMore', { ns: 'common' })}
       color="neutral"
-      pictogramName="help"
-      title={I18n.t('presentation.itWalletId.banner.title', { ns: 'wallet' })}
       content={I18n.t('presentation.itWalletId.banner.content', {
         ns: 'wallet'
       })}
-      action={I18n.t('buttons.findOutMore', { ns: 'common' })}
-      onPress={handleOnPress}
       labelClose={I18n.t('buttons.close', { ns: 'common' })}
       onClose={handleOnClose}
+      onPress={handleOnPress}
+      pictogramName="help"
+      testID="itwDiscoveryInfoBannerTestID"
+      title={I18n.t('presentation.itWalletId.banner.title', { ns: 'wallet' })}
     />
   );
 };

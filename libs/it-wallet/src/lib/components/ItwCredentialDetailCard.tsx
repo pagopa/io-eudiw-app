@@ -3,20 +3,21 @@ import { Canvas, Rect } from '@shopify/react-native-skia';
 import { PropsWithChildren } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { useLayoutSize } from '../hooks/useLayoutSize';
 import { borderVariantByStatus } from '../utils/itwCredentialUtils';
 import { ItwCredentialStatus } from '../utils/itwTypesUtils';
-import { ItwBrandedSkiaBorder } from './ItwBrandedSkiaBorder';
 import {
   SkiaCardOverlay,
   SkiaCardPatternOverlay
 } from './credential/ItwCredentialCard/CardOverlay';
-import { SkiaGradientBackground } from './credential/ItwCredentialCard/GradientBackground';
 import { useCredentialCardConfig } from './credential/ItwCredentialCard/config';
+import { SkiaGradientBackground } from './credential/ItwCredentialCard/GradientBackground';
+import { ItwBrandedSkiaBorder } from './ItwBrandedSkiaBorder';
 
 type ItwCredentialDetailCardProps = PropsWithChildren<{
-  credentialType: string;
   credentialStatus?: ItwCredentialStatus;
+  credentialType: string;
 }>;
 
 // Height of the transparent HeaderSecondLevel navigation bar rendered above this card.
@@ -31,15 +32,15 @@ const SCROLL_HACK_OFFSET = 4;
 const CARD_BORDER_RADIUS = 24;
 
 export const ItwCredentialDetailCard = ({
-  credentialType,
+  children,
   credentialStatus = 'valid',
-  children
+  credentialType
 }: ItwCredentialDetailCardProps) => {
   const safeAreaInsets = useSafeAreaInsets();
-  const { size, onLayout } = useLayoutSize();
+  const { onLayout, size } = useLayoutSize();
 
   // Credential's header card is always in light mode
-  const { color, background, overlay } = useCredentialCardConfig(
+  const { background, color, overlay } = useCredentialCardConfig(
     credentialType,
     'light'
   );
@@ -53,7 +54,7 @@ export const ItwCredentialDetailCard = ({
     SCROLL_HACK_OFFSET;
 
   return (
-    <View style={[styles.container, { paddingTop }]} onLayout={onLayout}>
+    <View onLayout={onLayout} style={[styles.container, { paddingTop }]}>
       {size && (
         <Canvas style={StyleSheet.absoluteFill}>
           {overlay?.header && (
@@ -71,10 +72,10 @@ export const ItwCredentialDetailCard = ({
           )}
 
           <ItwBrandedSkiaBorder
-            width={size.width}
-            height={size.height}
             cornerRadius={CARD_BORDER_RADIUS}
+            height={size.height}
             variant={borderVariantByStatus[credentialStatus]}
+            width={size.width}
           />
         </Canvas>
       )}
@@ -85,12 +86,12 @@ export const ItwCredentialDetailCard = ({
 
 const styles = StyleSheet.create({
   container: {
+    borderCurve: 'continuous',
+    borderRadius: CARD_BORDER_RADIUS,
     marginHorizontal: 8,
     marginTop: -SCROLL_HACK_OFFSET,
-    paddingBottom: 96,
     overflow: 'hidden',
-    borderRadius: CARD_BORDER_RADIUS,
-    borderCurve: 'continuous'
+    paddingBottom: 96
   },
   content: {
     alignItems: 'center',

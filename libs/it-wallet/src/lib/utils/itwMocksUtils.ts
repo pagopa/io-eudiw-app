@@ -16,26 +16,26 @@ export const ISSUER_MOCK_NAME = 'PagoPA S.p.A.';
  * Credential types mocks.
  */
 export enum CredentialType {
-  EUROPEAN_DISABILITY_CARD = 'EuropeanDisabilityCard',
+  BONUS_PARI = 'bonus_pari',
   DRIVING_LICENSE = 'mDL',
-  PID = 'PersonIdentificationData',
   EDUCATION_DEGREE = 'education_degree',
   EDUCATION_ENROLLMENT = 'education_enrollment',
-  RESIDENCY = 'residency',
-  BONUS_PARI = 'bonus_pari'
+  EUROPEAN_DISABILITY_CARD = 'EuropeanDisabilityCard',
+  PID = 'PersonIdentificationData',
+  RESIDENCY = 'residency'
 }
 
 export const ItwStoredCredentialsMocks = {
-  pid: pid as unknown as StoredCredential,
   dc: dc as unknown as StoredCredential,
-  mdl: mdl as unknown as StoredCredential,
-  ts: ts as unknown as StoredCredential,
   L3: {
-    mdl: mdlL3 as unknown as StoredCredential,
-    ts: tsL3 as unknown as StoredCredential,
     dc: dcL3 as unknown as StoredCredential,
     ed: edL3 as unknown as StoredCredential,
     ee: eeL3 as unknown as StoredCredential,
-    res: resL3 as unknown as StoredCredential
-  }
+    mdl: mdlL3 as unknown as StoredCredential,
+    res: resL3 as unknown as StoredCredential,
+    ts: tsL3 as unknown as StoredCredential
+  },
+  mdl: mdl as unknown as StoredCredential,
+  pid: pid as unknown as StoredCredential,
+  ts: ts as unknown as StoredCredential
 };

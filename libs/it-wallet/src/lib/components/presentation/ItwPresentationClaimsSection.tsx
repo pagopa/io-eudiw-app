@@ -5,7 +5,10 @@ import {
   useIOTheme
 } from '@pagopa/io-app-design-system';
 import { Fragment, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+
+import { useAppDispatch, useAppSelector } from '../../store';
 import {
   itwIsClaimValueHiddenSelector,
   itwSetClaimValuesHidden
@@ -18,8 +21,6 @@ import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
 import { ItwQrCodeClaimImage } from '../credential/ItwQrCodeClaimImage';
 import { ItwBarcodeCard } from '../ItwBarcodeCard';
 import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { useTranslation } from 'react-i18next';
 
 type ItwPresentationClaimsSectionProps = {
   credential: StoredCredentialMetadata;
@@ -47,7 +48,6 @@ export const ItwPresentationClaimsSection = ({
 
   const renderHideValuesToggle = () => (
     <View
-      accessible={true}
       accessibilityLabel={t(
         'presentation.credentialDetails.actions.hideClaimValues',
         {
@@ -56,17 +56,18 @@ export const ItwPresentationClaimsSection = ({
       )}
       accessibilityRole="switch"
       accessibilityState={{ checked: valuesHidden }}
+      accessible={true}
     >
       <IconButton
-        testID="toggle-claim-visibility"
-        icon={valuesHidden ? 'eyeHide' : 'eyeShow'}
-        onPress={handleToggleClaimVisibility}
         accessibilityLabel={t(
           'presentation.credentialDetails.actions.hideClaimValues',
           {
             ns: 'wallet'
           }
         )}
+        icon={valuesHidden ? 'eyeHide' : 'eyeShow'}
+        onPress={handleToggleClaimVisibility}
+        testID="toggle-claim-visibility"
       />
     </View>
   );
@@ -131,7 +132,7 @@ export const ItwPresentationClaimsSection = ({
         if (id === WellKnownClaim.link_qr_code) {
           // Since the `link_qr_code` claim  difficult to distinguish from a generic image claim, we need to manually
           // check for the claim and render it accordingly
-          return <ItwQrCodeClaimImage key={index} claim={claim} />;
+          return <ItwQrCodeClaimImage claim={claim} key={index} />;
         }
 
         return (
@@ -139,10 +140,10 @@ export const ItwPresentationClaimsSection = ({
             {index !== 0 && <Divider />}
             <ItwCredentialClaim
               claim={claim}
-              isPreview={false}
-              hidden={valuesHidden}
-              credentialStatus={credentialStatus}
               clipboardSuccessMessage={t('clipboard.copyFeedback')}
+              credentialStatus={credentialStatus}
+              hidden={valuesHidden}
+              isPreview={false}
               showLabel={t('buttons.show')}
             />
           </Fragment>

@@ -1,9 +1,15 @@
+import {
+  clipboardSetStringWithFeedback,
+  getSafeText,
+  useIOBottomSheetModal
+} from '@io-eudiw-app/commons';
 import { Divider, ListItemInfo } from '@pagopa/io-app-design-system';
 import { t } from 'i18next';
 import { Fragment, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image } from 'react-native';
 import * as z from 'zod';
+
 import {
   DrivingPrivilegesClaimType,
   ParsedClaimsRecord,
@@ -13,11 +19,6 @@ import {
 import { HIDDEN_CLAIM_TEXT } from '../../utils/constants';
 import { format } from '../../utils/dates';
 import { ItwCredentialStatus } from '../../utils/itwTypesUtils';
-import {
-  clipboardSetStringWithFeedback,
-  getSafeText,
-  useIOBottomSheetModal
-} from '@io-eudiw-app/commons';
 
 /**
  * Helper function to get the accessibility text for hidden claims.
@@ -33,14 +34,14 @@ const getHiddenClaimAccessibilityText = () =>
  * @param hidden - a flag to hide the claim value
  */
 const PlaceOfBirthClaimItem = ({
-  label,
   claim,
   hidden,
+  label,
   reversed
 }: {
-  label: string;
   claim: PlaceOfBirthClaimType;
   hidden?: boolean;
+  label: string;
   reversed: boolean;
 }) => {
   const displayValue = hidden ? HIDDEN_CLAIM_TEXT : claim.value;
@@ -50,10 +51,10 @@ const PlaceOfBirthClaimItem = ({
 
   return (
     <ListItemInfo
-      label={label}
-      value={displayValue}
       accessibilityLabel={`${label} ${accessibilityStateText}`}
+      label={label}
       reversed={reversed}
+      value={displayValue}
     />
   );
 };
@@ -65,14 +66,14 @@ const PlaceOfBirthClaimItem = ({
  * @param hidden - a flag to hide the claim value
  */
 const BoolClaimItem = ({
-  label,
   claim,
   hidden,
+  label,
   reversed
 }: {
-  label: string;
   claim: boolean;
   hidden?: boolean;
+  label: string;
   reversed: boolean;
 }) => {
   const realValue = t(`presentation.credentialDetails.boolClaim.${claim}`, {
@@ -85,10 +86,10 @@ const BoolClaimItem = ({
 
   return (
     <ListItemInfo
-      label={label}
-      value={displayValue}
       accessibilityLabel={`${label}: ${accessibilityStateText}`}
+      label={label}
       reversed={reversed}
+      value={displayValue}
     />
   );
 };
@@ -102,19 +103,19 @@ const BoolClaimItem = ({
  * @param hidden - a flag to hide the claim value
  */
 const PlainTextClaimItem = ({
-  label,
   claim,
-  isCopyable,
+  clipboardSuccessMessage,
   hidden,
-  reversed,
-  clipboardSuccessMessage
+  isCopyable,
+  label,
+  reversed
 }: {
-  label: string;
   claim: string;
-  isCopyable?: boolean;
-  hidden?: boolean;
-  reversed: boolean;
   clipboardSuccessMessage: string;
+  hidden?: boolean;
+  isCopyable?: boolean;
+  label: string;
+  reversed: boolean;
 }) => {
   const safeValue = getSafeText(claim);
   const displayValue = hidden ? HIDDEN_CLAIM_TEXT : safeValue;
@@ -128,12 +129,12 @@ const PlainTextClaimItem = ({
 
   return (
     <ListItemInfo
-      numberOfLines={4}
-      label={label}
-      value={displayValue}
-      onLongPress={isCopyable && !hidden ? handleLongPress : undefined}
       accessibilityLabel={`${label} ${accessibilityStateText}`}
+      label={label}
+      numberOfLines={4}
+      onLongPress={isCopyable && !hidden ? handleLongPress : undefined}
       reversed={reversed}
+      value={displayValue}
     />
   );
 };
@@ -146,17 +147,17 @@ const PlainTextClaimItem = ({
  * @param hidden - a flag to hide the claim value
  */
 const DateClaimItem = ({
-  label,
   claim,
-  status,
   hidden,
-  reversed
+  label,
+  reversed,
+  status
 }: {
-  label: string;
   claim: Date;
-  status?: ItwCredentialStatus;
   hidden?: boolean;
+  label: string;
   reversed: boolean;
+  status?: ItwCredentialStatus;
 }) => {
   // Remove the timezone offset to display the date in its original format
   const realValue = claim.toLocaleDateString();
@@ -171,31 +172,31 @@ const DateClaimItem = ({
     }
     const ns = 'presentation.credentialDetails.status';
     switch (status) {
-      case 'valid':
-      case 'expiring':
-      case 'jwtExpiring':
-        return {
-          type: 'badge',
-          componentProps: {
-            variant: 'success',
-            text: t(`${ns}.valid`, { ns: 'wallet' })
-          }
-        };
       case 'expired':
         return {
-          type: 'badge',
           componentProps: {
-            variant: 'error',
-            text: t(`${ns}.expired`, { ns: 'wallet' })
-          }
+            text: t(`${ns}.expired`, { ns: 'wallet' }),
+            variant: 'error'
+          },
+          type: 'badge'
+        };
+      case 'expiring':
+      case 'jwtExpiring':
+      case 'valid':
+        return {
+          componentProps: {
+            text: t(`${ns}.valid`, { ns: 'wallet' }),
+            variant: 'success'
+          },
+          type: 'badge'
         };
       case 'invalid':
         return {
-          type: 'badge',
           componentProps: {
-            variant: 'error',
-            text: t(`${ns}.invalid`, { ns: 'wallet' })
-          }
+            text: t(`${ns}.invalid`, { ns: 'wallet' }),
+            variant: 'error'
+          },
+          type: 'badge'
         };
       default:
         return undefined;
@@ -204,12 +205,12 @@ const DateClaimItem = ({
 
   return (
     <ListItemInfo
-      key={`${label}-${displayValue}`}
-      label={label}
-      value={displayValue}
       accessibilityLabel={`${label} ${accessibilityStateText}`}
       endElement={endElement}
+      key={`${label}-${displayValue}`}
+      label={label}
       reversed={reversed}
+      value={displayValue}
     />
   );
 };
@@ -220,22 +221,22 @@ const DateClaimItem = ({
  * @param _claim - the claim value of unknown type. We are not interested in its value but it's needed for the exaustive type checking.
  */
 const UnknownClaimItem = ({
+  clipboardSuccessMessage,
   label,
-  reversed,
-  clipboardSuccessMessage
+  reversed
 }: {
-  label: string;
   _claim?: unknown;
-  reversed: boolean;
   clipboardSuccessMessage: string;
+  label: string;
+  reversed: boolean;
 }) => (
   <PlainTextClaimItem
-    label={label}
     claim={t('verifiableCredentials.generic.placeholders.claimNotAvailable', {
       ns: 'wallet'
     })}
-    reversed={reversed}
     clipboardSuccessMessage={clipboardSuccessMessage}
+    label={label}
+    reversed={reversed}
   />
 );
 
@@ -246,47 +247,47 @@ const UnknownClaimItem = ({
  * @param hidden - a flag to hide the claim value
  */
 const ImageClaimItem = ({
-  label,
   claim,
+  clipboardSuccessMessage,
   height,
-  width,
   hidden,
+  label,
   reversed,
-  clipboardSuccessMessage
+  width
 }: {
-  label: string;
   claim: string;
-  width: number;
+  clipboardSuccessMessage: string;
   height: number;
   hidden?: boolean;
+  label: string;
   reversed: boolean;
-  clipboardSuccessMessage: string;
+  width: number;
 }) =>
   hidden ? (
     <PlainTextClaimItem
-      label={label}
       claim=""
-      hidden
-      reversed={reversed}
       clipboardSuccessMessage={clipboardSuccessMessage}
+      hidden
+      label={label}
+      reversed={reversed}
     />
   ) : (
     <ListItemInfo
-      label={label}
-      value={
-        <Image
-          source={{ uri: claim }}
-          style={{
-            width: 200,
-            height: Math.ceil((200 * height) / width)
-          }}
-          resizeMode="contain"
-          accessibilityIgnoresInvertColors
-        />
-      }
       accessibilityLabel={label}
       accessibilityRole="image"
+      label={label}
       reversed={reversed}
+      value={
+        <Image
+          accessibilityIgnoresInvertColors
+          resizeMode="contain"
+          source={{ uri: claim }}
+          style={{
+            height: Math.ceil((200 * height) / width),
+            width: 200
+          }}
+        />
+      }
     />
   );
 
@@ -300,57 +301,57 @@ const ImageClaimItem = ({
  * @returns a list item component with the driving privileges claim
  */
 const DrivingPrivilegesClaimItem = ({
-  label,
   claim,
   detailsButtonVisible,
-  showLabel,
   hidden,
-  reversed
+  label,
+  reversed,
+  showLabel
 }: {
-  label: string;
   claim: DrivingPrivilegesClaimType['value'][0];
-  showLabel: string;
   detailsButtonVisible?: boolean;
   hidden?: boolean;
+  label: string;
   reversed: boolean;
+  showLabel: string;
 }) => {
   const privilegeBottomSheet = useIOBottomSheetModal({
-    title: t('verifiableCredentials.claims.mdl.category', {
-      ns: 'wallet',
-      category: claim.vehicle_category_code
-    }),
     closeAccessibilityLabel: t('buttons.close', { ns: 'common' }),
     component: (
       <>
         <ListItemInfo
-          label={t('verifiableCredentials.claims.mdl.issuedDate', {
-            ns: 'wallet'
-          })}
-          value={format(claim.issue_date, 'DD/MM/YYYY')}
           accessibilityLabel={`${t(
             'verifiableCredentials.claims.mdl.issuedDate',
             {
               ns: 'wallet'
             }
           )} ${claim.issue_date}`}
+          label={t('verifiableCredentials.claims.mdl.issuedDate', {
+            ns: 'wallet'
+          })}
           reversed={reversed}
+          value={format(claim.issue_date, 'DD/MM/YYYY')}
         />
         <Divider />
         <ListItemInfo
-          label={t('verifiableCredentials.claims.mdl.expirationDate', {
-            ns: 'wallet'
-          })}
-          value={format(claim.expiry_date, 'DD/MM/YYYY')}
           accessibilityLabel={`${t(
             'verifiableCredentials.claims.mdl.expirationDate',
             {
               ns: 'wallet'
             }
           )} ${claim.expiry_date}`}
+          label={t('verifiableCredentials.claims.mdl.expirationDate', {
+            ns: 'wallet'
+          })}
           reversed={reversed}
+          value={format(claim.expiry_date, 'DD/MM/YYYY')}
         />
       </>
-    )
+    ),
+    title: t('verifiableCredentials.claims.mdl.category', {
+      category: claim.vehicle_category_code,
+      ns: 'wallet'
+    })
   });
 
   const realValue = claim.vehicle_category_code;
@@ -362,23 +363,23 @@ const DrivingPrivilegesClaimItem = ({
   const endElement: ListItemInfo['endElement'] =
     detailsButtonVisible && !hidden
       ? {
-          type: 'buttonLink',
           componentProps: {
+            accessibilityLabel: showLabel,
             label: showLabel,
-            onPress: () => privilegeBottomSheet.present(),
-            accessibilityLabel: showLabel
-          }
+            onPress: () => privilegeBottomSheet.present()
+          },
+          type: 'buttonLink'
         }
       : undefined;
 
   return (
     <>
       <ListItemInfo
-        label={label}
-        value={displayValue}
-        endElement={endElement}
         accessibilityLabel={`${label} ${accessibilityStateText}`}
+        endElement={endElement}
+        label={label}
         reversed={reversed}
+        value={displayValue}
       />
       {privilegeBottomSheet.bottomSheet}
     </>
@@ -392,65 +393,65 @@ type VerificationEvidenceClaimType = z.infer<typeof verificationEvidenceSchema>;
  * It features a bottom sheet with information about the organization id, name and country code.
  */
 const VerificationEvidenceClaimItem = ({
-  label,
   claim,
   detailsButtonVisible = true,
+  label,
   reversed
 }: {
-  label: string;
   claim: VerificationEvidenceClaimType['value'];
   detailsButtonVisible: boolean;
+  label: string;
   reversed: boolean;
 }) => {
-  const { organization_id, organization_name, country_code } = claim;
+  const { country_code, organization_id, organization_name } = claim;
   const { t } = useTranslation(['wallet', 'common']);
   const verificationBottomSheet = useIOBottomSheetModal({
-    title: organization_name,
     closeAccessibilityLabel: t('buttons.close', { ns: 'common' }),
     component: (
       <>
         <ListItemInfo
+          accessibilityLabel={`${t(
+            'verifiableCredentials.claims.mdl.verificationEvidence.organizationId'
+          )} ${organization_id}`}
           label={t(
             'verifiableCredentials.claims.mdl.verificationEvidence.organizationId'
           )}
           value={organization_id}
-          accessibilityLabel={`${t(
-            'verifiableCredentials.claims.mdl.verificationEvidence.organizationId'
-          )} ${organization_id}`}
         />
         <Divider />
         <ListItemInfo
+          accessibilityLabel={`${t(
+            'verifiableCredentials.claims.mdl.verificationEvidence.countryCode'
+          )} ${country_code}`}
           label={t(
             'verifiableCredentials.claims.mdl.verificationEvidence.countryCode'
           )}
           value={country_code}
-          accessibilityLabel={`${t(
-            'verifiableCredentials.claims.mdl.verificationEvidence.countryCode'
-          )} ${country_code}`}
         />
       </>
-    )
+    ),
+    title: organization_name
   });
 
   const endElement: ListItemInfo['endElement'] = detailsButtonVisible
     ? {
-        type: 'buttonLink',
         componentProps: {
+          accessibilityLabel: t('common:buttons.show'),
           label: t('common:buttons.show'),
-          onPress: () => verificationBottomSheet.present(),
-          accessibilityLabel: t('common:buttons.show')
-        }
+          onPress: () => verificationBottomSheet.present()
+        },
+        type: 'buttonLink'
       }
     : undefined;
 
   return (
     <>
       <ListItemInfo
-        label={label}
-        value={organization_name}
-        endElement={endElement}
         accessibilityLabel={`${label} ${organization_name}`}
+        endElement={endElement}
+        label={label}
         reversed={reversed}
+        value={organization_name}
       />
       {verificationBottomSheet.bottomSheet}
     </>
@@ -471,60 +472,38 @@ const VerificationEvidenceClaimItem = ({
 export const ItwCredentialClaim = ({
   claim,
   clipboardSuccessMessage,
-  showLabel,
+  credentialStatus,
   hidden,
   isPreview,
-  credentialStatus,
-  reversed = false
+  reversed = false,
+  showLabel
 }: {
   claim: ParsedClaimsRecord[string];
   clipboardSuccessMessage: string;
-  showLabel: string;
+  credentialStatus?: ItwCredentialStatus;
   hidden?: boolean;
   isPreview?: boolean;
-  credentialStatus?: ItwCredentialStatus;
   reversed?: boolean;
+  showLabel: string;
 }) => {
   if (claim.parsed) {
     switch (claim.parsed.type) {
-      case 'placeOfBirth':
+      case 'boolean':
         return (
-          <PlaceOfBirthClaimItem
-            label={claim.label}
-            claim={claim.parsed}
+          <BoolClaimItem
+            claim={claim.parsed.value}
             hidden={hidden}
+            label={claim.label}
             reversed={reversed}
           />
         );
       case 'date':
         return (
           <DateClaimItem
-            label={claim.label}
             claim={claim.parsed.value}
             hidden={hidden}
-            reversed={reversed}
-          />
-        );
-      case 'expireDate':
-        return (
-          <DateClaimItem
             label={claim.label}
-            claim={claim.parsed.value}
-            hidden={hidden}
-            status={!isPreview ? credentialStatus : undefined}
             reversed={reversed}
-          />
-        );
-      case 'image':
-        return (
-          <ImageClaimItem
-            label={claim.label}
-            claim={claim.parsed.value}
-            hidden={hidden}
-            reversed={reversed}
-            width={claim.parsed.width}
-            height={claim.parsed.height}
-            clipboardSuccessMessage={clipboardSuccessMessage}
           />
         );
       case 'drivingPrivileges':
@@ -534,53 +513,66 @@ export const ItwCredentialClaim = ({
           >
             {index !== 0 && <Divider />}
             <DrivingPrivilegesClaimItem
-              label={claim.label}
               claim={elem}
               detailsButtonVisible={!isPreview}
               hidden={hidden}
+              label={claim.label}
               reversed={reversed}
               showLabel={showLabel}
             />
           </Fragment>
         ));
-      case 'boolean':
-        return (
-          <BoolClaimItem
-            label={claim.label}
-            claim={claim.parsed.value}
-            hidden={hidden}
-            reversed={reversed}
-          />
-        );
-      case 'stringArray':
-        return (
-          <PlainTextClaimItem
-            label={claim.label}
-            claim={claim.parsed.value.join(', ')}
-            hidden={hidden}
-            reversed={reversed}
-            clipboardSuccessMessage={clipboardSuccessMessage}
-          />
-        );
       case 'emptyString':
         return null; // We want to hide the claim if it's empty
+      case 'expireDate':
+        return (
+          <DateClaimItem
+            claim={claim.parsed.value}
+            hidden={hidden}
+            label={claim.label}
+            reversed={reversed}
+            status={!isPreview ? credentialStatus : undefined}
+          />
+        );
+      case 'image':
+        return (
+          <ImageClaimItem
+            claim={claim.parsed.value}
+            clipboardSuccessMessage={clipboardSuccessMessage}
+            height={claim.parsed.height}
+            hidden={hidden}
+            label={claim.label}
+            reversed={reversed}
+            width={claim.parsed.width}
+          />
+        );
+      case 'placeOfBirth':
+        return (
+          <PlaceOfBirthClaimItem
+            claim={claim.parsed}
+            hidden={hidden}
+            label={claim.label}
+            reversed={reversed}
+          />
+        );
       case 'string':
         return (
           <PlainTextClaimItem
-            label={claim.label}
             claim={claim.parsed.value}
-            isCopyable={!isPreview}
-            hidden={hidden}
-            reversed={reversed}
             clipboardSuccessMessage={clipboardSuccessMessage}
+            hidden={hidden}
+            isCopyable={!isPreview}
+            label={claim.label}
+            reversed={reversed}
           />
         ); // must be the last one to be checked due to overlap with IPatternStringTag
-      case 'verificationEvidence':
+      case 'stringArray':
         return (
-          <VerificationEvidenceClaimItem
+          <PlainTextClaimItem
+            claim={claim.parsed.value.join(', ')}
+            clipboardSuccessMessage={clipboardSuccessMessage}
+            hidden={hidden}
             label={claim.label}
-            claim={claim.parsed.value}
-            detailsButtonVisible={!isPreview}
             reversed={reversed}
           />
         );
@@ -588,19 +580,28 @@ export const ItwCredentialClaim = ({
         return (
           <PlainTextClaimItem
             claim={claim.parsed.value}
+            clipboardSuccessMessage={clipboardSuccessMessage}
             label={claim.label}
             reversed={false}
-            clipboardSuccessMessage={clipboardSuccessMessage}
+          />
+        );
+      case 'verificationEvidence':
+        return (
+          <VerificationEvidenceClaimItem
+            claim={claim.parsed.value}
+            detailsButtonVisible={!isPreview}
+            label={claim.label}
+            reversed={reversed}
           />
         );
     }
   }
   return (
     <UnknownClaimItem
-      label={claim.label}
       _claim={claim}
-      reversed={reversed}
       clipboardSuccessMessage={clipboardSuccessMessage}
+      label={claim.label}
+      reversed={reversed}
     />
   );
 };

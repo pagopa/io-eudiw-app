@@ -1,24 +1,24 @@
 import i18next from 'i18next';
 
-export type Locales = 'it' | 'de' | 'en';
-
 /**
  * Enum for the claims locales.
  * This is used to get the correct locale for the claims.
  * Currently the only supported locales are it-IT and en-US.
  */
 export enum ClaimsLocales {
-  it = 'it-IT',
-  en = 'en-US'
+  en = 'en-US',
+  it = 'it-IT'
 }
+
+export type Locales = 'de' | 'en' | 'it';
 
 /**
  * Map from the app locales to the claims locales.
  * Currently en is mapped to en-US and it to it-IT.
  */
 const localeToClaimsLocales = new Map<string, ClaimsLocales>([
-  ['it', ClaimsLocales.it],
-  ['en', ClaimsLocales.en]
+  ['en', ClaimsLocales.en],
+  ['it', ClaimsLocales.it]
 ]);
 
 /**

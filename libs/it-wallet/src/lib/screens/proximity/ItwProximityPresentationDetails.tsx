@@ -1,36 +1,37 @@
+import { getSafeText } from '@io-eudiw-app/commons';
 import {
   ClaimsSelector,
   ListItemHeader,
-  VStack,
-  useIOTheme
+  useIOTheme,
+  VStack
 } from '@pagopa/io-app-design-system';
 import { addPadding } from '@pagopa/io-react-native-jwt';
 import { ComponentProps, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+
 import {
   getClaimDisplayValue,
   WellKnownClaim
 } from '../../utils/itwClaimsUtils';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { ClaimDisplayFormat } from '../../utils/itwRemotePresentationUtils';
-import { getSafeText } from '@io-eudiw-app/commons';
 
 /**
  * Maps claims to the format required by the ClaimsSelector component.
  */
 const mapClaims = (
-  claims: Array<ClaimDisplayFormat>
+  claims: ClaimDisplayFormat[]
 ): ComponentProps<typeof ClaimsSelector>['items'] =>
   claims.map(c => {
     const displayResult = getClaimDisplayValue(c);
 
     if (displayResult.type === 'image') {
       return {
-        id: c.id,
-        value: displayResult.value,
         description: c.label,
-        type: 'image'
+        id: c.id,
+        type: 'image',
+        value: displayResult.value
       };
     }
 
@@ -40,10 +41,10 @@ const mapClaims = (
       typeof displayResult.value === 'string'
     ) {
       return {
-        id: c.id,
-        value: `data:image/jpeg;base64,${addPadding(displayResult.value)}`,
         description: c.label,
-        type: 'image'
+        id: c.id,
+        type: 'image',
+        value: `data:image/jpeg;base64,${addPadding(displayResult.value)}`
       };
     }
 
@@ -52,20 +53,20 @@ const mapClaims = (
       : getSafeText(displayResult.value);
 
     return {
+      description: c.label,
       id: c.id,
-      value: textValue,
-      description: c.label
+      value: textValue
     };
   });
 
 /**
  * Type representing the proximity details with localized claims
  */
-export type ProximityDetails = Array<{
-  rpId: string;
+export type ProximityDetails = {
+  claimsToDisplay: ClaimDisplayFormat[];
   credentialType: string;
-  claimsToDisplay: Array<ClaimDisplayFormat>;
-}>;
+  rpId: string;
+}[];
 
 type ItwProximityPresentationDetailsProps = {
   data: ProximityDetails;
@@ -80,18 +81,18 @@ const ItwProximityPresentationDetails = ({
   return (
     <View>
       <ListItemHeader
-        label={t('presentation.trust.requiredClaims', { ns: 'wallet' })}
-        iconName="security"
         iconColor={theme['icon-decorative']}
+        iconName="security"
+        label={t('presentation.trust.requiredClaims', { ns: 'wallet' })}
       />
       <VStack space={24}>
         {data.map(({ claimsToDisplay, credentialType }) => (
           <ClaimsSelector
-            key={credentialType}
-            title={getCredentialNameFromType(credentialType)}
-            items={mapClaims(claimsToDisplay)}
             defaultExpanded
+            items={mapClaims(claimsToDisplay)}
+            key={credentialType}
             selectionEnabled={false}
+            title={getCredentialNameFromType(credentialType)}
           />
         ))}
       </VStack>

@@ -1,14 +1,15 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersistConfig, persistReducer } from 'redux-persist';
-import { WalletCombinedRootState } from '.';
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
-import { resetLifecycle } from './lifecycle';
 import { IoWallet } from '@pagopa/io-react-native-wallet';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PersistConfig, persistReducer } from 'redux-persist';
+
+import { WalletCombinedRootState } from '.';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
+import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the attestation slice
  * attestation - The wallet instance attestation
@@ -36,27 +37,27 @@ export const initialState: AttestationState = {
  * Redux slice for the attestation state. It allows to set and reset the attestation.
  */
 const attestationSlice = createSlice({
-  name: 'attestation',
+  extraReducers: builder => {
+    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
+  },
   initialState,
+  name: 'attestation',
   reducers: {
     setWalletInstanceAttestation: (
       state,
-      action: PayloadAction<Array<{ format: string; attestation: string }>>
+      action: PayloadAction<{ attestation: string; format: string }[]>
     ) => {
       state.wia.value = action.payload.reduce(
-        (acc, { format, attestation }) => ({ ...acc, [format]: attestation }),
+        (acc, { attestation, format }) => ({ ...acc, [format]: attestation }),
         {} as Record<string, string>
       );
     },
     setWalletUnitAttestation: (state, action: PayloadAction<string>) => {
       state.wua.value = action.payload;
     }
-  },
-  extraReducers: builder => {
-    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
-    builder.addCase(preferencesReset, () => initialState);
-    builder.addCase(resetLifecycle, () => initialState);
-    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   }
 });
 

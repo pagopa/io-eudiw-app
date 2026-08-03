@@ -11,6 +11,7 @@ import {
 } from '@pagopa/io-app-design-system';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { LoadingIndicator } from './LoadingIndicator';
 
 const styles = StyleSheet.create({
@@ -23,8 +24,8 @@ const styles = StyleSheet.create({
 const SPACE_BETWEEN_SPINNER_AND_TEXT = 24;
 
 type LoadingScreenContentProps = WithTestID<{
-  contentTitle: string;
   children?: React.ReactNode;
+  contentTitle: string;
   headerVisible?: boolean;
 }>;
 
@@ -36,15 +37,15 @@ type LoadingScreenContentProps = WithTestID<{
  */
 export const LoadingScreenContent = (props: LoadingScreenContentProps) => {
   const theme = useIOTheme();
-  const { contentTitle, children, headerVisible, testID } = props;
+  const { children, contentTitle, headerVisible, testID } = props;
 
   return (
     <SafeAreaView
+      edges={headerVisible ? ['bottom'] : undefined}
       style={[
         styles.container,
         { backgroundColor: IOColors[theme['appBackground-primary']] }
       ]}
-      edges={headerVisible ? ['bottom'] : undefined}
       testID={testID}
     >
       <ContentWrapper>
@@ -53,16 +54,16 @@ export const LoadingScreenContent = (props: LoadingScreenContentProps) => {
           style={{ alignItems: 'center' }}
         >
           <View
-            accessible={false}
             accessibilityElementsHidden={true}
+            accessible={false}
             importantForAccessibility={'no-hide-descendants'}
           >
             <LoadingIndicator />
           </View>
           <H3
-            style={{ textAlign: 'center' }}
-            color={theme['textHeading-secondary']}
             accessibilityLabel={contentTitle}
+            color={theme['textHeading-secondary']}
+            style={{ textAlign: 'center' }}
           >
             {contentTitle}
           </H3>

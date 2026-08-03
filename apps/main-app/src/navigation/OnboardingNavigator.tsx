@@ -1,23 +1,24 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { PinCreation, PinCreationProps } from '../screens/pin/PinCreation';
+
 import OnboardingBiometricAvailable from '../screens/onboarding/OnboardingBiometricAvailable';
 import OnboardingBiometricNoScreenLock from '../screens/onboarding/OnboardingBiometricNoScreenLock';
 import OnboardingBiometricNotEnrolled from '../screens/onboarding/OnboardingBiometricNotEnrolled';
 import { OnboardingCarousel } from '../screens/onboarding/OnboardingCarousel';
 import ONBOARDING_ROUTES from '../screens/onboarding/routes';
+import { PinCreation, PinCreationProps } from '../screens/pin/PinCreation';
 
 /**
  * Screen parameters for the onboarding navigator.
  * New screens should be added here along with their parameters.
  */
 export type OnboardingNavigatorParamsList = {
-  [ONBOARDING_ROUTES.MAIN]: undefined;
-  [ONBOARDING_ROUTES.CAROUSEL]: undefined;
-  [ONBOARDING_ROUTES.START]: undefined;
-  [ONBOARDING_ROUTES.PIN.CREATION]: PinCreationProps;
   [ONBOARDING_ROUTES.BIOMETRIC.AVAILABLE]: undefined;
-  [ONBOARDING_ROUTES.BIOMETRIC.NOT_ENROLLED]: undefined;
   [ONBOARDING_ROUTES.BIOMETRIC.NO_SCREEN_LOCK]: undefined;
+  [ONBOARDING_ROUTES.BIOMETRIC.NOT_ENROLLED]: undefined;
+  [ONBOARDING_ROUTES.CAROUSEL]: undefined;
+  [ONBOARDING_ROUTES.MAIN]: undefined;
+  [ONBOARDING_ROUTES.PIN.CREATION]: PinCreationProps;
+  [ONBOARDING_ROUTES.START]: undefined;
 };
 
 const Stack = createStackNavigator<OnboardingNavigatorParamsList>();
@@ -33,24 +34,24 @@ const OnboardingNavigator = () => (
     screenOptions={{ headerShown: false }}
   >
     <Stack.Screen
-      name={ONBOARDING_ROUTES.CAROUSEL}
       component={OnboardingCarousel}
+      name={ONBOARDING_ROUTES.CAROUSEL}
     />
     <Stack.Screen
-      name={ONBOARDING_ROUTES.PIN.CREATION}
       component={PinCreation}
+      name={ONBOARDING_ROUTES.PIN.CREATION}
     />
     <Stack.Screen
-      name={ONBOARDING_ROUTES.BIOMETRIC.AVAILABLE}
       component={OnboardingBiometricAvailable}
+      name={ONBOARDING_ROUTES.BIOMETRIC.AVAILABLE}
     />
     <Stack.Screen
-      name={ONBOARDING_ROUTES.BIOMETRIC.NOT_ENROLLED}
       component={OnboardingBiometricNotEnrolled}
+      name={ONBOARDING_ROUTES.BIOMETRIC.NOT_ENROLLED}
     />
     <Stack.Screen
-      name={ONBOARDING_ROUTES.BIOMETRIC.NO_SCREEN_LOCK}
       component={OnboardingBiometricNoScreenLock}
+      name={ONBOARDING_ROUTES.BIOMETRIC.NO_SCREEN_LOCK}
     />
   </Stack.Navigator>
 );

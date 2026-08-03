@@ -21,14 +21,14 @@ const initialState: DeepLinkingSlice = {
  * pending deep-link URL without crossing the app/lib boundary.
  */
 const deeplinkingSlice = createSlice({
-  name: 'deeplinking',
   initialState,
+  name: 'deeplinking',
   reducers: {
-    setUrl: (state, action: PayloadAction<{ url: string }>) => {
-      state.url = action.payload.url;
-    },
     resetUrl: state => {
       state.url = undefined;
+    },
+    setUrl: (state, action: PayloadAction<{ url: string }>) => {
+      state.url = action.payload.url;
     }
   }
 });
@@ -38,7 +38,7 @@ export const { reducer: deepLinkingReducer } = deeplinkingSlice;
 /**
  * Exports the actions for the deeplinking slice.
  */
-export const { setUrl, resetUrl } = deeplinkingSlice.actions;
+export const { resetUrl, setUrl } = deeplinkingSlice.actions;
 
 /**
  * Minimal state shape required by the deeplinking selector.

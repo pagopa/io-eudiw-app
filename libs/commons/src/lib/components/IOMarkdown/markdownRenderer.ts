@@ -10,8 +10,9 @@ import {
 } from '@textlint/ast-node-types';
 import { parse as textLintParse } from '@textlint/markdown-to-ast';
 import { omit } from 'lodash';
-import { AnyTxtNodeWithSpacer, IOMarkdownRenderRules, Renderer } from './types';
+
 import { isIos } from '../../utils/device';
+import { AnyTxtNodeWithSpacer, IOMarkdownRenderRules, Renderer } from './types';
 
 /**
  *
@@ -38,29 +39,30 @@ export function getRenderMarkdown(
  * @param content The `markdown` string to parse.
  * @returns The parsed content.
  */
-export function parse(content: string): Array<AnyTxtNodeWithSpacer> {
+export function parse(content: string): AnyTxtNodeWithSpacer[] {
   const parsedContent = textLintParse(content);
-  return integrateParent(parsedContent).children.reduce<
-    Array<AnyTxtNodeWithSpacer>
-  >((acc, currNode, idx, self) => {
-    const nextNode = self[idx + 1];
-    const nextNodeBeginning = nextNode?.loc.start.line;
-    const currNodeEnding = currNode.loc.end.line;
-    const diff = nextNodeBeginning - currNodeEnding;
+  return integrateParent(parsedContent).children.reduce<AnyTxtNodeWithSpacer[]>(
+    (acc, currNode, idx, self) => {
+      const nextNode = self[idx + 1];
+      const nextNodeBeginning = nextNode?.loc.start.line;
+      const currNodeEnding = currNode.loc.end.line;
+      const diff = nextNodeBeginning - currNodeEnding;
 
-    if (diff > 1) {
-      return [
-        ...acc,
-        currNode,
-        {
-          type: 'Spacer',
-          size: Math.min(2, diff - 1) * 8,
-          key: `Spacer_${currNodeEnding}_${nextNodeBeginning}`
-        }
-      ];
-    }
-    return [...acc, currNode];
-  }, []);
+      if (diff > 1) {
+        return [
+          ...acc,
+          currNode,
+          {
+            key: `Spacer_${currNodeEnding}_${nextNodeBeginning}`,
+            size: Math.min(2, diff - 1) * 8,
+            type: 'Spacer'
+          }
+        ];
+      }
+      return [...acc, currNode];
+    },
+    []
+  );
 }
 
 function integrateParent<T extends AnyTxtNode>(
@@ -124,7 +126,7 @@ export const convertReferenceLinksToInline = (markdownText: string): string => {
     const url = match[2].replace(/^<|>$/g, '');
     // Title is not supported but we capture it in case it will be in the future
     const title = match[3] || '';
-    linkDefinitions.set(label, { url, title });
+    linkDefinitions.set(label, { title, url });
   }
 
   // Remove all link definitions from the text
@@ -154,8 +156,8 @@ export const sanitizeMarkdownForImages = (
 ): string => {
   const markdownImageRegex = /!\[.*?\]\((.*?)\)/g;
 
-  const reversedMatches: Array<RegExpExecArray> = [];
-  let match: RegExpExecArray | null;
+  const reversedMatches: RegExpExecArray[] = [];
+  let match: null | RegExpExecArray;
   while ((match = markdownImageRegex.exec(inputMarkdownContent)) !== null) {
     reversedMatches.unshift(match);
   }
@@ -248,8 +250,8 @@ export type LinkData = {
 export const extractAllLinksFromRootNode = (
   node: TxtHeaderNode | TxtListNode | TxtParagraphNode,
   screenReaderEnabled: boolean
-): ReadonlyArray<LinkData> => {
-  const allLinkData: Array<LinkData> = [];
+): readonly LinkData[] => {
+  const allLinkData: LinkData[] = [];
   if (node.parent?.type === 'Document' && isIos && screenReaderEnabled) {
     extractAllLinksFromNodeWithChildren(node, allLinkData);
   }
@@ -258,11 +260,11 @@ export const extractAllLinksFromRootNode = (
 
 const extractAllLinksFromNodeWithChildren = (
   nodeWithChildren: Readonly<TxtParentNode>,
-  allLinks: Array<LinkData>
+  allLinks: LinkData[]
 ) => {
   nodeWithChildren.children.forEach(node => {
     if (isTxtLinkNode(node)) {
-      const composedLink: Array<string> = [];
+      const composedLink: string[] = [];
       extractLinkDataFromRootNode(node, composedLink);
       const text = composedLink.join('');
       const url = node.url;
@@ -278,7 +280,7 @@ const extractAllLinksFromNodeWithChildren = (
 
 const extractLinkDataFromRootNode = (
   inputNode: Readonly<TxtParentNode>,
-  links: Array<string>
+  links: string[]
 ): void =>
   inputNode.children.forEach(node => {
     if (isTxtStrNode(node)) {

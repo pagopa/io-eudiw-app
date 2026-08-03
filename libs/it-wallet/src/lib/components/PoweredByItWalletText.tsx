@@ -1,6 +1,7 @@
 import { BodySmall } from '@pagopa/io-app-design-system';
 import { t } from 'i18next';
 import { StyleSheet, View } from 'react-native';
+
 import ITWalletLogoImage from '../../assets/img/brand/itw_logo.svg';
 
 export const PoweredByItWalletText = () => (
@@ -8,15 +9,15 @@ export const PoweredByItWalletText = () => (
     <BodySmall>
       {t('presentation.credentialDetails.partOf', { ns: 'wallet' })}
     </BodySmall>
-    <ITWalletLogoImage width={80} height={16} accessibilityLabel="IT Wallet" />
+    <ITWalletLogoImage accessibilityLabel="IT Wallet" height={16} width={80} />
   </View>
 );
 
 const styles = StyleSheet.create({
   poweredBy: {
-    flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
-    gap: 8
+    flexDirection: 'row',
+    gap: 8,
+    justifyContent: 'center'
   }
 });

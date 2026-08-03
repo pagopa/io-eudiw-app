@@ -1,4 +1,11 @@
 import {
+  IOMarkdown,
+  LoadingScreenContent,
+  useDisableGestureNavigation,
+  useHardwareBackButton,
+  useHeaderSecondLevel
+} from '@io-eudiw-app/commons';
+import {
   Body,
   FeatureInfo,
   FooterActions,
@@ -14,16 +21,12 @@ import { useNavigation } from '@react-navigation/native';
 import { Fragment, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import {
-  IOMarkdown,
-  LoadingScreenContent,
-  useDisableGestureNavigation,
-  useHardwareBackButton,
-  useHeaderSecondLevel
-} from '@io-eudiw-app/commons';
+
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import { ItwRequestedClaimsList } from '../../components/presentation/ItwRequiredClaimsList';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
+import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../store';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus,
@@ -34,8 +37,6 @@ import {
 import { getCredentialNameByType } from '../../utils/credentials';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Screen which shows the user the credentials and claims that will be shared with the credential issuer
@@ -43,13 +44,13 @@ import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWit
  */
 const CredentialTrust = () => {
   const dispatch = useAppDispatch();
-  const { success: preAuthSuccess, error: preAuthError } = useAppSelector(
+  const { error: preAuthError, success: preAuthSuccess } = useAppSelector(
     selectCredentialIssuancePreAuthStatus
   );
   const { t } = useTranslation(['common', 'wallet']);
   const {
-    loading,
     error: postAuthError,
+    loading,
     success
   } = useAppSelector(selectCredentialIssuancePostAuthStatus);
   const requestedCredential = useAppSelector(selectRequestedCredentialType);
@@ -75,13 +76,13 @@ const CredentialTrust = () => {
   }, [dispatch]);
 
   const dismissalDialog = useItwDismissalDialog({
-    handleDismiss: cancel,
     customLabels: {
-      title: t('common:alert.title'),
       body: t('common:alert.body'),
+      cancelLabel: t('common:alert.cancel'),
       confirmLabel: t('common:alert.confirm'),
-      cancelLabel: t('common:alert.cancel')
-    }
+      title: t('common:alert.title')
+    },
+    handleDismiss: cancel
   });
 
   const presentationDetails = preAuthSuccess.status
@@ -90,11 +91,11 @@ const CredentialTrust = () => {
   const isPreAuthReady = presentationDetails !== undefined;
 
   useHeaderSecondLevel({
-    title: '',
-    headerShown: isPreAuthReady,
     goBack: () => {
       dismissalDialog.show();
-    }
+    },
+    headerShown: isPreAuthReady,
+    title: ''
   });
 
   useDisableGestureNavigation();
@@ -150,7 +151,7 @@ const CredentialTrust = () => {
 
   return (
     <ForceScrollDownView threshold={50}>
-      <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
+      <View style={{ flexGrow: 1, margin: IOVisualCostants.appMarginDefault }}>
         <VSpacer size={24} />
         <ItwDataExchangeIcons />
         <VSpacer size={24} />
@@ -168,9 +169,9 @@ const CredentialTrust = () => {
         </VStack>
         <VSpacer size={24} />
         <ListItemHeader
-          label={t('wallet:credentialIssuance.trust.requiredData')}
-          iconName="security"
           iconColor={theme['icon-default']}
+          iconName="security"
+          label={t('wallet:credentialIssuance.trust.requiredData')}
         />
         {requiredClaimsByCredential.map((requiredClaims, index) => (
           <Fragment
@@ -184,31 +185,31 @@ const CredentialTrust = () => {
         ))}
         <VSpacer size={48} />
         <FeatureInfo
-          iconName="fornitori"
           body={t('wallet:credentialIssuance.trust.disclaimer.store')}
+          iconName="fornitori"
         />
         <VSpacer size={24} />
         <FeatureInfo
-          iconName="trashcan"
           body={t('wallet:credentialIssuance.trust.disclaimer.retention')}
+          iconName="trashcan"
         />
       </View>
       <FooterActions
-        fixed={false}
         actions={{
-          type: 'TwoButtons',
           primary: {
             label: t('common:buttons.continue'),
-            onPress: onContinue,
-            loading
+            loading,
+            onPress: onContinue
           },
           secondary: {
             label: t('common:buttons.cancel'),
             onPress: () => {
               dismissalDialog.show();
             }
-          }
+          },
+          type: 'TwoButtons'
         }}
+        fixed={false}
       />
     </ForceScrollDownView>
   );

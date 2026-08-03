@@ -1,14 +1,15 @@
-import { StackScreenProps } from '@react-navigation/stack';
-import { useTranslation } from 'react-i18next';
-import { resetUrl } from '@io-eudiw-app/navigation';
 import {
   OperationResultScreenContent,
   useDisableGestureNavigation,
   useHardwareBackButton
 } from '@io-eudiw-app/commons';
+import { resetUrl } from '@io-eudiw-app/navigation';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useTranslation } from 'react-i18next';
+
+import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { useAppDispatch } from '../../store';
-import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Navigation params for the deep link error screen.
@@ -17,7 +18,7 @@ import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWit
  * - `link` -> the URL came from a deep link
  */
 export type DeepLinkErrorParams = {
-  source: 'qr' | 'link';
+  source: 'link' | 'qr';
 };
 
 type Props = StackScreenProps<WalletNavigatorParamsList, 'DEEP_LINK_ERROR'>;
@@ -45,14 +46,14 @@ const DeepLinkError = ({ route }: Props) => {
 
   return (
     <OperationResultScreenContent
-      pictogram="umbrella"
-      title={t(`deepLink.error.${source}.title`)}
-      subtitle={t(`deepLink.error.${source}.subtitle`)}
       action={{
         accessibilityLabel: t('deepLink.error.button'),
         label: t('deepLink.error.button'),
         onPress
       }}
+      pictogram="umbrella"
+      subtitle={t(`deepLink.error.${source}.subtitle`)}
+      title={t(`deepLink.error.${source}.title`)}
     />
   );
 };

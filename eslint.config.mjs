@@ -1,37 +1,19 @@
-import nx from '@nx/eslint-plugin';
-import sonarjs from 'eslint-plugin-sonarjs';
-import reactNative from 'eslint-plugin-react-native';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import eslintPluginJsonc from 'eslint-plugin-jsonc';
+import pagopa from '@pagopa/eslint-config/jest';
 
 export default [
-  ...nx.configs['flat/base'],
-  ...nx.configs['flat/typescript'],
-  ...nx.configs['flat/javascript'],
-  ...eslintPluginJsonc.configs['recommended-with-jsonc'],
-
+  ...pagopa,
   {
     ignores: [
-      '**/dist',
       '**/out-tsc',
+      '**/.nx/**',
       '**/node_modules/**',
       '**/.expo/**',
-      '**/ios',
-      '**/android'
+      '**/*.js',
+      '**/*.jsx',
+      '**/babel.config.*',
+      '**/jest.config.*',
+      '**/metro.config.*'
     ]
-  },
-  {
-    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx', '**/*.mjs'],
-    plugins: {
-      sonarjs,
-      'react-native': reactNative
-    },
-    rules: {
-      'prefer-const': 'error',
-      'no-console': 'error',
-      'no-var': 'error',
-      eqeqeq: ['error', 'smart']
-    }
   },
   {
     files: ['**/*.ts', '**/*.tsx'],
@@ -43,29 +25,53 @@ export default [
     },
     rules: {
       '@typescript-eslint/await-thenable': 'error',
+      '@typescript-eslint/dot-notation': 'error',
       '@typescript-eslint/no-floating-promises': 'error',
-      '@typescript-eslint/restrict-plus-operands': 'error',
-      '@typescript-eslint/dot-notation': 'error'
+      '@typescript-eslint/restrict-plus-operands': 'error'
     }
   },
   {
-    files: ['**/*.js', '**/*.mjs', '**/.*.js'],
     rules: {
-      '@typescript-eslint/await-thenable': 'off',
-      '@typescript-eslint/no-floating-promises': 'off'
-    }
-  },
-  {
-    files: ['**/*.json', '**/*.jsonc', '**/*.json5'],
-    languageOptions: {
-      parser: await import('jsonc-eslint-parser')
-    },
-    rules: {
-      ...eslintPluginJsonc.configs['recommended-with-jsonc'].rules,
-      'jsonc/indent': ['error', 2],
-      'jsonc/comma-dangle': ['error', 'never']
-    }
-  },
+      // Converting `type = {}` to `interface {}` breaks assignability to
+      // `Record<string, unknown>` — TypeScript requires an explicit index
+      // signature on interfaces, whereas type aliases satisfy it structurally.
+      // This affects analytics helpers, navigation param lists, and any other
+      // type used as a generic record argument throughout the codebase.
+      '@typescript-eslint/consistent-type-definitions': 'off',
 
-  eslintPluginPrettierRecommended
+      // Allow `_`-prefixed throwaways and rest-sibling destructuring omits
+      // (`const { key, ...rest } = obj`), matching tsc's own noUnusedLocals.
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+          varsIgnorePattern: '^_'
+        }
+      ]
+    }
+  },
+  {
+    // Static image assets must be loaded via `require()` for the React Native
+    rules: {
+      '@typescript-eslint/no-require-imports': [
+        'error',
+        { allow: ['\\.(png|jpg|jpeg|gif|webp)$'] }
+      ]
+    }
+  },
+  {
+    // For test-related files, allow require() and jest.requireActual()
+    files: [
+      '**/test-setup.ts',
+      '**/*.test.ts',
+      '**/*.test.tsx',
+      '**/*.spec.ts',
+      '**/*.spec.tsx',
+      '**/__mocks__/**'
+    ],
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off'
+    }
+  }
 ];

@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
+
 import { DebugCombinedRootState } from '.';
 
 /*
@@ -9,26 +10,29 @@ import { DebugCombinedRootState } from '.';
  * debugData - Data that is used for debugging purposes
  */
 export type DebugSlice = Readonly<{
-  isDebugModeEnabled: boolean;
   debugData: Record<string, unknown>;
+  isDebugModeEnabled: boolean;
 }>;
 
 // Initial state for the debug slice
 const initialState: DebugSlice = {
-  isDebugModeEnabled: true,
-  debugData: {}
+  debugData: {},
+  isDebugModeEnabled: true
 };
 
 /**
  * Redux slice for the debug state. It allows to enable and disable the debug mode and set debug data.
  */
 const debugSlice = createSlice({
-  name: 'debug',
   initialState,
+  name: 'debug',
   reducers: {
-    setDebugModeEnabled: (state, action: PayloadAction<{ state: boolean }>) => {
-      state.isDebugModeEnabled = action.payload.state;
-      state.debugData = {};
+    resetDebugData(state, action: PayloadAction<readonly string[]>) {
+      state.debugData = Object.fromEntries(
+        Object.entries(state.debugData).filter(
+          ([key]) => !action.payload.includes(key)
+        )
+      );
     },
     setDebugData: (state, action: PayloadAction<Record<string, unknown>>) => {
       state.debugData = {
@@ -36,12 +40,9 @@ const debugSlice = createSlice({
         ...action.payload
       };
     },
-    resetDebugData(state, action: PayloadAction<ReadonlyArray<string>>) {
-      state.debugData = Object.fromEntries(
-        Object.entries(state.debugData).filter(
-          ([key]) => !action.payload.includes(key)
-        )
-      );
+    setDebugModeEnabled: (state, action: PayloadAction<{ state: boolean }>) => {
+      state.isDebugModeEnabled = action.payload.state;
+      state.debugData = {};
     }
   }
 });
@@ -49,7 +50,7 @@ const debugSlice = createSlice({
 /**
  * Exports the actions for the debug slice.
  */
-export const { setDebugModeEnabled, setDebugData, resetDebugData } =
+export const { resetDebugData, setDebugData, setDebugModeEnabled } =
   debugSlice.actions;
 
 const debugPersist: PersistConfig<DebugSlice> = {

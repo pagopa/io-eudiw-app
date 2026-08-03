@@ -44,7 +44,7 @@ const isValueNotFoundError = (e: unknown): e is Error =>
  *
  * @returns A promise that resolves to an array of credential types
  */
-const readIndex = async (): Promise<Array<string>> => {
+const readIndex = async (): Promise<string[]> => {
   const raw = await SecureStore.getItemAsync(encodeKey(INDEX_KEY), options);
   if (!raw) {
     return [];
@@ -64,7 +64,7 @@ const readIndex = async (): Promise<Array<string>> => {
  *
  * @param types The array of credential types to persist
  */
-const writeIndex = async (types: Array<string>): Promise<void> => {
+const writeIndex = async (types: string[]): Promise<void> => {
   await SecureStore.setItemAsync(
     encodeKey(INDEX_KEY),
     JSON.stringify(types),
@@ -166,7 +166,7 @@ const store = async (
  * @param credentials An array of objects containing credentialType and credential string
  */
 const storeAll = async (
-  credentials: ReadonlyArray<{ credentialType: string; credential: string }>
+  credentials: readonly { credential: string; credentialType: string }[]
 ): Promise<void> => {
   await Promise.all(
     credentials.map(data => store(data.credentialType, data.credential))
@@ -208,9 +208,7 @@ const remove = async (credentialType: string): Promise<void> => {
  *
  * @param credentialIds An array of credential types
  */
-const removeAll = async (
-  credentialIds: ReadonlyArray<string>
-): Promise<void> => {
+const removeAll = async (credentialIds: readonly string[]): Promise<void> => {
   await Promise.all(credentialIds.map(remove));
 };
 
@@ -219,9 +217,7 @@ const removeAll = async (
  *
  * @returns A promise that resolves to an array of credential types
  */
-const list = async (): Promise<ReadonlyArray<string>> => {
-  return readIndex();
-};
+const list = async (): Promise<readonly string[]> => readIndex();
 
 /**
  * Clears all credentials' SD-JWT/MDOCs from the Secure Storage.
@@ -232,13 +228,13 @@ const clear = async (): Promise<void> => {
 };
 
 export const CredentialsVault = {
-  store,
-  storeAll,
+  clear,
   get,
+  list,
   remove,
   removeAll,
-  clear,
-  list
+  store,
+  storeAll
 };
 
 export type CredentialsVaultType = typeof CredentialsVault;

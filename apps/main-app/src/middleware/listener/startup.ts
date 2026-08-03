@@ -1,3 +1,20 @@
+import { initEnv } from '@io-eudiw-app/env';
+import {
+  getBiometricState,
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '@io-eudiw-app/identification';
+import { isNavigationReady } from '@io-eudiw-app/navigation';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse,
+  preferencesSetIsOnboardingDone,
+  preferencesSetSelectedMiniAppId,
+  selectIsFirstStartup,
+  selectIsOnboardingComplete,
+  selectSelectedMiniAppId
+} from '@io-eudiw-app/preferences';
 import { isAnyOf } from '@reduxjs/toolkit';
 import * as SplashScreen from 'expo-splash-screen';
 import { isPinOrFingerprintSet } from 'react-native-device-info';
@@ -9,29 +26,12 @@ import {
   startupSetStatus,
   StartupSlice
 } from '../../store/reducers/startup';
-import { AppListener, AppListenerWithAction } from './types';
-import {
-  getBiometricState,
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '@io-eudiw-app/identification';
-import { initEnv } from '@io-eudiw-app/env';
-import {
-  preferencesReset,
-  preferencesSetIsFirstStartupFalse,
-  preferencesSetIsOnboardingDone,
-  preferencesSetSelectedMiniAppId,
-  selectIsFirstStartup,
-  selectIsOnboardingComplete,
-  selectSelectedMiniAppId
-} from '@io-eudiw-app/preferences';
-import { isNavigationReady } from '@io-eudiw-app/navigation';
+import { handlePendingDeepLink } from './common';
 import {
   changeMiniAppSelectionListener,
   mountSelectedMiniAppListeners
 } from './miniapp';
-import { handlePendingDeepLink } from './common';
+import { AppListener, AppListenerWithAction } from './types';
 
 /**
  * Utility function to wait for the navigation to be ready before dispatching a navigation event.
@@ -85,7 +85,7 @@ const startIdentification = async (listenerApi: AppListener) => {
  * @param listenerApi - The listener API
  */
 export const startupListener: AppListenerWithAction<
-  ReturnType<typeof startupSetLoading> | ReturnType<typeof preferencesReset>
+  ReturnType<typeof preferencesReset> | ReturnType<typeof startupSetLoading>
 > = async (action, listenerApi) => {
   try {
     // Load the env variables

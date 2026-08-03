@@ -1,4 +1,11 @@
 import {
+  CircularProgress,
+  IOScrollView,
+  useDisableGestureNavigation,
+  useHardwareBackButton
+} from '@io-eudiw-app/commons';
+import { useDebugInfo } from '@io-eudiw-app/debug-info';
+import {
   H4,
   HStack,
   IOButton,
@@ -11,14 +18,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import {
-  CircularProgress,
-  IOScrollView,
-  useDisableGestureNavigation,
-  useHardwareBackButton
-} from '@io-eudiw-app/commons';
-import { useDebugInfo } from '@io-eudiw-app/debug-info';
+
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../store';
 import {
   ProximityStatus,
   resetProximity,
@@ -28,12 +30,11 @@ import {
   selectProximityStatus,
   setProximityStatusStopped
 } from '../../store/proximity';
-import { useAppDispatch, useAppSelector } from '../../store';
 
 type ContentProps = {
-  title: string;
   isSuccess: boolean;
   onDismiss: () => void;
+  title: string;
 };
 
 /**
@@ -66,9 +67,9 @@ const ItwProximityNfcPresentment = () => {
     proximityStatus === ProximityStatus.PROXIMITY_STATUS_STOPPED;
 
   useDebugInfo({
-    proximityStatusNfc: proximityStatus,
+    engagementMode,
     proximityErrorDetailsNfc: errorDetails ?? 'No errors',
-    engagementMode
+    proximityStatusNfc: proximityStatus
   });
 
   useHardwareBackButton(() => true);
@@ -109,8 +110,8 @@ const ItwProximityNfcPresentment = () => {
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PROXIMITY_FAILURE',
-        params: { fatal: true }
+        params: { fatal: true },
+        screen: 'PROXIMITY_FAILURE'
       });
     } else if (
       proximityStatus ===
@@ -133,35 +134,35 @@ const ItwProximityNfcPresentment = () => {
   }, [isSuccess, isSending, t]);
 
   return Platform.select({
-    ios: (
-      <IOsContent
-        title={title}
-        isSuccess={isSuccess}
-        onDismiss={handleDismiss}
-      />
-    ),
     default: (
       <AndroidContent
-        title={title}
         isSuccess={isSuccess}
         onDismiss={handleDismiss}
+        title={title}
+      />
+    ),
+    ios: (
+      <IOsContent
+        isSuccess={isSuccess}
+        onDismiss={handleDismiss}
+        title={title}
       />
     )
   });
 };
 
-const IOsContent = ({ title, isSuccess, onDismiss }: ContentProps) => {
+const IOsContent = ({ isSuccess, onDismiss, title }: ContentProps) => {
   const { t } = useTranslation(['common']);
   const insets = useSafeAreaInsets();
 
   return (
     <IOScrollView
       actions={{
-        type: 'SingleButton',
         primary: {
           label: t('common:buttons.close'),
           onPress: onDismiss
-        }
+        },
+        type: 'SingleButton'
       }}
     >
       <View style={[styles.container, { marginTop: insets.top }]}>
@@ -174,33 +175,33 @@ const IOsContent = ({ title, isSuccess, onDismiss }: ContentProps) => {
   );
 };
 
-const AndroidContent = ({ title, isSuccess, onDismiss }: ContentProps) => {
+const AndroidContent = ({ isSuccess, onDismiss, title }: ContentProps) => {
   const { t } = useTranslation(['common']);
 
   return (
     <IOScrollView centerContent={true}>
       <View style={{ alignItems: 'center', gap: 24 }}>
         <CircularProgress
-          size={240}
-          radius={120}
           progress={isSuccess ? 100 : 0}
-          strokeColor={IOColors['blueIO-500']}
+          radius={120}
+          size={240}
           strokeBgColor={IOColors['grey-200']}
+          strokeColor={IOColors['blueIO-500']}
           strokeWidth={4}
         >
           <Pictogram
-            size={180}
             name={isSuccess ? 'success' : 'nfcScanAndroid'}
+            size={180}
           />
         </CircularProgress>
         <H4 textStyle={{ textAlign: 'center' }}>{title}</H4>
         <View style={{ alignSelf: 'center' }}>
           <IOButton
-            variant="link"
             label={
               isSuccess ? t('common:buttons.close') : t('common:buttons.cancel')
             }
             onPress={onDismiss}
+            variant="link"
           />
         </View>
       </View>

@@ -10,5 +10,5 @@ export const getSafeText = (text: string) => truncate(text, { length: 128 });
  * @param text - The string to check
  * @returns true if the text is null, undefined or empty, false otherwise
  */
-export const isStringNullyOrEmpty = (text: string | null | undefined) =>
+export const isStringNullyOrEmpty = (text: null | string | undefined) =>
   text === null || text === undefined || text.trim().length === 0;

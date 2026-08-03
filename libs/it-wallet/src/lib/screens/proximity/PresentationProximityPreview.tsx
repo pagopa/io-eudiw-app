@@ -1,26 +1,35 @@
 import {
-  FeatureInfo,
-  FooterActions,
-  ForceScrollDownView,
-  H2,
-  IOVisualCostants,
-  VSpacer,
-  VStack,
-  Alert as AlertDs,
-  Body
-} from '@pagopa/io-app-design-system';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useCallback, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { View, StyleSheet, Alert } from 'react-native';
-import {
   IOMarkdown,
   LoadingScreenContent,
   useDisableGestureNavigation,
   useHardwareBackButton,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
+import {
+  selectIsDebugModeEnabled,
+  useDebugInfo
+} from '@io-eudiw-app/debug-info';
+import {
+  Alert as AlertDs,
+  Body,
+  FeatureInfo,
+  FooterActions,
+  ForceScrollDownView,
+  H2,
+  IOVisualCostants,
+  VSpacer,
+  VStack
+} from '@pagopa/io-app-design-system';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Alert, StyleSheet, View } from 'react-native';
+
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
+import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
+import { useAppDispatch, useAppSelector } from '../../store';
 import {
   ProximityStatus,
   resetProximity,
@@ -34,14 +43,6 @@ import {
   setProximityStatusPresentationDetails
 } from '../../store/proximity';
 import { ItwProximityPresentationDetails } from './ItwProximityPresentationDetails';
-import { useAppDispatch, useAppSelector } from '../../store';
-import {
-  selectIsDebugModeEnabled,
-  useDebugInfo
-} from '@io-eudiw-app/debug-info';
-import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
 
 /**
  * Screen that shows the claims required for a Proximity presentation
@@ -66,9 +67,9 @@ const PresentationProximityPreview = () => {
   useDebugInfo({
     isAuthenticated,
     proximityDetails,
-    verifierRequest,
+    proximityErrorDetailsPreview: proximityErrorDetails ?? 'No errors',
     proximityStatusPreview: proximityStatus,
-    proximityErrorDetailsPreview: proximityErrorDetails ?? 'No errors'
+    verifierRequest
   });
 
   useFocusEffect(
@@ -91,17 +92,17 @@ const PresentationProximityPreview = () => {
         proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR
       ) {
         navigation.navigate('MAIN_WALLET_NAV', {
-          screen: 'PROXIMITY_FAILURE',
           params: {
             fatal: true
-          }
+          },
+          screen: 'PROXIMITY_FAILURE'
         });
       } else if (
         proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR_AUTHORIZED
       ) {
         navigation.navigate('MAIN_WALLET_NAV', {
-          screen: 'PROXIMITY_FAILURE',
-          params: { fatal: false }
+          params: { fatal: false },
+          screen: 'PROXIMITY_FAILURE'
         });
       }
     }, [proximityStatus, navigation])
@@ -121,13 +122,13 @@ const PresentationProximityPreview = () => {
   const cancelAlert = () => {
     Alert.alert(t('common:cancelOperation.title'), '', [
       {
-        text: t('common:cancelOperation.confirm'),
         onPress: cancel,
-        style: 'destructive'
+        style: 'destructive',
+        text: t('common:cancelOperation.confirm')
       },
       {
-        text: t('common:cancelOperation.cancel'),
-        style: 'cancel'
+        style: 'cancel',
+        text: t('common:cancelOperation.cancel')
       }
     ]);
   };
@@ -136,13 +137,13 @@ const PresentationProximityPreview = () => {
     <>
       {isAuthenticated ? (
         <AlertDs
-          variant="success"
           content={t('wallet:proximity.isAuthenticated.true')}
+          variant="success"
         />
       ) : (
         <AlertDs
-          variant="warning"
           content={t('wallet:proximity.isAuthenticated.false')}
+          variant="warning"
         />
       )}
       <VSpacer size={24} />
@@ -150,8 +151,8 @@ const PresentationProximityPreview = () => {
   );
 
   useHeaderSecondLevel({
-    title: '',
-    goBack: cancelAlert
+    goBack: cancelAlert,
+    title: ''
   });
 
   /**
@@ -179,7 +180,7 @@ const PresentationProximityPreview = () => {
 
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>
-      <View style={{ margin: IOVisualCostants.appMarginDefault, flexGrow: 1 }}>
+      <View style={{ flexGrow: 1, margin: IOVisualCostants.appMarginDefault }}>
         <ItwDataExchangeIcons />
         <VSpacer size={24} />
         <VStack space={24}>
@@ -195,35 +196,35 @@ const PresentationProximityPreview = () => {
         <ItwProximityPresentationDetails data={proximityDetails} />
         <VSpacer size={48} />
         <FeatureInfo
-          iconName="fornitori"
           body={t('wallet:presentation.trust.disclaimer.0')}
+          iconName="fornitori"
         />
         <VSpacer size={24} />
         <FeatureInfo
-          iconName="trashcan"
           body={t('wallet:presentation.trust.disclaimer.1')}
+          iconName="trashcan"
         />
       </View>
       <FooterActions
-        fixed={false}
         actions={{
-          type: 'TwoButtons',
           primary: {
             label: t('buttons.confirm'),
-            onPress: () => {
-              dispatch(setProximityStatusAuthorizationSend());
-            },
             loading:
               proximityStatus ===
                 ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_SEND ||
               proximityStatus ===
-                ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE
+                ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE,
+            onPress: () => {
+              dispatch(setProximityStatusAuthorizationSend());
+            }
           },
           secondary: {
             label: t('buttons.cancel'),
             onPress: cancelAlert
-          }
+          },
+          type: 'TwoButtons'
         }}
+        fixed={false}
       />
     </ForceScrollDownView>
   );

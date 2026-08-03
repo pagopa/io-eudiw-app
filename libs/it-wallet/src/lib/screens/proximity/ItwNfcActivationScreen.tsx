@@ -1,11 +1,12 @@
-import { ListItemInfo } from '@pagopa/io-app-design-system';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import { Alert, Platform } from 'react-native';
 import {
   IOScrollViewWithListItems,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
+import { ListItemInfo } from '@pagopa/io-app-design-system';
+import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+import { Alert, Platform } from 'react-native';
+
 import { useProximityEngagement } from '../../hooks/useProximityEngagement';
 import { checkNfcActivation, openNfcPreferences } from '../../utils/nfc';
 
@@ -21,8 +22,8 @@ const ItwNfcActivationScreen = () => {
   const { startEngagement } = useProximityEngagement();
 
   useHeaderSecondLevel({
-    title: '',
-    goBack: () => navigation.goBack()
+    goBack: () => navigation.goBack(),
+    title: ''
   });
 
   const handleContinue = async () => {
@@ -37,47 +38,42 @@ const ItwNfcActivationScreen = () => {
       t('wallet:proximity.nfc.activation.alert.message'),
       [
         {
-          text: t('wallet:proximity.nfc.activation.alert.action'),
           onPress: () => {
             void openNfcPreferences();
-          }
+          },
+          text: t('wallet:proximity.nfc.activation.alert.action')
         },
         {
-          text: t('wallet:proximity.nfc.activation.alert.close'),
           onPress: () => navigation.goBack(),
-          style: 'cancel'
+          style: 'cancel',
+          text: t('wallet:proximity.nfc.activation.alert.close')
         }
       ]
     );
   };
 
-  const listItems: Array<ListItemInfo> = [
+  const listItems: ListItemInfo[] = [
     {
-      label: t('wallet:proximity.nfc.activation.listItems.step1.label'),
-      value: t('wallet:proximity.nfc.activation.listItems.step1.value'),
       icon:
-        Platform.OS === 'ios' ? 'systemSettingsiOS' : 'systemSettingsAndroid'
+        Platform.OS === 'ios' ? 'systemSettingsiOS' : 'systemSettingsAndroid',
+      label: t('wallet:proximity.nfc.activation.listItems.step1.label'),
+      value: t('wallet:proximity.nfc.activation.listItems.step1.value')
     },
     {
+      icon: 'systemAppsAndroid',
       label: t('wallet:proximity.nfc.activation.listItems.step2.label'),
-      value: t('wallet:proximity.nfc.activation.listItems.step2.value'),
-      icon: 'systemAppsAndroid'
+      value: t('wallet:proximity.nfc.activation.listItems.step2.value')
     },
     {
+      icon: 'systemToggleInstructions',
       label: t('wallet:proximity.nfc.activation.listItems.step3.label'),
-      value: t('wallet:proximity.nfc.activation.listItems.step3.value'),
-      icon: 'systemToggleInstructions'
+      value: t('wallet:proximity.nfc.activation.listItems.step3.value')
     }
   ];
 
   return (
     <IOScrollViewWithListItems
-      title={t('wallet:proximity.nfc.activation.title')}
-      subtitle={t('wallet:proximity.nfc.activation.subtitle')}
-      listItemHeaderLabel={t('wallet:proximity.nfc.activation.listItems.title')}
-      renderItems={listItems}
       actions={{
-        type: 'TwoButtons',
         primary: {
           label: t('wallet:proximity.nfc.activation.actions.primary'),
           onPress: () => {
@@ -87,8 +83,13 @@ const ItwNfcActivationScreen = () => {
         secondary: {
           label: t('wallet:proximity.nfc.activation.actions.secondary'),
           onPress: () => void handleContinue()
-        }
+        },
+        type: 'TwoButtons'
       }}
+      listItemHeaderLabel={t('wallet:proximity.nfc.activation.listItems.title')}
+      renderItems={listItems}
+      subtitle={t('wallet:proximity.nfc.activation.subtitle')}
+      title={t('wallet:proximity.nfc.activation.title')}
     />
   );
 };

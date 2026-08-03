@@ -3,11 +3,12 @@ import { DataSourceParam } from '@shopify/react-native-skia';
 import Color from 'color';
 import { useMemo } from 'react';
 import { ColorSchemeName } from 'react-native';
+
 import { XOR } from '../../../types/utils';
+import { wellKnownCredentialToCredentialType } from '../../../utils/credentials';
 import { fnv1a } from '../../../utils/hash';
 import { CredentialType } from '../../../utils/itwMocksUtils';
 import { ItWalletThemes } from '../../../utils/theme';
-import { wellKnownCredentialToCredentialType } from '../../../utils/credentials';
 
 /**
  * Colors from which random configurations will be generated, based on the
@@ -25,57 +26,81 @@ export const CREDENTIAL_BASE_COLORS = [
  */
 export const CREDENTIAL_CARD_PATTERN_OVERLAYS = {
   BONUSES: require('../../../../assets/img/cards/overlay/pattern/bonus.png'),
+  CULTURE_LEISURE: require('../../../../assets/img/cards/overlay/pattern/lifestyle.png'),
   EDUCATION: require('../../../../assets/img/cards/overlay/pattern/education.png'),
-  HOME_FAMILY: require('../../../../assets/img/cards/overlay/pattern/family.png'),
+  EMPLOYMENT: require('../../../../assets/img/cards/overlay/pattern/work.png'),
   FINANCIAL: require('../../../../assets/img/cards/overlay/pattern/financial.png'),
   HEALTH: require('../../../../assets/img/cards/overlay/pattern/health.png'),
+  HOME_FAMILY: require('../../../../assets/img/cards/overlay/pattern/family.png'),
   IDENTITY: require('../../../../assets/img/cards/overlay/pattern/identity.png'),
-  CULTURE_LEISURE: require('../../../../assets/img/cards/overlay/pattern/lifestyle.png'),
-  MOBILITY_TRAVEL: require('../../../../assets/img/cards/overlay/pattern/travel.png'),
-  EMPLOYMENT: require('../../../../assets/img/cards/overlay/pattern/work.png')
+  MOBILITY_TRAVEL: require('../../../../assets/img/cards/overlay/pattern/travel.png')
 } as const;
 
-export type CredentialCardBackground<L extends number = 1 | 2 | 3 | 4 | 5> = {
-  /**
-   * Up to 5 color stops, distributed evenly along the gradient line.
-   * At least 2 colors are required for a meaningful gradient.
-   */
-  colors: [string, ...Array<string>] & { length: L };
-  /**
-   * Optional positions for each color stop, as values between 0 and 1.
-   * When omitted the stops are distributed evenly (equivalent to CSS behaviour).
-   * Must have the same length as `colors` when provided.
-   */
-  positions?: [number, ...Array<number>] & { length: L };
-} & XOR<
-  {
-    /**
-     * Type of the gradient, either linearor radial.
-     */
-    type: 'linear';
-    /**
-     * Angle in degrees following the CSS convention:
-     * 0° = bottom → top, 90° = left → right, 135° = top-left → bottom-right.
-     */
-    angle: number;
-  },
-  {
-    /**
-     * Type of the gradient, either linear (default) or radial.
-     */
-    type: 'radial';
-    /**
-     * Center of the gradient expressed in percentage values between 0 and 1,
-     * where [0.5, 0.5] corresponds to the center of the card.
-     */
-    center: [number, number];
+export type CredentialCardBackground<L extends number = 1 | 2 | 3 | 4 | 5> =
+  XOR<
+    {
+      /**
+       * Angle in degrees following the CSS convention:
+       * 0° = bottom → top, 90° = left → right, 135° = top-left → bottom-right.
+       */
+      angle: number;
+      /**
+       * Type of the gradient, either linearor radial.
+       */
+      type: 'linear';
+    },
+    {
+      /**
+       * Center of the gradient expressed in percentage values between 0 and 1,
+       * where [0.5, 0.5] corresponds to the center of the card.
+       */
+      center: [number, number];
+      /**
+       * Radius of the gradient, expressed as a percentage of the card width, between 0 and 1.
+       */
+      radius: number;
 
+      /**
+       * Type of the gradient, either linear (default) or radial.
+       */
+      type: 'radial';
+    }
+  > & {
     /**
-     * Radius of the gradient, expressed as a percentage of the card width, between 0 and 1.
+     * Up to 5 color stops, distributed evenly along the gradient line.
+     * At least 2 colors are required for a meaningful gradient.
      */
-    radius: number;
-  }
->;
+    colors: [string, ...string[]] & { length: L };
+    /**
+     * Optional positions for each color stop, as values between 0 and 1.
+     * When omitted the stops are distributed evenly (equivalent to CSS behaviour).
+     * Must have the same length as `colors` when provided.
+     */
+    positions?: [number, ...number[]] & { length: L };
+  };
+
+export type CredentialCardConfig = {
+  /**
+   * Card background: either a solid colour or a gradient (angle + up to 5 stops).
+   */
+  background: CredentialCardBackground;
+  /**
+   * Color used for the card border when the credential is valid.
+   */
+  borderColor: string;
+  /**
+   * Base color for the credential, defined by the AS or in static configurations.
+   */
+  color: string;
+  /**
+   * Overlay configuration for the credential card, either a fixed image or a pattern
+   */
+  overlay?: CredentialCardOverlay;
+  /**
+   * Color used for the credential title text.
+   */
+  titleColor: string;
+};
 
 export type CredentialCardOverlay = XOR<
   {
@@ -101,34 +126,11 @@ export type CredentialCardOverlay = XOR<
   }
 >;
 
-export type CredentialCardConfig = {
-  /**
-   * Base color for the credential, defined by the AS or in static configurations.
-   */
-  color: string;
-  /**
-   * Color used for the credential title text.
-   */
-  titleColor: string;
-  /**
-   * Color used for the card border when the credential is valid.
-   */
-  borderColor: string;
-  /**
-   * Card background: either a solid colour or a gradient (angle + up to 5 stops).
-   */
-  background: CredentialCardBackground;
-  /**
-   * Overlay configuration for the credential card, either a fixed image or a pattern
-   */
-  overlay?: CredentialCardOverlay;
-};
-
 /**
  * A credential card configuration that varies based on the app color scheme (light/dark).
  */
 export type ThemeAwareCredentialCardConfig = Record<
-  'light' | 'dark',
+  'dark' | 'light',
   CredentialCardConfig
 >;
 
@@ -150,116 +152,116 @@ export const isThemeAwareCredentialCardConfig = (
 export const credentialCardConfigs: Partial<
   Record<string, CredentialCardConfig | ThemeAwareCredentialCardConfig>
 > = {
-  [CredentialType.PID]: {
-    light: {
-      color: '#EAF6FF',
-      titleColor: '#115486',
-      borderColor: '#4F99E2',
-      background: {
-        type: 'linear',
-        colors: ['#EAF6FF', '#F6FBFF', '#EAF6FF', '#F9F9F9', '#EAF6FF'],
-        positions: [0.0349, 0.2514, 0.4646, 0.7143, 0.9425],
-        angle: 217
-      },
-      overlay: {
-        card: require('../../../../assets/img/cards/overlay/pid_card_dark.png'),
-        header: require('../../../../assets/img/cards/overlay/pid_header.png')
-      }
-    },
-    dark: {
-      color: '#24375A',
-      titleColor: '#C4DCF5',
-      borderColor: '#738199',
-      background: {
-        type: 'linear',
-        colors: ['#233966', '#26344B', '#233966'],
-        positions: [0.0349, 0.4887, 0.9425],
-        angle: 217
-      },
-      overlay: {
-        card: require('../../../../assets/img/cards/overlay/pid_card.png'),
-        header: require('../../../../assets/img/cards/overlay/pid_header.png')
-      }
-    }
-  },
-  [CredentialType.DRIVING_LICENSE]: {
-    light: {
-      color: '#FADCF5',
-      titleColor: '#652035',
-      borderColor: '#D674A9',
-      background: {
-        type: 'linear',
-        colors: ['#FADCF5', '#FFECFC', '#FADCF5', '#FFECFC'],
-        positions: [0.0041, 0.3614, 0.6716, 1.0251],
-        angle: 249
-      },
-      overlay: {
-        card: require('../../../../assets/img/cards/overlay/mdl_card.png'),
-        header: require('../../../../assets/img/cards/overlay/mdl_header.png')
-      }
-    },
-    dark: {
-      color: '#2A092E',
-      titleColor: '#FADCF5',
-      borderColor: '#997387',
-      background: {
-        type: 'linear',
-        colors: ['#401B37', '#290744', '#2A0A2A', '#370945'],
-        positions: [0.0041, 0.3726, 0.6722, 1.026],
-        angle: 249
-      },
-      overlay: {
-        card: require('../../../../assets/img/cards/overlay/mdl_card_dark.png'),
-        header: require('../../../../assets/img/cards/overlay/mdl_header.png')
-      }
-    }
-  },
-  [CredentialType.EUROPEAN_DISABILITY_CARD]: {
-    light: {
-      color: '#D6EAF7',
-      titleColor: '#17406F',
-      borderColor: '#6B9BB6',
-      background: {
-        type: 'radial',
-        colors: ['#E5F0F7', '#D6DDE2', '#DFE9EF', '#C7D0DB'],
-        positions: [0, 0.2223, 0.4999, 1],
-        center: [1, 0.195],
-        radius: 1.0564
-      },
-      overlay: {
-        card: require('../../../../assets/img/cards/overlay/dc_card.png'),
-        header: require('../../../../assets/img/cards/overlay/dc_header.png')
-      }
-    },
-    dark: {
-      color: '#233B4D',
-      titleColor: '#D6EAF7',
-      borderColor: '#6B9BB6',
-      background: {
-        type: 'radial',
-        colors: ['#1A3547', '#3B4C57', '#1D3749', '#3C4E60'],
-        positions: [0, 0.2223, 0.4999, 1],
-        center: [1, 0.195],
-        radius: 1.0564
-      },
-      overlay: {
-        card: require('../../../../assets/img/cards/overlay/dc_card_dark.png'),
-        header: require('../../../../assets/img/cards/overlay/dc_header.png')
-      }
-    }
-  },
   [CredentialType.BONUS_PARI]: {
-    color: '#7AC1FA',
-    titleColor: '#2B3033',
-    borderColor: '#738899',
     background: {
-      type: 'linear',
+      angle: 69,
       colors: ['#EFEFEF', '#FFF9F2'],
-      angle: 69
+      type: 'linear'
     },
+    borderColor: '#738899',
+    color: '#7AC1FA',
     overlay: {
       pattern: CREDENTIAL_CARD_PATTERN_OVERLAYS.BONUSES,
       showCornerOverlay: true
+    },
+    titleColor: '#2B3033'
+  },
+  [CredentialType.DRIVING_LICENSE]: {
+    dark: {
+      background: {
+        angle: 249,
+        colors: ['#401B37', '#290744', '#2A0A2A', '#370945'],
+        positions: [0.0041, 0.3726, 0.6722, 1.026],
+        type: 'linear'
+      },
+      borderColor: '#997387',
+      color: '#2A092E',
+      overlay: {
+        card: require('../../../../assets/img/cards/overlay/mdl_card_dark.png'),
+        header: require('../../../../assets/img/cards/overlay/mdl_header.png')
+      },
+      titleColor: '#FADCF5'
+    },
+    light: {
+      background: {
+        angle: 249,
+        colors: ['#FADCF5', '#FFECFC', '#FADCF5', '#FFECFC'],
+        positions: [0.0041, 0.3614, 0.6716, 1.0251],
+        type: 'linear'
+      },
+      borderColor: '#D674A9',
+      color: '#FADCF5',
+      overlay: {
+        card: require('../../../../assets/img/cards/overlay/mdl_card.png'),
+        header: require('../../../../assets/img/cards/overlay/mdl_header.png')
+      },
+      titleColor: '#652035'
+    }
+  },
+  [CredentialType.EUROPEAN_DISABILITY_CARD]: {
+    dark: {
+      background: {
+        center: [1, 0.195],
+        colors: ['#1A3547', '#3B4C57', '#1D3749', '#3C4E60'],
+        positions: [0, 0.2223, 0.4999, 1],
+        radius: 1.0564,
+        type: 'radial'
+      },
+      borderColor: '#6B9BB6',
+      color: '#233B4D',
+      overlay: {
+        card: require('../../../../assets/img/cards/overlay/dc_card_dark.png'),
+        header: require('../../../../assets/img/cards/overlay/dc_header.png')
+      },
+      titleColor: '#D6EAF7'
+    },
+    light: {
+      background: {
+        center: [1, 0.195],
+        colors: ['#E5F0F7', '#D6DDE2', '#DFE9EF', '#C7D0DB'],
+        positions: [0, 0.2223, 0.4999, 1],
+        radius: 1.0564,
+        type: 'radial'
+      },
+      borderColor: '#6B9BB6',
+      color: '#D6EAF7',
+      overlay: {
+        card: require('../../../../assets/img/cards/overlay/dc_card.png'),
+        header: require('../../../../assets/img/cards/overlay/dc_header.png')
+      },
+      titleColor: '#17406F'
+    }
+  },
+  [CredentialType.PID]: {
+    dark: {
+      background: {
+        angle: 217,
+        colors: ['#233966', '#26344B', '#233966'],
+        positions: [0.0349, 0.4887, 0.9425],
+        type: 'linear'
+      },
+      borderColor: '#738199',
+      color: '#24375A',
+      overlay: {
+        card: require('../../../../assets/img/cards/overlay/pid_card.png'),
+        header: require('../../../../assets/img/cards/overlay/pid_header.png')
+      },
+      titleColor: '#C4DCF5'
+    },
+    light: {
+      background: {
+        angle: 217,
+        colors: ['#EAF6FF', '#F6FBFF', '#EAF6FF', '#F9F9F9', '#EAF6FF'],
+        positions: [0.0349, 0.2514, 0.4646, 0.7143, 0.9425],
+        type: 'linear'
+      },
+      borderColor: '#4F99E2',
+      color: '#EAF6FF',
+      overlay: {
+        card: require('../../../../assets/img/cards/overlay/pid_card_dark.png'),
+        header: require('../../../../assets/img/cards/overlay/pid_header.png')
+      },
+      titleColor: '#115486'
     }
   }
 };
@@ -293,9 +295,9 @@ const getOverlayPatterForCredentialType = (
   }
 
   const overlayHash = fnv1a(credentialType, 1);
-  const keys = Object.keys(CREDENTIAL_CARD_PATTERN_OVERLAYS) as Array<
-    keyof typeof CREDENTIAL_CARD_PATTERN_OVERLAYS
-  >;
+  const keys = Object.keys(
+    CREDENTIAL_CARD_PATTERN_OVERLAYS
+  ) as (keyof typeof CREDENTIAL_CARD_PATTERN_OVERLAYS)[];
   const key = keys[overlayHash % keys.length];
   return CREDENTIAL_CARD_PATTERN_OVERLAYS[key];
 };
@@ -349,18 +351,18 @@ const generateCredentialCardConfig = (
   );
 
   return {
-    color,
-    borderColor,
-    titleColor,
     background: {
-      type: 'linear',
+      angle: 0,
       colors: [backgroundColor, theme['card-background']],
-      angle: 0
+      type: 'linear'
     },
+    borderColor,
+    color,
     overlay: {
       pattern: patternOverlay,
       showCornerOverlay: true
-    }
+    },
+    titleColor
   };
 };
 
@@ -425,11 +427,13 @@ export const useCredentialCardConfig = (
 ) => {
   const { themeType } = useIOThemeContext();
 
-  const credentialDomain = useMemo((): string | undefined => {
-    // Credential Catalogue not present in DWallet, so in this case we just return undefined instead
-    // of trying to obtin the catalogue
-    return undefined;
-  }, []);
+  const credentialDomain = useMemo(
+    (): string | undefined =>
+      // Credential Catalogue not present in DWallet, so in this case we just return undefined instead
+      // of trying to obtin the catalogue
+      undefined,
+    []
+  );
 
   return getCredentialCardConfig(
     wellKnownCredentialToCredentialType[credentialType] ?? '',

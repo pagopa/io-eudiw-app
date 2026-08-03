@@ -10,15 +10,15 @@ import {
   withTiming
 } from 'react-native-reanimated';
 
-type SineWaveConfiguration = {
-  span: number;
-  duration: number;
-  axis: 'x' | 'y';
-  enabled?: boolean;
-};
-
 type SineWaveAnimation = {
   animatedStyle: AnimatedStyle<ViewStyle>;
+};
+
+type SineWaveConfiguration = {
+  axis: 'x' | 'y';
+  duration: number;
+  enabled?: boolean;
+  span: number;
 };
 
 /**
@@ -30,10 +30,10 @@ type SineWaveAnimation = {
  * @returns
  */
 const useSineWaveAnimation = ({
-  span,
-  duration,
   axis,
-  enabled
+  duration,
+  enabled,
+  span
 }: SineWaveConfiguration): SineWaveAnimation => {
   const translate = useSharedValue(0);
 

@@ -1,3 +1,4 @@
+import { isDevEnv } from '@io-eudiw-app/commons';
 import {
   BiometricsValidType,
   CodeInput,
@@ -8,7 +9,6 @@ import {
 import { NumberButton } from '@pagopa/io-app-design-system/lib/typescript/components/numberpad/NumberButton';
 import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { isDevEnv } from '@io-eudiw-app/commons';
 
 const PIN_LENGTH = 6;
 const CODE_INPUT_ERROR_ANIMATION_DURATION = 500;
@@ -16,21 +16,21 @@ const CODE_INPUT_SUCCESS_CALLBACK_CALL_TIMEOUT = 250;
 
 type BiometricConfigType =
   | {
-      biometricType: BiometricsValidType;
       biometricAccessibilityLabel: string;
+      biometricType: BiometricsValidType;
       onBiometricPress: () => Promise<void>;
     }
   | {
-      biometricType?: undefined;
       biometricAccessibilityLabel?: undefined;
+      biometricType?: undefined;
       onBiometricPress?: undefined;
     };
 type IdentificationNumberPadProps = {
-  pin: string;
-  deleteAccessibilityLabel: string;
-  pinValidation: (success: boolean) => void;
-  numberPadVariant: React.ComponentProps<typeof NumberButton>['variant'];
   biometricsConfig: BiometricConfigType;
+  deleteAccessibilityLabel: string;
+  numberPadVariant: React.ComponentProps<typeof NumberButton>['variant'];
+  pin: string;
+  pinValidation: (success: boolean) => void;
 };
 
 /**
@@ -44,11 +44,11 @@ export const IdentificationNumberPad = (
   const [value, setValue] = useState('');
 
   const {
-    pin,
+    biometricsConfig,
     deleteAccessibilityLabel,
-    pinValidation,
     numberPadVariant,
-    biometricsConfig
+    pin,
+    pinValidation
   } = props;
 
   const onValueChange = useCallback((v: number) => {
@@ -88,35 +88,35 @@ export const IdentificationNumberPad = (
     <>
       <View style={styles.codeInputContainer}>
         <CodeInput
-          value={value}
           length={PIN_LENGTH}
-          variant={'primary'}
-          onValueChange={onCodeInputValueChange}
           onValidate={onPinValidated}
+          onValueChange={onCodeInputValueChange}
+          value={value}
+          variant={'primary'}
         />
       </View>
       {isDevEnv && (
         <View
+          accessibilityElementsHidden
           accessible={false}
           importantForAccessibility="no-hide-descendants"
-          accessibilityElementsHidden
           style={{
-            zIndex: 10,
-            opacity: 0.75,
             alignSelf: 'center',
-            position: 'absolute',
             /* Ugly magic number, but the position is nicer with this value */
-            bottom: 38
+            bottom: 38,
+            opacity: 0.75,
+            position: 'absolute',
+            zIndex: 10
           }}
         >
           <IconButton
+            accessibilityLabel={'Insert valid pin button (dev only)'}
+            color="contrast"
             icon="unlocked"
             iconSize={16}
-            color="contrast"
             onPress={() => {
               setValue(pin);
             }}
-            accessibilityLabel={'Insert valid pin button (dev only)'}
           />
         </View>
       )}

@@ -1,3 +1,4 @@
+import { useInteractiveElementDefaultColorName } from '@io-eudiw-app/commons';
 import { IOColors, VSpacer } from '@pagopa/io-app-design-system';
 import { forwardRef, useCallback, useRef } from 'react';
 import {
@@ -8,43 +9,41 @@ import {
   useWindowDimensions,
   View
 } from 'react-native';
+
 import { LandingCardComponent } from './LandingCardComponent';
-import { useInteractiveElementDefaultColorName } from '@io-eudiw-app/commons';
 
 const styles = StyleSheet.create({
-  normalDot: {
-    height: 8,
-    width: 8,
-    borderRadius: 4,
-    backgroundColor: IOColors['blueIO-150'],
-    marginHorizontal: 4
-  },
   indicatorContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'center'
+  },
+  normalDot: {
+    backgroundColor: IOColors['blueIO-150'],
+    borderRadius: 4,
+    height: 8,
+    marginHorizontal: 4,
+    width: 8
   }
 });
 
 const newDsGrey = IOColors['grey-200'];
 
-type CarouselProps = {
-  carouselCards: ReadonlyArray<
-    React.ComponentProps<typeof LandingCardComponent>
-  >;
-  dotEasterEggCallback?: () => void;
-  dotColor?: string;
-  scrollViewRef: React.RefObject<ScrollView | null>;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-};
-
 type CarouselDotsProps = Omit<
   CarouselProps & {
-    scrollX: Animated.Value;
     dotColor?: string;
+    scrollX: Animated.Value;
   },
   'scrollViewRef' | 'setStep'
 >;
+
+type CarouselProps = {
+  carouselCards: readonly React.ComponentProps<typeof LandingCardComponent>[];
+  dotColor?: string;
+  dotEasterEggCallback?: () => void;
+  scrollViewRef: React.RefObject<null | ScrollView>;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+};
 
 /**
  * Carousel component with dots based on `ScrollView` which shows a list of `LandingCardComponent` horizontally.
@@ -56,7 +55,7 @@ type CarouselDotsProps = Omit<
  * @param setStep - The function to call when the user scrolls the ScrollView
  */
 const CarouselDots = (props: CarouselDotsProps) => {
-  const { carouselCards, dotEasterEggCallback, scrollX, dotColor } = props;
+  const { carouselCards, dotColor, dotEasterEggCallback, scrollX } = props;
   const dotTouchCount = useRef(0);
 
   const blueColor = useInteractiveElementDefaultColorName();
@@ -66,9 +65,8 @@ const CarouselDots = (props: CarouselDotsProps) => {
 
   return (
     <View
-      importantForAccessibility="yes"
       accessibilityElementsHidden={false}
-      style={styles.indicatorContainer}
+      importantForAccessibility="yes"
       onTouchEnd={(_: GestureResponderEvent) => {
         dotTouchCount.current++;
         if (dotTouchCount.current === 3) {
@@ -76,30 +74,31 @@ const CarouselDots = (props: CarouselDotsProps) => {
           dotEasterEggCallback?.();
         }
       }}
+      style={styles.indicatorContainer}
     >
       {carouselCards.map((_, imageIndex) => {
         const width = scrollX.interpolate({
+          extrapolate: 'clamp',
           inputRange: [
             windowWidth * (imageIndex - 1),
             windowWidth * imageIndex,
             windowWidth * (imageIndex + 1)
           ],
-          outputRange: [8, 16, 8],
-          extrapolate: 'clamp'
+          outputRange: [8, 16, 8]
         });
         const backgroundColor = scrollX.interpolate({
+          extrapolate: 'clamp',
           inputRange: [
             windowWidth * (imageIndex - 1),
             windowWidth * imageIndex,
             windowWidth * (imageIndex + 1)
           ],
-          outputRange: [newDsGrey, dotColor || blueColor, newDsGrey],
-          extrapolate: 'clamp'
+          outputRange: [newDsGrey, dotColor || blueColor, newDsGrey]
         });
         return (
           <Animated.View
             key={imageIndex}
-            style={[styles.normalDot, { width, backgroundColor }]}
+            style={[styles.normalDot, { backgroundColor, width }]}
           />
         );
       })}
@@ -108,7 +107,7 @@ const CarouselDots = (props: CarouselDotsProps) => {
 };
 
 export const Carousel = forwardRef<View, CarouselProps>((props, ref) => {
-  const { carouselCards, dotEasterEggCallback, dotColor } = props;
+  const { carouselCards, dotColor, dotEasterEggCallback } = props;
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollEvent = Animated.event(
     [
@@ -127,8 +126,8 @@ export const Carousel = forwardRef<View, CarouselProps>((props, ref) => {
     () =>
       carouselCards.map(p => (
         <LandingCardComponent
-          ref={p.id === 0 ? ref : null}
           key={`card-${p.id}`}
+          ref={p.id === 0 ? ref : null}
           {...p}
         />
       )),
@@ -141,9 +140,6 @@ export const Carousel = forwardRef<View, CarouselProps>((props, ref) => {
     <>
       <ScrollView
         horizontal={true}
-        pagingEnabled
-        ref={props.scrollViewRef}
-        showsHorizontalScrollIndicator={false}
         onScroll={event => {
           props.setStep(
             event.nativeEvent.contentOffset.x /
@@ -151,15 +147,18 @@ export const Carousel = forwardRef<View, CarouselProps>((props, ref) => {
           );
           scrollEvent(event);
         }}
+        pagingEnabled
+        ref={props.scrollViewRef}
         scrollEventThrottle={1}
+        showsHorizontalScrollIndicator={false}
       >
         {cardComponents}
       </ScrollView>
       <CarouselDots
-        dotEasterEggCallback={dotEasterEggCallback}
         carouselCards={carouselCards}
-        scrollX={scrollX}
         dotColor={dotColor}
+        dotEasterEggCallback={dotEasterEggCallback}
+        scrollX={scrollX}
       />
       <VSpacer size={24} />
     </>

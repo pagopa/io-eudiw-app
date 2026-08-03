@@ -3,10 +3,11 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { t } from 'i18next';
 import { Alert } from 'react-native';
+
+import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
+import { useAppDispatch } from '../store';
 import { removeCredential } from '../store/credentials';
 import { StoredCredentialMetadata } from '../utils/itwTypesUtils';
-import { useAppDispatch } from '../store';
-import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
 
 /**
  * Hook that shows a confirmation dialog and, if confirmed, removes a credential from the wallet
@@ -38,15 +39,15 @@ export const useItwRemoveCredentialWithConfirm = (
       }),
       [
         {
-          text: t('buttons.cancel', { ns: 'common' }),
-          style: 'cancel'
+          style: 'cancel',
+          text: t('buttons.cancel', { ns: 'common' })
         },
         {
+          onPress: handleRemoveCredential,
+          style: 'destructive',
           text: t('presentation.credentialDetails.dialogs.remove.confirm', {
             ns: 'wallet'
-          }),
-          style: 'destructive',
-          onPress: handleRemoveCredential
+          })
         }
       ]
     );

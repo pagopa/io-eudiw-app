@@ -1,9 +1,17 @@
+import {
+  LoadingScreenContent,
+  useDisableGestureNavigation,
+  useHardwareBackButton,
+  useHeaderSecondLevel
+} from '@io-eudiw-app/commons';
 import { Body } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { selectCredential } from '../../store/credentials';
 import {
   selectCredentialNotFound,
@@ -12,19 +20,12 @@ import {
   setPreDefinitionRequest
 } from '../../store/presentation';
 import { wellKnownCredential } from '../../utils/credentials';
-import {
-  LoadingScreenContent,
-  useDisableGestureNavigation,
-  useHardwareBackButton,
-  useHeaderSecondLevel
-} from '@io-eudiw-app/commons';
-import { useAppDispatch, useAppSelector } from '../../store';
 
 export type PresentationPreDefinitionParams = {
   client_id: string;
   request_uri: string;
-  state?: string | null;
   request_uri_method?: 'get' | 'post' | null;
+  state?: null | string;
 };
 
 type Props = StackScreenProps<
@@ -62,29 +63,29 @@ const PresentationPreDefinition = ({ route }: Props) => {
   useEffect(() => {
     if (preDefinitionStatus.success.status && preDefinitionResult) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PRESENTATION_POST_DEFINITION',
         params: {
           descriptor: preDefinitionResult
-        }
+        },
+        screen: 'PRESENTATION_POST_DEFINITION'
       });
     } else if (preDefinitionStatus.error.status) {
       switch (preDefinitionStatus.error.type) {
-        case 'WALLET_NOT_ACTIVE':
-          navigation.navigate('MAIN_WALLET_NAV', {
-            screen: 'PRESENTATION_WALLET_NOT_ACTIVE'
-          });
-          break;
         case 'CREDENTIAL_NOT_FOUND':
           if (credentialNotFound) {
             navigation.navigate('MAIN_WALLET_NAV', {
-              screen: 'PRESENTATION_CREDENTIAL_NOT_FOUND',
-              params: { credentialType: credentialNotFound }
+              params: { credentialType: credentialNotFound },
+              screen: 'PRESENTATION_CREDENTIAL_NOT_FOUND'
             });
           } else {
             navigation.navigate('MAIN_WALLET_NAV', {
               screen: 'PRESENTATION_FAILURE'
             });
           }
+          break;
+        case 'WALLET_NOT_ACTIVE':
+          navigation.navigate('MAIN_WALLET_NAV', {
+            screen: 'PRESENTATION_WALLET_NOT_ACTIVE'
+          });
           break;
         default:
           navigation.navigate('MAIN_WALLET_NAV', {

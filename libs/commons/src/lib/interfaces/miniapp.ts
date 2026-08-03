@@ -1,6 +1,7 @@
-import { ComponentType } from 'react';
-import { Reducer, TypedStartListening } from '@reduxjs/toolkit';
 import { PathConfigMap } from '@react-navigation/native';
+import { Reducer, TypedStartListening } from '@reduxjs/toolkit';
+import { ComponentType } from 'react';
+
 import { LocaleResource } from '.';
 
 /**
@@ -40,12 +41,50 @@ export interface MiniApp<
   >
 > {
   /**
+   * Registers Redux listener-middleware side effects owned by this mini-app.
+   *
+   * Called once by the host app during startup with a typed
+   * `startAppListening` function.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  addListeners: (startAppListening: TypedStartListening<any, any>) => void;
+
+  /**
    * Unique identifier for this mini-app.
    *
    * Used to reference the mini-app in the preferences store and
    * anywhere else the host app needs to distinguish between mini-apps.
    */
   id: TId;
+
+  /**
+   * Deep-link path configuration for the mini-app's navigator screens.
+   *
+   * Nested inside the host's linking config under the mini-app's
+   * root route name.
+   */
+  linkingConfig: PathConfigMap<TNavigatorParamsList>;
+
+  /**
+   * URI scheme prefixes handled by this mini-app's deep-linking config.
+   *
+   * These are merged into the host `NavigationContainer`'s
+   * `linking.prefixes` array.
+   *
+   * @example
+   * ```ts
+   * ['haip://', 'openid4vp://', 'eudi-openid4vp://']
+   * ```
+   */
+  linkingSchemes: string[];
+
+  /**
+   * Root navigator component for this mini-app.
+   *
+   * The host app mounts this component inside its own navigation tree
+   * when the mini-app's feature area becomes active.
+   */
+  Navigator: ComponentType<unknown>;
 
   /**
    * Reducer object to be spread into the host store's `combineReducers`.
@@ -70,42 +109,4 @@ export interface MiniApp<
    * via `i18n.addResourceBundle()`.
    */
   resource: LocaleResource;
-
-  /**
-   * Root navigator component for this mini-app.
-   *
-   * The host app mounts this component inside its own navigation tree
-   * when the mini-app's feature area becomes active.
-   */
-  Navigator: ComponentType<unknown>;
-
-  /**
-   * URI scheme prefixes handled by this mini-app's deep-linking config.
-   *
-   * These are merged into the host `NavigationContainer`'s
-   * `linking.prefixes` array.
-   *
-   * @example
-   * ```ts
-   * ['haip://', 'openid4vp://', 'eudi-openid4vp://']
-   * ```
-   */
-  linkingSchemes: Array<string>;
-
-  /**
-   * Deep-link path configuration for the mini-app's navigator screens.
-   *
-   * Nested inside the host's linking config under the mini-app's
-   * root route name.
-   */
-  linkingConfig: PathConfigMap<TNavigatorParamsList>;
-
-  /**
-   * Registers Redux listener-middleware side effects owned by this mini-app.
-   *
-   * Called once by the host app during startup with a typed
-   * `startAppListening` function.
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  addListeners: (startAppListening: TypedStartListening<any, any>) => void;
 }

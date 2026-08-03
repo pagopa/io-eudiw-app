@@ -1,9 +1,12 @@
+import { getEnv } from '@io-eudiw-app/env';
 import { IoWallet } from '@pagopa/io-react-native-wallet';
+
 import {
   selectInstanceKeyTag,
   selectSessionId,
   setInstanceKeyTag
 } from '../store/instance';
+import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { serializeErrorOrUnknown } from '../utils/errors';
 import { createWalletFetch } from '../utils/fetch';
 import {
@@ -11,12 +14,11 @@ import {
   getIntegrityContext
 } from '../utils/integrity';
 import { createAppAsyncThunk } from './thunk';
-import { getEnv } from '@io-eudiw-app/env';
-import { WALLET_SPEC_VERSION } from '../utils/constants';
 
+// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 export const createInstanceThunk = createAppAsyncThunk<void, void>(
   'instance/createInstance',
-  async (_, { getState, dispatch, rejectWithValue }) => {
+  async (_, { dispatch, getState, rejectWithValue }) => {
     try {
       const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
       const state = getState();
@@ -31,9 +33,9 @@ export const createInstanceThunk = createAppAsyncThunk<void, void>(
         const integrityContext = getIntegrityContext(keyTag);
 
         await wallet.WalletInstance.createWalletInstance({
+          appFetch,
           integrityContext,
-          walletProviderBaseUrl,
-          appFetch
+          walletProviderBaseUrl
         });
         dispatch(setInstanceKeyTag(keyTag));
       }

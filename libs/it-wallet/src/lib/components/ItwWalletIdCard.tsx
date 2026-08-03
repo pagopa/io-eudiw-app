@@ -1,13 +1,14 @@
-import { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useCallback } from 'react';
+
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
-import WALLET_ROUTES from '../navigation/wallet/routes';
 import MAIN_ROUTES from '../navigation/main/routes';
-import { ItwCredentialWalletCard } from './credential/ItwCredentialWalletCard';
+import WALLET_ROUTES from '../navigation/wallet/routes';
 import { useAppSelector } from '../store';
 import { itwCredentialsPidStatusSelector } from '../store/credentials';
 import { wellKnownCredential } from '../utils/credentials';
+import { ItwCredentialWalletCard } from './credential/ItwCredentialWalletCard';
 
 export const ItwWalletIdCard = ({ isStacked }: { isStacked: boolean }) => {
   const navigation =
@@ -22,12 +23,12 @@ export const ItwWalletIdCard = ({ isStacked }: { isStacked: boolean }) => {
 
   return (
     <ItwCredentialWalletCard
-      isStacked={isStacked}
       cardProps={{
-        credentialType: wellKnownCredential.PID,
         credentialStatus: pidStatus,
+        credentialType: wellKnownCredential.PID,
         onPress: handlePress
       }}
+      isStacked={isStacked}
     />
   );
 };

@@ -2,29 +2,30 @@ import { IOColors } from '@pagopa/io-app-design-system';
 import { Canvas } from '@shopify/react-native-skia';
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { CredentialCardConfig } from './config';
-import { SkiaGradientBackground } from './GradientBackground';
+
+import { useLayoutSize } from '../../../hooks/useLayoutSize';
 import {
   SkiaCardCornerOverlay,
   SkiaCardOverlay,
   SkiaCardPatternOverlay
 } from './CardOverlay';
-import { useLayoutSize } from '../../../hooks/useLayoutSize';
+import { CredentialCardConfig } from './config';
+import { SkiaGradientBackground } from './GradientBackground';
 
 type Props = Pick<CredentialCardConfig, 'background' | 'color' | 'overlay'>;
 
 export const CardBackground = memo(({ background, color, overlay }: Props) => {
-  const { size, onLayout } = useLayoutSize();
+  const { onLayout, size } = useLayoutSize();
 
   return (
     <View
+      onLayout={onLayout}
       style={[
         StyleSheet.absoluteFillObject,
         { backgroundColor: IOColors.white }
       ]}
-      onLayout={onLayout}
     >
-      <Canvas style={StyleSheet.absoluteFillObject} pointerEvents="none">
+      <Canvas pointerEvents="none" style={StyleSheet.absoluteFillObject}>
         <SkiaGradientBackground bg={background} {...size} />
         {overlay?.showCornerOverlay && (
           <SkiaCardCornerOverlay color={color} {...size} />
