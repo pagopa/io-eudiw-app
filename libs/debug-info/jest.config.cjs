@@ -19,6 +19,6 @@ module.exports = {
       require.resolve('jest-expo/src/preset/assetFileTransformer.js')
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|expo(-.*)?|@reduxjs/toolkit|immer|redux-persist)/)'
+    '/node_modules/(?!(.pnpm|react-native|@react-native|@react-native-community|expo|@expo|@expo-google-fonts|react-navigation|@react-navigation|@sentry/react-native|native-base|standard-navigation|@reduxjs/toolkit|immer|redux-persist))'
   ]
 };
