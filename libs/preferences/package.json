@@ -11,9 +11,14 @@
     },
     "./package.json": "./package.json"
   },
+  "dependencies": {
+    "@reduxjs/toolkit": "catalog:",
+    "@react-native-async-storage/async-storage": "catalog:",
+    "redux-persist": "catalog:"
+  },
   "peerDependencies": {
-    "react": "^19.1.0",
-    "react-native": "0.81.5"
+    "react": "catalog:",
+    "react-native": "catalog:"
   },
   "devDependencies": {
     "babel-preset-expo": "catalog:",

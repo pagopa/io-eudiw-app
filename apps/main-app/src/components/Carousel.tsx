@@ -1,6 +1,6 @@
 import { useInteractiveElementDefaultColorName } from '@io-eudiw-app/commons';
 import { IOColors, VSpacer } from '@pagopa/io-app-design-system';
-import { forwardRef, useCallback, useRef } from 'react';
+import { forwardRef, useCallback, useRef, useState } from 'react';
 import {
   Animated,
   GestureResponderEvent,
@@ -34,14 +34,13 @@ type CarouselDotsProps = Omit<
     dotColor?: string;
     scrollX: Animated.Value;
   },
-  'scrollViewRef' | 'setStep'
+  'setStep'
 >;
 
 type CarouselProps = {
   carouselCards: readonly React.ComponentProps<typeof LandingCardComponent>[];
   dotColor?: string;
   dotEasterEggCallback?: () => void;
-  scrollViewRef: React.RefObject<null | ScrollView>;
   setStep: React.Dispatch<React.SetStateAction<number>>;
 };
 
@@ -51,7 +50,6 @@ type CarouselProps = {
  * @param carouselCards - The list of `LandingCardComponent` to show
  * @param dotEasterEggCallback - The callback to call when the user taps the dots three times
  * @param dotColor - The color of the active dot
- * @param scrollViewRef - The ref of the ScrollView
  * @param setStep - The function to call when the user scrolls the ScrollView
  */
 const CarouselDots = (props: CarouselDotsProps) => {
@@ -106,9 +104,9 @@ const CarouselDots = (props: CarouselDotsProps) => {
   );
 };
 
-export const Carousel = forwardRef<View, CarouselProps>((props, ref) => {
+export const Carousel = forwardRef<ScrollView, CarouselProps>((props, ref) => {
   const { carouselCards, dotColor, dotEasterEggCallback } = props;
-  const scrollX = useRef(new Animated.Value(0)).current;
+  const [scrollX] = useState(() => new Animated.Value(0));
   const scrollEvent = Animated.event(
     [
       {
@@ -125,13 +123,9 @@ export const Carousel = forwardRef<View, CarouselProps>((props, ref) => {
   const renderCardComponents = useCallback(
     () =>
       carouselCards.map(p => (
-        <LandingCardComponent
-          key={`card-${p.id}`}
-          ref={p.id === 0 ? ref : null}
-          {...p}
-        />
+        <LandingCardComponent key={`card-${p.id}`} {...p} />
       )),
-    [carouselCards, ref]
+    [carouselCards]
   );
 
   const cardComponents = renderCardComponents();
@@ -148,7 +142,7 @@ export const Carousel = forwardRef<View, CarouselProps>((props, ref) => {
           scrollEvent(event);
         }}
         pagingEnabled
-        ref={props.scrollViewRef}
+        ref={ref}
         scrollEventThrottle={1}
         showsHorizontalScrollIndicator={false}
       >

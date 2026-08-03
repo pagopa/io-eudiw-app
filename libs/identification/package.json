@@ -14,11 +14,18 @@
   "dependencies": {
     "@io-eudiw-app/commons": "workspace:*",
     "@io-eudiw-app/preferences": "workspace:*",
-    "react-redux": "catalog:"
+    "@pagopa/io-app-design-system": "catalog:",
+    "@reduxjs/toolkit": "catalog:",
+    "@textlint/ast-node-types": "catalog:",
+    "expo-local-authentication": "catalog:",
+    "react-native-gesture-handler": "catalog:",
+    "react-native-safe-area-context": "catalog:",
+    "react-redux": "catalog:",
+    "redux-persist": "catalog:"
   },
   "peerDependencies": {
-    "react": "^19.1.0",
-    "react-native": "0.81.5"
+    "react": "catalog:",
+    "react-native": "catalog:"
   },
   "devDependencies": {
     "babel-preset-expo": "catalog:",

@@ -1,6 +1,6 @@
-import { ioWalletApiByVersion } from '@pagopa/io-react-native-wallet';
+import type { CredentialOffer } from '@pagopa/io-react-native-wallet';
 
-import { ItwCredentialCard } from '../components/credential/ItwCredentialCard';
+import { ItwCredentialCardProps } from '../components/credential/ItwCredentialCard';
 import { Prettify } from '../utils/itwTypesUtils';
 
 export type CardColorScheme = 'default' | 'faded' | 'greyscale';
@@ -27,18 +27,14 @@ export type ItwJwtCredentialStatus = 'jwtExpired' | 'jwtExpiring' | 'valid';
 /**
  * Type alias of `io-react-native-wallet`'s CredentialOffer
  */
-export type ResolvedCredentialOffer = Awaited<
-  ReturnType<
-    (typeof ioWalletApiByVersion)['1.3.3']['CredentialsOffer']['resolveCredentialOffer']
-  >
->;
+export type ResolvedCredentialOffer = CredentialOffer.CredentialOffer;
 
 // Base WalletCard type, which includes all card types
 export type WalletCard = WalletCardBase & WalletCardItw;
 
 // IT Wallet
 export type WalletCardItw = Prettify<
-  ItwCredentialCard & {
+  ItwCredentialCardProps & {
     type: 'itw';
   }
 >;

@@ -1,13 +1,12 @@
-/// <reference types="jest" />
-/// <reference types="node" />
 module.exports = {
-  coverageDirectory: '../../coverage/libs/env',
-  displayName: '@io-eudiw-app/env',
+  coverageDirectory: '../../coverage/libs/commons',
+  displayName: '@io-eudiw-app/commons',
   moduleFileExtensions: ['ts', 'js', 'html', 'tsx', 'jsx'],
   moduleNameMapper: {
     '\\.svg$': '@nx/expo/plugins/jest/svg-mock'
   },
   preset: 'jest-expo',
+  roots: ['<rootDir>/src/'],
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   transform: {
     '\\.[jt]sx?$': [

@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   faded: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     borderRadius: 8,
     borderWidth: 4
   },

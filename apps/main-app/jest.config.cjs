@@ -1,6 +1,3 @@
-/// <reference types="jest" />
-/// <reference types="node" />
-
 module.exports = {
   coverageDirectory: '../../coverage/apps/main-app',
   displayName: '@io-eudiw-app/main-app',
@@ -22,6 +19,6 @@ module.exports = {
       require.resolve('jest-expo/src/preset/assetFileTransformer.js')
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|expo(-.*)?|@reduxjs/toolkit|immer|redux-persist|@shopify/react-native-skia|@pagopa/io-app-design-system|react-native-linear-gradient|react-native-reanimated)/)'
+    '/node_modules/(?!(.pnpm|react-native|@react-native|@react-native-community|expo|@expo|@expo-google-fonts|react-navigation|@react-navigation|@sentry/react-native|native-base|standard-navigation|@reduxjs/toolkit|immer|redux-persist|@shopify/react-native-skia|@pagopa/io-app-design-system|react-native-linear-gradient|react-native-reanimated|react-native-gesture-handler))'
   ]
 };

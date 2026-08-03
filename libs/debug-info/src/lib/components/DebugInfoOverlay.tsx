@@ -67,7 +67,7 @@ export const DebugInfoOverlay = ({
 
 const styles = StyleSheet.create({
   versionContainer: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     alignItems: 'center',
     justifyContent: 'flex-start',
     top: Platform.OS === 'android' ? 0 : -8,

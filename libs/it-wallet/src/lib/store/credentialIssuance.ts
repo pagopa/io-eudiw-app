@@ -163,7 +163,8 @@ export const selectRequestedCredentialIssuerUrl = (
 
 export const selectRequestedCredentialOffer = (
   state: WalletCombinedRootState
-) => state.wallet.credentialIssuanceStatus.requestedCredentialOffer;
+): ResolvedCredentialOffer | undefined =>
+  state.wallet.credentialIssuanceStatus.requestedCredentialOffer;
 
 export const selectRequestedCredentialType = (state: WalletCombinedRootState) =>
   state.wallet.credentialIssuanceStatus.requestedCredentialType;

@@ -1,5 +1,3 @@
-/// <reference types="jest" />
-/// <reference types="node" />
 module.exports = {
   coverageDirectory: '../../coverage/libs/it-wallet',
   displayName: '@io-eudiw-app/it-wallet',
@@ -11,8 +9,8 @@ module.exports = {
   preset: 'jest-expo',
   setupFilesAfterEnv: [
     '<rootDir>/src/test-setup.ts',
-    '../../node_modules/react-native-gesture-handler/jestSetup.js',
-    '../../node_modules/@shopify/react-native-skia/jestSetup.js'
+    require.resolve('react-native-gesture-handler/jestSetup.js'),
+    require.resolve('@shopify/react-native-skia/jestSetup.js')
   ],
   transform: {
     '\\.[jt]sx?$': [
@@ -25,6 +23,6 @@ module.exports = {
       require.resolve('jest-expo/src/preset/assetFileTransformer.js')
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(@react-native|react-native|@react-navigation|@pagopa/io-app-design-system)|expo-modules-core|expo|@shopify/react-native-skia|/)'
+    '/node_modules/(?!(.pnpm|react-native|@react-native|@react-native-community|expo|@expo|@expo-google-fonts|react-navigation|@react-navigation|@sentry/react-native|native-base|standard-navigation|@reduxjs/toolkit|immer|redux-persist|@shopify/react-native-skia|@pagopa/io-app-design-system|react-native-linear-gradient|react-native-reanimated|react-native-gesture-handler))'
   ]
 };

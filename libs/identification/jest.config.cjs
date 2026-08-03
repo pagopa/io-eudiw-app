@@ -1,5 +1,3 @@
-/// <reference types="jest" />
-/// <reference types="node" />
 module.exports = {
   coverageDirectory: '../../coverage/libs/identification',
   displayName: '@io-eudiw-app/identification',

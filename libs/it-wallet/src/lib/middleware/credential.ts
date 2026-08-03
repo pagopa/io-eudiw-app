@@ -15,12 +15,13 @@ import {
   IoWallet,
   RemotePresentation
 } from '@pagopa/io-react-native-wallet';
-import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+import { AsyncThunk, isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import { t } from 'i18next';
 import { serializeError } from 'serialize-error';
 
 import { navigator } from '../navigation/utils';
+import { WalletCombinedRootState } from '../store';
 import {
   selectWalletInstanceAttestationAsJwt,
   shouldRequestWalletInstanceAttestationSelector
@@ -68,6 +69,15 @@ type DcqlQuery = Parameters<
   RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']
 >[0];
 
+type ResolveCredentialOfferThunk = AsyncThunk<
+  ResolvedCredentialOffer,
+  { url: string },
+  {
+    rejectValue: unknown;
+    state: WalletCombinedRootState;
+  }
+>;
+
 /**
  * Persists a credential bundle: writes the encoded SD-JWT/MDOC to the
  * vault first, and only on success commits the metadata to the Redux
@@ -98,34 +108,39 @@ export const persistCredential = createAppAsyncThunk<
  * the regular issuance flow.
  * The `scope` is intentionally not handled at this stage.
  */
-export const resolveCredentialOfferThunk = createAppAsyncThunk<
-  ResolvedCredentialOffer,
-  { url: string }
->(
-  'credentialIssuance/resolveOffer',
-  async ({ url }, { getState, rejectWithValue }) => {
-    try {
-      const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
-      const sessionId = selectSessionId(getState());
-      const appFetch = createWalletFetch(sessionId);
+export const resolveCredentialOfferThunk: ResolveCredentialOfferThunk =
+  createAppAsyncThunk<
+    ResolvedCredentialOffer,
+    { url: string },
+    { rejectValue: unknown }
+  >(
+    'credentialIssuance/resolveOffer',
+    async ({ url }, { getState, rejectWithValue }) => {
+      try {
+        const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+        const sessionId = selectSessionId(getState());
+        const appFetch = createWalletFetch(sessionId);
 
-      const offer = await wallet.CredentialsOffer.resolveCredentialOffer(url, {
-        fetch: appFetch
-      });
-
-      const [credentialConfigId] = offer.credential_configuration_ids;
-      if (!credentialConfigId) {
-        throw new Error(
-          'The credential offer does not contain any credential configuration id'
+        const offer = await wallet.CredentialsOffer.resolveCredentialOffer(
+          url,
+          {
+            fetch: appFetch
+          }
         );
-      }
 
-      return offer;
-    } catch (error) {
-      return rejectWithValue(serializeErrorOrUnknown(error));
+        const [credentialConfigId] = offer.credential_configuration_ids;
+        if (!credentialConfigId) {
+          throw new Error(
+            'The credential offer does not contain any credential configuration id'
+          );
+        }
+
+        return offer;
+      } catch (error) {
+        return rejectWithValue(serializeErrorOrUnknown(error));
+      }
     }
-  }
-);
+  );
 
 /**
  * Function which handles the issuance of a credential.

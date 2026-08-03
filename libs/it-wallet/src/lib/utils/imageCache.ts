@@ -66,26 +66,20 @@ const loadImageAsync = (source: number): Promise<null | SkImage> => {
 export const useCachedImage = (source: DataSourceParam): null | SkImage => {
   const key = typeof source === 'number' ? source : undefined;
 
-  const [image, setImage] = useState<null | SkImage>(() =>
-    key !== undefined ? (resolvedImages.get(key) ?? null) : null
-  );
+  const [loaded, setLoaded] = useState<{
+    image: null | SkImage;
+    key: number | undefined;
+  }>({ image: null, key: undefined });
 
   useEffect(() => {
-    if (key === undefined) {
-      return;
-    }
-
-    // If already resolved since the initial render, update immediately
-    const cached = resolvedImages.get(key);
-    if (cached) {
-      setImage(prev => (prev === cached ? prev : cached));
+    if (key === undefined || resolvedImages.has(key)) {
       return;
     }
 
     const controller = new AbortController();
-    void loadImageAsync(key).then(img => {
+    void loadImageAsync(key).then(image => {
       if (!controller.signal.aborted) {
-        setImage(img);
+        setLoaded({ image, key });
       }
     });
 
@@ -94,5 +88,12 @@ export const useCachedImage = (source: DataSourceParam): null | SkImage => {
     };
   }, [key]);
 
-  return image;
+  if (key === undefined) {
+    return null;
+  }
+
+  // The module-level cache is the source of truth: reading it during render
+  // avoids a synchronous setState in the effect when the image is already
+  // decoded (either from a previous mount or a concurrent consumer).
+  return resolvedImages.get(key) ?? (loaded.key === key ? loaded.image : null);
 };

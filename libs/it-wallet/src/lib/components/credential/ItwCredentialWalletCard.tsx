@@ -4,9 +4,9 @@ import MAIN_ROUTES from '../../navigation/main/routes';
 import WALLET_ROUTES from '../../navigation/wallet/routes';
 import { withWalletCardBaseComponent } from '../WalletCardBaseComponent';
 import { WalletCardPressableBase } from '../WalletCardPressableBase';
-import { ItwCredentialCard } from './ItwCredentialCard';
+import { ItwCredentialCard, ItwCredentialCardProps } from './ItwCredentialCard';
 
-type ItwCredentialWalletCardProps = ItwCredentialCard & {
+type ItwCredentialWalletCardProps = ItwCredentialCardProps & {
   /* Optional onPress to override press functionality */
   onPress?: () => void;
 };

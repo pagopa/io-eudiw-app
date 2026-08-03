@@ -14,7 +14,7 @@ import {
   Pictogram
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -24,6 +24,7 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import {
   ProximityStatus,
   resetProximity,
+  selectProximityAuthorizationSent,
   selectProximityEngagementMode,
   selectProximityErrorDetails,
   selectProximityRetrievalMethod,
@@ -57,8 +58,7 @@ const ItwProximityNfcPresentment = () => {
   const engagementMode = useAppSelector(selectProximityEngagementMode);
   const retrievalMethod = useAppSelector(selectProximityRetrievalMethod);
   const errorDetails = useAppSelector(selectProximityErrorDetails);
-
-  const [authorizationSent, setAuthorizationSent] = useState<boolean>(false);
+  const authorizationSent = useAppSelector(selectProximityAuthorizationSent);
 
   const isSending =
     proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_SEND;
@@ -113,11 +113,6 @@ const ItwProximityNfcPresentment = () => {
         params: { fatal: true },
         screen: 'PROXIMITY_FAILURE'
       });
-    } else if (
-      proximityStatus ===
-      ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE
-    ) {
-      setAuthorizationSent(true);
     }
   }, [proximityStatus, navigation, engagementMode, retrievalMethod]);
 

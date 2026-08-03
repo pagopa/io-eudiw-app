@@ -101,48 +101,6 @@ export const ItwBrandedBox = ({
     return [{ translateX }, { scale: lightScaleMultiplier }];
   });
 
-  const SkiaLight = () => (
-    <SkiaGroup
-      opacity={lightSkiaOpacity}
-      origin={vec(size.width / 2, size.height / 2)}
-    >
-      <SkiaCircle
-        cx={(size.width ?? 0) / 2}
-        cy={(size.height ?? 0) / 2}
-        r={lightSize / 2}
-        transform={skiaLightTranslateX}
-      >
-        <SkiaRadialGradient
-          c={vec((size.width ?? 0) / 2, (size.height ?? 0) / 2)}
-          colors={[
-            'rgba(255,255,255,1)',
-            'rgba(255,255,255,0.987)',
-            'rgba(255,255,255,0.95)',
-            'rgba(255,255,255,0.89)',
-            'rgba(255,255,255,0.825)',
-            'rgba(255,255,255,0.74)',
-            'rgba(255,255,255,0.65)',
-            'rgba(255,255,255,0.55)',
-            'rgba(255,255,255,0.45)',
-            'rgba(255,255,255,0.35)',
-            'rgba(255,255,255,0.26)',
-            'rgba(255,255,255,0.175)',
-            'rgba(255,255,255,0.1)',
-            'rgba(255,255,255,0.05)',
-            'rgba(255,255,255,0.01)',
-            'rgba(255,255,255,0)'
-          ]}
-          /* There are many stops because it's an easing gradient. */
-          positions={[
-            0, 0.081, 0.155, 0.225, 0.29, 0.353, 0.412, 0.471, 0.529, 0.588,
-            0.647, 0.71, 0.775, 0.845, 0.919, 1
-          ]}
-          r={lightSize / 2}
-        />
-      </SkiaCircle>
-    </SkiaGroup>
-  );
-
   return (
     <View
       onLayout={onLayout}
@@ -173,7 +131,45 @@ export const ItwBrandedBox = ({
         }}
       >
         {/* Animated light effect */}
-        <SkiaLight />
+        <SkiaGroup
+          opacity={lightSkiaOpacity}
+          origin={vec(size.width / 2, size.height / 2)}
+        >
+          <SkiaCircle
+            cx={(size.width ?? 0) / 2}
+            cy={(size.height ?? 0) / 2}
+            r={lightSize / 2}
+            transform={skiaLightTranslateX}
+          >
+            <SkiaRadialGradient
+              c={vec((size.width ?? 0) / 2, (size.height ?? 0) / 2)}
+              colors={[
+                'rgba(255,255,255,1)',
+                'rgba(255,255,255,0.987)',
+                'rgba(255,255,255,0.95)',
+                'rgba(255,255,255,0.89)',
+                'rgba(255,255,255,0.825)',
+                'rgba(255,255,255,0.74)',
+                'rgba(255,255,255,0.65)',
+                'rgba(255,255,255,0.55)',
+                'rgba(255,255,255,0.45)',
+                'rgba(255,255,255,0.35)',
+                'rgba(255,255,255,0.26)',
+                'rgba(255,255,255,0.175)',
+                'rgba(255,255,255,0.1)',
+                'rgba(255,255,255,0.05)',
+                'rgba(255,255,255,0.01)',
+                'rgba(255,255,255,0)'
+              ]}
+              /* There are many stops because it's an easing gradient. */
+              positions={[
+                0, 0.081, 0.155, 0.225, 0.29, 0.353, 0.412, 0.471, 0.529, 0.588,
+                0.647, 0.71, 0.775, 0.845, 0.919, 1
+              ]}
+              r={lightSize / 2}
+            />
+          </SkiaCircle>
+        </SkiaGroup>
 
         {/* Animated gradient border */}
         <ItwBrandedSkiaBorder

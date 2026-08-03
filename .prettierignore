@@ -6,3 +6,4 @@
 *.md
 *.yaml
 *.yml
+.nx/self-healing

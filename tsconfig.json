@@ -27,5 +27,8 @@
     {
       "path": "./libs/navigation"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0"
+  }
 }

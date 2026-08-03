@@ -15,8 +15,8 @@
     "zod": "catalog:"
   },
   "peerDependencies": {
-    "react": "^19.1.0",
-    "react-native": "0.81.5"
+    "react": "catalog:",
+    "react-native": "catalog:"
   },
   "devDependencies": {
     "babel-preset-expo": "catalog:",

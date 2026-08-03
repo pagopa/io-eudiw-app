@@ -18,7 +18,7 @@ export const WalletCardPressableBase = ({
   const { onPressIn, onPressOut, scaleAnimatedStyle } = useScaleAnimation();
 
   if (onPress === undefined) {
-    return <>{children}</>;
+    return children;
   }
 
   return (

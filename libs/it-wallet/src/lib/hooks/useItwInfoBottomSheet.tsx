@@ -26,7 +26,7 @@ type ItwInfoFlowProps = {
  */
 export const useItwInfoBottomSheet = ({ content, title }: ItwInfoFlowProps) => {
   const { t } = useTranslation(['common']);
-  const BottomSheetBody = () => (
+  const bottomSheetBody = (
     <View style={{ flex: 1 }}>
       {content.map((item, index) => (
         <VStack key={`${index}_${item.title}`} space={8}>
@@ -40,7 +40,7 @@ export const useItwInfoBottomSheet = ({ content, title }: ItwInfoFlowProps) => {
 
   const { bottomSheet, dismiss, present } = useIOBottomSheetModal({
     closeAccessibilityLabel: t('buttons.close'),
-    component: <BottomSheetBody />,
+    component: bottomSheetBody,
     title
   });
 
