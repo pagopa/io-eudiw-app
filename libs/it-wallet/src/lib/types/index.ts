@@ -1,6 +1,6 @@
 import { ioWalletApiByVersion } from '@pagopa/io-react-native-wallet';
 
-import { ItwCredentialCard } from '../components/credential/ItwCredentialCard';
+import { ItwCredentialCardProps } from '../components/credential/ItwCredentialCard';
 import { Prettify } from '../utils/itwTypesUtils';
 
 export type CardColorScheme = 'default' | 'faded' | 'greyscale';
@@ -38,7 +38,7 @@ export type WalletCard = WalletCardBase & WalletCardItw;
 
 // IT Wallet
 export type WalletCardItw = Prettify<
-  ItwCredentialCard & {
+  ItwCredentialCardProps & {
     type: 'itw';
   }
 >;

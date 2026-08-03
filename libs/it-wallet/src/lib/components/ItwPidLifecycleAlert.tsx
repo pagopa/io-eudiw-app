@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { format } from 'date-fns';
 import { t } from 'i18next';
-import { ComponentProps, useMemo } from 'react';
+import { ComponentProps } from 'react';
 import { View } from 'react-native';
 
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
@@ -14,10 +14,7 @@ import {
   itwCredentialsPidSelector,
   itwCredentialsPidStatusSelector
 } from '../store/credentials';
-import {
-  ItwJwtCredentialStatus,
-  StoredCredentialMetadata
-} from '../utils/itwTypesUtils';
+import { ItwJwtCredentialStatus } from '../utils/itwTypesUtils';
 
 const defaultLifecycleStatus: ItwJwtCredentialStatus[] = [
   'valid',
@@ -51,90 +48,57 @@ export const ItwPidLifecycleAlert = ({
     });
   };
 
-  const Content = ({
-    pidCredential,
-    pidStatus
-  }: {
-    pidCredential: StoredCredentialMetadata;
-    pidStatus: ItwJwtCredentialStatus;
-  }) => {
-    const nameSpace = 'itw';
+  if (!pid || !maybePidStatus || !lifecycleStatus.includes(maybePidStatus)) {
+    return null;
+  }
 
-    const alertProps = useMemo<ComponentProps<typeof Alert>>(() => {
-      const pidAlertPropsMap: Record<
-        ItwJwtCredentialStatus,
-        ComponentProps<typeof Alert>
-      > = {
-        jwtExpired: {
-          action: t(
-            `presentation.bottomSheets.pidInfo.alert.${nameSpace}.action`,
-            { ns: 'wallet' }
-          ),
-          content: t(
-            `presentation.bottomSheets.pidInfo.alert.${nameSpace}.expired`,
-            {
-              ns: 'wallet'
-            }
-          ),
-          onPress: startPidReissuing,
-          testID: 'itwPidLifecycleAlertTestID_jwtExpired',
-          variant: 'error'
-        },
-        jwtExpiring: {
-          action: t(
-            `presentation.bottomSheets.pidInfo.alert.${nameSpace}.action`,
-            {
-              ns: 'wallet'
-            }
-          ),
-          content: t(
-            `presentation.bottomSheets.pidInfo.alert.${nameSpace}.expiring`,
-            // TODO [SIW-3225]: date in bold
-            {
-              date: format(pidCredential.expiration, 'DD-MM-YYYY'),
-              ns: 'wallet'
-            }
-          ),
-          onPress: startPidReissuing,
-          testID: 'itwPidLifecycleAlertTestID_jwtExpiring',
-          variant: 'warning'
-        },
-        valid: {
-          content: t(
-            `presentation.bottomSheets.pidInfo.alert.${nameSpace}.valid`,
-            {
-              date: pidCredential.issuedAt
-                ? format(pidCredential.issuedAt, 'DD-MM-YYYY')
-                : '-',
-              ns: 'wallet'
-            }
-          ),
-          testID: 'itwPidLifecycleAlertTestID_valid',
-          variant: 'success'
+  const nameSpace = 'itw';
+  const pidAlertPropsMap: Record<
+    ItwJwtCredentialStatus,
+    ComponentProps<typeof Alert>
+  > = {
+    jwtExpired: {
+      action: t(`presentation.bottomSheets.pidInfo.alert.${nameSpace}.action`, {
+        ns: 'wallet'
+      }),
+      content: t(
+        `presentation.bottomSheets.pidInfo.alert.${nameSpace}.expired`,
+        {
+          ns: 'wallet'
         }
-      };
-
-      return pidAlertPropsMap[pidStatus];
-    }, [
-      pidStatus,
-      pidCredential.issuedAt,
-      pidCredential.expiration,
-      nameSpace
-    ]);
-
-    if (!lifecycleStatus.includes(pidStatus)) {
-      return null;
+      ),
+      onPress: startPidReissuing,
+      testID: 'itwPidLifecycleAlertTestID_jwtExpired',
+      variant: 'error'
+    },
+    jwtExpiring: {
+      action: t(`presentation.bottomSheets.pidInfo.alert.${nameSpace}.action`, {
+        ns: 'wallet'
+      }),
+      content: t(
+        `presentation.bottomSheets.pidInfo.alert.${nameSpace}.expiring`,
+        {
+          date: format(pid.expiration, 'DD-MM-YYYY'),
+          ns: 'wallet'
+        }
+      ),
+      onPress: startPidReissuing,
+      testID: 'itwPidLifecycleAlertTestID_jwtExpiring',
+      variant: 'warning'
+    },
+    valid: {
+      content: t(`presentation.bottomSheets.pidInfo.alert.${nameSpace}.valid`, {
+        date: pid.issuedAt ? format(pid.issuedAt, 'DD-MM-YYYY') : '-',
+        ns: 'wallet'
+      }),
+      testID: 'itwPidLifecycleAlertTestID_valid',
+      variant: 'success'
     }
-
-    return (
-      <View style={{ marginBottom: 16 }} testID={`itwPidLifecycleAlertTestID`}>
-        <Alert {...alertProps} />
-      </View>
-    );
   };
 
   return (
-    pid &&
-    maybePidStatus && <Content pidCredential={pid} pidStatus={maybePidStatus} />
+    <View style={{ marginBottom: 16 }} testID="itwPidLifecycleAlertTestID">
+      <Alert {...pidAlertPropsMap[maybePidStatus]} />
+    </View>
   );
 };

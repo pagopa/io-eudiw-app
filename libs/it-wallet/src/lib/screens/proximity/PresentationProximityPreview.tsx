@@ -133,7 +133,7 @@ const PresentationProximityPreview = () => {
     ]);
   };
 
-  const IsAuthenticatedAlert = () => (
+  const isAuthenticatedAlert = (
     <>
       {isAuthenticated ? (
         <AlertDs
@@ -192,7 +192,7 @@ const PresentationProximityPreview = () => {
           />
         </VStack>
         <VSpacer size={24} />
-        {isDebug && <IsAuthenticatedAlert />}
+        {isDebug && isAuthenticatedAlert}
         <ItwProximityPresentationDetails data={proximityDetails} />
         <VSpacer size={48} />
         <FeatureInfo

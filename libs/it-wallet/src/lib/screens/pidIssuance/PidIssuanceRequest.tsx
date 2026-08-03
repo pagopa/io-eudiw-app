@@ -31,7 +31,6 @@ import {
   selectPidIssuanceStatus
 } from '../../store/selectors/pidIssuance';
 import { parseClaimsToRecord } from '../../utils/claims';
-import { StoredCredential } from '../../utils/itwTypesUtils';
 
 /**
  * Screen which starts and handles the PID issuance flow.
@@ -47,9 +46,18 @@ const PidIssuanceRequest = () => {
   const pid = useAppSelector(selectPidIssuanceData);
   const { navigateToWallet } = useNavigateToWalletWithReset();
 
+  const dismissalDialog = useItwDismissalDialog({
+    customLabels: {
+      body: t('discovery.screen.itw.dismissalDialog.body'),
+      cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel'),
+      confirmLabel: t('discovery.screen.itw.dismissalDialog.confirm'),
+      title: t('discovery.screen.itw.dismissalDialog.title')
+    },
+    handleDismiss: () => navigateToWallet()
+  });
+
   useHardwareBackButtonToDismiss(() => dismissalDialog.show());
   useDisableGestureNavigation();
-
   useEffect(() => {
     dispatch(setPidIssuanceRequest());
     return () => {
@@ -73,54 +81,43 @@ const PidIssuanceRequest = () => {
     title: ''
   });
 
-  const dismissalDialog = useItwDismissalDialog({
-    customLabels: {
-      body: t('discovery.screen.itw.dismissalDialog.body'),
-      cancelLabel: t('discovery.screen.itw.dismissalDialog.cancel'),
-      confirmLabel: t('discovery.screen.itw.dismissalDialog.confirm'),
-      title: t('discovery.screen.itw.dismissalDialog.title')
-    },
-    handleDismiss: () => navigateToWallet()
-  });
-
-  const PidPreview = ({ credential }: { credential: StoredCredential }) => {
-    const parsedClaims = parseClaimsToRecord(credential.parsedCredential);
-
-    return (
-      <ForceScrollDownView
-        contentContainerStyle={styles.scroll}
-        footerActions={{
-          actions: {
-            primary: {
-              label: t('buttons.continue', {
-                ns: 'common'
-              }),
-              onPress: () => dispatch(addPidWithIdentification({ credential }))
-            },
-            type: 'SingleButton'
-          }
-        }}
-      >
-        <VStack style={styles.contentWrapper}>
-          <H2>{t('pidIssuance.preview.title')}</H2>
-          <VSpacer size={16} />
-          <Body>{t('pidIssuance.preview.subtitle')}</Body>
-          <VSpacer size={24} />
-          <View>
-            <CredentialPreviewClaimsList
-              claims={parsedClaims}
-              isPreview={true}
-            />
-          </View>
-        </VStack>
-      </ForceScrollDownView>
-    );
-  };
+  const parsedClaims = pid
+    ? parseClaimsToRecord(pid.parsedCredential)
+    : undefined;
 
   return (
     <>
       {loading && <LoadingScreenContent contentTitle={t('common:waiting')} />}
-      {success.status === true && pid && <PidPreview credential={pid} />}
+      {success.status === true && pid && parsedClaims && (
+        <ForceScrollDownView
+          contentContainerStyle={styles.scroll}
+          footerActions={{
+            actions: {
+              primary: {
+                label: t('buttons.continue', {
+                  ns: 'common'
+                }),
+                onPress: () =>
+                  dispatch(addPidWithIdentification({ credential: pid }))
+              },
+              type: 'SingleButton'
+            }
+          }}
+        >
+          <VStack style={styles.contentWrapper}>
+            <H2>{t('pidIssuance.preview.title')}</H2>
+            <VSpacer size={16} />
+            <Body>{t('pidIssuance.preview.subtitle')}</Body>
+            <VSpacer size={24} />
+            <View>
+              <CredentialPreviewClaimsList
+                claims={parsedClaims}
+                isPreview={true}
+              />
+            </View>
+          </VStack>
+        </ForceScrollDownView>
+      )}
     </>
   );
 };

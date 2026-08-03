@@ -40,32 +40,36 @@ const useSineWaveAnimation = ({
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
       axis === 'x'
-        ? { translateX: translate.value }
-        : { translateY: translate.value }
+        ? { translateX: translate.get() }
+        : { translateY: translate.get() }
     ]
   }));
 
   useEffect(() => {
     if (enabled) {
-      translate.value = withRepeat(
-        withSequence(
-          withTiming(-span, {
-            duration,
-            easing: Easing.inOut(Easing.cubic)
-          }),
-          withTiming(span, {
-            duration,
-            easing: Easing.inOut(Easing.cubic)
-          })
-        ),
-        -1,
-        true
+      translate.set(
+        withRepeat(
+          withSequence(
+            withTiming(-span, {
+              duration,
+              easing: Easing.inOut(Easing.cubic)
+            }),
+            withTiming(span, {
+              duration,
+              easing: Easing.inOut(Easing.cubic)
+            })
+          ),
+          -1,
+          true
+        )
       );
     } else {
-      translate.value = withTiming(0, {
-        duration: duration / 2,
-        easing: Easing.inOut(Easing.cubic)
-      });
+      translate.set(
+        withTiming(0, {
+          duration: duration / 2,
+          easing: Easing.inOut(Easing.cubic)
+        })
+      );
     }
   }, [translate, span, enabled, duration]);
 

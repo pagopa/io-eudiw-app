@@ -15,7 +15,7 @@ import {
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
-import { memo, useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import {
   Alert,
   ColorSchemeName,
@@ -218,18 +218,6 @@ export const IdentificationModal = ({
     ]
   );
 
-  const NumberPad = memo(() =>
-    pin ? (
-      <IdentificationNumberPad
-        biometricsConfig={biometricsConfig}
-        deleteAccessibilityLabel={deleteAccessibilityLabel}
-        numberPadVariant={numberPadVariant}
-        pin={pin}
-        pinValidation={onPinValidated}
-      />
-    ) : null
-  );
-
   // If the authentication process is not started, we don't show the modal.
   // We need to put this before the biometric request,
   // to avoid the biometric request to be triggered when the modal is not shown.
@@ -303,7 +291,15 @@ export const IdentificationModal = ({
               </View>
             </View>
             <VSpacer size={32} />
-            <NumberPad />
+            {pin && (
+              <IdentificationNumberPad
+                biometricsConfig={biometricsConfig}
+                deleteAccessibilityLabel={deleteAccessibilityLabel}
+                numberPadVariant={numberPadVariant}
+                pin={pin}
+                pinValidation={onPinValidated}
+              />
+            )}
             <View>
               <VSpacer size={32} />
               <View style={{ alignSelf: 'center' }}>

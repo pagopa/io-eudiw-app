@@ -65,14 +65,15 @@ const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
               { ns: 'wallet' }
             ),
             onPress: () => {
-              // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-              fiscalCode.success
-                ? openWebUrlInApp(
-                    `https://dev.bonuselettrodomestici.it/utente/it-wallet/payment/${fiscalCode.data}`,
-                    () =>
-                      IOToast.error(I18n.t('errors.generic', { ns: 'common' }))
-                  )
-                : IOToast.error(I18n.t('errors.generic', { ns: 'common' }));
+              if (fiscalCode.success) {
+                openWebUrlInApp(
+                  `https://dev.bonuselettrodomestici.it/utente/it-wallet/payment/${fiscalCode.data}`,
+                  () =>
+                    IOToast.error(I18n.t('errors.generic', { ns: 'common' }))
+                );
+              } else {
+                IOToast.error(I18n.t('errors.generic', { ns: 'common' }));
+              }
             },
             testID: 'PARI_BONUS_CTA_1_TESTID',
             variant: 'primary'

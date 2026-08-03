@@ -4,7 +4,7 @@ import {
   IconButton,
   useIOTheme
 } from '@pagopa/io-app-design-system';
-import { Fragment, useCallback, useMemo } from 'react';
+import { Fragment, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
@@ -72,7 +72,7 @@ export const ItwPresentationClaimsSection = ({
     </View>
   );
 
-  const claims = Object.entries(parsedClaims);
+  const claims = useMemo(() => Object.entries(parsedClaims), [parsedClaims]);
   const filteredClaims = useMemo(
     () =>
       claims.filter(
@@ -82,32 +82,16 @@ export const ItwPresentationClaimsSection = ({
     [claims]
   );
 
-  const LinkQrCode = useCallback(() => {
-    const linkQrCodeClaim = claims.find(
-      ([id]) => id === WellKnownClaim.link_qr_code
-    )?.[1];
-
-    if (!linkQrCodeClaim) {
-      return null;
-    }
-
-    return <ItwQrCodeClaimImage claim={linkQrCodeClaim} />;
-  }, [claims]);
-
-  const BarcodeCard = useCallback(() => {
-    const barcodeClaim = claims.find(
-      ([id]) => id === WellKnownClaim.barcode
-    )?.[1];
-
-    if (
-      !barcodeClaim?.parsed?.value ||
-      typeof barcodeClaim.parsed.value !== 'string'
-    ) {
-      return null;
-    }
-
-    return <ItwBarcodeCard value={barcodeClaim.parsed.value} />;
-  }, [claims]);
+  const linkQrCodeClaim = claims.find(
+    ([id]) => id === WellKnownClaim.link_qr_code
+  )?.[1];
+  const barcodeClaim = claims.find(
+    ([id]) => id === WellKnownClaim.barcode
+  )?.[1];
+  const barcodeValue =
+    typeof barcodeClaim?.parsed?.value === 'string'
+      ? barcodeClaim.parsed.value
+      : undefined;
 
   return (
     <View>
@@ -126,8 +110,8 @@ export const ItwPresentationClaimsSection = ({
           </View>
         )
       }
-      <LinkQrCode />
-      <BarcodeCard />
+      {linkQrCodeClaim && <ItwQrCodeClaimImage claim={linkQrCodeClaim} />}
+      {barcodeValue && <ItwBarcodeCard value={barcodeValue} />}
       {filteredClaims.map(([id, claim], index) => {
         if (id === WellKnownClaim.link_qr_code) {
           // Since the `link_qr_code` claim  difficult to distinguish from a generic image claim, we need to manually
