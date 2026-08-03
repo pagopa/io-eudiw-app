@@ -12,6 +12,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "catalog:",
     "@react-navigation/native": "catalog:"
   },
   "peerDependencies": {

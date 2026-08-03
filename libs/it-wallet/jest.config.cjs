@@ -9,8 +9,8 @@ module.exports = {
   preset: 'jest-expo',
   setupFilesAfterEnv: [
     '<rootDir>/src/test-setup.ts',
-    '../../node_modules/react-native-gesture-handler/jestSetup.js',
-    '../../node_modules/@shopify/react-native-skia/jestSetup.js'
+    require.resolve('react-native-gesture-handler/jestSetup.js'),
+    require.resolve('@shopify/react-native-skia/jestSetup.js')
   ],
   transform: {
     '\\.[jt]sx?$': [

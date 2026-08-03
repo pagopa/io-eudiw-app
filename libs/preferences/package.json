@@ -11,6 +11,11 @@
     },
     "./package.json": "./package.json"
   },
+  "dependencies": {
+    "@reduxjs/toolkit": "catalog:",
+    "@react-native-async-storage/async-storage": "catalog:",
+    "redux-persist": "catalog:"
+  },
   "peerDependencies": {
     "react": "catalog:",
     "react-native": "catalog:"

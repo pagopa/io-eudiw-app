@@ -14,8 +14,14 @@
   "dependencies": {
     "@io-eudiw-app/commons": "workspace:*",
     "@io-eudiw-app/preferences": "workspace:*",
+    "@pagopa/io-app-design-system": "catalog:",
+    "@reduxjs/toolkit": "catalog:",
+    "@textlint/ast-node-types": "catalog:",
+    "expo-local-authentication": "catalog:",
+    "react-native-gesture-handler": "catalog:",
     "react-native-safe-area-context": "catalog:",
-    "react-redux": "catalog:"
+    "react-redux": "catalog:",
+    "redux-persist": "catalog:"
   },
   "peerDependencies": {
     "react": "catalog:",

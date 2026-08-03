@@ -12,16 +12,36 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
+    "@gorhom/bottom-sheet": "catalog:",
+    "@pagopa/io-app-design-system": "catalog:",
+    "@pagopa/io-react-native-crypto": "catalog:",
     "@react-navigation/native": "catalog:",
-    "@reduxjs/toolkit": "2.11.1",
+    "@reduxjs/toolkit": "catalog:",
+    "@textlint/ast-node-types": "catalog:",
+    "@textlint/markdown-to-ast": "catalog:",
+    "expo-brightness": "~56.0.5",
+    "expo-clipboard": "catalog:",
     "expo-crypto": "catalog:",
-    "react-native-safe-area-context": "catalog:"
+    "expo-screen-capture": "catalog:",
+    "expo-secure-store": "catalog:",
+    "expo-web-browser": "catalog:",
+    "i18next": "catalog:",
+    "lodash": "catalog:",
+    "react-native-device-info": "catalog:",
+    "react-native-easing-gradient": "catalog:",
+    "react-native-gesture-handler": "catalog:",
+    "react-native-linear-gradient": "catalog:",
+    "react-native-reanimated": "catalog:",
+    "react-native-safe-area-context": "catalog:",
+    "react-native-svg": "catalog:",
+    "redux-persist": "catalog:"
   },
   "peerDependencies": {
     "react": "catalog:",
     "react-native": "catalog:"
   },
   "devDependencies": {
+    "@types/lodash": "catalog:",
     "babel-preset-expo": "catalog:",
     "jest-expo": "catalog:"
   }

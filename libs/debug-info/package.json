@@ -14,15 +14,21 @@
   "dependencies": {
     "@io-eudiw-app/preferences": "workspace:*",
     "@io-eudiw-app/commons": "workspace:*",
+    "@pagopa/io-app-design-system": "catalog:",
     "@react-navigation/native": "catalog:",
+    "@reduxjs/toolkit": "catalog:",
+    "lodash": "catalog:",
     "react-native-safe-area-context": "catalog:",
-    "react-redux": "catalog:"
+    "react-redux": "catalog:",
+    "redux-persist": "catalog:"
   },
   "peerDependencies": {
     "react": "catalog:",
     "react-native": "catalog:"
   },
   "devDependencies": {
+    "@react-native-async-storage/async-storage": "catalog:",
+    "@types/lodash": "catalog:",
     "babel-preset-expo": "catalog:",
     "jest-expo": "catalog:"
   }

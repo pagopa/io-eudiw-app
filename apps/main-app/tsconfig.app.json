@@ -41,25 +41,25 @@
   ],
   "references": [
     {
+      "path": "../../libs/preferences/tsconfig.lib.json"
+    },
+    {
       "path": "../../libs/navigation/tsconfig.lib.json"
     },
     {
-      "path": "../../libs/env/tsconfig.lib.json"
+      "path": "../../libs/it-wallet/tsconfig.lib.json"
     },
     {
       "path": "../../libs/identification/tsconfig.lib.json"
     },
     {
+      "path": "../../libs/env/tsconfig.lib.json"
+    },
+    {
       "path": "../../libs/debug-info/tsconfig.lib.json"
     },
     {
-      "path": "../../libs/preferences/tsconfig.lib.json"
-    },
-    {
       "path": "../../libs/commons/tsconfig.lib.json"
-    },
-    {
-      "path": "../../libs/it-wallet/tsconfig.lib.json"
     }
   ]
 }
