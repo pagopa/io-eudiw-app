@@ -8,8 +8,8 @@ const getDeviceIdMock = jest.fn();
 getDeviceIdMock.mockReturnValue('');
 
 const DeviceInfo = {
-  getReadableVersion,
   getDeviceId: getDeviceIdMock,
+  getReadableVersion,
   hasNotch: () => true
 };
 

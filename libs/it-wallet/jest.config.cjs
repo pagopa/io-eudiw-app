@@ -1,15 +1,17 @@
 module.exports = {
+  coverageDirectory: '../../coverage/libs/it-wallet',
   displayName: '@io-eudiw-app/it-wallet',
-  preset: 'jest-expo',
   moduleFileExtensions: ['ts', 'js', 'html', 'tsx', 'jsx'],
+  moduleNameMapper: {
+    '\\.svg$': '@nx/expo/plugins/jest/svg-mock'
+  },
+  modulePathIgnorePatterns: ['<rootDir>/out-tsc/'],
+  preset: 'jest-expo',
   setupFilesAfterEnv: [
     '<rootDir>/src/test-setup.ts',
     '../../node_modules/react-native-gesture-handler/jestSetup.js',
     '../../node_modules/@shopify/react-native-skia/jestSetup.js'
   ],
-  moduleNameMapper: {
-    '\\.svg$': '@nx/expo/plugins/jest/svg-mock'
-  },
   transform: {
     '\\.[jt]sx?$': [
       'babel-jest',
@@ -22,7 +24,5 @@ module.exports = {
   },
   transformIgnorePatterns: [
     'node_modules/(?!(@react-native|react-native|@react-navigation|@pagopa/io-app-design-system)|expo-modules-core|expo|@shopify/react-native-skia|/)'
-  ],
-  modulePathIgnorePatterns: ['<rootDir>/out-tsc/'],
-  coverageDirectory: '../../coverage/libs/it-wallet'
+  ]
 };

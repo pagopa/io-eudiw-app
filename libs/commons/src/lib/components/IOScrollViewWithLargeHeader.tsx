@@ -1,33 +1,34 @@
 import {
   Body,
   BodyProps,
+  BodySmall,
   ComposedBodyFromArray,
   ContentWrapper,
   H2,
-  BodySmall,
-  VSpacer,
+  IOVisualCostants,
   useIOTheme,
-  WithTestID,
-  IOVisualCostants
+  VSpacer,
+  WithTestID
 } from '@pagopa/io-app-design-system';
 import { ComponentProps, forwardRef, useState } from 'react';
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
+
 import { IOScrollView } from './IOScrollView';
 
 type LargeHeaderTitleProps = {
-  label: string;
   accessibilityLabel?: string;
-  testID?: string;
+  label: string;
   section?: string;
+  testID?: string;
 };
 
 type Props = WithTestID<{
-  children?: React.ReactNode;
   actions?: ComponentProps<typeof IOScrollView>['actions'];
-  title: LargeHeaderTitleProps;
-  description?: string | Array<BodyProps>;
-  includeContentMargins?: boolean;
+  children?: React.ReactNode;
+  description?: BodyProps[] | string;
   excludeEndContentMargin?: boolean;
+  includeContentMargins?: boolean;
+  title: LargeHeaderTitleProps;
 }>;
 
 /**
@@ -38,13 +39,13 @@ type Props = WithTestID<{
 export const IOScrollViewWithLargeHeader = forwardRef<View, Props>(
   (
     {
-      children,
-      title,
-      description,
       actions,
-      includeContentMargins = false,
+      children,
+      description,
       excludeEndContentMargin,
-      testID
+      includeContentMargins = false,
+      testID,
+      title
     },
     ref
   ) => {
@@ -60,27 +61,27 @@ export const IOScrollViewWithLargeHeader = forwardRef<View, Props>(
     return (
       <IOScrollView
         actions={actions}
-        snapOffset={titleHeight}
-        includeContentMargins={false}
         excludeEndContentMargin={excludeEndContentMargin}
+        includeContentMargins={false}
+        snapOffset={titleHeight}
         testID={testID}
       >
         <View
-          ref={ref}
           accessible
-          style={styles.titleContainer}
           onLayout={getTitleHeight}
+          ref={ref}
+          style={styles.titleContainer}
         >
           {title.section && (
-            <BodySmall weight="Semibold" color={theme['textBody-tertiary']}>
+            <BodySmall color={theme['textBody-tertiary']} weight="Semibold">
               {title.section}
             </BodySmall>
           )}
           <H2
-            color={theme['textHeading-default']}
-            testID={title?.testID}
             accessibilityLabel={title.accessibilityLabel ?? title.label}
             accessibilityRole="header"
+            color={theme['textHeading-default']}
+            testID={title?.testID}
           >
             {title.label}
           </H2>

@@ -1,19 +1,20 @@
-import { useNavigation } from '@react-navigation/native';
-import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   OperationResultScreenContent,
   useDisableGestureNavigation,
   useHardwareBackButton
 } from '@io-eudiw-app/commons';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
+import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import MAIN_ROUTES from '../../navigation/main/routes';
+import { useAppDispatch, useAppSelector } from '../../store';
 import {
   ProximityStatus,
   selectProximityStatus,
   setProximityStoreConsentChosen
 } from '../../store/proximity';
-import { useAppDispatch, useAppSelector } from '../../store';
 
 /**
  * Store-consent screen shown during the NFC-retrieval dance, after the user has
@@ -48,8 +49,8 @@ const ItwProximityStoreConsent = () => {
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED
     ) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PROXIMITY_FAILURE',
-        params: { fatal: true }
+        params: { fatal: true },
+        screen: 'PROXIMITY_FAILURE'
       });
     }
   }, [proximityStatus, navigation]);
@@ -59,19 +60,19 @@ const ItwProximityStoreConsent = () => {
 
   return (
     <OperationResultScreenContent
-      pictogram="activate"
-      title={t('wallet:proximity.storeConsent.title')}
-      subtitle={t('wallet:proximity.storeConsent.subtitle')}
       action={{
-        label: t('wallet:proximity.storeConsent.action'),
         accessibilityLabel: t('wallet:proximity.storeConsent.action'),
+        label: t('wallet:proximity.storeConsent.action'),
         onPress: choose(true)
       }}
+      pictogram="activate"
       secondaryAction={{
-        label: t('wallet:proximity.storeConsent.secondaryAction'),
         accessibilityLabel: t('wallet:proximity.storeConsent.secondaryAction'),
+        label: t('wallet:proximity.storeConsent.secondaryAction'),
         onPress: choose(false)
       }}
+      subtitle={t('wallet:proximity.storeConsent.subtitle')}
+      title={t('wallet:proximity.storeConsent.title')}
     />
   );
 };

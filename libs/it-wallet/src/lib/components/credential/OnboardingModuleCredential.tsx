@@ -1,24 +1,25 @@
 import { Badge, IOIcons, ModuleCredential } from '@pagopa/io-app-design-system';
 import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import {
   getCredentialNameByType,
   wellKnownCredential
 } from '../../utils/credentials';
 
 type Props = {
-  type: string;
   configId: string;
-  onPress: (type: string) => void;
-  isSaved: boolean;
   isFetching: boolean;
+  isSaved: boolean;
+  onPress: (type: string) => void;
+  type: string;
 };
 
 const credentialIconByType: Record<string, IOIcons> = {
-  [wellKnownCredential.DRIVING_LICENSE]: 'car',
-  [wellKnownCredential.PID]: 'fingerprint',
+  [wellKnownCredential.BONUS_PARI]: 'bonus',
   [wellKnownCredential.DISABILITY_CARD]: 'accessibility',
-  [wellKnownCredential.BONUS_PARI]: 'bonus'
+  [wellKnownCredential.DRIVING_LICENSE]: 'car',
+  [wellKnownCredential.PID]: 'fingerprint'
 };
 
 /**
@@ -30,18 +31,18 @@ const credentialIconByType: Record<string, IOIcons> = {
  * @param isFetching - if true, the credential issuance flow has been started
  */
 const OnboardingModuleCredential = ({
-  type,
   configId,
-  onPress,
+  isFetching,
   isSaved,
-  isFetching
+  onPress,
+  type
 }: Props) => {
   const { t } = useTranslation('wallet');
   const badge = useMemo((): Badge | undefined => {
     if (isSaved) {
       return {
-        variant: 'success',
-        text: t('credentialIssuance.badges.saved')
+        text: t('credentialIssuance.badges.saved'),
+        variant: 'success'
       };
     }
     return undefined;
@@ -55,12 +56,12 @@ const OnboardingModuleCredential = ({
 
   return (
     <ModuleCredential
-      testID={`${type}ModuleTestID`}
+      badge={badge}
       icon={credentialIconByType[type]}
+      isFetching={isFetching}
       label={getCredentialNameByType(type)}
       onPress={isPressable ? handleOnPress : undefined}
-      isFetching={isFetching}
-      badge={badge}
+      testID={`${type}ModuleTestID`}
     />
   );
 };

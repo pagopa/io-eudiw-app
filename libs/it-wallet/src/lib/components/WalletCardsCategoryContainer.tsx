@@ -5,11 +5,12 @@ import Animated, {
   FadeOutDown,
   LinearTransition
 } from 'react-native-reanimated';
+
 import { WalletCard } from '../types';
 import { ItwCredentialWalletCard } from './credential/ItwCredentialWalletCard';
 
 type WalletCardsCategoryContainerProps = WithTestID<{
-  cards: ReadonlyArray<WalletCard>;
+  cards: readonly WalletCard[];
 }>;
 
 // The item layout animation has a bug on Android for a FlatList that doesn't have a fixed height [https://github.com/software-mansion/react-native-reanimated/issues/5728]
@@ -26,34 +27,32 @@ const itemLayoutAnimation =
 export const WalletCardsCategoryContainer = ({
   cards,
   testID
-}: WalletCardsCategoryContainerProps) => {
-  return (
-    <Animated.FlatList
-      testID={testID}
-      scrollEnabled={false}
-      data={cards}
-      renderItem={({ index, item }) => {
-        // renderWalletCardFn is not of use for the eudiw scenarios because only Itw is supported
-        // renderWalletCardFn(item, index < cards.length - 1)
-        const { key: _, type: __, ...cardProps } = item;
+}: WalletCardsCategoryContainerProps) => (
+  <Animated.FlatList
+    contentContainerStyle={styles.container}
+    data={cards}
+    entering={FadeInDown.duration(150)}
+    exiting={FadeOutDown.duration(150)}
+    itemLayoutAnimation={itemLayoutAnimation}
+    layout={LinearTransition.duration(200)}
+    renderItem={({ index, item }) => {
+      // renderWalletCardFn is not of use for the eudiw scenarios because only Itw is supported
+      // renderWalletCardFn(item, index < cards.length - 1)
+      const { key: _, type: __, ...cardProps } = item;
 
-        return (
-          <ItwCredentialWalletCard
-            key={item.key}
-            testID={`walletCardTestID_${item.type}_${item.key}`}
-            cardProps={cardProps}
-            isStacked={index < cards.length - 1}
-          />
-        );
-      }}
-      itemLayoutAnimation={itemLayoutAnimation}
-      layout={LinearTransition.duration(200)}
-      contentContainerStyle={styles.container}
-      entering={FadeInDown.duration(150)}
-      exiting={FadeOutDown.duration(150)}
-    />
-  );
-};
+      return (
+        <ItwCredentialWalletCard
+          cardProps={cardProps}
+          isStacked={index < cards.length - 1}
+          key={item.key}
+          testID={`walletCardTestID_${item.type}_${item.key}`}
+        />
+      );
+    }}
+    scrollEnabled={false}
+    testID={testID}
+  />
+);
 
 const styles = StyleSheet.create({
   container: {

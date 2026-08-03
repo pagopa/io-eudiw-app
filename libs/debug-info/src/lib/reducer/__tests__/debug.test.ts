@@ -1,8 +1,8 @@
 import {
   debugRootReducer,
   resetDebugData,
-  setDebugData,
-  selectDebugData
+  selectDebugData,
+  setDebugData
 } from '../debug';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -17,8 +17,8 @@ describe('debug', () => {
   it('should return the debug data without the undefined values', () => {
     const state = debugRootReducer(
       {
-        isDebugModeEnabled: true,
-        debugData: {}
+        debugData: {},
+        isDebugModeEnabled: true
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
       setDebugData({ not_visible: undefined, visible: 'visible' })
@@ -28,8 +28,8 @@ describe('debug', () => {
   it('should remove the debug data when resetDebugData is called', () => {
     const state = debugRootReducer(
       {
-        isDebugModeEnabled: true,
-        debugData: { A: 'A', B: 'B', C: 'C' }
+        debugData: { A: 'A', B: 'B', C: 'C' },
+        isDebugModeEnabled: true
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
       resetDebugData(['A', 'B'])
@@ -39,8 +39,8 @@ describe('debug', () => {
   it('should merge and/or override data', () => {
     const state = debugRootReducer(
       {
-        isDebugModeEnabled: true,
-        debugData: { A: 'A', B: 'B', C: 'C' }
+        debugData: { A: 'A', B: 'B', C: 'C' },
+        isDebugModeEnabled: true
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
       setDebugData({ C: 'Updated!', D: 'D', E: 'E' })
@@ -56,8 +56,8 @@ describe('debug', () => {
   it('should remove undefined values', () => {
     const state = debugRootReducer(
       {
-        isDebugModeEnabled: true,
-        debugData: { A: 'A', B: 'B', C: 'C' } // <- C has a value
+        debugData: { A: 'A', B: 'B', C: 'C' }, // <- C has a value
+        isDebugModeEnabled: true
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
       setDebugData({ C: undefined, D: 'D', E: 'E' }) // <- C is updated to undefined

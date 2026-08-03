@@ -10,13 +10,13 @@ const DEFAULT_TRANSITION_DURATION = 1500;
 
 type UseMaxBrightnessOptions = {
   /**
-   * Whether to use a smooth transition to the maximum brightness
-   */
-  useSmoothTransition?: boolean;
-  /**
    * The duration of the smooth transition
    */
   transitionDuration?: number;
+  /**
+   * Whether to use a smooth transition to the maximum brightness
+   */
+  useSmoothTransition?: boolean;
 };
 
 /**
@@ -44,12 +44,12 @@ type UseMaxBrightnessOptions = {
  * @see {@link UseMaxBrightnessOptions} for configuration options
  */
 export function useMaxBrightness({
-  useSmoothTransition = false,
-  transitionDuration = DEFAULT_TRANSITION_DURATION
+  transitionDuration = DEFAULT_TRANSITION_DURATION,
+  useSmoothTransition = false
 }: UseMaxBrightnessOptions = {}) {
   const currentAppState = useRef<AppStateStatus | null>(null);
   // Store the initial brightness
-  const initialBrightness = useRef<number | null>(null);
+  const initialBrightness = useRef<null | number>(null);
 
   /**
    * Restores the screen brightness to its original value before any modifications.
@@ -66,8 +66,8 @@ export function useMaxBrightness({
     }
     const brightness = initialBrightness.current;
     await Platform.select({
-      ios: () => Brightness.setBrightnessAsync(brightness),
-      default: () => Brightness.restoreSystemBrightnessAsync()
+      default: () => Brightness.restoreSystemBrightnessAsync(),
+      ios: () => Brightness.setBrightnessAsync(brightness)
     })();
   }, []);
 
@@ -82,8 +82,8 @@ export function useMaxBrightness({
   const setBrightness = useCallback(
     async (brightness: number) =>
       Platform.select({
-        ios: () => Brightness.setBrightnessAsync(brightness),
-        default: async () => await Brightness.setBrightnessAsync(brightness)
+        default: async () => await Brightness.setBrightnessAsync(brightness),
+        ios: () => Brightness.setBrightnessAsync(brightness)
       })(),
     []
   );

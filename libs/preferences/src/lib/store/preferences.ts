@@ -1,8 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { persistReducer, type PersistConfig } from 'redux-persist';
+import { type PersistConfig, persistReducer } from 'redux-persist';
 
-export type TypefaceChoice = 'comfortable' | 'standard';
+export type PreferencesPartialRootState = {
+  preferences: PreferencesSlice;
+};
 
 /* State type definition for the preferences slice
  * sessionId - Randomly generated session id which identifies a wallet when creating a wallet instance. It gets resetted when the onboarding
@@ -11,36 +13,39 @@ export type TypefaceChoice = 'comfortable' | 'standard';
  * isBiometricEnabled - Indicates if the biometric is enabled for the user.
  */
 export type PreferencesSlice = {
-  isOnboardingComplete: boolean;
+  fontPreference: TypefaceChoice;
   isBiometricEnabled: boolean;
   isFirstStartup: boolean;
+  isOnboardingComplete: boolean;
   selectedMiniAppId?: string;
-  fontPreference: TypefaceChoice;
 };
 
-export type PreferencesPartialRootState = {
-  preferences: PreferencesSlice;
-};
+export type TypefaceChoice = 'comfortable' | 'standard';
 
 // Initial state for the preferences slice
 const initialState: PreferencesSlice = {
-  isOnboardingComplete: false,
+  fontPreference: 'comfortable',
   isBiometricEnabled: false,
   isFirstStartup: true,
-  selectedMiniAppId: undefined,
-  fontPreference: 'comfortable'
+  isOnboardingComplete: false,
+  selectedMiniAppId: undefined
 };
 
 /**
  * Redux slice for the preferences state. It contains information about the preferences state.
  */
 const preferencesSlice = createSlice({
-  name: 'preferences',
   initialState,
+  name: 'preferences',
   reducers: {
-    // Onboarding
-    preferencesSetIsOnboardingDone: state => {
-      state.isOnboardingComplete = true;
+    // Font
+    preferencesFontSet: (state, action: PayloadAction<TypefaceChoice>) => {
+      state.fontPreference = action.payload;
+    },
+    preferencesReset: () => initialState,
+    // Mini App
+    preferencesResetMiniAppSelection: state => {
+      state.selectedMiniAppId = undefined;
     },
     // Fingerpint
     preferencesSetIsBiometricEnabled: (
@@ -52,21 +57,16 @@ const preferencesSlice = createSlice({
     preferencesSetIsFirstStartupFalse: state => {
       state.isFirstStartup = false;
     },
-    // Font
-    preferencesFontSet: (state, action: PayloadAction<TypefaceChoice>) => {
-      state.fontPreference = action.payload;
-    },
-    // Mini App
-    preferencesResetMiniAppSelection: state => {
-      state.selectedMiniAppId = undefined;
+    // Onboarding
+    preferencesSetIsOnboardingDone: state => {
+      state.isOnboardingComplete = true;
     },
     preferencesSetSelectedMiniAppId: (
       state,
       action: PayloadAction<string | undefined>
     ) => {
       state.selectedMiniAppId = action.payload;
-    },
-    preferencesReset: () => initialState
+    }
   }
 });
 
@@ -74,13 +74,13 @@ const preferencesSlice = createSlice({
  * Exports the actions for the preferences slice.
  */
 export const {
-  preferencesSetIsOnboardingDone,
+  preferencesFontSet,
+  preferencesReset,
+  preferencesResetMiniAppSelection,
   preferencesSetIsBiometricEnabled,
   preferencesSetIsFirstStartupFalse,
-  preferencesSetSelectedMiniAppId,
-  preferencesResetMiniAppSelection,
-  preferencesFontSet,
-  preferencesReset
+  preferencesSetIsOnboardingDone,
+  preferencesSetSelectedMiniAppId
 } = preferencesSlice.actions;
 
 /**

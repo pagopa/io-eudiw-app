@@ -1,18 +1,18 @@
 import { preferencesReducer as localReducer } from './lib/store/preferences';
 export {
-  preferencesReset,
   preferencesFontSet,
-  type TypefaceChoice,
-  selectIsBiometricEnabled,
-  selectFontPreference,
-  selectSelectedMiniAppId,
-  preferencesSetIsBiometricEnabled,
-  preferencesSetIsOnboardingDone,
-  preferencesSetIsFirstStartupFalse,
-  preferencesSetSelectedMiniAppId,
+  preferencesReset,
   preferencesResetMiniAppSelection,
+  preferencesSetIsBiometricEnabled,
+  preferencesSetIsFirstStartupFalse,
+  preferencesSetIsOnboardingDone,
+  preferencesSetSelectedMiniAppId,
+  selectFontPreference,
+  selectIsBiometricEnabled,
+  selectIsFirstStartup,
   selectIsOnboardingComplete,
-  selectIsFirstStartup
+  selectSelectedMiniAppId,
+  type TypefaceChoice
 } from './lib/store/preferences';
 
 export const preferencesReducer = {

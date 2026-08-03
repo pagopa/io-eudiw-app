@@ -1,28 +1,29 @@
-/**
- * Implements the preferences screen where the user can see and update his
- * preferences about notifications, calendar, services, messages and languages
- */
-import { ComponentProps, useRef } from 'react';
-import { FlatList, ListRenderItemInfo, View } from 'react-native';
+import {
+  IOScrollViewWithLargeHeader,
+  useHeaderSecondLevel
+} from '@io-eudiw-app/commons';
 import {
   Divider,
   IOVisualCostants,
   ListItemNav
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
+/**
+ * Implements the preferences screen where the user can see and update his
+ * preferences about notifications, calendar, services, messages and languages
+ */
+import { ComponentProps, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  IOScrollViewWithLargeHeader,
-  useHeaderSecondLevel
-} from '@io-eudiw-app/commons';
+import { FlatList, ListRenderItemInfo, View } from 'react-native';
+
 import MAIN_ROUTES from '../../navigation/main/routes';
 
-type PreferencesNavListItem = {
-  value: string;
-} & Pick<
+type PreferencesNavListItem = Pick<
   ComponentProps<typeof ListItemNav>,
-  'description' | 'testID' | 'onPress'
->;
+  'description' | 'onPress' | 'testID'
+> & {
+  value: string;
+};
 
 const Preferences = () => {
   const titleRef = useRef<View>(null);
@@ -33,46 +34,46 @@ const Preferences = () => {
     title: ''
   });
 
-  const preferencesNavListItems: ReadonlyArray<PreferencesNavListItem> = [
+  const preferencesNavListItems: readonly PreferencesNavListItem[] = [
     {
-      // Appearance
-      value: t('wallet:settings.preferences.appearance.title'),
       description: t('wallet:settings.preferences.appearance.description'),
       onPress: () =>
-        navigation.navigate(MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE)
+        navigation.navigate(MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE),
+      // Appearance
+      value: t('wallet:settings.preferences.appearance.title')
     }
   ];
 
   const renderPreferencesNavItem = ({
-    item: { value, description, onPress, testID }
+    item: { description, onPress, testID, value }
   }: ListRenderItemInfo<PreferencesNavListItem>) => (
     <ListItemNav
-      value={value}
       description={description}
       onPress={onPress}
       testID={testID}
+      value={value}
     />
   );
 
   return (
     <IOScrollViewWithLargeHeader
+      description={t('wallet:settings.preferences.description')}
+      ref={titleRef}
       title={{
         label: t('wallet:settings.preferences.title')
       }}
-      description={t('wallet:settings.preferences.description')}
-      ref={titleRef}
     >
       <FlatList
-        scrollEnabled={false}
-        keyExtractor={(item: PreferencesNavListItem, index: number) =>
-          `${item.value}-${index}`
-        }
         contentContainerStyle={{
           paddingHorizontal: IOVisualCostants.appMarginDefault
         }}
         data={preferencesNavListItems}
-        renderItem={renderPreferencesNavItem}
         ItemSeparatorComponent={Divider}
+        keyExtractor={(item: PreferencesNavListItem, index: number) =>
+          `${item.value}-${index}`
+        }
+        renderItem={renderPreferencesNavItem}
+        scrollEnabled={false}
       />
     </IOScrollViewWithLargeHeader>
   );

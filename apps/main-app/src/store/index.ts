@@ -1,8 +1,21 @@
+import { takeLatestEffect } from '@io-eudiw-app/commons';
+import { debugReducer, DebugRootState } from '@io-eudiw-app/debug-info';
 import {
+  identificationReducer,
+  IdentificationRootState
+} from '@io-eudiw-app/identification';
+import { itWalletFeature } from '@io-eudiw-app/it-wallet';
+import { deepLinkingReducer } from '@io-eudiw-app/navigation';
+import {
+  PreferenceRootState,
+  preferencesReducer,
+  preferencesReset
+} from '@io-eudiw-app/preferences';
+import {
+  combineReducers,
   configureStore,
   EnhancedStore,
-  isAnyOf,
-  combineReducers
+  isAnyOf
 } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -14,6 +27,7 @@ import {
   REGISTER,
   REHYDRATE
 } from 'redux-persist';
+
 import reactotron from '../config/reactotron';
 import {
   listenerMiddleware,
@@ -21,28 +35,16 @@ import {
   startAppListening
 } from '../middleware/listener';
 import { startupListener } from '../middleware/listener/startup';
-import { deepLinkingReducer } from '@io-eudiw-app/navigation';
 import { startupSetLoading, startupSlice } from './reducers/startup';
 import { AppDispatch, RootState } from './types';
-import { itWalletFeature } from '@io-eudiw-app/it-wallet';
-import {
-  PreferenceRootState,
-  preferencesReducer,
-  preferencesReset
-} from '@io-eudiw-app/preferences';
-import { debugReducer, DebugRootState } from '@io-eudiw-app/debug-info';
-import {
-  identificationReducer,
-  IdentificationRootState
-} from '@io-eudiw-app/identification';
-import { takeLatestEffect } from '@io-eudiw-app/commons';
 // 1. Explicitly type the combined state of all your reducers.
 export type AppRootState = DebugRootState &
-  IdentificationRootState & {
-    wallet: ReturnType<typeof itWalletFeature.reducer.wallet>;
-  } & PreferenceRootState & {
+  IdentificationRootState &
+  PreferenceRootState & {
     deepLinking: ReturnType<typeof deepLinkingReducer>;
     startup: ReturnType<typeof startupSlice.reducer>;
+  } & {
+    wallet: ReturnType<typeof itWalletFeature.reducer.wallet>;
   };
 
 /**
@@ -62,8 +64,6 @@ const rootReducer = combineReducers({
  * Redux store configuration.
  */
 export const store: EnhancedStore<AppRootState> = configureStore({
-  // Use the wrapped rootReducer instead of the reducer object
-  reducer: rootReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -73,10 +73,17 @@ export const store: EnhancedStore<AppRootState> = configureStore({
       listenerMiddleware.middleware,
       miniAppListenerMiddleware.middleware
     ),
+  /**
+   * Typescript complains about the order of middleware and enhancers props,
+   * middleware must be declared before enhancers
+   */
+  // eslint-disable-next-line perfectionist/sort-objects
   enhancers: getDefaultEnhancers =>
     __DEV__
       ? getDefaultEnhancers().concat(reactotron.createEnhancer())
-      : getDefaultEnhancers()
+      : getDefaultEnhancers(),
+  // Use the wrapped rootReducer instead of the reducer object
+  reducer: rootReducer
 });
 
 /**
@@ -86,8 +93,8 @@ export const store: EnhancedStore<AppRootState> = configureStore({
  */
 listenerMiddleware.clearListeners();
 startAppListening({
-  matcher: isAnyOf(startupSetLoading, preferencesReset),
-  effect: takeLatestEffect(startupListener)
+  effect: takeLatestEffect(startupListener),
+  matcher: isAnyOf(startupSetLoading, preferencesReset)
 });
 
 /**

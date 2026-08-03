@@ -1,18 +1,19 @@
+import { getAppVersion } from '@io-eudiw-app/commons';
+import { selectSelectedMiniAppId } from '@io-eudiw-app/preferences';
 import {
+  hexToRgba,
   IOColors,
   IOText,
-  VStack,
-  hexToRgba,
-  useIOTheme
+  useIOTheme,
+  VStack
 } from '@pagopa/io-app-design-system';
 import { useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { useAppSelector } from '../reducer';
 import { DebugDataIndicator } from './DebugDataIndicator';
 import { DebugDataOverlay } from './DebugDataOverlay';
-import { getAppVersion } from '@io-eudiw-app/commons';
-import { selectSelectedMiniAppId } from '@io-eudiw-app/preferences';
-import { useAppSelector } from '../reducer';
 
 const debugItemBgColor = hexToRgba(IOColors.white, 0.4);
 const debugItemBorderColor = hexToRgba(IOColors.black, 0.1);
@@ -36,15 +37,15 @@ export const DebugInfoOverlay = ({
 
   return (
     <>
-      <SafeAreaView style={styles.versionContainer} pointerEvents="box-none">
+      <SafeAreaView pointerEvents="box-none" style={styles.versionContainer}>
         <VStack space={4} style={{ alignItems: 'center' }}>
           <View style={styles.versionTextWrapper}>
             <IOText
               color={theme['textBody-secondary']}
               font="TitilliumSansPro"
-              weight="Semibold"
-              size={12}
               lineHeight={16}
+              size={12}
+              weight="Semibold"
             >
               {appVersionText}
             </IOText>
@@ -56,8 +57,8 @@ export const DebugInfoOverlay = ({
       </SafeAreaView>
       {isDebugDataVisibile && (
         <DebugDataOverlay
-          onDismissed={() => showDebugData(false)}
           clipboardSuccessMessage={clipboardSuccessMessage}
+          onDismissed={() => showDebugData(false)}
         />
       )}
     </>
@@ -67,20 +68,20 @@ export const DebugInfoOverlay = ({
 const styles = StyleSheet.create({
   versionContainer: {
     ...StyleSheet.absoluteFill,
-    top: Platform.OS === 'android' ? 0 : -8,
-    justifyContent: 'flex-start',
     alignItems: 'center',
+    justifyContent: 'flex-start',
+    top: Platform.OS === 'android' ? 0 : -8,
     zIndex: 1000
   },
   versionTextWrapper: {
+    alignItems: 'center',
+    backgroundColor: debugItemBgColor,
+    borderColor: debugItemBorderColor,
+    borderRadius: 8,
+    borderWidth: 1,
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'center',
-    borderColor: debugItemBorderColor,
-    borderWidth: 1,
-    paddingHorizontal: 4,
-    borderRadius: 8,
-    backgroundColor: debugItemBgColor
+    paddingHorizontal: 4
   }
 });

@@ -7,8 +7,8 @@ import DeviceInfo from 'react-native-device-info';
  */
 export const getAppVersion = () =>
   Platform.select({
-    ios: DeviceInfo.getReadableVersion(),
-    default: DeviceInfo.getVersion()
+    default: DeviceInfo.getVersion(),
+    ios: DeviceInfo.getReadableVersion()
   });
 
 export const isAndroid = Platform.OS === 'android';

@@ -1,44 +1,45 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersistConfig, persistReducer } from 'redux-persist';
-import { WalletCombinedRootState } from '.';
 import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
-import { resetLifecycle } from './lifecycle';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
+import { PersistConfig, persistReducer } from 'redux-persist';
+
+import { WalletCombinedRootState } from '.';
+import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the instance slice
  * keyTag - The keytag bound to the wallet instance
  */
 type InstanceSlice = {
-  sessionId: string;
   keyTag: string | undefined;
+  sessionId: string;
 };
 
 // Initial state for the instance slice
 const initialState: InstanceSlice = {
-  sessionId: Crypto.randomUUID().toString(),
-  keyTag: undefined
+  keyTag: undefined,
+  sessionId: Crypto.randomUUID().toString()
 };
 
 /**
  * Redux slice for the instance state. It allows to store and reset the keytag bound to the wallet instance.
  */
 const instanceSlice = createSlice({
-  name: 'instance',
-  initialState,
-  reducers: {
-    setInstanceKeyTag: (state, action: PayloadAction<string>) => {
-      state.keyTag = action.payload;
-    }
-  },
   extraReducers: builder => {
     // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
     builder.addCase(preferencesReset, () => initialState);
     builder.addCase(resetLifecycle, () => initialState);
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
+  },
+  initialState,
+  name: 'instance',
+  reducers: {
+    setInstanceKeyTag: (state, action: PayloadAction<string>) => {
+      state.keyTag = action.payload;
+    }
   }
 });
 

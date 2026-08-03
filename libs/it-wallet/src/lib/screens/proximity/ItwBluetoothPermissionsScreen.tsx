@@ -1,11 +1,12 @@
-import { ListItemInfo } from '@pagopa/io-app-design-system';
-import { StackActions, useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import { Alert, Linking, Platform } from 'react-native';
 import {
   IOScrollViewWithListItems,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
+import { ListItemInfo } from '@pagopa/io-app-design-system';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+import { Alert, Linking, Platform } from 'react-native';
+
 import { useProximityEngagement } from '../../hooks/useProximityEngagement';
 import MAIN_ROUTES from '../../navigation/main/routes';
 import { checkBluetoothActivation } from '../../utils/bluetooth';
@@ -23,8 +24,8 @@ const ItwBluetoothPermissionsScreen = () => {
   const { startEngagement } = useProximityEngagement();
 
   useHeaderSecondLevel({
-    title: '',
-    goBack: () => navigation.goBack()
+    goBack: () => navigation.goBack(),
+    title: ''
   });
 
   const handleContinue = async () => {
@@ -44,47 +45,40 @@ const ItwBluetoothPermissionsScreen = () => {
       t('wallet:proximity.bluetooth.permissions.alert.message'),
       [
         {
-          text: t('wallet:proximity.bluetooth.permissions.alert.text'),
-          onPress: () => navigation.goBack()
+          onPress: () => navigation.goBack(),
+          text: t('wallet:proximity.bluetooth.permissions.alert.text')
         }
       ]
     );
   };
 
-  const listItems: Array<ListItemInfo> = [
+  const listItems: ListItemInfo[] = [
     {
-      label: t('wallet:proximity.bluetooth.permissions.listItems.step1.label'),
-      value: t('wallet:proximity.bluetooth.permissions.listItems.step1.value'),
       icon:
-        Platform.OS === 'ios' ? 'systemSettingsiOS' : 'systemSettingsAndroid'
+        Platform.OS === 'ios' ? 'systemSettingsiOS' : 'systemSettingsAndroid',
+      label: t('wallet:proximity.bluetooth.permissions.listItems.step1.label'),
+      value: t('wallet:proximity.bluetooth.permissions.listItems.step1.value')
     },
     {
+      icon: 'systemAppsAndroid',
       label: t('wallet:proximity.bluetooth.permissions.listItems.step2.label'),
-      value: t('wallet:proximity.bluetooth.permissions.listItems.step2.value'),
-      icon: 'systemAppsAndroid'
+      value: t('wallet:proximity.bluetooth.permissions.listItems.step2.value')
     },
     {
+      icon: 'productITWallet',
       label: t('wallet:proximity.bluetooth.permissions.listItems.step3.label'),
-      value: t('wallet:proximity.bluetooth.permissions.listItems.step3.value'),
-      icon: 'productITWallet'
+      value: t('wallet:proximity.bluetooth.permissions.listItems.step3.value')
     },
     {
+      icon: 'systemToggleInstructions',
       label: t('wallet:proximity.bluetooth.permissions.listItems.step4.label'),
-      value: t('wallet:proximity.bluetooth.permissions.listItems.step4.value'),
-      icon: 'systemToggleInstructions'
+      value: t('wallet:proximity.bluetooth.permissions.listItems.step4.value')
     }
   ];
 
   return (
     <IOScrollViewWithListItems
-      title={t('wallet:proximity.bluetooth.permissions.title')}
-      subtitle={t('wallet:proximity.bluetooth.permissions.subtitle')}
-      listItemHeaderLabel={t(
-        'wallet:proximity.bluetooth.permissions.listItems.title'
-      )}
-      renderItems={listItems}
       actions={{
-        type: 'TwoButtons',
         primary: {
           label: t('wallet:proximity.bluetooth.permissions.actions.primary'),
           onPress: () => {
@@ -94,8 +88,15 @@ const ItwBluetoothPermissionsScreen = () => {
         secondary: {
           label: t('wallet:proximity.bluetooth.permissions.actions.secondary'),
           onPress: () => void handleContinue()
-        }
+        },
+        type: 'TwoButtons'
       }}
+      listItemHeaderLabel={t(
+        'wallet:proximity.bluetooth.permissions.listItems.title'
+      )}
+      renderItems={listItems}
+      subtitle={t('wallet:proximity.bluetooth.permissions.subtitle')}
+      title={t('wallet:proximity.bluetooth.permissions.title')}
     />
   );
 };

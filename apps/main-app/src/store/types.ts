@@ -1,4 +1,5 @@
 import { ThunkAction, UnknownAction } from '@reduxjs/toolkit';
+
 import { store } from '.';
 
 /**
@@ -6,14 +7,14 @@ import { store } from '.';
  */
 export type AppDispatch = typeof store.dispatch;
 
-/**
- * Type definition for the root state of the Redux store.
- */
-export type RootState = ReturnType<typeof store.getState>;
-
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootState,
   unknown,
   UnknownAction
 >;
+
+/**
+ * Type definition for the root state of the Redux store.
+ */
+export type RootState = ReturnType<typeof store.getState>;

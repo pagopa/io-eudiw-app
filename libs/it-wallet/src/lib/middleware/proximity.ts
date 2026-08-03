@@ -1,3 +1,9 @@
+import { takeLatestEffect } from '@io-eudiw-app/commons';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '@io-eudiw-app/identification';
 import { ISO18013_5 } from '@pagopa/io-react-native-iso18013';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import { t } from 'i18next';
@@ -6,6 +12,8 @@ import {
   EmitterSubscription,
   NativeEventSubscription
 } from 'react-native';
+
+import { WalletCombinedRootState } from '../store';
 import { selectCredentials } from '../store/credentials';
 import {
   ProximityStatus,
@@ -39,8 +47,9 @@ import {
   itwGrantProximityConsent,
   selectProximityConsentExists
 } from '../store/proximityConsents';
-import { CredentialFormat } from '../utils/itwTypesUtils';
+import { serializeErrorOrUnknown } from '../utils/errors';
 import { CredentialsVault } from '../utils/itwCredentialVault';
+import { CredentialFormat } from '../utils/itwTypesUtils';
 import { requestBlePermissions } from '../utils/permissions';
 import {
   generateAcceptedFields,
@@ -48,20 +57,12 @@ import {
   getProximityDetails,
   verifierCertificates
 } from '../utils/proximity';
-import { takeLatestEffect } from '@io-eudiw-app/commons';
 import { AppListener, AppListenerWithAction, AppStartListening } from './types';
-import { serializeErrorOrUnknown } from '../utils/errors';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '@io-eudiw-app/identification';
-import { WalletCombinedRootState } from '../store';
 
 const {
-  ErrorCode,
   addListener,
   close,
+  ErrorCode,
   generateResponse,
   parseVerifierRequest,
   sendErrorResponse,
@@ -78,12 +79,12 @@ const {
 const ENGAGEMENT_CONFIG: Record<
   ISO18013_5.EngagementMode,
   {
-    engagementModes: ReadonlyArray<ISO18013_5.EngagementMode>;
-    retrievalMethods: ReadonlyArray<ISO18013_5.RetrievalMethod>;
+    engagementModes: readonly ISO18013_5.EngagementMode[];
+    retrievalMethods: readonly ISO18013_5.RetrievalMethod[];
   }
 > = {
-  qrcode: { engagementModes: ['qrcode'], retrievalMethods: ['ble'] },
-  nfc: { engagementModes: ['nfc'], retrievalMethods: ['ble', 'nfc'] }
+  nfc: { engagementModes: ['nfc'], retrievalMethods: ['ble', 'nfc'] },
+  qrcode: { engagementModes: ['qrcode'], retrievalMethods: ['ble'] }
 };
 
 const startProximityEngagement = async (appState: WalletCombinedRootState) => {
@@ -99,12 +100,12 @@ const startProximityEngagement = async (appState: WalletCombinedRootState) => {
   });
 };
 
-const removeProximityListeners = (listeners: Array<EmitterSubscription>) => {
+const removeProximityListeners = (listeners: EmitterSubscription[]) => {
   listeners.forEach(listener => listener.remove());
 };
 
-const addLifecycleListeners = (listenerApi: AppListener) => {
-  return AppState.addEventListener('change', async state => {
+const addLifecycleListeners = (listenerApi: AppListener) =>
+  AppState.addEventListener('change', async state => {
     const appState = listenerApi.getState();
     if (!selectProximityIsConnected(appState)) {
       if (state === 'active') {
@@ -114,7 +115,6 @@ const addLifecycleListeners = (listenerApi: AppListener) => {
       }
     }
   });
-};
 
 const removeLifecycleListeners = (subscr: NativeEventSubscription) =>
   subscr.remove();
@@ -305,7 +305,7 @@ const transmit = async (
     return;
   }
 
-  const documents: Array<ISO18013_5.RequestedDocument> = await Promise.all(
+  const documents: ISO18013_5.RequestedDocument[] = await Promise.all(
     mdocCredentials.map(async credential => {
       const encoded = await CredentialsVault.get(credential.credentialType);
       if (!encoded) {
@@ -314,9 +314,9 @@ const transmit = async (
         );
       }
       return {
-        issuerSignedContent: encoded,
         alias: credential.keyTag,
-        docType: credential.credentialType
+        docType: credential.credentialType,
+        issuerSignedContent: encoded
       };
     })
   );

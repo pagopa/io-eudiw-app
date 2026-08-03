@@ -1,15 +1,15 @@
 jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string) => key,
-    i18n: {
-      language: 'it-IT',
-      changeLanguage: jest.fn(() => Promise.resolve())
-    }
-  }),
   initReactI18next: {
-    type: '3rdParty',
-    init: jest.fn()
-  }
+    init: jest.fn(),
+    type: '3rdParty'
+  },
+  useTranslation: () => ({
+    i18n: {
+      changeLanguage: jest.fn(() => Promise.resolve()),
+      language: 'it-IT'
+    },
+    t: (key: string) => key
+  })
 }));
 
 jest.mock('i18next', () => ({

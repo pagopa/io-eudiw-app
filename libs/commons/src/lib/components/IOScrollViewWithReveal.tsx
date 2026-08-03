@@ -13,14 +13,12 @@ import {
   WithTestID
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
-
 import {
   ComponentProps,
   Fragment,
   PropsWithChildren,
   useLayoutEffect
 } from 'react';
-
 import { ColorValue, StyleSheet, View } from 'react-native';
 import { easeGradient } from 'react-native-easing-gradient';
 import LinearGradient from 'react-native-linear-gradient';
@@ -35,26 +33,27 @@ import Animated, {
   useSharedValue,
   withTiming
 } from 'react-native-reanimated';
+
 import { useFooterActionsMargin } from '../hooks/useFooterActionsMargin';
 
 type ButtonBlockProps = Omit<
   IOButtonBlockSpecificProps,
-  'fullWidth' | 'variant' | 'color'
+  'color' | 'fullWidth' | 'variant'
 >;
 
 type ButtonLinkProps = Omit<IOButtonLinkSpecificProps, 'color' | 'variant'>;
 
 type IOScrollViewRevealActions = {
-  primary: ButtonBlockProps;
   anchor: ButtonLinkProps;
+  primary: ButtonBlockProps;
 };
 
 type IOScrollViewWithRevealProps = WithTestID<
   PropsWithChildren<{
-    headerConfig?: ComponentProps<typeof HeaderSecondLevel>;
     actions: IOScrollViewRevealActions;
-    debugMode?: boolean;
     animatedRef: AnimatedRef<Animated.ScrollView>;
+    debugMode?: boolean;
+    headerConfig?: ComponentProps<typeof HeaderSecondLevel>;
     hideAnchorAction: SharedValue<boolean>;
   }>
 >;
@@ -72,20 +71,20 @@ const extraSafeAreaMargin: IOSpacingScale = 8;
 const anchorLinkTransitionDuration = 600; // in ms
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    flexShrink: 0,
+    paddingHorizontal: IOVisualCostants.appMarginDefault,
+    position: 'relative',
+    width: '100%'
+  },
   gradientBottomActions: {
-    width: '100%',
-    position: 'absolute',
     bottom: 0,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    position: 'absolute',
+    width: '100%'
   },
   gradientContainer: {
     ...StyleSheet.absoluteFill
-  },
-  buttonContainer: {
-    position: 'relative',
-    paddingHorizontal: IOVisualCostants.appMarginDefault,
-    width: '100%',
-    flexShrink: 0
   }
 });
 
@@ -105,11 +104,11 @@ const styles = StyleSheet.create({
  * @param {boolean} [debugMode=false] Enable debug mode. Only for testing purposes
  */
 export const IOScrollViewWithReveal = ({
-  headerConfig,
-  children,
   actions,
-  debugMode = false,
   animatedRef,
+  children,
+  debugMode = false,
+  headerConfig,
   hideAnchorAction,
   testID
 }: IOScrollViewWithRevealProps) => {
@@ -160,7 +159,7 @@ export const IOScrollViewWithReveal = ({
   const safeBottomAreaHeight = bottomMargin + actionBlockHeight;
 
   const handleScroll = useAnimatedScrollHandler(
-    ({ contentOffset, layoutMeasurement, contentSize }) => {
+    ({ contentOffset, contentSize, layoutMeasurement }) => {
       const scrollPosition = contentOffset.y;
       const maxScrollHeight = contentSize.height - layoutMeasurement.height;
       const scrollPercentage = scrollPosition / maxScrollHeight;
@@ -215,23 +214,24 @@ export const IOScrollViewWithReveal = ({
   return (
     <Fragment>
       <Animated.ScrollView
-        ref={animatedRef}
-        testID={testID}
-        onScroll={handleScroll}
-        scrollEventThrottle={8}
-        snapToEnd={false}
-        decelerationRate="normal"
         contentContainerStyle={[
           {
-            paddingBottom: actions ? safeBottomAreaHeight : bottomMargin,
-            flexGrow: 1
+            flexGrow: 1,
+            paddingBottom: actions ? safeBottomAreaHeight : bottomMargin
           }
         ]}
+        decelerationRate="normal"
+        onScroll={handleScroll}
+        ref={animatedRef}
+        scrollEventThrottle={8}
+        snapToEnd={false}
+        testID={testID}
       >
         {children}
       </Animated.ScrollView>
       {actions && (
         <View
+          pointerEvents="box-none"
           style={[
             styles.gradientBottomActions,
             {
@@ -239,34 +239,33 @@ export const IOScrollViewWithReveal = ({
               paddingBottom: bottomMargin
             }
           ]}
-          pointerEvents="box-none"
           {...(testID && { testID: `${testID}-actions` })}
         >
           <Animated.View
+            pointerEvents="none"
             style={[
               styles.gradientContainer,
               debugMode && {
                 backgroundColor: hexToRgba(IOColors['error-500'], 0.15)
               }
             ]}
-            pointerEvents="none"
           >
             <Animated.View
               style={[
                 opacityTransition,
                 debugMode && {
+                  backgroundColor: hexToRgba(IOColors['error-500'], 0.4),
                   borderTopColor: IOColors['error-500'],
-                  borderTopWidth: 1,
-                  backgroundColor: hexToRgba(IOColors['error-500'], 0.4)
+                  borderTopWidth: 1
                 }
               ]}
             >
               <LinearGradient
+                colors={colors}
+                locations={locations}
                 style={{
                   height: gradientAreaHeight - safeBackgroundBlockHeight
                 }}
-                locations={locations}
-                colors={colors}
               />
             </Animated.View>
 
@@ -275,15 +274,15 @@ export const IOScrollViewWithReveal = ({
                 block, the content appears glitchy. */}
             <View
               style={{
+                backgroundColor: APP_BG_COLOR,
                 bottom: 0,
-                height: safeBackgroundBlockHeight,
-                backgroundColor: APP_BG_COLOR
+                height: safeBackgroundBlockHeight
               }}
             />
           </Animated.View>
-          <View style={styles.buttonContainer} pointerEvents="box-none">
+          <View pointerEvents="box-none" style={styles.buttonContainer}>
             <View>
-              <IOButton variant="solid" fullWidth {...actions.primary} />
+              <IOButton fullWidth variant="solid" {...actions.primary} />
             </View>
             <VSpacer size={spaceBetweenActionAndLink} />
             <Animated.View

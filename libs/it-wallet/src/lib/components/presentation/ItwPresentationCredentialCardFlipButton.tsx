@@ -4,30 +4,31 @@ import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 type ItwPresentationCredentialCardFlipButtonProps = {
-  isFlipped: boolean;
-  handleOnPress: () => void;
   fullScreen?: boolean;
+  handleOnPress: () => void;
+  isFlipped: boolean;
 };
 
 /**
  * This component renders the flip button for the skeumorphic credential card
  */
 const ItwPresentationCredentialCardFlipButton = ({
-  isFlipped,
+  fullScreen = false,
   handleOnPress,
-  fullScreen = false
+  isFlipped
 }: ItwPresentationCredentialCardFlipButtonProps) => (
   <View
-    style={fullScreen ? styles.fullWidthButton : styles.button}
-    accessible={true}
     accessibilityLabel={t('presentation.credentialDetails.card.showBack', {
       ns: 'wallet'
     })}
     accessibilityRole="switch"
     accessibilityState={{ checked: isFlipped }}
+    accessible={true}
+    style={fullScreen ? styles.fullWidthButton : styles.button}
   >
     <IOButton
-      variant={fullScreen ? 'solid' : 'link'}
+      icon="switchCard"
+      iconPosition="end"
       label={t(
         `presentation.credentialDetails.card.${
           isFlipped ? 'showFront' : 'showBack'
@@ -37,8 +38,7 @@ const ItwPresentationCredentialCardFlipButton = ({
         }
       )}
       onPress={handleOnPress}
-      icon="switchCard"
-      iconPosition="end"
+      variant={fullScreen ? 'solid' : 'link'}
     />
   </View>
 );

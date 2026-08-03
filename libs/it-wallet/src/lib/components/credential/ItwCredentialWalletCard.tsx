@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
+
+import MAIN_ROUTES from '../../navigation/main/routes';
 import WALLET_ROUTES from '../../navigation/wallet/routes';
 import { withWalletCardBaseComponent } from '../WalletCardBaseComponent';
 import { WalletCardPressableBase } from '../WalletCardPressableBase';
 import { ItwCredentialCard, ItwCredentialCardProps } from './ItwCredentialCard';
-import MAIN_ROUTES from '../../navigation/main/routes';
 
 type ItwCredentialWalletCardProps = ItwCredentialCardProps & {
   /* Optional onPress to override press functionality */
@@ -16,10 +17,10 @@ const WrappedItwCredentialCard = (props: ItwCredentialWalletCardProps) => {
 
   const handleOnPress = () => {
     navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-      screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_DETAILS,
       params: {
         credentialType
-      }
+      },
+      screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_DETAILS
     });
   };
 

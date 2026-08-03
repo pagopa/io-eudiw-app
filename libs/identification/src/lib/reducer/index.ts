@@ -1,23 +1,19 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { identificationReducer, IdentificationSlice } from './identification';
+import { PreferenceRootState } from '@io-eudiw-app/preferences';
 import {
   combineReducers,
   ThunkDispatch,
   UnknownAction
 } from '@reduxjs/toolkit';
-import { pinReducer, PinState } from './pin';
-import { PreferenceRootState } from '@io-eudiw-app/preferences';
+import { useDispatch, useSelector } from 'react-redux';
 
-export type IdentificationCombinedRootState = {
+import { identificationReducer, IdentificationSlice } from './identification';
+import { pinReducer, PinState } from './pin';
+
+export type IdentificationCombinedRootState = PreferenceRootState & {
   identification: {
     identification: IdentificationSlice;
     pin: PinState;
   };
-} & PreferenceRootState;
-
-export type IdentificationRootState = {
-  identification: IdentificationSlice;
-  pin: PinState;
 };
 
 export type IdentificationDispatch = ThunkDispatch<
@@ -25,6 +21,11 @@ export type IdentificationDispatch = ThunkDispatch<
   undefined,
   UnknownAction
 >;
+
+export type IdentificationRootState = {
+  identification: IdentificationSlice;
+  pin: PinState;
+};
 
 /**
  * Combine all slices into a single base reducer.

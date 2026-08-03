@@ -3,14 +3,15 @@
  */
 
 import { createSelector } from '@reduxjs/toolkit';
+
+import { WalletCombinedRootState } from '..';
 import { wellKnownCredential } from '../../utils/credentials';
+import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import {
   itwCredentialsPidStatusSelector,
   selectCredentials
 } from '../credentials';
 import { lifecycleIsValidSelector } from '../lifecycle';
-import { WalletCombinedRootState } from '..';
-import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 
 /**
  * Returns the credentials object from the itw credentials state, excluding the PID credential.
@@ -87,9 +88,9 @@ export const itwCredentialStatusSelector = createSelector(
     );
     // This should never happen
     if (credential === undefined) {
-      return { status: undefined, message: undefined };
+      return { message: undefined, status: undefined };
     }
 
-    return { status: getCredentialStatus(credential), message: undefined };
+    return { message: undefined, status: getCredentialStatus(credential) };
   }
 );

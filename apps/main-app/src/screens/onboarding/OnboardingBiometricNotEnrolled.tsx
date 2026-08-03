@@ -1,12 +1,13 @@
-import { ListItemInfo } from '@pagopa/io-app-design-system';
-import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useAppDispatch } from '../../store';
-import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/preferences';
 import {
   IOScrollViewWithListItems,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
+import { preferencesSetIsOnboardingDone } from '@io-eudiw-app/preferences';
+import { ListItemInfo } from '@pagopa/io-app-design-system';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { useAppDispatch } from '../../store';
 
 /**
  * Screen to be shown if the user has not enrolled in biometric authentication but the device supports it.
@@ -24,58 +25,54 @@ const OnboardingBiometricNotEnrolled = () => {
     title: ''
   });
 
-  const listItems = useMemo<Array<ListItemInfo>>(
+  const listItems = useMemo<ListItemInfo[]>(
     () => [
       {
+        icon: 'systemSettingsAndroid',
         label: t(
           'global:onboarding.biometric.notEnrolled.list.firstItem.label'
         ),
-        value: t(
-          'global:onboarding.biometric.notEnrolled.list.firstItem.value'
-        ),
-        icon: 'systemSettingsAndroid'
+        value: t('global:onboarding.biometric.notEnrolled.list.firstItem.value')
       },
       {
+        icon: 'systemBiometricRecognitionOS',
         label: t(
           'global:onboarding.biometric.notEnrolled.list.secondItem.label'
         ),
         value: t(
           'global:onboarding.biometric.notEnrolled.list.secondItem.value'
-        ),
-        icon: 'systemBiometricRecognitionOS'
+        )
       },
       {
+        icon: 'systemToggleInstructions',
         label: t(
           'global:onboarding.biometric.notEnrolled.list.thirdItem.label'
         ),
-        value: t(
-          'global:onboarding.biometric.notEnrolled.list.thirdItem.value'
-        ),
-        icon: 'systemToggleInstructions'
+        value: t('global:onboarding.biometric.notEnrolled.list.thirdItem.value')
       }
     ],
     [t]
   );
 
   const primaryActionProps = {
-    label: t('common:buttons.continue'),
     accessibilityLabel: t('common:buttons.continue'),
+    label: t('common:buttons.continue'),
     onPress: concludeOnboarding,
     testID: 'not-enrolled-biometric-confirm'
   };
 
   return (
     <IOScrollViewWithListItems
-      title={t('global:onboarding.biometric.title')}
-      subtitle={t('global:onboarding.biometric.notEnrolled.description')}
-      listItemHeaderLabel={t(
-        'global:onboarding.biometric.notEnrolled.list.header'
-      )}
-      renderItems={listItems}
       actions={{
         primary: primaryActionProps,
         type: 'SingleButton'
       }}
+      listItemHeaderLabel={t(
+        'global:onboarding.biometric.notEnrolled.list.header'
+      )}
+      renderItems={listItems}
+      subtitle={t('global:onboarding.biometric.notEnrolled.description')}
+      title={t('global:onboarding.biometric.title')}
     />
   );
 };

@@ -1,24 +1,25 @@
-import { ReactNode } from 'react';
-import Animated, {
-  useAnimatedRef,
-  useSharedValue
-} from 'react-native-reanimated';
 import {
   ButtonBlockProps,
   IOScrollView,
   IOScrollViewActions,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
+import { ReactNode } from 'react';
+import Animated, {
+  useAnimatedRef,
+  useSharedValue
+} from 'react-native-reanimated';
+
+import { useAppSelector } from '../../store';
 import { lifecycleIsValidSelector } from '../../store/lifecycle';
 import { useHeaderPropsByCredentialType } from '../../utils/itwStyleUtils';
 import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
-import { useAppSelector } from '../../store';
 
 export type CredentialCtaProps = ButtonBlockProps;
 
 type ItwPresentationDetailsScreenBaseProps = {
-  credential: StoredCredentialMetadata;
   children?: ReactNode;
+  credential: StoredCredentialMetadata;
   ctaProps?: CredentialCtaProps;
   headerTransparent?: boolean;
 };
@@ -27,8 +28,8 @@ type ItwPresentationDetailsScreenBaseProps = {
 const scrollTriggerOffsetValue: number = 88;
 
 const ItwPresentationDetailsScreenBase = ({
-  credential,
   children,
+  credential,
   ctaProps,
   headerTransparent = false
 }: ItwPresentationDetailsScreenBaseProps) => {
@@ -44,26 +45,26 @@ const ItwPresentationDetailsScreenBase = ({
   // TODO add support toast?
 
   useHeaderSecondLevel({
+    animatedRef: animatedScrollViewRef,
+    enableDiscreteTransition: true,
     scrollValues: {
-      triggerOffset: scrollTriggerOffsetValue,
-      contentOffsetY: scrollTranslationY
+      contentOffsetY: scrollTranslationY,
+      triggerOffset: scrollTriggerOffsetValue
     },
     supportRequest: true,
-    enableDiscreteTransition: true,
-    animatedRef: animatedScrollViewRef,
     transparent: headerTransparent,
     ...headerProps
   });
 
   const actions: IOScrollViewActions | undefined = ctaProps
-    ? { type: 'SingleButton', primary: ctaProps }
+    ? { primary: ctaProps, type: 'SingleButton' }
     : undefined;
 
   return (
     <IOScrollView
+      actions={actions}
       animatedRef={animatedScrollViewRef}
       includeContentMargins={false}
-      actions={actions}
     >
       {children}
     </IOScrollView>

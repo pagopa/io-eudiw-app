@@ -5,9 +5,10 @@ import {
   View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DebugPrettyPrint } from './DebugPrettyPrint';
-import { selectDebugData } from '../reducer/debug';
+
 import { useAppSelector } from '../reducer';
+import { selectDebugData } from '../reducer/debug';
+import { DebugPrettyPrint } from './DebugPrettyPrint';
 
 type DebugDataOverlayProps = {
   clipboardSuccessMessage: string;
@@ -19,28 +20,28 @@ type DebugDataOverlayProps = {
  * Used in {@link DebugInfoOverlay}
  */
 export const DebugDataOverlay = ({
-  onDismissed,
-  clipboardSuccessMessage
+  clipboardSuccessMessage,
+  onDismissed
 }: DebugDataOverlayProps) => {
   const debugData = useAppSelector(selectDebugData);
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableWithoutFeedback onPress={onDismissed} accessibilityRole="none">
+      <TouchableWithoutFeedback accessibilityRole="none" onPress={onDismissed}>
         <View style={styles.overlay} />
       </TouchableWithoutFeedback>
       <ScrollView
-        style={styles.scroll}
         contentContainerStyle={styles.scrollContainer}
+        style={styles.scroll}
       >
         {Object.entries(debugData).map(([key, value]) => (
           <DebugPrettyPrint
-            key={`debug_data_${key}`}
-            title={key}
-            data={value}
             clipboardSuccessMessage={clipboardSuccessMessage}
+            data={value}
             expandable={true}
             isExpanded={false}
+            key={`debug_data_${key}`}
+            title={key}
           />
         ))}
       </ScrollView>
@@ -52,21 +53,21 @@ const overlayColor = '#000000B0';
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
     bottom: 0,
     left: 0,
+    paddingTop: 60,
+    position: 'absolute',
     right: 0,
-    zIndex: 999,
-    paddingTop: 60
+    top: 0,
+    zIndex: 999
   },
   overlay: {
-    position: 'absolute',
-    top: 0,
+    backgroundColor: overlayColor,
     bottom: 0,
     left: 0,
+    position: 'absolute',
     right: 0,
-    backgroundColor: overlayColor
+    top: 0
   },
   scroll: {
     flexGrow: 0

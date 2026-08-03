@@ -1,10 +1,11 @@
+import { isAndroid } from '@io-eudiw-app/commons';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { PermissionStatus, useCameraPermissions, Camera } from 'expo-camera';
+import { Camera, PermissionStatus, useCameraPermissions } from 'expo-camera';
 import { useCallback, useEffect, useState } from 'react';
 import { AppState, Linking } from 'react-native';
+
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
-import { isAndroid } from '@io-eudiw-app/commons';
 
 /**
  * Hook to handle camera permission status with platform specific behavior
@@ -99,7 +100,7 @@ export const useCameraPermissionStatus = () => {
   return {
     // Returns PermissionStatus | undefined (if loading)
     cameraPermissionStatus: permission?.status,
-    requestPermission,
-    openCameraSettings
+    openCameraSettings,
+    requestPermission
   };
 };

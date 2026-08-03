@@ -7,10 +7,14 @@ import {
   IOVisualCostants,
   useIOTheme
 } from '@pagopa/io-app-design-system';
+import I18n from 'i18next';
+import { useCallback } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import QRCode from 'react-native-qrcode-skia';
 import Animated, { FadeIn } from 'react-native-reanimated';
+
 import ItwAvatar from '../../../assets/img/brand/itw_avatar.svg';
+import { useProximityEngagement } from '../../hooks/useProximityEngagement';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   resetProximity,
@@ -19,9 +23,6 @@ import {
   setProximityStatusStopped
 } from '../../store/proximity';
 import { ITW_BRANDED_BOX_PADDING } from '../ItwBrandedBox';
-import I18n from 'i18next';
-import { useCallback } from 'react';
-import { useProximityEngagement } from '../../hooks/useProximityEngagement';
 
 const QR_CODE_LOGO_SIZE = 84;
 
@@ -58,78 +59,78 @@ export const ItwProximityQrCodeImage = () => {
   if (proximityFailure) {
     return (
       <StatusBox
-        iconName="warningFilled"
-        description={I18n.t('proximity.engagement.qrCode.error', {
-          ns: 'wallet'
-        })}
         action={
           <View style={styles.retryActionContainer}>
             <IOButton
-              variant="link"
               label={I18n.t('buttons.retry', { ns: 'common' })}
               onPress={handleRetry}
+              variant="link"
             />
           </View>
         }
+        description={I18n.t('proximity.engagement.qrCode.error', {
+          ns: 'wallet'
+        })}
+        iconName="warningFilled"
       />
     );
   }
 
   if (!qrCode) {
-    return <IOSkeleton shape="square" size={QR_CODE_SIZE} radius={16} />;
+    return <IOSkeleton radius={16} shape="square" size={QR_CODE_SIZE} />;
   }
 
   return (
     <Animated.View entering={FadeIn.duration(200)}>
       <QRCode
         color={theme['textBody-default']}
-        value={qrCode}
-        size={QR_CODE_SIZE}
         errorCorrectionLevel="H"
-        shapeOptions={{
-          shape: 'circle',
-          eyePatternShape: 'rounded',
-          eyePatternGap: 0,
-          gap: 0
-        }}
-        logoAreaSize={88}
-        logoAreaBorderRadius={8}
         logo={
-          <ItwAvatar width={QR_CODE_LOGO_SIZE} height={QR_CODE_LOGO_SIZE} />
+          <ItwAvatar height={QR_CODE_LOGO_SIZE} width={QR_CODE_LOGO_SIZE} />
         }
+        logoAreaBorderRadius={8}
+        logoAreaSize={88}
+        shapeOptions={{
+          eyePatternGap: 0,
+          eyePatternShape: 'rounded',
+          gap: 0,
+          shape: 'circle'
+        }}
+        size={QR_CODE_SIZE}
+        value={qrCode}
       />
     </Animated.View>
   );
 };
 
 type StatusBoxProps = {
-  iconName: 'warningFilled' | 'qrCode';
-  description: string;
   action?: React.ReactNode;
+  description: string;
+  iconName: 'qrCode' | 'warningFilled';
 };
 
-const StatusBox = ({ iconName, description, action }: StatusBoxProps) => (
+const StatusBox = ({ action, description, iconName }: StatusBoxProps) => (
   <View style={styles.statusBox}>
-    <Icon name={iconName} size={24} color="grey-700" />
+    <Icon color="grey-700" name={iconName} size={24} />
     <Body style={styles.statusDescription}>{description}</Body>
     {action}
   </View>
 );
 
 const styles = StyleSheet.create({
+  retryActionContainer: {
+    marginTop: 0
+  },
   statusBox: {
-    backgroundColor: IOColors['grey-50'],
     alignItems: 'center',
-    justifyContent: 'center',
     aspectRatio: 1,
-    padding: 16,
+    backgroundColor: IOColors['grey-50'],
     borderRadius: 16,
-    gap: 8
+    gap: 8,
+    justifyContent: 'center',
+    padding: 16
   },
   statusDescription: {
     textAlign: 'center'
-  },
-  retryActionContainer: {
-    marginTop: 0
   }
 });

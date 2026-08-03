@@ -4,7 +4,9 @@
 
 import { differenceInCalendarDays, isValid } from 'date-fns';
 import { t } from 'i18next';
+
 import { claimScheme, parseClaims } from './claims';
+import { isPresentationDetailSdJwt } from './credentials';
 import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
 import {
   ClaimDisplayResult,
@@ -14,7 +16,6 @@ import {
   ParsedDcql,
   StoredCredentialMetadata
 } from './itwTypesUtils';
-import { isPresentationDetailSdJwt } from './credentials';
 
 /**
  *
@@ -31,58 +32,58 @@ import { isPresentationDetailSdJwt } from './credentials';
  */
 export enum WellKnownClaim {
   /**
-   * Unique ID must be excluded from every credential and should not rendered in the claims list
+   *  Claim that contains the barcode
    */
-  unique_id = 'unique_id',
+  barcode = 'barcode',
+  /**
+   * Claim used to display the attachments of a credential (currently used for the European Health Insurance Card)
+   */
+  content = 'content',
+  document_number = 'document_number',
+  /**
+   * Claim that contains the driving privilege within the new nested structure
+   */
+  driving_privileges = 'driving_privileges',
   /**
    * Claim used to extract expiry date from a credential. This is used to display how many days are left for
    * the credential expiration or to know if the credential is expired
    */
   expiry_date = 'expiry_date',
   /**
-   * Claim used to display a QR Code for the Disability Card. It must be excluded from the common claims list
-   * and rendered using a {@link QRCodeImage} (currently used for the European Disability Card)
-   */
-  link_qr_code = 'link_qr_code',
-  /**
-   * Claim used to display the attachments of a credential (currently used for the European Health Insurance Card)
-   */
-  content = 'content',
-  /**
-   * Claim that contains the fiscal code, used for checks based on the user's identity.
-   */
-  tax_id_code = 'tax_id_code',
-  /**
    * Claims that contains the document number, if applicable for the credential
    */
 
-  fiscal_code = 'fiscal_code',
+  /**
+   * Claim that contains the family name, if applicable for the credential
+   */
+  family_name = 'family_name',
 
-  document_number = 'document_number',
+  fiscal_code = 'fiscal_code',
   /**
    * Claim that contains the first name, if applicable for the credential
    */
   given_name = 'given_name',
   /**
-   * Claim that contains the family name, if applicable for the credential
+   * Claim used to display a QR Code for the Disability Card. It must be excluded from the common claims list
+   * and rendered using a {@link QRCodeImage} (currently used for the European Disability Card)
    */
-  family_name = 'family_name',
+  link_qr_code = 'link_qr_code',
   /**
    * Claim that contains the portrait image
    */
   portrait = 'portrait',
   /**
-   * Claim that contains the driving privilege within the new nested structure
-   */
-  driving_privileges = 'driving_privileges',
-  /**
    * Claim that contains signature usual mark
    */
   signature_usual_mark = 'signature_usual_mark',
   /**
-   *  Claim that contains the barcode
+   * Claim that contains the fiscal code, used for checks based on the user's identity.
    */
-  barcode = 'barcode'
+  tax_id_code = 'tax_id_code',
+  /**
+   * Unique ID must be excluded from every credential and should not rendered in the claims list
+   */
+  unique_id = 'unique_id'
 }
 
 /**
@@ -148,7 +149,7 @@ export const getCredentialExpireDays = (
  */
 export const enrichPresentationDetails = (
   presentationDetails: ParsedDcql,
-  credentialsByType: Array<StoredCredentialMetadata>
+  credentialsByType: StoredCredentialMetadata[]
 ): EnrichedPresentationDetails =>
   presentationDetails.filter(isPresentationDetailSdJwt).map(details => {
     const credentialType = details.vct;
@@ -191,25 +192,6 @@ export const getClaimDisplayValue = (
     const parsed = claimScheme.parse(claim);
 
     switch (parsed.type) {
-      case 'placeOfBirth':
-        return {
-          type: 'text',
-          value: `${parsed.value}`
-        };
-
-      case 'date':
-      case 'expireDate':
-        return {
-          type: 'text',
-          value: parsed.value.toLocaleDateString()
-        };
-
-      case 'image':
-        return {
-          type: 'image',
-          value: parsed.value
-        };
-
       case 'boolean':
         return {
           type: 'text',
@@ -218,10 +200,11 @@ export const getClaimDisplayValue = (
           })
         };
 
-      case 'stringArray':
+      case 'date':
+      case 'expireDate':
         return {
           type: 'text',
-          value: parsed.value.join(', ')
+          value: parsed.value.toLocaleDateString()
         };
 
       case 'drivingPrivileges': {
@@ -234,16 +217,34 @@ export const getClaimDisplayValue = (
         };
       }
 
+      case 'emptyString':
+        return {
+          type: 'text',
+          value: ''
+        };
+
+      case 'image':
+        return {
+          type: 'image',
+          value: parsed.value
+        };
+
+      case 'placeOfBirth':
+        return {
+          type: 'text',
+          value: `${parsed.value}`
+        };
+
       case 'string':
         return {
           type: 'text',
           value: parsed.value
         };
 
-      case 'emptyString':
+      case 'stringArray':
         return {
           type: 'text',
-          value: ''
+          value: parsed.value.join(', ')
         };
 
       case 'verificationEvidence':
@@ -273,8 +274,8 @@ export const getClaimDisplayValue = (
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const SIMPLE_DATE_FORMAT = {
-  DDMMYYYY: 'DD/MM/YYYY',
-  DDMMYY: 'DD/MM/YY'
+  DDMMYY: 'DD/MM/YY',
+  DDMMYYYY: 'DD/MM/YYYY'
 } as const;
 
 export type SimpleDateFormat =

@@ -1,20 +1,21 @@
-import { useTranslation } from 'react-i18next';
 import {
-  OperationResultScreenContent,
   openWebUrl,
+  OperationResultScreenContent,
   useHardwareBackButton
 } from '@io-eudiw-app/commons';
+import { useDebugInfo } from '@io-eudiw-app/debug-info';
+import { Errors } from '@pagopa/io-react-native-wallet';
+import { useTranslation } from 'react-i18next';
+
+import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../store';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthError,
   selectCredentialIssuancePreAuthError,
   selectRequestedCredentialType
 } from '../../store/credentialIssuance';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { useDebugInfo } from '@io-eudiw-app/debug-info';
-import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
-import { Errors } from '@pagopa/io-react-native-wallet';
 
 const CREDENTIAL_INVALID_STATUS_CODE =
   Errors.IssuerResponseErrorCodes.CredentialInvalidStatus;
@@ -54,9 +55,6 @@ const CredentialFailure = () => {
   if (invalidStatusFailure) {
     return (
       <OperationResultScreenContent
-        pictogram={invalidStatusFailure.pictogram}
-        title={t(invalidStatusFailure.titleI18nKey)}
-        subtitle={t(invalidStatusFailure.subtitleI18nKey)}
         action={{
           accessibilityLabel: t(invalidStatusFailure.actionI18nKey),
           label: t(invalidStatusFailure.actionI18nKey),
@@ -66,11 +64,14 @@ const CredentialFailure = () => {
             navigateToWallet();
           }
         }}
+        pictogram={invalidStatusFailure.pictogram}
         secondaryAction={{
           accessibilityLabel: t('common:buttons.close'),
           label: t('common:buttons.close'),
           onPress
         }}
+        subtitle={t(invalidStatusFailure.subtitleI18nKey)}
+        title={t(invalidStatusFailure.titleI18nKey)}
       />
     );
   }
@@ -78,32 +79,32 @@ const CredentialFailure = () => {
   if (isInvalidStatus) {
     return (
       <OperationResultScreenContent
-        pictogram="umbrella"
-        title={t(
-          'wallet:credentialIssuance.failure.credentialInvalidStatus.title'
-        )}
-        subtitle={t(
-          'wallet:credentialIssuance.failure.credentialInvalidStatus.subtitle'
-        )}
         action={{
           accessibilityLabel: t('common:buttons.close'),
           label: t('common:buttons.close'),
           onPress
         }}
+        pictogram="umbrella"
+        subtitle={t(
+          'wallet:credentialIssuance.failure.credentialInvalidStatus.subtitle'
+        )}
+        title={t(
+          'wallet:credentialIssuance.failure.credentialInvalidStatus.title'
+        )}
       />
     );
   }
 
   return (
     <OperationResultScreenContent
-      pictogram="umbrella"
-      title={t('wallet:credentialIssuance.failure.title')}
-      subtitle={t('wallet:credentialIssuance.failure.subtitle')}
       action={{
         accessibilityLabel: t('common:buttons.close'),
         label: t('common:buttons.close'),
         onPress
       }}
+      pictogram="umbrella"
+      subtitle={t('wallet:credentialIssuance.failure.subtitle')}
+      title={t('wallet:credentialIssuance.failure.title')}
     />
   );
 };

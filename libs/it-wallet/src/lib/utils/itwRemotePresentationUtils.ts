@@ -1,6 +1,13 @@
 import { EnrichedPresentationDetails, ParsedCredential } from './itwTypesUtils';
 
 /**
+ * Union type for claim display format, either flat or nested
+ */
+export type ClaimDisplayFormat =
+  | FlatClaimDisplayFormat
+  | NestedArrayClaimDisplayFormat;
+
+/**
  * Flat claim that contains a primitive value or an array of primitives
  */
 export type FlatClaimDisplayFormat = {
@@ -15,15 +22,8 @@ export type FlatClaimDisplayFormat = {
 export type NestedArrayClaimDisplayFormat = {
   id: string;
   label: string;
-  value: Array<ParsedCredential>;
+  value: ParsedCredential[];
 };
-
-/**
- * Union type for claim display format, either flat or nested
- */
-export type ClaimDisplayFormat =
-  | FlatClaimDisplayFormat
-  | NestedArrayClaimDisplayFormat;
 
 type PresentationDetail = EnrichedPresentationDetails[number];
 
@@ -36,11 +36,11 @@ type PresentationDetail = EnrichedPresentationDetails[number];
 export const groupCredentialsByPurpose = (
   presentationDetails: EnrichedPresentationDetails
 ): {
-  required: Array<{ purpose: string; credentials: Array<PresentationDetail> }>;
-  optional: Array<{ purpose: string; credentials: Array<PresentationDetail> }>;
+  optional: { credentials: PresentationDetail[]; purpose: string }[];
+  required: { credentials: PresentationDetail[]; purpose: string }[];
 } => {
-  const required = {} as Record<string, Array<PresentationDetail>>;
-  const optional = {} as Record<string, Array<PresentationDetail>>;
+  const required = {} as Record<string, PresentationDetail[]>;
+  const optional = {} as Record<string, PresentationDetail[]>;
 
   for (const item of presentationDetails) {
     for (const purpose of item.purposes) {
@@ -51,13 +51,13 @@ export const groupCredentialsByPurpose = (
   }
 
   return {
-    required: Object.entries(required).map(([purpose, credentials]) => ({
-      purpose,
-      credentials
-    })),
     optional: Object.entries(optional).map(([purpose, credentials]) => ({
-      purpose,
-      credentials
+      credentials,
+      purpose
+    })),
+    required: Object.entries(required).map(([purpose, credentials]) => ({
+      credentials,
+      purpose
     }))
   };
 };

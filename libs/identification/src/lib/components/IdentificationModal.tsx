@@ -1,9 +1,17 @@
 import {
+  isAndroid,
+  useAppBackgroundAccentColorName
+} from '@io-eudiw-app/commons';
+import {
+  preferencesReset,
+  selectIsBiometricEnabled
+} from '@io-eudiw-app/preferences';
+import {
   ContentWrapper,
   H2,
+  IconButton,
   IOButton,
   IOPictograms,
-  IconButton,
   Pictogram,
   VSpacer
 } from '@pagopa/io-app-design-system';
@@ -19,59 +27,52 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { useBiometricType } from '../hooks/useBiometricType';
+import { useAppDispatch, useAppSelector } from '../reducer';
 import {
   selectIdentificationStatus,
   setIdentificationIdentified,
   setIdentificationUnidentified
 } from '../reducer/identification';
+import { selectPin } from '../reducer/pin';
 import {
   biometricAuthenticationRequest,
   getBiometricDesignSystemType,
   getBiometryAccessibilityLabel,
   IdentificationInstructionsComponent
 } from '../utils/biometric';
-import {
-  isAndroid,
-  useAppBackgroundAccentColorName
-} from '@io-eudiw-app/commons';
-import {
-  preferencesReset,
-  selectIsBiometricEnabled
-} from '@io-eudiw-app/preferences';
 import { IdentificationNumberPad } from './IdentificationNumberPad';
-import { useAppDispatch, useAppSelector } from '../reducer';
-import { selectPin } from '../reducer/pin';
 
 const onRequestCloseHandler = () => undefined;
 
 type IdentificationModalProps = {
-  titleLabels: {
-    validation: string;
-    access: string;
-  };
   biometricLabels: {
-    promptMessage: string;
-    promptDescription: string;
     cancelLabel: string;
-  };
-  instructionsLabels: {
-    unlockCode: string;
-    fingerprint: string;
-    faceId: string;
-  };
-  resetLabels: {
-    forgotButton: string;
-    title: string;
-    confirmMsg: string;
-    confirmMsgWithTask: string;
-    confirmButton: string;
-    cancelButton: string;
+    promptDescription: string;
+    promptMessage: string;
   };
   closeAccessibilityLabel: string;
   deleteAccessibilityLabel: string;
-  fingerprintAccessibilityLabel: string;
   faceAccessibilityLabel: string;
+  fingerprintAccessibilityLabel: string;
+  instructionsLabels: {
+    faceId: string;
+    fingerprint: string;
+    unlockCode: string;
+  };
+  resetLabels: {
+    cancelButton: string;
+    confirmButton: string;
+    confirmMsg: string;
+    confirmMsgWithTask: string;
+    forgotButton: string;
+    title: string;
+  };
+  titleLabels: {
+    access: string;
+    validation: string;
+  };
 };
 
 /**
@@ -80,15 +81,16 @@ type IdentificationModalProps = {
  * If the identification is successful, the setIdentificationIdentified action is dispatched, otherwise the setIdentificationUnidentified action is dispatched.
  * The middleware can listen for these actions to perform additional tasks.
  */
+// eslint-disable-next-line max-lines-per-function
 export const IdentificationModal = ({
-  titleLabels,
   biometricLabels,
+  closeAccessibilityLabel,
+  deleteAccessibilityLabel,
+  faceAccessibilityLabel,
+  fingerprintAccessibilityLabel,
   instructionsLabels,
   resetLabels,
-  deleteAccessibilityLabel,
-  fingerprintAccessibilityLabel,
-  faceAccessibilityLabel,
-  closeAccessibilityLabel
+  titleLabels
 }: IdentificationModalProps) => {
   const showRetryText = useRef(false);
   const headerRef = useRef<View>(null);
@@ -97,7 +99,7 @@ export const IdentificationModal = ({
   const { biometricType } = useBiometricType();
   const pin = useAppSelector(selectPin);
   const dispatch = useAppDispatch();
-  const { status, isValidatingTask } = useAppSelector(
+  const { isValidatingTask, status } = useAppSelector(
     selectIdentificationStatus
   );
   const [isBiometricLocked, setIsBiometricLocked] = useState(false);
@@ -128,9 +130,9 @@ export const IdentificationModal = ({
     () =>
       biometricAuthenticationRequest(
         {
-          promptMessage: biometricLabels.promptMessage,
+          cancelLabel: biometricLabels.cancelLabel,
           promptDescription: biometricLabels.promptDescription,
-          cancelLabel: biometricLabels.cancelLabel
+          promptMessage: biometricLabels.promptMessage
         },
         () => {
           onIdentificationSuccess();
@@ -156,12 +158,12 @@ export const IdentificationModal = ({
     () =>
       biometricType
         ? {
-            biometricType: getBiometricDesignSystemType(biometricType),
             biometricAccessibilityLabel: getBiometryAccessibilityLabel(
               biometricType,
               fingerprintAccessibilityLabel,
               faceAccessibilityLabel
             ),
+            biometricType: getBiometricDesignSystemType(biometricType),
             onBiometricPress: () => onFingerprintRequest()
           }
         : {},
@@ -194,13 +196,13 @@ export const IdentificationModal = ({
           : resetLabels.confirmMsg,
         [
           {
-            text: resetLabels.confirmButton,
+            onPress: onPinResetHandler,
             style: 'default',
-            onPress: onPinResetHandler
+            text: resetLabels.confirmButton
           },
           {
-            text: resetLabels.cancelButton,
-            style: 'cancel'
+            style: 'cancel',
+            text: resetLabels.cancelButton
           }
         ],
         { cancelable: false }
@@ -219,11 +221,11 @@ export const IdentificationModal = ({
   const NumberPad = memo(() =>
     pin ? (
       <IdentificationNumberPad
-        pin={pin}
-        pinValidation={onPinValidated}
-        numberPadVariant={numberPadVariant}
         biometricsConfig={biometricsConfig}
         deleteAccessibilityLabel={deleteAccessibilityLabel}
+        numberPadVariant={numberPadVariant}
+        pin={pin}
+        pinValidation={onPinValidated}
       />
     ) : null
   );
@@ -243,9 +245,9 @@ export const IdentificationModal = ({
 
   return (
     <Modal
+      onRequestClose={onRequestCloseHandler}
       statusBarTranslucent
       transparent
-      onRequestClose={onRequestCloseHandler}
     >
       {Platform.OS === 'ios' && <StatusBar barStyle={'light-content'} />}
       <View style={[styles.contentWrapper, { backgroundColor: blueColor }]}>
@@ -257,10 +259,10 @@ export const IdentificationModal = ({
             <ContentWrapper>
               <VSpacer size={16} />
               <IconButton
-                icon={'closeLarge'}
-                color="contrast"
-                onPress={onIdentificationCanceled}
                 accessibilityLabel={closeAccessibilityLabel}
+                color="contrast"
+                icon={'closeLarge'}
+                onPress={onIdentificationCanceled}
               />
             </ContentWrapper>
           </View>
@@ -279,8 +281,8 @@ export const IdentificationModal = ({
               <VSpacer size={16} />
               <View style={{ alignItems: 'center' }}>
                 <Pictogram
-                  pictogramStyle="light-content"
                   name={pictogramKey}
+                  pictogramStyle="light-content"
                   size={64}
                 />
               </View>
@@ -293,10 +295,10 @@ export const IdentificationModal = ({
 
                 <IdentificationInstructionsComponent
                   biometricType={biometricType}
-                  isBiometricIdentificationFailed={isBiometricLocked}
-                  instructionsUnlockCode={instructionsLabels.unlockCode}
-                  instructionsFingerprint={instructionsLabels.fingerprint}
                   instructionsFaceId={instructionsLabels.faceId}
+                  instructionsFingerprint={instructionsLabels.fingerprint}
+                  instructionsUnlockCode={instructionsLabels.unlockCode}
+                  isBiometricIdentificationFailed={isBiometricLocked}
                 />
               </View>
             </View>
@@ -306,11 +308,11 @@ export const IdentificationModal = ({
               <VSpacer size={32} />
               <View style={{ alignSelf: 'center' }}>
                 <IOButton
-                  variant="link"
                   accessibilityLabel={resetLabels.forgotButton}
                   color="contrast"
                   label={resetLabels.forgotButton}
                   onPress={() => confirmResetAlert()}
+                  variant="link"
                 />
                 <VSpacer size={16} />
               </View>
@@ -323,12 +325,12 @@ export const IdentificationModal = ({
 };
 
 const styles = StyleSheet.create({
-  contentWrapper: { flexGrow: 1 },
   closeButton: {
-    zIndex: 100,
+    alignItems: 'flex-end',
     flexGrow: 1,
-    alignItems: 'flex-end'
+    zIndex: 100
   },
+  contentWrapper: { flexGrow: 1 },
   scrollViewContentContainer: {
     flexGrow: 1
   }

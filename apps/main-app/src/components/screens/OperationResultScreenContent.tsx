@@ -23,16 +23,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 type ButtonProps = Pick<
   IOButtonProps,
-  'label' | 'accessibilityLabel' | 'onPress' | 'testID' | 'icon'
+  'accessibilityLabel' | 'icon' | 'label' | 'onPress' | 'testID'
 >;
 
 type OperationResultScreenContentProps = WithTestID<{
-  pictogram?: IOPictograms;
-  title: string;
-  subtitle?: string | Array<BodyProps>;
   action?: ButtonProps;
-  secondaryAction?: ButtonProps;
   isHeaderVisible?: boolean;
+  pictogram?: IOPictograms;
+  secondaryAction?: ButtonProps;
+  subtitle?: BodyProps[] | string;
+  title: string;
 }>;
 
 /**
@@ -53,22 +53,22 @@ const OperationResultScreenContent = forwardRef<
 >(
   (
     {
-      pictogram,
-      title,
-      subtitle,
       action,
-      secondaryAction,
       children,
+      isHeaderVisible,
+      pictogram,
+      secondaryAction,
+      subtitle,
       testID,
-      isHeaderVisible
+      title
     },
     ref
   ) => (
     <SafeAreaView
       edges={isHeaderVisible ? ['bottom'] : undefined}
+      ref={ref}
       style={styles.container}
       testID={testID}
-      ref={ref}
     >
       <ScrollView
         centerContent={true}
@@ -119,22 +119,22 @@ const OperationResultScreenContent = forwardRef<
 );
 
 const styles = StyleSheet.create({
+  alignCenter: {
+    alignItems: 'center'
+  },
   container: {
     flexGrow: 1,
     marginHorizontal: IOVisualCostants.appMarginDefault
   },
   wrapper: {
-    flex: 1,
+    alignContent: 'center',
     alignItems: 'stretch',
-    justifyContent: 'center',
-    alignContent: 'center'
+    flex: 1,
+    justifyContent: 'center'
   },
   wrapper_android: {
     flexGrow: 1,
     justifyContent: 'center'
-  },
-  alignCenter: {
-    alignItems: 'center'
   }
 });
 

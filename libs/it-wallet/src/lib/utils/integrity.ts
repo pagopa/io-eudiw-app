@@ -11,8 +11,8 @@ import { encode } from 'js-base64';
  * It contains the signature and the authenticator data.
  */
 type HardwareSignatureWithAuthData = {
-  signature: string;
   authenticatorData: string;
+  signature: string;
 };
 
 /**
@@ -32,7 +32,7 @@ const getHardwareSignatureWithAuthData = async (
    * Client data should be hashed however it is not done in this implementation.
    */
   const signature = await sign(clientData, hardwareKeyTag);
-  return { signature, authenticatorData: 'NOT_IMPLEMENTED' };
+  return { authenticatorData: 'NOT_IMPLEMENTED', signature };
 };
 
 /**
@@ -68,8 +68,8 @@ const getAttestation = async (
  * @returns a context object which Adheres to the {@link IntegrityContext} interface
  */
 const getIntegrityContext = (hardwareKeyTag: string): IntegrityContext => ({
-  getHardwareKeyTag: () => hardwareKeyTag,
   getAttestation: (nonce: string) => getAttestation(nonce, hardwareKeyTag),
+  getHardwareKeyTag: () => hardwareKeyTag,
   getHardwareSignatureWithAuthData: clientData =>
     getHardwareSignatureWithAuthData(hardwareKeyTag, clientData)
 });

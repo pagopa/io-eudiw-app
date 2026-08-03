@@ -1,3 +1,4 @@
+import { FocusAwareStatusBar, isAndroid } from '@io-eudiw-app/commons';
 import {
   IconButton,
   IOColors,
@@ -14,24 +15,24 @@ import {
   SafeAreaView,
   useSafeAreaInsets
 } from 'react-native-safe-area-context';
-import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
-import { OnBarcodeSuccess } from '../screens/presentation/QrCodeScanScreen';
-import { FocusAwareStatusBar, isAndroid } from '@io-eudiw-app/commons';
-import { CameraPermissionView } from './CameraPermissionView';
+
 import { useCameraPermissionStatus } from '../hooks/useCameraPermissionStatus';
 import { useQrCodeCameraScanner } from '../hooks/useQrCodeCameraScanner';
-
-type Props = {
-  onBarcodeSuccess: OnBarcodeSuccess;
-  onFileInputPressed: () => void;
-  isLoading?: boolean;
-  isDisabled?: boolean;
-};
+import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
+import { OnBarcodeSuccess } from '../screens/presentation/QrCodeScanScreen';
+import { CameraPermissionView } from './CameraPermissionView';
 
 type NavigationProps = StackNavigationProp<
   MainNavigatorParamsList,
   'MAIN_SCAN_QR'
 >;
+
+type Props = {
+  isDisabled?: boolean;
+  isLoading?: boolean;
+  onBarcodeSuccess: OnBarcodeSuccess;
+  onFileInputPressed: () => void;
+};
 
 /**
  * Base screen component for the QR code scanner which renders the camera view, the torch and close buttons and the file input button.
@@ -43,11 +44,11 @@ type NavigationProps = StackNavigationProp<
  * @returns
  */
 const QrCodeScanBaseScreenComponent = ({
-  onBarcodeSuccess,
-  onFileInputPressed,
+  isDisabled = false,
   // onManualInputPressed,
   isLoading = false,
-  isDisabled = false
+  onBarcodeSuccess,
+  onFileInputPressed
 }: Props) => {
   const isFocused = useIsFocused();
   const insets = useSafeAreaInsets();
@@ -75,13 +76,13 @@ const QrCodeScanBaseScreenComponent = ({
     };
   }, []);
 
-  const { cameraPermissionStatus, requestPermission, openCameraSettings } =
+  const { cameraPermissionStatus, openCameraSettings, requestPermission } =
     useCameraPermissionStatus();
 
   const { cameraComponent, enableTorch, toggleTorch } = useQrCodeCameraScanner({
-    onBarcodeSuccess,
     isDisabled: isAppInBackground || !isFocused || isDisabled,
-    isLoading
+    isLoading,
+    onBarcodeSuccess
   });
 
   const shouldDisplayTorchButton = cameraPermissionStatus === 'granted';
@@ -94,32 +95,32 @@ const QrCodeScanBaseScreenComponent = ({
     if (cameraPermissionStatus === 'denied') {
       return (
         <CameraPermissionView
-          pictogram="cameraDenied"
-          title={t('wallet:qr.permissions.denied.title')}
-          body={t('wallet:qr.permissions.denied.label')}
           action={{
-            label: t('wallet:qr.permissions.denied.action'),
             accessibilityLabel: t('wallet:qr.permissions.denied.action'),
+            label: t('wallet:qr.permissions.denied.action'),
             onPress: async () => {
               openCameraSettings();
             }
           }}
+          body={t('wallet:qr.permissions.denied.label')}
+          pictogram="cameraDenied"
+          title={t('wallet:qr.permissions.denied.title')}
         />
       );
     }
 
     return (
       <CameraPermissionView
-        pictogram="cameraRequest"
-        title={t('wallet:qr.permissions.undefined.title')}
-        body={t('wallet:qr.permissions.undefined.label')}
         action={{
-          label: t('wallet:qr.permissions.undefined.action'),
           accessibilityLabel: t('wallet:qr.permissions.undefined.action'),
+          label: t('wallet:qr.permissions.undefined.action'),
           onPress: async () => {
             await requestPermission();
           }
         }}
+        body={t('wallet:qr.permissions.undefined.label')}
+        pictogram="cameraRequest"
+        title={t('wallet:qr.permissions.undefined.title')}
       />
     );
   }, [
@@ -138,10 +139,10 @@ const QrCodeScanBaseScreenComponent = ({
     () => (
       <View style={styles.goBack}>
         <IconButton
-          icon="closeLarge"
-          onPress={navigation.goBack}
           accessibilityLabel={t('common:buttons.close')}
           color="contrast"
+          icon="closeLarge"
+          onPress={navigation.goBack}
         />
       </View>
     ),
@@ -152,10 +153,10 @@ const QrCodeScanBaseScreenComponent = ({
     () => (
       <View style={styles.torch}>
         <IconButton
-          icon={enableTorch ? 'lightFilled' : 'light'}
           accessibilityLabel={t('wallet:qr.flash')}
-          onPress={handleTorchToggle}
           color="contrast"
+          icon={enableTorch ? 'lightFilled' : 'light'}
+          onPress={handleTorchToggle}
         />
       </View>
     ),
@@ -167,11 +168,11 @@ const QrCodeScanBaseScreenComponent = ({
    */
   useEffect(() => {
     navigation.setOptions({
-      title: '',
+      headerLeft: () => customGoBack,
+      headerRight: () => (shouldDisplayTorchButton ? torchButton : null),
       headerShown: true,
       headerTransparent: true,
-      headerLeft: () => customGoBack,
-      headerRight: () => (shouldDisplayTorchButton ? torchButton : null)
+      title: ''
     });
   }, [customGoBack, navigation, shouldDisplayTorchButton, torchButton]);
 
@@ -179,12 +180,12 @@ const QrCodeScanBaseScreenComponent = ({
     <View style={[styles.screen, { paddingBottom: insets.bottom }]}>
       <View style={styles.cameraContainer}>{cameraView}</View>
       <View style={styles.navigationContainer}>
-        <TabNavigation tabAlignment="center" selectedIndex={0} color="dark">
+        <TabNavigation color="dark" selectedIndex={0} tabAlignment="center">
           <TabItem
-            testID="barcodeScanBaseScreenTabUpload"
-            label={t('wallet:qr.tabs.upload')}
             accessibilityLabel={t('wallet:qr.tabs.upload')}
+            label={t('wallet:qr.tabs.upload')}
             onPress={onFileInputPressed}
+            testID="barcodeScanBaseScreenTabUpload"
           />
         </TabNavigation>
       </View>
@@ -195,8 +196,8 @@ const QrCodeScanBaseScreenComponent = ({
         <SafeAreaView>
           {/* This overrides BaseHeader status bar configuration */}
           <FocusAwareStatusBar
-            barStyle={'light-content'}
             backgroundColor={isAndroid ? IOColors['blueIO-850'] : 'transparent'}
+            barStyle={'light-content'}
             translucent={false}
           />
         </SafeAreaView>
@@ -206,33 +207,33 @@ const QrCodeScanBaseScreenComponent = ({
 };
 
 const styles = StyleSheet.create({
-  screen: {
+  cameraContainer: {
+    alignItems: 'center',
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
     flex: 1,
-    backgroundColor: IOColors['blueIO-850']
+    flexGrow: 1,
+    justifyContent: 'center',
+    overflow: 'hidden'
+  },
+  goBack: {
+    marginLeft: 24
   },
   headerContainer: {
     flex: 1,
+    height: 160,
     position: 'absolute',
-    width: '100%',
-    height: 160
-  },
-  cameraContainer: {
-    flex: 1,
-    flexGrow: 1,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden'
+    width: '100%'
   },
   navigationContainer: {
     paddingVertical: 16
   },
+  screen: {
+    backgroundColor: IOColors['blueIO-850'],
+    flex: 1
+  },
   torch: {
     marginRight: 24
-  },
-  goBack: {
-    marginLeft: 24
   }
 });
 

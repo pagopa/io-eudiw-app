@@ -1,19 +1,20 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createInstanceThunk } from '../middleware/instance';
-import { StoredCredential } from '../utils/itwTypesUtils';
-import { RequestedCredential } from './credentialIssuance';
-import { ResolvedCredentialOffer } from '../types';
 import {
   AsyncStatusValues,
-  setInitial,
   setError,
-  setSuccess,
-  setLoading
+  setInitial,
+  setLoading,
+  setSuccess
 } from '@io-eudiw-app/commons';
 import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { createInstanceThunk } from '../middleware/instance';
+import { ResolvedCredentialOffer } from '../types';
+import { StoredCredential } from '../utils/itwTypesUtils';
+import { RequestedCredential } from './credentialIssuance';
 import { resetLifecycle } from './lifecycle';
 
 /**
@@ -24,12 +25,12 @@ import { resetLifecycle } from './lifecycle';
  * the right issuer once the PID is available.
  */
 export type PendingCredential =
+  | undefined
   | {
       credential: RequestedCredential;
       issuerUrl?: string;
       offer?: ResolvedCredentialOffer;
-    }
-  | undefined;
+    };
 
 /* State type definition for the pidIssuance slice
  * issuanceCreation - Async status for the instance creation
@@ -59,44 +60,6 @@ const initialState: PidIssuanceStatusSlice = {
  * allowing to handle the UI accordingly with a request, loading and success/error states along with their data, if necessary.
  */
 const pidIssuanceStatusSlice = createSlice({
-  name: 'pidIssuanceStatus',
-  initialState,
-  reducers: {
-    resetInstanceCreation: state => {
-      state.instanceCreation = setInitial();
-    },
-    resetPidIssuance: state => {
-      state.issuance = setInitial();
-    },
-    setPendingCredential: (
-      state,
-      action: PayloadAction<{
-        credential: RequestedCredential;
-        issuerUrl?: string;
-        offer?: ResolvedCredentialOffer;
-      }>
-    ) => {
-      state.pendingCredential = action.payload;
-    },
-    // Triggers the PID issuance flow handled by the obtainPidListener and moves
-    // the issuance status to loading.
-    setPidIssuanceRequest: state => {
-      state.issuance = setLoading();
-    },
-    setPidIssuanceSuccess: (state, action: PayloadAction<StoredCredential>) => {
-      state.issuance = setSuccess(action.payload);
-    },
-    // Sets the issuance error, discriminated by the phase it originates from
-    // (OID4VCI exchange in the obtainPidListener or vault persistence in the
-    // addPidWithIdentification listener), so the UI can surface it through
-    // selectPidIssuanceStatus.
-    setPidIssuanceError: (
-      state,
-      action: PayloadAction<{ error: unknown; type: PidIssuanceErrorType }>
-    ) => {
-      state.issuance = setError(action.payload.error, action.payload.type);
-    }
-  },
   extraReducers: builder => {
     // Instance creation thunk
     builder.addCase(createInstanceThunk.fulfilled, state => {
@@ -116,6 +79,44 @@ const pidIssuanceStatusSlice = createSlice({
     builder.addCase(preferencesReset, () => initialState);
     builder.addCase(resetLifecycle, () => initialState);
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
+  },
+  initialState,
+  name: 'pidIssuanceStatus',
+  reducers: {
+    resetInstanceCreation: state => {
+      state.instanceCreation = setInitial();
+    },
+    resetPidIssuance: state => {
+      state.issuance = setInitial();
+    },
+    setPendingCredential: (
+      state,
+      action: PayloadAction<{
+        credential: RequestedCredential;
+        issuerUrl?: string;
+        offer?: ResolvedCredentialOffer;
+      }>
+    ) => {
+      state.pendingCredential = action.payload;
+    },
+    // Sets the issuance error, discriminated by the phase it originates from
+    // (OID4VCI exchange in the obtainPidListener or vault persistence in the
+    // addPidWithIdentification listener), so the UI can surface it through
+    // selectPidIssuanceStatus.
+    setPidIssuanceError: (
+      state,
+      action: PayloadAction<{ error: unknown; type: PidIssuanceErrorType }>
+    ) => {
+      state.issuance = setError(action.payload.error, action.payload.type);
+    },
+    // Triggers the PID issuance flow handled by the obtainPidListener and moves
+    // the issuance status to loading.
+    setPidIssuanceRequest: state => {
+      state.issuance = setLoading();
+    },
+    setPidIssuanceSuccess: (state, action: PayloadAction<StoredCredential>) => {
+      state.issuance = setSuccess(action.payload);
+    }
   }
 });
 
@@ -126,9 +127,9 @@ export const {
   resetInstanceCreation,
   resetPidIssuance,
   setPendingCredential,
+  setPidIssuanceError,
   setPidIssuanceRequest,
-  setPidIssuanceSuccess,
-  setPidIssuanceError
+  setPidIssuanceSuccess
 } = pidIssuanceStatusSlice.actions;
 
 /**

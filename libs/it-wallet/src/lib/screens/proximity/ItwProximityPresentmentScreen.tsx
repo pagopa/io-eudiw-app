@@ -1,4 +1,12 @@
 import {
+  IOScrollView,
+  isIos,
+  useDisableGestureNavigation,
+  useHardwareBackButton,
+  useMaxBrightness
+} from '@io-eudiw-app/commons';
+import { useDebugInfo } from '@io-eudiw-app/debug-info';
+import {
   Alert,
   BodySmall,
   H6,
@@ -10,21 +18,23 @@ import {
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
+import I18n from 'i18next';
 import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
-import {
-  IOScrollView,
-  isIos,
-  useDisableGestureNavigation,
-  useHardwareBackButton,
-  useMaxBrightness
-} from '@io-eudiw-app/commons';
-import { useDebugInfo } from '@io-eudiw-app/debug-info';
+
 import { ItwBrandedBox } from '../../components/ItwBrandedBox';
 import { ItwProximityQrCodeImage } from '../../components/proximity/ItwProximityQrCodeImage';
 import { ItwProximityQrCodeInfoBanner } from '../../components/proximity/ItwProximityQrCodeInfoBanner';
+import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
+import { useProximityEngagement } from '../../hooks/useProximityEngagement';
+import MAIN_ROUTES from '../../navigation/main/routes';
+import { useAppDispatch, useAppSelector } from '../../store';
+import {
+  selectProximityInfoBannerActive,
+  shouldShowExpiredProximityCredentialsBannerSelector
+} from '../../store/credentials';
 import {
   ProximityStatus,
   resetProximity,
@@ -34,16 +44,7 @@ import {
   selectProximityStatus,
   setProximityStatusStopped
 } from '../../store/proximity';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { useProximityEngagement } from '../../hooks/useProximityEngagement';
-import MAIN_ROUTES from '../../navigation/main/routes';
 import { checkNfcActivation } from '../../utils/nfc';
-import I18n from 'i18next';
-import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
-import {
-  selectProximityInfoBannerActive,
-  shouldShowExpiredProximityCredentialsBannerSelector
-} from '../../store/credentials';
 
 /**
  * Proximity engagement screen (QR mode). Shows the IT-Wallet branded QR Code
@@ -68,9 +69,9 @@ const ItwProximityPresentmentScreen = () => {
   );
 
   useDebugInfo({
-    proximityStatusQR: proximityStatus,
+    engagementMode,
     proximityErrorDetailsQR: proximityErrorDetails ?? 'No errors',
-    engagementMode
+    proximityStatusQR: proximityStatus
   });
 
   useMaxBrightness({ useSmoothTransition: true });
@@ -89,13 +90,13 @@ const ItwProximityPresentmentScreen = () => {
     navigation.setOptions({
       header: () => (
         <HeaderSecondLevel
-          title={''}
-          type="singleAction"
           firstAction={{
-            icon: 'closeLarge',
             accessibilityLabel: I18n.t('buttons.close', { ns: 'common' }),
+            icon: 'closeLarge',
             onPress: () => close()
           }}
+          title={''}
+          type="singleAction"
         />
       ),
       headerShown: true
@@ -146,11 +147,11 @@ const ItwProximityPresentmentScreen = () => {
           style={styles.expiredBanner}
         >
           <Alert
+            action={t('wallet:proximity.engagement.invalidBanner.action')}
+            content={t('wallet:proximity.engagement.invalidBanner.content')}
+            onPress={() => toast()}
             testID="itwExpiredBannerTestID"
             variant="error"
-            content={t('wallet:proximity.engagement.invalidBanner.content')}
-            action={t('wallet:proximity.engagement.invalidBanner.action')}
-            onPress={() => toast()}
           />
         </Animated.View>
       )}
@@ -180,11 +181,11 @@ const ItwProximityPresentmentScreen = () => {
           {t('wallet:proximity.engagement.nfc.or')}
         </BodySmall>
         <IOButton
-          variant="link"
-          label={t('wallet:proximity.engagement.nfc.action')}
-          onPress={() => void handleContactlessPress()}
           icon="contactless"
           iconPosition="end"
+          label={t('wallet:proximity.engagement.nfc.action')}
+          onPress={() => void handleContactlessPress()}
+          variant="link"
         />
       </View>
 
@@ -202,14 +203,14 @@ const styles = StyleSheet.create({
   expiredBanner: {
     marginBottom: 24
   },
-  qrCodeShadow: {
-    boxShadow: `0px 4px 32px ${hexToRgba(IOColors.black, 0.1)}`
-  },
   nfcAction: {
     alignSelf: 'center',
-    marginTop: 32,
+    gap: 8,
     marginBottom: 24,
-    gap: 8
+    marginTop: 32
+  },
+  qrCodeShadow: {
+    boxShadow: `0px 4px 32px ${hexToRgba(IOColors.black, 0.1)}`
   }
 });
 

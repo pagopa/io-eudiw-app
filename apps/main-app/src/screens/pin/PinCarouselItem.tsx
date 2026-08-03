@@ -1,24 +1,24 @@
 import {
-  H4,
-  VSpacer,
-  CodeInput,
   Body,
-  WithTestID,
-  IOVisualCostants
+  CodeInput,
+  H4,
+  IOVisualCostants,
+  VSpacer,
+  WithTestID
 } from '@pagopa/io-app-design-system';
-import { RefObject, memo } from 'react';
+import { memo, RefObject } from 'react';
 import { Dimensions, View } from 'react-native';
 
 const { width } = Dimensions.get('screen');
 
 export type PinCarouselItemProps = WithTestID<{
-  title: string;
-  titleRef?: RefObject<View | null>;
   description?: string;
-  value: string;
-  maxLength: number;
   handleOnValidate: (val: string) => boolean;
+  maxLength: number;
   onValueChange: (val: string) => void;
+  title: string;
+  titleRef?: RefObject<null | View>;
+  value: string;
 }>;
 
 /**
@@ -33,35 +33,35 @@ export type PinCarouselItemProps = WithTestID<{
  */
 export const PinCarouselItem = memo(
   ({
-    title,
     description,
-    value,
-    testID,
-    titleRef,
-    maxLength,
     handleOnValidate,
-    onValueChange
+    maxLength,
+    onValueChange,
+    testID,
+    title,
+    titleRef,
+    value
   }: PinCarouselItemProps) => (
     <View
       style={{
-        paddingHorizontal: IOVisualCostants.appMarginDefault,
         alignItems: 'center',
         height: 128,
         justifyContent: 'space-between',
+        paddingHorizontal: IOVisualCostants.appMarginDefault,
         width
       }}
       testID={testID}
     >
       <View>
-        <H4 ref={titleRef} accessible testID={`${testID}_title`}>
+        <H4 accessible ref={titleRef} testID={`${testID}_title`}>
           {title}
         </H4>
       </View>
       {description && (
         <Body
           accessible
-          testID={`${testID}_description`}
           style={{ textAlign: 'center' }}
+          testID={`${testID}_description`}
         >
           {description}
         </Body>
@@ -71,8 +71,8 @@ export const PinCarouselItem = memo(
         length={maxLength}
         onValidate={handleOnValidate}
         onValueChange={onValueChange}
-        variant="neutral"
         value={value}
+        variant="neutral"
       />
     </View>
   )

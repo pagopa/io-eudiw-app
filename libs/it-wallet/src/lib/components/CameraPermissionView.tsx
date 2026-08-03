@@ -10,13 +10,13 @@ import {
 import { StyleSheet, View } from 'react-native';
 
 type Props = {
-  title: string;
-  body: string;
   action: Pick<
     IOButtonBlockSpecificProps,
-    'label' | 'accessibilityLabel' | 'onPress'
+    'accessibilityLabel' | 'label' | 'onPress'
   >;
+  body: string;
   pictogram: IOPictograms;
+  title: string;
 };
 
 /**
@@ -34,25 +34,25 @@ const CameraPermissionView = (props: Props) => (
       {props.title}
     </H6>
     <VSpacer size={8} />
-    <BodySmall weight="Regular" color="white" style={styles.text}>
+    <BodySmall color="white" style={styles.text} weight="Regular">
       {props.body}
     </BodySmall>
     <VSpacer size={32} />
     <IOButton
-      variant="solid"
-      label={props.action.label}
       accessibilityLabel={props.action.label}
-      onPress={props.action.onPress}
       color="contrast"
       fullWidth={true}
+      label={props.action.label}
+      onPress={props.action.onPress}
+      variant="solid"
     />
   </View>
 );
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 32,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginHorizontal: 32
   },
   text: {
     textAlign: 'center'

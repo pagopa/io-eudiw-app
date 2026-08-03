@@ -1,4 +1,4 @@
-import { Action, ListenerEffect, AnyAction, Dispatch } from '@reduxjs/toolkit';
+import { Action, AnyAction, Dispatch, ListenerEffect } from '@reduxjs/toolkit';
 
 /**
  * Flexible Take Latest Effect
@@ -24,9 +24,9 @@ export const takeLatestEffect =
 export const raceEffect =
   <S = unknown, D extends Dispatch = Dispatch, A extends Action = AnyAction>(
     effect: ListenerEffect<A, S, D>,
-    racers: Array<
-      (listenerApi: Parameters<ListenerEffect<A, S, D>>[1]) => Promise<unknown>
-    >,
+    racers: ((
+      listenerApi: Parameters<ListenerEffect<A, S, D>>[1]
+    ) => Promise<unknown>)[],
     delayMs = 15
   ): ListenerEffect<A, S, D> =>
   async (action, listenerApi) => {

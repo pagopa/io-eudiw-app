@@ -9,14 +9,15 @@ import { Alert } from 'react-native';
 import ReactNativeHapticFeedback, {
   HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
-import { parseDeepLink } from '../../utils/parsing';
-import { useQrCodeFileReader } from '../../hooks/useQrCodeFileReader';
+
 import { QrCodeScanBaseScreenComponent } from '../../components/QrCodeScanBaseScreenComponent';
+import { useQrCodeFileReader } from '../../hooks/useQrCodeFileReader';
+import { parseDeepLink } from '../../utils/parsing';
 
 /**
  * Types for callback in case of success or error
  */
-export type OnBarcodeSuccess = (barcode: Array<string> | string) => void;
+export type OnBarcodeSuccess = (barcode: string | string[]) => void;
 
 export type OnBardCodeError = () => void;
 
@@ -34,8 +35,8 @@ const QrCodeScanScreen = () => {
       t('qr.multipleResultsAlert.body', { ns: 'wallet' }),
       [
         {
-          text: t(`qr.multipleResultsAlert.action`, { ns: 'wallet' }),
-          style: 'default'
+          style: 'default',
+          text: t(`qr.multipleResultsAlert.action`, { ns: 'wallet' })
         }
       ],
       { cancelable: false }
@@ -57,10 +58,10 @@ const QrCodeScanScreen = () => {
         HapticFeedbackTypes.notificationSuccess
       );
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'DEEP_LINK_HANDLER',
         params: {
           url: barcode
-        }
+        },
+        screen: 'DEEP_LINK_HANDLER'
       });
     } catch {
       ReactNativeHapticFeedback.trigger(HapticFeedbackTypes.notificationError);
@@ -81,16 +82,16 @@ const QrCodeScanScreen = () => {
   const handleBarcodeError: OnBardCodeError = () =>
     IOToast.error(t('qr.error', { ns: 'wallet' }));
 
-  const { showImagePicker, isLoading } = useQrCodeFileReader({
-    onBarcodeSuccess: handleBarcodeSuccess,
-    onBarcodeError: handleBarcodeError
+  const { isLoading, showImagePicker } = useQrCodeFileReader({
+    onBarcodeError: handleBarcodeError,
+    onBarcodeSuccess: handleBarcodeSuccess
   });
 
   return (
     <QrCodeScanBaseScreenComponent
-      onBarcodeSuccess={handleBarcodeSuccess}
-      isLoading={isLoading}
       isDisabled={isLoading}
+      isLoading={isLoading}
+      onBarcodeSuccess={handleBarcodeSuccess}
       onFileInputPressed={showImagePicker}
     />
   );

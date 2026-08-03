@@ -1,18 +1,19 @@
 import {
-  BodySmall,
-  HStack,
-  IOColors,
-  IOText,
-  IconButton
-} from '@pagopa/io-app-design-system';
-import { useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { withDebugEnabled } from './withDebugEnabled';
-import { truncateObjectStrings } from '../utils';
-import {
   clipboardSetStringWithFeedback,
   Prettify
 } from '@io-eudiw-app/commons';
+import {
+  BodySmall,
+  HStack,
+  IconButton,
+  IOColors,
+  IOText
+} from '@pagopa/io-app-design-system';
+import { useMemo, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+
+import { truncateObjectStrings } from '../utils';
+import { withDebugEnabled } from './withDebugEnabled';
 
 type ExpandableProps =
   | {
@@ -25,12 +26,12 @@ type ExpandableProps =
     };
 
 type Props = Prettify<
-  {
-    title: string;
+  ExpandableProps & {
     clipboardSuccessMessage: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any;
-  } & ExpandableProps
+    title: string;
+  }
 >;
 
 /**
@@ -40,11 +41,11 @@ type Props = Prettify<
  */
 export const DebugPrettyPrint = withDebugEnabled(
   ({
-    title,
-    data,
     clipboardSuccessMessage,
+    data,
     expandable = true,
-    isExpanded = false
+    isExpanded = false,
+    title
   }: Props) => {
     const [expanded, setExpanded] = useState(isExpanded);
 
@@ -54,12 +55,12 @@ export const DebugPrettyPrint = withDebugEnabled(
       }
 
       return (
-        <View style={styles.content} pointerEvents="box-only">
+        <View pointerEvents="box-only" style={styles.content}>
           <IOText
-            font="FiraCode"
-            size={12}
-            lineHeight={18}
             color="grey-650"
+            font="FiraCode"
+            lineHeight={18}
+            size={12}
             weight="Medium"
           >
             {JSON.stringify(truncateObjectStrings(data), null, 2)}
@@ -69,15 +70,16 @@ export const DebugPrettyPrint = withDebugEnabled(
     }, [data, expandable, expanded]);
 
     return (
-      <View testID="DebugPrettyPrintTestID" style={styles.container}>
+      <View style={styles.container} testID="DebugPrettyPrintTestID">
         <View style={styles.header}>
-          <BodySmall weight="Semibold" color="white">
+          <BodySmall color="white" weight="Semibold">
             {title}
           </BodySmall>
           <HStack space={16}>
             <IconButton
-              icon={'copy'}
               accessibilityLabel="copy"
+              color="contrast"
+              icon={'copy'}
               iconSize={20}
               onPress={async () =>
                 await clipboardSetStringWithFeedback(
@@ -85,15 +87,14 @@ export const DebugPrettyPrint = withDebugEnabled(
                   clipboardSuccessMessage
                 )
               }
-              color="contrast"
             />
             {expandable && (
               <IconButton
-                icon={expanded ? 'eyeHide' : 'eyeShow'}
                 accessibilityLabel="show"
+                color="contrast"
+                icon={expanded ? 'eyeHide' : 'eyeShow'}
                 iconSize={24}
                 onPress={() => setExpanded(_ => !_)}
-                color="contrast"
               />
             )}
           </HStack>
@@ -107,18 +108,18 @@ export const DebugPrettyPrint = withDebugEnabled(
 const styles = StyleSheet.create({
   container: {
     borderRadius: 4,
-    overflow: 'hidden',
-    marginVertical: 4
-  },
-  header: {
-    backgroundColor: IOColors['error-600'],
-    padding: 12,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    marginVertical: 4,
+    overflow: 'hidden'
   },
   content: {
     backgroundColor: IOColors['grey-50'],
     padding: 8
+  },
+  header: {
+    backgroundColor: IOColors['error-600'],
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 12
   }
 });

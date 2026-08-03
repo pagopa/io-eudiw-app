@@ -13,22 +13,22 @@ import {
 } from '@pagopa/io-app-design-system';
 import { forwardRef } from 'react';
 import {
-  View,
   ScrollView,
+  StyleSheet,
   useWindowDimensions,
-  StyleSheet
+  View
 } from 'react-native';
 
 type Props = {
+  accessibilityHint?: string;
+  accessibilityLabel?: string;
+  content: string;
+  contentColor?: IOColors;
   id: number;
   pictogramName: IOPictograms;
-  title: string;
-  content: string;
-  accessibilityLabel?: string;
-  accessibilityHint?: string;
-  titleColor?: IOColors;
-  contentColor?: IOColors;
   pictogramStyle?: React.ComponentProps<typeof Pictogram>['pictogramStyle'];
+  title: string;
+  titleColor?: IOColors;
 };
 
 /**
@@ -50,43 +50,43 @@ export const LandingCardComponent = forwardRef<View, Props>((props, ref) => {
     width: screenWidth
   };
   const {
-    accessibilityLabel,
     accessibilityHint,
-    pictogramName,
-    title,
+    accessibilityLabel,
     content,
-    titleColor,
     contentColor,
-    pictogramStyle
+    pictogramName,
+    pictogramStyle,
+    title,
+    titleColor
   } = props;
 
   return (
     <ScrollView accessible={false} contentContainerStyle={styles.container}>
       <View
+        accessibilityHint={accessibilityHint}
+        accessibilityLabel={accessibilityLabel}
+        accessible={true}
         ref={ref}
         style={[wrapperStyle, styles.wrapper]}
-        accessible={true}
-        accessibilityLabel={accessibilityLabel}
-        accessibilityHint={accessibilityHint}
       >
         <Pictogram
-          size={180}
           name={pictogramName}
           pictogramStyle={pictogramStyle}
+          size={180}
         />
         <VSpacer />
         <H3
+          color={titleColor}
           importantForAccessibility="no"
           style={styles.centeredText}
-          color={titleColor}
         >
           {title}
         </H3>
         <VSpacer />
         <Body
+          color={contentColor}
           importantForAccessibility="no"
           style={styles.centeredText}
-          color={contentColor}
         >
           {content}
         </Body>
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   centeredText: { textAlign: 'center' },
   container: { flexGrow: 1, justifyContent: 'center' },
   wrapper: {
-    paddingHorizontal: IOVisualCostants.appMarginDefault,
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingHorizontal: IOVisualCostants.appMarginDefault
   }
 });

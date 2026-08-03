@@ -3,10 +3,10 @@ import { memo } from 'react';
 import { ColorValue, View } from 'react-native';
 
 type TabIconComponentProps = {
+  color?: ColorValue;
   focused: boolean;
   iconName: IONavIcons;
   iconNameFocused: IONavIcons;
-  color?: ColorValue;
 };
 
 /**
@@ -17,13 +17,13 @@ type TabIconComponentProps = {
  * @param color - The color of the icon
  */
 export const TabIconComponent = memo(
-  ({ focused, iconName, iconNameFocused, color }: TabIconComponentProps) => (
+  ({ color, focused, iconName, iconNameFocused }: TabIconComponentProps) => (
     // accessibilityLabel={""} in order to read the font icon, without modify the library element
     <View accessibilityLabel={''} pointerEvents="none">
       <AnimatedIcon
+        color={color}
         name={focused ? iconNameFocused : iconName}
         size={24}
-        color={color}
       />
     </View>
   )

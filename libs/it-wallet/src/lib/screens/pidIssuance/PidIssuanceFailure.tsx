@@ -1,8 +1,12 @@
-import { useTranslation } from 'react-i18next';
 import {
   OperationResultScreenContent,
   useHardwareBackButton
 } from '@io-eudiw-app/commons';
+import { useDebugInfo } from '@io-eudiw-app/debug-info';
+import { useTranslation } from 'react-i18next';
+
+import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
+import { useAppDispatch, useAppSelector } from '../../store';
 import {
   resetInstanceCreation,
   resetPidIssuance
@@ -11,9 +15,6 @@ import {
   selectPidIssuanceError,
   selectPidIssuanceErrorType
 } from '../../store/selectors/pidIssuance';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { useDebugInfo } from '@io-eudiw-app/debug-info';
-import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 
 /**
  * Filure screen of the pid issuance flow.
@@ -38,14 +39,14 @@ const PidIssuanceFailure = () => {
 
   return (
     <OperationResultScreenContent
-      pictogram="umbrella"
-      title={t('wallet:pidIssuance.failure.title')}
-      subtitle={t('wallet:pidIssuance.failure.subtitle')}
       action={{
         accessibilityLabel: t('common:buttons.close'),
         label: t('common:buttons.close'),
         onPress
       }}
+      pictogram="umbrella"
+      subtitle={t('wallet:pidIssuance.failure.subtitle')}
+      title={t('wallet:pidIssuance.failure.title')}
     />
   );
 };

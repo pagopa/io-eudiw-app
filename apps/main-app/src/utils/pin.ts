@@ -8,14 +8,13 @@ type SequenceOrder = 'ASCENDING' | 'DESCENDING';
  * @param sequenceOrder - The order of the sequence, either 'ASCENDING' or 'DESCENDING'.
  * @returns A function that takes an array of digits and returns true if the digits are in the specified sequence order.
  */
-const checkSequence =
-  (sequenceOrder: SequenceOrder) => (digits: Array<number>) =>
-    digits
-      .slice(1)
-      .every(
-        (digit, i) =>
-          digit === digits[i] + (sequenceOrder === 'ASCENDING' ? 1 : -1)
-      );
+const checkSequence = (sequenceOrder: SequenceOrder) => (digits: number[]) =>
+  digits
+    .slice(1)
+    .every(
+      (digit, i) =>
+        digit === digits[i] + (sequenceOrder === 'ASCENDING' ? 1 : -1)
+    );
 
 /**
  * Check if a given input is a valid PIN number. A valid PIN number must:

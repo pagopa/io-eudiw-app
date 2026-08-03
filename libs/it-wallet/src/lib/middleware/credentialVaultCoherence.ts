@@ -1,7 +1,7 @@
+import { WalletCombinedRootState, WalletDispatch } from '../store';
 import { removeCredential, selectCredentials } from '../store/credentials';
 import { wellKnownCredential } from '../utils/credentials';
 import { CredentialsVault } from '../utils/itwCredentialVault';
-import { WalletCombinedRootState, WalletDispatch } from '../store';
 import { AppStartListening } from './types';
 
 /**
@@ -75,7 +75,6 @@ export const addCredentialVaultCoherenceListener = (
   startAppListening: AppStartListening
 ) => {
   const unsubscribe = startAppListening({
-    predicate: () => true,
     effect: async (_action, listenerApi) => {
       unsubscribe();
       try {
@@ -86,6 +85,7 @@ export const addCredentialVaultCoherenceListener = (
       } catch {
         /* swallow: drift will be retried at the next app boot */
       }
-    }
+    },
+    predicate: () => true
   });
 };

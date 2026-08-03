@@ -5,39 +5,58 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { ComponentProps, useLayoutEffect, useMemo } from 'react';
 
-type SpecificHookProps = {
-  canGoBack?: boolean;
-  /* On the surface, this prop seems useless, but it's used
-  to programmatically hide the header.
-  See PR#5795 for more details. */
-  headerShown?: boolean;
-};
+export type HeaderSecondLevelHookProps = PropsWithoutSupport | PropsWithSupport;
+
+type HeaderActionConfigProps = Pick<
+  React.ComponentProps<typeof HeaderSecondLevel>,
+  'firstAction' | 'secondAction' | 'thirdAction' | 'type'
+>;
 
 /* Tried to spread the props of the `HeaderSecondLevel` component,
 but caused some type mismatches, so it's better to pick some specific
 props without manually (re)declaring each prop */
 type HeaderHookManagedProps = Pick<
   ComponentProps<typeof HeaderSecondLevel>,
-  | 'title'
-  | 'backAccessibilityLabel'
-  | 'backTestID'
-  | 'goBack'
-  | 'transparent'
-  | 'scrollValues'
-  | 'variant'
-  | 'backgroundColor'
-  | 'enableDiscreteTransition'
   | 'animatedRef'
+  | 'backAccessibilityLabel'
+  | 'backgroundColor'
+  | 'backTestID'
+  | 'enableDiscreteTransition'
+  | 'goBack'
+  | 'scrollValues'
+  | 'title'
+  | 'transparent'
+  | 'variant'
 >;
 
-type HeaderActionConfigProps = Pick<
-  React.ComponentProps<typeof HeaderSecondLevel>,
-  'type' | 'firstAction' | 'secondAction' | 'thirdAction'
->;
+type HeaderProps = ComponentProps<typeof HeaderSecondLevel>;
 
 type NoAdditionalActions = {
   secondAction?: never;
   thirdAction?: never;
+};
+
+type PropsWithoutSupport = HeaderHookManagedProps &
+  NoAdditionalActions &
+  SpecificHookProps & {
+    contextualHelp?: never;
+    contextualHelpMarkdown?: never;
+    faqCategories?: never;
+    supportRequest?: false;
+  };
+
+type PropsWithSupport = HeaderHookManagedProps &
+  SpecificHookProps &
+  WithAdditionalActions & {
+    supportRequest: true;
+  };
+
+type SpecificHookProps = {
+  canGoBack?: boolean;
+  /* On the surface, this prop seems useless, but it's used
+  to programmatically hide the header.
+  See PR#5795 for more details. */
+  headerShown?: boolean;
 };
 
 type WithAdditionalActions =
@@ -47,23 +66,6 @@ type WithAdditionalActions =
       thirdAction?: HeaderActionProps;
     };
 
-type PropsWithSupport = SpecificHookProps &
-  HeaderHookManagedProps & {
-    supportRequest: true;
-  } & WithAdditionalActions;
-
-type PropsWithoutSupport = SpecificHookProps &
-  HeaderHookManagedProps & {
-    supportRequest?: false;
-    faqCategories?: never;
-    contextualHelp?: never;
-    contextualHelpMarkdown?: never;
-  } & NoAdditionalActions;
-
-export type HeaderSecondLevelHookProps = PropsWithSupport | PropsWithoutSupport;
-
-type HeaderProps = ComponentProps<typeof HeaderSecondLevel>;
-
 /**
  * This hook sets the `HeaderSecondLevel` in a screen using the `useLayoutEffect` hook.
  * @param canGoBack - Completely disable `Back` button.
@@ -71,21 +73,21 @@ type HeaderProps = ComponentProps<typeof HeaderSecondLevel>;
  * @param props - Props to configure the header. Not all original props are supported.
  */
 export const useHeaderSecondLevel = ({
-  title,
+  animatedRef,
   backAccessibilityLabel,
+  backgroundColor,
   backTestID,
+  canGoBack = true,
+  enableDiscreteTransition,
   goBack,
   headerShown = true,
-  canGoBack = true,
-  supportRequest,
-  secondAction,
-  thirdAction,
-  transparent = false,
   scrollValues,
-  variant,
-  backgroundColor,
-  enableDiscreteTransition,
-  animatedRef
+  secondAction,
+  supportRequest,
+  thirdAction,
+  title,
+  transparent = false,
+  variant
 }: HeaderSecondLevelHookProps) => {
   const navigation = useNavigation();
 
@@ -105,15 +107,15 @@ export const useHeaderSecondLevel = ({
     const enableDiscreteTransitionProps =
       enableDiscreteTransition && animatedRef
         ? {
-            enableDiscreteTransition,
-            animatedRef
+            animatedRef,
+            enableDiscreteTransition
           }
         : {};
 
     return {
+      backgroundColor,
       scrollValues,
       variant,
-      backgroundColor,
       ...enableDiscreteTransitionProps
     };
   }, [
@@ -132,34 +134,34 @@ export const useHeaderSecondLevel = ({
     }
 
     const helpAction: HeaderActionProps = {
+      accessibilityLabel: '',
       icon: 'help',
-      onPress: () => void 0,
-      accessibilityLabel: ''
+      onPress: () => void 0
     };
 
     // Three actions
     if (secondAction && thirdAction) {
       return {
-        type: 'threeActions',
         firstAction: helpAction,
         secondAction,
-        thirdAction
+        thirdAction,
+        type: 'threeActions'
       };
     }
 
     // Two actions
     if (secondAction) {
       return {
-        type: 'twoActions',
         firstAction: helpAction,
-        secondAction
+        secondAction,
+        type: 'twoActions'
       };
     }
 
     // Just `Help` action
     return {
-      type: 'singleAction',
-      firstAction: helpAction
+      firstAction: helpAction,
+      type: 'singleAction'
     };
   }, [supportRequest, secondAction, thirdAction]);
 

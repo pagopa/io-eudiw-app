@@ -7,6 +7,11 @@ packages:
   - 'libs/identification'
   - 'libs/debug-info'
   - 'libs/navigation'
+allowBuilds:
+  '@shopify/react-native-skia': true
+  '@swc/core': true
+  nx: true
+  unrs-resolver: true
 catalog:
   '@expo/cli': '56.1.21'
   '@react-navigation/bottom-tabs': '7.18.13'

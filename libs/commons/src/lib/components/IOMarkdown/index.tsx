@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { View } from 'react-native';
+
 import {
   convertReferenceLinksToInline,
   getRenderMarkdown,
@@ -8,8 +9,6 @@ import {
 } from './markdownRenderer';
 import { DEFAULT_RULES } from './renderRules';
 import { IOMarkdownRenderRules } from './types';
-
-type UnsafeProps = Omit<IOMarkdownProps, 'onError'>;
 
 export type IOMarkdownProps = {
   /**
@@ -28,6 +27,8 @@ export type IOMarkdownProps = {
    */
   rules?: Partial<IOMarkdownRenderRules>;
 };
+
+type UnsafeProps = Omit<IOMarkdownProps, 'onError'>;
 
 /**
  * This component parses a markdown string and render it using the `DS` components.

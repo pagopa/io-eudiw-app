@@ -2,16 +2,17 @@ import { Divider, ListItemHeader } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useMemo, useState } from 'react';
-import { Fragment } from 'react/jsx-runtime';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+import { Fragment } from 'react/jsx-runtime';
+
+import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
 import { parseClaimsToRecord } from '../../utils/claims';
 import { WellKnownClaim } from '../../utils/itwClaimsUtils';
 import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 import { ItwCredentialClaim } from '../credential/ItwCredentialClaim';
 import { ItwIssuanceMetadata } from '../ItwIssuanceMetadata';
 import { ItwPidLifecycleAlert } from '../ItwPidLifecycleAlert';
-import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
   credential: StoredCredentialMetadata;
@@ -38,12 +39,12 @@ export const ItwPresentationPidDetail = ({ credential }: Props) => {
 
   const endElement = useMemo<ListItemHeader['endElement']>(
     () => ({
-      type: 'iconButton',
       componentProps: {
-        icon: claimsHidden ? 'eyeHide' : 'eyeShow',
         accessibilityLabel: listItemHeaderLabel,
+        icon: claimsHidden ? 'eyeHide' : 'eyeShow',
         onPress: () => setClaimsHidden(state => !state)
-      }
+      },
+      type: 'iconButton'
     }),
     [claimsHidden, listItemHeaderLabel]
   );
@@ -51,20 +52,20 @@ export const ItwPresentationPidDetail = ({ credential }: Props) => {
   return (
     <View>
       <ItwPidLifecycleAlert
-        navigation={navigation}
         lifecycleStatus={['jwtExpired', 'jwtExpiring']}
+        navigation={navigation}
       />
       {claims.length > 0 && (
-        <ListItemHeader label={listItemHeaderLabel} endElement={endElement} />
+        <ListItemHeader endElement={endElement} label={listItemHeaderLabel} />
       )}
       {claims.map(([id, claim], index) => (
         <Fragment key={id}>
           {index !== 0 && <Divider />}
           <ItwCredentialClaim
             claim={claim}
-            isPreview
-            hidden={claimsHidden}
             clipboardSuccessMessage={t('common:clipboard.copyFeedback')}
+            hidden={claimsHidden}
+            isPreview
             showLabel={t('common:buttons.show')}
           />
         </Fragment>

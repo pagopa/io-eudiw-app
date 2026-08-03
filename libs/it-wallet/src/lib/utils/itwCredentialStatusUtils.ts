@@ -1,4 +1,5 @@
 import { differenceInCalendarDays } from 'date-fns';
+
 import { isPresentationDetailSdJwt, wellKnownCredential } from './credentials';
 import { getCredentialExpireDate } from './itwClaimsUtils';
 import { validCredentialStatuses } from './itwCredentialUtils';
@@ -36,7 +37,7 @@ export const getCredentialStatus = (
   // NOTE: checks on status assertion have been removed because not yet supported
 
   const { expiringDays = DEFAULT_EXPIRING_DAYS } = options;
-  const { parsedCredential, expiration } = storedCredential;
+  const { expiration, parsedCredential } = storedCredential;
 
   const now = Date.now();
 
@@ -76,12 +77,12 @@ export const getCredentialStatus = (
  * Note: although this list is unlikely to change, you should ensure to have
  * a fallback when dealing with this list to prevent unwanted behaviours
  */
-const credentialTypesByVct: { [vct: string]: CredentialType } = {
-  [wellKnownCredential.PID]: CredentialType.PID,
-  [wellKnownCredential.DRIVING_LICENSE]: CredentialType.DRIVING_LICENSE,
+const credentialTypesByVct: Record<string, CredentialType> = {
+  [wellKnownCredential.BONUS_PARI]: CredentialType.BONUS_PARI,
   [wellKnownCredential.DISABILITY_CARD]:
     CredentialType.EUROPEAN_DISABILITY_CARD,
-  [wellKnownCredential.BONUS_PARI]: CredentialType.BONUS_PARI
+  [wellKnownCredential.DRIVING_LICENSE]: CredentialType.DRIVING_LICENSE,
+  [wellKnownCredential.PID]: CredentialType.PID
 };
 
 /**
@@ -89,7 +90,7 @@ const credentialTypesByVct: { [vct: string]: CredentialType } = {
  */
 export const getInvalidCredentials = (
   presentationDetails: ParsedDcql,
-  credentialsByType: Array<StoredCredentialMetadata>
+  credentialsByType: StoredCredentialMetadata[]
 ) =>
   presentationDetails
     .filter(isPresentationDetailSdJwt) // TODO: [SIW-3998] Support MDOC remote presentation

@@ -1,8 +1,3 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  EnrichedPresentationDetails,
-  StoredCredential
-} from '../utils/itwTypesUtils';
 import {
   AsyncStatusValues,
   setError,
@@ -10,26 +5,27 @@ import {
   setLoading,
   setSuccess
 } from '@io-eudiw-app/commons';
-import { WalletCombinedRootState } from '.';
 import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
-import { resetLifecycle } from './lifecycle';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { WalletCombinedRootState } from '.';
 import { ResolvedCredentialOffer } from '../types';
+import {
+  EnrichedPresentationDetails,
+  StoredCredential
+} from '../utils/itwTypesUtils';
+import { resetLifecycle } from './lifecycle';
 
 export type RequestedCredential = string | undefined;
-type RequestedCredentialType = string | undefined;
-
-type ObtainCredentialPreAuthResult = EnrichedPresentationDetails | undefined;
-
 /* State type definition for the credentialIssuance slice
  * issuanceCreation - Async status for the instance creation
  * issuance - Async status for the CREDENTIAL issuance
  */
 type CredentialIssuanceStatusSlice = {
   requestedCredential: RequestedCredential;
-  requestedCredentialType: RequestedCredentialType;
   /**
    * Issuer URL to use for the issuance. When set (e.g. coming from a credential
    * offer) it overrides the default EAA provider configured via env.
@@ -42,18 +38,23 @@ type CredentialIssuanceStatusSlice = {
    * `authorization_server` to the Issuer metadata discovery.
    */
   requestedCredentialOffer: ResolvedCredentialOffer | undefined;
-  statusPreAuth: AsyncStatusValues<ObtainCredentialPreAuthResult>;
+  requestedCredentialType: RequestedCredentialType;
   statusPostAuth: AsyncStatusValues<StoredCredential>;
+  statusPreAuth: AsyncStatusValues<ObtainCredentialPreAuthResult>;
 };
+
+type ObtainCredentialPreAuthResult = EnrichedPresentationDetails | undefined;
+
+type RequestedCredentialType = string | undefined;
 
 // Initial state for the credentialIssuance slice
 const initialState: CredentialIssuanceStatusSlice = {
   requestedCredential: undefined,
-  requestedCredentialType: undefined,
   requestedCredentialIssuerUrl: undefined,
   requestedCredentialOffer: undefined,
-  statusPreAuth: setInitial(),
-  statusPostAuth: setInitial()
+  requestedCredentialType: undefined,
+  statusPostAuth: setInitial(),
+  statusPreAuth: setInitial()
 };
 
 /**
@@ -61,14 +62,42 @@ const initialState: CredentialIssuanceStatusSlice = {
  * allowing to handle the UI accordingly with a request, loading and success/error states along with their data, if necessary.
  */
 const credentialIssuanceStatusSlice = createSlice({
-  name: 'credentialIssuanceStatus',
+  extraReducers: builder => {
+    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
+  },
   initialState,
+  name: 'credentialIssuanceStatus',
   reducers: {
+    resetCredentialIssuance: _ => initialState,
+    setCredentialIssuancePostAuthError: (
+      state,
+      action: PayloadAction<{ error: unknown }>
+    ) => {
+      state.statusPostAuth = setError(action.payload.error);
+    },
+    setCredentialIssuancePostAuthRequest: state => {
+      state.statusPostAuth = setLoading();
+    },
+    setCredentialIssuancePostAuthSuccess: (
+      state,
+      action: PayloadAction<{ credential: StoredCredential }>
+    ) => {
+      state.statusPostAuth = setSuccess(action.payload.credential);
+    },
+    setCredentialIssuancePreAuthError: (
+      state,
+      action: PayloadAction<{ error: unknown }>
+    ) => {
+      state.statusPreAuth = setError(action.payload.error);
+    },
     setCredentialIssuancePreAuthRequest: (
       state,
       action: PayloadAction<
-        | { offer: ResolvedCredentialOffer }
         | { credential: RequestedCredential; issuerUrl?: string }
+        | { offer: ResolvedCredentialOffer }
       >
     ) => {
       if ('offer' in action.payload) {
@@ -85,44 +114,16 @@ const credentialIssuanceStatusSlice = createSlice({
       }
       state.statusPreAuth = setLoading();
     },
-    setCredentialIssuancePreAuthError: (
-      state,
-      action: PayloadAction<{ error: unknown }>
-    ) => {
-      state.statusPreAuth = setError(action.payload.error);
-    },
     setCredentialIssuancePreAuthSuccess: (
       state,
       action: PayloadAction<{
-        result: ObtainCredentialPreAuthResult;
         credentialType: RequestedCredentialType;
+        result: ObtainCredentialPreAuthResult;
       }>
     ) => {
       state.statusPreAuth = setSuccess(action.payload.result);
       state.requestedCredentialType = action.payload.credentialType;
-    },
-    setCredentialIssuancePostAuthRequest: state => {
-      state.statusPostAuth = setLoading();
-    },
-    setCredentialIssuancePostAuthError: (
-      state,
-      action: PayloadAction<{ error: unknown }>
-    ) => {
-      state.statusPostAuth = setError(action.payload.error);
-    },
-    setCredentialIssuancePostAuthSuccess: (
-      state,
-      action: PayloadAction<{ credential: StoredCredential }>
-    ) => {
-      state.statusPostAuth = setSuccess(action.payload.credential);
-    },
-    resetCredentialIssuance: _ => initialState
-  },
-  extraReducers: builder => {
-    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
-    builder.addCase(preferencesReset, () => initialState);
-    builder.addCase(resetLifecycle, () => initialState);
-    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
+    }
   }
 });
 
@@ -130,13 +131,13 @@ const credentialIssuanceStatusSlice = createSlice({
  * Exports the actions for the credentialIssuance slice.
  */
 export const {
+  resetCredentialIssuance,
   setCredentialIssuancePostAuthError,
   setCredentialIssuancePostAuthRequest,
   setCredentialIssuancePostAuthSuccess,
   setCredentialIssuancePreAuthError,
   setCredentialIssuancePreAuthRequest,
-  setCredentialIssuancePreAuthSuccess,
-  resetCredentialIssuance
+  setCredentialIssuancePreAuthSuccess
 } = credentialIssuanceStatusSlice.actions;
 
 /**

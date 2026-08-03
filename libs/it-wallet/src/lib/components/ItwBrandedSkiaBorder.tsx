@@ -7,17 +7,18 @@ import {
   Group as SkiaGroup
 } from '@shopify/react-native-skia';
 import { ColorSchemeName, LayoutRectangle } from 'react-native';
+
 import { ItwBrandedSkiaGradient } from './ItwBrandedSkiaGradient';
 
-export type ItwIridescentBorderVariant = 'default' | 'warning' | 'error';
+export type ItwIridescentBorderVariant = 'default' | 'error' | 'warning';
 
 type ItwIridescentBorderProps = {
-  width: LayoutRectangle['width'];
-  height: LayoutRectangle['height'];
-  variant?: ItwIridescentBorderVariant;
-  thickness?: number;
   cornerRadius?: number;
+  height: LayoutRectangle['height'];
   themeType?: ColorSchemeName;
+  thickness?: number;
+  variant?: ItwIridescentBorderVariant;
+  width: LayoutRectangle['width'];
 };
 
 /**
@@ -26,12 +27,12 @@ type ItwIridescentBorderProps = {
  * Renders an animated IT-Wallet branded gradient using Skia and device rotation sensor data.
  */
 export const ItwBrandedSkiaBorder = ({
-  width,
-  height,
-  thickness = 3,
   cornerRadius = 16,
+  height,
+  themeType = 'light',
+  thickness = 3,
   variant = 'default',
-  themeType = 'light'
+  width
 }: ItwIridescentBorderProps) => {
   const isLightMode = themeType === 'light';
 
@@ -41,16 +42,16 @@ export const ItwBrandedSkiaBorder = ({
 
   return (
     <Mask
-      mode="alpha"
       mask={
         <SkiaGroup blendMode={'colorDodge'} opacity={gradientBorderOpacity}>
           <ItwBrandedSkiaGradient
-            width={width}
             height={height}
             variant={variant}
+            width={width}
           />
         </SkiaGroup>
       }
+      mode="alpha"
     >
       <SkiaGroup
         layer={
@@ -60,15 +61,14 @@ export const ItwBrandedSkiaBorder = ({
         }
       >
         <RoundedRect
-          x={0}
-          y={0}
-          width={width}
           height={height}
           r={cornerRadius}
-          strokeWidth={thickness}
           strokeJoin={'round'}
-          // eslint-disable-next-line react/style-prop-object
+          strokeWidth={thickness}
           style={'stroke'}
+          width={width}
+          x={0}
+          y={0}
         />
       </SkiaGroup>
     </Mask>

@@ -41,25 +41,23 @@ const themeKeys = [
   'card-background'
 ] as const;
 
-type ItWalletTheme = {
-  [K in (typeof themeKeys)[number]]: string;
-};
+type ItWalletTheme = Record<(typeof themeKeys)[number], string>;
 
 const itWalletLightTheme: ItWalletTheme = {
-  'header-background': '#F2F9FF',
   'banner-background': '#F2F9FF',
-  'card-background': '#F2F2F2'
+  'card-background': '#F2F2F2',
+  'header-background': '#F2F9FF'
 };
 
 const itWalletDarkTheme: ItWalletTheme = {
-  'header-background': '#0F2433',
   'banner-background': '#0F2433',
-  'card-background': '#1A1A1A'
+  'card-background': '#1A1A1A',
+  'header-background': '#0F2433'
 };
 
 export const ItWalletThemes = {
-  light: itWalletLightTheme,
-  dark: itWalletDarkTheme
+  dark: itWalletDarkTheme,
+  light: itWalletLightTheme
 };
 
 export const getItWalletColorScheme = (

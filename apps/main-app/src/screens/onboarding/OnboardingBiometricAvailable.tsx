@@ -1,13 +1,14 @@
-import { Banner, Body, H2, VSpacer } from '@pagopa/io-app-design-system';
-import { ComponentProps } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useAppDispatch } from '../../store';
+import { IOScrollView, useHeaderSecondLevel } from '@io-eudiw-app/commons';
+import { confirmBiometricEnabling } from '@io-eudiw-app/identification';
 import {
   preferencesSetIsBiometricEnabled,
   preferencesSetIsOnboardingDone
 } from '@io-eudiw-app/preferences';
-import { IOScrollView, useHeaderSecondLevel } from '@io-eudiw-app/commons';
-import { confirmBiometricEnabling } from '@io-eudiw-app/identification';
+import { Banner, Body, H2, VSpacer } from '@pagopa/io-app-design-system';
+import { ComponentProps } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { useAppDispatch } from '../../store';
 
 type IOScrollViewActions = ComponentProps<typeof IOScrollView>['actions'];
 
@@ -53,17 +54,17 @@ const OnboardingBiometricAvailable = () => {
   };
 
   const actions: IOScrollViewActions = {
-    type: 'TwoButtons',
     primary: {
-      label: t('common:buttons.activate'),
       accessibilityLabel: t('common:buttons.activate'),
+      label: t('common:buttons.activate'),
       onPress: onPressPrimary
     },
     secondary: {
-      label: t('common:buttons.notNow'),
       accessibilityLabel: t('common:buttons.notNow'),
+      label: t('common:buttons.notNow'),
       onPress: onPressSecondary
-    }
+    },
+    type: 'TwoButtons'
   };
 
   return (
@@ -73,8 +74,8 @@ const OnboardingBiometricAvailable = () => {
       <Body>{t('global:onboarding.biometric.available.body')}</Body>
       <VSpacer size={24} />
       <Banner
-        content={t('global:onboarding.biometric.available.settings')}
         color="neutral"
+        content={t('global:onboarding.biometric.available.settings')}
         pictogramName="activate"
       />
     </IOScrollView>

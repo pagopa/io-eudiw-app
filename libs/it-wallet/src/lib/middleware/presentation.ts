@@ -1,5 +1,14 @@
+import { takeLatestEffect } from '@io-eudiw-app/commons';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '@io-eudiw-app/identification';
+import { IoWallet, RemotePresentation } from '@pagopa/io-react-native-wallet';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+
 import { selectCredentials } from '../store/credentials';
+import { lifecycleIsOperationalSelector } from '../store/lifecycle';
 import {
   resetPresentation,
   selectOptionalCredentials,
@@ -12,25 +21,17 @@ import {
   setPreDefinitionRequest,
   setPreDefinitionSuccess
 } from '../store/presentation';
+import { WALLET_SPEC_VERSION } from '../utils/constants';
 import {
   getConfigIdByVct,
   wellKnownCredentialConfigurationIDs
 } from '../utils/credentials';
+import { serializeErrorOrUnknown } from '../utils/errors';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
-import { AppListenerWithAction, AppStartListening } from './types';
-import { takeLatestEffect } from '@io-eudiw-app/commons';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '@io-eudiw-app/identification';
-import { IoWallet, RemotePresentation } from '@pagopa/io-react-native-wallet';
-import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { CredentialsVault } from '../utils/itwCredentialVault';
 import { getWalletInstanceAttestationThunk } from './attestation';
-import { serializeErrorOrUnknown } from '../utils/errors';
-import { lifecycleIsOperationalSelector } from '../store/lifecycle';
+import { AppListenerWithAction, AppStartListening } from './types';
 
 type DcqlQuery = Parameters<
   RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']
@@ -47,14 +48,14 @@ const presentationListener: AppListenerWithAction<
   ReturnType<typeof setPreDefinitionRequest>
 > = async (action, listenerApi) => {
   try {
-    const { request_uri, client_id, state, request_uri_method } =
+    const { client_id, request_uri, request_uri_method, state } =
       action.payload;
 
     if (lifecycleIsOperationalSelector(listenerApi.getState())) {
       listenerApi.dispatch(
         setPreDefinitionError({
-          type: 'WALLET_NOT_ACTIVE',
-          error: serializeErrorOrUnknown(new Error('Wallet is not active'))
+          error: serializeErrorOrUnknown(new Error('Wallet is not active')),
+          type: 'WALLET_NOT_ACTIVE'
         })
       );
       return;
@@ -65,10 +66,10 @@ const presentationListener: AppListenerWithAction<
     await listenerApi.dispatch(getWalletInstanceAttestationThunk());
 
     const qrParams = wallet.RemotePresentation.startFlowFromQR({
-      request_uri,
       client_id,
-      state,
-      request_uri_method: request_uri_method ?? 'get'
+      request_uri,
+      request_uri_method: request_uri_method ?? 'get',
+      state
     });
 
     if (!qrParams.request_uri) {
@@ -97,7 +98,7 @@ const presentationListener: AppListenerWithAction<
      * Array of tuples containing the credential keytag and its raw value.
      * The encoded SD-JWT is retrieved from the secure vault on demand.
      */
-    const credentialsSdJwt: Array<[string, string]> = (
+    const credentialsSdJwt: [string, string][] = (
       await Promise.all(
         credentials
           .filter(c => c.format === 'dc+sd-jwt')
@@ -168,8 +169,8 @@ const presentationListener: AppListenerWithAction<
         );
 
         const authRequestObject = {
-          nonce: requestObject.nonce,
           clientId: requestObject.client_id,
+          nonce: requestObject.nonce,
           responseUri: requestObject.response_uri
         };
 
@@ -223,18 +224,18 @@ const presentationListener: AppListenerWithAction<
       }
       listenerApi.dispatch(
         setPreDefinitionError({
-          type: 'CREDENTIAL_NOT_FOUND',
-          error: serialized
+          error: serialized,
+          type: 'CREDENTIAL_NOT_FOUND'
         })
       );
       return;
     }
     // We don't know which step is failed thus we set the same error for both
     listenerApi.dispatch(
-      setPostDefinitionError({ type: 'PRESENTATION_ERROR', error: serialized })
+      setPostDefinitionError({ error: serialized, type: 'PRESENTATION_ERROR' })
     );
     listenerApi.dispatch(
-      setPreDefinitionError({ type: 'PRESENTATION_ERROR', error: serialized })
+      setPreDefinitionError({ error: serialized, type: 'PRESENTATION_ERROR' })
     );
   }
 };

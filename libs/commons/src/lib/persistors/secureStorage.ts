@@ -22,10 +22,10 @@ export function secureStoragePersistor(): Storage {
       }
     },
 
-    setItem: async (key, value) =>
-      SecureStore.setItemAsync(encodeKey(key), value, options),
-
     removeItem: async key =>
-      SecureStore.deleteItemAsync(encodeKey(key), options)
+      SecureStore.deleteItemAsync(encodeKey(key), options),
+
+    setItem: async (key, value) =>
+      SecureStore.setItemAsync(encodeKey(key), value, options)
   };
 }

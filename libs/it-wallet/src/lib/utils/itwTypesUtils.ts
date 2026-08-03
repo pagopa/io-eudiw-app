@@ -3,33 +3,53 @@ import {
   RemotePresentation,
   SdJwt
 } from '@pagopa/io-react-native-wallet';
+
 import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
+
+export const enum CredentialFormat {
+  LEGACY_SD_JWT = 'vc+sd-jwt',
+  MDOC = 'mso_mdoc',
+  SD_JWT = 'dc+sd-jwt'
+}
+
+export type ClaimDisplayResult =
+  | { type: 'image'; value: string }
+  | { type: 'text'; value: string | string[] };
+/**
+ * Type for disclosable claims.
+ */
+export type DisclosureClaim = {
+  claim: ClaimDisplayFormat;
+  source: string;
+};
+
+/**
+ * Creates a type that can be either T with none of the properties from U, or U with none of the properties from T
+ */
+export type Either<T, U> = Only<T, U> | Only<U, T>;
+export type EnrichedPresentationDetails = (Extract<
+  ParsedDcql[number],
+  { format: 'dc+sd-jwt' }
+> & {
+  claimsToDisplay: ClaimDisplayFormat[];
+})[];
 
 /**
  * Alias for the IssuerConfiguration type
  */
 export type IssuerConfiguration = CredentialIssuance.IssuerConfig;
 
-// Digital credential status
-export type ItwJwtCredentialStatus = 'valid' | 'jwtExpired' | 'jwtExpiring';
 // Combined status of a credential, that includes both the physical and the digital version
 export type ItwCredentialStatus =
+  | 'expired'
+  | 'expiring'
+  | 'invalid'
   | 'unknown'
   | 'valid'
-  | 'invalid'
-  | 'expiring'
-  | 'expired'
   | ItwJwtCredentialStatus;
 
-export type PercentPosition = `${number}%`;
-/**
- * A TypeScript type alias called `Prettify`.
- * It takes a type as its argument and returns a new type that has the same properties as the original type,
- * but the properties are not intersected. This means that the new type is easier to read and understand.
- */
-export type Prettify<T> = {
-  [K in keyof T]: T[K];
-} & object;
+// Digital credential status
+export type ItwJwtCredentialStatus = 'jwtExpired' | 'jwtExpiring' | 'valid';
 
 /**
  * Ensures that a type has all properties of T but none of the properties of U
@@ -40,27 +60,24 @@ export type Only<T, U> = {
   [P in keyof U]?: never;
 };
 
-/**
- * Creates a type that can be either T with none of the properties from U, or U with none of the properties from T
- */
-export type Either<T, U> = Only<T, U> | Only<U, T>;
-
 export type ParsedCredential = CredentialIssuance.ParsedCredential;
 
 /**
- * Metadata for a credential stored in the wallet. This is the portion that
- * lives in the Redux slice — it omits the encoded SD-JWT/MDOC, which is
- * persisted separately by `CredentialsVault`.
+ * Type representing the parsed DCQL query with the presentation details
  */
-export type StoredCredentialMetadata = {
-  parsedCredential: ParsedCredential;
-  keyTag: string;
-  credentialType: string;
-  format: string;
-  expiration: string;
-  issuedAt?: string;
-  issuerConf: IssuerConfiguration;
-  spec_version?: string;
+export type ParsedDcql = Awaited<
+  ReturnType<RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']>
+>;
+
+export type PercentPosition = `${number}%`;
+
+/**
+ * A TypeScript type alias called `Prettify`.
+ * It takes a type as its argument and returns a new type that has the same properties as the original type,
+ * but the properties are not intersected. This means that the new type is easier to read and understand.
+ */
+export type Prettify<T> = object & {
+  [K in keyof T]: T[K];
 };
 
 /**
@@ -72,43 +89,21 @@ export type StoredCredential = StoredCredentialMetadata & {
   credential: string;
 };
 
-export type EnrichedPresentationDetails = Array<
-  Extract<ParsedDcql[number], { format: 'dc+sd-jwt' }> & {
-    claimsToDisplay: Array<ClaimDisplayFormat>;
-  }
->;
-
 /**
- * Type for disclosable claims.
+ * Metadata for a credential stored in the wallet. This is the portion that
+ * lives in the Redux slice — it omits the encoded SD-JWT/MDOC, which is
+ * persisted separately by `CredentialsVault`.
  */
-export type DisclosureClaim = {
-  claim: ClaimDisplayFormat;
-  source: string;
+export type StoredCredentialMetadata = {
+  credentialType: string;
+  expiration: string;
+  format: string;
+  issuedAt?: string;
+  issuerConf: IssuerConfiguration;
+  keyTag: string;
+  parsedCredential: ParsedCredential;
+  spec_version?: string;
 };
-
-/**
- * A type guard that filters out undefined and null from a type T
- */
-export function isDefined<T, O extends NonNullable<T>>(v: T): v is O {
-  return v !== null && v !== undefined;
-}
-
-/**
- * Type representing the parsed DCQL query with the presentation details
- */
-export type ParsedDcql = Awaited<
-  ReturnType<RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']>
->;
-
-export type ClaimDisplayResult =
-  | { type: 'image'; value: string }
-  | { type: 'text'; value: string | Array<string> };
-
-export const enum CredentialFormat {
-  MDOC = 'mso_mdoc',
-  SD_JWT = 'dc+sd-jwt',
-  LEGACY_SD_JWT = 'vc+sd-jwt'
-}
 
 /**
  * Alias for the Verification type
@@ -116,3 +111,10 @@ export const enum CredentialFormat {
 export type Verification = NonNullable<
   ReturnType<typeof SdJwt.getVerification>
 >;
+
+/**
+ * A type guard that filters out undefined and null from a type T
+ */
+export function isDefined<T, O extends NonNullable<T>>(v: T): v is O {
+  return v !== null && v !== undefined;
+}

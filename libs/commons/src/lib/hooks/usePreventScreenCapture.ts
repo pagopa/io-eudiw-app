@@ -1,12 +1,12 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as Crypto from 'expo-crypto';
 import {
-  preventScreenCaptureAsync,
-  allowScreenCaptureAsync
+  allowScreenCaptureAsync,
+  preventScreenCaptureAsync
 } from 'expo-screen-capture';
 import { useCallback, useMemo, useRef } from 'react';
 
-const activeTags: Set<string> = new Set();
+const activeTags = new Set<string>();
 
 const preventScreenCapture = (tag: string) => {
   if (!activeTags.has(tag)) {

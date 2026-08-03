@@ -1,8 +1,9 @@
-import { isAnyOf } from '@reduxjs/toolkit';
 import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
+import { isAnyOf } from '@reduxjs/toolkit';
+
 import { removeCredential } from '../store/credentials';
 import { resetLifecycle } from '../store/lifecycle';
 import { wellKnownCredential } from '../utils/credentials';
@@ -41,17 +42,17 @@ export const addCredentialVaultListeners = (
   });
 
   startAppListening({
-    matcher: isAnyOf(
-      resetLifecycle,
-      preferencesReset,
-      preferencesSetIsFirstStartupFalse
-    ),
     effect: async () => {
       try {
         await CredentialsVault.clear();
       } catch {
         /* swallow: Redux state has already been reset */
       }
-    }
+    },
+    matcher: isAnyOf(
+      resetLifecycle,
+      preferencesReset,
+      preferencesSetIsFirstStartupFalse
+    )
   });
 };

@@ -1,20 +1,21 @@
-import { useNavigation } from '@react-navigation/native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { useTranslation } from 'react-i18next';
 import {
   OperationResultScreenContent,
   useDisableGestureNavigation,
   useHardwareBackButton
 } from '@io-eudiw-app/commons';
+import { useNavigation } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useTranslation } from 'react-i18next';
+
+import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
+import WALLET_ROUTES from '../../navigation/wallet/routes';
+import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { useAppDispatch } from '../../store';
-import { resetPresentation } from '../../store/presentation';
 import {
   PendingCredential,
   setPendingCredential
 } from '../../store/pidIssuance';
-import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
-import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
-import WALLET_ROUTES from '../../navigation/wallet/routes';
+import { resetPresentation } from '../../store/presentation';
 import {
   getCredentialNameByType,
   getCredentialTypeByConfigId
@@ -27,10 +28,10 @@ import {
  * activation so the issuance resumes automatically once the PID is available.
  */
 export type PresentationWalletNotActiveParams =
+  | undefined
   | {
       pendingCredential?: NonNullable<PendingCredential>;
-    }
-  | undefined;
+    };
 
 type Props = StackScreenProps<
   WalletNavigatorParamsList,
@@ -86,29 +87,29 @@ const PresentationWalletNotActive = ({ route }: Props) => {
 
   return (
     <OperationResultScreenContent
-      pictogram="itWallet"
-      title={
-        isCredentialOffer
-          ? t('notActive.credentialOffer.title', { credentialName })
-          : t('notActive.title')
-      }
-      subtitle={
-        isCredentialOffer
-          ? t('notActive.credentialOffer.body')
-          : t('notActive.body')
-      }
       action={{
         label: isCredentialOffer
           ? t('notActive.credentialOffer.confirm')
           : t('notActive.confirm'),
         onPress: onActivate
       }}
+      pictogram="itWallet"
       secondaryAction={{
         label: isCredentialOffer
           ? t('notActive.credentialOffer.cancel')
           : t('notActive.notNow'),
         onPress: onDismiss
       }}
+      subtitle={
+        isCredentialOffer
+          ? t('notActive.credentialOffer.body')
+          : t('notActive.body')
+      }
+      title={
+        isCredentialOffer
+          ? t('notActive.credentialOffer.title', { credentialName })
+          : t('notActive.title')
+      }
     />
   );
 };

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import { RootStackParamList } from '../RootStacknavigator';
 
 /**

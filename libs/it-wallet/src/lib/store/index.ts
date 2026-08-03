@@ -1,3 +1,7 @@
+// External State Types
+import { DebugRootState } from '@io-eudiw-app/debug-info';
+import { DeepLinkingRootState } from '@io-eudiw-app/navigation';
+import { PreferenceRootState } from '@io-eudiw-app/preferences';
 import {
   combineReducers,
   ThunkAction,
@@ -5,6 +9,7 @@ import {
   UnknownAction
 } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { attestationReducer } from './attestation';
 import { credentialIssuanceStatusReducer } from './credentialIssuance';
 import { credentialsReducer } from './credentials';
@@ -15,45 +20,21 @@ import { presentationReducer } from './presentation';
 import { proximityReducer } from './proximity';
 import { proximityConsentsReducer } from './proximityConsents';
 
-// External State Types
-import { DebugRootState } from '@io-eudiw-app/debug-info';
-import { PreferenceRootState } from '@io-eudiw-app/preferences';
-import { DeepLinkingRootState } from '@io-eudiw-app/navigation';
-
 /**
  * Combine all slices into a single base reducer.
  * Each slice handles its own reset logic via extraReducers.
  */
 export const walletRootReducer = combineReducers({
-  lifecycle: lifecycleReducer,
-  instance: instanceReducer,
   attestation: attestationReducer,
-  pidIssuanceStatus: pidIssuanceStatusReducer,
-  credentials: credentialsReducer,
   credentialIssuanceStatus: credentialIssuanceStatusReducer,
+  credentials: credentialsReducer,
+  instance: instanceReducer,
+  lifecycle: lifecycleReducer,
+  pidIssuanceStatus: pidIssuanceStatusReducer,
   presentation: presentationReducer,
   proximity: proximityReducer,
   proximityConsents: proximityConsentsReducer
 });
-
-type WalletRootState = ReturnType<typeof walletRootReducer>;
-
-/**
- * This type is required for selectors and middleware in order to correctly type the state of the wallet submodule.
- * It combines the actual wallet state with some other states which this module depends on, otherwise the selectors and middleware won't be able
- * to correctly infer the type of the data returned by the state.
- */
-export type WalletCombinedRootState = {
-  wallet: WalletRootState;
-} & DebugRootState &
-  PreferenceRootState &
-  DeepLinkingRootState;
-
-export type WalletDispatch = ThunkDispatch<
-  WalletCombinedRootState,
-  undefined,
-  UnknownAction
->;
 
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
@@ -61,6 +42,25 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   UnknownAction
 >;
+
+/**
+ * This type is required for selectors and middleware in order to correctly type the state of the wallet submodule.
+ * It combines the actual wallet state with some other states which this module depends on, otherwise the selectors and middleware won't be able
+ * to correctly infer the type of the data returned by the state.
+ */
+export type WalletCombinedRootState = DebugRootState &
+  DeepLinkingRootState &
+  PreferenceRootState & {
+    wallet: WalletRootState;
+  };
+
+export type WalletDispatch = ThunkDispatch<
+  WalletCombinedRootState,
+  undefined,
+  UnknownAction
+>;
+
+type WalletRootState = ReturnType<typeof walletRootReducer>;
 
 /**
  * HOOKS

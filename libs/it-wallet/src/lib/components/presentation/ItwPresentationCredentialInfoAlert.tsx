@@ -1,20 +1,21 @@
 import { Alert } from '@pagopa/io-app-design-system';
 import { t } from 'i18next';
 import { memo } from 'react';
+
+import { useAppSelector } from '../../store';
+import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
 import { CredentialInfoAlert } from '../../utils/itwCredentialCapabilities';
 import {
   ItwCredentialStatus,
   StoredCredentialMetadata
 } from '../../utils/itwTypesUtils';
-import { useAppSelector } from '../../store';
-import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
 
 type Props = {
   credential: StoredCredentialMetadata;
   infoAlert?: CredentialInfoAlert;
 };
 
-const validStates: Array<ItwCredentialStatus | undefined> = [
+const validStates: (ItwCredentialStatus | undefined)[] = [
   'valid',
   'expiring',
   'jwtExpiring'
@@ -38,8 +39,8 @@ const ItwPresentationCredentialInfoAlert = ({
   if (infoAlert) {
     return (
       <Alert
-        testID={infoAlert.testID}
         content={t(infoAlert.contentI18nKey, { ns: 'wallet' })}
+        testID={infoAlert.testID}
         variant="info"
       />
     );

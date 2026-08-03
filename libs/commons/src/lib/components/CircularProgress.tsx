@@ -9,13 +9,13 @@ import Svg, { Circle, G } from 'react-native-svg';
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 type CircularProgressProps = {
-  progress: number;
-  size: number;
-  radius: number;
-  strokeColor: ColorValue;
-  strokeBgColor: ColorValue;
-  strokeWidth: number;
   children?: ReactNode;
+  progress: number;
+  radius: number;
+  size: number;
+  strokeBgColor: ColorValue;
+  strokeColor: ColorValue;
+  strokeWidth: number;
 };
 
 /**
@@ -23,13 +23,13 @@ type CircularProgressProps = {
  * Ported from io-app to keep the proximity NFC screen graphics aligned.
  */
 export const CircularProgress = ({
-  size,
+  children,
   progress,
+  size,
   radius = size / 2,
-  strokeWidth,
-  strokeColor,
   strokeBgColor,
-  children
+  strokeColor,
+  strokeWidth
 }: CircularProgressProps) => {
   const progressLength = useSharedValue(0);
 
@@ -51,12 +51,12 @@ export const CircularProgress = ({
       testID={`circular-progress-${Math.round(progress)}`}
     >
       <Svg
-        width={size}
+        fill="none"
         height={size}
         viewBox={`0 0 ${size} ${size}`}
-        fill="none"
+        width={size}
       >
-        <G rotation="-90" origin={`${size / 2}, ${size / 2}`}>
+        <G origin={`${size / 2}, ${size / 2}`} rotation="-90">
           {/* Circle Background */}
           <Circle
             cx={size / 2}
@@ -67,14 +67,14 @@ export const CircularProgress = ({
           />
           {/* Active circle (animated) */}
           <AnimatedCircle
+            animatedProps={animatedProps}
             cx={size / 2}
             cy={size / 2}
             r={radius - strokeWidth / 2}
             stroke={strokeColor}
-            strokeWidth={strokeWidth}
             strokeDasharray={CIRCLE_LENGTH}
-            animatedProps={animatedProps}
             strokeLinecap={'round'}
+            strokeWidth={strokeWidth}
           />
         </G>
       </Svg>
@@ -82,9 +82,9 @@ export const CircularProgress = ({
         style={[
           styles.childrenWrapper,
           {
-            width: (radius - strokeWidth) * 2,
+            borderRadius: radius - strokeWidth,
             height: (radius - strokeWidth) * 2,
-            borderRadius: radius - strokeWidth
+            width: (radius - strokeWidth) * 2
           }
         ]}
       >
@@ -95,14 +95,14 @@ export const CircularProgress = ({
 };
 
 const styles = StyleSheet.create({
+  childrenWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    position: 'absolute'
+  },
   circularProgressWrapper: {
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  childrenWrapper: {
-    overflow: 'hidden',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute'
   }
 });

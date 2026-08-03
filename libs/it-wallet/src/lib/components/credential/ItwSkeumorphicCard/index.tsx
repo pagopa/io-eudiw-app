@@ -10,15 +10,16 @@ import {
   View,
   ViewStyle
 } from 'react-native';
+
 import { ParsedClaimsRecord } from '../../../utils/claims';
 import { accessibilityLabelByStatus } from '../../../utils/itwAccessibilityUtils';
+import { ItwCredentialCapabilities } from '../../../utils/itwCredentialCapabilities';
 import {
   getCredentialNameFromType,
   tagPropsByStatus,
   useBorderColorByStatus,
   validCredentialStatuses
 } from '../../../utils/itwCredentialUtils';
-import { ItwCredentialCapabilities } from '../../../utils/itwCredentialCapabilities';
 import {
   ItwCredentialStatus,
   StoredCredentialMetadata
@@ -33,28 +34,28 @@ import { CardWidthContext } from './CardWidthContext';
 import { FlippableCard } from './FlippableCard';
 
 type ItwSkeumorphicCardProps = {
+  capabilities: ItwCredentialCapabilities;
+  claims: ParsedClaimsRecord;
   credential: StoredCredentialMetadata;
+  isFlipped?: boolean;
   status: ItwCredentialStatus;
   valuesHidden: boolean;
-  capabilities: ItwCredentialCapabilities;
-  isFlipped?: boolean;
-  claims: ParsedClaimsRecord;
 };
 
 export const ItwSkeumorphicCard = ({
-  credential,
-  status,
-  isFlipped = false,
-  valuesHidden,
   capabilities,
-  claims
+  claims,
+  credential,
+  isFlipped = false,
+  status,
+  valuesHidden
 }: ItwSkeumorphicCardProps) => {
   const FrontSide = useMemo(
     () => (
       <CardSideBase
-        status={status}
-        credentialType={credential.credentialType}
         capabilities={capabilities}
+        credentialType={credential.credentialType}
+        status={status}
       >
         <CardBackground
           credentialType={credential.credentialType}
@@ -74,9 +75,9 @@ export const ItwSkeumorphicCard = ({
   const BackSide = useMemo(
     () => (
       <CardSideBase
-        status={status}
-        credentialType={credential.credentialType}
         capabilities={capabilities}
+        credentialType={credential.credentialType}
+        status={status}
       >
         <CardBackground
           credentialType={credential.credentialType}
@@ -96,7 +97,6 @@ export const ItwSkeumorphicCard = ({
   const accessibilityProps = useMemo(
     () =>
       ({
-        accessible: true,
         accessibilityLabel: `${getCredentialNameFromType(
           credential.credentialType
         )}, ${t(
@@ -107,16 +107,17 @@ export const ItwSkeumorphicCard = ({
             ns: 'wallet'
           }
         )}`,
-        accessibilityValue: { text: accessibilityLabelByStatus[status] }
+        accessibilityValue: { text: accessibilityLabelByStatus[status] },
+        accessible: true
       }) as AccessibilityProps,
     [credential.credentialType, isFlipped, status]
   );
 
   const card = (
     <FlippableCard
+      BackComponent={BackSide}
       containerStyle={[styles.card]}
       FrontComponent={FrontSide}
-      BackComponent={BackSide}
       isFlipped={isFlipped}
     />
   );
@@ -135,33 +136,33 @@ const gradientVariantByStatus: Record<
   ItwCredentialStatus,
   ItwIridescentBorderVariant
 > = {
-  valid: 'default',
-  expiring: 'warning',
   expired: 'error',
-  jwtExpiring: 'warning',
-  jwtExpired: 'error',
+  expiring: 'warning',
   invalid: 'error',
-  unknown: 'error'
+  jwtExpired: 'error',
+  jwtExpiring: 'warning',
+  unknown: 'error',
+  valid: 'default'
 };
 
 type CardSideBaseProps = {
-  status: ItwCredentialStatus;
-  credentialType: string;
   capabilities: ItwCredentialCapabilities;
   children: ReactNode;
+  credentialType: string;
+  status: ItwCredentialStatus;
 };
 
 const CardSideBase = ({
-  status,
-  credentialType,
   capabilities,
-  children
+  children,
+  credentialType,
+  status
 }: CardSideBaseProps) => {
   const borderColorMap = useBorderColorByStatus(credentialType);
 
-  const [size, setSize] = useState<{ width: number; height: number }>({
-    width: 0,
-    height: 0
+  const [size, setSize] = useState<{ height: number; width: number }>({
+    height: 0,
+    width: 0
   });
 
   const { showStatusTag } = capabilities;
@@ -172,13 +173,13 @@ const CardSideBase = ({
   const isValid = [...validCredentialStatuses, 'jwtExpired'].includes(status);
 
   const dynamicStyle: StyleProp<ViewStyle> = {
-    borderColor,
-    backgroundColor: isValid ? undefined : 'rgba(255,255,255,0.7)'
+    backgroundColor: isValid ? undefined : 'rgba(255,255,255,0.7)',
+    borderColor
   };
 
   const handleOnLayout = (event: LayoutChangeEvent) => {
-    const { width, height } = event.nativeEvent.layout;
-    setSize({ width, height });
+    const { height, width } = event.nativeEvent.layout;
+    setSize({ height, width });
   };
 
   return (
@@ -200,19 +201,19 @@ const CardSideBase = ({
         {/* Skia Canvas for border and light effect, only displayed if IT-Wallet enabled */}
         <Canvas
           style={{
+            height: size.height,
             position: 'absolute',
-            width: size.width,
-            height: size.height
+            width: size.width
           }}
           testID="itWalletBrandBorderTestID"
         >
           {/* Animated gradient border */}
           <ItwBrandedSkiaBorder
-            width={size.width}
-            height={size.height}
-            variant={gradientVariantByStatus[status]}
-            thickness={4}
             cornerRadius={8}
+            height={size.height}
+            thickness={4}
+            variant={gradientVariantByStatus[status]}
+            width={size.width}
           />
         </Canvas>
       </CardWidthContext.Provider>
@@ -225,32 +226,32 @@ const CardSideBase = ({
 export const SKEUMORPHIC_CARD_ASPECT_RATIO = 16 / 10.09;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderRadius: 8,
-    overflow: 'hidden'
-  },
   card: {
     aspectRatio: SKEUMORPHIC_CARD_ASPECT_RATIO,
+    // Android
+    elevation: 8,
     shadowColor: IOColors.black,
     shadowOffset: {
-      width: 0,
-      height: 4 // To avoid the shadow to be clipped by the header
+      height: 4, // To avoid the shadow to be clipped by the header
+      width: 0
     },
     shadowOpacity: 0.15,
-    shadowRadius: 8,
-    // Android
-    elevation: 8
+    shadowRadius: 8
   },
-  tag: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    zIndex: 20
+  container: {
+    borderRadius: 8,
+    flex: 1,
+    overflow: 'hidden'
   },
   faded: {
     ...StyleSheet.absoluteFill,
-    borderWidth: 4,
-    borderRadius: 8
+    borderRadius: 8,
+    borderWidth: 4
+  },
+  tag: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
+    zIndex: 20
   }
 });
