@@ -80,12 +80,13 @@
     "@types/lodash": "catalog:",
     "babel-preset-expo": "catalog:",
     "eslint-config-expo": "^56.0.4",
-    "eslint-plugin-react": "7.35.0",
     "eslint-plugin-jest": "^29.12.1",
+    "eslint-plugin-react": "7.35.0",
+    "expo-dev-client": "^56.0.26",
     "jest-expo": "catalog:",
     "jest-mock": "29.7.0",
     "react-test-renderer": "catalog:",
-    "reactotron-react-native": "^5.1.12",
+    "reactotron-react-native": "^5.3.1",
     "reactotron-redux": "^3.1.10"
   }
 }
