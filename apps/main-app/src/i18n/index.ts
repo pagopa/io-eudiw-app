@@ -1,5 +1,6 @@
 import { resource as commonResource } from '@io-eudiw-app/commons';
 import { itWalletFeature } from '@io-eudiw-app/it-wallet';
+import { itWalletHsmFeature } from '@io-eudiw-app/it-wallet-hsm';
 import i18n from 'i18next'; // Change this from * as i18n
 import { forEach } from 'lodash';
 import { initReactI18next } from 'react-i18next';
@@ -30,6 +31,7 @@ const initI18n = async () => {
 
   addResources(commonResource);
   addResources(itWalletFeature.resource);
+  addResources(itWalletHsmFeature.resource);
 
   return i18n;
 };

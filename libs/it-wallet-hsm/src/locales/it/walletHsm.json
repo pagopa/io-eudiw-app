@@ -1,0 +1,548 @@
+{
+  "notActive": {
+    "title": "Ottieni IT-Wallet per continuare",
+    "body": "Per accedere ai servizi online è necessario attivare IT-Wallet utilizzando la tua Carta di Identità Elettronica (CIE).",
+    "confirm": "Ottieni IT-Wallet",
+    "notNow": "Non ora",
+    "credentialOffer": {
+      "title": "Attiva IT-Wallet per aggiungere {{credentialName}}",
+      "body": "Potrai aggiungere anche altri documenti digitali e usarli online e dal vivo, ti basta il tuo telefono!",
+      "confirm": "Inizia",
+      "cancel": "Annulla"
+    }
+  },
+  "credentials": {
+    "names": {
+      "mdl": "Patente di guida",
+      "pid": "IT-Wallet ID",
+      "disabilityCard": "Carta Europea della Disabilità",
+      "bonusPari": "Bonus",
+      "unknown": "Credenziale Sconosciuta"
+    },
+    "status": {
+      "expired": "Scaduta",
+      "expiring": "In scadenza",
+      "pending": "In lavorazione",
+      "invalid": "Non valido",
+      "verificationExpiring": "Azione richiesta",
+      "verificationExpired": "Azione richiesta",
+      "upgradePending": "Da aggiornare",
+      "unknown": "Non disponibile"
+    },
+    "pidStatusAlert": {
+      "confirmIdentityBefore": "Conferma la tua identità entro il ",
+      "confirmIdentity": "Conferma la tua identità per continuare con i tuoi documenti"
+    },
+    "digital": "Versione Digitale"
+  },
+  "discovery": {
+    "screen": {
+      "itw": {
+        "dismissalDialog": {
+          "title": "Vuoi rinunciare ai vantaggi di IT-Wallet?",
+          "body": "Potrai ottenere IT-Wallet in qualsiasi altro momento, se cambi idea.",
+          "confirm": "Si, rinuncia",
+          "cancel": "No, continua"
+        }
+      }
+    }
+  },
+  "pidIssuance": {
+    "preview": {
+      "title": "Ci siamo quasi!",
+      "subtitle": "Hai verificato la tua identità.\nIl tuo portafoglio IT-Wallet sarà associato a questi dati:"
+    },
+    "failure": {
+      "title": "An unexpected error occurred",
+      "subtitle": "Your request to the issuing entity was not successful."
+    }
+  },
+  "presentation": {
+    "alerts": {
+      "statusAction": "Cosa posso fare?",
+      "mdl": {
+        "content": "La tua Patente su IO ha lo stesso valore legale del documento fisico, solo sul territorio italiano.",
+        "invalid": {
+          "cta": "Rimuovi documento dal Portafoglio"
+        }
+      },
+      "edc": {
+        "content": "Puoi usare la tua Carta Europea della Disabilità su IO per accedere ai servizi sul territorio italiano, negli stessi contesti d'uso del tuo documento fisico."
+      },
+      "bonusPari": {
+        "content": "Il Bonus ha una validità di 15gg. Sarà possibile richiedere un nuovo bonus. L'ottenimento del nuovo bonus è vincolato al monte totale e alle priorità di richiesta."
+      },
+      "expired": {
+        "content": "Il documento non è più valido. Se sei già in possesso del nuovo documento valido, puoi aggiornare la versione digitale nel Portafoglio"
+      },
+      "expiring": {
+        "content": "Mancano {{days}} giorni alla scadenza del documento."
+      },
+      "jwtVerification": {
+        "content": {
+          "jwtExpiring": "Verifica la versione digitale del tuo documento entro il {{date}} per continuare a usarlo senza limitazioni.",
+          "jwtExpired": "Verifica ora la versione digitale del tuo documento per continuare a usarlo senza limitazioni."
+        },
+        "action": "Inizia"
+      }
+    },
+    "credentialDetails": {
+      "boolClaim": {
+        "true": "Sì",
+        "false": "No"
+      },
+      "hiddenClaim": "Nascosto",
+      "status": {
+        "valid": "Valida",
+        "invalid": "Non valida",
+        "expired": "Scaduta"
+      },
+      "actions": {
+        "pariPurchases": "Dettaglio acquisti"
+      },
+      "partOf": "Parte di"
+    },
+    "loading": {
+      "title": "Stiamo facendo dei controlli di sicurezza",
+      "subtitle": "Attendi qualche secondo"
+    },
+    "trust": {
+      "title": "Dati richiesti",
+      "subtitle": "Saranno mostrati a **Comune di Soleluna** per accedere ai servizi richiesti",
+      "requiredClaims": "Dati necessari",
+      "optionalClaims": "Dati facoltativi",
+      "purpose": "Finalità: {{purpose}}",
+      "disclaimer": {
+        "0": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
+        "1": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento"
+      }
+    },
+    "success": {
+      "title": "Fatto!",
+      "subtitle": "Ora puoi continuare a usare i servizi sul sito dell'ente."
+    },
+    "successWithRedirect": {
+      "title": "Fatto!",
+      "subtitle": "Ora puoi continuare a usare i servizi sul sito dell'ente.",
+      "continue": "Continua sul sito dell'ente"
+    },
+    "failure": {
+      "title": "Un problema non permette di continuare",
+      "subtitle": "Si è verificato un errore tecnico che ha impedito l'accesso ai servizi dell'ente. Se il problema persiste, contetta l'assistenza.",
+      "button": "Ho capito"
+    },
+    "bottomSheets": {
+      "pidInfo": {
+        "alert": {
+          "itw": {
+            "valid": "Hai attivato il tuo ID con CIE il {{date}}.",
+            "expiring": "Rinnova il tuo ID per continuare ad usare IT-Wallet entro il {{date}}.",
+            "expired": "Rinnova il tuo ID per continuare ad usare IT-Wallet.",
+            "action": "Rinnova ID"
+          }
+        }
+      },
+      "org.iso.18013.5.1.mDL": {
+        "expiring": {
+          "cta": "Scopri di più"
+        }
+      }
+    },
+    "itWalletId": {
+      "description": "È il tuo pass digitale per dimostrare chi sei, accedere ai servizi online e ottenere nuovi documenti.",
+      "banner": {
+        "title": "Cos'è IT-Wallet ID?",
+        "content": "È il cuore del tuo Portafoglio IT-Wallet: ti consente di ottenere i documenti digitali, dimostrare chi sei e accedere ai servizi online"
+      },
+      "cta": {
+        "revoke": "Disattiva IT-Wallet"
+      },
+      "dialog": {
+        "revoke": {
+          "title": "Vuoi davvero disattivare IT-Wallet?",
+          "message": "Eliminerai i documenti che hai aggiunto al Portafoglio.\nSe cambi idea, potrai riattivare IT-Wallet in futuro.",
+          "confirm": "Sì, disattiva",
+          "cancel": "No, torna indietro"
+        }
+      }
+    },
+    "statusAssertionUnknown": {
+      "title": "Non siamo riusciti a caricare {{credentialName}}",
+      "content": "Chiudi e riapri l'app per riprovare.",
+      "primaryAction": "Ho capito"
+    },
+    "authSource": "PagoPa S.p.A."
+  },
+  "bonusPari": {
+    "barcode": {
+      "copyButton": "Copia codice sconto"
+    }
+  },
+  "proximity": {
+    "home": {
+      "cta": "Avvia verifica"
+    },
+    "engagement": {
+      "title": "Avvia una verifica",
+      "instruction": "Mostra il codice QR a chi verifica i tuoi documenti digitali",
+      "qrCode": {
+        "error": "Abbiamo avuto un problema nel generare il QR Code."
+      },
+      "invalidBanner": {
+        "content": "Conferma la tua identità per continuare a usare il tuo portafoglio IT-Wallet.",
+        "action": "Conferma identità"
+      },
+      "banner": {
+        "title": "Come funziona il QR Code?",
+        "content": "Ti consente di far verificare i documenti digitali che hai aggiunto al Portafoglio.",
+        "action": "Scopri di più"
+      },
+      "nfc": {
+        "or": "oppure",
+        "action": "Avvia verifica contactless"
+      }
+    },
+    "nfcEngagement": {
+      "ready": {
+        "ios": "Pronto per la verifica",
+        "android": "Avvicina il telefono al lettore"
+      },
+      "sending": "Verifica in corso",
+      "success": "Verifica completata!"
+    },
+    "storeConsent": {
+      "title": "Vuoi salvare la tua scelta per non ripetere questo passaggio?",
+      "subtitle": "Salva il consenso per saltare questo passaggio alle prossime verifiche contactless per questo servizio",
+      "action": "Sì, salva il consenso",
+      "secondaryAction": "No, chiedimelo ogni volta"
+    },
+    "bluetooth": {
+      "permissions": {
+        "title": "Consenti a DWalletLab di accedere al Bluetooth",
+        "subtitle": "Per farlo, devi modificare le preferenze nelle impostazioni di sistema del tuo dispositivo.",
+        "listItems": {
+          "title": "Ecco come:",
+          "step1": {
+            "label": "Step 1",
+            "value": "Vai su \"Impostazioni\""
+          },
+          "step2": {
+            "label": "Step 2",
+            "value": "Seleziona \"App\""
+          },
+          "step3": {
+            "label": "Step 3",
+            "value": "Seleziona \"DWalletLab\""
+          },
+          "step4": {
+            "label": "Step 4",
+            "value": "Consenti l’accesso a Bluetooth"
+          }
+        },
+        "actions": {
+          "primary": "Apri impostazioni",
+          "secondary": "Continua"
+        },
+        "alert": {
+          "title": "È richiesto l’accesso al Bluetooth per continuare",
+          "message": "Vai a Impostazioni e modifica le preferenze, poi riprova.",
+          "text": "Ho capito"
+        }
+      },
+      "activation": {
+        "title": "Attiva il Bluetooth per continuare",
+        "subtitle": "Per farlo, devi modificare le preferenze nelle impostazioni di sistema del tuo dispositivo.",
+        "listItems": {
+          "title": "Ecco come:",
+          "step1": {
+            "label": "Step 1",
+            "value": "Vai su \"Impostazioni\""
+          },
+          "step2": {
+            "label": "Step 2",
+            "value": "Seleziona \"Bluetooth\""
+          },
+          "step3": {
+            "label": "Step 3",
+            "value": "Consenti l’utilizzo del Bluetooth"
+          }
+        },
+        "actions": {
+          "primary": "Apri impostazioni",
+          "secondary": "Continua"
+        },
+        "alert": {
+          "title": "È richiesto l’utilizzo del Bluetooth per continuare",
+          "message": "Vai a Impostazioni e modifica le preferenze, poi riprova.",
+          "text": "Ho capito"
+        }
+      }
+    },
+    "nfc": {
+      "activation": {
+        "title": "Attiva l’NFC per continuare",
+        "subtitle": "Per permettere la verifica di prossimità dei tuoi documenti digitali, attiva l’NFC dalle Impostazioni del tuo dispositivo.",
+        "listItems": {
+          "title": "Ecco come:",
+          "step1": {
+            "label": "Step 1",
+            "value": "Vai su \"Impostazioni\""
+          },
+          "step2": {
+            "label": "Step 2",
+            "value": "Cerca la funzionalità \"NFC\""
+          },
+          "step3": {
+            "label": "Step 3",
+            "value": "Attiva la funzionalità"
+          }
+        },
+        "actions": {
+          "primary": "Apri impostazioni",
+          "secondary": "Continua"
+        },
+        "alert": {
+          "title": "È richiesto l’utilizzo dell’NFC per continuare",
+          "message": "Attiva l’NFC per permettere la verifica dei tuoi documenti digitali",
+          "action": "Attiva NFC",
+          "close": "Chiudi"
+        }
+      }
+    },
+    "trust": {
+      "subtitle": "Saranno mostrati a **{{relyingParty}}** per completare la verifica dei documenti richiesti."
+    },
+    "connected": {
+      "body": "Verification in progress. Please wait a few seconds..."
+    },
+    "isAuthenticated": {
+      "true": "The verifier is authenticated",
+      "false": "The verifier is not authenticated"
+    },
+    "success": {
+      "title": "Fatto!",
+      "subtitle": "La verifica è stata completata con successo.",
+      "button": "Ok"
+    },
+    "failure": {
+      "title": "An error has occurred",
+      "subtitle": "Your data has been sent, but there has been an error. Check the verifier app for more information.",
+      "subtitleFatal": "We were unable to complete the verification of your document.",
+      "understand": "I understand"
+    }
+  },
+  "verifiableCredentials": {
+    "generic": {
+      "placeholders": {
+        "claimNotAvailable": "Attributo non riconosciuto"
+      }
+    },
+    "claims": {
+      "uniqueId": "ID univoco",
+      "givenName": "Nome",
+      "familyName": "Cognome",
+      "taxIdCode": "Codice Fiscale",
+      "birthdate": "Data di nascita",
+      "placeOfBirth": "Luogo di nascita",
+      "expirationDate": "Scadenza",
+      "securityLevel": "Livello di sicurezza",
+      "info": "Ulteriori info su questi dati",
+      "releasedBy": "Emissione versione digitale",
+      "releasedByPid": "Emissione IT-Wallet ID",
+      "attachments": "Allegati",
+      "authenticSource": "Origine dei dati",
+      "mdl": {
+        "category": "Patente {{category}}",
+        "issuedDate": "Valida dal",
+        "expirationDate": "Valida fino",
+        "restrictionConditions": "Codici",
+        "verificationEvidence": {
+          "organizationId": "ID Organizzazione",
+          "organizationName": "Nome Organizzazione",
+          "countryCode": "Codice Nazione"
+        }
+      }
+    }
+  },
+  "home": {
+    "screen": {
+      "emptyMessage": "La tua Patente di guida, la tua Tessera Sanitaria e altri documenti digitali appariranno qui!",
+      "cta": "Aggiungi un documento"
+    }
+  },
+  "credentialIssuance": {
+    "badges": {
+      "saved": "Saved"
+    },
+    "list": {
+      "title": "Cosa vorresti aggiungere al Portafoglio?",
+      "header": "Documenti"
+    },
+    "trust": {
+      "title": "{{credential}}: Dati richiesti",
+      "subtitle": "Saranno condivisi con **{{organization}}** per il rilascio della versione digitale del documento.",
+      "requiredData": "Dati richiesti",
+      "disclaimer": {
+        "store": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
+        "retention": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento."
+      },
+      "dataSource": "Fornito da {{credentialSource}}"
+    },
+    "failure": {
+      "title": "An unexpected error occurred",
+      "subtitle": "Your request to the issuing entity was not successful.",
+      "credentialInvalidStatus": {
+        "title": "Credenziale non ottenibile",
+        "subtitle": "La credenziale che stai cercando di ottenere in questo momento non è disponibile."
+      },
+      "bonusPariNotRequested": {
+        "title": "Per ottenere il documento devi prima richiedere il bonus sul portale PARI",
+        "subtitle": "Per ottenere il Bonus come documento su IT-Wallet, effettua la procedura sul portale PARI.",
+        "action": "Effettua la richiesta"
+      },
+      "button": "I understand"
+    },
+    "alreadyObtained": {
+      "title": "Documento già presente",
+      "subtitle": "Il documento che stai cercando di aggiungere è già presente nel tuo portafoglio.",
+      "button": "Vai al portafoglio",
+      "close": "Chiudi"
+    }
+  },
+  "issuance": {
+    "emptyWallet": {
+      "readyBanner": {
+        "content": "È tutto pronto: aggiungi un documento al tuo Portafoglio di IO.",
+        "action": "Aggiungi documento"
+      }
+    },
+    "credentialPreview": {
+      "bottomSheet": {
+        "about": {
+          "title": "Chi è?",
+          "subtitle": "È l’ente riconosciuto dallo Stato a fornirti la versione digitale dei tuoi documenti.\n\n Per sapere come tratta i tuoi dati consulta l’[Informativa Privacy]({{privacyUrl}}). "
+        },
+        "authSource": {
+          "title": "Chi è",
+          "subtitle": "È l’ente o la banca dati digitale che detiene i dati contenuti all'interno del tuo documento."
+        }
+      }
+    },
+    "credentialNotFound": {
+      "title": "Aggiungi il documento al Portafoglio",
+      "subtitle": "Per usare i documenti su IO, prima aggiungili al Portafoglio. È facile e veloce."
+    },
+    "walletInstanceNotActive": {
+      "itWallet": {
+        "title": "Ottieni IT-Wallet per continuare",
+        "body": "Per aggiungere nuovi documenti al tuo Portafoglio di IO ottieni IT-Wallet: ti basta avere con te la Carta di Identità Elettronica (CIE).",
+        "bodyBold": ""
+      },
+      "primaryAction": "Inizia",
+      "secondaryAction": "Non ora"
+    }
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "version": "Versione",
+    "preferences": {
+      "title": "Preferenze",
+      "description": "Gestisci le preferenze dell'applicazione",
+      "appearance": {
+        "title": "Aspetto dell'app",
+        "description": "Personalizza l'app in base alle tue esigenze",
+        "typefaceStyle": {
+          "title": "Stile carattere",
+          "comfortable": {
+            "title": "Confortevole",
+            "description": "Progettato per una migliore leggibilità dei testi"
+          },
+          "standard": {
+            "title": "Standard",
+            "description": "Lo stile di sempre, con forme strette e geometriche"
+          }
+        }
+      }
+    },
+    "changeApp": {
+      "title": "Cambia app",
+      "description": "Scegli un'app per testare"
+    },
+    "debug": {
+      "mode": "Modalità debug",
+      "wallet": {
+        "title": "Resetta il portafoglio",
+        "description": "Rimuove tutti i documenti dal portafoglio"
+      },
+      "app": {
+        "title": "Resetta l'app",
+        "description": "Rimuove tutte le impostazioni e i dati dell'app"
+      }
+    },
+    "proximity": {
+      "title": "Consensi Proximity NFC",
+      "description": "Gestisci i consensi per le presentazioni in prossimità tramite NFC",
+      "screen": {
+        "title": "Consensi approvati",
+        "empty": "Nessun consenso registrato",
+        "delete": "Cancella consenso per {{ rpId }}"
+      }
+    }
+  },
+  "credentialOffer": {
+    "loading": {
+      "title": "Stiamo elaborando l'offerta",
+      "subtitle": "Attendi qualche istante."
+    }
+  },
+  "tabNavigator": {
+    "wallet": "Portafoglio",
+    "scanQr": "Inquadra"
+  },
+  "deepLink": {
+    "error": {
+      "qr": {
+        "title": "QR code non valido",
+        "subtitle": "Il codice QR che hai inquadrato non è valido o non è supportato. Riprova con un altro codice."
+      },
+      "link": {
+        "title": "Link non valido",
+        "subtitle": "Il link che hai aperto non è valido o non è supportato. Riprova con un altro link."
+      },
+      "button": "Vai al Portafoglio"
+    }
+  },
+  "qr": {
+    "error": "Unrecognized QR code",
+    "flash": "Flash",
+    "tabs": {
+      "upload": "Upload"
+    },
+    "permissions": {
+      "undefined": {
+        "title": "We need your permission to access the camera",
+        "label": "Allow access to the camera to scan QR codes",
+        "action": "Allow access"
+      },
+      "denied": {
+        "title": "You denied access to the camera",
+        "label": "To allow access to the camera, go to the settings of your device",
+        "action": "Open settings"
+      }
+    },
+    "multipleResultsAlert": {
+      "title": "Hai inquadrato più codici",
+      "body": "Inquadra un solo codice alla volta",
+      "action": "Riprova"
+    }
+  },
+  "imagePicker": {
+    "settingsAlert": {
+      "title": "It seems access to Photos has been denied",
+      "message": "We need access to your gallery in addition to upload QR codes",
+      "buttonText": {
+        "enable": "Enable permissions"
+      }
+    }
+  }
+}

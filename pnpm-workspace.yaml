@@ -1,6 +1,7 @@
 packages:
   - 'apps/*'
   - 'libs/it-wallet'
+  - 'libs/it-wallet-hsm'
   - 'libs/commons'
   - 'libs/env'
   - 'libs/preferences'

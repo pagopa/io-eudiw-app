@@ -1,0 +1,309 @@
+import {
+  isAndroid,
+  raceEffect,
+  regenerateCryptoKey,
+  takeLatestEffect
+} from '@io-eudiw-app/commons';
+import { getEnv } from '@io-eudiw-app/env';
+import {
+  setIdentificationIdentified,
+  setIdentificationStarted,
+  setIdentificationUnidentified
+} from '@io-eudiw-app/identification';
+import {
+  createCryptoContextFor,
+  IoWallet
+} from '@pagopa/io-react-native-wallet';
+import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+import * as Crypto from 'expo-crypto';
+import * as WebBrowser from 'expo-web-browser';
+
+import MAIN_ROUTES from '../navigation/main/routes';
+import { navigator } from '../navigation/utils';
+import WALLET_ROUTES from '../navigation/wallet/routes';
+import { selectWalletInstanceAttestationAsJwt } from '../store/attestation';
+import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
+import { addPidWithIdentification } from '../store/credentials';
+import { selectSessionId } from '../store/instance';
+import { Lifecycle, setLifecycle } from '../store/lifecycle';
+import {
+  resetPidIssuance,
+  setPidIssuanceError,
+  setPidIssuanceRequest,
+  setPidIssuanceSuccess
+} from '../store/pidIssuance';
+import { selectPendingCredential } from '../store/selectors/pidIssuance';
+import { WALLET_SPEC_VERSION } from '../utils/constants';
+import { wellKnownCredential } from '../utils/credentials';
+import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
+import { serializeErrorOrUnknown } from '../utils/errors';
+import { createWalletFetch } from '../utils/fetch';
+import {
+  getWalletInstanceAttestationThunk,
+  getWalletUnitAttestationThunk
+} from './attestation';
+import { persistCredential } from './credential';
+import { AppListenerWithAction, AppStartListening } from './types';
+
+/**
+ * Listener which obtains the PID credential.
+ * It is triggered by the setPidIssuanceRequest action and drives the whole
+ * OID4VCI exchange, surfacing loading/success/error through the pidIssuance
+ * slice so the UI can react to selectPidIssuanceStatus.
+ */
+const obtainPidListener: AppListenerWithAction<
+  ReturnType<typeof setPidIssuanceRequest>
+> = async (_, listenerApi) => {
+  const { dispatch, getState } = listenerApi;
+  try {
+    const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+    const {
+      EXPO_PUBLIC_PID_PROVIDER_BASE_URL,
+      EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri
+    } = getEnv();
+
+    await dispatch(getWalletInstanceAttestationThunk());
+
+    const walletInstanceAttestation =
+      selectWalletInstanceAttestationAsJwt(getState());
+
+    if (!walletInstanceAttestation) {
+      throw new Error('Wallet Instance Attestation not found');
+    }
+
+    const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
+
+    // Start the issuance flow
+    const sessionId = selectSessionId(getState());
+    const appFetch = createWalletFetch(sessionId);
+
+    const issuerUrl = EXPO_PUBLIC_PID_PROVIDER_BASE_URL;
+
+    // Evaluate issuer trust
+    const { issuerConf } = await wallet.CredentialIssuance.evaluateIssuerTrust(
+      issuerUrl,
+      {
+        appFetch
+      }
+    );
+
+    // Start user authorization
+    const { clientId, codeVerifier, credentialDefinition, issuerRequestUri } =
+      await wallet.CredentialIssuance.startUserAuthorization(
+        issuerConf,
+        ['dc_sd_jwt_PersonIdentificationData'],
+        { proofType: 'none' },
+        {
+          appFetch,
+          redirectUri: redirectUri,
+          walletInstanceAttestation,
+          wiaCryptoContext
+        }
+      );
+
+    // Obtain the Authorization URL
+    const { authUrl } = await wallet.CredentialIssuance.buildAuthorizationUrl(
+      issuerRequestUri,
+      clientId,
+      issuerConf
+    );
+
+    // On Android check if there is a browser to open the authentication session and then warm it up
+    if (isAndroid) {
+      const { browserPackages } =
+        await WebBrowser.getCustomTabsSupportingBrowsersAsync();
+      if (browserPackages.length === 0) {
+        throw new Error('No browser found to open the authentication session');
+      }
+      await WebBrowser.warmUpAsync();
+    }
+
+    const baseRedirectUri = `${new URL(redirectUri).protocol}//`;
+    const authRedirectUrl = await WebBrowser.openAuthSessionAsync(
+      authUrl,
+      baseRedirectUri,
+      {
+        createTask: false,
+        preferEphemeralSession: true
+      }
+    );
+
+    if (authRedirectUrl.type !== 'success' || !authRedirectUrl.url) {
+      throw new Error('Authorization flow was not completed successfully.');
+    }
+
+    const { code } =
+      await wallet.CredentialIssuance.completePidUserAuthorizationWithQueryMode(
+        authRedirectUrl.url
+      );
+
+    // Create credential crypto context
+    const credentialKeyTag = Crypto.randomUUID().toString();
+
+    // Create DPoP context for the whole issuance flow
+    await regenerateCryptoKey(DPOP_KEYTAG);
+    const dPopCryptoContext = createCryptoContextFor(DPOP_KEYTAG);
+
+    const { accessToken } = await wallet.CredentialIssuance.authorizeAccess(
+      issuerConf,
+      code,
+      redirectUri,
+      codeVerifier,
+      {
+        appFetch,
+        dPopCryptoContext,
+        walletInstanceAttestation,
+        wiaCryptoContext
+      }
+    );
+
+    const [pidCredentialDefinition] = credentialDefinition;
+    // Get the credential configuration ID for PID
+    const pidCredentialConfigId =
+      pidCredentialDefinition?.type === 'openid_credential' &&
+      pidCredentialDefinition?.credential_configuration_id;
+
+    const { credential_configuration_id, credential_identifiers } =
+      accessToken.authorization_details.find(
+        authDetails =>
+          authDetails.credential_configuration_id === pidCredentialConfigId
+      ) ?? {};
+
+    // Get the first credential_identifier from the access token's authorization details
+    const [credential_identifier] = credential_identifiers ?? [];
+
+    if (!credential_configuration_id) {
+      throw new Error('No credential configuration ID found for PID');
+    }
+
+    const walletUnitAttestation = await dispatch(
+      getWalletUnitAttestationThunk({
+        keyTags: [credentialKeyTag]
+      })
+    ).unwrap();
+
+    const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
+
+    // Get the credential identifier that was authorized
+    const { credential, format } =
+      await wallet.CredentialIssuance.obtainCredential(
+        issuerConf,
+        accessToken,
+        clientId,
+        {
+          credential_configuration_id,
+          credential_identifier
+        },
+        {
+          appFetch,
+          credentialCryptoContext,
+          dPopCryptoContext,
+          walletUnitAttestation: walletUnitAttestation.attestation
+        }
+      );
+
+    const { expiration, issuedAt, parsedCredential } =
+      await wallet.CredentialIssuance.verifyAndParseCredential(
+        issuerConf,
+        credential,
+        credential_configuration_id,
+        { credentialCryptoContext, ignoreMissingAttributes: true }
+      );
+
+    dispatch(
+      setPidIssuanceSuccess({
+        credential,
+        credentialType: wellKnownCredential.PID,
+        expiration: expiration.toISOString(),
+        format,
+        issuedAt: issuedAt?.toISOString(),
+        issuerConf,
+        keyTag: credentialKeyTag,
+        parsedCredential,
+        spec_version: WALLET_SPEC_VERSION
+      })
+    );
+  } catch (error) {
+    // Ignore if the task was aborted (e.g. the user left the screen)
+    if (error instanceof TaskAbortError) {
+      return;
+    }
+    const serialized = serializeErrorOrUnknown(error);
+    dispatch(setPidIssuanceError({ error: serialized, type: 'issuance' }));
+  }
+};
+
+/**
+ * Listener to store the credential after pin validation.
+ * It dispatches the action which shows the pin validation modal and awaits for the result.
+ * If the pin is correct, the credential is stored, the issuance state is resetted and the user is navigated to the main screen.
+ */
+const addPidWithAuthListener: AppListenerWithAction<
+  ReturnType<typeof addPidWithIdentification>
+> = async (action, listenerApi) => {
+  listenerApi.dispatch(
+    setIdentificationStarted({ canResetPin: false, isValidatingTask: true })
+  );
+  const resAction = await listenerApi.take(
+    isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
+  );
+  if (setIdentificationIdentified.match(resAction[0])) {
+    const persistResult = await listenerApi.dispatch(
+      persistCredential({ credential: action.payload.credential })
+    );
+    if (persistCredential.rejected.match(persistResult)) {
+      // Vault write failed: surface the error through the issuance state so the
+      // PidIssuanceRequest screen reacts to selectPidIssuanceStatus and routes
+      // to the failure screen, like the OID4VCI issuance error path does.
+      listenerApi.dispatch(
+        setPidIssuanceError({
+          error: persistResult.payload ?? persistResult.error,
+          type: 'persist'
+        })
+      );
+      return;
+    }
+    listenerApi.dispatch(
+      setLifecycle({ lifecycle: Lifecycle.LIFECYCLE_VALID })
+    );
+    // Get the pending required credential to be obtained after the Pid
+    const pendingCredential = selectPendingCredential(listenerApi.getState());
+    if (pendingCredential?.credential) {
+      listenerApi.dispatch(
+        // When the pending credential comes from a credential offer, forward the
+        // whole offer so the issuance can validate it and select the right
+        // authorization server; otherwise fall back to the minimal data.
+        setCredentialIssuancePreAuthRequest(
+          pendingCredential.offer
+            ? { offer: pendingCredential.offer }
+            : {
+                credential: pendingCredential.credential,
+                issuerUrl: pendingCredential.issuerUrl
+              }
+        )
+      );
+      navigator.navigate(MAIN_ROUTES.WALLET_NAV, {
+        screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
+      });
+    } else {
+      // This should not happen, so by default the flow will just reset navigation and go back home
+      navigator.navigateWithReset(MAIN_ROUTES.TAB_NAV);
+    }
+  } else {
+    return;
+  }
+};
+
+export const addPidListeners = (startAppListening: AppStartListening) => {
+  startAppListening({
+    actionCreator: setPidIssuanceRequest,
+    effect: raceEffect(obtainPidListener, [
+      listenerApi => listenerApi.take(isAnyOf(resetPidIssuance))
+    ])
+  });
+
+  startAppListening({
+    actionCreator: addPidWithIdentification,
+    effect: takeLatestEffect(addPidWithAuthListener)
+  });
+};

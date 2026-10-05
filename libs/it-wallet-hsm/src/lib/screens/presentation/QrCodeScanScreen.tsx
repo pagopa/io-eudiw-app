@@ -1,0 +1,100 @@
+import {
+  useDisableGestureNavigation,
+  useHardwareBackButton
+} from '@io-eudiw-app/commons';
+import { IOToast } from '@pagopa/io-app-design-system';
+import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+import { Alert } from 'react-native';
+import ReactNativeHapticFeedback, {
+  HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
+
+import { QrCodeScanBaseScreenComponent } from '../../components/QrCodeScanBaseScreenComponent';
+import { useQrCodeFileReader } from '../../hooks/useQrCodeFileReader';
+import { parseDeepLink } from '../../utils/parsing';
+
+/**
+ * Types for callback in case of success or error
+ */
+export type OnBarcodeSuccess = (barcode: string | string[]) => void;
+
+export type OnBardCodeError = () => void;
+
+const QrCodeScanScreen = () => {
+  const navigation = useNavigation();
+  const { t } = useTranslation();
+
+  // Disable the back gesture navigation and the hardware back button
+  useDisableGestureNavigation();
+  useHardwareBackButton(() => true);
+
+  const handleMultipleResults = () =>
+    Alert.alert(
+      t('qr.multipleResultsAlert.title', { ns: 'itWalletHsm' }),
+      t('qr.multipleResultsAlert.body', { ns: 'itWalletHsm' }),
+      [
+        {
+          style: 'default',
+          text: t(`qr.multipleResultsAlert.action`, { ns: 'itWalletHsm' })
+        }
+      ],
+      { cancelable: false }
+    );
+
+  /**
+   * Handler for a single barcode result. It validates that the scanned URL is a
+   * recognized wallet deep link (presentation or credential offer) and then
+   * delegates routing to the centralized deep link handler, which inspects the
+   * scheme and dispatches to the appropriate flow.
+   * If the URL is not recognized, it shows a toast error.
+   * @param barcode - The barcode string to be parsed
+   */
+  const handleSingleResult = (barcode: string) => {
+    try {
+      // Validate the scanned URL; routing is performed by the deep link handler.
+      parseDeepLink(barcode);
+      ReactNativeHapticFeedback.trigger(
+        HapticFeedbackTypes.notificationSuccess
+      );
+      navigation.navigate('MAIN_WALLET_NAV', {
+        params: {
+          url: barcode
+        },
+        screen: 'DEEP_LINK_HANDLER'
+      });
+    } catch {
+      ReactNativeHapticFeedback.trigger(HapticFeedbackTypes.notificationError);
+      IOToast.error(t('qr.error', { ns: 'itWalletHsm' }));
+    }
+  };
+
+  const handleBarcodeSuccess: OnBarcodeSuccess = barcode => {
+    const codes = Array.isArray(barcode) ? barcode : [barcode];
+
+    if (codes.length > 1) {
+      handleMultipleResults();
+    } else {
+      handleSingleResult(codes[0]);
+    }
+  };
+
+  const handleBarcodeError: OnBardCodeError = () =>
+    IOToast.error(t('qr.error', { ns: 'itWalletHsm' }));
+
+  const { isLoading, showImagePicker } = useQrCodeFileReader({
+    onBarcodeError: handleBarcodeError,
+    onBarcodeSuccess: handleBarcodeSuccess
+  });
+
+  return (
+    <QrCodeScanBaseScreenComponent
+      isDisabled={isLoading}
+      isLoading={isLoading}
+      onBarcodeSuccess={handleBarcodeSuccess}
+      onFileInputPressed={showImagePicker}
+    />
+  );
+};
+
+export default QrCodeScanScreen;

@@ -1,0 +1,82 @@
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import * as Crypto from 'expo-crypto';
+import { PersistConfig, persistReducer } from 'redux-persist';
+
+import { WalletCombinedRootState } from '.';
+import { resetLifecycle } from './lifecycle';
+
+/* State type definition for the instance slice
+ * keyTag - The keytag bound to the wallet instance
+ */
+type InstanceSlice = {
+  keyTag: string | undefined;
+  sessionId: string;
+};
+
+// Initial state for the instance slice
+const initialState: InstanceSlice = {
+  keyTag: undefined,
+  sessionId: Crypto.randomUUID().toString()
+};
+
+/**
+ * Redux slice for the instance state. It allows to store and reset the keytag bound to the wallet instance.
+ */
+const instanceSlice = createSlice({
+  extraReducers: builder => {
+    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
+  },
+  initialState,
+  name: 'instance',
+  reducers: {
+    setInstanceKeyTag: (state, action: PayloadAction<string>) => {
+      state.keyTag = action.payload;
+    }
+  }
+});
+
+/**
+ * Redux persist configuration for the instance slice.
+ * Currently it uses AsyncStorage as the storage engine.
+ */
+const instancePersist: PersistConfig<InstanceSlice> = {
+  key: 'instance',
+  storage: AsyncStorage
+};
+
+/**
+ * Persisted reducer for the instance slice.
+ */
+export const instanceReducer = persistReducer(
+  instancePersist,
+  instanceSlice.reducer
+);
+
+/**
+ * Exports the actions for the instance slice.
+ */
+export const { setInstanceKeyTag } = instanceSlice.actions;
+
+/**
+ * Select the wallet instance keytag.
+ * @param state - The root state
+ * @returns the wallet instance keytag
+ */
+export const selectInstanceKeyTag = (state: WalletCombinedRootState) =>
+  state.itWalletHsm.instance.keyTag;
+
+/**
+ * Selects the session id of the wallet
+ * @param state - The root state of the Redux store
+ * @returns a randomly generated uuid
+ */
+export const selectSessionId = (state: WalletCombinedRootState) =>
+  state.itWalletHsm.instance.sessionId;

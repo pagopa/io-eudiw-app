@@ -1,0 +1,280 @@
+import { secureStoragePersistor } from '@io-eudiw-app/commons';
+import {
+  preferencesReset,
+  preferencesSetIsFirstStartupFalse
+} from '@io-eudiw-app/preferences';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PersistConfig, persistReducer } from 'redux-persist';
+
+import { WalletCombinedRootState } from '.';
+import { ItwJwtCredentialStatus, WalletCard } from '../types';
+import { wellKnownCredential } from '../utils/credentials';
+import { getCredentialStatus } from '../utils/itwCredentialStatusUtils';
+import {
+  CredentialFormat,
+  StoredCredential,
+  StoredCredentialMetadata
+} from '../utils/itwTypesUtils';
+import { resetLifecycle } from './lifecycle';
+
+/* State type definition for the credentials slice.
+ * Only credential metadata is kept here. The encoded SD-JWT/MDOC of each
+ * credential is persisted separately by `CredentialsVault`, so this
+ * slice can keep using redux-persist without bloating secure storage with
+ * the raw credential payloads.
+ */
+type CredentialsSlice = {
+  banners: {
+    pidInfoBannerActive: boolean;
+    proximityInfoBannerActive: boolean;
+  };
+  credentials: StoredCredentialMetadata[];
+};
+
+// Initial state for the credential slice
+const initialState: CredentialsSlice = {
+  banners: {
+    pidInfoBannerActive: true,
+    proximityInfoBannerActive: true
+  },
+  credentials: []
+};
+
+/**
+ * Redux slice for the credential state. It allows to store the PID and other credentials.
+ * This must be a separate slice because the credentials are stored using a custom persistor.
+ */
+const credentialsSlice = createSlice({
+  extraReducers: builder => {
+    // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
+    builder.addCase(preferencesReset, () => initialState);
+    builder.addCase(resetLifecycle, () => initialState);
+    builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
+  },
+  initialState,
+  name: 'credentials',
+  reducers: {
+    addCredential: (
+      state,
+      action: PayloadAction<{ credential: StoredCredentialMetadata }>
+    ) => {
+      const { credential } = action.payload;
+      const existingIndex = state.credentials.findIndex(
+        c => c.credentialType === credential.credentialType
+      );
+      if (existingIndex !== -1) {
+        // If the credential already exists, replace it
+        state.credentials[existingIndex] = credential;
+      } else {
+        // Otherwise add it
+        state.credentials.push(credential);
+      }
+    },
+    // Empty action which will be intercepted by the listener and trigger the identification before storing a credential
+    addCredentialWithIdentification: (
+      _,
+      __: PayloadAction<{ credential: StoredCredential }>
+    ) => {
+      /* empty */
+    },
+    // Empty action which will be intercepted by the listener and trigger the identification before storing the PID
+    addPidWithIdentification: (
+      _,
+      __: PayloadAction<{ credential: StoredCredential }>
+    ) => {
+      /* empty */
+    },
+    // PID Info Banner
+    disablePidInfoBanner: state => {
+      state.banners.pidInfoBannerActive = false;
+    },
+    // Proximity Info Banner
+    disableProximityInfoBanner: state => {
+      state.banners.proximityInfoBannerActive = false;
+    },
+    removeCredential: (
+      state,
+      action: PayloadAction<{ credentialType: string }>
+    ) => {
+      // If the credential is the PID, ignore it as it is not removable without resetting the lifecycle
+      const { credentialType } = action.payload;
+      if (credentialType !== wellKnownCredential.PID) {
+        state.credentials = state.credentials.filter(
+          c => c.credentialType !== credentialType
+        );
+      }
+    }
+  }
+});
+
+/**
+ * Redux persist configuration for the credential slice.
+ * The slice now stores only credential metadata: the encoded SD-JWT/MDOC
+ * payloads live in `CredentialsVault` and never flow through redux-persist.
+ */
+const credentialsPersistor: PersistConfig<CredentialsSlice> = {
+  key: 'credentials',
+  storage: secureStoragePersistor()
+};
+
+/**
+ * Persisted reducer for the credential slice.
+ */
+export const credentialsReducer = persistReducer(
+  credentialsPersistor,
+  credentialsSlice.reducer
+);
+
+/**
+ * Exports the actions for the credentials slice.
+ */
+export const {
+  addCredential,
+  addCredentialWithIdentification,
+  addPidWithIdentification,
+  disablePidInfoBanner,
+  disableProximityInfoBanner,
+  removeCredential
+} = credentialsSlice.actions;
+
+export const selectCredentials = (state: WalletCombinedRootState) =>
+  state.itWalletHsm.credentials.credentials;
+
+export const selectCredential = (credentialType: string) =>
+  createSelector(selectCredentials, credentials =>
+    credentials.find(c => c.credentialType === credentialType)
+  );
+
+export const itwCredentialsPidSelector = selectCredential(
+  wellKnownCredential.PID
+);
+
+/**
+ * Returns the pid credential expiration date, if present.
+ *
+ * @param state - The global state.
+ * @returns The pid credential expiration date.
+ */
+export const itwCredentialsPidExpirationSelector = createSelector(
+  itwCredentialsPidSelector,
+  pid => pid?.expiration
+);
+
+/**
+ * Returns the credential status and the error message corresponding to the status assertion error, if present.
+ *
+ * @param state - The global state.
+ * @returns The credential status and the error message corresponding to the status assertion error, if present.
+ */
+export const itwCredentialsPidStatusSelector = createSelector(
+  itwCredentialsPidSelector,
+  pid =>
+    pid ? (getCredentialStatus(pid) as ItwJwtCredentialStatus) : undefined
+);
+
+/**
+ * Selects all the credentials beside the PID and transforms them
+ * into {@link ItwCredentialCardProps}
+ */
+export const selectWalletCards: (
+  state: WalletCombinedRootState
+) => WalletCard[] = createSelector(selectCredentials, credentials =>
+  credentials
+    .filter(cred => cred.credentialType !== wellKnownCredential.PID)
+    .map(cred => ({
+      credentialStatus: getCredentialStatus(cred),
+      credentialType: cred.credentialType,
+      key: cred.keyTag,
+      type: 'itw'
+    }))
+);
+
+/**
+ * Selector to determine whether there are any presentable credentials.
+ * Returns `true` if there is at least one MDOC credential in the wallet,
+ * which are the ones presentable over proximity.
+ *
+ * @param state - The global state.
+ * @returns `true` if there is at least one presentable credential, `false` otherwise.
+ */
+export const hasPresentableCredentialsSelector = createSelector(
+  selectCredentials,
+  credentials =>
+    credentials.some(credential => credential.format === CredentialFormat.MDOC)
+);
+
+/**
+ * Checks if a given credential is expired based on its status.
+ */
+const isExpiredPresentableCredential = (
+  credential: StoredCredentialMetadata
+) => {
+  const status = getCredentialStatus(credential);
+  return status === 'expired' || status === 'jwtExpired';
+};
+
+/**
+ * Selector to determine whether there are any presentable credentials.
+ * Returns `true` if there is at least one MDOC credential in the wallet,
+ * which are the ones presentable over proximity.
+ *
+ * @param state - The global state.
+ * @returns `true` if there is at least one presentable credential, `false` otherwise.
+ */
+export const presentableCredentialsSelector = createSelector(
+  selectCredentials,
+  credentials =>
+    credentials.filter(
+      credential => credential.format === CredentialFormat.MDOC
+    )
+);
+
+/**
+ * Checks if all presentable credentials are expired.
+ * @param presentableCredentialsByDocType - The presentable credentials by document type.
+ * @returns `true` if all presentable credentials are expired, `false` otherwise.
+ */
+export const areAllPresentableCredentialsExpired = (
+  presentableCredentials: StoredCredentialMetadata[]
+) =>
+  presentableCredentials.length > 0 &&
+  presentableCredentials.every(isExpiredPresentableCredential);
+
+/**
+ * Selector to determine whether the Proximity QR Code screen should surface the
+ * expired credentials banner.
+ * Even when the PID and all presentable credentials are expired, the wallet
+ * must still allow QR/NFC presentation so the relying party can decide whether
+ * to accept the verification.
+ *
+ * @param state - The global state.
+ * @returns `true` if the expired credentials banner should be shown.
+ */
+export const shouldShowExpiredProximityCredentialsBannerSelector =
+  createSelector(
+    itwCredentialsPidStatusSelector,
+    presentableCredentialsSelector,
+    (
+      pidStatus: ItwJwtCredentialStatus | undefined,
+      presentableCredentialsByDocType
+    ) =>
+      pidStatus === 'jwtExpired' &&
+      areAllPresentableCredentialsExpired(presentableCredentialsByDocType)
+  );
+
+/**
+ * Selects whether the PID info banner is active (i.e. not yet dismissed by the user).
+ * @param state - The global state.
+ * @returns a boolean indicating whether the PID info banner is active
+ */
+export const selectPidInfoBannerActive = (state: WalletCombinedRootState) =>
+  state.itWalletHsm.credentials.banners.pidInfoBannerActive;
+
+/**
+ * Selects whether the Proximity info banner is active (i.e. not yet dismissed by the user).
+ * @param state - The global state.
+ * @returns a boolean indicating whether the Proximity info banner is active
+ */
+export const selectProximityInfoBannerActive = (
+  state: WalletCombinedRootState
+) => state.itWalletHsm.credentials.banners.proximityInfoBannerActive;
