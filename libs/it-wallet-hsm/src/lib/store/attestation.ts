@@ -1,5 +1,12 @@
 import { secureStoragePersistor } from '@io-eudiw-app/commons';
 import {
+  AsyncStatusValues,
+  setError,
+  setInitial,
+  setLoading,
+  setSuccess
+} from '@io-eudiw-app/commons';
+import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
@@ -8,6 +15,7 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 
 import { WalletCombinedRootState } from '.';
+import { getWalletInstanceAttestationThunk } from '../middleware/attestation';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { resetLifecycle } from './lifecycle';
 
@@ -15,6 +23,7 @@ import { resetLifecycle } from './lifecycle';
  * attestation - The wallet instance attestation
  */
 type AttestationState = {
+  request: AsyncStatusValues;
   wia: {
     value?: Record<string, string>;
   };
@@ -25,6 +34,7 @@ type AttestationState = {
 
 // Initial state for the attestation slice
 export const initialState: AttestationState = {
+  request: setInitial(),
   wia: {
     value: undefined
   },
@@ -38,6 +48,18 @@ export const initialState: AttestationState = {
  */
 const attestationSlice = createSlice({
   extraReducers: builder => {
+    builder.addCase(getWalletInstanceAttestationThunk.pending, state => {
+      state.request = setLoading();
+    });
+    builder.addCase(getWalletInstanceAttestationThunk.fulfilled, state => {
+      state.request = setSuccess();
+    });
+    builder.addCase(
+      getWalletInstanceAttestationThunk.rejected,
+      (state, action) => {
+        state.request = setError(action.payload ?? action.error);
+      }
+    );
     // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
     builder.addCase(preferencesReset, () => initialState);
     builder.addCase(resetLifecycle, () => initialState);
@@ -83,6 +105,10 @@ export const attestationReducer = persistReducer(
  */
 export const { setWalletInstanceAttestation, setWalletUnitAttestation } =
   attestationSlice.actions;
+
+export const selectWalletInstanceAttestationRequestStatus = (
+  state: WalletCombinedRootState
+) => state.itWalletHsm.attestation.request;
 
 /**
  * Selects the attestation from the attestation state in the given format.

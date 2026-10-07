@@ -15,7 +15,6 @@ import { credentialIssuanceStatusReducer } from './credentialIssuance';
 import { credentialsReducer } from './credentials';
 import { instanceReducer } from './instance';
 import { lifecycleReducer } from './lifecycle';
-import { pidIssuanceStatusReducer } from './pidIssuance';
 import { presentationReducer } from './presentation';
 import { proximityReducer } from './proximity';
 import { proximityConsentsReducer } from './proximityConsents';
@@ -30,7 +29,6 @@ export const walletRootReducer = combineReducers({
   credentials: credentialsReducer,
   instance: instanceReducer,
   lifecycle: lifecycleReducer,
-  pidIssuanceStatus: pidIssuanceStatusReducer,
   presentation: presentationReducer,
   proximity: proximityReducer,
   proximityConsents: proximityConsentsReducer

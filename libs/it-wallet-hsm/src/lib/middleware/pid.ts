@@ -1,24 +1,13 @@
-import {
-  isAndroid,
-  raceEffect,
-  regenerateCryptoKey,
-  takeLatestEffect
-} from '@io-eudiw-app/commons';
+import { isAndroid, regenerateCryptoKey } from '@io-eudiw-app/commons';
 import { getEnv } from '@io-eudiw-app/env';
-import {
-  setIdentificationIdentified,
-  setIdentificationStarted,
-  setIdentificationUnidentified
-} from '@io-eudiw-app/identification';
 import {
   createCryptoContextFor,
   IoWallet
 } from '@pagopa/io-react-native-wallet';
-import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
+import { TaskAbortError } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import * as WebBrowser from 'expo-web-browser';
 
-import { navigator } from '../navigation/utils';
 import { selectWalletInstanceAttestationAsJwt } from '../store/attestation';
 import {
   selectRequestedCredential,
@@ -26,15 +15,7 @@ import {
   setCredentialIssuancePostAuthSuccess,
   setCredentialIssuancePreAuthRequest
 } from '../store/credentialIssuance';
-import { addPidWithIdentification } from '../store/credentials';
 import { selectSessionId } from '../store/instance';
-import { Lifecycle, setLifecycle } from '../store/lifecycle';
-import {
-  resetPidIssuance,
-  setPidIssuanceError,
-  setPidIssuanceRequest,
-  setPidIssuanceSuccess
-} from '../store/pidIssuance';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import {
   wellKnownCredential,
@@ -47,28 +28,33 @@ import {
   getWalletInstanceAttestationThunk,
   getWalletUnitAttestationThunk
 } from './attestation';
-import { persistCredential } from './credential';
 import { createInstanceThunk } from './instance';
 import { AppListenerWithAction, AppStartListening } from './types';
 
 /**
  * Listener which obtains the PID credential.
- * It is triggered by the setPidIssuanceRequest action and drives the whole
- * OID4VCI exchange, surfacing loading/success/error through the pidIssuance
- * slice so the UI can react to selectPidIssuanceStatus.
+ * It is triggered through the standard credential issuance action and drives
+ * the PID-specific OID4VCI exchange.
  */
 const obtainPidListener: AppListenerWithAction<
-  ReturnType<typeof setPidIssuanceRequest>
+  ReturnType<typeof setCredentialIssuancePreAuthRequest>
 > = async (_, listenerApi) => {
   const { dispatch, getState } = listenerApi;
   try {
+    if (
+      selectRequestedCredential(getState()) !==
+      wellKnownCredentialConfigurationIDs.PID
+    ) {
+      return;
+    }
+    await dispatch(createInstanceThunk()).unwrap();
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
     const {
       EXPO_PUBLIC_PID_PROVIDER_BASE_URL,
       EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri
     } = getEnv();
 
-    await dispatch(getWalletInstanceAttestationThunk());
+    await dispatch(getWalletInstanceAttestationThunk()).unwrap();
 
     const walletInstanceAttestation =
       selectWalletInstanceAttestationAsJwt(getState());
@@ -217,16 +203,18 @@ const obtainPidListener: AppListenerWithAction<
       );
 
     dispatch(
-      setPidIssuanceSuccess({
-        credential,
-        credentialType: wellKnownCredential.PID,
-        expiration: expiration.toISOString(),
-        format,
-        issuedAt: issuedAt?.toISOString(),
-        issuerConf,
-        keyTag: credentialKeyTag,
-        parsedCredential,
-        spec_version: WALLET_SPEC_VERSION
+      setCredentialIssuancePostAuthSuccess({
+        credential: {
+          credential,
+          credentialType: wellKnownCredential.PID,
+          expiration: expiration.toISOString(),
+          format,
+          issuedAt: issuedAt?.toISOString(),
+          issuerConf,
+          keyTag: credentialKeyTag,
+          parsedCredential,
+          spec_version: WALLET_SPEC_VERSION
+        }
       })
     );
   } catch (error) {
@@ -235,97 +223,13 @@ const obtainPidListener: AppListenerWithAction<
       return;
     }
     const serialized = serializeErrorOrUnknown(error);
-    dispatch(setPidIssuanceError({ error: serialized, type: 'issuance' }));
-  }
-};
-
-/**
- * Listener to store the credential after pin validation.
- * It dispatches the action which shows the pin validation modal and awaits for the result.
- * If the pin is correct, the credential is stored, the issuance state is resetted and the user is navigated to the main screen.
- */
-const addPidWithAuthListener: AppListenerWithAction<
-  ReturnType<typeof addPidWithIdentification>
-> = async (action, listenerApi) => {
-  listenerApi.dispatch(
-    setIdentificationStarted({ canResetPin: false, isValidatingTask: true })
-  );
-  const resAction = await listenerApi.take(
-    isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
-  );
-  if (setIdentificationIdentified.match(resAction[0])) {
-    const persistResult = await listenerApi.dispatch(
-      persistCredential({ credential: action.payload.credential })
-    );
-    if (persistCredential.rejected.match(persistResult)) {
-      // Vault write failed: surface the error through the issuance state so the
-      // PidIssuanceRequest screen reacts to selectPidIssuanceStatus and routes
-      // to the failure screen, like the OID4VCI issuance error path does.
-      listenerApi.dispatch(
-        setPidIssuanceError({
-          error: persistResult.payload ?? persistResult.error,
-          type: 'persist'
-        })
-      );
-      return;
-    }
-    listenerApi.dispatch(
-      setLifecycle({ lifecycle: Lifecycle.LIFECYCLE_VALID })
-    );
-    navigator.navigateWithReset('MAIN_TAB_NAV');
-  } else {
-    return;
+    dispatch(setCredentialIssuancePostAuthError({ error: serialized }));
   }
 };
 
 export const addPidListeners = (startAppListening: AppStartListening) => {
   startAppListening({
     actionCreator: setCredentialIssuancePreAuthRequest,
-    effect: async (_, listenerApi) => {
-      if (
-        selectRequestedCredential(listenerApi.getState()) !==
-        wellKnownCredentialConfigurationIDs.PID
-      ) {
-        return;
-      }
-      try {
-        await listenerApi.dispatch(createInstanceThunk()).unwrap();
-        listenerApi.dispatch(setPidIssuanceRequest());
-        const result = await listenerApi.take(
-          isAnyOf(setPidIssuanceSuccess, setPidIssuanceError)
-        );
-        if (setPidIssuanceSuccess.match(result[0])) {
-          listenerApi.dispatch(
-            setCredentialIssuancePostAuthSuccess({
-              credential: result[0].payload
-            })
-          );
-        } else {
-          listenerApi.dispatch(
-            setCredentialIssuancePostAuthError({
-              error: result[0].payload.error
-            })
-          );
-        }
-      } catch (error) {
-        listenerApi.dispatch(
-          setCredentialIssuancePostAuthError({
-            error: serializeErrorOrUnknown(error)
-          })
-        );
-      }
-    }
-  });
-
-  startAppListening({
-    actionCreator: setPidIssuanceRequest,
-    effect: raceEffect(obtainPidListener, [
-      listenerApi => listenerApi.take(isAnyOf(resetPidIssuance))
-    ])
-  });
-
-  startAppListening({
-    actionCreator: addPidWithIdentification,
-    effect: takeLatestEffect(addPidWithAuthListener)
+    effect: obtainPidListener
   });
 };

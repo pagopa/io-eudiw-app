@@ -1,4 +1,11 @@
 import {
+  AsyncStatusValues,
+  setError,
+  setInitial,
+  setLoading,
+  setSuccess
+} from '@io-eudiw-app/commons';
+import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
@@ -8,18 +15,21 @@ import * as Crypto from 'expo-crypto';
 import { PersistConfig, persistReducer } from 'redux-persist';
 
 import { WalletCombinedRootState } from '.';
+import { createInstanceThunk } from '../middleware/instance';
 import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the instance slice
  * keyTag - The keytag bound to the wallet instance
  */
 type InstanceSlice = {
+  creation: AsyncStatusValues;
   keyTag: string | undefined;
   sessionId: string;
 };
 
 // Initial state for the instance slice
 const initialState: InstanceSlice = {
+  creation: setInitial(),
   keyTag: undefined,
   sessionId: Crypto.randomUUID().toString()
 };
@@ -29,6 +39,17 @@ const initialState: InstanceSlice = {
  */
 const instanceSlice = createSlice({
   extraReducers: builder => {
+    builder.addCase(createInstanceThunk.fulfilled, state => {
+      state.creation = setSuccess();
+    });
+    builder.addCase(createInstanceThunk.pending, state => {
+      state.creation = setLoading();
+    });
+    builder.addCase(createInstanceThunk.rejected, (state, action) => {
+      state.creation = action.meta.aborted
+        ? setInitial()
+        : setError(action.error);
+    });
     // Reset the state when the preferences are reset, if it's the first startup or if the wallet lifecycle is reset. This is required to clear the persisted storage.
     builder.addCase(preferencesReset, () => initialState);
     builder.addCase(resetLifecycle, () => initialState);
@@ -72,6 +93,9 @@ export const { setInstanceKeyTag } = instanceSlice.actions;
  */
 export const selectInstanceKeyTag = (state: WalletCombinedRootState) =>
   state.itWalletHsm.instance.keyTag;
+
+export const selectInstanceCreationStatus = (state: WalletCombinedRootState) =>
+  state.itWalletHsm.instance.creation;
 
 /**
  * Selects the session id of the wallet

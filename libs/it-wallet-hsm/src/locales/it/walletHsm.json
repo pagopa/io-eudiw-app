@@ -178,6 +178,9 @@
       "copyButton": "Copia codice sconto"
     }
   },
+  "walletActivation": {
+    "cta": "Attiva il Portafoglio"
+  },
   "proximity": {
     "home": {
       "cta": "Verifica prossimità"

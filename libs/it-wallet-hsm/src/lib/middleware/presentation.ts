@@ -63,7 +63,7 @@ const presentationListener: AppListenerWithAction<
 
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
 
-    await listenerApi.dispatch(getWalletInstanceAttestationThunk());
+    await listenerApi.dispatch(getWalletInstanceAttestationThunk()).unwrap();
 
     const qrParams = wallet.RemotePresentation.startFlowFromQR({
       client_id,

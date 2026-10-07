@@ -185,7 +185,7 @@ const obtainCredentialListener: AppListenerWithAction<
     const offer = selectRequestedCredentialOffer(state);
     // Checks if the wallet instance attestation needs to be requested
     if (shouldRequestWalletInstanceAttestationSelector(state)) {
-      await listenerApi.dispatch(getWalletInstanceAttestationThunk());
+      await listenerApi.dispatch(getWalletInstanceAttestationThunk()).unwrap();
     }
 
     // Gets the Wallet Instance Attestation from the persisted store

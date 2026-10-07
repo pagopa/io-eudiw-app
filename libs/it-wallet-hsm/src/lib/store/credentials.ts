@@ -77,13 +77,6 @@ const credentialsSlice = createSlice({
     ) => {
       /* empty */
     },
-    // Empty action which will be intercepted by the listener and trigger the identification before storing the PID
-    addPidWithIdentification: (
-      _,
-      __: PayloadAction<{ credential: StoredCredential }>
-    ) => {
-      /* empty */
-    },
     // PID Info Banner
     disablePidInfoBanner: state => {
       state.banners.pidInfoBannerActive = false;
@@ -131,7 +124,6 @@ export const credentialsReducer = persistReducer(
 export const {
   addCredential,
   addCredentialWithIdentification,
-  addPidWithIdentification,
   disablePidInfoBanner,
   disableProximityInfoBanner,
   removeCredential
