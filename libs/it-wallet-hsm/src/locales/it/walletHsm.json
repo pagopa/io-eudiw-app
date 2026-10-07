@@ -285,25 +285,6 @@
   "settings": {
     "title": "Impostazioni",
     "version": "Versione",
-    "preferences": {
-      "title": "Preferenze",
-      "description": "Gestisci le preferenze dell'applicazione",
-      "appearance": {
-        "title": "Aspetto dell'app",
-        "description": "Personalizza l'app in base alle tue esigenze",
-        "typefaceStyle": {
-          "title": "Stile carattere",
-          "comfortable": {
-            "title": "Confortevole",
-            "description": "Progettato per una migliore leggibilità dei testi"
-          },
-          "standard": {
-            "title": "Standard",
-            "description": "Lo stile di sempre, con forme strette e geometriche"
-          }
-        }
-      }
-    },
     "changeApp": {
       "title": "Cambia app",
       "description": "Scegli un'app per testare"

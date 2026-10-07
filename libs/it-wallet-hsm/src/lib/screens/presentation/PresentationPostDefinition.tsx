@@ -197,7 +197,6 @@ const PresentationPostDefinition = ({ route }: Props) => {
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>
       <View style={{ flexGrow: 1, margin: IOVisualCostants.appMarginDefault }}>
-        <VSpacer size={24} />
         {required.map(({ credentials, purpose }) => (
           <View key={`required:${purpose}`}>
             <ListItemHeader

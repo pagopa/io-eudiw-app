@@ -18,13 +18,11 @@ import {
   ListItemSwitch,
   useIOToast
 } from '@pagopa/io-app-design-system';
-import { useNavigation } from '@react-navigation/native';
 import { ComponentProps, useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, ListRenderItemInfo } from 'react-native';
 
 import AppVersion from '../../components/AppVersion';
-import MAIN_ROUTES from '../../navigation/main/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { resetLifecycle } from '../../store/lifecycle';
 
@@ -45,7 +43,6 @@ const RESET_COUNTER_TIMEOUT = 2000;
 
 const Settings = () => {
   const toast = useIOToast();
-  const navigation = useNavigation();
   const { t } = useTranslation(['common', 'itWalletHsm']);
   const dispatch = useAppDispatch();
   const isDebugModeEnabled = useAppSelector(selectIsDebugModeEnabled);
@@ -59,12 +56,6 @@ const Settings = () => {
   });
 
   const profileNavListItems: readonly ProfileNavListItem[] = [
-    {
-      description: t('itWalletHsm:settings.preferences.description'),
-      onPress: () => navigation.navigate(MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN),
-      // Preferences
-      value: t('itWalletHsm:settings.preferences.title')
-    },
     {
       description: t('itWalletHsm:settings.changeApp.description'),
       onPress: () => dispatch(preferencesResetMiniAppSelection()),

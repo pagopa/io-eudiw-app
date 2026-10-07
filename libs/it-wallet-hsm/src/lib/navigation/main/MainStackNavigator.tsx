@@ -7,8 +7,6 @@ import ItwBluetoothPermissionsScreen from '../../screens/proximity/ItwBluetoothP
 import ItwNfcActivationScreen from '../../screens/proximity/ItwNfcActivationScreen';
 import ItwProximityNfcPresentment from '../../screens/proximity/ItwProximityNfcPresentment';
 import ItwProximityPresentmentScreen from '../../screens/proximity/ItwProximityPresentmentScreen';
-import Appearance from '../../screens/settings/Appearance';
-import Preference from '../../screens/settings/Preferences';
 import Settings from '../../screens/settings/Settings';
 // Internal Imports
 import { TabNavigator } from '../tab/TabNavigator';
@@ -28,8 +26,6 @@ export type MainNavigatorParamsList = {
   [MAIN_ROUTES.PROXIMITY_NFC_ACTIVATION]: undefined;
   [MAIN_ROUTES.SCAN_QR]: undefined;
   [MAIN_ROUTES.SETTINGS.MAIN]: undefined;
-  [MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE]: undefined;
-  [MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN]: undefined;
   [MAIN_ROUTES.TAB_NAV]: undefined;
   [MAIN_ROUTES.WALLET_NAV]: NavigatorScreenParams<WalletNavigatorParamsList>;
 };
@@ -101,13 +97,5 @@ export const MainStackNavigator = () => (
     />
 
     <Stack.Screen component={Settings} name={MAIN_ROUTES.SETTINGS.MAIN} />
-    <Stack.Screen
-      component={Preference}
-      name={MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN}
-    />
-    <Stack.Screen
-      component={Appearance}
-      name={MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE}
-    />
   </Stack.Navigator>
 );
