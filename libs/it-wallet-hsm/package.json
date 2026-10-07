@@ -26,14 +26,11 @@
     "@react-native-async-storage/async-storage": "catalog:",
     "@reduxjs/toolkit": "catalog:",
     "@shopify/react-native-skia": "catalog:",
-    "@textlint/ast-node-types": "catalog:",
     "@pagopa/io-react-native-iso18013": "0.8.4",
     "@pagopa/io-react-native-wallet": "3.4.4",
     "serialize-error": "catalog:",
     "zod": "catalog:",
     "@pagopa/io-react-native-jwt": "2.1.0",
-    "@types/color": "^4.2.0",
-    "color": "catalog:",
     "date-fns": "catalog:",
     "expo-camera": "catalog:",
     "expo-crypto": "catalog:",
@@ -45,7 +42,6 @@
     "lodash": "catalog:",
     "react-native-barcode-creator": "^0.2.0",
     "react-native-bluetooth-state-manager": "^1.3.5",
-    "react-native-device-info": "catalog:",
     "react-native-gesture-handler": "catalog:",
     "react-native-haptic-feedback": "catalog:",
     "react-native-linear-gradient": "catalog:",
@@ -67,10 +63,6 @@
     "react-native": "catalog:"
   },
   "devDependencies": {
-    "@testing-library/react-native": "catalog:",
-    "@types/lodash": "catalog:",
-    "babel-preset-expo": "catalog:",
-    "jest-expo": "catalog:",
-    "react-test-renderer": "catalog:"
+    "@types/lodash": "catalog:"
   }
 }
