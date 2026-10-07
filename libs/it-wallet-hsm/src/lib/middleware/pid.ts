@@ -15,7 +15,7 @@ import {
   setCredentialIssuancePostAuthSuccess,
   setCredentialIssuancePreAuthRequest
 } from '../store/credentialIssuance';
-import { selectSessionId } from '../store/instance';
+import { selectInstanceKeyTag, selectSessionId } from '../store/instance';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import {
   wellKnownCredential,
@@ -28,7 +28,6 @@ import {
   getWalletInstanceAttestationThunk,
   getWalletUnitAttestationThunk
 } from './attestation';
-import { createInstanceThunk } from './instance';
 import { AppListenerWithAction, AppStartListening } from './types';
 
 /**
@@ -47,7 +46,9 @@ const obtainPidListener: AppListenerWithAction<
     ) {
       return;
     }
-    await dispatch(createInstanceThunk()).unwrap();
+    if (!selectInstanceKeyTag(getState())) {
+      throw new Error('Wallet Instance is not active');
+    }
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
     const {
       EXPO_PUBLIC_PID_PROVIDER_BASE_URL,

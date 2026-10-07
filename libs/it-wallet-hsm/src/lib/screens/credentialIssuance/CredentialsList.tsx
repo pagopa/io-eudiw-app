@@ -1,10 +1,7 @@
+import { IOScrollView, useHeaderSecondLevel } from '@io-eudiw-app/commons';
 import {
-  IOScrollViewWithLargeHeader,
-  useHeaderSecondLevel
-} from '@io-eudiw-app/commons';
-import {
-  IOVisualCostants,
   ListItemHeader,
+  useIOToast,
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
@@ -13,9 +10,15 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import { OnboardingModuleCredential } from '../../components/credential/OnboardingModuleCredential';
+import { getWalletInstanceAttestationThunk } from '../../middleware/attestation';
+import { createInstanceThunk } from '../../middleware/instance';
 import MAIN_ROUTES from '../../navigation/main/routes';
 import WALLET_ROUTES from '../../navigation/wallet/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
+import {
+  selectWalletInstanceAttestationRequestStatus,
+  shouldRequestWalletInstanceAttestationSelector
+} from '../../store/attestation';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus,
@@ -24,6 +27,10 @@ import {
   setCredentialIssuancePreAuthRequest
 } from '../../store/credentialIssuance';
 import { selectCredentials } from '../../store/credentials';
+import {
+  selectInstanceCreationStatus,
+  selectInstanceKeyTag
+} from '../../store/instance';
 import {
   CredentialsKeys,
   wellKnownCredential,
@@ -37,10 +44,21 @@ import {
  */
 const CredentialsList = () => {
   const { t } = useTranslation('itWalletHsm');
+  const { t: tCommon } = useTranslation('common');
   const credentials = useAppSelector(selectCredentials);
   const dispatch = useAppDispatch();
+  const toast = useIOToast();
   const requestedCredential = useAppSelector(selectRequestedCredential);
   const navigation = useNavigation();
+  const instanceKeyTag = useAppSelector(selectInstanceKeyTag);
+  const instanceCreationStatus = useAppSelector(selectInstanceCreationStatus);
+  const hasWalletInstance = instanceKeyTag !== undefined;
+  const shouldRequestAttestation = useAppSelector(
+    shouldRequestWalletInstanceAttestationSelector
+  );
+  const attestationRequestStatus = useAppSelector(
+    selectWalletInstanceAttestationRequestStatus
+  );
 
   const goBack = useCallback(() => {
     navigation.goBack();
@@ -56,6 +74,28 @@ const CredentialsList = () => {
   const postAuthStatus = useAppSelector(selectCredentialIssuancePostAuthStatus);
   const isPidIssuance =
     requestedCredential === wellKnownCredentialConfigurationIDs.PID;
+
+  const activateWalletInstance = useCallback(async () => {
+    try {
+      await dispatch(createInstanceThunk()).unwrap();
+      toast.success(tCommon('generics.success'));
+    } catch {
+      toast.error(tCommon('errors.generic'));
+    }
+  }, [dispatch, tCommon, toast]);
+
+  const activateWalletAttestation = useCallback(async () => {
+    if (!hasWalletInstance) {
+      toast.error(tCommon('errors.generic'));
+      return;
+    }
+    try {
+      await dispatch(getWalletInstanceAttestationThunk()).unwrap();
+      toast.success(tCommon('generics.success'));
+    } catch {
+      toast.error(tCommon('errors.generic'));
+    }
+  }, [dispatch, hasWalletInstance, tCommon, toast]);
 
   useEffect(() => {
     if (preAuthStatus.success.status) {
@@ -97,13 +137,28 @@ const CredentialsList = () => {
   });
 
   return (
-    <IOScrollViewWithLargeHeader
-      title={{
-        label: t('credentialIssuance.list.title')
-      }}
-    >
+    <IOScrollView>
       <View style={styles.wrapper}>
-        <ListItemHeader label={t('credentialIssuance.list.header')} />
+        <View style={styles.sectionWrapper}>
+          <ListItemHeader label={t('credentialIssuance.list.walletProvider')} />
+          <VStack space={8}>
+            <OnboardingModuleCredential
+              configId="wallet-instance-creation"
+              isFetching={instanceCreationStatus.loading}
+              isSaved={hasWalletInstance}
+              onPress={() => void activateWalletInstance()}
+              type={t('credentialIssuance.list.instance')}
+            />
+            <OnboardingModuleCredential
+              configId="wallet-instance-attestation"
+              isFetching={attestationRequestStatus.loading}
+              isSaved={!shouldRequestAttestation}
+              onPress={() => void activateWalletAttestation()}
+              type={t('credentialIssuance.list.attestation')}
+            />
+          </VStack>
+        </View>
+        <ListItemHeader label={t('credentialIssuance.list.documents')} />
         <VStack space={8}>
           {Object.entries(wellKnownCredential).map(([credentialKey, type]) => (
             <OnboardingModuleCredential
@@ -127,15 +182,16 @@ const CredentialsList = () => {
           ))}
         </VStack>
       </View>
-    </IOScrollViewWithLargeHeader>
+    </IOScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  sectionWrapper: {
+    gap: 8
+  },
   wrapper: {
-    gap: 16,
-    paddingHorizontal: IOVisualCostants.appMarginDefault,
-    paddingVertical: 16
+    gap: 16
   }
 });
 

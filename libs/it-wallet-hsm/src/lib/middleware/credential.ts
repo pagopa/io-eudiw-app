@@ -43,7 +43,7 @@ import {
   addCredentialWithIdentification,
   selectCredential
 } from '../store/credentials';
-import { selectSessionId } from '../store/instance';
+import { selectInstanceKeyTag, selectSessionId } from '../store/instance';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
 import { ResolvedCredentialOffer } from '../types';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
@@ -171,6 +171,9 @@ const obtainCredentialListener: AppListenerWithAction<
     const credentialId = selectRequestedCredential(state);
     if (!credentialId) {
       throw new Error('Credential type not found');
+    }
+    if (!selectInstanceKeyTag(state)) {
+      throw new Error('Wallet Instance is not active');
     }
     if (credentialId === wellKnownCredentialConfigurationIDs.PID) {
       return;

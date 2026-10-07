@@ -3,87 +3,31 @@
     "title": "Ottieni IT-Wallet per continuare",
     "body": "Per accedere ai servizi online è necessario attivare IT-Wallet utilizzando la tua Carta di Identità Elettronica (CIE).",
     "confirm": "Ottieni IT-Wallet",
-    "notNow": "Non ora",
-    "credentialOffer": {
-      "title": "Attiva IT-Wallet per aggiungere {{credentialName}}",
-      "body": "Potrai aggiungere anche altri documenti digitali e usarli online e dal vivo, ti basta il tuo telefono!",
-      "confirm": "Inizia",
-      "cancel": "Annulla"
-    }
+    "notNow": "Non ora"
   },
   "credentials": {
     "names": {
-      "mdl": "Patente di guida",
-      "pid": "IT-Wallet ID",
-      "disabilityCard": "Carta Europea della Disabilità",
-      "bonusPari": "Bonus",
       "unknown": "Credenziale Sconosciuta"
     },
     "status": {
       "expired": "Scaduta",
       "expiring": "In scadenza",
-      "pending": "In lavorazione",
       "invalid": "Non valido",
       "verificationExpiring": "Azione richiesta",
       "verificationExpired": "Azione richiesta",
-      "upgradePending": "Da aggiornare",
       "unknown": "Non disponibile"
-    },
-    "pidStatusAlert": {
-      "confirmIdentityBefore": "Conferma la tua identità entro il ",
-      "confirmIdentity": "Conferma la tua identità per continuare con i tuoi documenti"
-    },
-    "digital": "Versione Digitale"
-  },
-  "discovery": {
-    "screen": {
-      "itw": {
-        "dismissalDialog": {
-          "title": "Vuoi rinunciare ai vantaggi di IT-Wallet?",
-          "body": "Potrai ottenere IT-Wallet in qualsiasi altro momento, se cambi idea.",
-          "confirm": "Si, rinuncia",
-          "cancel": "No, continua"
-        }
-      }
-    }
-  },
-  "pidIssuance": {
-    "preview": {
-      "title": "Ci siamo quasi!",
-      "subtitle": "Hai verificato la tua identità.\nIl tuo portafoglio IT-Wallet sarà associato a questi dati:"
-    },
-    "failure": {
-      "title": "An unexpected error occurred",
-      "subtitle": "Your request to the issuing entity was not successful."
     }
   },
   "presentation": {
     "alerts": {
-      "statusAction": "Cosa posso fare?",
       "mdl": {
-        "content": "La tua Patente su IO ha lo stesso valore legale del documento fisico, solo sul territorio italiano.",
-        "invalid": {
-          "cta": "Rimuovi documento dal Portafoglio"
-        }
+        "content": "La tua Patente su IO ha lo stesso valore legale del documento fisico, solo sul territorio italiano."
       },
       "edc": {
         "content": "Puoi usare la tua Carta Europea della Disabilità su IO per accedere ai servizi sul territorio italiano, negli stessi contesti d'uso del tuo documento fisico."
       },
       "bonusPari": {
         "content": "Il Bonus ha una validità di 15gg. Sarà possibile richiedere un nuovo bonus. L'ottenimento del nuovo bonus è vincolato al monte totale e alle priorità di richiesta."
-      },
-      "expired": {
-        "content": "Il documento non è più valido. Se sei già in possesso del nuovo documento valido, puoi aggiornare la versione digitale nel Portafoglio"
-      },
-      "expiring": {
-        "content": "Mancano {{days}} giorni alla scadenza del documento."
-      },
-      "jwtVerification": {
-        "content": {
-          "jwtExpiring": "Verifica la versione digitale del tuo documento entro il {{date}} per continuare a usarlo senza limitazioni.",
-          "jwtExpired": "Verifica ora la versione digitale del tuo documento per continuare a usarlo senza limitazioni."
-        },
-        "action": "Inizia"
       }
     },
     "credentialDetails": {
@@ -107,15 +51,8 @@
       "subtitle": "Attendi qualche secondo"
     },
     "trust": {
-      "title": "Dati richiesti",
-      "subtitle": "Saranno mostrati a **Comune di Soleluna** per accedere ai servizi richiesti",
       "requiredClaims": "Dati necessari",
-      "optionalClaims": "Dati facoltativi",
-      "purpose": "Finalità: {{purpose}}",
-      "disclaimer": {
-        "0": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
-        "1": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento"
-      }
+      "optionalClaims": "Dati facoltativi"
     },
     "success": {
       "title": "Fatto!",
@@ -131,56 +68,13 @@
       "subtitle": "Si è verificato un errore tecnico che ha impedito l'accesso ai servizi dell'ente. Se il problema persiste, contetta l'assistenza.",
       "button": "Ho capito"
     },
-    "bottomSheets": {
-      "pidInfo": {
-        "alert": {
-          "itw": {
-            "valid": "Hai attivato il tuo ID con CIE il {{date}}.",
-            "expiring": "Rinnova il tuo ID per continuare ad usare IT-Wallet entro il {{date}}.",
-            "expired": "Rinnova il tuo ID per continuare ad usare IT-Wallet.",
-            "action": "Rinnova ID"
-          }
-        }
-      },
-      "org.iso.18013.5.1.mDL": {
-        "expiring": {
-          "cta": "Scopri di più"
-        }
-      }
-    },
-    "itWalletId": {
-      "description": "È il tuo pass digitale per dimostrare chi sei, accedere ai servizi online e ottenere nuovi documenti.",
-      "banner": {
-        "title": "Cos'è IT-Wallet ID?",
-        "content": "È il cuore del tuo Portafoglio IT-Wallet: ti consente di ottenere i documenti digitali, dimostrare chi sei e accedere ai servizi online"
-      },
-      "cta": {
-        "revoke": "Disattiva IT-Wallet"
-      },
-      "dialog": {
-        "revoke": {
-          "title": "Vuoi davvero disattivare IT-Wallet?",
-          "message": "Eliminerai i documenti che hai aggiunto al Portafoglio.\nSe cambi idea, potrai riattivare IT-Wallet in futuro.",
-          "confirm": "Sì, disattiva",
-          "cancel": "No, torna indietro"
-        }
-      }
-    },
     "statusAssertionUnknown": {
       "title": "Non siamo riusciti a caricare {{credentialName}}",
       "content": "Chiudi e riapri l'app per riprovare.",
       "primaryAction": "Ho capito"
-    },
-    "authSource": "PagoPa S.p.A."
-  },
-  "bonusPari": {
-    "barcode": {
-      "copyButton": "Copia codice sconto"
     }
   },
-  "walletActivation": {
-    "cta": "Attiva il Portafoglio"
-  },
+  "bonusPari": {},
   "proximity": {
     "home": {
       "cta": "Verifica prossimità"
@@ -312,16 +206,6 @@
         }
       }
     },
-    "trust": {
-      "subtitle": "Saranno mostrati a **{{relyingParty}}** per completare la verifica dei documenti richiesti."
-    },
-    "connected": {
-      "body": "Verification in progress. Please wait a few seconds..."
-    },
-    "isAuthenticated": {
-      "true": "The verifier is authenticated",
-      "false": "The verifier is not authenticated"
-    },
     "success": {
       "title": "Fatto!",
       "subtitle": "La verifica è stata completata con successo.",
@@ -341,54 +225,30 @@
       }
     },
     "claims": {
-      "uniqueId": "ID univoco",
-      "givenName": "Nome",
-      "familyName": "Cognome",
-      "taxIdCode": "Codice Fiscale",
-      "birthdate": "Data di nascita",
-      "placeOfBirth": "Luogo di nascita",
-      "expirationDate": "Scadenza",
-      "securityLevel": "Livello di sicurezza",
-      "info": "Ulteriori info su questi dati",
-      "releasedBy": "Emissione versione digitale",
-      "releasedByPid": "Emissione IT-Wallet ID",
-      "attachments": "Allegati",
-      "authenticSource": "Origine dei dati",
       "mdl": {
         "category": "Patente {{category}}",
         "issuedDate": "Valida dal",
         "expirationDate": "Valida fino",
-        "restrictionConditions": "Codici",
         "verificationEvidence": {
           "organizationId": "ID Organizzazione",
-          "organizationName": "Nome Organizzazione",
           "countryCode": "Codice Nazione"
         }
       }
     }
   },
-  "home": {
-    "screen": {
-      "emptyMessage": "La tua Patente di guida, la tua Tessera Sanitaria e altri documenti digitali appariranno qui!",
-      "cta": "Aggiungi un documento"
-    }
-  },
+  "home": {},
   "credentialIssuance": {
     "badges": {
       "saved": "Saved"
     },
     "list": {
-      "title": "Cosa vorresti aggiungere al Portafoglio?",
-      "header": "Documenti"
+      "documents": "Documenti",
+      "walletProvider": "Wallet Provider",
+      "instance": "Wallet Instance",
+      "attestation": "Wallet Instance Attestation"
     },
     "trust": {
-      "title": "{{credential}}: Dati richiesti",
-      "subtitle": "Saranno condivisi con **{{organization}}** per il rilascio della versione digitale del documento.",
       "requiredData": "Dati richiesti",
-      "disclaimer": {
-        "store": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
-        "retention": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento."
-      },
       "dataSource": "Fornito da {{credentialSource}}"
     },
     "failure": {
@@ -397,8 +257,7 @@
       "credentialInvalidStatus": {
         "title": "Credenziale non ottenibile",
         "subtitle": "La credenziale che stai cercando di ottenere in questo momento non è disponibile."
-      },
-      "button": "I understand"
+      }
     },
     "alreadyObtained": {
       "title": "Documento già presente",
@@ -408,24 +267,7 @@
     }
   },
   "issuance": {
-    "emptyWallet": {
-      "readyBanner": {
-        "content": "È tutto pronto: aggiungi un documento al tuo Portafoglio di IO.",
-        "action": "Aggiungi documento"
-      }
-    },
-    "credentialPreview": {
-      "bottomSheet": {
-        "about": {
-          "title": "Chi è?",
-          "subtitle": "È l’ente riconosciuto dallo Stato a fornirti la versione digitale dei tuoi documenti.\n\n Per sapere come tratta i tuoi dati consulta l’[Informativa Privacy]({{privacyUrl}}). "
-        },
-        "authSource": {
-          "title": "Chi è",
-          "subtitle": "È l’ente o la banca dati digitale che detiene i dati contenuti all'interno del tuo documento."
-        }
-      }
-    },
+    "credentialPreview": {},
     "credentialNotFound": {
       "title": "Aggiungi il documento al Portafoglio",
       "subtitle": "Per usare i documenti su IO, prima aggiungili al Portafoglio. È facile e veloce."
@@ -478,8 +320,6 @@
       }
     },
     "proximity": {
-      "title": "Consensi Proximity NFC",
-      "description": "Gestisci i consensi per le presentazioni in prossimità tramite NFC",
       "screen": {
         "title": "Consensi approvati",
         "empty": "Nessun consenso registrato",
