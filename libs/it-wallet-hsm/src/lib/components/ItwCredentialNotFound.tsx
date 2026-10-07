@@ -11,11 +11,8 @@ import { useEffect } from 'react';
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../navigation/main/routes';
 import WALLET_ROUTES from '../navigation/wallet/routes';
-import { useAppDispatch, useAppSelector } from '../store';
+import { useAppDispatch } from '../store';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
-import { lifecycleIsOperationalSelector } from '../store/lifecycle';
-import { setPendingCredential } from '../store/pidIssuance';
-import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
 
 const ItwCredentialNotFound = ({
   cancelButtonLabel,
@@ -36,23 +33,8 @@ const ItwCredentialNotFound = ({
   useDisableGestureNavigation();
   useHardwareBackButton(() => true);
 
-  const shouldIssuePidFirst = useAppSelector(lifecycleIsOperationalSelector);
-
   const navigateToCredential = () => {
     onDismiss?.();
-    if (shouldIssuePidFirst) {
-      const isPidOnlyFlow =
-        credentialType === wellKnownCredentialConfigurationIDs.PID;
-      dispatch(
-        setPendingCredential({
-          credential: isPidOnlyFlow ? undefined : credentialType
-        })
-      );
-      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-        screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
-      });
-      return;
-    }
     dispatch(
       setCredentialIssuancePreAuthRequest({ credential: credentialType })
     );

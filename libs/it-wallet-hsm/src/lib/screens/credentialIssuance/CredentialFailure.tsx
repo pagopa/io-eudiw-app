@@ -1,5 +1,4 @@
 import {
-  openWebUrl,
   OperationResultScreenContent,
   useHardwareBackButton
 } from '@io-eudiw-app/commons';
@@ -12,10 +11,8 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthError,
-  selectCredentialIssuancePreAuthError,
-  selectRequestedCredentialType
+  selectCredentialIssuancePreAuthError
 } from '../../store/credentialIssuance';
-import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 
 const CREDENTIAL_INVALID_STATUS_CODE =
   Errors.IssuerResponseErrorCodes.CredentialInvalidStatus;
@@ -32,16 +29,9 @@ const CredentialFailure = () => {
   const dispatch = useAppDispatch();
   const postError = useAppSelector(selectCredentialIssuancePostAuthError);
   const preError = useAppSelector(selectCredentialIssuancePreAuthError);
-  const requestedCredentialType = useAppSelector(selectRequestedCredentialType);
-
   const isInvalidStatus =
     isCredentialInvalidStatusError(postError) ||
     isCredentialInvalidStatusError(preError);
-
-  const invalidStatusFailure =
-    isInvalidStatus && requestedCredentialType
-      ? getCredentialCapabilities(requestedCredentialType).invalidStatusFailure
-      : undefined;
 
   useHardwareBackButton(() => true);
 
@@ -51,30 +41,6 @@ const CredentialFailure = () => {
     dispatch(resetCredentialIssuance());
     navigateToWallet();
   };
-
-  if (invalidStatusFailure) {
-    return (
-      <OperationResultScreenContent
-        action={{
-          accessibilityLabel: t(invalidStatusFailure.actionI18nKey),
-          label: t(invalidStatusFailure.actionI18nKey),
-          onPress: () => {
-            openWebUrl(invalidStatusFailure.actionUrl, () => null);
-            dispatch(resetCredentialIssuance());
-            navigateToWallet();
-          }
-        }}
-        pictogram={invalidStatusFailure.pictogram}
-        secondaryAction={{
-          accessibilityLabel: t('common:buttons.close'),
-          label: t('common:buttons.close'),
-          onPress
-        }}
-        subtitle={t(invalidStatusFailure.subtitleI18nKey)}
-        title={t(invalidStatusFailure.titleI18nKey)}
-      />
-    );
-  }
 
   if (isInvalidStatus) {
     return (

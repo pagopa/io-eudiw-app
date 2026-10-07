@@ -12,25 +12,8 @@ import {
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { createInstanceThunk } from '../middleware/instance';
-import { ResolvedCredentialOffer } from '../types';
 import { StoredCredential } from '../utils/itwTypesUtils';
-import { RequestedCredential } from './credentialIssuance';
 import { resetLifecycle } from './lifecycle';
-
-/**
- * A credential whose issuance is deferred until the PID has been obtained.
- * Besides the credential configuration id, it optionally carries the issuer URL
- * and, when the issuance was started from a credential offer, the whole resolved
- * offer (e.g. coming from a credential offer) so the issuance can resume against
- * the right issuer once the PID is available.
- */
-export type PendingCredential =
-  | undefined
-  | {
-      credential: RequestedCredential;
-      issuerUrl?: string;
-      offer?: ResolvedCredentialOffer;
-    };
 
 /* State type definition for the pidIssuance slice
  * issuanceCreation - Async status for the instance creation
@@ -45,14 +28,12 @@ export type PidIssuanceErrorType = 'issuance' | 'persist';
 type PidIssuanceStatusSlice = {
   instanceCreation: AsyncStatusValues;
   issuance: AsyncStatusValues<StoredCredential, PidIssuanceErrorType>;
-  pendingCredential: PendingCredential;
 };
 
 // Initial state for the pidIssuance slice
 const initialState: PidIssuanceStatusSlice = {
   instanceCreation: setInitial(),
-  issuance: setInitial(),
-  pendingCredential: undefined
+  issuance: setInitial()
 };
 
 /**
@@ -89,16 +70,6 @@ const pidIssuanceStatusSlice = createSlice({
     resetPidIssuance: state => {
       state.issuance = setInitial();
     },
-    setPendingCredential: (
-      state,
-      action: PayloadAction<{
-        credential: RequestedCredential;
-        issuerUrl?: string;
-        offer?: ResolvedCredentialOffer;
-      }>
-    ) => {
-      state.pendingCredential = action.payload;
-    },
     // Sets the issuance error, discriminated by the phase it originates from
     // (OID4VCI exchange in the obtainPidListener or vault persistence in the
     // addPidWithIdentification listener), so the UI can surface it through
@@ -126,7 +97,6 @@ const pidIssuanceStatusSlice = createSlice({
 export const {
   resetInstanceCreation,
   resetPidIssuance,
-  setPendingCredential,
   setPidIssuanceError,
   setPidIssuanceRequest,
   setPidIssuanceSuccess

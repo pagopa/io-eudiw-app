@@ -50,7 +50,7 @@ export const ItwPresentationCredentialDetailScreen = ({ route }: Props) => {
       <OperationResultScreenContent
         action={{
           label: t(`${ns}.primaryAction`),
-          onPress: () => navigation.replace('PID_ISSUANCE_INSTANCE_CREATION')
+          onPress: () => navigation.replace('CREDENTIAL_ISSUANCE_LIST')
         }}
         pictogram="itWallet"
         secondaryAction={{

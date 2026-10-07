@@ -23,8 +23,6 @@ import {
   setCredentialIssuancePreAuthRequest
 } from '../../store/credentialIssuance';
 import { selectCredentials } from '../../store/credentials';
-import { lifecycleIsOperationalSelector } from '../../store/lifecycle';
-import { setPendingCredential } from '../../store/pidIssuance';
 import {
   CredentialsKeys,
   wellKnownCredential,
@@ -53,24 +51,23 @@ const CredentialsList = () => {
 
   const isCredentialRequested = (type: string) => requestedCredential === type;
 
-  const shouldIssuePidFirst = useAppSelector(lifecycleIsOperationalSelector);
   const preAuthStatus = useAppSelector(selectCredentialIssuancePreAuthStatus);
 
   useEffect(() => {
-    if (preAuthStatus.success.status && !shouldIssuePidFirst) {
+    if (preAuthStatus.success.status) {
       navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
         screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
       });
     }
-  }, [preAuthStatus.success, navigation, shouldIssuePidFirst]);
+  }, [preAuthStatus.success, navigation]);
 
   useEffect(() => {
-    if (preAuthStatus.error.status && !shouldIssuePidFirst) {
+    if (preAuthStatus.error.status) {
       navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
         screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE
       });
     }
-  }, [preAuthStatus.error, navigation, shouldIssuePidFirst]);
+  }, [preAuthStatus.error, navigation]);
 
   useHeaderSecondLevel({
     goBack,
@@ -86,37 +83,28 @@ const CredentialsList = () => {
       <View style={styles.wrapper}>
         <ListItemHeader label={t('credentialIssuance.list.header')} />
         <VStack space={8}>
-          {Object.entries(wellKnownCredential)
-            .filter(([_, type]) => type !== wellKnownCredential.PID)
-            .map(([credentialKey, type]) => (
-              <OnboardingModuleCredential
-                configId={
-                  wellKnownCredentialConfigurationIDs[
-                    credentialKey as CredentialsKeys
-                  ]
-                }
-                isFetching={isCredentialRequested(
-                  wellKnownCredentialConfigurationIDs[
-                    credentialKey as CredentialsKeys
-                  ]
-                )}
-                isSaved={isCredentialSaved(type)}
-                key={`itw_credential_${type}`}
-                onPress={c => {
-                  if (shouldIssuePidFirst) {
-                    dispatch(setPendingCredential({ credential: c }));
-                    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-                      screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
-                    });
-                    return;
-                  }
-                  dispatch(
-                    setCredentialIssuancePreAuthRequest({ credential: c })
-                  );
-                }}
-                type={type}
-              />
-            ))}
+          {Object.entries(wellKnownCredential).map(([credentialKey, type]) => (
+            <OnboardingModuleCredential
+              configId={
+                wellKnownCredentialConfigurationIDs[
+                  credentialKey as CredentialsKeys
+                ]
+              }
+              isFetching={isCredentialRequested(
+                wellKnownCredentialConfigurationIDs[
+                  credentialKey as CredentialsKeys
+                ]
+              )}
+              isSaved={isCredentialSaved(type)}
+              key={`itw_credential_${type}`}
+              onPress={c =>
+                dispatch(
+                  setCredentialIssuancePreAuthRequest({ credential: c })
+                )
+              }
+              type={type}
+            />
+          ))}
         </VStack>
       </View>
     </IOScrollViewWithLargeHeader>

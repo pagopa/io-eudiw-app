@@ -14,9 +14,6 @@ import DeepLinkError, {
 import DeepLinkHandler, {
   DeepLinkHandlerParams
 } from '../../screens/deeplink/DeepLinkHandler';
-import PidIssuanceFailure from '../../screens/pidIssuance/PidIssuanceFailure';
-import PidIssuancRequest from '../../screens/pidIssuance/PidIssuanceRequest';
-import { WalletInstanceCreation } from '../../screens/pidIssuance/WalletInstanceCreation';
 import {
   ItwPresentationCredentialDetailNavigationParams,
   ItwPresentationCredentialDetailScreen
@@ -60,10 +57,6 @@ export type WalletNavigatorParamsList = {
 
   // Deep link / QR centralized entry point
   [WALLET_ROUTES.DEEP_LINK.HANDLER]: DeepLinkHandlerParams;
-  [WALLET_ROUTES.PID_ISSUANCE.FAILURE]: undefined;
-  // Pid issuance
-  [WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION]: undefined;
-  [WALLET_ROUTES.PID_ISSUANCE.REQUEST]: undefined;
   [WALLET_ROUTES.PRESENTATION
     .CREDENTIAL_DETAILS]: ItwPresentationCredentialDetailNavigationParams;
   [WALLET_ROUTES.PRESENTATION
@@ -93,7 +86,7 @@ const Stack = createStackNavigator<WalletNavigatorParamsList>();
  */
 const WalletNavigator = () => (
   <Stack.Navigator
-    initialRouteName={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
+    initialRouteName={WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST}
   >
     <Stack.Group>
       <Stack.Screen
@@ -113,19 +106,6 @@ const WalletNavigator = () => (
       />
     </Stack.Group>
     <Stack.Group>
-      <Stack.Screen
-        component={WalletInstanceCreation}
-        name={WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION}
-      />
-      <Stack.Screen
-        component={PidIssuanceFailure}
-        name={WALLET_ROUTES.PID_ISSUANCE.FAILURE}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        component={PidIssuancRequest}
-        name={WALLET_ROUTES.PID_ISSUANCE.REQUEST}
-      />
       <Stack.Screen
         component={ItwPresentationCredentialDetailScreen}
         name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_DETAILS}

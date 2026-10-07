@@ -18,11 +18,17 @@ import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import * as WebBrowser from 'expo-web-browser';
 
-import MAIN_ROUTES from '../navigation/main/routes';
 import { navigator } from '../navigation/utils';
-import WALLET_ROUTES from '../navigation/wallet/routes';
+import {
+  selectRequestedCredential,
+  setCredentialIssuancePostAuthError,
+  setCredentialIssuancePostAuthRequest,
+  setCredentialIssuancePostAuthSuccess,
+  setCredentialIssuancePreAuthError,
+  setCredentialIssuancePreAuthRequest,
+  setCredentialIssuancePreAuthSuccess
+} from '../store/credentialIssuance';
 import { selectWalletInstanceAttestationAsJwt } from '../store/attestation';
-import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
 import { addPidWithIdentification } from '../store/credentials';
 import { selectSessionId } from '../store/instance';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
@@ -32,9 +38,11 @@ import {
   setPidIssuanceRequest,
   setPidIssuanceSuccess
 } from '../store/pidIssuance';
-import { selectPendingCredential } from '../store/selectors/pidIssuance';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
-import { wellKnownCredential } from '../utils/credentials';
+import {
+  wellKnownCredential,
+  wellKnownCredentialConfigurationIDs
+} from '../utils/credentials';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { serializeErrorOrUnknown } from '../utils/errors';
 import { createWalletFetch } from '../utils/fetch';
@@ -43,6 +51,7 @@ import {
   getWalletUnitAttestationThunk
 } from './attestation';
 import { persistCredential } from './credential';
+import { createInstanceThunk } from './instance';
 import { AppListenerWithAction, AppStartListening } from './types';
 
 /**
@@ -266,35 +275,58 @@ const addPidWithAuthListener: AppListenerWithAction<
     listenerApi.dispatch(
       setLifecycle({ lifecycle: Lifecycle.LIFECYCLE_VALID })
     );
-    // Get the pending required credential to be obtained after the Pid
-    const pendingCredential = selectPendingCredential(listenerApi.getState());
-    if (pendingCredential?.credential) {
-      listenerApi.dispatch(
-        // When the pending credential comes from a credential offer, forward the
-        // whole offer so the issuance can validate it and select the right
-        // authorization server; otherwise fall back to the minimal data.
-        setCredentialIssuancePreAuthRequest(
-          pendingCredential.offer
-            ? { offer: pendingCredential.offer }
-            : {
-                credential: pendingCredential.credential,
-                issuerUrl: pendingCredential.issuerUrl
-              }
-        )
-      );
-      navigator.navigate(MAIN_ROUTES.WALLET_NAV, {
-        screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
-      });
-    } else {
-      // This should not happen, so by default the flow will just reset navigation and go back home
-      navigator.navigateWithReset(MAIN_ROUTES.TAB_NAV);
-    }
+    navigator.navigateWithReset('MAIN_TAB_NAV');
   } else {
     return;
   }
 };
 
 export const addPidListeners = (startAppListening: AppStartListening) => {
+  startAppListening({
+    actionCreator: setCredentialIssuancePreAuthRequest,
+    effect: async (_, listenerApi) => {
+      if (
+        selectRequestedCredential(listenerApi.getState()) !==
+        wellKnownCredentialConfigurationIDs.PID
+      ) {
+        return;
+      }
+      try {
+        await listenerApi.dispatch(createInstanceThunk()).unwrap();
+        listenerApi.dispatch(
+          setCredentialIssuancePreAuthSuccess({
+            credentialType: wellKnownCredential.PID,
+            result: []
+          })
+        );
+        await listenerApi.take(isAnyOf(setCredentialIssuancePostAuthRequest));
+        listenerApi.dispatch(setPidIssuanceRequest());
+        const result = await listenerApi.take(
+          isAnyOf(setPidIssuanceSuccess, setPidIssuanceError)
+        );
+        if (setPidIssuanceSuccess.match(result[0])) {
+          listenerApi.dispatch(
+            setCredentialIssuancePostAuthSuccess({
+              credential: result[0].payload
+            })
+          );
+        } else {
+          listenerApi.dispatch(
+            setCredentialIssuancePostAuthError({
+              error: result[0].payload.error
+            })
+          );
+        }
+      } catch (error) {
+        listenerApi.dispatch(
+          setCredentialIssuancePreAuthError({
+            error: serializeErrorOrUnknown(error)
+          })
+        );
+      }
+    }
+  });
+
   startAppListening({
     actionCreator: setPidIssuanceRequest,
     effect: raceEffect(obtainPidListener, [

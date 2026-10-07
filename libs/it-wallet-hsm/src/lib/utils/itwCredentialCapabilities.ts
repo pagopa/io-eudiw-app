@@ -20,17 +20,8 @@ export type ItwCredentialCapabilities = {
     appSelectorHook: typeof useAppSelector
   ) => { key: string; props: ListItemAction }[];
   infoAlert?: CredentialInfoAlert;
-  invalidStatusFailure?: CredentialInvalidStatusFailure;
   showStatusTag: boolean;
   suppressStatusAlert: boolean;
-};
-
-type CredentialInvalidStatusFailure = {
-  actionI18nKey: ParseKeys<['common', 'itWalletHsm']>;
-  actionUrl: string;
-  pictogram: 'accessDenied';
-  subtitleI18nKey: ParseKeys<['common', 'itWalletHsm']>;
-  titleI18nKey: ParseKeys<['common', 'itWalletHsm']>;
 };
 
 const DEFAULT_CAPABILITIES: ItwCredentialCapabilities = {
@@ -84,16 +75,6 @@ const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
     infoAlert: {
       contentI18nKey: 'presentation.alerts.bonusPari.content',
       testID: 'itwBonusPariBannerTestID'
-    },
-    invalidStatusFailure: {
-      actionI18nKey:
-        'itWalletHsm:credentialIssuance.failure.bonusPariNotRequested.action',
-      actionUrl: 'https://dev.bonuselettrodomestici.it/utente',
-      pictogram: 'accessDenied',
-      subtitleI18nKey:
-        'itWalletHsm:credentialIssuance.failure.bonusPariNotRequested.subtitle',
-      titleI18nKey:
-        'itWalletHsm:credentialIssuance.failure.bonusPariNotRequested.title'
     },
     showStatusTag: false,
     suppressStatusAlert: true

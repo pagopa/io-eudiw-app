@@ -1,24 +1,15 @@
 import {
-  IOMarkdown,
   LoadingScreenContent,
   useDisableGestureNavigation,
   useHardwareBackButton,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
+import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import {
-  selectIsDebugModeEnabled,
-  useDebugInfo
-} from '@io-eudiw-app/debug-info';
-import {
-  Alert as AlertDs,
   Body,
-  FeatureInfo,
   FooterActions,
   ForceScrollDownView,
-  H2,
-  IOVisualCostants,
-  VSpacer,
-  VStack
+  IOVisualCostants
 } from '@pagopa/io-app-design-system';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -26,7 +17,6 @@ import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, StyleSheet, View } from 'react-native';
 
-import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -56,7 +46,6 @@ const PresentationProximityPreview = () => {
   const { navigateToWallet } = useNavigateToWalletWithReset();
   const proximityStatus = useAppSelector(selectProximityStatus);
   const { t } = useTranslation(['common', 'itWalletHsm']);
-  const isDebug = useAppSelector(selectIsDebugModeEnabled);
   const isAuthenticated = useAppSelector(
     selectProximityDisclosureIsAuthenticated
   );
@@ -133,23 +122,6 @@ const PresentationProximityPreview = () => {
     ]);
   };
 
-  const isAuthenticatedAlert = (
-    <>
-      {isAuthenticated ? (
-        <AlertDs
-          content={t('itWalletHsm:proximity.isAuthenticated.true')}
-          variant="success"
-        />
-      ) : (
-        <AlertDs
-          content={t('itWalletHsm:proximity.isAuthenticated.false')}
-          variant="warning"
-        />
-      )}
-      <VSpacer size={24} />
-    </>
-  );
-
   useHeaderSecondLevel({
     goBack: cancelAlert,
     title: ''
@@ -181,29 +153,7 @@ const PresentationProximityPreview = () => {
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>
       <View style={{ flexGrow: 1, margin: IOVisualCostants.appMarginDefault }}>
-        <ItwDataExchangeIcons />
-        <VSpacer size={24} />
-        <VStack space={24}>
-          <H2>{t('itWalletHsm:presentation.trust.title')}</H2>
-          <IOMarkdown
-            content={t('itWalletHsm:proximity.trust.subtitle', {
-              relyingParty: proximityDetails[0]?.rpId ?? ''
-            })}
-          />
-        </VStack>
-        <VSpacer size={24} />
-        {isDebug && isAuthenticatedAlert}
         <ItwProximityPresentationDetails data={proximityDetails} />
-        <VSpacer size={48} />
-        <FeatureInfo
-          body={t('itWalletHsm:presentation.trust.disclaimer.0')}
-          iconName="fornitori"
-        />
-        <VSpacer size={24} />
-        <FeatureInfo
-          body={t('itWalletHsm:presentation.trust.disclaimer.1')}
-          iconName="trashcan"
-        />
       </View>
       <FooterActions
         actions={{

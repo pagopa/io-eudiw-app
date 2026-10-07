@@ -4,13 +4,10 @@ import {
   useHardwareBackButton,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
-import { IOMarkdown } from '@io-eudiw-app/commons';
 import {
   ClaimsSelector,
-  FeatureInfo,
   FooterActions,
   ForceScrollDownView,
-  H2,
   IOVisualCostants,
   ListItemCheckbox,
   ListItemHeader,
@@ -24,14 +21,12 @@ import { ComponentProps, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, StyleSheet, View } from 'react-native';
 
-import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   Descriptor,
   selectPostDefinitionStatus,
-  selectPreDefinitionStatus,
   setOptionalCredentials,
   setPostDefinitionCancel,
   setPostDefinitionRequest
@@ -60,19 +55,13 @@ type Props = StackScreenProps<
  * Presentation for the issuance flow after the user has received the descriptor containing the requested claims.
  * It requires the descrptor containg the requested claims in order to render the screen, passed via navigation params.
  */
-// eslint-disable-next-line max-lines-per-function
 const PresentationPostDefinition = ({ route }: Props) => {
   const navigation = useNavigation();
   const { t } = useTranslation(['common', 'itWalletHsm']);
   const dispatch = useAppDispatch();
   const postDefinitionStatus = useAppSelector(selectPostDefinitionStatus);
   const { navigateToWallet } = useNavigateToWalletWithReset();
-  const preDef = useAppSelector(selectPreDefinitionStatus);
   const theme = useIOTheme();
-
-  const rpConfig = preDef.success?.status
-    ? preDef.success.data?.rpConfig
-    : undefined;
 
   // Disable the back gesture navigation and the hardware back button
   useDisableGestureNavigation();
@@ -208,31 +197,10 @@ const PresentationPostDefinition = ({ route }: Props) => {
   return (
     <ForceScrollDownView style={styles.scroll} threshold={50}>
       <View style={{ flexGrow: 1, margin: IOVisualCostants.appMarginDefault }}>
-        <ItwDataExchangeIcons
-          requesterLogoUri={
-            rpConfig?.logo_uri ? { uri: rpConfig.logo_uri } : undefined
-          }
-        />
-        <VSpacer size={24} />
-        <VStack space={24}>
-          <H2>{t('itWalletHsm:presentation.trust.title')}</H2>
-          <IOMarkdown
-            content={t('itWalletHsm:presentation.trust.subtitle', {
-              relyingParty: rpConfig?.organization_name
-            })}
-          />
-        </VStack>
         <VSpacer size={24} />
         {required.map(({ credentials, purpose }) => (
           <View key={`required:${purpose}`}>
             <ListItemHeader
-              description={
-                purpose
-                  ? t('itWalletHsm:presentation.trust.purpose', {
-                      purpose
-                    })
-                  : undefined
-              }
               iconColor={theme['icon-decorative']}
               iconName="security"
               label={t('itWalletHsm:presentation.trust.requiredClaims')}
@@ -243,13 +211,6 @@ const PresentationPostDefinition = ({ route }: Props) => {
         {optional.map(({ credentials, purpose }) => (
           <View key={`optional:${purpose}`}>
             <ListItemCheckbox
-              description={
-                purpose
-                  ? t('itWalletHsm:presentation.trust.purpose', {
-                      purpose
-                    })
-                  : undefined
-              }
               icon="security"
               onValueChange={value => {
                 sendOptionalCredentials(value ? credentials : []);
@@ -260,16 +221,6 @@ const PresentationPostDefinition = ({ route }: Props) => {
             <VSpacer size={16} />
           </View>
         ))}
-        <VSpacer size={48} />
-        <FeatureInfo
-          body={t('itWalletHsm:presentation.trust.disclaimer.0')}
-          iconName="fornitori"
-        />
-        <VSpacer size={24} />
-        <FeatureInfo
-          body={t('itWalletHsm:presentation.trust.disclaimer.1')}
-          iconName="trashcan"
-        />
       </View>
       <FooterActions
         actions={{

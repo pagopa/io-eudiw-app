@@ -44,9 +44,13 @@ import {
   selectCredential
 } from '../store/credentials';
 import { selectSessionId } from '../store/instance';
+import { Lifecycle, setLifecycle } from '../store/lifecycle';
 import { ResolvedCredentialOffer } from '../types';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
-import { wellKnownCredential } from '../utils/credentials';
+import {
+  wellKnownCredential,
+  wellKnownCredentialConfigurationIDs
+} from '../utils/credentials';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { serializeErrorOrUnknown } from '../utils/errors';
 import { createWalletFetch } from '../utils/fetch';
@@ -167,6 +171,9 @@ const obtainCredentialListener: AppListenerWithAction<
     const credentialId = selectRequestedCredential(state);
     if (!credentialId) {
       throw new Error('Credential type not found');
+    }
+    if (credentialId === wellKnownCredentialConfigurationIDs.PID) {
+      return;
     }
 
     // When the issuance originates from a credential offer, the issuer URL is
@@ -434,6 +441,13 @@ const addCredentialWithAuthListener: AppListenerWithAction<
         setCredentialIssuancePostAuthError({ error: persistResult.payload })
       );
       return;
+    }
+    if (
+      action.payload.credential.credentialType === wellKnownCredential.PID
+    ) {
+      listenerApi.dispatch(
+        setLifecycle({ lifecycle: Lifecycle.LIFECYCLE_VALID })
+      );
     }
     listenerApi.dispatch(resetCredentialIssuance());
     navigator.navigateWithReset('MAIN_TAB_NAV');

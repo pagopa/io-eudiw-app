@@ -1,5 +1,4 @@
 import {
-  IOMarkdown,
   LoadingScreenContent,
   useDisableGestureNavigation,
   useHardwareBackButton,
@@ -7,22 +6,18 @@ import {
 } from '@io-eudiw-app/commons';
 import {
   Body,
-  FeatureInfo,
   FooterActions,
   ForceScrollDownView,
-  H2,
   IOVisualCostants,
   ListItemHeader,
   useIOTheme,
-  VSpacer,
-  VStack
+  VSpacer
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { Fragment, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
-import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import { ItwRequestedClaimsList } from '../../components/presentation/ItwRequiredClaimsList';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
@@ -31,12 +26,9 @@ import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus,
   selectCredentialIssuancePreAuthStatus,
-  selectRequestedCredentialType,
   setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
-import { getCredentialNameByType } from '../../utils/credentials';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
-import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
 
 /**
  * Screen which shows the user the credentials and claims that will be shared with the credential issuer
@@ -53,7 +45,6 @@ const CredentialTrust = () => {
     loading,
     success
   } = useAppSelector(selectCredentialIssuancePostAuthStatus);
-  const requestedCredential = useAppSelector(selectRequestedCredentialType);
   const navigation = useNavigation();
   const { navigateToWallet } = useNavigateToWalletWithReset();
   const theme = useIOTheme();
@@ -152,22 +143,6 @@ const CredentialTrust = () => {
   return (
     <ForceScrollDownView threshold={50}>
       <View style={{ flexGrow: 1, margin: IOVisualCostants.appMarginDefault }}>
-        <VSpacer size={24} />
-        <ItwDataExchangeIcons />
-        <VSpacer size={24} />
-        <VStack space={24}>
-          <H2>
-            {t('itWalletHsm:credentialIssuance.trust.title', {
-              credential: getCredentialNameByType(requestedCredential)
-            })}
-          </H2>
-          <IOMarkdown
-            content={t('itWalletHsm:credentialIssuance.trust.subtitle', {
-              organization: ISSUER_MOCK_NAME
-            })}
-          />
-        </VStack>
-        <VSpacer size={24} />
         <ListItemHeader
           iconColor={theme['icon-default']}
           iconName="security"
@@ -183,16 +158,6 @@ const CredentialTrust = () => {
             )}
           </Fragment>
         ))}
-        <VSpacer size={48} />
-        <FeatureInfo
-          body={t('itWalletHsm:credentialIssuance.trust.disclaimer.store')}
-          iconName="fornitori"
-        />
-        <VSpacer size={24} />
-        <FeatureInfo
-          body={t('itWalletHsm:credentialIssuance.trust.disclaimer.retention')}
-          iconName="trashcan"
-        />
       </View>
       <FooterActions
         actions={{

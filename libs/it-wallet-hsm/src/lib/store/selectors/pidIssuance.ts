@@ -44,11 +44,3 @@ export const selectPidIssuanceErrorType = (state: WalletCombinedRootState) => {
   const { error } = state.itWalletHsm.pidIssuanceStatus.issuance;
   return error.status ? error.type : undefined;
 };
-
-/**
- * Selects the pending credential to issue after the Wallet Pid has been obtained
- * @param state - The root state
- * @returns The credential to issue after the wallet is operational
- */
-export const selectPendingCredential = (state: WalletCombinedRootState) =>
-  state.itWalletHsm.pidIssuanceStatus.pendingCredential;
