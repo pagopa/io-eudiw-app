@@ -19,16 +19,13 @@ import * as Crypto from 'expo-crypto';
 import * as WebBrowser from 'expo-web-browser';
 
 import { navigator } from '../navigation/utils';
+import { selectWalletInstanceAttestationAsJwt } from '../store/attestation';
 import {
   selectRequestedCredential,
   setCredentialIssuancePostAuthError,
-  setCredentialIssuancePostAuthRequest,
   setCredentialIssuancePostAuthSuccess,
-  setCredentialIssuancePreAuthError,
-  setCredentialIssuancePreAuthRequest,
-  setCredentialIssuancePreAuthSuccess
+  setCredentialIssuancePreAuthRequest
 } from '../store/credentialIssuance';
-import { selectWalletInstanceAttestationAsJwt } from '../store/attestation';
 import { addPidWithIdentification } from '../store/credentials';
 import { selectSessionId } from '../store/instance';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
@@ -293,13 +290,6 @@ export const addPidListeners = (startAppListening: AppStartListening) => {
       }
       try {
         await listenerApi.dispatch(createInstanceThunk()).unwrap();
-        listenerApi.dispatch(
-          setCredentialIssuancePreAuthSuccess({
-            credentialType: wellKnownCredential.PID,
-            result: []
-          })
-        );
-        await listenerApi.take(isAnyOf(setCredentialIssuancePostAuthRequest));
         listenerApi.dispatch(setPidIssuanceRequest());
         const result = await listenerApi.take(
           isAnyOf(setPidIssuanceSuccess, setPidIssuanceError)
@@ -319,7 +309,7 @@ export const addPidListeners = (startAppListening: AppStartListening) => {
         }
       } catch (error) {
         listenerApi.dispatch(
-          setCredentialIssuancePreAuthError({
+          setCredentialIssuancePostAuthError({
             error: serializeErrorOrUnknown(error)
           })
         );

@@ -85,9 +85,7 @@ const Stack = createStackNavigator<WalletNavigatorParamsList>();
  * It includes the pid issuance flow.
  */
 const WalletNavigator = () => (
-  <Stack.Navigator
-    initialRouteName={WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST}
-  >
+  <Stack.Navigator initialRouteName={WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST}>
     <Stack.Group>
       <Stack.Screen
         component={DeepLinkHandler}

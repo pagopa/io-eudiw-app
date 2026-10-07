@@ -442,9 +442,7 @@ const addCredentialWithAuthListener: AppListenerWithAction<
       );
       return;
     }
-    if (
-      action.payload.credential.credentialType === wellKnownCredential.PID
-    ) {
+    if (action.payload.credential.credentialType === wellKnownCredential.PID) {
       listenerApi.dispatch(
         setLifecycle({ lifecycle: Lifecycle.LIFECYCLE_VALID })
       );

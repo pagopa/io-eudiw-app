@@ -18,6 +18,7 @@ import WALLET_ROUTES from '../../navigation/wallet/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   resetCredentialIssuance,
+  selectCredentialIssuancePostAuthStatus,
   selectCredentialIssuancePreAuthStatus,
   selectRequestedCredential,
   setCredentialIssuancePreAuthRequest
@@ -52,6 +53,9 @@ const CredentialsList = () => {
   const isCredentialRequested = (type: string) => requestedCredential === type;
 
   const preAuthStatus = useAppSelector(selectCredentialIssuancePreAuthStatus);
+  const postAuthStatus = useAppSelector(selectCredentialIssuancePostAuthStatus);
+  const isPidIssuance =
+    requestedCredential === wellKnownCredentialConfigurationIDs.PID;
 
   useEffect(() => {
     if (preAuthStatus.success.status) {
@@ -68,6 +72,24 @@ const CredentialsList = () => {
       });
     }
   }, [preAuthStatus.error, navigation]);
+
+  useEffect(() => {
+    if (isPidIssuance && postAuthStatus.success.status) {
+      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+        screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.PREVIEW
+      });
+    }
+    if (isPidIssuance && postAuthStatus.error.status) {
+      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+        screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE
+      });
+    }
+  }, [
+    isPidIssuance,
+    navigation,
+    postAuthStatus.error.status,
+    postAuthStatus.success.status
+  ]);
 
   useHeaderSecondLevel({
     goBack,
@@ -98,9 +120,7 @@ const CredentialsList = () => {
               isSaved={isCredentialSaved(type)}
               key={`itw_credential_${type}`}
               onPress={c =>
-                dispatch(
-                  setCredentialIssuancePreAuthRequest({ credential: c })
-                )
+                dispatch(setCredentialIssuancePreAuthRequest({ credential: c }))
               }
               type={type}
             />

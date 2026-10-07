@@ -180,7 +180,7 @@
   },
   "proximity": {
     "home": {
-      "cta": "Avvia verifica"
+      "cta": "Verifica prossimità"
     },
     "engagement": {
       "title": "Avvia una verifica",
