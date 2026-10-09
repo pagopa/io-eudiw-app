@@ -90,7 +90,7 @@ jobs:
           distribution: 'temurin'
           cache: gradle
       - id: setup-android-sdk
-        uses: android-actions/setup-android@00854ea68c109d98c75d956347303bf7c45b0277 #v3.2.1
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd #v4.0.4
       - id: setup-ruby
         uses: ruby/setup-ruby@afeafc3d1ab54a631816aba4c914a0081c12ff2f #v1.310.0
         with:
