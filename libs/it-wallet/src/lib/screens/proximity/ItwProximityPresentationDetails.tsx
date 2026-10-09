@@ -50,7 +50,7 @@ const mapClaims = (
 
     const textValue = Array.isArray(displayResult.value)
       ? displayResult.value.map(getSafeText).join(', ')
-      : getSafeText(displayResult.value);
+      : getSafeText(displayResult.value, 1024);
 
     return {
       description: c.label,

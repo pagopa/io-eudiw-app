@@ -32,11 +32,12 @@ const ItwRequiredClaimsList = ({ items }: ItwRequiredClaimsListProps) => {
           <HStack
             style={{
               alignItems: 'center',
+              columnGap: 12,
               justifyContent: 'space-between',
               paddingVertical: 12
             }}
           >
-            <View>
+            <View style={styles.claim}>
               <ClaimText claim={claim} />
               <BodySmall color={theme['textBody-tertiary']} weight="Regular">
                 {t('credentialIssuance.trust.dataSource', {
@@ -90,6 +91,9 @@ const ClaimText = ({ claim }: { claim: ClaimDisplayFormat }) => {
 };
 
 const styles = StyleSheet.create({
+  claim: {
+    flex: 1
+  },
   container: {
     borderCurve: 'continuous',
     borderRadius: 8,

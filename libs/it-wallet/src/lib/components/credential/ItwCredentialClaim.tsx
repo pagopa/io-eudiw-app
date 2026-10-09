@@ -117,7 +117,7 @@ const PlainTextClaimItem = ({
   label: string;
   reversed: boolean;
 }) => {
-  const safeValue = getSafeText(claim);
+  const safeValue = getSafeText(claim, 1024);
   const displayValue = hidden ? HIDDEN_CLAIM_TEXT : safeValue;
   const accessibilityStateText = hidden
     ? getHiddenClaimAccessibilityText()

@@ -1,4 +1,3 @@
-import { getSafeText } from '@io-eudiw-app/commons';
 import { ListItemInfo } from '@pagopa/io-app-design-system';
 import { Image } from 'react-native';
 
@@ -36,17 +35,18 @@ export const ItwCredentialClaim = ({
     );
   }
 
-  const value = getSafeText(parsed?.value ?? '');
-  if (value === '') {
-    return null;
-  }
+  const value = parsed?.value ?? '';
 
-  return (
-    <ListItemInfo
-      accessibilityLabel={`${label} ${value}`}
-      label={label}
-      numberOfLines={4}
-      value={value}
-    />
-  );
+  if (!value) {
+    return null;
+  } else {
+    return (
+      <ListItemInfo
+        accessibilityLabel={`${label} ${value}`}
+        label={label}
+        numberOfLines={Number.MAX_SAFE_INTEGER}
+        value={value}
+      />
+    );
+  }
 };
