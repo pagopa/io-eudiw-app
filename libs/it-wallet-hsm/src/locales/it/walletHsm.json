@@ -245,6 +245,7 @@
       "documents": "Documenti",
       "walletProvider": "Wallet Provider",
       "instance": "Wallet Instance",
+      "keyAttestation": "Key Attestation",
       "attestation": "Wallet Instance Attestation"
     },
     "trust": {

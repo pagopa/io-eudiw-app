@@ -1,0 +1,80 @@
+diff --git a/dist/index.js b/dist/index.js
+index 2c28d61d216aa5a1bf4a0f7796948832705c6a60..f68f020bdd9581521db06d516641b7f7b677a737 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -554,7 +554,7 @@ function assertAuthorizationServerAllowed(authorizationServer, authorizationServ
+ }
+ function validateBaseCredentialOffer(options) {
+   const { credentialIssuerMetadata, credentialOffer, versionLabel } = options;
+-  if (!credentialOffer.credential_issuer.startsWith("https://")) {
++  if (!/^https?:\/\//.test(credentialOffer.credential_issuer)) {
+     throw new CredentialOfferError("credential_issuer must be an HTTPS URL");
+   }
+   if (credentialOffer.credential_configuration_ids.length === 0) {
+@@ -1617,7 +1617,7 @@ async function applyFederationAuthorizationServerSelection(fetch, federationResu
+     return federationResult;
+   }
+   const parsedSelectedAuthorizationServer = import_zod15.default.url().safeParse(selectedAuthorizationServer);
+-  if (!parsedSelectedAuthorizationServer.success || !parsedSelectedAuthorizationServer.data.startsWith("https://")) {
++  if (!parsedSelectedAuthorizationServer.success || !/^https?:\/\//.test(parsedSelectedAuthorizationServer.data)) {
+     throw new import_io_wallet_utils16.ValidationError(
+       "selected authorization server is not a valid HTTPS URL"
+     );
+@@ -1655,7 +1655,7 @@ async function fallbackDiscovery(fetch, baseUrl, authorizationServer) {
+   if (authorizationServers && authorizationServers.length > 0) {
+     const selectedAuthorizationServer = authorizationServer ?? authorizationServers[0];
+     const parsedUrl = import_zod15.default.url().safeParse(selectedAuthorizationServer);
+-    if (!parsedUrl.success || !parsedUrl.data.startsWith("https://")) {
++    if (!parsedUrl.success || !/^https?:\/\//.test(parsedUrl.data)) {
+       throw new import_io_wallet_utils16.ValidationError(
+         "selected authorization server is not a valid HTTPS URL"
+       );
+@@ -1739,7 +1739,7 @@ var dispatchFetchMetadata = (0, import_io_wallet_utils16.createVersionDispatcher
+ async function fetchMetadata(options) {
+   try {
+     const urlValidation = import_zod15.default.url().safeParse(options.credentialIssuerUrl);
+-    if (!urlValidation.success || !urlValidation.data.startsWith("https://")) {
++    if (!urlValidation.success || !/^https?:\/\//.test(urlValidation.data)) {
+       throw new import_io_wallet_utils16.ValidationError(
+         "credentialIssuerUrl must be a valid HTTPS URL"
+       );
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 47d5966d15bba5ddd481a13ddcf9feb07bb0bf48..732f80b1512a533a22ebd93de90579f45fc307e2 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -484,7 +484,7 @@ function assertAuthorizationServerAllowed(authorizationServer, authorizationServ
+ }
+ function validateBaseCredentialOffer(options) {
+   const { credentialIssuerMetadata, credentialOffer, versionLabel } = options;
+-  if (!credentialOffer.credential_issuer.startsWith("https://")) {
++  if (!/^https?:\/\//.test(credentialOffer.credential_issuer)) {
+     throw new CredentialOfferError("credential_issuer must be an HTTPS URL");
+   }
+   if (credentialOffer.credential_configuration_ids.length === 0) {
+@@ -1615,7 +1615,7 @@ async function applyFederationAuthorizationServerSelection(fetch, federationResu
+     return federationResult;
+   }
+   const parsedSelectedAuthorizationServer = z15.url().safeParse(selectedAuthorizationServer);
+-  if (!parsedSelectedAuthorizationServer.success || !parsedSelectedAuthorizationServer.data.startsWith("https://")) {
++  if (!parsedSelectedAuthorizationServer.success || !/^https?:\/\//.test(parsedSelectedAuthorizationServer.data)) {
+     throw new ValidationError9(
+       "selected authorization server is not a valid HTTPS URL"
+     );
+@@ -1653,7 +1653,7 @@ async function fallbackDiscovery(fetch, baseUrl, authorizationServer) {
+   if (authorizationServers && authorizationServers.length > 0) {
+     const selectedAuthorizationServer = authorizationServer ?? authorizationServers[0];
+     const parsedUrl = z15.url().safeParse(selectedAuthorizationServer);
+-    if (!parsedUrl.success || !parsedUrl.data.startsWith("https://")) {
++    if (!parsedUrl.success || !/^https?:\/\//.test(parsedUrl.data)) {
+       throw new ValidationError9(
+         "selected authorization server is not a valid HTTPS URL"
+       );
+@@ -1737,7 +1737,7 @@ var dispatchFetchMetadata = createVersionDispatcher7({
+ async function fetchMetadata(options) {
+   try {
+     const urlValidation = z15.url().safeParse(options.credentialIssuerUrl);
+-    if (!urlValidation.success || !urlValidation.data.startsWith("https://")) {
++    if (!urlValidation.success || !/^https?:\/\//.test(urlValidation.data)) {
+       throw new ValidationError9(
+         "credentialIssuerUrl must be a valid HTTPS URL"
+       );

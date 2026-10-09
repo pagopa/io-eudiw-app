@@ -27,7 +27,7 @@
     "@reduxjs/toolkit": "catalog:",
     "@shopify/react-native-skia": "catalog:",
     "@pagopa/io-react-native-iso18013": "0.8.4",
-    "@pagopa/io-react-native-wallet": "3.4.4",
+    "@pagopa/io-react-native-wallet": "3.8.2",
     "serialize-error": "catalog:",
     "zod": "catalog:",
     "@pagopa/io-react-native-jwt": "2.1.0",

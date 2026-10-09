@@ -25,8 +25,8 @@ import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { serializeErrorOrUnknown } from '../utils/errors';
 import { createWalletFetch } from '../utils/fetch';
 import {
-  getWalletInstanceAttestationThunk,
-  getWalletUnitAttestationThunk
+  getKeyAttestationThunk,
+  getWalletInstanceAttestationThunk
 } from './attestation';
 import { AppListenerWithAction, AppStartListening } from './types';
 
@@ -169,8 +169,8 @@ const obtainPidListener: AppListenerWithAction<
       throw new Error('No credential configuration ID found for PID');
     }
 
-    const walletUnitAttestation = await dispatch(
-      getWalletUnitAttestationThunk({
+    const keyAttestation = await dispatch(
+      getKeyAttestationThunk({
         keyTags: [credentialKeyTag]
       })
     ).unwrap();
@@ -191,7 +191,7 @@ const obtainPidListener: AppListenerWithAction<
           appFetch,
           credentialCryptoContext,
           dPopCryptoContext,
-          walletUnitAttestation: walletUnitAttestation.attestation
+          keyAttestation: keyAttestation.attestation
         }
       );
 

@@ -70,26 +70,26 @@ export const getWalletInstanceAttestationThunk =
     }
   };
 
-type GetWalletUnitAttestationThunkInput = {
+type GetKeyAttestationThunkInput = {
   keyTags: string[];
 };
-type GetWalletUnitAttestationThunkOutput = {
+type GetKeyAttestationThunkOutput = {
   attestation: string;
   format: string;
 };
 
-export const getWalletUnitAttestationThunk = createAppAsyncThunk<
-  GetWalletUnitAttestationThunkOutput,
-  GetWalletUnitAttestationThunkInput
->('walletinstance/walletunitattestation', async ({ keyTags }, { getState }) => {
+export const getKeyAttestationThunk = createAppAsyncThunk<
+  GetKeyAttestationThunkOutput,
+  GetKeyAttestationThunkInput
+>('walletinstance/keyattestation', async ({ keyTags }, { getState }) => {
   const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
   const sessionId = selectSessionId(getState());
 
   const appFetch = createWalletFetch(sessionId);
 
-  if (!wallet.WalletUnitAttestation.isSupported) {
+  if (!wallet.KeyAttestation.isSupported) {
     throw new Error(
-      `Wallet Unit Attestation is not supported in v${WALLET_SPEC_VERSION}`
+      `Key Attestation is not supported in v${WALLET_SPEC_VERSION}`
     );
   }
 
@@ -104,7 +104,7 @@ export const getWalletUnitAttestationThunk = createAppAsyncThunk<
   const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
     getEnv();
 
-  return await wallet.WalletUnitAttestation.getAttestation(
+  return await wallet.KeyAttestation.getAttestation(
     {
       walletProviderBaseUrl,
       walletSolutionId: 'appio',

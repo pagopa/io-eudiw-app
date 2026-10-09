@@ -41,6 +41,7 @@ export const createInstanceThunk = createAppAsyncThunk<void, void>(
       }
       return;
     } catch (err: unknown) {
+      console.log(err);
       return rejectWithValue({ error: serializeErrorOrUnknown(err) });
     }
   }
