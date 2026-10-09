@@ -240,7 +240,7 @@ const DcBackData = ({ claims }: DataComponentProps) => {
   const qrCodeStringClaim =
     qrCodeClaim?.type === claimType.string ? qrCodeClaim : undefined;
 
-  const [width, setWidth] = useState<number | `${number}%`>('29%');
+  const [width, setWidth] = useState<`${number}%` | number>('29%');
 
   return (
     <View style={styles.container} testID="dcBackDataTestID">
