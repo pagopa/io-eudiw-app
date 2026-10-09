@@ -78,3 +78,5 @@ overrides:
 patchedDependencies:
   '@pagopa/io-app-design-system': 'patches/@pagopa__io-app-design-system.patch'
   '@pagopa/io-react-native-wallet': patches/@pagopa__io-react-native-wallet.patch
+
+nodeLinker: hoisted
