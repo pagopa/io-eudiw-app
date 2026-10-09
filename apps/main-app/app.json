@@ -30,7 +30,8 @@
       },
       "icon": {
         "light": "./assets/images/icons/ios-default.png"
-      }
+      },
+      "appleTeamId": "M2X5YQ4BJ7"
     },
     "android": {
       "package": "it.pagopa.io.app.poc.eudiw",
@@ -41,9 +42,14 @@
         "android.permission.BLUETOOTH_ADVERTISE",
         "android.permission.BLUETOOTH",
         "android.permission.BLUETOOTH_ADMIN",
-        "android.permission.ACCESS_FINE_LOCATION"
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT"
       ],
-      "blockedPermissions": ["android.permission.READ_MEDIA_IMAGES"],
+      "blockedPermissions": [
+        "android.permission.READ_MEDIA_IMAGES"
+      ],
       "predictiveBackGestureEnabled": false,
       "intentFilters": [
         {
@@ -72,7 +78,10 @@
               "scheme": "iowallet"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ],
       "adaptiveIcon": {
@@ -136,7 +145,9 @@
       [
         "react-native-permissions",
         {
-          "iosPermissions": ["Bluetooth"]
+          "iosPermissions": [
+            "Bluetooth"
+          ]
         }
       ],
       [

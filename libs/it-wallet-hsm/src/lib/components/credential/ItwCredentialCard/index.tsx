@@ -1,26 +1,21 @@
-import { selectFontPreference } from '@io-eudiw-app/preferences';
 import {
   HStack,
   IOColors,
   IOText,
   Tag,
+  useIOTheme,
   useIOThemeContext
 } from '@pagopa/io-app-design-system';
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { useItwDisplayCredentialStatus } from '../../../hooks/useItwDisplayCredentialStatus';
-import { useAppSelector } from '../../../store';
 import { ItwCredentialStatus } from '../../../types';
-import { getCredentialCapabilities } from '../../../utils/itwCredentialCapabilities';
 import {
   getCredentialNameFromType,
   useBorderColorByStatus,
   useTagPropsByStatus,
   validCredentialStatuses
 } from '../../../utils/itwCredentialUtils';
-import { CardBackground } from './CardBackground';
-import { useCredentialCardConfig } from './config';
 
 export type ItwCredentialCardProps = {
   /**
@@ -38,22 +33,13 @@ export type ItwCredentialCardProps = {
 
 export const ItwCredentialCard = memo(
   ({ credentialStatus = 'valid', credentialType }: ItwCredentialCardProps) => {
-    const typefacePreference = useAppSelector(selectFontPreference);
     const { theme, themeType } = useIOThemeContext();
-    const status = useItwDisplayCredentialStatus(credentialStatus);
+    const ioTheme = useIOTheme();
+    const status = credentialStatus;
     const borderColorMap = useBorderColorByStatus();
-    const cardConfig = useCredentialCardConfig();
     const tagPropsByStatus = useTagPropsByStatus();
     const isValid = validCredentialStatuses.includes(status);
-    const capabilites = useMemo(
-      () => getCredentialCapabilities(credentialType),
-      [credentialType]
-    );
-
-    const statusTagProps = useMemo<Tag | undefined>(
-      () => (capabilites.showStatusTag ? tagPropsByStatus[status] : undefined),
-      [status, tagPropsByStatus, capabilites]
-    );
+    const statusTagProps: Tag | undefined = tagPropsByStatus[status];
 
     const appBackgroundColor = IOColors[theme['appBackground-primary']];
 
@@ -65,20 +51,21 @@ export const ItwCredentialCard = memo(
         ]}
       >
         <View style={styles.cardContainer}>
-          <CardBackground {...cardConfig} />
+          <View
+            style={[
+              StyleSheet.absoluteFill,
+              { backgroundColor: IOColors[ioTheme['appBackground-secondary']] }
+            ]}
+          />
           <View style={styles.header}>
             <HStack space={16}>
               <IOText
-                font={
-                  typefacePreference === 'comfortable'
-                    ? 'Titillio'
-                    : 'TitilliumSansPro'
-                }
+                font="TitilliumSansPro"
                 lineHeight={24}
                 maxFontSizeMultiplier={1.25}
                 size={16}
                 style={{
-                  color: cardConfig.titleColor,
+                  color: IOColors[ioTheme['textBody-default']],
                   flex: 1,
                   flexShrink: 1,
                   letterSpacing: 0.25
@@ -111,8 +98,8 @@ export const ItwCredentialCard = memo(
           <View
             style={[
               styles.border,
-              status === 'valid' || capabilites.suppressStatusAlert
-                ? { borderColor: cardConfig.borderColor, borderWidth: 1 }
+              status === 'valid'
+                ? { borderColor: IOColors['grey-300'], borderWidth: 1 }
                 : { borderColor: borderColorMap[status], borderWidth: 2 }
             ]}
           />

@@ -4,7 +4,7 @@ import {
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
-import { VStack } from '@pagopa/io-app-design-system';
+import { ListItemAction, VStack } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { useMemo } from 'react';
@@ -14,10 +14,14 @@ import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
 import { ItwPresentationClaimsSection } from '../../components/presentation/ItwPresentationClaimsSection';
 import { ItwPresentationCredentialUnknownStatus } from '../../components/presentation/ItwPresentationCredentialUnknownStatus';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
-import { useAppSelector } from '../../store';
-import { selectCredential } from '../../store/credentials';
-import { lifecycleIsValidSelector } from '../../store/lifecycle';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { removeCredential, selectCredential } from '../../store/credentials';
+import {
+  lifecycleIsValidSelector,
+  resetLifecycle
+} from '../../store/lifecycle';
 import { parseClaimsToRecord } from '../../utils/claims';
+import { wellKnownCredential } from '../../utils/credentials';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 
@@ -93,6 +97,19 @@ const ItwPresentationCredentialDetail = ({
   credential
 }: ItwPresentationCredentialDetailProps) => {
   const status = getCredentialStatus(credential);
+  const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation('itWalletHsm');
+
+  const handleRemoveCredential = () => {
+    // The PID can't be removed alone: removing it resets the wallet lifecycle
+    dispatch(
+      credential.credentialType === wellKnownCredential.PID
+        ? resetLifecycle()
+        : removeCredential(credential)
+    );
+    navigation.goBack();
+  };
 
   useHeaderSecondLevel({
     canGoBack: true,
@@ -115,6 +132,13 @@ const ItwPresentationCredentialDetail = ({
         <ItwPresentationClaimsSection
           credential={credential}
           parsedClaims={parsedClaims}
+        />
+        <ListItemAction
+          icon="trashcan"
+          label={t('presentation.credentialDetails.actions.removeFromWallet')}
+          onPress={handleRemoveCredential}
+          testID="removeCredentialActionTestID"
+          variant="danger"
         />
       </VStack>
     </IOScrollView>

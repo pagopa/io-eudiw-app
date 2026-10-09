@@ -23,8 +23,8 @@ import {
 } from '../../store/credentialIssuance';
 import { addCredentialWithIdentification } from '../../store/credentials';
 import { parseClaimsToRecord } from '../../utils/claims';
-import { getCredentialNameByType } from '../../utils/credentials';
 import { WellKnownClaim } from '../../utils/itwClaimsUtils';
+import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 
 export const CredentialPreview = () => {
   const credentialPostStatus = useAppSelector(
@@ -77,7 +77,7 @@ export const CredentialPreview = () => {
       threshold={50}
     >
       <View style={styles.container}>
-        <H2>{getCredentialNameByType(credential.credentialType)}</H2>
+        <H2>{getCredentialNameFromType(credential.credentialType)}</H2>
         <VSpacer size={24} />
         <CredentialPreviewClaimsList claims={parsedClaims} isPreview={true} />
       </View>

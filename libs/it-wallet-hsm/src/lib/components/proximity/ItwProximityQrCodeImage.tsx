@@ -13,7 +13,6 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 import QRCode from 'react-native-qrcode-skia';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
-import ItwAvatar from '../../../assets/img/brand/itw_avatar.svg';
 import { useProximityEngagement } from '../../hooks/useProximityEngagement';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
@@ -22,8 +21,6 @@ import {
   selectProximityQrCode,
   setProximityStatusStopped
 } from '../../store/proximity';
-
-const QR_CODE_LOGO_SIZE = 84;
 
 /**
  * For the QR Code size, we start from the window width and subtract the
@@ -34,8 +31,8 @@ const WINDOW_WIDTH = Dimensions.get('window').width;
 const QR_CODE_SIZE = WINDOW_WIDTH - IOVisualCostants.appMarginDefault * 2; // horizontal screen padding (both sides)
 
 /**
- * Renders the proximity engagement QR Code using the skia renderer (circle dots
- * + IT-Wallet logo), reading the QR string from the proximity store. While the
+ * Renders the proximity engagement QR Code using the skia renderer (plain, no
+ * logo), reading the QR string from the proximity store. While the
  * QR string is being generated a square skeleton is shown.
  */
 export const ItwProximityQrCodeImage = () => {
@@ -80,18 +77,6 @@ export const ItwProximityQrCodeImage = () => {
     <Animated.View entering={FadeIn.duration(200)}>
       <QRCode
         color={theme['textBody-default']}
-        errorCorrectionLevel="H"
-        logo={
-          <ItwAvatar height={QR_CODE_LOGO_SIZE} width={QR_CODE_LOGO_SIZE} />
-        }
-        logoAreaBorderRadius={8}
-        logoAreaSize={88}
-        shapeOptions={{
-          eyePatternGap: 0,
-          eyePatternShape: 'rounded',
-          gap: 0,
-          shape: 'circle'
-        }}
         size={QR_CODE_SIZE}
         value={qrCode}
       />

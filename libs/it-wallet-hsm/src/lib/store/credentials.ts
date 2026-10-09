@@ -24,19 +24,11 @@ import { resetLifecycle } from './lifecycle';
  * the raw credential payloads.
  */
 type CredentialsSlice = {
-  banners: {
-    pidInfoBannerActive: boolean;
-    proximityInfoBannerActive: boolean;
-  };
   credentials: StoredCredentialMetadata[];
 };
 
 // Initial state for the credential slice
 const initialState: CredentialsSlice = {
-  banners: {
-    pidInfoBannerActive: true,
-    proximityInfoBannerActive: true
-  },
   credentials: []
 };
 
@@ -77,14 +69,6 @@ const credentialsSlice = createSlice({
     ) => {
       /* empty */
     },
-    // PID Info Banner
-    disablePidInfoBanner: state => {
-      state.banners.pidInfoBannerActive = false;
-    },
-    // Proximity Info Banner
-    disableProximityInfoBanner: state => {
-      state.banners.proximityInfoBannerActive = false;
-    },
     removeCredential: (
       state,
       action: PayloadAction<{ credentialType: string }>
@@ -124,8 +108,6 @@ export const credentialsReducer = persistReducer(
 export const {
   addCredential,
   addCredentialWithIdentification,
-  disablePidInfoBanner,
-  disableProximityInfoBanner,
   removeCredential
 } = credentialsSlice.actions;
 
@@ -253,20 +235,3 @@ export const shouldShowExpiredProximityCredentialsBannerSelector =
       pidStatus === 'jwtExpired' &&
       areAllPresentableCredentialsExpired(presentableCredentialsByDocType)
   );
-
-/**
- * Selects whether the PID info banner is active (i.e. not yet dismissed by the user).
- * @param state - The global state.
- * @returns a boolean indicating whether the PID info banner is active
- */
-export const selectPidInfoBannerActive = (state: WalletCombinedRootState) =>
-  state.itWalletHsm.credentials.banners.pidInfoBannerActive;
-
-/**
- * Selects whether the Proximity info banner is active (i.e. not yet dismissed by the user).
- * @param state - The global state.
- * @returns a boolean indicating whether the Proximity info banner is active
- */
-export const selectProximityInfoBannerActive = (
-  state: WalletCombinedRootState
-) => state.itWalletHsm.credentials.banners.proximityInfoBannerActive;

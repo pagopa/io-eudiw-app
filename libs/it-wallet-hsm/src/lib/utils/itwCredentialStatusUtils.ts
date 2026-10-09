@@ -3,7 +3,6 @@ import { differenceInCalendarDays } from 'date-fns';
 import { isPresentationDetailSdJwt, wellKnownCredential } from './credentials';
 import { getCredentialExpireDate } from './itwClaimsUtils';
 import { validCredentialStatuses } from './itwCredentialUtils';
-import { CredentialType } from './itwMocksUtils';
 import {
   isDefined,
   ItwCredentialStatus,
@@ -71,6 +70,13 @@ export const getCredentialStatus = (
 
   return 'valid';
 };
+
+enum CredentialType {
+  BONUS_PARI = 'bonus_pari',
+  DRIVING_LICENSE = 'mDL',
+  EUROPEAN_DISABILITY_CARD = 'EuropeanDisabilityCard',
+  PID = 'PersonIdentificationData'
+}
 
 /**
  * Maps a vct name to the corresponding credential type, used in UI contexts

@@ -1,4 +1,3 @@
-import { selectFontPreference } from '@io-eudiw-app/preferences';
 import { IOColors, makeFontStyleObject } from '@pagopa/io-app-design-system';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
@@ -6,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 
 import { TabIconComponent } from '../../components/TabIconComponent';
 import WalletHome from '../../screens/WalletHome';
-import { useAppSelector } from '../../store';
 import TAB_ROUTES from './routes';
 
 /**
@@ -28,8 +26,6 @@ export const TabNavigator = () => {
   const { t } = useTranslation(['common', 'itWalletHsm']);
   const navigation = useNavigation();
 
-  const typefacePreference = useAppSelector(selectFontPreference);
-
   /**
    * Used to mock tab content. This will never be rendered.
    */
@@ -47,9 +43,7 @@ export const TabNavigator = () => {
         tabBarInactiveTintColor: IOColors['grey-850'],
         tabBarLabelStyle: makeFontStyleObject(
           11,
-          typefacePreference === 'comfortable'
-            ? 'Titillio'
-            : 'TitilliumSansPro',
+          'TitilliumSansPro',
           14,
           'Regular'
         )

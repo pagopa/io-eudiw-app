@@ -2,8 +2,7 @@ import {
   IOScrollView,
   isIos,
   useDisableGestureNavigation,
-  useHardwareBackButton,
-  useMaxBrightness
+  useHardwareBackButton
 } from '@io-eudiw-app/commons';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import {
@@ -14,7 +13,6 @@ import {
   hexToRgba,
   IOButton,
   IOColors,
-  VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
@@ -25,15 +23,11 @@ import { StyleSheet, View } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 
 import { ItwProximityQrCodeImage } from '../../components/proximity/ItwProximityQrCodeImage';
-import { ItwProximityQrCodeInfoBanner } from '../../components/proximity/ItwProximityQrCodeInfoBanner';
 import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
 import { useProximityEngagement } from '../../hooks/useProximityEngagement';
 import MAIN_ROUTES from '../../navigation/main/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
-import {
-  selectProximityInfoBannerActive,
-  shouldShowExpiredProximityCredentialsBannerSelector
-} from '../../store/credentials';
+import { shouldShowExpiredProximityCredentialsBannerSelector } from '../../store/credentials';
 import {
   ProximityStatus,
   resetProximity,
@@ -60,9 +54,6 @@ const ItwProximityPresentmentScreen = () => {
   const proximityFailure = useAppSelector(selectProximityFailure);
   const proximityErrorDetails = useAppSelector(selectProximityErrorDetails);
   const engagementMode = useAppSelector(selectProximityEngagementMode);
-  const proximtyInfoBannerActive = useAppSelector(
-    selectProximityInfoBannerActive
-  );
   const shouldShowExpiredCredentialsBanner = useAppSelector(
     shouldShowExpiredProximityCredentialsBannerSelector
   );
@@ -73,7 +64,6 @@ const ItwProximityPresentmentScreen = () => {
     proximityStatusQR: proximityStatus
   });
 
-  useMaxBrightness({ useSmoothTransition: true });
   useHardwareBackButton(() => true);
   useDisableGestureNavigation();
 
@@ -184,13 +174,6 @@ const ItwProximityPresentmentScreen = () => {
           variant="link"
         />
       </View>
-
-      {proximtyInfoBannerActive && (
-        <Animated.View layout={LinearTransition.duration(200)}>
-          <VSpacer size={24} />
-          <ItwProximityQrCodeInfoBanner />
-        </Animated.View>
-      )}
     </IOScrollView>
   );
 };

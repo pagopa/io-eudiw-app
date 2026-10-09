@@ -20,34 +20,6 @@ export const useBorderColorByStatus = (): Record<
   };
 };
 
-export const tagPropsByStatus: Partial<Record<ItwCredentialStatus, Tag>> = {
-  expired: {
-    text: t('credentials.status.expired', { ns: 'itWalletHsm' }),
-    variant: 'error'
-  },
-  expiring: {
-    text: t('credentials.status.expiring', { ns: 'itWalletHsm' }),
-    variant: 'warning'
-  },
-  invalid: {
-    text: t('credentials.status.invalid', { ns: 'itWalletHsm' }),
-    variant: 'error'
-  },
-  jwtExpired: {
-    text: t('credentials.status.verificationExpired', { ns: 'itWalletHsm' }),
-    variant: 'error'
-  },
-  jwtExpiring: {
-    text: t('credentials.status.verificationExpiring', { ns: 'itWalletHsm' }),
-    variant: 'warning'
-  },
-  unknown: {
-    icon: { color: 'grey-450', name: 'infoFilled' },
-    text: t('credentials.status.unknown', { ns: 'itWalletHsm' }),
-    variant: 'custom'
-  }
-};
-
 /**
  * List of statuses that make a credential valid, especially for UI purposes.
  */

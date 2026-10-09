@@ -6,9 +6,6 @@
     "notNow": "Non ora"
   },
   "credentials": {
-    "names": {
-      "unknown": "Credenziale Sconosciuta"
-    },
     "status": {
       "expired": "Scaduta",
       "expiring": "In scadenza",
@@ -19,17 +16,6 @@
     }
   },
   "presentation": {
-    "alerts": {
-      "mdl": {
-        "content": "La tua Patente su IO ha lo stesso valore legale del documento fisico, solo sul territorio italiano."
-      },
-      "edc": {
-        "content": "Puoi usare la tua Carta Europea della Disabilità su IO per accedere ai servizi sul territorio italiano, negli stessi contesti d'uso del tuo documento fisico."
-      },
-      "bonusPari": {
-        "content": "Il Bonus ha una validità di 15gg. Sarà possibile richiedere un nuovo bonus. L'ottenimento del nuovo bonus è vincolato al monte totale e alle priorità di richiesta."
-      }
-    },
     "credentialDetails": {
       "boolClaim": {
         "true": "Sì",
@@ -42,7 +28,7 @@
         "expired": "Scaduta"
       },
       "actions": {
-        "pariPurchases": "Dettaglio acquisti"
+        "removeFromWallet": "Rimuovi dal Portafoglio"
       },
       "partOf": "Parte di"
     },
@@ -88,11 +74,6 @@
       "invalidBanner": {
         "content": "Conferma la tua identità per continuare a usare il tuo portafoglio IT-Wallet.",
         "action": "Conferma identità"
-      },
-      "banner": {
-        "title": "Come funziona il QR Code?",
-        "content": "Ti consente di far verificare i documenti digitali che hai aggiunto al Portafoglio.",
-        "action": "Scopri di più"
       },
       "nfc": {
         "or": "oppure",
