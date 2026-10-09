@@ -191,77 +191,9 @@ export const getClaimDisplayValue = (
   try {
     const parsed = claimScheme.parse(claim);
 
-    switch (parsed.type) {
-      case 'boolean':
-        return {
-          type: 'text',
-          value: t(`presentation.credentialDetails.boolClaim.${parsed.value}`, {
-            ns: 'itWalletHsm'
-          })
-        };
-
-      case 'date':
-      case 'expireDate':
-        return {
-          type: 'text',
-          value: parsed.value.toLocaleDateString()
-        };
-
-      case 'drivingPrivileges': {
-        const categories = parsed.value
-          .map(v => v.vehicle_category_code)
-          .join(', ');
-        return {
-          type: 'text',
-          value: categories
-        };
-      }
-
-      case 'emptyString':
-        return {
-          type: 'text',
-          value: ''
-        };
-
-      case 'image':
-        return {
-          type: 'image',
-          value: parsed.value
-        };
-
-      case 'placeOfBirth':
-        return {
-          type: 'text',
-          value: `${parsed.value}`
-        };
-
-      case 'string':
-        return {
-          type: 'text',
-          value: parsed.value
-        };
-
-      case 'stringArray':
-        return {
-          type: 'text',
-          value: parsed.value.join(', ')
-        };
-
-      case 'verificationEvidence':
-        return {
-          type: 'text',
-          value: parsed.value.organization_name
-        };
-
-      default:
-        return {
-          type: 'text',
-          value: t(
-            'verifiableCredentials.generic.placeholders.claimNotAvailable',
-            { ns: 'itWalletHsm' }
-          )
-        };
-    }
+    return parsed.type === 'image'
+      ? { type: 'image', value: parsed.value }
+      : { type: 'text', value: parsed.value };
   } catch {
     return {
       type: 'text',

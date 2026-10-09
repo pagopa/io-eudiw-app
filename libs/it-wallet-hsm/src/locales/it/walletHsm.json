@@ -17,16 +17,6 @@
   },
   "presentation": {
     "credentialDetails": {
-      "boolClaim": {
-        "true": "Sì",
-        "false": "No"
-      },
-      "hiddenClaim": "Nascosto",
-      "status": {
-        "valid": "Valida",
-        "invalid": "Non valida",
-        "expired": "Scaduta"
-      },
       "actions": {
         "removeFromWallet": "Rimuovi dal Portafoglio"
       },
@@ -203,17 +193,6 @@
     "generic": {
       "placeholders": {
         "claimNotAvailable": "Attributo non riconosciuto"
-      }
-    },
-    "claims": {
-      "mdl": {
-        "category": "Patente {{category}}",
-        "issuedDate": "Valida dal",
-        "expirationDate": "Valida fino",
-        "verificationEvidence": {
-          "organizationId": "ID Organizzazione",
-          "countryCode": "Codice Nazione"
-        }
       }
     }
   },

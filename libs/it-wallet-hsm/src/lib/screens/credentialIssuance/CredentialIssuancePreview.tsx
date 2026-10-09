@@ -79,7 +79,7 @@ export const CredentialPreview = () => {
       <View style={styles.container}>
         <H2>{getCredentialNameFromType(credential.credentialType)}</H2>
         <VSpacer size={24} />
-        <CredentialPreviewClaimsList claims={parsedClaims} isPreview={true} />
+        <CredentialPreviewClaimsList claims={parsedClaims} />
       </View>
       <FooterActions
         actions={{

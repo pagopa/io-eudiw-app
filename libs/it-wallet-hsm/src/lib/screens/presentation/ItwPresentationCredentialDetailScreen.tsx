@@ -129,10 +129,7 @@ const ItwPresentationCredentialDetail = ({
   return (
     <IOScrollView>
       <VStack space={24}>
-        <ItwPresentationClaimsSection
-          credential={credential}
-          parsedClaims={parsedClaims}
-        />
+        <ItwPresentationClaimsSection parsedClaims={parsedClaims} />
         <ListItemAction
           icon="trashcan"
           label={t('presentation.credentialDetails.actions.removeFromWallet')}
