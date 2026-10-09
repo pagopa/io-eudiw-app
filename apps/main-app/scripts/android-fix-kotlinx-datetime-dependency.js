@@ -6,7 +6,8 @@ const { withProjectBuildGradle } = require('@expo/config-plugins');
  * and kotlinx.datetime.Instant, while com.android.identity (used by io-react-native-iso18013) is compiled against 0.6.x.
  * Any 0.7.x request is redirected to the matching 0.6.x-compat artifact, which ships both the 0.7.x and the 0.6.x APIs.
  * Release builds only request 0.6.x and are therefore left untouched.
- * This patch can be removed once com.android.identity migrates to kotlin.time.Clock.
+ * This patch can be removed once com.android.identity migrates to kotlin.time.Clock, whose only user is, for the moment,
+ * @pagopa/io-react-native-iso18013 through it.pagopa.io.wallet.proximity and it.pagopa.io.wallet.cbor.
  */
 const GRADLE_FIX_MARKER = 'Fix kotlinx-datetime 0.7.x breaking com.android.identity';
 const GRADLE_FIX = `
