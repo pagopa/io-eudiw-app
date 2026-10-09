@@ -31,7 +31,7 @@
     "@pagopa/io-react-native-wallet": "3.4.4",
     "serialize-error": "catalog:",
     "zod": "catalog:",
-    "@pagopa/io-react-native-jwt": "2.1.0",
+    "@pagopa/io-react-native-jwt": "^2.2.5",
     "@types/color": "^4.2.0",
     "color": "catalog:",
     "date-fns": "catalog:",
