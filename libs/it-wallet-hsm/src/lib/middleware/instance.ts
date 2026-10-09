@@ -1,7 +1,6 @@
 import { getEnv } from '@io-eudiw-app/env';
 import { IoWallet } from '@pagopa/io-react-native-wallet';
 
-import { setInstanceKeyTag } from '../store/instance';
 import {
   selectInstanceKeyTag,
   selectSessionId
@@ -15,34 +14,38 @@ import {
 } from '../utils/integrity';
 import { createAppAsyncThunk } from './thunk';
 
-// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-export const createInstanceThunk = createAppAsyncThunk<void, void>(
-  'instance/createInstance',
-  async (_, { dispatch, getState, rejectWithValue }) => {
-    try {
-      const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
-      const state = getState();
-      const instanceKeyTag = selectInstanceKeyTag(state);
+/**
+ * Creates the wallet instance if missing and returns the new integrity key tag,
+ * which the slice stores on fulfillment. Returns undefined if already created.
+ */
+export const createInstanceThunk = createAppAsyncThunk<
+  string | undefined,
+  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+  void
+>('instance/createInstance', async (_, { getState, rejectWithValue }) => {
+  try {
+    const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+    const state = getState();
+    const instanceKeyTag = selectInstanceKeyTag(state);
 
-      if (!instanceKeyTag) {
-        const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
-          getEnv();
-        const sessionId = selectSessionId(state);
-        const appFetch = createWalletFetch(sessionId);
-        const keyTag = await generateIntegrityHardwareKeyTag();
-        const integrityContext = getIntegrityContext(keyTag);
+    if (!instanceKeyTag) {
+      const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
+        getEnv();
+      const sessionId = selectSessionId(state);
+      const appFetch = createWalletFetch(sessionId);
+      const keyTag = await generateIntegrityHardwareKeyTag();
+      const integrityContext = getIntegrityContext(keyTag);
 
-        await wallet.WalletInstance.createWalletInstance({
-          appFetch,
-          integrityContext,
-          walletProviderBaseUrl
-        });
-        dispatch(setInstanceKeyTag(keyTag));
-      }
-      return;
-    } catch (err: unknown) {
-      console.log(err);
-      return rejectWithValue({ error: serializeErrorOrUnknown(err) });
+      await wallet.WalletInstance.createWalletInstance({
+        appFetch,
+        integrityContext,
+        walletProviderBaseUrl
+      });
+      return keyTag;
     }
+    return undefined;
+  } catch (err: unknown) {
+    console.log(err);
+    return rejectWithValue({ error: serializeErrorOrUnknown(err) });
   }
-);
+});

@@ -48,9 +48,21 @@ const attestationSlice = createSlice({
     builder.addCase(getWalletInstanceAttestationThunk.pending, state => {
       state.request = setLoading();
     });
-    builder.addCase(getWalletInstanceAttestationThunk.fulfilled, state => {
-      state.request = setSuccess();
-    });
+    builder.addCase(
+      getWalletInstanceAttestationThunk.fulfilled,
+      (state, action) => {
+        state.request = setSuccess();
+        if (action.payload) {
+          state.wia.value = action.payload.reduce(
+            (acc, { attestation, format }) => ({
+              ...acc,
+              [format]: attestation
+            }),
+            {} as Record<string, string>
+          );
+        }
+      }
+    );
     builder.addCase(
       getWalletInstanceAttestationThunk.rejected,
       (state, action) => {
@@ -65,15 +77,6 @@ const attestationSlice = createSlice({
   initialState,
   name: 'attestation',
   reducers: {
-    setWalletInstanceAttestation: (
-      state,
-      action: PayloadAction<{ attestation: string; format: string }[]>
-    ) => {
-      state.wia.value = action.payload.reduce(
-        (acc, { attestation, format }) => ({ ...acc, [format]: attestation }),
-        {} as Record<string, string>
-      );
-    },
     setWalletUnitAttestation: (state, action: PayloadAction<string>) => {
       state.wua.value = action.payload;
     }
@@ -100,5 +103,4 @@ export const attestationReducer = persistReducer(
 /**
  * Exports the actions for the attestation slice.
  */
-export const { setWalletInstanceAttestation, setWalletUnitAttestation } =
-  attestationSlice.actions;
+export const { setWalletUnitAttestation } = attestationSlice.actions;

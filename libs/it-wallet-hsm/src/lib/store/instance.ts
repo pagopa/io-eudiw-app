@@ -10,7 +10,7 @@ import {
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import { PersistConfig, persistReducer } from 'redux-persist';
 
@@ -38,8 +38,11 @@ const initialState: InstanceSlice = {
  */
 const instanceSlice = createSlice({
   extraReducers: builder => {
-    builder.addCase(createInstanceThunk.fulfilled, state => {
+    builder.addCase(createInstanceThunk.fulfilled, (state, action) => {
       state.creation = setSuccess();
+      if (action.payload) {
+        state.keyTag = action.payload;
+      }
     });
     builder.addCase(createInstanceThunk.pending, state => {
       state.creation = setLoading();
@@ -56,11 +59,7 @@ const instanceSlice = createSlice({
   },
   initialState,
   name: 'instance',
-  reducers: {
-    setInstanceKeyTag: (state, action: PayloadAction<string>) => {
-      state.keyTag = action.payload;
-    }
-  }
+  reducers: {}
 });
 
 /**
@@ -79,8 +78,3 @@ export const instanceReducer = persistReducer(
   instancePersist,
   instanceSlice.reducer
 );
-
-/**
- * Exports the actions for the instance slice.
- */
-export const { setInstanceKeyTag } = instanceSlice.actions;
