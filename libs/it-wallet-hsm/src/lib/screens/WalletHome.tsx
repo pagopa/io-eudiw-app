@@ -13,9 +13,9 @@ import { useProximityEngagement } from '../hooks/useProximityEngagement';
 import MAIN_ROUTES from '../navigation/main/routes';
 import WALLET_ROUTES from '../navigation/wallet/routes';
 import { useAppSelector } from '../store';
-import { selectWalletInstanceAttestationRequestStatus } from '../store/attestation';
+import { selectWalletInstanceAttestationRequestStatus } from '../store/attestationSelectors';
 import { hasPresentableCredentialsSelector } from '../store/credentials';
-import { selectInstanceCreationStatus } from '../store/instance';
+import { selectInstanceCreationStatus } from '../store/instanceSelectors';
 
 /**
  * Wallet home to be rendered as the first page in the tab navigator.

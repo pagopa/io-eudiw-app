@@ -8,14 +8,17 @@ import { TaskAbortError } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import * as WebBrowser from 'expo-web-browser';
 
-import { selectWalletInstanceAttestationAsJwt } from '../store/attestation';
+import { selectWalletInstanceAttestationAsJwt } from '../store/attestationSelectors';
 import {
   selectRequestedCredential,
   setCredentialIssuancePostAuthError,
   setCredentialIssuancePostAuthSuccess,
   setCredentialIssuancePreAuthRequest
 } from '../store/credentialIssuance';
-import { selectInstanceKeyTag, selectSessionId } from '../store/instance';
+import {
+  selectInstanceKeyTag,
+  selectSessionId
+} from '../store/instanceSelectors';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import {
   wellKnownCredential,

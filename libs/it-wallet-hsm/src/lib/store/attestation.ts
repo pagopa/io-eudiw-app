@@ -10,13 +10,10 @@ import {
   preferencesReset,
   preferencesSetIsFirstStartupFalse
 } from '@io-eudiw-app/preferences';
-import { IoWallet } from '@pagopa/io-react-native-wallet';
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 
-import { WalletCombinedRootState } from '.';
 import { getWalletInstanceAttestationThunk } from '../middleware/attestation';
-import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the attestation slice
@@ -105,46 +102,3 @@ export const attestationReducer = persistReducer(
  */
 export const { setWalletInstanceAttestation, setWalletUnitAttestation } =
   attestationSlice.actions;
-
-export const selectWalletInstanceAttestationRequestStatus = (
-  state: WalletCombinedRootState
-) => state.itWalletHsm.attestation.request;
-
-/**
- * Selects the attestation from the attestation state in the given format.
- * @param format - The format of the attestation to select
- * @param state - The root state of the Redux store
- * @returns the attestation
- */
-export const makeSelectWalletInstanceAttestation =
-  (format: string) => (state: WalletCombinedRootState) =>
-    state.itWalletHsm.attestation.wia.value?.[format];
-
-export const selectWalletInstanceAttestationAsJwt =
-  makeSelectWalletInstanceAttestation('jwt');
-export const selectWalletInstanceAttestationAsSdJwt =
-  makeSelectWalletInstanceAttestation('dc+sd-jwt');
-export const selectWalletInstanceAttestationAsMdoc =
-  makeSelectWalletInstanceAttestation('mso_mdoc');
-
-/**
- * Checks if the Wallet Instance Attestation needs to be requested by
- * checking the expiry date
- * @param state - the root state of the Redux store
- * @returns true if the Wallet Instance Attestation is expired or not present
- */
-export const shouldRequestWalletInstanceAttestationSelector: (
-  state: WalletCombinedRootState
-) => boolean = createSelector(
-  selectWalletInstanceAttestationAsJwt,
-  (attestation): boolean => {
-    if (!attestation) {
-      return true;
-    }
-    const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
-    const payload = wallet.WalletInstanceAttestation.decode(attestation);
-    const expiryDate = new Date(payload.exp * 1000);
-    const now = new Date();
-    return now > expiryDate;
-  }
-);

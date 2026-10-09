@@ -14,7 +14,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import { PersistConfig, persistReducer } from 'redux-persist';
 
-import { WalletCombinedRootState } from '.';
 import { createInstanceThunk } from '../middleware/instance';
 import { resetLifecycle } from './lifecycle';
 
@@ -85,22 +84,3 @@ export const instanceReducer = persistReducer(
  * Exports the actions for the instance slice.
  */
 export const { setInstanceKeyTag } = instanceSlice.actions;
-
-/**
- * Select the wallet instance keytag.
- * @param state - The root state
- * @returns the wallet instance keytag
- */
-export const selectInstanceKeyTag = (state: WalletCombinedRootState) =>
-  state.itWalletHsm.instance.keyTag;
-
-export const selectInstanceCreationStatus = (state: WalletCombinedRootState) =>
-  state.itWalletHsm.instance.creation;
-
-/**
- * Selects the session id of the wallet
- * @param state - The root state of the Redux store
- * @returns a randomly generated uuid
- */
-export const selectSessionId = (state: WalletCombinedRootState) =>
-  state.itWalletHsm.instance.sessionId;

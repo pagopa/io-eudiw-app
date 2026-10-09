@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import {
   selectWalletInstanceAttestationRequestStatus,
   shouldRequestWalletInstanceAttestationSelector
-} from '../../store/attestation';
+} from '../../store/attestationSelectors';
 import {
   resetCredentialIssuance,
   selectCredentialIssuancePostAuthStatus,
@@ -30,7 +30,7 @@ import { selectCredentials } from '../../store/credentials';
 import {
   selectInstanceCreationStatus,
   selectInstanceKeyTag
-} from '../../store/instance';
+} from '../../store/instanceSelectors';
 import {
   CredentialsKeys,
   wellKnownCredential,

@@ -1,11 +1,11 @@
 import { getEnv } from '@io-eudiw-app/env';
 import { IoWallet } from '@pagopa/io-react-native-wallet';
 
+import { setInstanceKeyTag } from '../store/instance';
 import {
   selectInstanceKeyTag,
-  selectSessionId,
-  setInstanceKeyTag
-} from '../store/instance';
+  selectSessionId
+} from '../store/instanceSelectors';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { serializeErrorOrUnknown } from '../utils/errors';
 import { createWalletFetch } from '../utils/fetch';

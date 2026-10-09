@@ -118,7 +118,6 @@ export const getKeyAttestationThunk = createAppAsyncThunk<
   );
 });
 
-// TO DO
 const createKeyAttestationCryptoContextFor = (
   keyTag: string
 ): KeyAttestationCryptoContext => ({

@@ -8,11 +8,12 @@ import {
   type KeyAttestationCryptoContext
 } from '@pagopa/io-react-native-wallet';
 
+import { setWalletInstanceAttestation } from '../store/attestation';
+import { shouldRequestWalletInstanceAttestationSelector } from '../store/attestationSelectors';
 import {
-  setWalletInstanceAttestation,
-  shouldRequestWalletInstanceAttestationSelector
-} from '../store/attestation';
-import { selectInstanceKeyTag, selectSessionId } from '../store/instance';
+  selectInstanceKeyTag,
+  selectSessionId
+} from '../store/instanceSelectors';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { WIA_KEYTAG } from '../utils/crypto';
 import { createWalletFetch } from '../utils/fetch';

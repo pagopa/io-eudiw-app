@@ -25,7 +25,7 @@ import { WalletCombinedRootState } from '../store';
 import {
   selectWalletInstanceAttestationAsJwt,
   shouldRequestWalletInstanceAttestationSelector
-} from '../store/attestation';
+} from '../store/attestationSelectors';
 import {
   resetCredentialIssuance,
   selectRequestedCredential,
@@ -43,7 +43,10 @@ import {
   addCredentialWithIdentification,
   selectCredential
 } from '../store/credentials';
-import { selectInstanceKeyTag, selectSessionId } from '../store/instance';
+import {
+  selectInstanceKeyTag,
+  selectSessionId
+} from '../store/instanceSelectors';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
 import { ResolvedCredentialOffer } from '../types';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
