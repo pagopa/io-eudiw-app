@@ -163,7 +163,6 @@ overrides:
 patchedDependencies:
   '@pagopa/io-app-design-system': 81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4
   '@pagopa/io-react-native-wallet@3.8.2': c552117ebbe211c7a080fa55e32ffcfb4eaf702a9f5ed603f31dec47451f35b6
-  '@pagopa/io-wallet-oid4vci@1.5.8': 0855a62229c99afe5ed9a596304675f29df871be5fbf2f01e3ad82334f929cac
 
 importers:
 
@@ -12333,7 +12332,7 @@ snapshots:
       '@pagopa/io-react-native-jwt': 2.1.0(react-native@0.85.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.85.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.85.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
       '@pagopa/io-wallet-oauth2': 1.5.8
       '@pagopa/io-wallet-oid-federation': 1.5.8
-      '@pagopa/io-wallet-oid4vci': 1.5.8(patch_hash=0855a62229c99afe5ed9a596304675f29df871be5fbf2f01e3ad82334f929cac)
+      '@pagopa/io-wallet-oid4vci': 1.5.8
       '@pagopa/io-wallet-oid4vp': 1.5.8
       '@pagopa/io-wallet-utils': 1.5.8
       '@sd-jwt/core': 0.19.0
@@ -12372,7 +12371,7 @@ snapshots:
       buffer: 6.0.3
       zod: 4.3.6
 
-  '@pagopa/io-wallet-oid4vci@1.5.8(patch_hash=0855a62229c99afe5ed9a596304675f29df871be5fbf2f01e3ad82334f929cac)':
+  '@pagopa/io-wallet-oid4vci@1.5.8':
     dependencies:
       '@openid4vc/oauth2': 0.4.3
       '@openid4vc/openid4vci': 0.4.3
