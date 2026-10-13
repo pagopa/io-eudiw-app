@@ -36,51 +36,54 @@ export const getWalletInstanceAttestationThunk = createAppAsyncThunk<
   GetWalletInstanceAttestationThunkOutput | undefined,
   undefined,
   { rejectValue: unknown }
->('itWalletHsm/attestation/getWalletInstance', async (_, { getState, rejectWithValue }) => {
-  try {
-    const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
-    const state = getState();
-    const instanceKeyTag = selectInstanceKeyTag(state);
+>(
+  'itWalletHsm/attestation/getWalletInstance',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+      const state = getState();
+      const instanceKeyTag = selectInstanceKeyTag(state);
 
-    if (!instanceKeyTag) {
-      throw new Error(
-        'Instance key tag is not set. Cannot obtain attestation.'
-      );
+      if (!instanceKeyTag) {
+        throw new Error(
+          'Instance key tag is not set. Cannot obtain attestation.'
+        );
+      }
+
+      if (shouldRequestWalletInstanceAttestationSelector(getState())) {
+        const sessionId = selectSessionId(state);
+        const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
+          getEnv();
+        const appFetch = createWalletFetch(sessionId);
+
+        const integrityContext = getIntegrityContext(instanceKeyTag);
+
+        await regenerateCryptoKey(WIA_KEYTAG);
+        const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
+
+        /**
+         * Obtains a new Wallet Instance Attestation.
+         * WARNING: The integrity context must be the same used when creating the Wallet Instance with the same keytag.
+         */
+        return await wallet.WalletInstanceAttestation.getAttestation(
+          {
+            walletProviderBaseUrl,
+            walletSolutionId: 'appio',
+            walletSolutionVersion: '3.26.0'
+          },
+          {
+            appFetch,
+            integrityContext,
+            wiaCryptoContext
+          }
+        );
+      }
+      return undefined;
+    } catch (error) {
+      return rejectWithValue(error);
     }
-
-    if (shouldRequestWalletInstanceAttestationSelector(getState())) {
-      const sessionId = selectSessionId(state);
-      const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
-        getEnv();
-      const appFetch = createWalletFetch(sessionId);
-
-      const integrityContext = getIntegrityContext(instanceKeyTag);
-
-      await regenerateCryptoKey(WIA_KEYTAG);
-      const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
-
-      /**
-       * Obtains a new Wallet Instance Attestation.
-       * WARNING: The integrity context must be the same used when creating the Wallet Instance with the same keytag.
-       */
-      return await wallet.WalletInstanceAttestation.getAttestation(
-        {
-          walletProviderBaseUrl,
-          walletSolutionId: 'appio',
-          walletSolutionVersion: '3.26.0'
-        },
-        {
-          appFetch,
-          integrityContext,
-          wiaCryptoContext
-        }
-      );
-    }
-    return undefined;
-  } catch (error) {
-    return rejectWithValue(error);
   }
-});
+);
 
 export type GetKeyAttestationThunkOutput = Awaited<
   ReturnType<KeyAttestation.KeyAttestationSupportedApi['getAttestation']>
@@ -93,42 +96,45 @@ type GetKeyAttestationThunkInput = {
 export const getKeyAttestationThunk = createAppAsyncThunk<
   GetKeyAttestationThunkOutput,
   GetKeyAttestationThunkInput
->('itWalletHsm/walletinstance/keyattestation', async ({ keyTags }, { getState }) => {
-  const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+>(
+  'itWalletHsm/walletinstance/keyattestation',
+  async ({ keyTags }, { getState }) => {
+    const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
 
-  const sessionId = selectSessionId(getState());
-  const appFetch = createWalletFetch(sessionId);
+    const sessionId = selectSessionId(getState());
+    const appFetch = createWalletFetch(sessionId);
 
-  if (!wallet.KeyAttestation.isSupported) {
-    throw new Error(
-      `Key Attestation is not supported in v${WALLET_SPEC_VERSION}`
+    if (!wallet.KeyAttestation.isSupported) {
+      throw new Error(
+        `Key Attestation is not supported in v${WALLET_SPEC_VERSION}`
+      );
+    }
+
+    // Retrieve the integrity key tag from the store and create its context
+    const integrityKeyTag = selectInstanceKeyTag(getState());
+    if (!integrityKeyTag) {
+      throw new Error('Integrity key not found');
+    }
+    const integrityContext = getIntegrityContext(integrityKeyTag);
+
+    // Get env URLs
+    const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
+      getEnv();
+
+    return await wallet.KeyAttestation.getAttestation(
+      {
+        walletProviderBaseUrl,
+        walletSolutionId: 'appio',
+        walletSolutionVersion: '3.26.0'
+      },
+      {
+        appFetch,
+        integrityContext,
+        keysToAttest: keyTags.map(createKeyAttestationCryptoContextFor)
+      }
     );
   }
-
-  // Retrieve the integrity key tag from the store and create its context
-  const integrityKeyTag = selectInstanceKeyTag(getState());
-  if (!integrityKeyTag) {
-    throw new Error('Integrity key not found');
-  }
-  const integrityContext = getIntegrityContext(integrityKeyTag);
-
-  // Get env URLs
-  const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
-    getEnv();
-
-  return await wallet.KeyAttestation.getAttestation(
-    {
-      walletProviderBaseUrl,
-      walletSolutionId: 'appio',
-      walletSolutionVersion: '3.26.0'
-    },
-    {
-      appFetch,
-      integrityContext,
-      keysToAttest: keyTags.map(createKeyAttestationCryptoContextFor)
-    }
-  );
-});
+);
 
 // TO DO
 const createKeyAttestationCryptoContextFor = (
