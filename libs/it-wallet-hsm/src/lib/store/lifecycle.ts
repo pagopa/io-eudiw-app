@@ -42,7 +42,7 @@ const lifecycleSlice = createSlice({
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   },
   initialState,
-  name: 'lifecycle',
+  name: 'itWalletHsmLifecycle',
   reducers: {
     resetLifecycle: () => initialState,
     setLifecycle: (state, action: PayloadAction<LifecycleSlice>) => {
@@ -56,7 +56,7 @@ const lifecycleSlice = createSlice({
  * Currently it uses AsyncStorage as the storage engine.
  */
 const lifecyclePersist: PersistConfig<LifecycleSlice> = {
-  key: 'lifecycle',
+  key: 'itWalletHsmLifecycle',
   storage: AsyncStorage
 };
 

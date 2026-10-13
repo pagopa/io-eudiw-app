@@ -69,7 +69,7 @@ const credentialIssuanceStatusSlice = createSlice({
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   },
   initialState,
-  name: 'credentialIssuanceStatus',
+  name: 'itWalletHsmCredentialIssuanceStatus',
   reducers: {
     resetCredentialIssuance: _ => initialState,
     setCredentialIssuancePostAuthError: (

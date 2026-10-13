@@ -44,7 +44,7 @@ const credentialsSlice = createSlice({
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   },
   initialState,
-  name: 'credentials',
+  name: 'itWalletHsmCredentials',
   reducers: {
     addCredential: (
       state,
@@ -90,7 +90,7 @@ const credentialsSlice = createSlice({
  * payloads live in `CredentialsVault` and never flow through redux-persist.
  */
 const credentialsPersistor: PersistConfig<CredentialsSlice> = {
-  key: 'credentials',
+  key: 'itWalletHsmCredentials',
   storage: secureStoragePersistor()
 };
 

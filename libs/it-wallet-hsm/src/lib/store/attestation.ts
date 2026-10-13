@@ -75,7 +75,7 @@ const attestationSlice = createSlice({
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   },
   initialState,
-  name: 'attestation',
+  name: 'itWalletHsmAttestation',
   reducers: {
     setWalletUnitAttestation: (state, action: PayloadAction<string>) => {
       state.wua.value = action.payload;
@@ -88,7 +88,7 @@ const attestationSlice = createSlice({
  * Currently it uses `io-react-native-secure-storage` as the storage engine which stores it encrypted.
  */
 const attestationPersist: PersistConfig<AttestationState> = {
-  key: 'attestation',
+  key: 'itWalletHsmAttestation',
   storage: secureStoragePersistor()
 };
 

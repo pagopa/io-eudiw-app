@@ -58,7 +58,7 @@ const instanceSlice = createSlice({
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   },
   initialState,
-  name: 'instance',
+  name: 'itWalletHsmInstance',
   reducers: {}
 });
 
@@ -67,7 +67,7 @@ const instanceSlice = createSlice({
  * Currently it uses AsyncStorage as the storage engine.
  */
 const instancePersist: PersistConfig<InstanceSlice> = {
-  key: 'instance',
+  key: 'itWalletHsmInstance',
   storage: AsyncStorage
 };
 

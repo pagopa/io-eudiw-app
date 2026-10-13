@@ -74,7 +74,7 @@ const presentationSlice = createSlice({
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   },
   initialState,
-  name: 'presentationSlice',
+  name: 'itWalletHsmPresentation',
   reducers: {
     resetPresentation: state => {
       state.preDefinition = setInitial();

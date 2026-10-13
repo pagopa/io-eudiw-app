@@ -108,7 +108,7 @@ const proximitySlice = createSlice({
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   },
   initialState,
-  name: 'proximitySlice',
+  name: 'itWalletHsmProximity',
   reducers: {
     resetProximity: _ => initialState,
     resetProximityQrCode: state => (state.qrCode = undefined),

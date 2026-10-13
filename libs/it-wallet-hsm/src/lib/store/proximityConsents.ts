@@ -93,7 +93,7 @@ const proximityConsentsSlice = createSlice({
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
   },
   initialState,
-  name: 'proximityConsents',
+  name: 'itWalletHsmProximityConsents',
   reducers: {
     itwGrantProximityConsent: (state, action: PayloadAction<ConsentData>) => {
       const key = generateConsentKey(action.payload);
@@ -110,7 +110,7 @@ const proximityConsentsSlice = createSlice({
 });
 
 const proximityConsentsPersist: PersistConfig<ProximityConsentsState> = {
-  key: 'proximityConsents',
+  key: 'itWalletHsmProximityConsents',
   storage: secureStoragePersistor()
 };
 

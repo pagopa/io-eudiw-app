@@ -22,30 +22,33 @@ export const createInstanceThunk = createAppAsyncThunk<
   string | undefined,
   // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
   void
->('instance/createInstance', async (_, { getState, rejectWithValue }) => {
-  try {
-    const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
-    const state = getState();
-    const instanceKeyTag = selectInstanceKeyTag(state);
+>(
+  'itWalletHsm/instance/createInstance',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+      const state = getState();
+      const instanceKeyTag = selectInstanceKeyTag(state);
 
-    if (!instanceKeyTag) {
-      const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
-        getEnv();
-      const sessionId = selectSessionId(state);
-      const appFetch = createWalletFetch(sessionId);
-      const keyTag = await generateIntegrityHardwareKeyTag();
-      const integrityContext = getIntegrityContext(keyTag);
+      if (!instanceKeyTag) {
+        const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
+          getEnv();
+        const sessionId = selectSessionId(state);
+        const appFetch = createWalletFetch(sessionId);
+        const keyTag = await generateIntegrityHardwareKeyTag();
+        const integrityContext = getIntegrityContext(keyTag);
 
-      await wallet.WalletInstance.createWalletInstance({
-        appFetch,
-        integrityContext,
-        walletProviderBaseUrl
-      });
-      return keyTag;
+        await wallet.WalletInstance.createWalletInstance({
+          appFetch,
+          integrityContext,
+          walletProviderBaseUrl
+        });
+        return keyTag;
+      }
+      return undefined;
+    } catch (err: unknown) {
+      console.log(err);
+      return rejectWithValue({ error: serializeErrorOrUnknown(err) });
     }
-    return undefined;
-  } catch (err: unknown) {
-    console.log(err);
-    return rejectWithValue({ error: serializeErrorOrUnknown(err) });
   }
-});
+);

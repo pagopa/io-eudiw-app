@@ -1,7 +1,8 @@
 import * as SecureStore from 'expo-secure-store';
 
-const PREFIX = 'itw:credential:';
-const INDEX_KEY = 'itw:credential-index';
+// Namespaced to avoid sharing secure storage entries with the it-wallet vault.
+const PREFIX = 'itw-hsm:credential:';
+const INDEX_KEY = 'itw-hsm:credential-index';
 
 const options: SecureStore.SecureStoreOptions = {
   keychainAccessible: SecureStore.WHEN_UNLOCKED_THIS_DEVICE_ONLY
@@ -20,7 +21,7 @@ const encodeKey = (key: string) => key.replace(/:/g, '_');
  * Generates the storage key for a given credential type.
  *
  * Example: for credentialType "dc_sd_jwt_PersonalIdentificationData",
- * the generated storage key will be "itw:credential:dc_sd_jwt_PersonalIdentificationData"
+ * the generated storage key will be "itw-hsm:credential:dc_sd_jwt_PersonalIdentificationData"
  *
  * @param credentialType The credential type
  * @returns The storage key

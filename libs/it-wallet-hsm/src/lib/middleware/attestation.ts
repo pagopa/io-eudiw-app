@@ -36,7 +36,7 @@ export const getWalletInstanceAttestationThunk = createAppAsyncThunk<
   GetWalletInstanceAttestationThunkOutput | undefined,
   undefined,
   { rejectValue: unknown }
->('attestation/getWalletInstance', async (_, { getState, rejectWithValue }) => {
+>('itWalletHsm/attestation/getWalletInstance', async (_, { getState, rejectWithValue }) => {
   try {
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
     const state = getState();
@@ -93,7 +93,7 @@ type GetKeyAttestationThunkInput = {
 export const getKeyAttestationThunk = createAppAsyncThunk<
   GetKeyAttestationThunkOutput,
   GetKeyAttestationThunkInput
->('walletinstance/keyattestation', async ({ keyTags }, { getState }) => {
+>('itWalletHsm/walletinstance/keyattestation', async ({ keyTags }, { getState }) => {
   const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
 
   const sessionId = selectSessionId(getState());
