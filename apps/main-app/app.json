@@ -91,6 +91,9 @@
         {
           "android": {
             "minSdkVersion": 26
+          },
+          "ios": {
+            "enableSceneSupport": true
           }
         }
       ],
@@ -180,6 +183,7 @@
       ],
       "expo-status-bar",
       "./scripts/android-fix-bouncy-castle-dependency.js",
+      "./scripts/android-fix-kotlinx-datetime-dependency.js",
       "./scripts/android-fix-pagopa-codegen.js",
       "./scripts/android-signing.js"
     ],
