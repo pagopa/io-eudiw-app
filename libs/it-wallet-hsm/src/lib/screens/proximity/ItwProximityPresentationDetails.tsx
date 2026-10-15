@@ -5,15 +5,11 @@ import {
   useIOTheme,
   VStack
 } from '@pagopa/io-app-design-system';
-import { addPadding } from '@pagopa/io-react-native-jwt';
 import { ComponentProps, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
-import {
-  getClaimDisplayValue,
-  WellKnownClaim
-} from '../../utils/itwClaimsUtils';
+import { getClaimDisplayValue } from '../../utils/itwClaimsUtils';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { ClaimDisplayFormat } from '../../utils/itwRemotePresentationUtils';
 
@@ -32,19 +28,6 @@ const mapClaims = (
         id: c.id,
         type: 'image',
         value: displayResult.value
-      };
-    }
-
-    if (
-      (c.id.includes(WellKnownClaim.portrait) ||
-        c.id.includes(WellKnownClaim.signature_usual_mark)) &&
-      typeof displayResult.value === 'string'
-    ) {
-      return {
-        description: c.label,
-        id: c.id,
-        type: 'image',
-        value: `data:image/jpeg;base64,${addPadding(displayResult.value)}`
       };
     }
 

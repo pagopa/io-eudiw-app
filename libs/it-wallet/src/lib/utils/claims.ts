@@ -138,19 +138,17 @@ const JPEG_SOF_CODES = [
 ];
 
 /**
- * Schema to validate claims that are known to have a base64url representation of a jpeg in their value,
- * discriminated by the claim ids
+ * Detects images from their value: either a data URI or a base64(url) JPEG, which always starts with `/9j/`
+ */
+const IMAGE_VALUE_REGEX = /^(data:image\/|[/_]9j[/_])/;
+
+/**
+ * Schema to validate claims that have an image (JPEG) in their value, detected from the value itself
  */
 const base64ImageSchema = z
   .object({
-    id: z
-      .string()
-      .transform(str => {
-        const split = str.split(':');
-        return split[split.length - 1];
-      })
-      .pipe(z.enum(['portrait', 'signature_usual_mark'])),
-    value: z.string()
+    id: z.string(),
+    value: z.string().regex(IMAGE_VALUE_REGEX)
   })
   .transform(obj => obj.value)
   /**
@@ -158,7 +156,10 @@ const base64ImageSchema = z
    * will then be returned alongside the data: URI of the image itself
    */
   .transform(b64url => {
-    const b64_unpadded = b64url.replaceAll('-', '+').replaceAll('_', '/');
+    const b64_unpadded = b64url
+      .replace(/^data:image\/[a-z]+;base64,/, '')
+      .replaceAll('-', '+')
+      .replaceAll('_', '/');
     const b64 =
       b64_unpadded.length % 4 === 0
         ? b64_unpadded
