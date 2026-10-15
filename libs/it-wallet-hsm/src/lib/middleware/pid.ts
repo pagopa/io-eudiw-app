@@ -24,7 +24,7 @@ import {
   wellKnownCredential,
   wellKnownCredentialConfigurationIDs
 } from '../utils/credentials';
-import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
+import { DPOP_HSM_KEYTAG, WIA_HSM_KEYTAG } from '../utils/crypto';
 import { serializeErrorOrUnknown } from '../utils/errors';
 import { createWalletFetch } from '../utils/fetch';
 import {
@@ -67,7 +67,7 @@ const obtainPidListener: AppListenerWithAction<
       throw new Error('Wallet Instance Attestation not found');
     }
 
-    const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
+    const wiaCryptoContext = createCryptoContextFor(WIA_HSM_KEYTAG);
 
     // Start the issuance flow
     const sessionId = selectSessionId(getState());
@@ -137,8 +137,8 @@ const obtainPidListener: AppListenerWithAction<
     const credentialKeyTag = Crypto.randomUUID().toString();
 
     // Create DPoP context for the whole issuance flow
-    await regenerateCryptoKey(DPOP_KEYTAG);
-    const dPopCryptoContext = createCryptoContextFor(DPOP_KEYTAG);
+    await regenerateCryptoKey(DPOP_HSM_KEYTAG);
+    const dPopCryptoContext = createCryptoContextFor(DPOP_HSM_KEYTAG);
 
     const { accessToken } = await wallet.CredentialIssuance.authorizeAccess(
       issuerConf,

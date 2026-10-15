@@ -15,7 +15,7 @@ import {
   selectSessionId
 } from '../store/instanceSelectors';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
-import { WIA_KEYTAG } from '../utils/crypto';
+import { WIA_HSM_KEYTAG } from '../utils/crypto';
 import { createWalletFetch } from '../utils/fetch';
 import { getIntegrityContext } from '../utils/integrity';
 import { createAppAsyncThunk } from './thunk';
@@ -58,8 +58,8 @@ export const getWalletInstanceAttestationThunk = createAppAsyncThunk<
 
         const integrityContext = getIntegrityContext(instanceKeyTag);
 
-        await regenerateCryptoKey(WIA_KEYTAG);
-        const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
+        await regenerateCryptoKey(WIA_HSM_KEYTAG);
+        const wiaCryptoContext = createCryptoContextFor(WIA_HSM_KEYTAG);
 
         /**
          * Obtains a new Wallet Instance Attestation.
