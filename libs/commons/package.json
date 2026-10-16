@@ -19,7 +19,7 @@
     "@reduxjs/toolkit": "catalog:",
     "@textlint/ast-node-types": "catalog:",
     "@textlint/markdown-to-ast": "catalog:",
-    "expo-brightness": "~56.0.5",
+    "expo-brightness": "~57.0.2",
     "expo-clipboard": "catalog:",
     "expo-crypto": "catalog:",
     "expo-screen-capture": "catalog:",
