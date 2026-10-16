@@ -18,6 +18,7 @@
     "@io-eudiw-app/env": "workspace:*",
     "@io-eudiw-app/identification": "workspace:*",
     "@io-eudiw-app/it-wallet": "workspace:*",
+    "@io-eudiw-app/it-wallet-hsm": "workspace:*",
     "@io-eudiw-app/navigation": "workspace:*",
     "@io-eudiw-app/preferences": "workspace:*",
     "@pagopa/io-app-design-system": "catalog:",

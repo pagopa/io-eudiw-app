@@ -10,6 +10,9 @@
       "path": "./libs/it-wallet"
     },
     {
+      "path": "./libs/it-wallet-hsm"
+    },
+    {
       "path": "./libs/commons"
     },
     {

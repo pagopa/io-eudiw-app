@@ -17,7 +17,10 @@ export const ItwWalletIdCard = ({ isStacked }: { isStacked: boolean }) => {
 
   const handlePress = useCallback(() => {
     navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-      screen: WALLET_ROUTES.PRESENTATION.PID_DETAIL
+      params: {
+        credentialType: wellKnownCredential.PID
+      },
+      screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_DETAILS
     });
   }, [navigation]);
 

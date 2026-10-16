@@ -30,7 +30,6 @@ import {
   ItwPresentationCredentialDetailNavigationParams,
   ItwPresentationCredentialDetailScreen
 } from '../../screens/presentation/ItwPresentationCredentialDetailScreen';
-import { ItwPresentationPidDetailScreen } from '../../screens/presentation/ItwPresentationPidDetailScreen';
 import PresentationCredentialNotFound, {
   PresentationCredentialNotFoundParams
 } from '../../screens/presentation/PresentationCredentialNotFound';
@@ -85,8 +84,6 @@ export type WalletNavigatorParamsList = {
     .CREDENTIAL_NOT_FOUND]: PresentationCredentialNotFoundParams;
   [WALLET_ROUTES.PRESENTATION.FAILURE]: undefined;
 
-  // Credential presentation
-  [WALLET_ROUTES.PRESENTATION.PID_DETAIL]: undefined;
   [WALLET_ROUTES.PRESENTATION
     .POST_DEFINITION]: PresentationPostDefinitionParams;
   [WALLET_ROUTES.PRESENTATION.PRE_DEFINITION]: PresentationPreDefinitionParams;
@@ -145,10 +142,6 @@ const WalletNavigator = () => (
       <Stack.Screen
         component={PidIssuancRequest}
         name={WALLET_ROUTES.PID_ISSUANCE.REQUEST}
-      />
-      <Stack.Screen
-        component={ItwPresentationPidDetailScreen}
-        name={WALLET_ROUTES.PRESENTATION.PID_DETAIL}
       />
       <Stack.Screen
         component={ItwPresentationCredentialDetailScreen}

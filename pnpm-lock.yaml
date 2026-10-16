@@ -162,7 +162,7 @@ overrides:
 
 patchedDependencies:
   '@pagopa/io-app-design-system': 81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4
-  '@pagopa/io-react-native-wallet': 1193b0f6e374578fa195b938f4d2cc6bec9aed5ac461cb274a4fbc58a651cbf4
+  '@pagopa/io-react-native-wallet@3.8.2': c552117ebbe211c7a080fa55e32ffcfb4eaf702a9f5ed603f31dec47451f35b6
 
 importers:
 
@@ -300,6 +300,9 @@ importers:
       '@io-eudiw-app/it-wallet':
         specifier: workspace:*
         version: link:../../libs/it-wallet
+      '@io-eudiw-app/it-wallet-hsm':
+        specifier: workspace:*
+        version: link:../../libs/it-wallet-hsm
       '@io-eudiw-app/navigation':
         specifier: workspace:*
         version: link:../../libs/navigation
@@ -744,8 +747,8 @@ importers:
         specifier: ^2.2.5
         version: 2.2.5(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
       '@pagopa/io-react-native-wallet':
-        specifier: 3.4.4
-        version: 3.4.4(patch_hash=1193b0f6e374578fa195b938f4d2cc6bec9aed5ac461cb274a4fbc58a651cbf4)(18a14b643d732bb5fb1a1e66f85b400d)
+        specifier: 3.8.2
+        version: 3.8.2(patch_hash=c552117ebbe211c7a080fa55e32ffcfb4eaf702a9f5ed603f31dec47451f35b6)(18a14b643d732bb5fb1a1e66f85b400d)
       '@react-native-async-storage/async-storage':
         specifier: 'catalog:'
         version: 2.2.0(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))
@@ -879,6 +882,154 @@ importers:
       react-test-renderer:
         specifier: 'catalog:'
         version: 19.2.3(react@19.2.3)
+
+  libs/it-wallet-hsm:
+    dependencies:
+      '@io-eudiw-app/commons':
+        specifier: workspace:*
+        version: link:../commons
+      '@io-eudiw-app/debug-info':
+        specifier: workspace:*
+        version: link:../debug-info
+      '@io-eudiw-app/env':
+        specifier: workspace:*
+        version: link:../env
+      '@io-eudiw-app/identification':
+        specifier: workspace:*
+        version: link:../identification
+      '@io-eudiw-app/navigation':
+        specifier: workspace:*
+        version: link:../navigation
+      '@io-eudiw-app/preferences':
+        specifier: workspace:*
+        version: link:../preferences
+      '@pagopa/io-app-design-system':
+        specifier: 'catalog:'
+        version: 5.12.1(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(87a38461ecd352bce028511a81a2328e)
+      '@pagopa/io-react-native-cie':
+        specifier: 1.3.6
+        version: 1.3.6(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      '@pagopa/io-react-native-crypto':
+        specifier: 'catalog:'
+        version: 1.2.4(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      '@pagopa/io-react-native-iso18013':
+        specifier: 0.8.4
+        version: 0.8.4(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      '@pagopa/io-react-native-jwt':
+        specifier: 2.1.0
+        version: 2.1.0(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      '@pagopa/io-react-native-wallet':
+        specifier: 3.8.2
+        version: 3.8.2(patch_hash=c552117ebbe211c7a080fa55e32ffcfb4eaf702a9f5ed603f31dec47451f35b6)(f19a04f2e37c9eb52d42125fcf02b7b1)
+      '@react-native-async-storage/async-storage':
+        specifier: 'catalog:'
+        version: 2.2.0(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))
+      '@react-navigation/bottom-tabs':
+        specifier: 'catalog:'
+        version: 7.18.13(47dae60864dae9029e1b1ce9a8d17eef)
+      '@react-navigation/native':
+        specifier: 'catalog:'
+        version: 7.3.13(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      '@react-navigation/stack':
+        specifier: 'catalog:'
+        version: 7.10.16(30c21126a23986f703340de5cdb25ee9)
+      '@reduxjs/toolkit':
+        specifier: 'catalog:'
+        version: 2.11.1(react-redux@9.2.0(@types/react@19.2.18)(react@19.2.3)(redux@5.0.1))(react@19.2.3)
+      '@shopify/react-native-skia':
+        specifier: 'catalog:'
+        version: 2.6.2(a7d9ced29fb689a812193726f6b70807)
+      date-fns:
+        specifier: 'catalog:'
+        version: 1.30.1
+      expo-camera:
+        specifier: 'catalog:'
+        version: 57.0.6(@types/emscripten@1.41.5)(expo@57.0.27)(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      expo-crypto:
+        specifier: 'catalog:'
+        version: 57.0.3(expo@57.0.27)
+      expo-image-picker:
+        specifier: 'catalog:'
+        version: 57.0.20(expo@57.0.27)
+      expo-secure-store:
+        specifier: 'catalog:'
+        version: 57.0.4(expo@57.0.27)
+      expo-web-browser:
+        specifier: 'catalog:'
+        version: 57.0.3(expo@57.0.27)(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))
+      i18next:
+        specifier: 'catalog:'
+        version: 23.16.8
+      js-base64:
+        specifier: 'catalog:'
+        version: 3.9.2
+      lodash:
+        specifier: 'catalog:'
+        version: 4.18.1
+      react:
+        specifier: 'catalog:'
+        version: 19.2.3
+      react-i18next:
+        specifier: 'catalog:'
+        version: 15.7.4(i18next@23.16.8)(react-dom@19.2.3(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)(typescript@6.0.3)
+      react-native:
+        specifier: 'catalog:'
+        version: 0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1)
+      react-native-barcode-creator:
+        specifier: ^0.2.0
+        version: 0.2.0(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      react-native-bluetooth-state-manager:
+        specifier: ^1.3.5
+        version: 1.3.5(prop-types@15.8.1)(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))
+      react-native-gesture-handler:
+        specifier: 'catalog:'
+        version: 2.32.0(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      react-native-haptic-feedback:
+        specifier: 'catalog:'
+        version: 2.3.4(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))
+      react-native-linear-gradient:
+        specifier: 'catalog:'
+        version: 2.8.3(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      react-native-permissions:
+        specifier: 'catalog:'
+        version: 5.6.1(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      react-native-qrcode-skia:
+        specifier: ^0.4.0
+        version: 0.4.0(@shopify/react-native-skia@2.6.2(a7d9ced29fb689a812193726f6b70807))(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      react-native-qrcode-svg:
+        specifier: 'catalog:'
+        version: 6.3.21(react-native-svg@15.15.4(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      react-native-reanimated:
+        specifier: 'catalog:'
+        version: 4.5.1(react-native-worklets@0.10.1(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      react-native-safe-area-context:
+        specifier: 'catalog:'
+        version: 5.7.0(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      react-native-svg:
+        specifier: 'catalog:'
+        version: 15.15.4(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      react-native-worklets:
+        specifier: 'catalog:'
+        version: 0.10.1(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1)
+      react-redux:
+        specifier: 'catalog:'
+        version: 9.2.0(@types/react@19.2.18)(react@19.2.3)(redux@5.0.1)
+      redux-persist:
+        specifier: 'catalog:'
+        version: 6.0.0(react@19.2.3)(redux@5.0.1)
+      rn-qr-generator:
+        specifier: 'catalog:'
+        version: 2.0.0(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      serialize-error:
+        specifier: 'catalog:'
+        version: 13.0.1
+      zod:
+        specifier: 4.3.6
+        version: 4.3.6
+    devDependencies:
+      '@types/lodash':
+        specifier: 'catalog:'
+        version: 4.17.25
 
   libs/navigation:
     dependencies:
@@ -2496,46 +2647,42 @@ packages:
       react: '*'
       react-native: '*'
 
+  '@pagopa/io-react-native-jwt@2.1.0':
+    resolution: {integrity: sha512-KLesesGbDmQorBiqx6rMTh0gRMfTNv6JT8yHOIU89maESWkR0bjt/s0eBKyz45uWoBuPY2NmAq/Aubk/aEjHsQ==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
   '@pagopa/io-react-native-jwt@2.2.5':
     resolution: {integrity: sha512-TGfQi5kT3sG7PookG4yNE/iHoeYa+ikIq0D10HfgZwW4g9GzDs9tf2HGE9dFHpVaIBieNUAADFD+7qahHyiWxw==}
     peerDependencies:
       react: '*'
       react-native: '*'
 
-  '@pagopa/io-react-native-wallet@3.4.4':
-    resolution: {integrity: sha512-kh2yQG9DKHu9+q9bkR74y9kDJgSq58vf0NQ4tCgrJpy7M3WCtgyKDlyJnKrZnswu6CtxuH/v55zrfTH7s5iiCg==}
-    engines: {node: '>= 16.0.0'}
+  '@pagopa/io-react-native-wallet@3.8.2':
+    resolution: {integrity: sha512-aDqmlXcmKXMDV1zvxCM4kyRad5cfO7w/Ai92sgoCaSBftvlczMrJEDNkQ36ST8r64TMzknGuembAeb5zIBPi6g==}
     peerDependencies:
       '@pagopa/io-react-native-crypto': '*'
       '@pagopa/io-react-native-iso18013': '*'
       '@pagopa/io-react-native-jwt': '*'
-      react: '*'
-      react-native: '*'
+      react: 19.2.3
+      react-native: 0.85.3
       react-native-quick-crypto: '*'
 
-  '@pagopa/io-wallet-oauth2@1.5.2':
-    resolution: {integrity: sha512-nEmPWRaVmY70l4VDjXAOBHdjLYAlHVT6gkzpAQQ5sS9FhlScDq8qvsV35aabVzqFy+3LaCcgNMeD3LYokD+ccQ==}
+  '@pagopa/io-wallet-oauth2@1.5.8':
+    resolution: {integrity: sha512-blmvmF6FV8Pb2OUa1uwBaCs0UNuZlFVLMy7VPTjHBK+T9a3nPzopyeol55mR5KBNyu8yK/yv3efs0xpypBN/Hg==}
 
-  '@pagopa/io-wallet-oauth2@1.5.4':
-    resolution: {integrity: sha512-LPNoZbrSc/Nj0ax5hAO6+r+lQnRPMDabmKPSFhS5bhc7685h5kW2KuC4QjS1Y6HyBvKgZeYohYW9BDcbbPfm1g==}
+  '@pagopa/io-wallet-oid-federation@1.5.8':
+    resolution: {integrity: sha512-GAsz3deQ5s3S0SAX82rl5nxx45E5ptiVDu3Scvno3IEZqkAYFGZQQmzznimHWJ0Xcao6qGXT+DJ6MGfa+puQ8g==}
 
-  '@pagopa/io-wallet-oid-federation@1.5.2':
-    resolution: {integrity: sha512-SRJpdXT301qFlMGYJ6hYQTG/r306C32cJtUDFv2D3BdG+xJ1vmr4h+SbuwQoZWzhhxSS4TmRsHCsvuxzNCcX/w==}
+  '@pagopa/io-wallet-oid4vci@1.5.8':
+    resolution: {integrity: sha512-XVCU7I6kNgJ1fH2zpwM4G84pOBqtAxu4WLrwWtOJjyutMGypx7pW8uNMPPebCWWtABdBaSSHpancOfcZmdfRjQ==}
 
-  '@pagopa/io-wallet-oid-federation@1.5.4':
-    resolution: {integrity: sha512-G3HWvDBl1favjWuFDg+OAcLu99NFuf9ZNCmONejbWOVXbzhvzTCl4k6qCEY3GtwMaMdVP11lUdkfYbNowOoWCg==}
+  '@pagopa/io-wallet-oid4vp@1.5.8':
+    resolution: {integrity: sha512-FDPFh9u2QWKFD6Kmf7N1/vXhDmP1x+J8XMcLpRkryrTPQU/9kTltQBzjKt9MneLa2LKAsSq4jgAUapN3ZnSZbg==}
 
-  '@pagopa/io-wallet-oid4vci@1.5.2':
-    resolution: {integrity: sha512-AwwiGKPuljq9jocT6lyb33X/tFh/wzPKGwKUY2QTIt4noYuA3tYaSb29np3j8ae5hh04dDiCFVA4Hsz9Om/nNg==}
-
-  '@pagopa/io-wallet-oid4vp@1.5.2':
-    resolution: {integrity: sha512-Ld4+h1eXP4YPdZSEbJqgkJZEiAbCI1HwjOih/rTRl63N8onyTjOoSjlTFvwM+NvmUmYCP2TWI/ZGM0iM5O9tFQ==}
-
-  '@pagopa/io-wallet-utils@1.5.2':
-    resolution: {integrity: sha512-i5Rnb+PDi+9mhifn5nVxFkeJLgIBNiLaDVqGV9slxzzYAi3InTtG+UrDb/It6kky2UvK2fHRoGENues4pD1Xfg==}
-
-  '@pagopa/io-wallet-utils@1.5.4':
-    resolution: {integrity: sha512-wX1WGFQedLJutBGOcz7QdQqp7N710ii/MEITJypxfiaJQFsXTUZUsux4ZWH1FYPhZUC6WVBX+0s+APyRRsZCew==}
+  '@pagopa/io-wallet-utils@1.5.8':
+    resolution: {integrity: sha512-GdL9uegVxJ10Zsk+8aRCgwaiBkPpYeUsOeda1MyQUiwFfjjaz+O1Rr1m9JKCgF1copWLlRgkA1P1I2IoQZekjQ==}
 
   '@pagopa/react-native-nodelibs@0.1.0':
     resolution: {integrity: sha512-OfWzgDFEK+SfXdywhkLg0Y04A10FJ0HAZihHA5G45qiVnCg3jGEalHC57hpThKcAqvL7s+sCLmKM5Y/cLaSJRQ==}
@@ -11981,6 +12128,13 @@ snapshots:
       react-native: 0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1)
       zod: 4.3.6
 
+  '@pagopa/io-react-native-jwt@2.1.0(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)':
+    dependencies:
+      js-base64: 3.9.2
+      react: 19.2.3
+      react-native: 0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1)
+      zod: 4.3.6
+
   '@pagopa/io-react-native-jwt@2.2.5(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)':
     dependencies:
       js-base64: 3.9.2
@@ -11988,19 +12142,21 @@ snapshots:
       react-native: 0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1)
       zod: 4.3.6
 
-  '@pagopa/io-react-native-wallet@3.4.4(patch_hash=1193b0f6e374578fa195b938f4d2cc6bec9aed5ac461cb274a4fbc58a651cbf4)(18a14b643d732bb5fb1a1e66f85b400d)':
+  '@pagopa/io-react-native-wallet@3.8.2(patch_hash=c552117ebbe211c7a080fa55e32ffcfb4eaf702a9f5ed603f31dec47451f35b6)(18a14b643d732bb5fb1a1e66f85b400d)':
     dependencies:
       '@pagopa/io-react-native-crypto': 1.2.4(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
       '@pagopa/io-react-native-iso18013': 0.8.4(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
       '@pagopa/io-react-native-jwt': 2.2.5(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
-      '@pagopa/io-wallet-oauth2': 1.5.2
-      '@pagopa/io-wallet-oid-federation': 1.5.2
-      '@pagopa/io-wallet-oid4vci': 1.5.2
-      '@pagopa/io-wallet-oid4vp': 1.5.2
-      '@pagopa/io-wallet-utils': 1.5.2
+      '@pagopa/io-wallet-oauth2': 1.5.8
+      '@pagopa/io-wallet-oid-federation': 1.5.8
+      '@pagopa/io-wallet-oid4vci': 1.5.8
+      '@pagopa/io-wallet-oid4vp': 1.5.8
+      '@pagopa/io-wallet-utils': 1.5.8
       '@sd-jwt/core': 0.19.0
       '@sd-jwt/crypto-nodejs': 0.19.0
+      '@sd-jwt/decode': 0.19.0
       '@sd-jwt/jwt-status-list': 0.19.0
+      '@sd-jwt/present': 0.19.0
       '@sd-jwt/types': 0.19.0
       dcql: 3.0.0(typescript@6.0.3)
       js-base64: 3.9.2
@@ -12012,68 +12168,79 @@ snapshots:
       react-native-quick-crypto: 0.7.17(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
       react-native-url-polyfill: 2.0.0(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))
       uuid: 11.1.1
+      valibot: 1.2.0(typescript@6.0.3)
       zod: 4.3.6
     transitivePeerDependencies:
       - typescript
 
-  '@pagopa/io-wallet-oauth2@1.5.2':
+  '@pagopa/io-react-native-wallet@3.8.2(patch_hash=c552117ebbe211c7a080fa55e32ffcfb4eaf702a9f5ed603f31dec47451f35b6)(f19a04f2e37c9eb52d42125fcf02b7b1)':
+    dependencies:
+      '@pagopa/io-react-native-crypto': 1.2.4(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      '@pagopa/io-react-native-iso18013': 0.8.4(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      '@pagopa/io-react-native-jwt': 2.1.0(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      '@pagopa/io-wallet-oauth2': 1.5.8
+      '@pagopa/io-wallet-oid-federation': 1.5.8
+      '@pagopa/io-wallet-oid4vci': 1.5.8
+      '@pagopa/io-wallet-oid4vp': 1.5.8
+      '@pagopa/io-wallet-utils': 1.5.8
+      '@sd-jwt/core': 0.19.0
+      '@sd-jwt/crypto-nodejs': 0.19.0
+      '@sd-jwt/decode': 0.19.0
+      '@sd-jwt/jwt-status-list': 0.19.0
+      '@sd-jwt/present': 0.19.0
+      '@sd-jwt/types': 0.19.0
+      dcql: 3.0.0(typescript@6.0.3)
+      js-base64: 3.9.2
+      js-sha256: 0.11.1
+      jsrsasign: 11.1.3
+      parse-url: 10.0.3
+      react: 19.2.3
+      react-native: 0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1)
+      react-native-quick-crypto: 0.7.17(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      react-native-url-polyfill: 2.0.0(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))
+      uuid: 11.1.1
+      valibot: 1.2.0(typescript@6.0.3)
+      zod: 4.3.6
+    transitivePeerDependencies:
+      - typescript
+
+  '@pagopa/io-wallet-oauth2@1.5.8':
     dependencies:
       '@openid4vc/oauth2': 0.4.3
       '@openid4vc/utils': 0.4.3
-      '@pagopa/io-wallet-oid-federation': 1.5.2
-      '@pagopa/io-wallet-utils': 1.5.2
+      '@pagopa/io-wallet-oid-federation': 1.5.8
+      '@pagopa/io-wallet-utils': 1.5.8
       js-base64: 3.9.2
       zod: 4.3.6
 
-  '@pagopa/io-wallet-oauth2@1.5.4':
+  '@pagopa/io-wallet-oid-federation@1.5.8':
     dependencies:
-      '@openid4vc/oauth2': 0.4.3
-      '@openid4vc/utils': 0.4.3
-      '@pagopa/io-wallet-oid-federation': 1.5.4
-      '@pagopa/io-wallet-utils': 1.5.4
-      js-base64: 3.9.2
-      zod: 4.3.6
-
-  '@pagopa/io-wallet-oid-federation@1.5.2':
-    dependencies:
-      '@pagopa/io-wallet-utils': 1.5.4
+      '@pagopa/io-wallet-utils': 1.5.8
       buffer: 6.0.3
       zod: 4.3.6
 
-  '@pagopa/io-wallet-oid-federation@1.5.4':
-    dependencies:
-      '@pagopa/io-wallet-utils': 1.5.4
-      buffer: 6.0.3
-      zod: 4.3.6
-
-  '@pagopa/io-wallet-oid4vci@1.5.2':
+  '@pagopa/io-wallet-oid4vci@1.5.8':
     dependencies:
       '@openid4vc/oauth2': 0.4.3
       '@openid4vc/openid4vci': 0.4.3
       '@openid4vc/utils': 0.4.3
-      '@pagopa/io-wallet-oauth2': 1.5.2
-      '@pagopa/io-wallet-oid-federation': 1.5.2
-      '@pagopa/io-wallet-oid4vp': 1.5.2
-      '@pagopa/io-wallet-utils': 1.5.2
+      '@pagopa/io-wallet-oauth2': 1.5.8
+      '@pagopa/io-wallet-oid-federation': 1.5.8
+      '@pagopa/io-wallet-oid4vp': 1.5.8
+      '@pagopa/io-wallet-utils': 1.5.8
       zod: 4.3.6
 
-  '@pagopa/io-wallet-oid4vp@1.5.2':
+  '@pagopa/io-wallet-oid4vp@1.5.8':
     dependencies:
       '@openid4vc/oauth2': 0.4.3
       '@openid4vc/openid4vp': 0.4.3
       '@openid4vc/utils': 0.4.3
-      '@pagopa/io-wallet-oauth2': 1.5.4
-      '@pagopa/io-wallet-oid-federation': 1.5.4
-      '@pagopa/io-wallet-utils': 1.5.4
+      '@pagopa/io-wallet-oauth2': 1.5.8
+      '@pagopa/io-wallet-oid-federation': 1.5.8
+      '@pagopa/io-wallet-utils': 1.5.8
       zod: 4.3.6
 
-  '@pagopa/io-wallet-utils@1.5.2':
-    dependencies:
-      '@openid4vc/oauth2': 0.4.3
-      '@openid4vc/utils': 0.4.3
-      zod: 4.3.6
-
-  '@pagopa/io-wallet-utils@1.5.4':
+  '@pagopa/io-wallet-utils@1.5.8':
     dependencies:
       '@openid4vc/oauth2': 0.4.3
       '@openid4vc/utils': 0.4.3

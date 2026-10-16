@@ -2,9 +2,9 @@
 
 This file describes the reason for the patches applied.
 
-### @pagopa__io-react-native-wallet.patch
+### @pagopa__io-react-native-wallet@3.8.2.patch
 
-Created on: **18/06/2026**
+Created on: **18/06/2026** (re-applied to version 3.8.2 on **08/10/2026**)
 
 #### Reason
 
@@ -29,24 +29,37 @@ The following check is temporarily disabled:
 
 ##### 2. Use `credential_issuer` as the issuer identifier when obtaining a credential
 
-- In `src/credential/issuance/v1.3.3/05-obtain-credential.ts`, the `issuerIdentifier` passed when requesting credentials is changed from `issuerConf.credential_endpoint` to `issuerConf.credential_issuer`.
+- In `src/credential/issuance/v1.4.6/05-obtain-credential.ts`, the `issuerIdentifier` passed when requesting credentials is changed from `issuerConf.credential_endpoint` to `issuerConf.credential_issuer`.
 - This makes the request use the issuer's identifier (the `credential_issuer` URL) rather than the credential endpoint URL, aligning the value sent to the issuer with what it expects.
 
 ##### 3. Temporarily disable the Android key attestation requirement for the Wallet Unit Attestation
 
-- In `src/wallet-unit-attestation/v1.3.3/issuing.ts`, the check in `createKeyAttestationRequest` that throws on Android when no key attestation is present is commented out.
+- In `src/key-attestation/v1.4.6/issuing.ts`, the check in `createKeyAttestationRequest` that throws on Android when no key attestation is present is commented out.
 - Normally, on Android the generated key must carry a key attestation in order to request a Wallet Unit Attestation. This guard is disabled to unblock testing on devices/environments where a valid Android key attestation is not available.
 
 The following check is temporarily disabled:
 // if (Platform.OS === "android" && !attestation) {
 // throw new IoWalletError(
-// "Missing key attestation: on Android the generated key must have a key attestation to request a Wallet Unit Attestation"
+// "Missing Android key attestation: the generated key pair must be hardware-backed"
 // );
 // }
 
 ### How to remove in the future:
 
-- Run `pnpm patch-remove @pagopa/io-react-native-wallet`
+- Run `pnpm patch-remove @pagopa/io-react-native-wallet@3.8.2`
+- Remove this entry from patches.md.
+
+### @pagopa__io-wallet-oid4vci@1.5.8.patch
+
+Created on: **08/10/2026**
+
+#### Reason
+
+**Local development only: do not ship.** The library requires HTTPS for the credential issuer, the credential offer's `credential_issuer` and the authorization server. This patch relaxes those four checks in `dist/index.js` and `dist/index.mjs` to accept `http://` too, so a local issuer without TLS can be used.
+
+### How to remove in the future:
+
+- Run `pnpm patch-remove @pagopa/io-wallet-oid4vci@1.5.8`
 - Remove this entry from patches.md.
 
 ### @pagopa__io-app-design-system.patch

@@ -59,8 +59,8 @@ import {
   StoredCredentialMetadata
 } from '../utils/itwTypesUtils';
 import {
-  getWalletInstanceAttestationThunk,
-  getWalletUnitAttestationThunk
+  getKeyAttestationThunk,
+  getWalletInstanceAttestationThunk
 } from './attestation';
 import { createAppAsyncThunk } from './thunk';
 import { AppListenerWithAction, AppStartListening } from './types';
@@ -198,8 +198,8 @@ const obtainCredentialListener: AppListenerWithAction<
     const appFetch = createWalletFetch(sessionId);
 
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
-    const walletUnitAttestation = await listenerApi
-      .dispatch(getWalletUnitAttestationThunk({ keyTags: [credentialKeyTag] }))
+    const keyAttestation = await listenerApi
+      .dispatch(getKeyAttestationThunk({ keyTags: [credentialKeyTag] }))
       .unwrap();
     const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
 
@@ -327,7 +327,7 @@ const obtainCredentialListener: AppListenerWithAction<
       await wallet.CredentialIssuance.completeUserAuthorizationWithFormPostJwtMode(
         requestObject,
         issuerConf,
-        [pid.keyTag, pidEncoded],
+        evaluatedDcqlQuery,
         { appFetch, wiaCryptoContext }
       );
 
@@ -367,7 +367,7 @@ const obtainCredentialListener: AppListenerWithAction<
           appFetch,
           credentialCryptoContext,
           dPopCryptoContext,
-          walletUnitAttestation: walletUnitAttestation.attestation
+          keyAttestation: keyAttestation.attestation
         }
       );
 

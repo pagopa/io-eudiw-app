@@ -70,7 +70,7 @@ const ClaimText = ({ claim }: { claim: ClaimDisplayFormat }) => {
     return (
       <>
         {value.map((item, index) => {
-          const safeValue = getSafeText(item);
+          const safeValue = getSafeText(item, 1024);
           if (isStringNullyOrEmpty(safeValue)) {
             return null;
           }
@@ -80,7 +80,7 @@ const ClaimText = ({ claim }: { claim: ClaimDisplayFormat }) => {
     );
   }
 
-  const safeText = getSafeText(value);
+  const safeText = getSafeText(value, 1024);
 
   if (isStringNullyOrEmpty(safeText)) {
     return null;

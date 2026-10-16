@@ -1,0 +1,118 @@
+import * as ImagePicker from 'expo-image-picker';
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Alert, Linking } from 'react-native';
+import RNQRGenerator from 'rn-qr-generator';
+
+import {
+  OnBarcodeSuccess,
+  OnBardCodeError
+} from '../screens/presentation/QrCodeScanScreen';
+
+type QrCodeFileReader = {
+  /**
+   * Indicates that the decoder is currently reading/decoding barcodes
+   */
+  isLoading: boolean;
+  /**
+   * Shows the image picker that lets the user select an image from the library
+   */
+  showImagePicker: () => Promise<void>;
+};
+
+type QrCodeFileReaderConfiguration = {
+  onBarcodeError: OnBardCodeError;
+  onBarcodeSuccess: OnBarcodeSuccess;
+};
+
+const imageLibraryOptions: ImagePicker.ImagePickerOptions = {
+  allowsEditing: false,
+  allowsMultipleSelection: false,
+  mediaTypes: ['images']
+};
+
+/**
+ * Hook that handles the image picker and the barcode decoding from the selected image.
+ * @param onBarcodeError - Callback called when a barcode is not successfully decoded
+ * @param onBarcodeSuccess - Callback called when a barcode is successfully decoded
+ */
+const useQrCodeFileReader = ({
+  onBarcodeError,
+  onBarcodeSuccess
+}: QrCodeFileReaderConfiguration): QrCodeFileReader => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [permissionStatus, requestPermission] =
+    ImagePicker.useMediaLibraryPermissions();
+  const { t } = useTranslation(['itWalletHsm', 'common']);
+
+  const showPermissionsAlert = useCallback(() => {
+    Alert.alert(
+      t('itWalletHsm:imagePicker.settingsAlert.title'),
+      t('itWalletHsm:imagePicker.settingsAlert.message'),
+      [
+        { style: 'cancel', text: t('common:buttons.cancel') },
+        {
+          onPress: Linking.openSettings,
+          text: t('itWalletHsm:imagePicker.settingsAlert.buttonText.enable')
+        }
+      ],
+      { cancelable: false }
+    );
+  }, [t]);
+
+  const processImage = useCallback(
+    async (uri: string) => {
+      const response = await RNQRGenerator.detect({ uri });
+
+      if (response.values?.length) {
+        onBarcodeSuccess(response.values);
+        return;
+      }
+
+      throw new Error('NO_BARCODE_FOUND');
+    },
+    [onBarcodeSuccess]
+  );
+
+  const showImagePicker = useCallback(async () => {
+    try {
+      const currentPermission =
+        permissionStatus?.status === ImagePicker.PermissionStatus.GRANTED
+          ? permissionStatus
+          : await requestPermission();
+
+      if (currentPermission.status !== ImagePicker.PermissionStatus.GRANTED) {
+        showPermissionsAlert();
+        return;
+      }
+
+      setIsLoading(true);
+      const result =
+        await ImagePicker.launchImageLibraryAsync(imageLibraryOptions);
+
+      if (result.canceled || !result.assets?.[0]?.uri) {
+        setIsLoading(false);
+        return;
+      }
+
+      await processImage(result.assets[0].uri);
+    } catch {
+      onBarcodeError();
+    } finally {
+      setIsLoading(false);
+    }
+  }, [
+    permissionStatus,
+    requestPermission,
+    showPermissionsAlert,
+    processImage,
+    onBarcodeError
+  ]);
+
+  return {
+    isLoading,
+    showImagePicker
+  };
+};
+
+export { useQrCodeFileReader };
