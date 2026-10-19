@@ -30,7 +30,7 @@
     "@pagopa/io-react-native-wallet": "3.8.2",
     "serialize-error": "catalog:",
     "zod": "catalog:",
-    "@pagopa/io-react-native-jwt": "2.1.0",
+    "@pagopa/io-react-native-jwt": "^2.2.5",
     "date-fns": "catalog:",
     "expo-camera": "catalog:",
     "expo-crypto": "catalog:",
