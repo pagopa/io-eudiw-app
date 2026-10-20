@@ -18,11 +18,13 @@ import {
   ListItemSwitch,
   useIOToast
 } from '@pagopa/io-app-design-system';
+import { useNavigation } from '@react-navigation/native';
 import { ComponentProps, useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, ListRenderItemInfo } from 'react-native';
 
 import AppVersion from '../../components/AppVersion';
+import MAIN_ROUTES from '../../navigation/main/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { resetLifecycle } from '../../store/lifecycle';
 
@@ -45,6 +47,7 @@ const Settings = () => {
   const toast = useIOToast();
   const { t } = useTranslation(['common', 'itWalletHsm']);
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
   const isDebugModeEnabled = useAppSelector(selectIsDebugModeEnabled);
   const idResetTap = useRef<ReturnType<typeof setInterval> | undefined>(
     undefined
@@ -60,6 +63,11 @@ const Settings = () => {
       description: t('itWalletHsm:settings.changeApp.description'),
       onPress: () => dispatch(preferencesResetMiniAppSelection()),
       value: t('itWalletHsm:settings.changeApp.title')
+    },
+    {
+      description: t('itWalletHsm:settings.proximity.description'),
+      onPress: () => navigation.navigate(MAIN_ROUTES.SETTINGS.PROXIMITY),
+      value: t('itWalletHsm:settings.proximity.title')
     },
     {
       description: t('itWalletHsm:settings.debug.wallet.description'),
