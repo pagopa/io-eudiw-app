@@ -7,6 +7,8 @@ import { Alert } from 'react-native';
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
 import { useAppDispatch } from '../store';
 import { removeCredential } from '../store/credentials';
+import { resetLifecycle } from '../store/lifecycle';
+import { wellKnownCredential } from '../utils/credentials';
 import { StoredCredentialMetadata } from '../utils/itwTypesUtils';
 
 /**
@@ -21,7 +23,12 @@ export const useItwRemoveCredentialWithConfirm = (
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
 
   const handleRemoveCredential = () => {
-    dispatch(removeCredential(credential));
+    // The PID can't be removed alone: removing it resets the wallet lifecycle
+    dispatch(
+      credential.credentialType === wellKnownCredential.PID
+        ? resetLifecycle()
+        : removeCredential(credential)
+    );
     toast.success(
       t('presentation.credentialDetails.toast.removed', { ns: 'wallet' })
     );
