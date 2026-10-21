@@ -13,7 +13,7 @@ import { LocaleResource } from '.';
  *
  * @example
  * ```ts
- * // libs/it-wallet/src/index.ts
+ * // mini-apps/it-wallet/src/index.ts
  * import type { MiniApp } from '@io-eudiw-app/commons';
  *
  * const miniApp = {

@@ -7,7 +7,7 @@
       "path": "./apps/main-app"
     },
     {
-      "path": "./libs/it-wallet"
+      "path": "./mini-apps/it-wallet"
     },
     {
       "path": "./libs/commons"

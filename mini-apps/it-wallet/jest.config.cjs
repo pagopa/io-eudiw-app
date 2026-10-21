@@ -1,5 +1,5 @@
 module.exports = {
-  coverageDirectory: '../../coverage/libs/it-wallet',
+  coverageDirectory: '../../coverage/mini-apps/it-wallet',
   displayName: '@io-eudiw-app/it-wallet',
   moduleFileExtensions: ['ts', 'js', 'html', 'tsx', 'jsx'],
   moduleNameMapper: {

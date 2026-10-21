@@ -1,6 +1,6 @@
 # main-app
 
-`main-app` is the host Expo / React Native application that orchestrates all miniapps. It owns the top-level Redux store, the root navigation stack, the i18n instance and the startup lifecycle. All features live in **miniapp libraries** (e.g. `libs/it-wallet`) that plug into the host through the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface.
+`main-app` is the host Expo / React Native application that orchestrates all miniapps. It owns the top-level Redux store, the root navigation stack, the i18n instance and the startup lifecycle. All features live in **miniapp libraries** (e.g. `mini-apps/it-wallet`) that plug into the host through the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface.
 
 ---
 
@@ -24,7 +24,7 @@ From the repo root, run:
 Use the Nx generator to scaffold the library. Run the following command from the repo root:
 
 ```sh
-pnpm nx g @nx/expo:lib libs/my-feature
+pnpm nx g @nx/expo:lib mini-apps/my-feature
 ```
 
 This creates the library folder, generates `package.json`, `tsconfig.json`, `tsconfig.lib.json`, and registers the project in `nx.json` automatically.
@@ -33,7 +33,7 @@ After the generator finishes, manually add the workspace protocol entry in **`pn
 ```yaml
 packages:
   # …existing entries…
-  - 'libs/my-feature'
+  - 'mini-apps/my-feature'
 ```
 
 ---
@@ -43,7 +43,7 @@ packages:
 Every miniapp must export a single object that satisfies [`MiniApp<TId, TReducerKey, TNavigatorParamsList>`](../../libs/commons/src/lib/interfaces/miniapp.ts) from `@io-eudiw-app/commons`.
 
 ```ts
-// libs/my-feature/src/lib/interfaces/miniapp.ts (for reference)
+// mini-apps/my-feature/src/lib/interfaces/miniapp.ts (for reference)
 export interface MiniApp<
   TId extends string,
   TReducerKey extends string,
@@ -66,7 +66,7 @@ The subsections below explain each field.
 Create a combined reducer for the miniapp's state and expose it under a **single, unique key** — this key becomes the slice name in the host store.
 
 ```ts
-// libs/my-feature/src/lib/store/index.ts
+// mini-apps/my-feature/src/lib/store/index.ts
 import { combineReducers } from '@reduxjs/toolkit';
 import { mySliceReducer } from './mySlice';
 
@@ -80,7 +80,7 @@ export const myFeatureRootReducer = combineReducers({
 Return a `LocaleResource` object structured as `{ [language]: { [namespace]: translations } }`. At minimum, Italian (`it`) must be present.
 
 ```ts
-// libs/my-feature/src/lib/i18n/index.ts
+// mini-apps/my-feature/src/lib/i18n/index.ts
 import it from '../../locales/it/my_feature.json';
 import type { LocaleResource } from '@io-eudiw-app/commons';
 
@@ -92,7 +92,7 @@ export const resource: LocaleResource = {
 Create an **`i18next.d.ts`** file alongside `index.ts` to give i18next full TypeScript awareness of your namespace inside the miniapp lib:
 
 ```ts
-// libs/my-feature/src/lib/i18n/i18next.d.ts
+// mini-apps/my-feature/src/lib/i18n/i18next.d.ts
 import { resource as commonResource } from '@io-eudiw-app/commons';
 import myFeatureIt from '../../locales/it/my_feature.json';
 
@@ -113,7 +113,7 @@ declare module 'i18next' {
 Build a `@react-navigation/stack` (or equivalent) navigator and export it as a plain React component. Define route names in a dedicated `routes.ts` constant file.
 
 ```ts
-// libs/my-feature/src/lib/navigation/main/routes.ts
+// mini-apps/my-feature/src/lib/navigation/main/routes.ts
 const MY_FEATURE_ROUTES = {
   HOME: 'MY_FEATURE_HOME',
   DETAIL: 'MY_FEATURE_DETAIL',
@@ -123,7 +123,7 @@ export default MY_FEATURE_ROUTES;
 ```
 
 ```tsx
-// libs/my-feature/src/lib/navigation/main/MainStackNavigator.tsx
+// mini-apps/my-feature/src/lib/navigation/main/MainStackNavigator.tsx
 import { createStackNavigator } from '@react-navigation/stack';
 import MY_FEATURE_ROUTES from './routes';
 import HomeScreen from '../../screens/HomeScreen';
@@ -147,7 +147,7 @@ export const MainStackNavigator = () => (
 To get correct typing for `useNavigation`, `Link`, refs, etc., augment the global `RootParamList` in a type declaration file inside your lib:
 
 ```ts
-// libs/my-feature/src/lib/navigation/types/navigation.ts
+// mini-apps/my-feature/src/lib/navigation/types/navigation.ts
 import { MainNavigatorParamsList } from '../main/MainStackNavigator';
 
 declare global {
@@ -174,7 +174,7 @@ export const myFeatureLinkingConfig: PathConfigMap<MainNavigatorParamsList> = {
 Listeners are Redux Toolkit listener-middleware effects that react to dispatched actions (e.g. background polling, navigation side effects).
 
 ```ts
-// libs/my-feature/src/lib/middleware/index.ts
+// mini-apps/my-feature/src/lib/middleware/index.ts
 import type { TypedStartListening } from '@reduxjs/toolkit';
 
 export const addMyFeatureListeners = (
@@ -191,7 +191,7 @@ export const addMyFeatureListeners = (
 Assemble all pieces in `src/index.ts` using the `satisfies` keyword to get compile-time verification against the [`MiniApp`](../../libs/commons/src/lib/interfaces/miniapp.ts) interface. Each miniapp must provide a unique `id`:
 
 ```ts
-// libs/my-feature/src/index.ts
+// mini-apps/my-feature/src/index.ts
 import type { MiniApp } from '@io-eudiw-app/commons';
 import { myFeatureRootReducer } from './lib/store';
 import { resource } from './lib/i18n';

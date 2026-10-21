@@ -31,22 +31,22 @@
   "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx", "**/*.json"],
   "references": [
     {
-      "path": "../navigation/tsconfig.lib.json"
+      "path": "../../libs/navigation/tsconfig.lib.json"
     },
     {
-      "path": "../identification/tsconfig.lib.json"
+      "path": "../../libs/identification/tsconfig.lib.json"
     },
     {
-      "path": "../env/tsconfig.lib.json"
+      "path": "../../libs/env/tsconfig.lib.json"
     },
     {
-      "path": "../debug-info/tsconfig.lib.json"
+      "path": "../../libs/debug-info/tsconfig.lib.json"
     },
     {
-      "path": "../commons/tsconfig.lib.json"
+      "path": "../../libs/commons/tsconfig.lib.json"
     },
     {
-      "path": "../preferences/tsconfig.lib.json"
+      "path": "../../libs/preferences/tsconfig.lib.json"
     }
   ]
 }
