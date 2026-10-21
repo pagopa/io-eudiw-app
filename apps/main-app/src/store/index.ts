@@ -5,7 +5,6 @@ import {
   IdentificationRootState
 } from '@io-eudiw-app/identification';
 import { itWalletFeature } from '@io-eudiw-app/it-wallet';
-import { itWalletHsmFeature } from '@io-eudiw-app/it-wallet-hsm';
 import { deepLinkingReducer } from '@io-eudiw-app/navigation';
 import {
   PreferenceRootState,
@@ -45,7 +44,6 @@ export type AppRootState = DebugRootState &
     deepLinking: ReturnType<typeof deepLinkingReducer>;
     startup: ReturnType<typeof startupSlice.reducer>;
   } & {
-    itWalletHsm: ReturnType<typeof itWalletHsmFeature.reducer.itWalletHsm>;
     wallet: ReturnType<typeof itWalletFeature.reducer.wallet>;
   };
 
@@ -59,7 +57,6 @@ const rootReducer = combineReducers({
   ...debugReducer,
   ...identificationReducer,
   ...itWalletFeature.reducer,
-  ...itWalletHsmFeature.reducer,
   deepLinking: deepLinkingReducer
 });
 

@@ -30,8 +30,7 @@
     "subtitle": "In questa sezione puoi scegliere un caso d’uso per testare l’integrazione con la tua piattaforma.",
     "available": "App disponibili",
     "miniApps": {
-      "it-wallet": "IT-Wallet (1.4.6)",
-      "it-wallet-hsm": "Remote HSM (1.4.6)"
+      "it-wallet": "IT-Wallet (1.4.6)"
     }
   },
   "onboarding": {
