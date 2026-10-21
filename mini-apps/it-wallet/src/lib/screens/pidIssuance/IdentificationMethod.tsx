@@ -43,12 +43,6 @@ export const IdentificationMethod = () => {
         <VSpacer size={8} />
         <VStack space={16}>
           <ModuleNavigationAlt
-            badge={{
-              text: t('identification.modeSelection.mode.ciePin.badge', {
-                ns: 'wallet'
-              }),
-              variant: 'highlight'
-            }}
             icon="cieCard"
             onPress={handleOnPress}
             subtitle={t('identification.modeSelection.mode.ciePin.subtitle', {

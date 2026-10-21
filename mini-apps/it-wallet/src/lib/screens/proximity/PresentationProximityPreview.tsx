@@ -170,6 +170,7 @@ const PresentationProximityPreview = () => {
     return (
       <LoadingScreenContent
         contentTitle={t('presentation.loading.title', { ns: 'wallet' })}
+        headerVisible
       >
         <Body style={{ textAlign: 'center' }}>
           {t('presentation.loading.subtitle', { ns: 'wallet' })}

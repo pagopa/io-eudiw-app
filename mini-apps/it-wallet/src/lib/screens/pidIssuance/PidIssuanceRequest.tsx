@@ -87,7 +87,12 @@ const PidIssuanceRequest = () => {
 
   return (
     <>
-      {loading && <LoadingScreenContent contentTitle={t('common:waiting')} />}
+      {loading && (
+        <LoadingScreenContent
+          contentTitle={t('common:waiting')}
+          headerVisible
+        />
+      )}
       {success.status === true && pid && parsedClaims && (
         <ForceScrollDownView
           contentContainerStyle={styles.scroll}
