@@ -13,8 +13,8 @@ catalogs:
       specifier: ^5.2.8
       version: 5.2.14
     '@pagopa/io-app-design-system':
-      specifier: 5.12.1
-      version: 5.12.1
+      specifier: 8.1.0
+      version: 8.1.0
     '@pagopa/io-react-native-crypto':
       specifier: ^1.2.3
       version: 1.2.4
@@ -308,7 +308,7 @@ importers:
         version: link:../../libs/preferences
       '@pagopa/io-app-design-system':
         specifier: 'catalog:'
-        version: 5.12.1(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(87a38461ecd352bce028511a81a2328e)
+        version: 8.1.0(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(4dd0c85d37c7deafcec7e875a9e77e17)
       '@pagopa/react-native-nodelibs':
         specifier: ^0.1.0
         version: 0.1.0(d37767f4a630164f90b5d0257888b6c5)
@@ -513,7 +513,7 @@ importers:
         version: 5.2.14(fec0d93b6d07d3a6f13fafa3e68050f1)
       '@pagopa/io-app-design-system':
         specifier: 'catalog:'
-        version: 5.12.1(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(87a38461ecd352bce028511a81a2328e)
+        version: 8.1.0(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(4dd0c85d37c7deafcec7e875a9e77e17)
       '@pagopa/io-react-native-crypto':
         specifier: 'catalog:'
         version: 1.2.4(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
@@ -604,7 +604,7 @@ importers:
         version: link:../preferences
       '@pagopa/io-app-design-system':
         specifier: 'catalog:'
-        version: 5.12.1(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(87a38461ecd352bce028511a81a2328e)
+        version: 8.1.0(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(4dd0c85d37c7deafcec7e875a9e77e17)
       '@react-navigation/native':
         specifier: 'catalog:'
         version: 7.3.13(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
@@ -672,7 +672,7 @@ importers:
         version: link:../preferences
       '@pagopa/io-app-design-system':
         specifier: 'catalog:'
-        version: 5.12.1(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(87a38461ecd352bce028511a81a2328e)
+        version: 8.1.0(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(4dd0c85d37c7deafcec7e875a9e77e17)
       '@reduxjs/toolkit':
         specifier: 'catalog:'
         version: 2.11.1(react-redux@9.2.0(@types/react@19.2.18)(react@19.2.3)(redux@5.0.1))(react@19.2.3)
@@ -777,7 +777,7 @@ importers:
         version: link:../../libs/preferences
       '@pagopa/io-app-design-system':
         specifier: 'catalog:'
-        version: 5.12.1(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(87a38461ecd352bce028511a81a2328e)
+        version: 8.1.0(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(4dd0c85d37c7deafcec7e875a9e77e17)
       '@pagopa/io-react-native-cie':
         specifier: 1.3.6
         version: 1.3.6(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
@@ -2463,19 +2463,20 @@ packages:
       eslint-plugin-jest:
         optional: true
 
-  '@pagopa/io-app-design-system@5.12.1':
-    resolution: {integrity: sha512-tZ40Lpx+Ej5c1DzKOx915Ch06KVyv8MzNvOvbO9QSx6bT6Lv2gdLg79efV0U+kCgVZE759+c9vdbnKvuxcWg4A==}
+  '@pagopa/io-app-design-system@8.1.0':
+    resolution: {integrity: sha512-k2nKOHJN4shz+CRb1zaf97DGo7MiKztai9JLEXEGVlSCE+ezDyzt+5uOeBBeeL2tUQPQygYlGNl4fy1MRmsHiw==}
     engines: {node: '>= 20'}
     peerDependencies:
-      react: '*'
+      react: ^19.0.0
       react-native: '*'
       react-native-easing-gradient: '*'
       react-native-gesture-handler: '*'
       react-native-haptic-feedback: '*'
       react-native-linear-gradient: '*'
-      react-native-reanimated: '*'
+      react-native-reanimated: '>=4.0.0'
       react-native-safe-area-context: '*'
       react-native-svg: '*'
+      react-native-worklets: '*'
 
   '@pagopa/io-react-native-cie@1.3.6':
     resolution: {integrity: sha512-3DNrCT0G5rguskrPtmhahovjmlwJd7E3uEPZmsH+mZStHs63TueNBLyK9L8fbgRLhZaZ1ZZkRp06XH+2x0lnWA==}
@@ -6280,6 +6281,9 @@ packages:
     resolution: {integrity: sha512-cNOjgCnLB+FnvWWtyRTzmB3POJ+cXxTA81LoW7u8JdmhfXzriropYwpjShnz1QLLWsQwY7nIxoDmcPTwphDK9w==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
+  linkify-it@5.0.2:
+    resolution: {integrity: sha512-ONTm2jCMAVZjgQa/Fy1kScXsuOoF5NPTsoFBdE1KVIZ2vAh/r9+Bqo+0jINCBYnavTPQZz38QzFTme79ENoN3Q==}
+
   loader-runner@4.3.2:
     resolution: {integrity: sha512-DFEqQ3ihfS9blba08cLfYf1NRAIEm+dDjic073DRDc3/JspI/8wYmtDsHwd3+4hwvdxSK7PGaElfTmm0awWJ4w==}
     engines: {node: '>=6.11.5'}
@@ -6355,6 +6359,10 @@ packages:
   makeerror@1.0.12:
     resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
 
+  markdown-it@14.3.3:
+    resolution: {integrity: sha512-L//tDAkjTjJCU6pBUSBTgs3Kg4InVaZuUZog/b6V12UKhcDQ7S78877ibbCanRExwPuYP1CZD7Gd2dxSy1GXRg==}
+    hasBin: true
+
   markdown-table@2.0.0:
     resolution: {integrity: sha512-Ezda85ToJUBhM6WGaG6veasyym+Tbs3cMAw/ZhOPqXiYsr0jgocBV3j3nx+4lk47plLlIqjwuTm/ywVI+zjJ/A==}
 
@@ -6409,6 +6417,9 @@ packages:
 
   mdn-data@2.0.30:
     resolution: {integrity: sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==}
+
+  mdurl@2.1.0:
+    resolution: {integrity: sha512-1+HBaOx0zi/dQWht8rNv9MYf9qqpqL/kxI0hXImU6Y547zM6Sni8BQibt7ifgMcYtQg41ao3Ivd6cnSM86inpg==}
 
   media-typer@0.3.0:
     resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
@@ -7112,6 +7123,10 @@ packages:
 
   public-encrypt@4.0.3:
     resolution: {integrity: sha512-zVpa8oKZSz5bTMTFClc1fQOnyyEzpl5ozpi1B5YcvBrdohMjH2rfsBtyXcuNuwjsDIXmBYlF2N5FlJYhR29t8Q==}
+
+  punycode.js@2.3.1:
+    resolution: {integrity: sha512-uxFIHU0YlHYhDQtV4R9J6a52SLx28BCjT+4ieh7IGbgwVJWO+km431c4yRlREUAsAmt/uMjQUyQHNEPf0M39CA==}
+    engines: {node: '>=6'}
 
   punycode@1.4.1:
     resolution: {integrity: sha512-jmYNElW7yvO7TV33CjSmvSiE2yco3bV2czu/OzDKdMNVZQWfxCblURLhf+47syQRBntjfLdd/H0egrzIG+oaFQ==}
@@ -8191,6 +8206,9 @@ packages:
     resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  uc.micro@2.1.0:
+    resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
 
   uglify-js@3.19.3:
     resolution: {integrity: sha512-v3Xu+yuwBXisp6QYTcH4UbH+xYJXqnq2m/LtQVWKWzYc1iehYnLixoQDN9FH6/j9/oybfd6W9Ghwkl8+UMKTKQ==}
@@ -11940,10 +11958,10 @@ snapshots:
       - supports-color
       - vitest
 
-  '@pagopa/io-app-design-system@5.12.1(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(87a38461ecd352bce028511a81a2328e)':
+  '@pagopa/io-app-design-system@8.1.0(patch_hash=81b6cac3680c318741e64c660cf11d59f5b82fdada8ad9245a9f23889cedcfb4)(4dd0c85d37c7deafcec7e875a9e77e17)':
     dependencies:
       auto-changelog: 2.6.0
-      lodash: 4.18.1
+      markdown-it: 14.3.3
       react: 19.2.3
       react-native: 0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1)
       react-native-easing-gradient: 1.1.1(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
@@ -11953,6 +11971,7 @@ snapshots:
       react-native-reanimated: 4.5.1(react-native-worklets@0.10.1(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
       react-native-safe-area-context: 5.7.0(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
       react-native-svg: 15.15.4(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      react-native-worklets: 0.10.1(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1)
 
   '@pagopa/io-react-native-cie@1.3.6(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)':
     dependencies:
@@ -17702,6 +17721,10 @@ snapshots:
 
   lines-and-columns@2.0.3: {}
 
+  linkify-it@5.0.2:
+    dependencies:
+      uc.micro: 2.1.0
+
   loader-runner@4.3.2: {}
 
   loader-utils@3.3.1: {}
@@ -17766,6 +17789,15 @@ snapshots:
   makeerror@1.0.12:
     dependencies:
       tmpl: 1.0.5
+
+  markdown-it@14.3.3:
+    dependencies:
+      argparse: 2.0.1
+      entities: 4.5.0
+      linkify-it: 5.0.2
+      mdurl: 2.1.0
+      punycode.js: 2.3.1
+      uc.micro: 2.1.0
 
   markdown-table@2.0.0:
     dependencies:
@@ -17855,6 +17887,8 @@ snapshots:
   mdn-data@2.0.28: {}
 
   mdn-data@2.0.30: {}
+
+  mdurl@2.1.0: {}
 
   media-typer@0.3.0: {}
 
@@ -19079,6 +19113,8 @@ snapshots:
       parse-asn1: 5.1.9
       randombytes: 2.1.0
       safe-buffer: 5.2.1
+
+  punycode.js@2.3.1: {}
 
   punycode@1.4.1: {}
 
@@ -20358,6 +20394,8 @@ snapshots:
   typescript@5.9.3: {}
 
   typescript@6.0.3: {}
+
+  uc.micro@2.1.0: {}
 
   uglify-js@3.19.3:
     optional: true

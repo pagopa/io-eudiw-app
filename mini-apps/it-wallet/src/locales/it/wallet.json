@@ -78,7 +78,7 @@
   "identification": {
     "modeSelection": {
       "section": {
-        "issuance": "Ottieni IT-Wallet"
+        "issuance": "Attiva IT-Wallet"
       },
       "title": {
         "issuance": "Conferma la tua identità"
@@ -90,8 +90,7 @@
       "mode": {
         "ciePin": {
           "title": "Continua con CIE + PIN",
-          "subtitle": "Ha una durata di 12 mesi",
-          "badge": "scelta consigliata"
+          "subtitle": "Ha una durata di 12 mesi"
         },
         "spid": {
           "title": "Continua con SPID + CIE",
@@ -107,7 +106,14 @@
   "pidIssuance": {
     "preview": {
       "title": "Ci siamo quasi!",
-      "subtitle": "Hai verificato la tua identità.\nIl tuo portafoglio IT-Wallet sarà associato a questi dati:"
+      "subtitle": "Hai verificato la tua identità.\nIl tuo portafoglio IT-Wallet sarà associato a questi dati:",
+      "cancel": "Annulla",
+      "upgradeNotice": "Se hai già aggiunto documenti al Portafoglio, questi saranno aggiornati alle funzionalità IT-Wallet, senza modifiche ai tuoi dati."
+    },
+    "result": {
+      "title": "Il tuo portafoglio IT-Wallet è pronto!",
+      "subtitle": "Ora hai accesso ai vantaggi del nuovo portafoglio digitale.",
+      "primaryAction": "Esplora IT-Wallet"
     },
     "failure": {
       "title": "An unexpected error occurred",
@@ -498,7 +504,7 @@
     "emptyWallet": {
       "readyBanner": {
         "content": "È tutto pronto: aggiungi un documento al tuo Portafoglio di IO.",
-        "action": "Aggiungi documento"
+        "action": "Inizia"
       }
     },
     "credentialPreview": {
@@ -511,6 +517,12 @@
           "title": "Chi è",
           "subtitle": "È l’ente o la banca dati digitale che detiene i dati contenuti all'interno del tuo documento."
         }
+      }
+    },
+    "credentialIntroduction": {
+      "content": {
+        "mdl": "**Per aggiungere la tua patente di guida ti serve:**\n\n * un documento di identità valido\n * di essere titolare di una patente di guida italiana in corso di validità\n\nI dati verranno letti direttamente dalle fonti ufficiali.",
+        "disabilityCard": "**Per aggiungere la Carta Europea della Disabilità ti serve:**\n\n * un documento di identità valido\n * di essere titolare di una Carta Europea della Disabilità\n\nI dati verranno letti direttamente dalle fonti ufficiali."
       }
     },
     "credentialNotFound": {

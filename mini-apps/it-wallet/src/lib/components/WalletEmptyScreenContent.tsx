@@ -18,7 +18,7 @@ const WalletEmptyScreenContent = () => {
 
   const handleAddToWalletButtonPress = () => {
     navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-      screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST
+      screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
     });
   };
 

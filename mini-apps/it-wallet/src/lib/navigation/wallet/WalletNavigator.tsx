@@ -2,6 +2,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import CredentialAlreadyObtained from '../../screens/credentialIssuance/CredentialAlreadyObtained';
 import CredentialFailure from '../../screens/credentialIssuance/CredentialFailure';
+import CredentialIntroduction, {
+  CredentialIntroductionParams
+} from '../../screens/credentialIssuance/CredentialIntroduction';
 import { CredentialPreview } from '../../screens/credentialIssuance/CredentialIssuancePreview';
 import CredentialsList from '../../screens/credentialIssuance/CredentialsList';
 import CredentialTrust from '../../screens/credentialIssuance/CredentialTrust';
@@ -17,6 +20,7 @@ import DeepLinkHandler, {
 import { IdentificationMethod } from '../../screens/pidIssuance/IdentificationMethod';
 import PidIssuanceFailure from '../../screens/pidIssuance/PidIssuanceFailure';
 import PidIssuancRequest from '../../screens/pidIssuance/PidIssuanceRequest';
+import PidIssuanceResult from '../../screens/pidIssuance/PidIssuanceResult';
 import { WalletInstanceCreation } from '../../screens/pidIssuance/WalletInstanceCreation';
 import {
   ItwPresentationCredentialCardModal,
@@ -60,6 +64,8 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.ALREADY_OBTAINED]: undefined;
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE]: undefined;
   // Credential Issuance
+  [WALLET_ROUTES.CREDENTIAL_ISSUANCE
+    .INTRODUCTION]: CredentialIntroductionParams;
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST]: undefined;
 
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.PREVIEW]: undefined;
@@ -74,6 +80,7 @@ export type WalletNavigatorParamsList = {
   // Pid issuance
   [WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.REQUEST]: undefined;
+  [WALLET_ROUTES.PID_ISSUANCE.RESULT]: undefined;
   [WALLET_ROUTES.PRESENTATION
     .CREDENTIAL_CARD_MODAL]: ItwPresentationCredentialCardModalNavigationParams;
   [WALLET_ROUTES.PRESENTATION
@@ -144,6 +151,11 @@ const WalletNavigator = () => (
         name={WALLET_ROUTES.PID_ISSUANCE.REQUEST}
       />
       <Stack.Screen
+        component={PidIssuanceResult}
+        name={WALLET_ROUTES.PID_ISSUANCE.RESULT}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         component={ItwPresentationCredentialDetailScreen}
         name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_DETAILS}
       />
@@ -190,6 +202,10 @@ const WalletNavigator = () => (
       <Stack.Screen
         component={CredentialsList}
         name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST}
+      />
+      <Stack.Screen
+        component={CredentialIntroduction}
+        name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.INTRODUCTION}
       />
       <Stack.Screen
         component={CredentialTrust}

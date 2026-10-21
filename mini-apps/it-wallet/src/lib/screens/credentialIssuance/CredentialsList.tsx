@@ -7,7 +7,7 @@ import {
   ListItemHeader,
   VStack
 } from '@pagopa/io-app-design-system';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
@@ -55,22 +55,44 @@ const CredentialsList = () => {
 
   const shouldIssuePidFirst = useAppSelector(lifecycleIsOperationalSelector);
   const preAuthStatus = useAppSelector(selectCredentialIssuancePreAuthStatus);
+  const isFocused = useIsFocused();
 
+  // Credentials which skip the introduction are issued directly from this
+  // screen, so the issuance outcome is handled here only while it's focused.
   useEffect(() => {
-    if (preAuthStatus.success.status && !shouldIssuePidFirst) {
+    if (isFocused && preAuthStatus.success.status && !shouldIssuePidFirst) {
       navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
         screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
       });
     }
-  }, [preAuthStatus.success, navigation, shouldIssuePidFirst]);
+  }, [isFocused, preAuthStatus.success, navigation, shouldIssuePidFirst]);
 
   useEffect(() => {
-    if (preAuthStatus.error.status && !shouldIssuePidFirst) {
+    if (isFocused && preAuthStatus.error.status && !shouldIssuePidFirst) {
       navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
         screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE
       });
     }
-  }, [preAuthStatus.error, navigation, shouldIssuePidFirst]);
+  }, [isFocused, preAuthStatus.error, navigation, shouldIssuePidFirst]);
+
+  const onCredentialPress = (credential: string) => {
+    // Skip the introduction screen for PARI BONUS
+    if (credential !== wellKnownCredentialConfigurationIDs.BONUS_PARI) {
+      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+        params: { credential },
+        screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.INTRODUCTION
+      });
+      return;
+    }
+    if (shouldIssuePidFirst) {
+      dispatch(setPendingCredential({ credential }));
+      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+        screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
+      });
+      return;
+    }
+    dispatch(setCredentialIssuancePreAuthRequest({ credential }));
+  };
 
   useHeaderSecondLevel({
     goBack,
@@ -102,18 +124,7 @@ const CredentialsList = () => {
                 )}
                 isSaved={isCredentialSaved(type)}
                 key={`itw_credential_${type}`}
-                onPress={c => {
-                  if (shouldIssuePidFirst) {
-                    dispatch(setPendingCredential({ credential: c }));
-                    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-                      screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
-                    });
-                    return;
-                  }
-                  dispatch(
-                    setCredentialIssuancePreAuthRequest({ credential: c })
-                  );
-                }}
+                onPress={onCredentialPress}
                 type={type}
               />
             ))}

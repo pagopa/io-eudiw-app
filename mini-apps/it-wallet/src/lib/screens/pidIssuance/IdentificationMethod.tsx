@@ -11,7 +11,6 @@ import {
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
-import { View } from 'react-native';
 
 export const IdentificationMethod = () => {
   const navigation = useNavigation();
@@ -54,17 +53,6 @@ export const IdentificationMethod = () => {
             })}
           />
           <ModuleNavigationAlt
-            icon="spid"
-            onPress={handleOnPress}
-            subtitle={t('identification.modeSelection.mode.spid.subtitle', {
-              ns: 'wallet'
-            })}
-            testID="SpidMethodModuleTestID"
-            title={t('identification.modeSelection.mode.spid.title', {
-              ns: 'wallet'
-            })}
-          />
-          <ModuleNavigationAlt
             icon="cie"
             onPress={handleOnPress}
             subtitle={t('identification.modeSelection.mode.cieId.subtitle', {
@@ -75,17 +63,25 @@ export const IdentificationMethod = () => {
               ns: 'wallet'
             })}
           />
-          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <IOButton
-              label={t('identification.modeSelection.noCieCta', {
-                ns: 'wallet'
-              })}
-              onPress={handleOnPress}
-              testID={'noCieButtonTestID'}
-              textAlign="center"
-              variant="link"
-            />
-          </View>
+          <ModuleNavigationAlt
+            icon="spid"
+            onPress={handleOnPress}
+            subtitle={t('identification.modeSelection.mode.spid.subtitle', {
+              ns: 'wallet'
+            })}
+            testID="SpidMethodModuleTestID"
+            title={t('identification.modeSelection.mode.spid.title', {
+              ns: 'wallet'
+            })}
+          />
+          <IOButton
+            label={t('identification.modeSelection.noCieCta', {
+              ns: 'wallet'
+            })}
+            onPress={handleOnPress}
+            testID={'noCieButtonTestID'}
+            variant="link"
+          />
         </VStack>
       </ContentWrapper>
     </IOScrollViewWithLargeHeader>
