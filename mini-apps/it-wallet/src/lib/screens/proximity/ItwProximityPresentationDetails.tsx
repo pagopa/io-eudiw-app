@@ -1,46 +1,14 @@
-import { getSafeText } from '@io-eudiw-app/commons';
 import {
-  ClaimsSelector,
   ListItemHeader,
   useIOTheme,
   VStack
 } from '@pagopa/io-app-design-system';
-import { ComponentProps, memo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
-import { getClaimDisplayValue } from '../../utils/itwClaimsUtils';
-import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
+import { ItwClaimsSelector } from '../../components/presentation/ItwClaimsSelector';
 import { ClaimDisplayFormat } from '../../utils/itwRemotePresentationUtils';
-
-/**
- * Maps claims to the format required by the ClaimsSelector component.
- */
-const mapClaims = (
-  claims: ClaimDisplayFormat[]
-): ComponentProps<typeof ClaimsSelector>['items'] =>
-  claims.map(c => {
-    const displayResult = getClaimDisplayValue(c);
-
-    if (displayResult.type === 'image') {
-      return {
-        description: c.label,
-        id: c.id,
-        type: 'image',
-        value: displayResult.value
-      };
-    }
-
-    const textValue = Array.isArray(displayResult.value)
-      ? displayResult.value.map(getSafeText).join(', ')
-      : getSafeText(displayResult.value, 1024);
-
-    return {
-      description: c.label,
-      id: c.id,
-      value: textValue
-    };
-  });
 
 /**
  * Type representing the proximity details with localized claims
@@ -70,12 +38,11 @@ const ItwProximityPresentationDetails = ({
       />
       <VStack space={24}>
         {data.map(({ claimsToDisplay, credentialType }) => (
-          <ClaimsSelector
+          <ItwClaimsSelector
+            credentialType={credentialType}
             defaultExpanded
-            items={mapClaims(claimsToDisplay)}
+            items={claimsToDisplay}
             key={credentialType}
-            selectionEnabled={false}
-            title={getCredentialNameFromType(credentialType)}
           />
         ))}
       </VStack>

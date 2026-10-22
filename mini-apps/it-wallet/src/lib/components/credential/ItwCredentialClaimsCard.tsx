@@ -5,9 +5,17 @@ import {
   IOSpacingScale,
   useIOThemeContext
 } from '@pagopa/io-app-design-system';
-import { PropsWithChildren } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { PropsWithChildren, ReactNode } from 'react';
+import {
+  AccessibilityState,
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Animated, { AnimatedStyle } from 'react-native-reanimated';
 
 import { useItWalletTheme } from '../../utils/theme';
 
@@ -19,6 +27,16 @@ const CARD_BORDER = 1;
 type ItwCredentialClaimsCardProps = PropsWithChildren<{
   /** The end color of the credential-specific header gradient. */
   gradientEndColor: string;
+  /** Accessibility label of the pressable header. */
+  headerAccessibilityLabel?: string;
+  /** Accessibility state of the pressable header. */
+  headerAccessibilityState?: AccessibilityState;
+  /** Element rendered at the end of the header. */
+  headerAccessory?: ReactNode;
+  /** Extra (animated) style applied to the header. */
+  headerStyle?: AnimatedStyle<StyleProp<ViewStyle>>;
+  /** When set, the header becomes pressable. */
+  onHeaderPress?: () => void;
   /** The title displayed in the card header. */
   title: string;
 }>;
@@ -30,6 +48,11 @@ type ItwCredentialClaimsCardProps = PropsWithChildren<{
 export const ItwCredentialClaimsCard = ({
   children,
   gradientEndColor,
+  headerAccessibilityLabel,
+  headerAccessibilityState,
+  headerAccessory,
+  headerStyle,
+  onHeaderPress,
   title
 }: ItwCredentialClaimsCardProps) => {
   const { theme } = useIOThemeContext();
@@ -45,15 +68,24 @@ export const ItwCredentialClaimsCard = ({
         }
       ]}
     >
-      <View accessibilityRole="header" style={styles.header}>
-        <LinearGradient
-          colors={[itwTheme['card-background'], gradientEndColor]}
-          style={StyleSheet.absoluteFill}
-        />
-        <View style={styles.title}>
-          <H6>{title}</H6>
-        </View>
-      </View>
+      <Pressable
+        accessibilityLabel={headerAccessibilityLabel}
+        accessibilityRole={onHeaderPress ? 'button' : 'header'}
+        accessibilityState={headerAccessibilityState}
+        disabled={!onHeaderPress}
+        onPress={onHeaderPress}
+      >
+        <Animated.View style={[styles.header, headerStyle]}>
+          <LinearGradient
+            colors={[itwTheme['card-background'], gradientEndColor]}
+            style={StyleSheet.absoluteFill}
+          />
+          <View style={styles.title}>
+            <H6>{title}</H6>
+          </View>
+          {headerAccessory}
+        </Animated.View>
+      </Pressable>
       {children}
     </View>
   );
