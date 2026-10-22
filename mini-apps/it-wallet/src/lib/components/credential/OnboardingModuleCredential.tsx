@@ -1,11 +1,8 @@
-import { Badge, IOIcons, ModuleCredential } from '@pagopa/io-app-design-system';
+import { Badge, ModuleCredential } from '@pagopa/io-app-design-system';
 import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import {
-  getCredentialNameByType,
-  wellKnownCredential
-} from '../../utils/credentials';
+import { getCredentialNameByType } from '../../utils/credentials';
 
 type Props = {
   configId: string;
@@ -13,13 +10,6 @@ type Props = {
   isSaved: boolean;
   onPress: (type: string) => void;
   type: string;
-};
-
-const credentialIconByType: Record<string, IOIcons> = {
-  [wellKnownCredential.BONUS_PARI]: 'bonus',
-  [wellKnownCredential.DISABILITY_CARD]: 'accessibility',
-  [wellKnownCredential.DRIVING_LICENSE]: 'car',
-  [wellKnownCredential.PID]: 'fingerprint'
 };
 
 /**
@@ -57,7 +47,6 @@ const OnboardingModuleCredential = ({
   return (
     <ModuleCredential
       badge={badge}
-      icon={credentialIconByType[type]}
       isFetching={isFetching}
       label={getCredentialNameByType(type)}
       onPress={isPressable ? handleOnPress : undefined}

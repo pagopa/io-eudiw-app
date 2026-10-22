@@ -107,13 +107,9 @@
     "alerts": {
       "statusAction": "Cosa posso fare?",
       "mdl": {
-        "content": "La tua Patente su IO ha lo stesso valore legale del documento fisico, solo sul territorio italiano.",
         "invalid": {
           "cta": "Rimuovi documento dal Portafoglio"
         }
-      },
-      "edc": {
-        "content": "Puoi usare la tua Carta Europea della Disabilità su IO per accedere ai servizi sul territorio italiano, negli stessi contesti d'uso del tuo documento fisico."
       },
       "bonusPari": {
         "content": "Il Bonus ha una validità di 15gg. Sarà possibile richiedere un nuovo bonus. L'ottenimento del nuovo bonus è vincolato al monte totale e alle priorità di richiesta."
@@ -237,7 +233,7 @@
       }
     },
     "ctas": {
-      "present": "Avvia verifica"
+      "present": "Usa per la verifica"
     },
     "statusAssertionUnknown": {
       "title": "Non siamo riusciti a caricare {{credentialName}}",
@@ -253,7 +249,7 @@
   },
   "proximity": {
     "home": {
-      "cta": "Avvia verifica"
+      "cta": "Usa per la verifica"
     },
     "engagement": {
       "title": "Avvia una verifica",
@@ -512,7 +508,7 @@
     "credentialIntroduction": {
       "content": {
         "mdl": "**Cosa troverai**\n\nLa tua Patente di guida in versione digitale.\nNella patente digitale troverai il dettaglio delle categorie che hai conseguito (es. AM, A1, A2, A, B1, B, BE, C1, C1E, C, CE, D1, D1E, D, DE), incluse le annotazioni e i codici di restrizione.\n\n**Lo sapevi?**\nLa Patente su IO è valida per dimostrare la tua identità, oltre che l’abilitazione alla guida.",
-        "disabilityCard": "**Per aggiungere la Carta Europea della Disabilità ti serve:**\n\n * un documento di identità valido\n * di essere titolare di una Carta Europea della Disabilità\n\nI dati verranno letti direttamente dalle fonti ufficiali."
+        "disabilityCard": "**Cosa troverai**\n\nLa Carta Europea della Disabilità (EDC) è disponibile per i titolari a cui è stato riconosciuto un grado di invalidità civile pari o superiore al 67%, oppure che beneficiano dell’indennità di accompagnamento ai sensi della legge 18/1980.\n\nLa carta digitale è equivalente alla versione fisica ai fini del riconoscimento delle agevolazioni nei paesi aderenti al programma europeo EDC. "
       }
     },
     "credentialNotFound": {

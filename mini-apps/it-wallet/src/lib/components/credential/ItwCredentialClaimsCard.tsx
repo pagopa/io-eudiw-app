@@ -48,8 +48,6 @@ export const ItwCredentialClaimsCard = ({
       <View accessibilityRole="header" style={styles.header}>
         <LinearGradient
           colors={[itwTheme['card-background'], gradientEndColor]}
-          end={{ x: 1, y: 0 }}
-          start={{ x: 0, y: 0 }}
           style={StyleSheet.absoluteFill}
         />
         <View style={styles.title}>

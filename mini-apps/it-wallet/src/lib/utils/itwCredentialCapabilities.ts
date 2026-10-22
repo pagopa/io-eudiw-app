@@ -98,20 +98,8 @@ const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
     showStatusTag: false,
     suppressStatusAlert: true
   },
-  [wellKnownCredential.DISABILITY_CARD]: {
-    ...DEFAULT_CAPABILITIES,
-    infoAlert: {
-      contentI18nKey: 'presentation.alerts.edc.content',
-      testID: 'itwEdcBannerTestID'
-    }
-  },
-  [wellKnownCredential.DRIVING_LICENSE]: {
-    ...DEFAULT_CAPABILITIES,
-    infoAlert: {
-      contentI18nKey: 'presentation.alerts.mdl.content',
-      testID: 'itwMdlBannerTestID'
-    }
-  }
+  [wellKnownCredential.DISABILITY_CARD]: DEFAULT_CAPABILITIES,
+  [wellKnownCredential.DRIVING_LICENSE]: DEFAULT_CAPABILITIES
 };
 
 export const getCredentialCapabilities = (
