@@ -1,6 +1,6 @@
 packages:
   - 'apps/*'
-  - 'libs/it-wallet'
+  - 'mini-apps/it-wallet'
   - 'libs/commons'
   - 'libs/env'
   - 'libs/preferences'
@@ -71,13 +71,13 @@ ignoredBuiltDependencies:
   - 'esbuild'
   - 'nx'
   - 'unrs-resolver'
+minimumReleaseAgeExclude:
+  - '@pagopa/io-react-native-wallet@3.8.2'
 onlyBuiltDependencies:
   - '@shopify/react-native-skia'
 overrides:
   zod: '4.3.6'
 patchedDependencies:
   '@pagopa/io-app-design-system': 'patches/@pagopa__io-app-design-system.patch'
-  '@pagopa/io-react-native-wallet': patches/@pagopa__io-react-native-wallet.patch
-minimumReleaseAgeExclude:
-  - "@pagopa/io-react-native-jwt@2.2.5"
+  '@pagopa/io-react-native-wallet@3.8.2': patches/@pagopa__io-react-native-wallet@3.8.2.patch
 nodeLinker: hoisted

@@ -47,7 +47,7 @@
       "path": "../../libs/navigation/tsconfig.lib.json"
     },
     {
-      "path": "../../libs/it-wallet/tsconfig.lib.json"
+      "path": "../../mini-apps/it-wallet/tsconfig.lib.json"
     },
     {
       "path": "../../libs/identification/tsconfig.lib.json"
