@@ -17,8 +17,15 @@ const ItwPresentationDetailsFooter = ({
   capabilities,
   credential
 }: ItwPresentationDetailFooterProps) => {
-  const { confirmAndRemoveCredential } =
+  const { confirmAndRemoveCredential, isPid } =
     useItwRemoveCredentialWithConfirm(credential);
+
+  const removeLabel = t(
+    isPid
+      ? 'presentation.credentialDetails.actions.deactivateItWallet'
+      : 'presentation.credentialDetails.actions.removeFromWallet',
+    { ns: 'wallet' }
+  );
 
   return (
     <View>
@@ -28,16 +35,9 @@ const ItwPresentationDetailsFooter = ({
           <ListItemAction key={key} {...props} />
         ))}
       <ListItemAction
-        accessibilityLabel={t(
-          'presentation.credentialDetails.actions.removeFromWallet',
-          {
-            ns: 'wallet'
-          }
-        )}
+        accessibilityLabel={removeLabel}
         icon="trashcan"
-        label={t('presentation.credentialDetails.actions.removeFromWallet', {
-          ns: 'wallet'
-        })}
+        label={removeLabel}
         onPress={confirmAndRemoveCredential}
         testID="removeCredentialActionTestID"
         variant="danger"

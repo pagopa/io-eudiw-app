@@ -151,6 +151,7 @@
       },
       "actions": {
         "removeFromWallet": "Rimuovi dal Portafoglio",
+        "deactivateItWallet": "Disattiva IT-Wallet",
         "hideClaimValues": "Nascondi gli attributi del documento",
         "pariPurchases": "Dettaglio acquisti"
       },
@@ -159,6 +160,12 @@
           "title": "Vuoi rimuovere il documento dal Portafoglio?",
           "content": "Se cambi idea, potrai riaggiungerlo in seguito.",
           "confirm": "Sì, rimuovi"
+        },
+        "deactivate": {
+          "title": "Vuoi davvero disattivare IT-Wallet?",
+          "content": "Eliminerai i documenti che hai aggiunto al Portafoglio. Se cambi idea, potrai riattivare IT-Wallet in futuro.",
+          "confirm": "Sì, disattiva",
+          "cancel": "No, torna indietro"
         }
       },
       "toast": {

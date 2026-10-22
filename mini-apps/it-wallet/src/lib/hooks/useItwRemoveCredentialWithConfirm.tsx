@@ -36,30 +36,59 @@ export const useItwRemoveCredentialWithConfirm = (
     navigation.pop();
   };
 
+  const isPid = credential.credentialType === wellKnownCredential.PID;
+
   const confirmAndRemoveCredential = () =>
-    Alert.alert(
-      t('presentation.credentialDetails.dialogs.remove.title', {
-        ns: 'wallet'
-      }),
-      t('presentation.credentialDetails.dialogs.remove.content', {
-        ns: 'wallet'
-      }),
-      [
-        {
-          style: 'cancel',
-          text: t('buttons.cancel', { ns: 'common' })
-        },
-        {
-          onPress: handleRemoveCredential,
-          style: 'destructive',
-          text: t('presentation.credentialDetails.dialogs.remove.confirm', {
+    isPid
+      ? Alert.alert(
+          t('presentation.credentialDetails.dialogs.deactivate.title', {
             ns: 'wallet'
-          })
-        }
-      ]
-    );
+          }),
+          t('presentation.credentialDetails.dialogs.deactivate.content', {
+            ns: 'wallet'
+          }),
+          [
+            {
+              onPress: handleRemoveCredential,
+              style: 'destructive',
+              text: t(
+                'presentation.credentialDetails.dialogs.deactivate.confirm',
+                { ns: 'wallet' }
+              )
+            },
+            {
+              style: 'cancel',
+              text: t(
+                'presentation.credentialDetails.dialogs.deactivate.cancel',
+                { ns: 'wallet' }
+              )
+            }
+          ]
+        )
+      : Alert.alert(
+          t('presentation.credentialDetails.dialogs.remove.title', {
+            ns: 'wallet'
+          }),
+          t('presentation.credentialDetails.dialogs.remove.content', {
+            ns: 'wallet'
+          }),
+          [
+            {
+              style: 'cancel',
+              text: t('buttons.cancel', { ns: 'common' })
+            },
+            {
+              onPress: handleRemoveCredential,
+              style: 'destructive',
+              text: t('presentation.credentialDetails.dialogs.remove.confirm', {
+                ns: 'wallet'
+              })
+            }
+          ]
+        );
 
   return {
-    confirmAndRemoveCredential
+    confirmAndRemoveCredential,
+    isPid
   };
 };
