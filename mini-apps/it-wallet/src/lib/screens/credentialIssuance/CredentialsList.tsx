@@ -3,8 +3,10 @@ import {
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import {
+  H6,
+  IOListItemVisualParams,
   IOVisualCostants,
-  ListItemHeader,
+  useIOTheme,
   VStack
 } from '@pagopa/io-app-design-system';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -13,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import { OnboardingModuleCredential } from '../../components/credential/OnboardingModuleCredential';
+import { PoweredByItWalletText } from '../../components/PoweredByItWalletText';
 import MAIN_ROUTES from '../../navigation/main/routes';
 import WALLET_ROUTES from '../../navigation/wallet/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -34,7 +37,7 @@ import {
 /**
  * The list of the obtainable credentias.
  * Each credential has a button that allows the user to request it.
- * It also shows a badge if the credential is already saved or a loading indicator if the credential is being requested.
+ * Credentials already in the wallet are hidden, and a loading indicator is shown while a credential is being requested.
  */
 const CredentialsList = () => {
   const { t } = useTranslation('wallet');
@@ -42,6 +45,7 @@ const CredentialsList = () => {
   const dispatch = useAppDispatch();
   const requestedCredential = useAppSelector(selectRequestedCredential);
   const navigation = useNavigation();
+  const theme = useIOTheme();
 
   const goBack = useCallback(() => {
     navigation.goBack();
@@ -106,10 +110,18 @@ const CredentialsList = () => {
       }}
     >
       <View style={styles.wrapper}>
-        <ListItemHeader label={t('credentialIssuance.list.header')} />
+        <View style={styles.header}>
+          <H6 color={theme['textBody-tertiary']} role="heading">
+            {t('credentialIssuance.list.header')}
+          </H6>
+          <PoweredByItWalletText />
+        </View>
         <VStack space={8}>
           {Object.entries(wellKnownCredential)
-            .filter(([_, type]) => type !== wellKnownCredential.PID)
+            .filter(
+              ([_, type]) =>
+                type !== wellKnownCredential.PID && !isCredentialSaved(type)
+            )
             .map(([credentialKey, type]) => (
               <OnboardingModuleCredential
                 configId={
@@ -122,7 +134,6 @@ const CredentialsList = () => {
                     credentialKey as CredentialsKeys
                   ]
                 )}
-                isSaved={isCredentialSaved(type)}
                 key={`itw_credential_${type}`}
                 onPress={onCredentialPress}
                 type={type}
@@ -135,6 +146,11 @@ const CredentialsList = () => {
 };
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: IOListItemVisualParams.paddingVertical
+  },
   wrapper: {
     gap: 16,
     paddingHorizontal: IOVisualCostants.appMarginDefault,

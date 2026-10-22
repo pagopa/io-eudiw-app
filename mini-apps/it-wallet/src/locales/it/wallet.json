@@ -440,9 +440,6 @@
     }
   },
   "credentialIssuance": {
-    "badges": {
-      "saved": "Saved"
-    },
     "list": {
       "title": "Cosa vorresti aggiungere al Portafoglio?",
       "header": "Documenti"
