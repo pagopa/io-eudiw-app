@@ -1,4 +1,7 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  TransitionPresets
+} from '@react-navigation/stack';
 
 import CredentialAlreadyObtained from '../../screens/credentialIssuance/CredentialAlreadyObtained';
 import CredentialFailure from '../../screens/credentialIssuance/CredentialFailure';
@@ -26,10 +29,6 @@ import {
   ItwPresentationCredentialCardModal,
   ItwPresentationCredentialCardModalNavigationParams
 } from '../../screens/presentation/ItwPresentationCredentialCardModal';
-import {
-  ItwPresentationCredentialCardScreen,
-  ItwPresentationCredentialCardScreenNavigationParams
-} from '../../screens/presentation/ItwPresentationCredentialCardScreen';
 import {
   ItwPresentationCredentialDetailNavigationParams,
   ItwPresentationCredentialDetailScreen
@@ -83,8 +82,6 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.PID_ISSUANCE.RESULT]: undefined;
   [WALLET_ROUTES.PRESENTATION
     .CREDENTIAL_CARD_MODAL]: ItwPresentationCredentialCardModalNavigationParams;
-  [WALLET_ROUTES.PRESENTATION
-    .CREDENTIAL_CARD_SCREEN]: ItwPresentationCredentialCardScreenNavigationParams;
   [WALLET_ROUTES.PRESENTATION
     .CREDENTIAL_DETAILS]: ItwPresentationCredentialDetailNavigationParams;
   [WALLET_ROUTES.PRESENTATION
@@ -162,10 +159,10 @@ const WalletNavigator = () => (
       <Stack.Screen
         component={ItwPresentationCredentialCardModal}
         name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_MODAL}
-      />
-      <Stack.Screen
-        component={ItwPresentationCredentialCardScreen}
-        name={WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_SCREEN}
+        options={{
+          gestureEnabled: false,
+          ...TransitionPresets.ModalSlideFromBottomIOS
+        }}
       />
     </Stack.Group>
     <Stack.Group>

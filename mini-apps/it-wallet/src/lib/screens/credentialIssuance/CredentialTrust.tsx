@@ -7,11 +7,10 @@ import {
 } from '@io-eudiw-app/commons';
 import {
   Body,
-  FeatureInfo,
-  FooterActions,
+  BodySmall,
+  ContentWrapper,
   ForceScrollDownView,
   H2,
-  IOVisualCostants,
   ListItemHeader,
   useIOTheme,
   VSpacer,
@@ -20,7 +19,6 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { Fragment, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
 
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import { ItwRequestedClaimsList } from '../../components/presentation/ItwRequiredClaimsList';
@@ -150,8 +148,26 @@ const CredentialTrust = () => {
   );
 
   return (
-    <ForceScrollDownView threshold={50}>
-      <View style={{ flexGrow: 1, margin: IOVisualCostants.appMarginDefault }}>
+    <ForceScrollDownView
+      footerActions={{
+        actions: {
+          primary: {
+            label: t('common:buttons.continue'),
+            loading,
+            onPress: onContinue
+          },
+          secondary: {
+            label: t('common:buttons.undo'),
+            onPress: () => {
+              dismissalDialog.show();
+            }
+          },
+          type: 'TwoButtons'
+        }
+      }}
+      threshold={50}
+    >
+      <ContentWrapper>
         <VSpacer size={24} />
         <ItwDataExchangeIcons />
         <VSpacer size={24} />
@@ -183,34 +199,9 @@ const CredentialTrust = () => {
             )}
           </Fragment>
         ))}
-        <VSpacer size={48} />
-        <FeatureInfo
-          body={t('wallet:credentialIssuance.trust.disclaimer.store')}
-          iconName="fornitori"
-        />
         <VSpacer size={24} />
-        <FeatureInfo
-          body={t('wallet:credentialIssuance.trust.disclaimer.retention')}
-          iconName="trashcan"
-        />
-      </View>
-      <FooterActions
-        actions={{
-          primary: {
-            label: t('common:buttons.continue'),
-            loading,
-            onPress: onContinue
-          },
-          secondary: {
-            label: t('common:buttons.cancel'),
-            onPress: () => {
-              dismissalDialog.show();
-            }
-          },
-          type: 'TwoButtons'
-        }}
-        fixed={false}
-      />
+        <BodySmall>{t('wallet:credentialIssuance.trust.disclaimer')}</BodySmall>
+      </ContentWrapper>
     </ForceScrollDownView>
   );
 };

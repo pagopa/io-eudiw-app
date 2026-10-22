@@ -4,7 +4,6 @@ import { memo } from 'react';
 import { View } from 'react-native';
 
 import { useItwRemoveCredentialWithConfirm } from '../../hooks/useItwRemoveCredentialWithConfirm';
-import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
 import { useAppSelector } from '../../store';
 import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
@@ -28,21 +27,6 @@ const ItwPresentationDetailsFooter = ({
         .map(({ key, props }) => (
           <ListItemAction key={key} {...props} />
         ))}
-      <ListItemAction
-        accessibilityLabel={t(
-          'presentation.credentialDetails.actions.requestAssistance',
-          {
-            ns: 'wallet'
-          }
-        )}
-        icon="message"
-        label={t('presentation.credentialDetails.actions.requestAssistance', {
-          ns: 'wallet'
-        })}
-        onPress={useNotAvailableToastGuard()}
-        testID="requestAssistanceActionTestID"
-        variant="primary"
-      />
       <ListItemAction
         accessibilityLabel={t(
           'presentation.credentialDetails.actions.removeFromWallet',

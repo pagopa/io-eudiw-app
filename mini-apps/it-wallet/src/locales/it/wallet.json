@@ -38,33 +38,16 @@
   "discovery": {
     "screen": {
       "itw": {
-        "title": "DWallet Lab: l'app di test compatibile con l'identità digitale europea",
+        "title": "I tuoi documenti digitali con IT-Wallet: sicuri, ufficiali e sempre con te",
         "features": {
-          "1": "Un'app di test compatibile con le ultime regole tecniche europee",
-          "2": "Attivazione ed autenticazione simulate per focalizzarsi sulle funzionalità",
-          "3": "Testa facilmente le funzionalità su un'app compatibile con EUDIW"
-        },
-        "details": {
-          "1": {
-            "title": "Facile, sicuro, ufficiale",
-            "content": "Simula diversi metodi di attivazione proprio come i veri portafogli europei.\n\nDWallet Lab utilizza funzionalità di sicurezza avanzate e conformi per proteggere i tuoi dati."
-          },
-          "2": {
-            "title": "Testa nuove funzionalità",
-            "content": "Utilizza questa app per testare funzionalità specifiche che non sono ancora state implementate nell'app di produzione."
-          },
-          "3": {
-            "title": "Autenticazione simulata",
-            "content": "L'attivazione e l'autenticazione vengono simulate per mantenere l'attenzione sulle funzionalità da testare."
-          },
-          "4": {
-            "title": "Progettato con l’Europa",
-            "content": "DWallet Lab è compatibile con EUDIW Wallet: se i test avranno esito positivo, potrebbero essere implementati nell'app di produzione e resi disponibili per un gran numero di cittadini dell'Unione Europea."
-          }
+          "1": "La tua Patente su IO è valida come documento di riconoscimento",
+          "2": "Ti basta il tuo telefono per dimostrare la tua identità",
+          "3": "Hai tutto ciò che ti serve anche se lasci a casa il portafoglio",
+          "4": "I nuovi documenti digitali ufficiali, solo sull’app IO",
+          "5": "Accedi in pochi tocchi ai servizi digitali della PA"
         },
         "actions": {
-          "primary": "Continua",
-          "anchor": "Scopri di più"
+          "primary": "Continua"
         },
         "dismissalDialog": {
           "title": "Vuoi rinunciare ai vantaggi di IT-Wallet?",
@@ -172,7 +155,6 @@
       },
       "actions": {
         "removeFromWallet": "Rimuovi dal Portafoglio",
-        "requestAssistance": "Qualcosa non torna?",
         "hideClaimValues": "Nascondi gli attributi del documento",
         "pariPurchases": "Dettaglio acquisti"
       },
@@ -470,13 +452,10 @@
       "header": "Documenti"
     },
     "trust": {
-      "title": "{{credential}}: Dati richiesti",
-      "subtitle": "Saranno condivisi con **{{organization}}** per il rilascio della versione digitale del documento.",
+      "title": "Dati necessari per {{credential}}",
+      "subtitle": "Saranno condivisi con **{{organization}}** solo per il tempo necessario al rilascio della versione digitale del documento.",
       "requiredData": "Dati richiesti",
-      "disclaimer": {
-        "store": "I tuoi dati sono al sicuro e saranno trattati solo per le finalità descritte in informativa Privacy.",
-        "retention": "I dati saranno condivisi solo per il tempo necessario al rilascio della versione digitale del documento."
-      },
+      "disclaimer": "I tuoi dati saranno tratti in sicurezza.",
       "dataSource": "Fornito da {{credentialSource}}"
     },
     "failure": {
@@ -508,7 +487,18 @@
       }
     },
     "credentialPreview": {
+      "detailsTitle": "Controlla i dettagli",
+      "subtitle": "Se i dati sono corretti, aggiungi il documento al Portafoglio.",
+      "actions": {
+        "primary": "Aggiungi al Portafoglio",
+        "somethingWrong": "Qualcosa non torna?"
+      },
       "bottomSheet": {
+        "somethingWrong": {
+          "title": "Qualcosa non torna sui dati del documento",
+          "bodyMarkdown": "Se riscontri errori o incongruenze, dovrai segnalarlo all'ente che detiene i dati e ne è responsabile.\n\nUna volta che i dati saranno stati corretti potrai aggiungere di nuovo il documento al Portafoglio.",
+          "primaryAction": "Ho capito"
+        },
         "about": {
           "title": "Chi è?",
           "subtitle": "È l’ente riconosciuto dallo Stato a fornirti la versione digitale dei tuoi documenti.\n\n Per sapere come tratta i tuoi dati consulta l’[Informativa Privacy]({{privacyUrl}}). "
@@ -521,7 +511,7 @@
     },
     "credentialIntroduction": {
       "content": {
-        "mdl": "**Per aggiungere la tua patente di guida ti serve:**\n\n * un documento di identità valido\n * di essere titolare di una patente di guida italiana in corso di validità\n\nI dati verranno letti direttamente dalle fonti ufficiali.",
+        "mdl": "**Cosa troverai**\n\nLa tua Patente di guida in versione digitale.\nNella patente digitale troverai il dettaglio delle categorie che hai conseguito (es. AM, A1, A2, A, B1, B, BE, C1, C1E, C, CE, D1, D1E, D, DE), incluse le annotazioni e i codici di restrizione.\n\n**Lo sapevi?**\nLa Patente su IO è valida per dimostrare la tua identità, oltre che l’abilitazione alla guida.",
         "disabilityCard": "**Per aggiungere la Carta Europea della Disabilità ti serve:**\n\n * un documento di identità valido\n * di essere titolare di una Carta Europea della Disabilità\n\nI dati verranno letti direttamente dalle fonti ufficiali."
       }
     },

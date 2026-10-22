@@ -1,7 +1,6 @@
 import {
   AnimatedImage,
-  IOMarkdown,
-  IOScrollViewWithReveal,
+  IOScrollView,
   useDisableGestureNavigation,
   useHardwareBackButtonToDismiss,
   useHeaderSecondLevel
@@ -9,31 +8,24 @@ import {
 import {
   BodySmall,
   ContentWrapper,
-  Divider,
   H2,
-  H4,
   HStack,
-  Icon,
   IOColors,
-  IOIcons,
   useIOTheme,
+  useIOThemeContext,
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Animated, {
-  useAnimatedRef,
-  useDerivedValue,
-  useScrollOffset,
-  useSharedValue
-} from 'react-native-reanimated';
+import { useEffect, useRef } from 'react';
+import { StyleSheet } from 'react-native';
 
 import Feature1Image from '../../../assets/img/discovery/feature_1.svg';
 import Feature2Image from '../../../assets/img/discovery/feature_2.svg';
 import Feature3Image from '../../../assets/img/discovery/feature_3.svg';
+import Feature4Image from '../../../assets/img/discovery/feature_4.svg';
+import Feature5Image from '../../../assets/img/discovery/feature_5.svg';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { createInstanceThunk } from '../../middleware/instance';
@@ -41,10 +33,13 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import { resetInstanceCreation } from '../../store/pidIssuance';
 import { selectInstanceStatus } from '../../store/selectors/pidIssuance';
 
-// Offset to avoid to scroll to the block without margins
-const scrollOffset = 12;
-// Percentage of the visible block after which the anchor link is hidden
-const intersectionRatio = 0.3;
+const features = [
+  { Image: Feature1Image, key: '1' },
+  { Image: Feature2Image, key: '2' },
+  { Image: Feature3Image, key: '3' },
+  { Image: Feature4Image, key: '4' },
+  { Image: Feature5Image, key: '5' }
+] as const;
 
 type CreateInstancePromise = ReturnType<ReturnType<typeof createInstanceThunk>>;
 
@@ -101,148 +96,57 @@ export const WalletInstanceCreation = () => {
     }
   }, [error, navigation]);
 
-  const [productHighlightsLayout, setProductHighlightsLayout] = useState({
-    height: 0,
-    y: 0
-  });
-
-  const productHighlightsRef = useRef<View>(null);
-  const animatedRef = useAnimatedRef<Animated.ScrollView>();
-  const scrollPosition = useScrollOffset(animatedRef);
-  const hideAnchorLink = useSharedValue(false);
-
-  useDerivedValue(() => {
-    const threshold: number =
-      productHighlightsLayout.height * (1 - intersectionRatio);
-
-    if (productHighlightsLayout.y > 0) {
-      hideAnchorLink.value =
-        scrollPosition.value >= productHighlightsLayout.y - threshold;
-    }
-  });
-
-  const handleScrollToHighlights = useCallback(() => {
-    animatedRef.current?.scrollTo({
-      animated: true,
-      y: productHighlightsLayout.y - scrollOffset
-    });
-  }, [animatedRef, productHighlightsLayout]);
-
   const onPress = async () => {
     const promise = dispatch(createInstanceThunk());
     thunkRef.current = promise;
   };
 
   return (
-    <IOScrollViewWithReveal
+    <IOScrollView
       actions={{
-        anchor: {
-          label: t('discovery.screen.itw.actions.anchor', {
-            ns: 'wallet'
-          }),
-          onPress: handleScrollToHighlights
-        },
         primary: {
-          label: t('discovery.screen.itw.actions.primary', {
-            ns: 'wallet'
-          }),
+          label: t('discovery.screen.itw.actions.primary', { ns: 'wallet' }),
           loading,
           onPress
-        }
+        },
+        type: 'SingleButton'
       }}
-      animatedRef={animatedRef}
-      hideAnchorAction={hideAnchorLink}
+      includeContentMargins={false}
       testID="itwDiscoveryInfoComponentTestID"
     >
-      <AnimatedImage
-        source={require('../../../assets/img/discovery/itw_hero.png')}
-        style={styles.hero}
-      />
+      <HeroImage />
       <VSpacer size={24} />
       <ContentWrapper>
-        <H2>
-          {t('discovery.screen.itw.title', {
-            ns: 'wallet'
-          })}
-        </H2>
+        <H2>{t('discovery.screen.itw.title', { ns: 'wallet' })}</H2>
         <VSpacer size={24} />
         <VStack space={16}>
-          <FeatureBlock
-            content={t('discovery.screen.itw.features.1', {
-              ns: 'wallet'
-            })}
-            image={<Feature1Image height={48} width={48} />}
-          />
-          <FeatureBlock
-            content={t('discovery.screen.itw.features.2', {
-              ns: 'wallet'
-            })}
-            image={<Feature2Image height={48} width={48} />}
-          />
-          <FeatureBlock
-            content={t('discovery.screen.itw.features.3', {
-              ns: 'wallet'
-            })}
-            image={<Feature3Image height={48} width={48} />}
-          />
+          {features.map(({ Image, key }) => (
+            <FeatureBlock
+              content={t(`discovery.screen.itw.features.${key}`, {
+                ns: 'wallet'
+              })}
+              image={<Image height={48} width={48} />}
+              key={key}
+            />
+          ))}
         </VStack>
+        <VSpacer size={24} />
       </ContentWrapper>
-      <VSpacer size={32} />
-      <View
-        onLayout={event => {
-          setProductHighlightsLayout({
-            height: event.nativeEvent.layout.height,
-            y: event.nativeEvent.layout.y
-          });
-        }}
-        ref={productHighlightsRef}
-      >
-        <ContentWrapper>
-          <Divider />
-          <DetailBlock
-            content={t('discovery.screen.itw.details.1.content', {
-              ns: 'wallet'
-            })}
-            icon="security"
-            title={t('discovery.screen.itw.details.1.title', {
-              ns: 'wallet'
-            })}
-          />
-          <Divider />
-          <DetailBlock
-            content={t('discovery.screen.itw.details.2.content', {
-              ns: 'wallet'
-            })}
-            icon="fiscalCodeIndividual"
-            title={t('discovery.screen.itw.details.2.title', {
-              ns: 'wallet'
-            })}
-          />
-          <Divider />
-          <DetailBlock
-            content={t('discovery.screen.itw.details.3.content', {
-              ns: 'wallet'
-            })}
-            icon="navQrWallet"
-            title={t('discovery.screen.itw.details.3.title', {
-              ns: 'wallet'
-            })}
-          />
-          <Divider />
-          <DetailBlock
-            content={t('discovery.screen.itw.details.4.content', {
-              ns: 'wallet'
-            })}
-            icon="euStars"
-            title={t('discovery.screen.itw.details.4.title', {
-              ns: 'wallet'
-            })}
-          />
+    </IOScrollView>
+  );
+};
 
-          <VSpacer size={24} />
-        </ContentWrapper>
-      </View>
-    </IOScrollViewWithReveal>
+const HeroImage = () => {
+  const { themeType } = useIOThemeContext();
+  return (
+    <AnimatedImage
+      source={
+        themeType === 'light'
+          ? require('../../../assets/img/discovery/itw_hero.png')
+          : require('../../../assets/img/discovery/itw_hero_dark.png')
+      }
+      style={styles.hero}
+    />
   );
 };
 
@@ -268,32 +172,7 @@ const FeatureBlock = (props: {
   );
 };
 
-const DetailBlock = (props: {
-  content: string;
-  icon: IOIcons;
-  title: string;
-}) => {
-  const theme = useIOTheme();
-
-  return (
-    <VStack space={8} style={styles.detail}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <H4>{props.title}</H4>
-        <Icon
-          color={theme['interactiveElem-default']}
-          name={props.icon}
-          size={24}
-        />
-      </View>
-      <IOMarkdown content={props.content} />
-    </VStack>
-  );
-};
-
 const styles = StyleSheet.create({
-  detail: {
-    paddingVertical: 16
-  },
   feature: {
     alignItems: 'center',
     borderCurve: 'continuous',
