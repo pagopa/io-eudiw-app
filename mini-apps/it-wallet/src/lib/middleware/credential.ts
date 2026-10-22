@@ -20,6 +20,7 @@ import * as Crypto from 'expo-crypto';
 import { t } from 'i18next';
 import { serializeError } from 'serialize-error';
 
+import MAIN_ROUTES from '../navigation/main/routes';
 import { navigator } from '../navigation/utils';
 import { WalletCombinedRootState } from '../store';
 import {
@@ -436,7 +437,7 @@ const addCredentialWithAuthListener: AppListenerWithAction<
       return;
     }
     listenerApi.dispatch(resetCredentialIssuance());
-    navigator.navigateWithReset('MAIN_TAB_NAV');
+    navigator.popTo(MAIN_ROUTES.TAB_NAV);
     IOToast.success(t('buttons.done', { ns: 'common' }));
   } else {
     return;

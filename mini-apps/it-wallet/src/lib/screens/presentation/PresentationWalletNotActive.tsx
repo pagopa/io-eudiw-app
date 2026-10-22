@@ -8,8 +8,9 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
 
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
-import WALLET_ROUTES from '../../navigation/wallet/routes';
-import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
+import MAIN_ROUTES from '../../navigation/main/routes';
+import PID_ISSUANCE_ROUTES from '../../navigation/pidIssuance/routes';
 import { useAppDispatch } from '../../store';
 import {
   PendingCredential,
@@ -34,8 +35,8 @@ export type PresentationWalletNotActiveParams =
     };
 
 type Props = StackScreenProps<
-  WalletNavigatorParamsList,
-  'PRESENTATION_WALLET_NOT_ACTIVE'
+  MainNavigatorParamsList,
+  typeof MAIN_ROUTES.WALLET_NOT_ACTIVE
 >;
 
 /**
@@ -66,8 +67,8 @@ const PresentationWalletNotActive = ({ route }: Props) => {
     if (pendingCredential) {
       dispatch(setPendingCredential(pendingCredential));
     }
-    navigation.navigate('MAIN_WALLET_NAV', {
-      screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
+    navigation.navigate(MAIN_ROUTES.PID_ISSUANCE_NAV, {
+      screen: PID_ISSUANCE_ROUTES.INSTANCE_CREATION
     });
   };
 

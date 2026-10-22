@@ -8,7 +8,8 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
 
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
-import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
+import MAIN_ROUTES from '../../navigation/main/routes';
 import { useAppDispatch } from '../../store';
 
 /**
@@ -21,7 +22,10 @@ export type DeepLinkErrorParams = {
   source: 'link' | 'qr';
 };
 
-type Props = StackScreenProps<WalletNavigatorParamsList, 'DEEP_LINK_ERROR'>;
+type Props = StackScreenProps<
+  MainNavigatorParamsList,
+  typeof MAIN_ROUTES.DEEP_LINK_ERROR
+>;
 
 /**
  * Error screen shown when a deep link / QR code URL cannot be parsed by

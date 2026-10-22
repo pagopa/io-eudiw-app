@@ -24,6 +24,8 @@ import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import { ItwRequestedClaimsList } from '../../components/presentation/ItwRequiredClaimsList';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
+import CREDENTIAL_ISSUANCE_ROUTES from '../../navigation/credentialIssuance/routes';
+import MAIN_ROUTES from '../../navigation/main/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   resetCredentialIssuance,
@@ -58,8 +60,8 @@ const CredentialTrust = () => {
 
   const navigateToErrorScreen = useCallback(
     () =>
-      navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'CREDENTIAL_ISSUANCE_FAILURE'
+      navigation.navigate(MAIN_ROUTES.CREDENTIAL_ISSUANCE_NAV, {
+        screen: CREDENTIAL_ISSUANCE_ROUTES.FAILURE
       }),
     [navigation]
   );
@@ -108,8 +110,8 @@ const CredentialTrust = () => {
    */
   useEffect(() => {
     if (success.status) {
-      navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'CREDENTIAL_ISSUANCE_PREVIEW'
+      navigation.navigate(MAIN_ROUTES.CREDENTIAL_ISSUANCE_NAV, {
+        screen: CREDENTIAL_ISSUANCE_ROUTES.PREVIEW
       });
     }
   }, [navigation, success.status]);

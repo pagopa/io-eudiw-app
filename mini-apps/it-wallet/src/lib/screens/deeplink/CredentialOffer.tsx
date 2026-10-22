@@ -5,11 +5,14 @@ import {
 } from '@io-eudiw-app/commons';
 import { Body } from '@pagopa/io-app-design-system';
 import { StackScreenProps } from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import WALLET_ROUTES from '../../navigation/wallet/routes';
-import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import { CredentialIssuanceNavigatorParamsList } from '../../navigation/credentialIssuance/CredentialIssuanceNavigator';
+import CREDENTIAL_ISSUANCE_ROUTES from '../../navigation/credentialIssuance/routes';
+import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
+import MAIN_ROUTES from '../../navigation/main/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   setCredentialIssuancePreAuthError,
@@ -25,8 +28,8 @@ export type CredentialOfferParams = {
 };
 
 type Props = StackScreenProps<
-  WalletNavigatorParamsList,
-  'CREDENTIAL_OFFER_ISSUANCE'
+  CredentialIssuanceNavigatorParamsList,
+  typeof CREDENTIAL_ISSUANCE_ROUTES.OFFER
 >;
 
 /**
@@ -74,7 +77,7 @@ const CredentialOffer = ({ navigation, route }: Props) => {
         credentialType !== undefined &&
         credentials.some(c => c.credentialType === credentialType)
       ) {
-        navigation.replace(WALLET_ROUTES.CREDENTIAL_ISSUANCE.ALREADY_OBTAINED);
+        navigation.replace(CREDENTIAL_ISSUANCE_ROUTES.ALREADY_OBTAINED);
         return;
       }
 
@@ -82,13 +85,15 @@ const CredentialOffer = ({ navigation, route }: Props) => {
         // The wallet is not active yet: prompt the user to activate it,
         // carrying the whole offer so its issuance resumes against the right
         // issuer once the PID has been obtained.
-        navigation.replace(WALLET_ROUTES.PRESENTATION.WALLET_NOT_ACTIVE, {
-          pendingCredential: {
-            credential: credentialConfigId,
-            issuerUrl: offer.credential_issuer,
-            offer
-          }
-        });
+        navigation
+          .getParent<StackNavigationProp<MainNavigatorParamsList>>()
+          .replace(MAIN_ROUTES.WALLET_NOT_ACTIVE, {
+            pendingCredential: {
+              credential: credentialConfigId,
+              issuerUrl: offer.credential_issuer,
+              offer
+            }
+          });
         return;
       }
 
@@ -99,10 +104,10 @@ const CredentialOffer = ({ navigation, route }: Props) => {
           offer
         })
       );
-      navigation.replace(WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST);
+      navigation.replace(CREDENTIAL_ISSUANCE_ROUTES.TRUST);
     } catch (error) {
       dispatch(setCredentialIssuancePreAuthError({ error }));
-      navigation.replace(WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE);
+      navigation.replace(CREDENTIAL_ISSUANCE_ROUTES.FAILURE);
     }
   }, [route.params, shouldIssuePidFirst, credentials, dispatch, navigation]);
 

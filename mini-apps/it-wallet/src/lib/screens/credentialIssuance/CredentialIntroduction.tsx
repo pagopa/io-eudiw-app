@@ -12,9 +12,10 @@ import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, View } from 'react-native';
 
+import { CredentialIssuanceNavigatorParamsList } from '../../navigation/credentialIssuance/CredentialIssuanceNavigator';
+import CREDENTIAL_ISSUANCE_ROUTES from '../../navigation/credentialIssuance/routes';
 import MAIN_ROUTES from '../../navigation/main/routes';
-import WALLET_ROUTES from '../../navigation/wallet/routes';
-import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import PID_ISSUANCE_ROUTES from '../../navigation/pidIssuance/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   resetCredentialIssuance,
@@ -34,8 +35,8 @@ export type CredentialIntroductionParams = {
 };
 
 type Props = StackScreenProps<
-  WalletNavigatorParamsList,
-  'CREDENTIAL_ISSUANCE_INTRODUCTION'
+  CredentialIssuanceNavigatorParamsList,
+  typeof CREDENTIAL_ISSUANCE_ROUTES.INTRODUCTION
 >;
 
 const introHero = Image.resolveAssetSource(
@@ -82,16 +83,16 @@ const CredentialIntroduction = ({ route }: Props) => {
 
   useEffect(() => {
     if (preAuthStatus.success.status) {
-      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-        screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
+      navigation.navigate(MAIN_ROUTES.CREDENTIAL_ISSUANCE_NAV, {
+        screen: CREDENTIAL_ISSUANCE_ROUTES.TRUST
       });
     }
   }, [preAuthStatus.success, navigation]);
 
   useEffect(() => {
     if (preAuthStatus.error.status) {
-      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-        screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE
+      navigation.navigate(MAIN_ROUTES.CREDENTIAL_ISSUANCE_NAV, {
+        screen: CREDENTIAL_ISSUANCE_ROUTES.FAILURE
       });
     }
   }, [preAuthStatus.error, navigation]);
@@ -99,8 +100,8 @@ const CredentialIntroduction = ({ route }: Props) => {
   const handleContinue = () => {
     if (shouldIssuePidFirst) {
       dispatch(setPendingCredential({ credential }));
-      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-        screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
+      navigation.navigate(MAIN_ROUTES.PID_ISSUANCE_NAV, {
+        screen: PID_ISSUANCE_ROUTES.INSTANCE_CREATION
       });
       return;
     }

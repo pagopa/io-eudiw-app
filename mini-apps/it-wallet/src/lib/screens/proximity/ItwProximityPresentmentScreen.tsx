@@ -30,6 +30,7 @@ import { ItwProximityQrCodeInfoBanner } from '../../components/proximity/ItwProx
 import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
 import { useProximityEngagement } from '../../hooks/useProximityEngagement';
 import MAIN_ROUTES from '../../navigation/main/routes';
+import PROXIMITY_ROUTES from '../../navigation/proximity/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   selectProximityInfoBannerActive,
@@ -112,8 +113,8 @@ const ItwProximityPresentmentScreen = () => {
     if (
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT
     ) {
-      navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PROXIMITY_PREVIEW'
+      navigation.navigate(MAIN_ROUTES.PROXIMITY_NAV, {
+        screen: PROXIMITY_ROUTES.PREVIEW
       });
     }
   }, [proximityStatus, navigation, engagementMode]);
@@ -130,7 +131,9 @@ const ItwProximityPresentmentScreen = () => {
     // instructions screen without committing to NFC (the QR engagement keeps
     // running underneath).
     if (!(await checkNfcActivation())) {
-      navigation.navigate(MAIN_ROUTES.PROXIMITY_NFC_ACTIVATION);
+      navigation.navigate(MAIN_ROUTES.PROXIMITY_NAV, {
+        screen: PROXIMITY_ROUTES.NFC_ACTIVATION
+      });
       return;
     }
     // Switch the engagement to NFC and restart the proximity listener: the

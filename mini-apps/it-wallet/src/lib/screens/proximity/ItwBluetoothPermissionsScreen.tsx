@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Alert, Linking, Platform } from 'react-native';
 
 import { useProximityEngagement } from '../../hooks/useProximityEngagement';
-import MAIN_ROUTES from '../../navigation/main/routes';
+import PROXIMITY_ROUTES from '../../navigation/proximity/routes';
 import { checkBluetoothActivation } from '../../utils/bluetooth';
 import { requestBlePermissions } from '../../utils/permissions';
 
@@ -34,7 +34,7 @@ const ItwBluetoothPermissionsScreen = () => {
         startEngagement('qrcode', { replaceScreen: true });
       } else {
         navigation.dispatch(
-          StackActions.replace(MAIN_ROUTES.PROXIMITY_BLUETOOTH_ACTIVATION)
+          StackActions.replace(PROXIMITY_ROUTES.BLUETOOTH_ACTIVATION)
         );
       }
       return;

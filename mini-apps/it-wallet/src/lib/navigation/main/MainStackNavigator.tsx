@@ -1,39 +1,65 @@
 import { NavigatorScreenParams, PathConfigMap } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  TransitionPresets
+} from '@react-navigation/stack';
 
+import DeepLinkError, {
+  DeepLinkErrorParams
+} from '../../screens/deeplink/DeepLinkError';
+import DeepLinkHandler, {
+  DeepLinkHandlerParams
+} from '../../screens/deeplink/DeepLinkHandler';
+import {
+  ItwPresentationCredentialCardModal,
+  ItwPresentationCredentialCardModalNavigationParams
+} from '../../screens/presentation/ItwPresentationCredentialCardModal';
+import {
+  ItwPresentationCredentialDetailNavigationParams,
+  ItwPresentationCredentialDetailScreen
+} from '../../screens/presentation/ItwPresentationCredentialDetailScreen';
+import PresentationWalletNotActive, {
+  PresentationWalletNotActiveParams
+} from '../../screens/presentation/PresentationWalletNotActive';
 import QrCodeScanScreen from '../../screens/presentation/QrCodeScanScreen';
-import ItwBluetoothActivationScreen from '../../screens/proximity/ItwBluetoothActivationScreen';
-import ItwBluetoothPermissionsScreen from '../../screens/proximity/ItwBluetoothPermissionsScreen';
-import ItwNfcActivationScreen from '../../screens/proximity/ItwNfcActivationScreen';
-import ItwProximityNfcPresentment from '../../screens/proximity/ItwProximityNfcPresentment';
-import ItwProximityPresentmentScreen from '../../screens/proximity/ItwProximityPresentmentScreen';
 import Appearance from '../../screens/settings/Appearance';
 import Preference from '../../screens/settings/Preferences';
 import { ProximityConsents } from '../../screens/settings/ProximityConsents';
 import Settings from '../../screens/settings/Settings';
-// Internal Imports
+import CredentialIssuanceNavigator, {
+  CredentialIssuanceNavigatorParamsList
+} from '../credentialIssuance/CredentialIssuanceNavigator';
+import PidIssuanceNavigator, {
+  PidIssuanceNavigatorParamsList
+} from '../pidIssuance/PidIssuanceNavigator';
+import PresentationNavigator, {
+  PresentationNavigatorParamsList
+} from '../presentation/PresentationNavigator';
+import ProximityNavigator, {
+  ProximityNavigatorParamsList
+} from '../proximity/ProximityNavigator';
 import { TabNavigator } from '../tab/TabNavigator';
-import WalletNavigator, {
-  WalletNavigatorParamsList
-} from '../wallet/WalletNavigator';
 import MAIN_ROUTES from './routes';
 
 /**
  * Screen parameters for the main navigator.
  */
 export type MainNavigatorParamsList = {
-  [MAIN_ROUTES.BLE_PRESENTMENT]: undefined;
-  [MAIN_ROUTES.NFC_PRESENTMENT]: undefined;
-  [MAIN_ROUTES.PROXIMITY_BLUETOOTH_ACTIVATION]: undefined;
-  [MAIN_ROUTES.PROXIMITY_BLUETOOTH_PERMISSIONS]: undefined;
-  [MAIN_ROUTES.PROXIMITY_NFC_ACTIVATION]: undefined;
+  [MAIN_ROUTES.CREDENTIAL_CARD_MODAL]: ItwPresentationCredentialCardModalNavigationParams;
+  [MAIN_ROUTES.CREDENTIAL_DETAILS]: ItwPresentationCredentialDetailNavigationParams;
+  [MAIN_ROUTES.CREDENTIAL_ISSUANCE_NAV]: NavigatorScreenParams<CredentialIssuanceNavigatorParamsList>;
+  [MAIN_ROUTES.DEEP_LINK_ERROR]: DeepLinkErrorParams;
+  [MAIN_ROUTES.DEEP_LINK_HANDLER]: DeepLinkHandlerParams;
+  [MAIN_ROUTES.PID_ISSUANCE_NAV]: NavigatorScreenParams<PidIssuanceNavigatorParamsList>;
+  [MAIN_ROUTES.PRESENTATION_NAV]: NavigatorScreenParams<PresentationNavigatorParamsList>;
+  [MAIN_ROUTES.PROXIMITY_NAV]: NavigatorScreenParams<ProximityNavigatorParamsList>;
   [MAIN_ROUTES.SCAN_QR]: undefined;
   [MAIN_ROUTES.SETTINGS.MAIN]: undefined;
   [MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE]: undefined;
   [MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN]: undefined;
   [MAIN_ROUTES.SETTINGS.PROXIMITY]: undefined;
   [MAIN_ROUTES.TAB_NAV]: undefined;
-  [MAIN_ROUTES.WALLET_NAV]: NavigatorScreenParams<WalletNavigatorParamsList>;
+  [MAIN_ROUTES.WALLET_NOT_ACTIVE]: PresentationWalletNotActiveParams;
 };
 
 /**
@@ -43,20 +69,18 @@ export type MainNavigatorParamsList = {
  * reading the full URL from the deep linking slice.
  */
 export const walletLinkingConfig: PathConfigMap<MainNavigatorParamsList> = {
-  [MAIN_ROUTES.WALLET_NAV]: {
-    screens: {
-      DEEP_LINK_HANDLER: {
-        path: ''
-      }
-    }
+  [MAIN_ROUTES.DEEP_LINK_HANDLER]: {
+    path: ''
   }
 };
 
 const Stack = createStackNavigator<MainNavigatorParamsList>();
 
 /**
- * The main stack navigator.
- * Handles async i18n initialization before rendering the navigation tree.
+ * The main stack navigator of the mini-app.
+ * It hosts the tab navigator, the standalone screens and one nested stack for
+ * each flow (PID issuance, credential issuance, remote and proximity
+ * presentation).
  */
 export const MainStackNavigator = () => (
   <Stack.Navigator
@@ -67,53 +91,76 @@ export const MainStackNavigator = () => (
   >
     <Stack.Screen component={TabNavigator} name={MAIN_ROUTES.TAB_NAV} />
 
-    <Stack.Screen component={WalletNavigator} name={MAIN_ROUTES.WALLET_NAV} />
+    <Stack.Group>
+      <Stack.Screen
+        component={PidIssuanceNavigator}
+        name={MAIN_ROUTES.PID_ISSUANCE_NAV}
+      />
+      <Stack.Screen
+        component={CredentialIssuanceNavigator}
+        name={MAIN_ROUTES.CREDENTIAL_ISSUANCE_NAV}
+      />
+      <Stack.Screen
+        component={PresentationNavigator}
+        name={MAIN_ROUTES.PRESENTATION_NAV}
+      />
+      <Stack.Screen
+        component={ProximityNavigator}
+        name={MAIN_ROUTES.PROXIMITY_NAV}
+        options={{ animation: 'slide_from_bottom' }}
+      />
+    </Stack.Group>
 
-    <Stack.Screen
-      component={QrCodeScanScreen}
-      name={MAIN_ROUTES.SCAN_QR}
-      options={{ animation: 'slide_from_bottom' }}
-    />
+    <Stack.Group>
+      <Stack.Screen
+        component={DeepLinkHandler}
+        name={MAIN_ROUTES.DEEP_LINK_HANDLER}
+      />
+      <Stack.Screen
+        component={DeepLinkError}
+        name={MAIN_ROUTES.DEEP_LINK_ERROR}
+      />
+      <Stack.Screen
+        component={PresentationWalletNotActive}
+        name={MAIN_ROUTES.WALLET_NOT_ACTIVE}
+      />
+      <Stack.Screen
+        component={QrCodeScanScreen}
+        name={MAIN_ROUTES.SCAN_QR}
+        options={{ animation: 'slide_from_bottom' }}
+      />
+    </Stack.Group>
 
-    <Stack.Screen
-      component={ItwProximityPresentmentScreen}
-      name={MAIN_ROUTES.BLE_PRESENTMENT}
-      options={{ animation: 'slide_from_bottom' }}
-    />
+    <Stack.Group>
+      <Stack.Screen
+        component={ItwPresentationCredentialDetailScreen}
+        name={MAIN_ROUTES.CREDENTIAL_DETAILS}
+      />
+      <Stack.Screen
+        component={ItwPresentationCredentialCardModal}
+        name={MAIN_ROUTES.CREDENTIAL_CARD_MODAL}
+        options={{
+          gestureEnabled: false,
+          headerShown: true,
+          ...TransitionPresets.ModalSlideFromBottomIOS
+        }}
+      />
+    </Stack.Group>
 
-    <Stack.Screen
-      component={ItwProximityNfcPresentment}
-      name={MAIN_ROUTES.NFC_PRESENTMENT}
-      options={{ animation: 'slide_from_bottom' }}
-    />
-
-    <Stack.Screen
-      component={ItwBluetoothPermissionsScreen}
-      name={MAIN_ROUTES.PROXIMITY_BLUETOOTH_PERMISSIONS}
-    />
-
-    <Stack.Screen
-      component={ItwBluetoothActivationScreen}
-      name={MAIN_ROUTES.PROXIMITY_BLUETOOTH_ACTIVATION}
-    />
-
-    <Stack.Screen
-      component={ItwNfcActivationScreen}
-      name={MAIN_ROUTES.PROXIMITY_NFC_ACTIVATION}
-    />
-
-    <Stack.Screen component={Settings} name={MAIN_ROUTES.SETTINGS.MAIN} />
-    <Stack.Screen
-      component={Preference}
-      name={MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN}
-    />
-    <Stack.Screen
-      component={Appearance}
-      name={MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE}
-    />
-    <Stack.Screen
-      component={ProximityConsents}
-      name={MAIN_ROUTES.SETTINGS.PROXIMITY}
-    />
+    <Stack.Group>
+      <Stack.Screen component={Settings} name={MAIN_ROUTES.SETTINGS.MAIN} />
+      <Stack.Screen
+        component={Preference}
+        name={MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN}
+      />
+      <Stack.Screen
+        component={Appearance}
+        name={MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE}
+      />
+      <Stack.Screen
+        component={ProximityConsents}
+        name={MAIN_ROUTES.SETTINGS.PROXIMITY}
+      />
+    </Stack.Group>
   </Stack.Navigator>
 );

@@ -16,8 +16,9 @@ import { StyleSheet, View } from 'react-native';
 
 import { OnboardingModuleCredential } from '../../components/credential/OnboardingModuleCredential';
 import { PoweredByItWalletText } from '../../components/PoweredByItWalletText';
+import CREDENTIAL_ISSUANCE_ROUTES from '../../navigation/credentialIssuance/routes';
 import MAIN_ROUTES from '../../navigation/main/routes';
-import WALLET_ROUTES from '../../navigation/wallet/routes';
+import PID_ISSUANCE_ROUTES from '../../navigation/pidIssuance/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   resetCredentialIssuance,
@@ -65,16 +66,16 @@ const CredentialsList = () => {
   // screen, so the issuance outcome is handled here only while it's focused.
   useEffect(() => {
     if (isFocused && preAuthStatus.success.status && !shouldIssuePidFirst) {
-      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-        screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
+      navigation.navigate(MAIN_ROUTES.CREDENTIAL_ISSUANCE_NAV, {
+        screen: CREDENTIAL_ISSUANCE_ROUTES.TRUST
       });
     }
   }, [isFocused, preAuthStatus.success, navigation, shouldIssuePidFirst]);
 
   useEffect(() => {
     if (isFocused && preAuthStatus.error.status && !shouldIssuePidFirst) {
-      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-        screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE
+      navigation.navigate(MAIN_ROUTES.CREDENTIAL_ISSUANCE_NAV, {
+        screen: CREDENTIAL_ISSUANCE_ROUTES.FAILURE
       });
     }
   }, [isFocused, preAuthStatus.error, navigation, shouldIssuePidFirst]);
@@ -82,16 +83,16 @@ const CredentialsList = () => {
   const onCredentialPress = (credential: string) => {
     // Skip the introduction screen for PARI BONUS
     if (credential !== wellKnownCredentialConfigurationIDs.BONUS_PARI) {
-      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+      navigation.navigate(MAIN_ROUTES.CREDENTIAL_ISSUANCE_NAV, {
         params: { credential },
-        screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.INTRODUCTION
+        screen: CREDENTIAL_ISSUANCE_ROUTES.INTRODUCTION
       });
       return;
     }
     if (shouldIssuePidFirst) {
       dispatch(setPendingCredential({ credential }));
-      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-        screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
+      navigation.navigate(MAIN_ROUTES.PID_ISSUANCE_NAV, {
+        screen: PID_ISSUANCE_ROUTES.INSTANCE_CREATION
       });
       return;
     }

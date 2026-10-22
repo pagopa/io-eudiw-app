@@ -12,6 +12,9 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
 
+import MAIN_ROUTES from '../../navigation/main/routes';
+import PID_ISSUANCE_ROUTES from '../../navigation/pidIssuance/routes';
+
 export const IdentificationMethod = () => {
   const navigation = useNavigation();
 
@@ -20,8 +23,8 @@ export const IdentificationMethod = () => {
   });
 
   const handleOnPress = () => {
-    navigation.navigate('MAIN_WALLET_NAV', {
-      screen: 'PID_ISSUANCE_REQUEST'
+    navigation.navigate(MAIN_ROUTES.PID_ISSUANCE_NAV, {
+      screen: PID_ISSUANCE_ROUTES.REQUEST
     });
   };
   return (

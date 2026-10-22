@@ -24,7 +24,7 @@ import { LocaleResource } from '.';
  *   linkingSchemes: ['haip://', 'openid4vp://'],
  *   linkingConfig: walletLinkingConfig,
  *   addListeners: addWalletListeners,
- * } satisfies MiniApp<'it-wallet', 'wallet', WalletNavigatorParamsList>;
+ * } satisfies MiniApp<'it-wallet', 'wallet', MainNavigatorParamsList>;
  * ```
  *
  * @template TId - A literal string that uniquely identifies this mini-app.

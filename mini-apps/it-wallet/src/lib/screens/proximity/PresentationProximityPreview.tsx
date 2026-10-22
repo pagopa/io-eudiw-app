@@ -29,6 +29,8 @@ import { Alert, StyleSheet, View } from 'react-native';
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
+import MAIN_ROUTES from '../../navigation/main/routes';
+import PROXIMITY_ROUTES from '../../navigation/proximity/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   ProximityStatus,
@@ -76,33 +78,33 @@ const PresentationProximityPreview = () => {
     useCallback(() => {
       // Handle navigation based on the proximity presentation result
       if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_STOPPED) {
-        navigation.navigate('MAIN_WALLET_NAV', {
-          screen: 'PROXIMITY_SUCCESS'
+        navigation.navigate(MAIN_ROUTES.PROXIMITY_NAV, {
+          screen: PROXIMITY_ROUTES.SUCCESS
         });
       } else if (
         proximityStatus === ProximityStatus.PROXIMITY_STATUS_STORE_CONSENT
       ) {
         // NFC-retrieval dance: after confirming the claims the middleware asks
         // whether to persist the consent before re-engaging.
-        navigation.navigate('MAIN_WALLET_NAV', {
-          screen: 'PROXIMITY_STORE_CONSENT'
+        navigation.navigate(MAIN_ROUTES.PROXIMITY_NAV, {
+          screen: PROXIMITY_ROUTES.STORE_CONSENT
         });
       } else if (
         proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED ||
         proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR
       ) {
-        navigation.navigate('MAIN_WALLET_NAV', {
+        navigation.navigate(MAIN_ROUTES.PROXIMITY_NAV, {
           params: {
             fatal: true
           },
-          screen: 'PROXIMITY_FAILURE'
+          screen: PROXIMITY_ROUTES.FAILURE
         });
       } else if (
         proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR_AUTHORIZED
       ) {
-        navigation.navigate('MAIN_WALLET_NAV', {
+        navigation.navigate(MAIN_ROUTES.PROXIMITY_NAV, {
           params: { fatal: false },
-          screen: 'PROXIMITY_FAILURE'
+          screen: PROXIMITY_ROUTES.FAILURE
         });
       }
     }, [proximityStatus, navigation])

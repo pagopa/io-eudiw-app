@@ -10,7 +10,9 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import MAIN_ROUTES from '../../navigation/main/routes';
+import { PresentationNavigatorParamsList } from '../../navigation/presentation/PresentationNavigator';
+import PRESENTATION_ROUTES from '../../navigation/presentation/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { selectCredential } from '../../store/credentials';
 import {
@@ -29,8 +31,8 @@ export type PresentationPreDefinitionParams = {
 };
 
 type Props = StackScreenProps<
-  WalletNavigatorParamsList,
-  'PRESENTATION_PRE_DEFINITION'
+  PresentationNavigatorParamsList,
+  typeof PRESENTATION_ROUTES.PRE_DEFINITION
 >;
 
 /**
@@ -62,34 +64,32 @@ const PresentationPreDefinition = ({ route }: Props) => {
    */
   useEffect(() => {
     if (preDefinitionStatus.success.status && preDefinitionResult) {
-      navigation.navigate('MAIN_WALLET_NAV', {
+      navigation.navigate(MAIN_ROUTES.PRESENTATION_NAV, {
         params: {
           descriptor: preDefinitionResult
         },
-        screen: 'PRESENTATION_POST_DEFINITION'
+        screen: PRESENTATION_ROUTES.POST_DEFINITION
       });
     } else if (preDefinitionStatus.error.status) {
       switch (preDefinitionStatus.error.type) {
         case 'CREDENTIAL_NOT_FOUND':
           if (credentialNotFound) {
-            navigation.navigate('MAIN_WALLET_NAV', {
+            navigation.navigate(MAIN_ROUTES.PRESENTATION_NAV, {
               params: { credentialType: credentialNotFound },
-              screen: 'PRESENTATION_CREDENTIAL_NOT_FOUND'
+              screen: PRESENTATION_ROUTES.CREDENTIAL_NOT_FOUND
             });
           } else {
-            navigation.navigate('MAIN_WALLET_NAV', {
-              screen: 'PRESENTATION_FAILURE'
+            navigation.navigate(MAIN_ROUTES.PRESENTATION_NAV, {
+              screen: PRESENTATION_ROUTES.FAILURE
             });
           }
           break;
         case 'WALLET_NOT_ACTIVE':
-          navigation.navigate('MAIN_WALLET_NAV', {
-            screen: 'PRESENTATION_WALLET_NOT_ACTIVE'
-          });
+          navigation.navigate(MAIN_ROUTES.WALLET_NOT_ACTIVE);
           break;
         default:
-          navigation.navigate('MAIN_WALLET_NAV', {
-            screen: 'PRESENTATION_FAILURE'
+          navigation.navigate(MAIN_ROUTES.PRESENTATION_NAV, {
+            screen: PRESENTATION_ROUTES.FAILURE
           });
       }
     }

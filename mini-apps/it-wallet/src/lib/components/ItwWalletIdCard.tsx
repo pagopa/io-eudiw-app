@@ -4,7 +4,6 @@ import { useCallback } from 'react';
 
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../navigation/main/routes';
-import WALLET_ROUTES from '../navigation/wallet/routes';
 import { useAppSelector } from '../store';
 import { itwCredentialsPidStatusSelector } from '../store/credentials';
 import { wellKnownCredential } from '../utils/credentials';
@@ -16,11 +15,8 @@ export const ItwWalletIdCard = ({ isStacked }: { isStacked: boolean }) => {
   const pidStatus = useAppSelector(itwCredentialsPidStatusSelector);
 
   const handlePress = useCallback(() => {
-    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-      params: {
-        credentialType: wellKnownCredential.PID
-      },
-      screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_DETAILS
+    navigation.navigate(MAIN_ROUTES.CREDENTIAL_DETAILS, {
+      credentialType: wellKnownCredential.PID
     });
   }, [navigation]);
 

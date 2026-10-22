@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { TabIconComponent } from '../../components/TabIconComponent';
 import WalletHome from '../../screens/WalletHome';
 import { useAppSelector } from '../../store';
+import MAIN_ROUTES from '../main/routes';
 import TAB_ROUTES from './routes';
 
 /**
@@ -22,7 +23,7 @@ const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
 
 /**
  * Tab navigator which contains the main screens of the application.
- * It is used to navigate between the main screens of the application which are currently the home, scan qr and show qr screens.
+ * It contains the wallet home and a scan QR tab, which opens the QR code scanner instead of rendering a screen.
  */
 export const TabNavigator = () => {
   const { t } = useTranslation(['common', 'wallet']);
@@ -35,7 +36,8 @@ export const TabNavigator = () => {
    */
   const EmptyComponent = () => null;
 
-  const navigateToQrCodeScanScreen = () => navigation.navigate('MAIN_SCAN_QR');
+  const navigateToQrCodeScanScreen = () =>
+    navigation.navigate(MAIN_ROUTES.SCAN_QR);
 
   return (
     <Tab.Navigator

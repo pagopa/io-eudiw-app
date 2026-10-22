@@ -1,10 +1,15 @@
-import { OperationResultScreenContent } from '@io-eudiw-app/commons';
+import {
+  OperationResultScreenContent,
+  useDisableGestureNavigation,
+  useHardwareBackButton
+} from '@io-eudiw-app/commons';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
 
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
-import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import { ProximityNavigatorParamsList } from '../../navigation/proximity/ProximityNavigator';
+import PROXIMITY_ROUTES from '../../navigation/proximity/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   resetProximity,
@@ -17,10 +22,16 @@ export type PresentationProximityFailureProps = {
   fatal: boolean;
 };
 
-type Props = StackScreenProps<WalletNavigatorParamsList, 'PROXIMITY_FAILURE'>;
+type Props = StackScreenProps<
+  ProximityNavigatorParamsList,
+  typeof PROXIMITY_ROUTES.FAILURE
+>;
 const PresentationProximityFailure = ({ route }: Props) => {
   const { t } = useTranslation();
   const { navigateToWallet } = useNavigateToWalletWithReset();
+
+  useHardwareBackButton(() => true);
+  useDisableGestureNavigation();
   const dispatch = useAppDispatch();
 
   const proximityStatus = useAppSelector(selectProximityStatus);

@@ -8,7 +8,7 @@ import { View } from 'react-native';
 
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../navigation/main/routes';
-import WALLET_ROUTES from '../navigation/wallet/routes';
+import PID_ISSUANCE_ROUTES from '../navigation/pidIssuance/routes';
 import { useAppSelector } from '../store';
 import {
   itwCredentialsPidSelector,
@@ -43,8 +43,8 @@ export const ItwPidLifecycleAlert = ({
   const maybePidStatus = useAppSelector(itwCredentialsPidStatusSelector);
 
   const startPidReissuing = () => {
-    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-      screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
+    navigation.navigate(MAIN_ROUTES.PID_ISSUANCE_NAV, {
+      screen: PID_ISSUANCE_ROUTES.INSTANCE_CREATION
     });
   };
 

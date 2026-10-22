@@ -1,7 +1,9 @@
 import {
   openWebUrl,
   OperationResultScreenContent,
-  OperationResultScreenContentProps
+  OperationResultScreenContentProps,
+  useDisableGestureNavigation,
+  useHardwareBackButton
 } from '@io-eudiw-app/commons';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import { useIOToast } from '@pagopa/io-app-design-system';
@@ -22,6 +24,9 @@ const PresentationSuccess = () => {
   const { t } = useTranslation(['wallet', 'common']);
   const dispatch = useAppDispatch();
   const { navigateToWallet } = useNavigateToWalletWithReset();
+
+  useHardwareBackButton(() => true);
+  useDisableGestureNavigation();
   const result = useAppSelector(selectPostDefinitionResult);
   const toast = useIOToast();
 
