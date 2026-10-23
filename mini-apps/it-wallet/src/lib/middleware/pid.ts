@@ -285,9 +285,6 @@ const addPidWithAuthListener: AppListenerWithAction<
       navigator.navigate(MAIN_ROUTES.WALLET_NAV, {
         screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
       });
-    } else {
-      // This should not happen, so by default the flow will just reset navigation and go back home
-      navigator.navigateWithReset(MAIN_ROUTES.TAB_NAV);
     }
   } else {
     return;

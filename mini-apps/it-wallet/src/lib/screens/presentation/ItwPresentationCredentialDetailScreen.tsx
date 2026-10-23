@@ -30,6 +30,7 @@ import {
   CredentialCtaProps,
   ItwPresentationDetailsScreenBase
 } from '../../components/presentation/ItwPresentationDetailsScreenBase';
+import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredentialStatus';
 import { useProximityEngagement } from '../../hooks/useProximityEngagement';
 import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../../navigation/main/routes';
@@ -127,6 +128,7 @@ const ItwPresentationCredentialDetail = ({
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
   const isDebugEnabled = useAppSelector(selectIsDebugModeEnabled);
   const status = getCredentialStatus(credential);
+  const displayStatus = useItwDisplayCredentialStatus(status);
   const capabilities = getCredentialCapabilities(credential.credentialType);
 
   const { t } = useTranslation(['wallet', 'common']);
@@ -139,13 +141,6 @@ const ItwPresentationCredentialDetail = ({
   const hasSkeumorphicCard = credentialsWithSkeumorphicCard.includes(
     credential.credentialType
   );
-
-  const handleOpenCard = () => {
-    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
-      params: { credentialType: credential.credentialType },
-      screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_SCREEN
-    });
-  };
 
   // The proximity verification CTA is only available for mdoc credentials
   // (currently only the mDL), which are the ones presentable over proximity.
@@ -166,6 +161,17 @@ const ItwPresentationCredentialDetail = ({
     () => parseClaimsToRecord(credential.parsedCredential),
     [credential.parsedCredential]
   );
+
+  const handleOpenCard = () => {
+    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+      params: {
+        credential,
+        parsedClaims,
+        status: displayStatus
+      },
+      screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_MODAL
+    });
+  };
 
   if (status === 'unknown') {
     return <ItwPresentationCredentialUnknownStatus credential={credential} />;

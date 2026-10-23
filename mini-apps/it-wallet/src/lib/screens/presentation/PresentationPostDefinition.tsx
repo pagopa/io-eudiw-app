@@ -1,17 +1,14 @@
 import {
-  getSafeText,
   useDisableGestureNavigation,
   useHardwareBackButton,
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import { IOMarkdown } from '@io-eudiw-app/commons';
 import {
-  ClaimsSelector,
-  FeatureInfo,
-  FooterActions,
+  BodySmall,
+  ContentWrapper,
   ForceScrollDownView,
   H2,
-  IOVisualCostants,
   ListItemCheckbox,
   ListItemHeader,
   useIOTheme,
@@ -20,11 +17,12 @@ import {
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { ComponentProps, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert, View } from 'react-native';
 
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
+import { ItwClaimsSelector } from '../../components/presentation/ItwClaimsSelector';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -36,12 +34,7 @@ import {
   setPostDefinitionCancel,
   setPostDefinitionRequest
 } from '../../store/presentation';
-import { getClaimDisplayValue } from '../../utils/itwClaimsUtils';
-import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
-import {
-  ClaimDisplayFormat,
-  groupCredentialsByPurpose
-} from '../../utils/itwRemotePresentationUtils';
+import { groupCredentialsByPurpose } from '../../utils/itwRemotePresentationUtils';
 import { EnrichedPresentationDetails } from '../../utils/itwTypesUtils';
 
 /**
@@ -60,7 +53,7 @@ type Props = StackScreenProps<
  * Presentation for the issuance flow after the user has received the descriptor containing the requested claims.
  * It requires the descrptor containg the requested claims in order to render the screen, passed via navigation params.
  */
-// eslint-disable-next-line max-lines-per-function
+
 const PresentationPostDefinition = ({ route }: Props) => {
   const navigation = useNavigation();
   const { t } = useTranslation(['common', 'wallet']);
@@ -127,42 +120,6 @@ const PresentationPostDefinition = ({ route }: Props) => {
   });
 
   /**
-   * Maps claims to the format required by the ClaimsSelector component.
-   */
-  const mapClaims = (
-    claims: ClaimDisplayFormat[]
-  ): ComponentProps<typeof ClaimsSelector>['items'] =>
-    claims
-      // Deduplicate by id so the ClaimsSelector never receives two items with
-      // the same React key (the key is derived from the claim id)
-      .filter(
-        (claim, index, all) =>
-          all.findIndex(({ id }) => id === claim.id) === index
-      )
-      .map(c => {
-        const displayResult = getClaimDisplayValue(c);
-
-        if (displayResult.type === 'image') {
-          return {
-            description: c.label,
-            id: c.id,
-            type: 'image',
-            value: displayResult.value // This is always a string for images
-          };
-        }
-
-        const textValue = Array.isArray(displayResult.value)
-          ? displayResult.value.map(getSafeText).join(', ')
-          : getSafeText(displayResult.value, 1024);
-
-        return {
-          description: c.label,
-          id: c.id,
-          value: textValue
-        };
-      });
-
-  /**
    * Renders the block of credentials requested during the presentation flow.
    */
   const RequestedCredentialsBlock = ({
@@ -178,15 +135,13 @@ const PresentationPostDefinition = ({ route }: Props) => {
       <VStack space={24}>
         {visibleCredentials.map((c: EnrichedPresentationDetails[number]) => {
           const credentialType = c.vct;
-          const title = getCredentialNameFromType(credentialType, '');
 
           return (
-            <ClaimsSelector
+            <ItwClaimsSelector
+              credentialType={credentialType}
               defaultExpanded
-              items={mapClaims(c.claimsToDisplay)}
+              items={c.claimsToDisplay}
               key={c.id}
-              selectionEnabled={false}
-              title={title}
             />
           );
         })}
@@ -206,8 +161,24 @@ const PresentationPostDefinition = ({ route }: Props) => {
   };
 
   return (
-    <ForceScrollDownView style={styles.scroll} threshold={50}>
-      <View style={{ flexGrow: 1, margin: IOVisualCostants.appMarginDefault }}>
+    <ForceScrollDownView
+      footerActions={{
+        actions: {
+          primary: {
+            label: t('buttons.continue'),
+            loading: postDefinitionStatus.loading,
+            onPress: () => dispatch(setPostDefinitionRequest([]))
+          },
+          secondary: {
+            label: t('common:buttons.undo'),
+            onPress: cancelAlert
+          },
+          type: 'TwoButtons'
+        }
+      }}
+    >
+      <ContentWrapper>
+        <VSpacer size={24} />
         <ItwDataExchangeIcons
           requesterLogoUri={
             rpConfig?.logo_uri ? { uri: rpConfig.logo_uri } : undefined
@@ -260,40 +231,11 @@ const PresentationPostDefinition = ({ route }: Props) => {
             <VSpacer size={16} />
           </View>
         ))}
-        <VSpacer size={48} />
-        <FeatureInfo
-          body={t('wallet:presentation.trust.disclaimer.0')}
-          iconName="fornitori"
-        />
         <VSpacer size={24} />
-        <FeatureInfo
-          body={t('wallet:presentation.trust.disclaimer.1')}
-          iconName="trashcan"
-        />
-      </View>
-      <FooterActions
-        actions={{
-          primary: {
-            label: t('buttons.continue'),
-            loading: postDefinitionStatus.loading,
-            onPress: () => dispatch(setPostDefinitionRequest([]))
-          },
-          secondary: {
-            label: t('buttons.cancel'),
-            onPress: cancelAlert
-          },
-          type: 'TwoButtons'
-        }}
-        fixed={false}
-      />
+        <BodySmall>{t('wallet:credentialIssuance.trust.disclaimer')}</BodySmall>
+      </ContentWrapper>
     </ForceScrollDownView>
   );
 };
-
-const styles = StyleSheet.create({
-  scroll: {
-    flexGrow: 1
-  }
-});
 
 export default PresentationPostDefinition;

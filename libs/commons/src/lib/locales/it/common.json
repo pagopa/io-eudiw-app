@@ -13,7 +13,8 @@
     "next": "Avanti",
     "done": "Fatto",
     "findOutMore": "Scopri di più",
-    "retry": "Riprova"
+    "retry": "Riprova",
+    "undo": "Annulla"
   },
   "clipboard": {
     "copyFeedback": "Copied to clipboard"
