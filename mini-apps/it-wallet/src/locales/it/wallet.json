@@ -259,8 +259,8 @@
       "cta": "Usa per la verifica"
     },
     "engagement": {
-      "title": "Avvia una verifica",
-      "instruction": "Mostra il codice QR a chi verifica i tuoi documenti digitali",
+      "title": "Pronto per la verifica",
+      "instruction": "Chi verifica dal vivo userà un’app ufficiale.",
       "qrCode": {
         "error": "Abbiamo avuto un problema nel generare il QR Code."
       },
@@ -269,13 +269,13 @@
         "action": "Conferma identità"
       },
       "banner": {
-        "title": "Come funziona il QR Code?",
+        "title": "Come funziona la verifica?",
         "content": "Ti consente di far verificare i documenti digitali che hai aggiunto al Portafoglio.",
         "action": "Scopri di più"
       },
       "nfc": {
         "or": "oppure",
-        "action": "Avvia verifica contactless"
+        "action": "Usa verifica contactless"
       }
     },
     "nfcEngagement": {
@@ -385,8 +385,21 @@
         }
       }
     },
-    "trust": {
-      "subtitle": "Saranno mostrati a **{{relyingParty}}** per completare la verifica dei documenti richiesti."
+    "connectionLoading": {
+      "title": "In attesa di connessione per la verifica...",
+      "subtitle": "Attendi qualche secondo..."
+    },
+    "sendLoading": {
+      "title": "Stiamo comunicando i tuoi dati per la verifica",
+      "subtitle": "Attendi qualche secondo..."
+    },
+    "selectiveDisclosure": {
+      "title": "Consenti la verifica di questi dati per procedere",
+      "subtitle": "Saranno condivisi con **{{relyingParty}}** solo per il tempo necessario all’accesso ai servizi richiesti.",
+      "unknownVerifier": "Sconosciuto",
+      "alert": {
+        "message": "Non potrai completare la verifica del documento."
+      }
     },
     "connected": {
       "body": "Verification in progress. Please wait a few seconds..."
@@ -455,7 +468,7 @@
       "title": "Dati necessari per {{credential}}",
       "subtitle": "Saranno condivisi con **{{organization}}** solo per il tempo necessario al rilascio della versione digitale del documento.",
       "requiredData": "Dati richiesti",
-      "disclaimer": "I tuoi dati saranno tratti in sicurezza.",
+      "disclaimer": "I tuoi dati saranno trattati in sicurezza. Se prosegui, dichiari di aver letto e compreso l'Informativa Privacy e i Termini e Condizioni d’uso.",
       "dataSource": "Fornito da {{credentialSource}}"
     },
     "failure": {

@@ -1,9 +1,7 @@
 import {
-  IOMarkdown,
   LoadingScreenContent,
   useDisableGestureNavigation,
-  useHardwareBackButton,
-  useHeaderSecondLevel
+  useHardwareBackButton
 } from '@io-eudiw-app/commons';
 import {
   selectIsDebugModeEnabled,
@@ -12,19 +10,18 @@ import {
 import {
   Alert as AlertDs,
   Body,
-  FeatureInfo,
-  FooterActions,
+  ContentWrapper,
   ForceScrollDownView,
   H2,
-  IOVisualCostants,
-  VSpacer,
+  HeaderSecondLevel,
+  IOMarkdownLite,
   VStack
 } from '@pagopa/io-app-design-system';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert } from 'react-native';
 
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
@@ -43,6 +40,30 @@ import {
   setProximityStatusPresentationDetails
 } from '../../store/proximity';
 import { ItwProximityPresentationDetails } from './ItwProximityPresentationDetails';
+
+type LoadingContentProps = {
+  variant: 'connection' | 'send';
+};
+
+/**
+ * Loading content shown while waiting for the verifier request (`connection`)
+ * and while the identification is performed and the documents are sent
+ * (`send`).
+ */
+const LoadingContent = ({ variant }: LoadingContentProps) => {
+  const { t } = useTranslation('wallet');
+
+  return (
+    <LoadingScreenContent
+      contentTitle={t(`proximity.${variant}Loading.title`)}
+      headerVisible
+    >
+      <Body style={{ textAlign: 'center' }}>
+        {t(`proximity.${variant}Loading.subtitle`)}
+      </Body>
+    </LoadingScreenContent>
+  );
+};
 
 /**
  * Screen that shows the claims required for a Proximity presentation
@@ -113,47 +134,73 @@ const PresentationProximityPreview = () => {
   useHardwareBackButton(() => true);
 
   // In case of cancellation, stop the proximity flow and go to the Wallet Home
-  const cancel = () => {
+  const cancel = useCallback(() => {
     dispatch(setProximityStatusAuthorizationRejected());
     dispatch(resetProximity());
     navigateToWallet();
-  };
+  }, [dispatch, navigateToWallet]);
 
-  const cancelAlert = () => {
-    Alert.alert(t('common:cancelOperation.title'), '', [
-      {
-        onPress: cancel,
-        style: 'destructive',
-        text: t('common:cancelOperation.confirm')
-      },
-      {
-        style: 'cancel',
-        text: t('common:cancelOperation.cancel')
-      }
-    ]);
-  };
+  const cancelAlert = useCallback(() => {
+    Alert.alert(
+      t('common:cancelOperation.title'),
+      t('wallet:proximity.selectiveDisclosure.alert.message'),
+      [
+        {
+          onPress: cancel,
+          style: 'destructive',
+          text: t('common:cancelOperation.confirm')
+        },
+        {
+          style: 'cancel',
+          text: t('common:cancelOperation.cancel')
+        }
+      ]
+    );
+  }, [cancel, t]);
 
-  const isAuthenticatedAlert = (
-    <>
-      {isAuthenticated ? (
-        <AlertDs
-          content={t('wallet:proximity.isAuthenticated.true')}
-          variant="success"
-        />
-      ) : (
-        <AlertDs
-          content={t('wallet:proximity.isAuthenticated.false')}
-          variant="warning"
-        />
-      )}
-      <VSpacer size={24} />
-    </>
+  const isAuthenticatedAlert = isAuthenticated ? (
+    <AlertDs
+      content={t('wallet:proximity.isAuthenticated.true')}
+      variant="success"
+    />
+  ) : (
+    <AlertDs
+      content={t('wallet:proximity.isAuthenticated.false')}
+      variant="warning"
+    />
   );
 
-  useHeaderSecondLevel({
-    goBack: cancelAlert,
-    title: ''
-  });
+  // State when the user is checking which claims to disclose and has to confirm
+  const isReviewingClaims =
+    proximityStatus ===
+      ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED ||
+    proximityStatus === ProximityStatus.PROXIMITY_STATUS_PRESENTATION_DETAILS;
+
+  // State where the app is sending data to the verifier
+  const isSending = !!proximityDetails && !isReviewingClaims;
+
+  //State where the app is loading either the proximity details or sending data
+  const isLoading = !proximityDetails || isSending;
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      header: () =>
+        isLoading ? (
+          <HeaderSecondLevel title={''} type="base" />
+        ) : (
+          <HeaderSecondLevel
+            firstAction={{
+              accessibilityLabel: t('common:buttons.close'),
+              icon: 'closeLarge',
+              onPress: cancelAlert
+            }}
+            title={''}
+            type="singleAction"
+          />
+        ),
+      headerShown: true
+    });
+  }, [navigation, t, cancelAlert, isLoading]);
 
   /**
    * Listener for navigation transition end to detect that navigation
@@ -166,75 +213,54 @@ const PresentationProximityPreview = () => {
     return unsubscribe;
   }, [navigation, dispatch]);
 
+  const verifierName =
+    proximityDetails?.[0]?.rpId ??
+    t('wallet:proximity.selectiveDisclosure.unknownVerifier');
+
+  if (isSending) {
+    return <LoadingContent variant="send" />;
+  }
+
   if (!proximityDetails) {
-    return (
-      <LoadingScreenContent
-        contentTitle={t('presentation.loading.title', { ns: 'wallet' })}
-        headerVisible
-      >
-        <Body style={{ textAlign: 'center' }}>
-          {t('presentation.loading.subtitle', { ns: 'wallet' })}
-        </Body>
-      </LoadingScreenContent>
-    );
+    return <LoadingContent variant="connection" />;
   }
 
   return (
-    <ForceScrollDownView style={styles.scroll} threshold={50}>
-      <View style={{ flexGrow: 1, margin: IOVisualCostants.appMarginDefault }}>
-        <ItwDataExchangeIcons />
-        <VSpacer size={24} />
-        <VStack space={24}>
-          <H2>{t('wallet:presentation.trust.title')}</H2>
-          <IOMarkdown
-            content={t('wallet:proximity.trust.subtitle', {
-              relyingParty: proximityDetails[0]?.rpId ?? ''
-            })}
-          />
-        </VStack>
-        <VSpacer size={24} />
-        {isDebug && isAuthenticatedAlert}
-        <ItwProximityPresentationDetails data={proximityDetails} />
-        <VSpacer size={48} />
-        <FeatureInfo
-          body={t('wallet:presentation.trust.disclaimer.0')}
-          iconName="fornitori"
-        />
-        <VSpacer size={24} />
-        <FeatureInfo
-          body={t('wallet:presentation.trust.disclaimer.1')}
-          iconName="trashcan"
-        />
-      </View>
-      <FooterActions
-        actions={{
+    <ForceScrollDownView
+      footerActions={{
+        actions: {
           primary: {
             label: t('buttons.confirm'),
-            loading:
-              proximityStatus ===
-                ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_SEND ||
-              proximityStatus ===
-                ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_COMPLETE,
             onPress: () => {
               dispatch(setProximityStatusAuthorizationSend());
             }
           },
           secondary: {
-            label: t('buttons.cancel'),
+            label: t('common:buttons.undo'),
             onPress: cancelAlert
           },
           type: 'TwoButtons'
-        }}
-        fixed={false}
-      />
+        }
+      }}
+    >
+      <ContentWrapper>
+        <VStack space={24}>
+          <ItwDataExchangeIcons />
+          <VStack space={16}>
+            <H2>{t('wallet:proximity.selectiveDisclosure.title')}</H2>
+            <IOMarkdownLite
+              content={t('wallet:proximity.selectiveDisclosure.subtitle', {
+                relyingParty: verifierName
+              })}
+            />
+          </VStack>
+          {isDebug && isAuthenticatedAlert}
+          <ItwProximityPresentationDetails data={proximityDetails} />
+          <Body>{t('wallet:credentialIssuance.trust.disclaimer')}</Body>
+        </VStack>
+      </ContentWrapper>
     </ForceScrollDownView>
   );
 };
-
-const styles = StyleSheet.create({
-  scroll: {
-    flexGrow: 1
-  }
-});
 
 export default PresentationProximityPreview;
