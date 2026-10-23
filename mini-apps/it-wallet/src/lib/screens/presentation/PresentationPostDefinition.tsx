@@ -176,7 +176,6 @@ const PresentationPostDefinition = ({ route }: Props) => {
           type: 'TwoButtons'
         }
       }}
-      threshold={50}
     >
       <ContentWrapper>
         <VSpacer size={24} />

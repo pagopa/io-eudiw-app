@@ -66,7 +66,9 @@ export const CredentialPreview = () => {
   useDisableGestureNavigation();
 
   const cardConfig = useCredentialCardConfig(
-    credentialPostStatus.success.data?.credentialType ?? ''
+    (credentialPostStatus.success.status
+      ? credentialPostStatus.success.data?.credentialType
+      : undefined) ?? ''
   );
 
   const somethingWrongBottomSheet = useIOBottomSheetModal({
@@ -137,7 +139,6 @@ export const CredentialPreview = () => {
           type: 'TwoButtons'
         }
       }}
-      threshold={50}
     >
       <ContentWrapper style={styles.scrollView}>
         <VStack space={8}>
