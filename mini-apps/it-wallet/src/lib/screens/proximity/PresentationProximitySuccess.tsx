@@ -1,8 +1,4 @@
-import {
-  OperationResultScreenContent,
-  useDisableGestureNavigation,
-  useHardwareBackButton
-} from '@io-eudiw-app/commons';
+import { OperationResultScreenContent } from '@io-eudiw-app/commons';
 import { useDebugInfo } from '@io-eudiw-app/debug-info';
 import { useTranslation } from 'react-i18next';
 
@@ -18,9 +14,6 @@ import {
 const PresentationProximitySuccess = () => {
   const { t } = useTranslation();
   const { navigateToWallet } = useNavigateToWalletWithReset();
-
-  useHardwareBackButton(() => true);
-  useDisableGestureNavigation();
   const dispatch = useAppDispatch();
 
   const proximityStatus = useAppSelector(selectProximityStatus);

@@ -2,7 +2,6 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { useCallback } from 'react';
 
 import MAIN_ROUTES from '../navigation/main/routes';
-import PROXIMITY_ROUTES from '../navigation/proximity/routes';
 import { useAppDispatch } from '../store';
 import {
   ProximityEngagementMode,
@@ -16,8 +15,8 @@ import { requestBlePermissions } from '../utils/permissions';
  * Presentment screen shown for each proximity engagement mode.
  */
 const ENGAGEMENT_SCREEN = {
-  nfc: PROXIMITY_ROUTES.NFC_PRESENTMENT,
-  qrcode: PROXIMITY_ROUTES.QR_PRESENTMENT
+  nfc: MAIN_ROUTES.NFC_PRESENTMENT,
+  qrcode: MAIN_ROUTES.BLE_PRESENTMENT
 } as const;
 
 /**
@@ -43,9 +42,7 @@ export const useProximityEngagement = () => {
       if (options?.replaceScreen) {
         navigation.dispatch(StackActions.replace(ENGAGEMENT_SCREEN[mode]));
       } else {
-        navigation.navigate(MAIN_ROUTES.PROXIMITY_NAV, {
-          screen: ENGAGEMENT_SCREEN[mode]
-        });
+        navigation.navigate(ENGAGEMENT_SCREEN[mode]);
       }
     },
     [dispatch, navigation]
@@ -58,15 +55,11 @@ export const useProximityEngagement = () => {
    */
   const startQrVerification = useCallback(async () => {
     if (!(await requestBlePermissions())) {
-      navigation.navigate(MAIN_ROUTES.PROXIMITY_NAV, {
-        screen: PROXIMITY_ROUTES.BLUETOOTH_PERMISSIONS
-      });
+      navigation.navigate(MAIN_ROUTES.PROXIMITY_BLUETOOTH_PERMISSIONS);
       return;
     }
     if (!(await checkBluetoothActivation())) {
-      navigation.navigate(MAIN_ROUTES.PROXIMITY_NAV, {
-        screen: PROXIMITY_ROUTES.BLUETOOTH_ACTIVATION
-      });
+      navigation.navigate(MAIN_ROUTES.PROXIMITY_BLUETOOTH_ACTIVATION);
       return;
     }
     startEngagement('qrcode');

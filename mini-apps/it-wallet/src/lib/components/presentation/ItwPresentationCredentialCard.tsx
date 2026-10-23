@@ -10,8 +10,8 @@ import { PropsWithChildren, useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredentialStatus';
-import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
-import MAIN_ROUTES from '../../navigation/main/routes';
+import WALLET_ROUTES from '../../navigation/wallet/routes';
+import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { useAppSelector } from '../../store';
 import { itwIsClaimValueHiddenSelector } from '../../store/credentials';
 import { ParsedClaimsRecord } from '../../utils/claims';
@@ -39,7 +39,7 @@ const ItwPresentationCredentialCard = ({
   parsedClaims
 }: Props) => {
   const navigation =
-    useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
+    useNavigation<StackNavigationProp<WalletNavigatorParamsList>>();
   const [isFlipped, setIsFlipped] = useState(false);
   const credentialStatus = getCredentialStatus(credential);
   const status = useItwDisplayCredentialStatus(credentialStatus);
@@ -51,7 +51,7 @@ const ItwPresentationCredentialCard = ({
   const valuesHidden = useAppSelector(itwIsClaimValueHiddenSelector);
 
   const handleCardPress = () => {
-    navigation.navigate(MAIN_ROUTES.CREDENTIAL_CARD_MODAL, {
+    navigation.navigate(WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_MODAL, {
       credential,
       parsedClaims,
       status

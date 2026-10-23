@@ -9,7 +9,6 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import MAIN_ROUTES from '../../navigation/main/routes';
-import PROXIMITY_ROUTES from '../../navigation/proximity/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   ProximityStatus,
@@ -44,16 +43,14 @@ const ItwProximityStoreConsent = () => {
     if (proximityStatus === ProximityStatus.PROXIMITY_STATUS_STARTED) {
       // Re-engagement: return to the NFC presentment screen so the user can tap
       // again and the verifier re-issues the request.
-      navigation.navigate(MAIN_ROUTES.PROXIMITY_NAV, {
-        screen: PROXIMITY_ROUTES.NFC_PRESENTMENT
-      });
+      navigation.navigate(MAIN_ROUTES.NFC_PRESENTMENT);
     } else if (
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR ||
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED
     ) {
-      navigation.navigate(MAIN_ROUTES.PROXIMITY_NAV, {
+      navigation.navigate('MAIN_WALLET_NAV', {
         params: { fatal: true },
-        screen: PROXIMITY_ROUTES.FAILURE
+        screen: 'PROXIMITY_FAILURE'
       });
     }
   }, [proximityStatus, navigation]);

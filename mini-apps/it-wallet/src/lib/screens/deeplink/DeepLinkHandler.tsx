@@ -10,10 +10,8 @@ import { useTranslation } from 'react-i18next';
 
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { resolveCredentialOfferThunk } from '../../middleware/credential';
-import CREDENTIAL_ISSUANCE_ROUTES from '../../navigation/credentialIssuance/routes';
-import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
-import MAIN_ROUTES from '../../navigation/main/routes';
-import PRESENTATION_ROUTES from '../../navigation/presentation/routes';
+import WALLET_ROUTES from '../../navigation/wallet/routes';
+import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { parseDeepLink } from '../../utils/parsing';
 
@@ -28,10 +26,7 @@ export type DeepLinkHandlerParams =
       url?: string;
     };
 
-type Props = StackScreenProps<
-  MainNavigatorParamsList,
-  typeof MAIN_ROUTES.DEEP_LINK_HANDLER
->;
+type Props = StackScreenProps<WalletNavigatorParamsList, 'DEEP_LINK_HANDLER'>;
 
 /**
  * Centralized entry point for both deep links and QR code scans.
@@ -80,21 +75,17 @@ const DeepLinkHandler = ({ navigation, route }: Props) => {
       try {
         const parsed = parseDeepLink(url);
         if (parsed.kind === 'presentation') {
-          navigation.replace(MAIN_ROUTES.PRESENTATION_NAV, {
-            params: parsed.params,
-            screen: PRESENTATION_ROUTES.PRE_DEFINITION
-          });
+          navigation.replace('PRESENTATION_PRE_DEFINITION', parsed.params);
         } else {
           const offer = await dispatch(
             resolveCredentialOfferThunk({ url })
           ).unwrap();
-          navigation.replace(MAIN_ROUTES.CREDENTIAL_ISSUANCE_NAV, {
-            params: { offer },
-            screen: CREDENTIAL_ISSUANCE_ROUTES.OFFER
+          navigation.replace('CREDENTIAL_OFFER_ISSUANCE', {
+            offer
           });
         }
       } catch {
-        navigation.replace(MAIN_ROUTES.DEEP_LINK_ERROR, {
+        navigation.replace(WALLET_ROUTES.DEEP_LINK.ERROR, {
           source: isQrFlow ? 'qr' : 'link'
         });
       } finally {

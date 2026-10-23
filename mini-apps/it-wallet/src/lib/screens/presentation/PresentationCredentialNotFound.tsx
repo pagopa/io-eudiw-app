@@ -1,14 +1,9 @@
-import {
-  useDisableGestureNavigation,
-  useHardwareBackButton
-} from '@io-eudiw-app/commons';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
 
 import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
-import { PresentationNavigatorParamsList } from '../../navigation/presentation/PresentationNavigator';
-import PRESENTATION_ROUTES from '../../navigation/presentation/routes';
+import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { useAppDispatch } from '../../store';
 import { resetPresentation } from '../../store/presentation';
 
@@ -17,8 +12,8 @@ export type PresentationCredentialNotFoundParams = {
 };
 
 type Props = StackScreenProps<
-  PresentationNavigatorParamsList,
-  typeof PRESENTATION_ROUTES.CREDENTIAL_NOT_FOUND
+  WalletNavigatorParamsList,
+  'PRESENTATION_CREDENTIAL_NOT_FOUND'
 >;
 
 /**
@@ -32,9 +27,6 @@ const PresentationCredentialNotFound = ({ route }: Props) => {
   const { t } = useTranslation('common');
   const dispatch = useAppDispatch();
   const { navigateToWallet } = useNavigateToWalletWithReset();
-
-  useHardwareBackButton(() => true);
-  useDisableGestureNavigation();
   const { credentialType } = route.params;
 
   const onDismiss = () => {

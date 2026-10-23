@@ -20,8 +20,6 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
-import MAIN_ROUTES from '../../navigation/main/routes';
-import PROXIMITY_ROUTES from '../../navigation/proximity/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   ProximityStatus,
@@ -94,8 +92,8 @@ const ItwProximityNfcPresentment = () => {
       if (
         proximityStatus === ProximityStatus.PROXIMITY_STATUS_RECEIVED_DOCUMENT
       ) {
-        navigation.navigate(MAIN_ROUTES.PROXIMITY_NAV, {
-          screen: PROXIMITY_ROUTES.PREVIEW
+        navigation.navigate('MAIN_WALLET_NAV', {
+          screen: 'PROXIMITY_PREVIEW'
         });
         return;
       }
@@ -104,16 +102,16 @@ const ItwProximityNfcPresentment = () => {
     if (
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_AUTHORIZATION_STARTED
     ) {
-      navigation.navigate(MAIN_ROUTES.PROXIMITY_NAV, {
-        screen: PROXIMITY_ROUTES.PREVIEW
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PROXIMITY_PREVIEW'
       });
     } else if (
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_ERROR ||
       proximityStatus === ProximityStatus.PROXIMITY_STATUS_ABORTED
     ) {
-      navigation.navigate(MAIN_ROUTES.PROXIMITY_NAV, {
+      navigation.navigate('MAIN_WALLET_NAV', {
         params: { fatal: true },
-        screen: PROXIMITY_ROUTES.FAILURE
+        screen: 'PROXIMITY_FAILURE'
       });
     }
   }, [proximityStatus, navigation, engagementMode, retrievalMethod]);

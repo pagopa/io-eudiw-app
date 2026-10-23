@@ -29,8 +29,6 @@ import Feature5Image from '../../../assets/img/discovery/feature_5.svg';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { createInstanceThunk } from '../../middleware/instance';
-import MAIN_ROUTES from '../../navigation/main/routes';
-import PID_ISSUANCE_ROUTES from '../../navigation/pidIssuance/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { resetInstanceCreation } from '../../store/pidIssuance';
 import { selectInstanceStatus } from '../../store/selectors/pidIssuance';
@@ -83,8 +81,8 @@ export const WalletInstanceCreation = () => {
 
   useEffect(() => {
     if (success.status === true) {
-      navigation.navigate(MAIN_ROUTES.PID_ISSUANCE_NAV, {
-        screen: PID_ISSUANCE_ROUTES.ID_METHOD
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PID_ISSUANCE_ID_METHOD'
       });
       dispatch(resetInstanceCreation());
     }
@@ -92,8 +90,8 @@ export const WalletInstanceCreation = () => {
 
   useEffect(() => {
     if (error.status === true) {
-      navigation.navigate(MAIN_ROUTES.PID_ISSUANCE_NAV, {
-        screen: PID_ISSUANCE_ROUTES.FAILURE
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PID_ISSUANCE_FAILURE'
       });
     }
   }, [error, navigation]);

@@ -18,9 +18,9 @@ import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
 import * as WebBrowser from 'expo-web-browser';
 
-import CREDENTIAL_ISSUANCE_ROUTES from '../navigation/credentialIssuance/routes';
 import MAIN_ROUTES from '../navigation/main/routes';
 import { navigator } from '../navigation/utils';
+import WALLET_ROUTES from '../navigation/wallet/routes';
 import { selectWalletInstanceAttestationAsJwt } from '../store/attestation';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
 import { addPidWithIdentification } from '../store/credentials';
@@ -282,8 +282,8 @@ const addPidWithAuthListener: AppListenerWithAction<
               }
         )
       );
-      navigator.navigate(MAIN_ROUTES.CREDENTIAL_ISSUANCE_NAV, {
-        screen: CREDENTIAL_ISSUANCE_ROUTES.TRUST
+      navigator.navigate(MAIN_ROUTES.WALLET_NAV, {
+        screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
       });
     }
   } else {

@@ -9,8 +9,8 @@ import { useTranslation } from 'react-i18next';
 
 import { WalletCardsContainer } from '../components/WalletCardsContainer';
 import { useProximityEngagement } from '../hooks/useProximityEngagement';
-import CREDENTIAL_ISSUANCE_ROUTES from '../navigation/credentialIssuance/routes';
 import MAIN_ROUTES from '../navigation/main/routes';
+import WALLET_ROUTES from '../navigation/wallet/routes';
 import { useAppSelector } from '../store';
 import { hasPresentableCredentialsSelector } from '../store/credentials';
 
@@ -33,14 +33,14 @@ const WalletHome = () => {
         accessibilityLabel: t('settings.title', { ns: 'wallet' }),
         icon: 'add',
         onPress: () =>
-          navigation.navigate(MAIN_ROUTES.CREDENTIAL_ISSUANCE_NAV, {
-            screen: CREDENTIAL_ISSUANCE_ROUTES.LIST
+          navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+            screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.LIST
           })
       } satisfies HeaderActionProps,
       {
         accessibilityLabel: t('settings.title', { ns: 'wallet' }),
         icon: 'coggle',
-        onPress: () => navigation.navigate(MAIN_ROUTES.SETTINGS.MAIN)
+        onPress: () => navigation.navigate('MAIN_SETTINGS')
       }
     ],
     [navigation, t]

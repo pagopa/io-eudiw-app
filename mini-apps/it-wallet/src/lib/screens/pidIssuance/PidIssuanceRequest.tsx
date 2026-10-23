@@ -21,8 +21,6 @@ import { StyleSheet, View } from 'react-native';
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
-import MAIN_ROUTES from '../../navigation/main/routes';
-import PID_ISSUANCE_ROUTES from '../../navigation/pidIssuance/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   addPidWithIdentification,
@@ -76,16 +74,16 @@ const PidIssuanceRequest = () => {
 
   useEffect(() => {
     if (error.status === true) {
-      navigation.navigate(MAIN_ROUTES.PID_ISSUANCE_NAV, {
-        screen: PID_ISSUANCE_ROUTES.FAILURE
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PID_ISSUANCE_FAILURE'
       });
     }
   }, [error, navigation]);
 
   useEffect(() => {
     if (isPidStored && !pendingCredential) {
-      navigation.navigate(MAIN_ROUTES.PID_ISSUANCE_NAV, {
-        screen: PID_ISSUANCE_ROUTES.RESULT
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PID_ISSUANCE_RESULT'
       });
     }
   }, [isPidStored, pendingCredential, navigation]);

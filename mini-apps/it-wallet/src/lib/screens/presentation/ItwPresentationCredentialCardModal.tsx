@@ -21,8 +21,7 @@ import {
 import { FlipGestureDetector } from '../../components/credential/ItwSkeumorphicCard/FlipGestureDetector';
 import { ItwPresentationCredentialCardFlipButton } from '../../components/presentation/ItwPresentationCredentialCardFlipButton';
 import { ItwPresentationCredentialCardHideValuesButton } from '../../components/presentation/ItwPresentationCredentialCardHideValuesButton';
-import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
-import MAIN_ROUTES from '../../navigation/main/routes';
+import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   itwIsClaimValueHiddenSelector,
@@ -42,8 +41,8 @@ export type ItwPresentationCredentialCardModalNavigationParams = {
 };
 
 type Props = StackScreenProps<
-  MainNavigatorParamsList,
-  typeof MAIN_ROUTES.CREDENTIAL_CARD_MODAL
+  WalletNavigatorParamsList,
+  'PRESENTATION_CREDENTIAL_CARD_MODAL'
 >;
 
 /**

@@ -19,13 +19,12 @@ import {
 import { useCameraPermissionStatus } from '../hooks/useCameraPermissionStatus';
 import { useQrCodeCameraScanner } from '../hooks/useQrCodeCameraScanner';
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
-import MAIN_ROUTES from '../navigation/main/routes';
 import { OnBarcodeSuccess } from '../screens/presentation/QrCodeScanScreen';
 import { CameraPermissionView } from './CameraPermissionView';
 
 type NavigationProps = StackNavigationProp<
   MainNavigatorParamsList,
-  typeof MAIN_ROUTES.SCAN_QR
+  'MAIN_SCAN_QR'
 >;
 
 type Props = {

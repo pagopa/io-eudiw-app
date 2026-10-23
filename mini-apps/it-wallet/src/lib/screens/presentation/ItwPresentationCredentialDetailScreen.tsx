@@ -34,7 +34,8 @@ import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredenti
 import { useProximityEngagement } from '../../hooks/useProximityEngagement';
 import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../../navigation/main/routes';
-import PID_ISSUANCE_ROUTES from '../../navigation/pidIssuance/routes';
+import WALLET_ROUTES from '../../navigation/wallet/routes';
+import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { useAppSelector } from '../../store';
 import { selectCredential } from '../../store/credentials';
 import { lifecycleIsValidSelector } from '../../store/lifecycle';
@@ -57,8 +58,8 @@ const credentialsWithSkeumorphicCard: readonly string[] = [
 ];
 
 type Props = StackScreenProps<
-  MainNavigatorParamsList,
-  typeof MAIN_ROUTES.CREDENTIAL_DETAILS
+  WalletNavigatorParamsList,
+  'PRESENTATION_CREDENTIAL_DETAILS'
 >;
 
 /**
@@ -66,7 +67,7 @@ type Props = StackScreenProps<
  */
 export const ItwPresentationCredentialDetailScreen = ({ route }: Props) => {
   const navigation =
-    useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
+    useNavigation<StackNavigationProp<WalletNavigatorParamsList>>();
   const { credentialType } = route.params;
   const { t } = useTranslation(['wallet', 'common']);
 
@@ -81,10 +82,7 @@ export const ItwPresentationCredentialDetailScreen = ({ route }: Props) => {
       <OperationResultScreenContent
         action={{
           label: t(`${ns}.primaryAction`),
-          onPress: () =>
-            navigation.replace(MAIN_ROUTES.PID_ISSUANCE_NAV, {
-              screen: PID_ISSUANCE_ROUTES.INSTANCE_CREATION
-            })
+          onPress: () => navigation.replace('PID_ISSUANCE_INSTANCE_CREATION')
         }}
         pictogram="itWallet"
         secondaryAction={{
@@ -165,10 +163,13 @@ const ItwPresentationCredentialDetail = ({
   );
 
   const handleOpenCard = () => {
-    navigation.navigate(MAIN_ROUTES.CREDENTIAL_CARD_MODAL, {
-      credential,
-      parsedClaims,
-      status: displayStatus
+    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+      params: {
+        credential,
+        parsedClaims,
+        status: displayStatus
+      },
+      screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_MODAL
     });
   };
 

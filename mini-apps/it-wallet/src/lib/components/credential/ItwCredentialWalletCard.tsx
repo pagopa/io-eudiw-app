@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 
 import MAIN_ROUTES from '../../navigation/main/routes';
+import WALLET_ROUTES from '../../navigation/wallet/routes';
 import { withWalletCardBaseComponent } from '../WalletCardBaseComponent';
 import { WalletCardPressableBase } from '../WalletCardPressableBase';
 import { ItwCredentialCard, ItwCredentialCardProps } from './ItwCredentialCard';
@@ -15,8 +16,11 @@ const WrappedItwCredentialCard = (props: ItwCredentialWalletCardProps) => {
   const navigation = useNavigation();
 
   const handleOnPress = () => {
-    navigation.navigate(MAIN_ROUTES.CREDENTIAL_DETAILS, {
-      credentialType
+    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+      params: {
+        credentialType
+      },
+      screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_DETAILS
     });
   };
 

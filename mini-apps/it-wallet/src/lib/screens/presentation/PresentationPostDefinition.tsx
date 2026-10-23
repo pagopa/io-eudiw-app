@@ -24,9 +24,7 @@ import { Alert, View } from 'react-native';
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import { ItwClaimsSelector } from '../../components/presentation/ItwClaimsSelector';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
-import MAIN_ROUTES from '../../navigation/main/routes';
-import { PresentationNavigatorParamsList } from '../../navigation/presentation/PresentationNavigator';
-import PRESENTATION_ROUTES from '../../navigation/presentation/routes';
+import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   Descriptor,
@@ -47,8 +45,8 @@ export type PresentationPostDefinitionParams = {
 };
 
 type Props = StackScreenProps<
-  PresentationNavigatorParamsList,
-  typeof PRESENTATION_ROUTES.POST_DEFINITION
+  WalletNavigatorParamsList,
+  'PRESENTATION_POST_DEFINITION'
 >;
 
 /**
@@ -102,12 +100,12 @@ const PresentationPostDefinition = ({ route }: Props) => {
    */
   useEffect(() => {
     if (postDefinitionStatus.success.status) {
-      navigation.navigate(MAIN_ROUTES.PRESENTATION_NAV, {
-        screen: PRESENTATION_ROUTES.SUCCESS
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PRESENTATION_SUCCESS'
       });
     } else if (postDefinitionStatus.error.status) {
-      navigation.navigate(MAIN_ROUTES.PRESENTATION_NAV, {
-        screen: PRESENTATION_ROUTES.FAILURE
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PRESENTATION_FAILURE'
       });
     }
   }, [

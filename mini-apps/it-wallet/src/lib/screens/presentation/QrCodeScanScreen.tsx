@@ -12,7 +12,6 @@ import ReactNativeHapticFeedback, {
 
 import { QrCodeScanBaseScreenComponent } from '../../components/QrCodeScanBaseScreenComponent';
 import { useQrCodeFileReader } from '../../hooks/useQrCodeFileReader';
-import MAIN_ROUTES from '../../navigation/main/routes';
 import { parseDeepLink } from '../../utils/parsing';
 
 /**
@@ -58,8 +57,11 @@ const QrCodeScanScreen = () => {
       ReactNativeHapticFeedback.trigger(
         HapticFeedbackTypes.notificationSuccess
       );
-      navigation.navigate(MAIN_ROUTES.DEEP_LINK_HANDLER, {
-        url: barcode
+      navigation.navigate('MAIN_WALLET_NAV', {
+        params: {
+          url: barcode
+        },
+        screen: 'DEEP_LINK_HANDLER'
       });
     } catch {
       ReactNativeHapticFeedback.trigger(HapticFeedbackTypes.notificationError);

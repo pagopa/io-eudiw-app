@@ -8,10 +8,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { t } from 'i18next';
 import { useEffect } from 'react';
 
-import CREDENTIAL_ISSUANCE_ROUTES from '../navigation/credentialIssuance/routes';
 import { MainNavigatorParamsList } from '../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../navigation/main/routes';
-import PID_ISSUANCE_ROUTES from '../navigation/pidIssuance/routes';
+import WALLET_ROUTES from '../navigation/wallet/routes';
 import { useAppDispatch, useAppSelector } from '../store';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
 import { lifecycleIsOperationalSelector } from '../store/lifecycle';
@@ -49,16 +48,16 @@ const ItwCredentialNotFound = ({
           credential: isPidOnlyFlow ? undefined : credentialType
         })
       );
-      navigation.navigate(MAIN_ROUTES.PID_ISSUANCE_NAV, {
-        screen: PID_ISSUANCE_ROUTES.INSTANCE_CREATION
+      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+        screen: WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION
       });
       return;
     }
     dispatch(
       setCredentialIssuancePreAuthRequest({ credential: credentialType })
     );
-    navigation.navigate(MAIN_ROUTES.CREDENTIAL_ISSUANCE_NAV, {
-      screen: CREDENTIAL_ISSUANCE_ROUTES.TRUST
+    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+      screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
     });
   };
 
