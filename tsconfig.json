@@ -10,6 +10,9 @@
       "path": "./mini-apps/it-wallet"
     },
     {
+      "path": "./mini-apps/aptitude"
+    },
+    {
       "path": "./libs/commons"
     },
     {

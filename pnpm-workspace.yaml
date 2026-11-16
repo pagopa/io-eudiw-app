@@ -1,6 +1,7 @@
 packages:
   - 'apps/*'
   - 'mini-apps/it-wallet'
+  - 'mini-apps/aptitude'
   - 'libs/commons'
   - 'libs/env'
   - 'libs/preferences'

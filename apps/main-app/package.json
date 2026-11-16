@@ -13,6 +13,7 @@
   "dependencies": {
     "@expo/metro-runtime": "~57.0.16",
     "@gorhom/bottom-sheet": "catalog:",
+    "@io-eudiw-app/aptitude": "workspace:*",
     "@io-eudiw-app/commons": "workspace:*",
     "@io-eudiw-app/debug-info": "workspace:*",
     "@io-eudiw-app/env": "workspace:*",
