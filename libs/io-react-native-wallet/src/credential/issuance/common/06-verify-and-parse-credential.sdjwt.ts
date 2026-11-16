@@ -1,0 +1,312 @@
+import type { Verifier } from "@sd-jwt/core";
+
+import { hasher } from "@owf/crypto";
+import {
+  type CryptoContext,
+  verify as verifyJwt,
+} from "@pagopa/io-react-native-jwt";
+import { type SDJwt, SDJwtInstance, type VerifierOptions } from "@sd-jwt/core";
+
+import type { SdJwt4VCBase } from "../../../sd-jwt/types";
+import type { IssuanceApi, IssuerConfig, ParsedCredential } from "../api";
+
+import { MissingX509CertsError } from "../../../trust/common/errors";
+import { fixLegacyCredentialSdJwt } from "../../../utils/credentials";
+import { IoWalletError } from "../../../utils/errors";
+import { isSameThumbprint, type JWK } from "../../../utils/jwk";
+import { Logger, LogLevel } from "../../../utils/logging";
+import { isPathEqual, isPrefixOf } from "../../../utils/parser";
+import { verifyX509Chain } from "../../../utils/x509";
+
+type ClaimConfig = CredentialConf["claims"][number];
+
+type CredentialConf =
+  IssuerConfig["credential_configurations_supported"][string];
+
+type DisplayableClaim = Omit<ClaimConfig, "display"> & {
+  display: NonNullable<ClaimConfig["display"]>;
+};
+
+/**
+ * Parse a Sd-Jwt credential according to the issuer configuration
+ * @param credentialConfig - the list of supported credentials, as defined in the issuer configuration with their claims metadata
+ * @param parsedCredentialRaw - the raw parsed credential
+ * @param ignoreMissingAttributes - skip error when attributes declared in the issuer configuration are not found within disclosures
+ * @param includeUndefinedAttributes - include attributes not explicitly declared in the issuer configuration
+ * @returns The parsed credential with attributes in plain value
+ */
+const parseCredentialSdJwt = (
+  credentialConfig: CredentialConf,
+  parsedCredentialRaw: Record<string, unknown>,
+  ignoreMissingAttributes = false,
+  includeUndefinedAttributes = false,
+): ParsedCredential => {
+  // Claims without display property (such as `iat`, `exp`, `iss`, etc.)
+  // must be ignored as they are not meant to be displayed to the user.
+  const displayableClaims = (credentialConfig.claims || []).filter(
+    (c) => c.display !== undefined,
+  ) as DisplayableClaim[];
+
+  // Check that all mandatory attributes defined in the issuer configuration are present in the credential
+  if (!ignoreMissingAttributes) {
+    const missingPaths: string[] = [];
+    const rootKeysToVerify = new Set(
+      displayableClaims
+        .map((c) => c.path[0])
+        .filter((p): p is string => typeof p === "string"),
+    );
+
+    for (const rootKey of rootKeysToVerify) {
+      if (!(rootKey in parsedCredentialRaw)) {
+        missingPaths.push(rootKey);
+      }
+    }
+
+    if (missingPaths.length > 0) {
+      const missing = missingPaths.join(", ");
+      const received = Object.keys(parsedCredentialRaw).join(", ");
+      throw new IoWalletError(
+        `Some attributes are missing in the credential. Missing: [${missing}], received: [${received}]`,
+      );
+    }
+  }
+
+  /**
+   * Helper to find display metadata for any given path
+   */
+  const getDisplayNames = (
+    path: (null | number | string)[],
+  ): Record<string, string> | undefined => {
+    const match = displayableClaims.find((c) => isPathEqual(c.path, path));
+    if (!match) return undefined;
+
+    const nameMap: Record<string, string> = {};
+    for (const entry of match.display) {
+      nameMap[entry.locale] = entry.name;
+    }
+    return nameMap;
+  };
+
+  /**
+   * Recursive function to build the localized structure
+   */
+  const processLevel = (
+    currentData: unknown,
+    currentPath: (null | number | string)[],
+  ): unknown => {
+    // Handle Arrays
+    if (Array.isArray(currentData)) {
+      return currentData.map((item) =>
+        processLevel(item, [...currentPath, null]),
+      );
+    }
+
+    // Handle Objects
+    if (typeof currentData !== "object" || currentData === null) {
+      return currentData;
+    }
+
+    const dataObj = currentData as Record<string, unknown>;
+    const result: ParsedCredential = {};
+    const processedKeys = new Set<number | string>();
+
+    // Identify unique keys in config at this level
+    const configKeysAtThisLevel: (number | string)[] = [];
+    for (const claim of displayableClaims) {
+      // Check if the claim path starts with the current path
+      if (isPrefixOf(currentPath, claim.path)) {
+        const nextPart = claim.path[currentPath.length];
+        if (
+          (typeof nextPart === "string" || typeof nextPart === "number") &&
+          !configKeysAtThisLevel.includes(nextPart)
+        ) {
+          configKeysAtThisLevel.push(nextPart);
+        }
+      }
+    }
+
+    // Process keys
+    for (const key of configKeysAtThisLevel) {
+      const stringKey = key.toString();
+      const dataValue = dataObj[stringKey];
+      if (dataValue === undefined) continue;
+
+      const newPath = [...currentPath, key];
+
+      let localizedNames = getDisplayNames(newPath);
+
+      // Fallback for arrays
+      if (!localizedNames && Array.isArray(dataValue)) {
+        localizedNames = getDisplayNames([...newPath, null]);
+      }
+
+      result[stringKey] = {
+        name: localizedNames || stringKey,
+        value: processLevel(dataValue, newPath),
+      };
+
+      processedKeys.add(key);
+    }
+
+    // Handle Undefined Attributes
+    if (includeUndefinedAttributes) {
+      for (const [key, value] of Object.entries(dataObj)) {
+        if (!processedKeys.has(key)) {
+          result[key] = {
+            name: key,
+            value: value,
+          };
+        }
+      }
+    }
+
+    return result;
+  };
+
+  return processLevel(parsedCredentialRaw, []) as ParsedCredential;
+};
+
+type SdJwtInstanceVerifier = Verifier<VerifierOptions & { issuerKeys: JWK[] }>;
+
+/**
+ * JWT verifier implementing the interface expected by the SD-JWT library.
+ * Verification is delegated to `io-react-native-jwt` to leverage its support for multiple algorithms.
+ * @returns Boolean indicating whether the verification succeeded or not
+ */
+const sdJwtInstanceVerifier: SdJwtInstanceVerifier = async (
+  data,
+  signature,
+  options,
+) => {
+  if (!options?.issuerKeys) {
+    return false;
+  }
+  try {
+    await verifyJwt(`${data}.${signature}`, options.issuerKeys, {
+      clockTolerance: options.skewSeconds,
+    });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+/**
+ * Given a credential, verify it's in the supported format
+ * and the credential is correctly signed
+ * and it's bound to the given key
+ *
+ * @param rawCredential The received credential
+ * @param issuerKeys The set of public keys of the issuer,
+ * which will be used to verify the signature
+ * @param holderBindingContext The access to the holder's key
+ *
+ * @throws If the signature verification fails
+ * @throws If the credential is not in the SdJwt4VC format
+ * @throws If the holder binding is not properly configured
+ *
+ */
+async function verifyCredentialSdJwt(
+  rawCredential: string,
+  issuerKeys: JWK[],
+  holderBindingContext: CryptoContext,
+): Promise<SDJwt> {
+  const sdJwtInstance = new SDJwtInstance({
+    hasher,
+    verifier: sdJwtInstanceVerifier,
+  });
+
+  const [verifiedCredential, holderBindingKey] = await Promise.all([
+    sdJwtInstance.verify(rawCredential, { issuerKeys, skewSeconds: 30 }),
+    holderBindingContext.getPublicKey(),
+  ]);
+
+  const { cnf } = verifiedCredential.payload as SdJwt4VCBase["payload"];
+  if (!(await isSameThumbprint(cnf.jwk, holderBindingKey as JWK))) {
+    const message = `Failed to verify holder binding, expected kid: ${holderBindingKey.kid}, got: ${cnf.jwk.kid}`;
+    Logger.log(LogLevel.ERROR, message);
+    throw new IoWalletError(message);
+  }
+
+  return await sdJwtInstance.decode(fixLegacyCredentialSdJwt(rawCredential));
+}
+
+export const verifyAndParseCredentialSdJwt: IssuanceApi["verifyAndParseCredential"] =
+  async (
+    issuerConf,
+    credential,
+    credentialConfigurationId,
+    {
+      credentialCryptoContext,
+      ignoreMissingAttributes,
+      includeUndefinedAttributes,
+      validateCertificateChain,
+    },
+    x509CertRoot,
+  ) => {
+    const decoded = await verifyCredentialSdJwt(
+      credential,
+      issuerConf.keys,
+      credentialCryptoContext,
+    );
+
+    Logger.log(
+      LogLevel.DEBUG,
+      `Decoded credential: ${JSON.stringify(decoded)}`,
+    );
+
+    if (validateCertificateChain) {
+      if (!x509CertRoot) {
+        throw new IoWalletError("Missing x509CertRoot");
+      }
+      const x5c = decoded.jwt?.header?.x5c as string[] | undefined;
+      if (!x5c || !Array.isArray(x5c) || x5c.length === 0) {
+        throw new MissingX509CertsError("Missing x509 certificates");
+      }
+      await verifyX509Chain(x5c, x509CertRoot);
+    }
+
+    const credentialConfig =
+      issuerConf.credential_configurations_supported[credentialConfigurationId];
+
+    if (!credentialConfig) {
+      Logger.log(
+        LogLevel.ERROR,
+        `Credential type not supported by the issuer: ${credentialConfigurationId}`,
+      );
+      throw new IoWalletError("Credential type not supported by the issuer");
+    }
+
+    const parsedCredentialRaw = (await decoded.getClaims(hasher)) as Record<
+      string,
+      unknown
+    >;
+
+    const parsedCredential = parseCredentialSdJwt(
+      credentialConfig,
+      parsedCredentialRaw,
+      ignoreMissingAttributes,
+      includeUndefinedAttributes,
+    );
+
+    const issuedAt =
+      typeof parsedCredentialRaw.iat === "number"
+        ? new Date(parsedCredentialRaw.iat * 1000)
+        : undefined;
+
+    if (typeof parsedCredentialRaw.exp !== "number") {
+      throw new IoWalletError("Invalid or missing expiration claim (exp)");
+    }
+    const expiration = new Date(parsedCredentialRaw.exp * 1000);
+
+    Logger.log(
+      LogLevel.DEBUG,
+      `Parsed credential: ${JSON.stringify(parsedCredential)}\nIssued at: ${issuedAt}`,
+    );
+
+    return {
+      expiration,
+      issuedAt,
+      parsedCredential,
+    };
+  };
