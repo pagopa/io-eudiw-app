@@ -150,7 +150,6 @@ export const completeUserAuthorizationWithFormPostJwtMode: IssuanceApi["complete
       callbacks: {
         ...partialCallbacks,
         fetch: appFetch,
-        verifyJwt: createVerifyJwtFromJwks(issuerConfig.keys),
       },
       iss: requestObject.iss,
       presentationResponseUri: requestObject.response_uri,
