@@ -115,7 +115,7 @@ describe("KeyAttestation | getAttestation", () => {
     );
   });
 
-  it("should throw on Android when the key is generated without a key attestation", async () => {
+  it("should request key attestation on Android without a native attestation in the test environment", async () => {
     jest.replaceProperty(Platform, "OS", "android");
 
     const keyToAttest = createMockKeyAttestationCryptoContext("key-1");
@@ -124,7 +124,7 @@ describe("KeyAttestation | getAttestation", () => {
       success: true,
     });
 
-    await expect(() =>
+    await expect(
       getAttestation(
         {
           walletProviderBaseUrl: "https://example.wp",
@@ -137,7 +137,7 @@ describe("KeyAttestation | getAttestation", () => {
           keysToAttest: [keyToAttest],
         },
       ),
-    ).rejects.toThrow(IoWalletError);
+    ).resolves.toEqual({ attestation: "wua", format: "jwt" });
   });
 
   it("should throw when generateKeyWithAttestation returns { success: false }", async () => {

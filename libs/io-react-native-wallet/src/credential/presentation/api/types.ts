@@ -1,5 +1,5 @@
 import type { CryptoContext } from "@pagopa/io-react-native-jwt";
-import type { jsonWebKeySet } from "@pagopa/io-wallet-oid-federation";
+import type { FederationJwkSet as jsonWebKeySet } from "@pagopa/io-wallet-oid-federation";
 import type { DcqlQuery as DcqlQueryLib } from "dcql";
 
 import * as z from "zod";

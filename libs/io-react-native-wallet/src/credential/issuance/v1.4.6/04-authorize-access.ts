@@ -73,6 +73,7 @@ export const authorizeAccess: IssuanceApi["authorizeAccess"] = async (
       fetch: appFetch,
     },
     clientAttestationDPoP,
+    config: sdkConfigV1_4,
     dPoP: tokenDPoP.jwt,
     walletAttestation: walletInstanceAttestation,
   });

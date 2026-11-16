@@ -2,6 +2,7 @@ packages:
   - 'apps/*'
   - 'mini-apps/it-wallet'
   - 'mini-apps/aptitude'
+  - 'libs/io-react-native-wallet'
   - 'libs/commons'
   - 'libs/env'
   - 'libs/preferences'

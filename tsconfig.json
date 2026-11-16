@@ -4,6 +4,9 @@
   "files": [],
   "references": [
     {
+      "path": "./libs/io-react-native-wallet"
+    },
+    {
       "path": "./apps/main-app"
     },
     {

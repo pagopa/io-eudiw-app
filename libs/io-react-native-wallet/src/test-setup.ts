@@ -25,7 +25,7 @@ defineGlobal("fetch", globalThis.fetch);
 defineGlobal("Headers", globalThis.Headers);
 defineGlobal("Request", globalThis.Request);
 defineGlobal("Response", globalThis.Response);
-defineGlobal("FormData", globalThis.FormData);
+defineGlobal("FormData", Reflect.get(globalThis, "FormData"));
 defineGlobal("URL", globalThis.URL);
 defineGlobal("URLSearchParams", globalThis.URLSearchParams);
 

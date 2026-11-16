@@ -1,8 +1,8 @@
-import { Oauth2JwtParseError as SdkOauth2JwtParseError } from "@pagopa/io-wallet-oauth2";
 import {
   CreateAuthorizationResponseError as SdkCreateAuthorizationResponseError,
   FetchAuthorizationResponseError as SdkFetchAuthorizationResponseError,
 } from "@pagopa/io-wallet-oid4vp";
+import { JwtParseError as SdkOauth2JwtParseError } from "@pagopa/io-wallet-utils";
 import {
   UnexpectedStatusCodeError as SdkUnexpectedStatusCodeError,
   ValidationError as SdkValidationError,

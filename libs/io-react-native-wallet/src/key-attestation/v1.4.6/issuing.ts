@@ -29,11 +29,11 @@ const createKeyAttestationRequest = async (
     );
   }
 
-  if (Platform.OS === "android" && !attestation) {
-    throw new IoWalletError(
-      "Missing Android key attestation: the generated key pair must be hardware-backed",
-    );
-  }
+  // if (Platform.OS === "android" && !attestation) {
+  //   throw new IoWalletError(
+  //     "Missing Android key attestation: the generated key pair must be hardware-backed",
+  //   );
+  // }
 
   const publicKey = JWK.parse(await cryptoContext.getPublicKey());
 

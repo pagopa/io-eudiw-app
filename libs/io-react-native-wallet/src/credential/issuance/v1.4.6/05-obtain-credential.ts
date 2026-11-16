@@ -1,9 +1,7 @@
+import type { CallbackContext, JwtSignerJwk } from "@pagopa/io-wallet-utils";
+
 import { type CryptoContext, SignJWT } from "@pagopa/io-react-native-jwt";
-import {
-  type CallbackContext,
-  createTokenDPoP,
-  type JwtSignerJwk,
-} from "@pagopa/io-wallet-oauth2";
+import { createTokenDPoP } from "@pagopa/io-wallet-oauth2";
 import {
   createCredentialRequest,
   fetchCredentialResponse,
@@ -114,7 +112,7 @@ export const requestCredentials = async ({
     clientId,
     config: sdkConfigV1_4,
     credential_identifier: credentialIdentifier,
-    issuerIdentifier: issuerConf.credential_endpoint,
+    issuerIdentifier: issuerConf.credential_issuer,
     keyAttestation: keyAttestationJwt,
     maxBatchSize: issuerConf.credential_issuance_batch_size,
     nonce: c_nonce,

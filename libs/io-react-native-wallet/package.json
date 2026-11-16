@@ -38,6 +38,7 @@
   },
   "exports": {
     ".": {
+      "@io-eudiw-app/source": "./src/index.ts",
       "@io-app-it-wallet/source": "./src/index.ts",
       "source": "./src/index.ts",
       "react-native": "./src/index.ts",
@@ -61,11 +62,11 @@
     "react-native-quick-crypto": "*"
   },
   "dependencies": {
-    "@pagopa/io-wallet-oauth2": "1.5.8",
-    "@pagopa/io-wallet-oid-federation": "1.5.8",
-    "@pagopa/io-wallet-oid4vci": "1.5.8",
-    "@pagopa/io-wallet-oid4vp": "1.5.8",
-    "@pagopa/io-wallet-utils": "1.5.8",
+    "@pagopa/io-wallet-oauth2": "2.1.1-apt",
+    "@pagopa/io-wallet-oid-federation": "2.1.1-apt",
+    "@pagopa/io-wallet-oid4vci": "2.1.1-apt",
+    "@pagopa/io-wallet-oid4vp": "2.1.1-apt",
+    "@pagopa/io-wallet-utils": "2.1.1-apt",
     "@sd-jwt/core": "^0.22.0",
     "@owf/crypto": "^0.4.2",
     "@owf/token-status-list": "^0.4.2",

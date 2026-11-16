@@ -8,6 +8,7 @@
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
   },
   "exclude": [
+    "lib",
     "out-tsc",
     "dist",
     "__mocks__",
@@ -27,7 +28,7 @@
     "eslint.config.cjs",
     "eslint.config.mjs",
     "jest.config.ts",
-    "jest.config.cts",
+    "jest.config.cjs",
     "src/**/*.spec.ts",
     "src/**/*.test.ts"
   ],

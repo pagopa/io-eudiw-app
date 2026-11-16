@@ -1,4 +1,4 @@
-import { jsonWebKeySchema } from "@pagopa/io-wallet-oid-federation";
+import { zFederationJwk as jsonWebKeySchema } from "@pagopa/io-wallet-oid-federation";
 import * as z from "zod";
 
 import { FederationEntityMetadata } from "../../../trust/common/types";

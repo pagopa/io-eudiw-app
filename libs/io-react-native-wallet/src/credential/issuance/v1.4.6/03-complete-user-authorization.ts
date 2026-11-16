@@ -1,4 +1,4 @@
-import type { jsonWebKeySet } from "@pagopa/io-wallet-oid-federation";
+import type { FederationJwkSet as jsonWebKeySet } from "@pagopa/io-wallet-oid-federation";
 
 import { parseMrtdChallenge } from "@pagopa/io-wallet-oauth2";
 import { sendAuthorizationResponseAndExtractCode } from "@pagopa/io-wallet-oid4vci";
@@ -150,6 +150,7 @@ export const completeUserAuthorizationWithFormPostJwtMode: IssuanceApi["complete
       callbacks: {
         ...partialCallbacks,
         fetch: appFetch,
+        verifyJwt: createVerifyJwtFromJwks(issuerConfig.keys),
       },
       iss: requestObject.iss,
       presentationResponseUri: requestObject.response_uri,

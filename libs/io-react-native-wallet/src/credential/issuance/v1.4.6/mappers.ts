@@ -67,6 +67,15 @@ export const mapToIssuerConfig = createMapper<
       "openid_credential_issuer is required in Issuer metadata",
     );
 
+    assert(
+      oauthAuthorizationServer.authorization_endpoint,
+      "authorization_endpoint is required in Authorization Server metadata",
+    );
+    assert(
+      oauthAuthorizationServer.pushed_authorization_request_endpoint,
+      "pushed_authorization_request_endpoint is required in Authorization Server metadata",
+    );
+
     return {
       authorization_endpoint: oauthAuthorizationServer.authorization_endpoint,
       authorization_servers: openid_credential_issuer.authorization_servers,
@@ -82,7 +91,7 @@ export const mapToIssuerConfig = createMapper<
       federation_entity: federation_entity ?? {},
       keys: [
         ...openid_credential_issuer.jwks.keys,
-        ...oauthAuthorizationServer.jwks.keys,
+        ...(oauthAuthorizationServer.jwks?.keys ?? []),
       ] as JWK[],
       nonce_endpoint: openid_credential_issuer.nonce_endpoint ?? "",
       pushed_authorization_request_endpoint:
