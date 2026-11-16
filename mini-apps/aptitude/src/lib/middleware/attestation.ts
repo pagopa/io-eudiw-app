@@ -81,42 +81,45 @@ type GetKeyAttestationThunkOutput = {
 export const getKeyAttestationThunk = createAppAsyncThunk<
   GetKeyAttestationThunkOutput,
   GetKeyAttestationThunkInput
->('walletinstance/keyattestation', async ({ keyTags }, { getState }) => {
-  const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
-  const sessionId = selectSessionId(getState());
+>(
+  'aptitude/walletinstance/keyattestation',
+  async ({ keyTags }, { getState }) => {
+    const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+    const sessionId = selectSessionId(getState());
 
-  const appFetch = createWalletFetch(sessionId);
+    const appFetch = createWalletFetch(sessionId);
 
-  if (!wallet.KeyAttestation.isSupported) {
-    throw new Error(
-      `Key Attestation is not supported in v${WALLET_SPEC_VERSION}`
+    if (!wallet.KeyAttestation.isSupported) {
+      throw new Error(
+        `Key Attestation is not supported in v${WALLET_SPEC_VERSION}`
+      );
+    }
+
+    // Retrieve the integrity key tag from the store and create its context
+    const integrityKeyTag = selectInstanceKeyTag(getState());
+    if (!integrityKeyTag) {
+      throw new Error('Integrity key not found');
+    }
+    const integrityContext = getIntegrityContext(integrityKeyTag);
+
+    // Get env URLs
+    const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
+      getEnv();
+
+    return await wallet.KeyAttestation.getAttestation(
+      {
+        walletProviderBaseUrl,
+        walletSolutionId: 'appio',
+        walletSolutionVersion: '3.26.0'
+      },
+      {
+        appFetch,
+        integrityContext,
+        keysToAttest: keyTags.map(createKeyAttestationCryptoContextFor)
+      }
     );
   }
-
-  // Retrieve the integrity key tag from the store and create its context
-  const integrityKeyTag = selectInstanceKeyTag(getState());
-  if (!integrityKeyTag) {
-    throw new Error('Integrity key not found');
-  }
-  const integrityContext = getIntegrityContext(integrityKeyTag);
-
-  // Get env URLs
-  const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
-    getEnv();
-
-  return await wallet.KeyAttestation.getAttestation(
-    {
-      walletProviderBaseUrl,
-      walletSolutionId: 'appio',
-      walletSolutionVersion: '3.26.0'
-    },
-    {
-      appFetch,
-      integrityContext,
-      keysToAttest: keyTags.map(createKeyAttestationCryptoContextFor)
-    }
-  );
-});
+);
 
 const createKeyAttestationCryptoContextFor = (
   keyTag: string

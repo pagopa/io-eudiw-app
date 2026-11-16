@@ -89,7 +89,7 @@ export const persistCredential = createAppAsyncThunk<
   { credential: StoredCredential },
   { rejectValue: string }
 >(
-  'credentials/persist',
+  'aptitude/credentials/persist',
   async ({ credential }, { dispatch, rejectWithValue }) => {
     const { credential: encoded, ...metadata } = credential;
     try {
@@ -114,7 +114,7 @@ export const resolveCredentialOfferThunk: ResolveCredentialOfferThunk =
     { url: string },
     { rejectValue: unknown }
   >(
-    'credentialIssuance/resolveOffer',
+    'aptitude/credentialIssuance/resolveOffer',
     async ({ url }, { getState, rejectWithValue }) => {
       try {
         const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });

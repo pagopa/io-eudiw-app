@@ -17,7 +17,7 @@ import { createAppAsyncThunk } from './thunk';
 
 // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 export const createInstanceThunk = createAppAsyncThunk<void, void>(
-  'instance/createInstance',
+  'aptitude/instance/createInstance',
   async (_, { dispatch, getState, rejectWithValue }) => {
     try {
       const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
