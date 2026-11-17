@@ -1,5 +1,5 @@
-import type { RequestObject } from "../../api";
-import type { DirectAuthorizationBodyPayload } from "../../v1.0.0/types";
+import type { RequestObject } from '../../api';
+import type { DirectAuthorizationBodyPayload } from '../../v1.0.0/types';
 
 /**
  * Builds a URL-encoded form body for a direct POST response without encryption.
@@ -10,7 +10,7 @@ import type { DirectAuthorizationBodyPayload } from "../../v1.0.0/types";
  */
 export const buildDirectPostBody = async (
   { state }: RequestObject,
-  payload: DirectAuthorizationBodyPayload,
+  payload: DirectAuthorizationBodyPayload
 ): Promise<string> => {
   const formUrlEncodedBody = new URLSearchParams({
     ...(state && { state }),
@@ -18,12 +18,12 @@ export const buildDirectPostBody = async (
       (acc, [key, value]) => ({
         ...acc,
         [key]:
-          Array.isArray(value) || typeof value === "object"
+          Array.isArray(value) || typeof value === 'object'
             ? JSON.stringify(value)
-            : value,
+            : value
       }),
-      {} as Record<string, string>,
-    ),
+      {} as Record<string, string>
+    )
   });
 
   return formUrlEncodedBody.toString();

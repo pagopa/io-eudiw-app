@@ -1,11 +1,11 @@
-import { WalletProviderResponseError } from "../utils/errors";
-import { parseRawHttpResponse } from "../utils/misc";
+import { WalletProviderResponseError } from '../utils/errors';
+import { parseRawHttpResponse } from '../utils/misc';
 import {
   createApiClient as createWalletProviderApiClient,
   type EndpointParameters,
   ProblemJson,
-  ApiClient as WalletProviderApiClient,
-} from "./generated/wallet-provider";
+  ApiClient as WalletProviderApiClient
+} from './generated/wallet-provider';
 
 export type WalletProviderClient = WalletProviderApiClient;
 
@@ -18,14 +18,14 @@ const validateResponse = async (response: Response) => {
       problemDetail = ProblemJson.parse(await response.json());
     } catch {
       problemDetail = {
-        title: "Invalid response from Wallet Provider",
+        title: 'Invalid response from Wallet Provider'
       };
     }
 
     throw new WalletProviderResponseError({
-      message: problemDetail.title ?? "Invalid response from Wallet Provider",
+      message: problemDetail.title ?? 'Invalid response from Wallet Provider',
       reason: problemDetail,
-      statusCode: response.status,
+      statusCode: response.status
     });
   }
   return response;
@@ -42,19 +42,19 @@ export const getWalletProviderClient = (context: {
       appFetch(interpolateUrl(url, params), {
         body: params?.body ? processBody(params.body) : undefined,
         headers: {
-          "Content-Type": "application/json",
-          ...params?.header,
+          'Content-Type': 'application/json',
+          ...params?.header
         },
-        method,
+        method
       })
         .then(validateResponse)
         .then<RawHttpResponse>(parseRawHttpResponse),
-    walletProviderBaseUrl,
+    walletProviderBaseUrl
   );
 };
 
 const processBody = (body: unknown): string =>
-  typeof body === "string" ? body : JSON.stringify(body);
+  typeof body === 'string' ? body : JSON.stringify(body);
 
 /**
  * Function to interpolate the url when the request includes path params.
@@ -66,9 +66,9 @@ export const interpolateUrl = (url: string, params?: EndpointParameters) => {
 
   return Object.entries(params.path).reduce(
     (interpolatedUrl, [key, value]) =>
-      typeof value === "string"
+      typeof value === 'string'
         ? interpolatedUrl.replace(`{${key}}`, value)
         : interpolatedUrl,
-    url,
+    url
   );
 };

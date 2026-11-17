@@ -1,7 +1,6 @@
 import { insertNewLinesIfNeededOnMatch } from '../markdownRenderer';
-// eslint-disable-next-line max-lines-per-function
+
 describe('markdownRenderer', () => {
-  // eslint-disable-next-line max-lines-per-function
   describe('insertNewLinesIfNeededOnMatch', () => {
     it('Given two new lines before and after, should do nothing', () => {
       const match = { 0: { length: 12 }, index: 2 } as RegExpExecArray;

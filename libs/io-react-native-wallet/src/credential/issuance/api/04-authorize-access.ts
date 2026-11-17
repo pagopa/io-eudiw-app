@@ -1,7 +1,7 @@
-import type { CryptoContext } from "@pagopa/io-react-native-jwt";
+import type { CryptoContext } from '@pagopa/io-react-native-jwt';
 
-import type { IssuerConfig } from "./IssuerConfig";
-import type { TokenResponse } from "./types";
+import type { IssuerConfig } from './IssuerConfig';
+import type { TokenResponse } from './types';
 
 export interface AuthorizeAccessApi {
   /**
@@ -33,6 +33,6 @@ export interface AuthorizeAccessApi {
       dPopCryptoContext: CryptoContext;
       walletInstanceAttestation: string;
       wiaCryptoContext: CryptoContext;
-    },
+    }
   ): Promise<{ accessToken: TokenResponse }>;
 }

@@ -1,9 +1,9 @@
-import type { RelyingPartyConfig } from "../api";
-import type { RequestObject } from "../api/types";
+import type { RelyingPartyConfig } from '../api';
+import type { RequestObject } from '../api/types';
 
-import { RelyingPartyEntityConfiguration } from "../../../trust/v1.0.0/types";
-import { createMapper } from "../../../utils/mappers";
-import { RawRequestObject } from "./types";
+import { RelyingPartyEntityConfiguration } from '../../../trust/v1.0.0/types';
+import { createMapper } from '../../../utils/mappers';
+import { RawRequestObject } from './types';
 
 export const mapToRelyingPartyConfig = createMapper<
   RelyingPartyEntityConfiguration,
@@ -17,7 +17,7 @@ export const mapToRelyingPartyConfig = createMapper<
       openid_credential_verifier.authorization_encrypted_response_enc,
     federation_entity,
     jwks: openid_credential_verifier.jwks,
-    subject: payload.sub,
+    subject: payload.sub
   };
 });
 
@@ -31,6 +31,6 @@ export const mapToRequestObject = createMapper<RawRequestObject, RequestObject>(
     response_type: payload.response_type,
     response_uri: payload.response_uri,
     state: payload.state,
-    trust_chain: header.trust_chain,
-  }),
+    trust_chain: header.trust_chain
+  })
 );

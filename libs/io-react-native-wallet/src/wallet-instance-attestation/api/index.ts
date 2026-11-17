@@ -1,11 +1,11 @@
-import type { CryptoContext } from "@pagopa/io-react-native-jwt";
+import type { CryptoContext } from '@pagopa/io-react-native-jwt';
 
-import type { IntegrityContext } from "../../utils/integrity";
+import type { IntegrityContext } from '../../utils/integrity';
 import type {
   DecodedWalletInstanceAttestation,
   WalletAttestation,
-  WalletAttestationRequestParams,
-} from "./types";
+  WalletAttestationRequestParams
+} from './types';
 
 export interface WalletInstanceAttestationApi {
   /**
@@ -39,7 +39,7 @@ export interface WalletInstanceAttestationApi {
       appFetch?: typeof fetch;
       integrityContext: IntegrityContext;
       wiaCryptoContext: CryptoContext;
-    },
+    }
   ): Promise<WalletAttestation[]>;
 
   /**
@@ -58,5 +58,5 @@ export interface WalletInstanceAttestationApi {
 export type {
   DecodedWalletInstanceAttestation,
   WalletAttestation,
-  WalletAttestationRequestParams,
-} from "./types";
+  WalletAttestationRequestParams
+} from './types';

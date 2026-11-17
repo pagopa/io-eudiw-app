@@ -1,7 +1,7 @@
-import type { CryptoContext } from "@pagopa/io-react-native-jwt";
+import type { CryptoContext } from '@pagopa/io-react-native-jwt';
 
-import type { AuthorizationDetail } from "../../../utils/par";
-import type { IssuerConfig } from "./IssuerConfig";
+import type { AuthorizationDetail } from '../../../utils/par';
+import type { IssuerConfig } from './IssuerConfig';
 
 export interface StartUserAuthorizationApi {
   /**
@@ -36,8 +36,8 @@ export interface StartUserAuthorizationApi {
     issuerConf: IssuerConfig,
     credentialIds: string[],
     proof:
-      | { idpHinting: string; proofType: "mrtd-pop" }
-      | { proofType: "none" },
+      | { idpHinting: string; proofType: 'mrtd-pop' }
+      | { proofType: 'none' },
     context: {
       appFetch?: typeof fetch;
       issuerState?: string;
@@ -45,7 +45,7 @@ export interface StartUserAuthorizationApi {
       scope?: string;
       walletInstanceAttestation: string;
       wiaCryptoContext: CryptoContext;
-    },
+    }
   ): Promise<{
     clientId: string;
     codeVerifier: string;

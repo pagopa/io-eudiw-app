@@ -1,21 +1,21 @@
-import { DcqlError, DcqlQuery } from "dcql";
-import { isValiError } from "valibot";
+import { DcqlError, DcqlQuery } from 'dcql';
+import { isValiError } from 'valibot';
 
-import type { Credential4Dcql, RemotePresentationApi } from "../api";
-import type { CredentialPurpose } from "../api/06-evaluate-dcql-query";
+import type { Credential4Dcql, RemotePresentationApi } from '../api';
+import type { CredentialPurpose } from '../api/06-evaluate-dcql-query';
 
-import { LEGACY_SD_JWT } from "../../../sd-jwt/types";
-import { IoWalletError } from "../../../utils/errors";
-import { CredentialsNotFoundError } from "../common/errors";
+import { LEGACY_SD_JWT } from '../../../sd-jwt/types';
+import { IoWalletError } from '../../../utils/errors';
+import { CredentialsNotFoundError } from '../common/errors';
 import {
   extractFailedCredentialsDetails,
   getClaimsFromDcqlMatch,
   getDcqlQueryMatches,
-  getPresentationFrameFromDcqlMatch,
-} from "../common/utils/dcql";
-import * as sdJwtUtils from "../common/utils/sd-jwt";
+  getPresentationFrameFromDcqlMatch
+} from '../common/utils/dcql';
+import * as sdJwtUtils from '../common/utils/sd-jwt';
 
-export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
+export const evaluateDcqlQuery: RemotePresentationApi['evaluateDcqlQuery'] =
   async (query, credentialsSdJwt) => {
     const credentials = await sdJwtUtils.mapCredentialsToObj(credentialsSdJwt);
 
@@ -24,7 +24,7 @@ export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
         acc[c.vct] = c.original_credential;
         return acc;
       },
-      {} as Record<string, Credential4Dcql>,
+      {} as Record<string, Credential4Dcql>
     );
 
     try {
@@ -36,16 +36,16 @@ export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
 
       if (!queryResult.can_be_satisfied) {
         throw new CredentialsNotFoundError(
-          extractFailedCredentialsDetails(queryResult),
+          extractFailedCredentialsDetails(queryResult)
         );
       }
 
       return getDcqlQueryMatches(queryResult).map(([id, match]) => {
         const purposes = queryResult.credential_sets
-          ?.filter((set) => set.matching_options?.flat().includes(id))
-          ?.map<CredentialPurpose>((credentialSet) => ({
+          ?.filter(set => set.matching_options?.flat().includes(id))
+          ?.map<CredentialPurpose>(credentialSet => ({
             description: credentialSet.purpose?.toString(),
-            required: Boolean(credentialSet.required),
+            required: Boolean(credentialSet.required)
           }));
 
         const matchOutput = match.valid_credentials[0]?.meta.output;
@@ -53,16 +53,16 @@ export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
         // The legacy SD-JWT format is still supported because `evaluateDcqlQuery`
         // is also used when presenting the legacy 0.7.1 eID to get other credentials.
         if (
-          matchOutput?.credential_format === "dc+sd-jwt" ||
+          matchOutput?.credential_format === 'dc+sd-jwt' ||
           (matchOutput?.credential_format === LEGACY_SD_JWT &&
-            "vct" in matchOutput)
+            'vct' in matchOutput)
         ) {
           const { vct } = matchOutput;
           const cred = credentialsByVct[vct];
 
           if (!cred) {
             throw new IoWalletError(
-              `Credential with vct ${vct} not found in the provided credentials`,
+              `Credential with vct ${vct} not found in the provided credentials`
             );
           }
 
@@ -71,7 +71,7 @@ export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
           const requiredDisclosures = getClaimsFromDcqlMatch(match);
           const presentationFrame = getPresentationFrameFromDcqlMatch(
             match,
-            parsedQuery,
+            parsedQuery
           );
 
           return {
@@ -84,12 +84,12 @@ export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
             // See https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-6.4.2
             purposes: purposes ?? [{ required: true }],
             requiredDisclosures,
-            vct,
+            vct
           };
         }
 
         throw new Error(
-          `Unsupported credential format: ${matchOutput?.credential_format}`,
+          `Unsupported credential format: ${matchOutput?.credential_format}`
         );
       });
     } catch (error) {
@@ -97,8 +97,8 @@ export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
       if (isValiError(error)) {
         throw new DcqlError({
           cause: error.issues,
-          code: "PARSE_ERROR",
-          message: "Failed to parse the provided DCQL query",
+          code: 'PARSE_ERROR',
+          message: 'Failed to parse the provided DCQL query'
         });
       }
 

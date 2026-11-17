@@ -2,8 +2,8 @@ import type {
   Credential4Dcql,
   CredentialFormat,
   DcqlQuery,
-  PresentationFrame,
-} from "./types";
+  PresentationFrame
+} from './types';
 
 /**
  * The purpose for the credential request by the RP.
@@ -16,7 +16,7 @@ export interface CredentialPurpose {
 export type Disclosure = [
   string /* salt */,
   string /* claim name */,
-  unknown /* claim value */,
+  unknown /* claim value */
 ];
 
 export interface EvaluateDcqlQueryApi {
@@ -34,7 +34,7 @@ export interface EvaluateDcqlQueryApi {
   evaluateDcqlQuery(
     query: DcqlQuery,
     credentialsSdJwt: Credential4Dcql[],
-    credentialsMdoc?: Credential4Dcql[],
+    credentialsMdoc?: Credential4Dcql[]
   ): Promise<
     (CredentialFormat & {
       credential: string;

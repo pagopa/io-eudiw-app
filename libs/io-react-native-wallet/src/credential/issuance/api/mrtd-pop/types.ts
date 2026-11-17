@@ -25,13 +25,13 @@ export interface MrtdPopVerificationResult {
 export interface MrtdProofChallengeInfo {
   aud: string;
   exp: number;
-  htm: "POST";
+  htm: 'POST';
   htu: string;
   iat: number;
   iss: string;
   mrtd_auth_session: string;
   mrtd_pop_jwt_nonce: string;
   state: string;
-  status: "require_interaction";
-  type: "mrtd+ias";
+  status: 'require_interaction';
+  type: 'mrtd+ias';
 }

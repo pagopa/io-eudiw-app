@@ -7,8 +7,10 @@
   },
   "files": ["src/test-setup.ts"],
   "include": [
+    "__mocks__/**/*.ts",
     "jest.config.ts",
     "jest.config.cjs",
+    "src/**/__tests__/**/*.ts",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.test.tsx",

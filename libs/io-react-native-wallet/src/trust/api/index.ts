@@ -1,7 +1,7 @@
-import { type X509CertificateOptions } from "@pagopa/io-react-native-crypto";
+import { type X509CertificateOptions } from '@pagopa/io-react-native-crypto';
 
-import type { ParsedToken } from "../common/utils";
-import type { TrustAnchorConfig } from "./TrustAnchorConfig";
+import type { ParsedToken } from '../common/utils';
+import type { TrustAnchorConfig } from './TrustAnchorConfig';
 
 export interface TrustApi {
   /**
@@ -16,7 +16,7 @@ export interface TrustApi {
   buildTrustChain(
     relyingPartyEntityBaseUrl: string,
     trustAnchorConfig: TrustAnchorConfig,
-    appFetch?: typeof fetch,
+    appFetch?: typeof fetch
   ): Promise<string[]>;
 
   /**
@@ -27,7 +27,7 @@ export interface TrustApi {
    */
   getTrustAnchorEntityConfiguration(
     trustAnchorBaseUrl: string,
-    ctx?: FetchContext,
+    ctx?: FetchContext
   ): Promise<TrustAnchorConfig>;
 
   /**
@@ -49,7 +49,7 @@ export interface TrustApi {
     ctx?: {
       appFetch?: typeof fetch;
       renewOnFail?: boolean;
-    },
+    }
   ): Promise<ParsedToken[]>;
 }
 

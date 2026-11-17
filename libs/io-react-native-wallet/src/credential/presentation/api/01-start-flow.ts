@@ -1,4 +1,4 @@
-import type { PresentationParams } from "./types";
+import type { PresentationParams } from './types';
 
 export interface StartFlowApi {
   /**

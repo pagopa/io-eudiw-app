@@ -1,13 +1,13 @@
-import * as z from "zod";
+import * as z from 'zod';
 
-import { JWK } from "../../../utils/jwk";
-import { UnixTime } from "../../../utils/zod";
+import { JWK } from '../../../utils/jwk';
+import { UnixTime } from '../../../utils/zod';
 
 /**
  * Shape from parsing a status assertion response in case of 201.
  */
 export const StatusAssertionResponse = z.object({
-  status_assertion_responses: z.array(z.string()),
+  status_assertion_responses: z.array(z.string())
 });
 
 export type ParsedStatusAssertionJwt = z.infer<typeof ParsedStatusAssertionJwt>;
@@ -25,25 +25,25 @@ export const ParsedStatusAssertionJwt = z.object({
   header: z.object({
     alg: z.string(),
     kid: z.string().optional(),
-    typ: z.literal("status-assertion+jwt"),
+    typ: z.literal('status-assertion+jwt')
   }),
   payload: z.object({
     cnf: z.object({
-      jwk: JWK,
+      jwk: JWK
     }),
     credential_hash: z.string(),
     credential_hash_alg: z.string(),
     credential_status_detail: z
       .object({
         description: z.string(),
-        state: z.string(),
+        state: z.string()
       })
       .optional(),
     credential_status_type: z.string(),
     exp: UnixTime,
     iat: UnixTime,
-    iss: z.string(),
-  }),
+    iss: z.string()
+  })
 });
 
 export type ParsedStatusAssertionErrorJwt = z.infer<
@@ -58,14 +58,14 @@ export const ParsedStatusAssertionErrorJwt = z.object({
   header: z.object({
     alg: z.string(),
     kid: z.string().optional(),
-    typ: z.literal("status-assertion-error+jwt"),
+    typ: z.literal('status-assertion-error+jwt')
   }),
   payload: z.object({
     credential_hash: z.string(),
     credential_hash_alg: z.string(),
     error: z.string(),
-    error_description: z.string(),
-  }),
+    error_description: z.string()
+  })
 });
 
 /**
@@ -76,13 +76,13 @@ export type ParsedStatusAssertionResponse = z.infer<
 >;
 export const ParsedStatusAssertionResponse = z.union([
   ParsedStatusAssertionJwt,
-  ParsedStatusAssertionErrorJwt,
+  ParsedStatusAssertionErrorJwt
 ]);
 
 export enum StatusType {
-  INVALID = "0x01",
-  SUSPENDED = "0x02",
-  VALID = "0x00",
+  INVALID = '0x01',
+  SUSPENDED = '0x02',
+  VALID = '0x00'
 }
 
 export type InvalidStatusErrorReason = {

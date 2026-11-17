@@ -1,7 +1,7 @@
-import * as z from "zod";
+import * as z from 'zod';
 
-import { JWK } from "../../utils/jwk";
-import { FederationEntityMetadata } from "../common/types";
+import { JWK } from '../../utils/jwk';
+import { FederationEntityMetadata } from '../common/types';
 
 /**
  * Common Trust Anchor configuration
@@ -14,8 +14,8 @@ export const TrustAnchorConfig = z.object({
     header: z.object({
       alg: z.string(),
       kid: z.string(),
-      typ: z.literal("entity-statement+jwt"),
-    }),
+      typ: z.literal('entity-statement+jwt')
+    })
   }),
-  keys: z.array(JWK),
+  keys: z.array(JWK)
 });

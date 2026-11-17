@@ -1,52 +1,52 @@
-import type { MetadataResponseV1_4 } from "@pagopa/io-wallet-oid4vci";
-import type { ParsedAuthorizeRequestResult } from "@pagopa/io-wallet-oid4vp";
+import type { MetadataResponseV1_4 } from '@pagopa/io-wallet-oid4vci';
+import type { ParsedAuthorizeRequestResult } from '@pagopa/io-wallet-oid4vp';
 
-import type { RequestObject } from "../../../credential/presentation";
-import type { JWK } from "../../../utils/jwk";
+import type { RequestObject } from '../../../credential/presentation';
+import type { JWK } from '../../../utils/jwk';
 
-import { createMapper } from "../../../utils/mappers";
-import { assert } from "../../../utils/misc";
-import { IssuerConfig } from "../api/IssuerConfig";
+import { createMapper } from '../../../utils/mappers';
+import { assert } from '../../../utils/misc';
+import { IssuerConfig } from '../api/IssuerConfig';
 
 type CredentialConfigurations =
-  IssuerConfig["credential_configurations_supported"];
+  IssuerConfig['credential_configurations_supported'];
 type OpenIdCredentialIssuer =
-  MetadataResponseV1_4["metadata"]["openid_credential_issuer"];
+  MetadataResponseV1_4['metadata']['openid_credential_issuer'];
 
 const mapCredentialConfigurationsSupported = (
-  oidIssuer: NonNullable<OpenIdCredentialIssuer>,
+  oidIssuer: NonNullable<OpenIdCredentialIssuer>
 ): CredentialConfigurations =>
   Object.entries(oidIssuer.credential_configurations_supported).reduce(
     (acc, [key, config]) => {
       acc[key] = {
-        ...(config.format === "dc+sd-jwt"
+        ...(config.format === 'dc+sd-jwt'
           ? { format: config.format, vct: config.vct }
           : { doctype: config.doctype, format: config.format }),
         claims:
-          config.credential_metadata.claims?.map((claim) => ({
+          config.credential_metadata.claims?.map(claim => ({
             display: claim.display,
-            path: claim.path,
+            path: claim.path
           })) ?? [],
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- value validated as defined above
         display: config.credential_metadata.display!,
         issuance_errors_supported: config.issuance_errors_supported,
-        scope: config.scope,
+        scope: config.scope
       };
       return acc;
     },
-    {} as CredentialConfigurations,
+    {} as CredentialConfigurations
   );
 
 export const mapToIssuerConfig = createMapper<
   MetadataResponseV1_4,
   IssuerConfig
 >(
-  (x) => {
+  x => {
     const {
       federation_entity,
       oauth_authorization_server,
       openid_credential_issuer,
-      openid_credential_verifier,
+      openid_credential_verifier
     } = x.metadata;
 
     // The Issuer's own `oauth_authorization_server` always describes the Issuer
@@ -60,27 +60,27 @@ export const mapToIssuerConfig = createMapper<
 
     assert(
       oauthAuthorizationServer,
-      "oauth_authorization_server is required in Issuer metadata",
+      'oauth_authorization_server is required in Issuer metadata'
     );
     assert(
       openid_credential_issuer,
-      "openid_credential_issuer is required in Issuer metadata",
+      'openid_credential_issuer is required in Issuer metadata'
     );
 
     assert(
       oauthAuthorizationServer.authorization_endpoint,
-      "authorization_endpoint is required in Authorization Server metadata",
+      'authorization_endpoint is required in Authorization Server metadata'
     );
     assert(
       oauthAuthorizationServer.pushed_authorization_request_endpoint,
-      "pushed_authorization_request_endpoint is required in Authorization Server metadata",
+      'pushed_authorization_request_endpoint is required in Authorization Server metadata'
     );
 
     return {
       authorization_endpoint: oauthAuthorizationServer.authorization_endpoint,
       authorization_servers: openid_credential_issuer.authorization_servers,
       credential_configurations_supported: mapCredentialConfigurationsSupported(
-        openid_credential_issuer,
+        openid_credential_issuer
       ),
       credential_endpoint: openid_credential_issuer.credential_endpoint,
       credential_issuance_batch_size:
@@ -91,15 +91,15 @@ export const mapToIssuerConfig = createMapper<
       federation_entity: federation_entity ?? {},
       keys: [
         ...openid_credential_issuer.jwks.keys,
-        ...(oauthAuthorizationServer.jwks?.keys ?? []),
+        ...(oauthAuthorizationServer.jwks?.keys ?? [])
       ] as JWK[],
-      nonce_endpoint: openid_credential_issuer.nonce_endpoint ?? "",
+      nonce_endpoint: openid_credential_issuer.nonce_endpoint ?? '',
       pushed_authorization_request_endpoint:
         oauthAuthorizationServer.pushed_authorization_request_endpoint,
-      token_endpoint: oauthAuthorizationServer.token_endpoint,
+      token_endpoint: oauthAuthorizationServer.token_endpoint
     };
   },
-  { outputSchema: IssuerConfig }, // Output validation for extra-safety
+  { outputSchema: IssuerConfig } // Output validation for extra-safety
 );
 
 export const mapToRequestObject = createMapper<
@@ -107,7 +107,7 @@ export const mapToRequestObject = createMapper<
   RequestObject
 >(({ header, payload }) => ({
   ...payload,
-  iss: payload.iss ?? "",
+  iss: payload.iss ?? '',
   trust_chain: header.trust_chain,
-  x5c: header.x5c as string[] | undefined,
+  x5c: header.x5c as string[] | undefined
 }));

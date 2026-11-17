@@ -1,8 +1,8 @@
-import * as z from "zod";
+import * as z from 'zod';
 
 export type AuthorizationDetail = z.infer<typeof AuthorizationDetail>;
 
-export type CredentialFormat = "dc+sd-jwt" | "mso_mdoc";
+export type CredentialFormat = 'dc+sd-jwt' | 'mso_mdoc';
 
 // The credential as a collection of attributes in plain value
 export type ParsedCredential = Record<
@@ -22,7 +22,7 @@ export type ParsedCredential = Record<
 export const AuthorizationDetail = z.object({
   credential_configuration_id: z.string(),
   credential_identifiers: z.array(z.string()),
-  type: z.literal("openid_credential"),
+  type: z.literal('openid_credential')
 });
 
 export type TokenResponse = z.infer<typeof TokenResponse>;
@@ -31,5 +31,5 @@ export const TokenResponse = z.object({
   authorization_details: z.array(AuthorizationDetail),
   expires_in: z.number().optional(),
   refresh_token: z.string().optional(),
-  token_type: z.string(),
+  token_type: z.string()
 });

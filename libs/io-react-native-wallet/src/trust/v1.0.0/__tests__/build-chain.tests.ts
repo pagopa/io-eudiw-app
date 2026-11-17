@@ -4,16 +4,16 @@ import {
   leafEntityConfiguration,
   leafEntityStatement,
   signed,
-  trustAnchorEntityConfiguration,
-} from "../__fixtures__/entity-statements";
-import { buildTrustChain } from "../build-chain";
-import { mapToTrustAnchorConfig } from "../mappers";
-import { verifyTrustChain } from "../verify-chain";
+  trustAnchorEntityConfiguration
+} from '../__fixtures__/entity-statements';
+import { buildTrustChain } from '../build-chain';
+import { mapToTrustAnchorConfig } from '../mappers';
+import { verifyTrustChain } from '../verify-chain';
 
 // Dummy base URLs aligned with our non‑regulatory examples
-const leafBaseUrl = "https://leaf.example";
-const intermediateBaseUrl = "https://intermediate.example";
-const taBaseUrl = "https://trustanchor.example";
+const leafBaseUrl = 'https://leaf.example';
+const intermediateBaseUrl = 'https://intermediate.example';
+const taBaseUrl = 'https://trustanchor.example';
 
 // Dummy tokens that will be produced by signing the dummy objects
 let mockSignedLeafECJwt: string;
@@ -36,11 +36,16 @@ const mockResponses: Record<
     Promise.resolve(mockSignedTrustAnchorECJwt),
   [`${taBaseUrl}/fetch?sub=${encodeURIComponent(intermediateBaseUrl)}`]: () =>
     Promise.resolve(mockSignedIntermediateESJwt),
-  [`${taBaseUrl}/list`]: [leafBaseUrl, intermediateBaseUrl],
+  [`${taBaseUrl}/list`]: [leafBaseUrl, intermediateBaseUrl]
 };
 
 const customFetch: typeof fetch = async (requestInfo, _) => {
-  const url = typeof requestInfo === "string" ? requestInfo : requestInfo.url;
+  const url =
+    typeof requestInfo === 'string'
+      ? requestInfo
+      : requestInfo instanceof URL
+        ? requestInfo.href
+        : requestInfo.url;
 
   const mockResponse = mockResponses[url];
 
@@ -52,24 +57,24 @@ const customFetch: typeof fetch = async (requestInfo, _) => {
     // Federation list (array response)
     return Promise.resolve({
       json: () => Promise.resolve(mockResponse),
-      status: 200,
+      status: 200
     } as Response);
   }
 
   // Entity Configuration / Entity Statement (string JWT response)
   const resolvedText =
-    typeof mockResponse === "function"
+    typeof mockResponse === 'function'
       ? mockResponse()
       : await Promise.resolve(mockResponse);
   const text = await resolvedText;
   return {
     status: 200,
-    text: () => Promise.resolve(text),
+    text: () => Promise.resolve(text)
   } as Response;
 };
 
 const mappedTrustAnchorEntityConfiguration = mapToTrustAnchorConfig(
-  trustAnchorEntityConfiguration,
+  trustAnchorEntityConfiguration
 );
 
 // Before all tests, create real signed JWTs using `signed()` helper
@@ -81,48 +86,48 @@ beforeAll(async () => {
   mockSignedTrustAnchorECJwt = await signed(trustAnchorEntityConfiguration);
 });
 
-describe("buildTrustChain", () => {
-  it("builds a valid trust chain from leaf to trust anchor", async () => {
+describe('buildTrustChain', () => {
+  it('builds a valid trust chain from leaf to trust anchor', async () => {
     const chain = await buildTrustChain(
       leafBaseUrl,
       mappedTrustAnchorEntityConfiguration,
-      customFetch,
+      customFetch
     );
 
     expect(chain).toEqual([
       mockSignedLeafECJwt,
       mockSignedLeafESJwt,
       mockSignedIntermediateESJwt,
-      mockSignedTrustAnchorECJwt,
+      mockSignedTrustAnchorECJwt
     ]);
   });
 
-  it("builds a valid trust chain from leaf to trust anchor and verifies it", async () => {
+  it('builds a valid trust chain from leaf to trust anchor and verifies it', async () => {
     // Build the chain of trust
     const chain = await buildTrustChain(
       leafBaseUrl,
       mappedTrustAnchorEntityConfiguration,
-      customFetch,
+      customFetch
     );
 
     expect(chain).toEqual([
       mockSignedLeafECJwt,
       mockSignedLeafESJwt,
       mockSignedIntermediateESJwt,
-      mockSignedTrustAnchorECJwt,
+      mockSignedTrustAnchorECJwt
     ]);
 
     // Verify the chain of trust
     const result = await verifyTrustChain(
       mappedTrustAnchorEntityConfiguration,
-      chain,
+      chain
     );
 
     expect(result).toEqual([
       leafEntityConfiguration,
       leafEntityStatement,
       intermediateEntityStatement,
-      trustAnchorEntityConfiguration,
+      trustAnchorEntityConfiguration
     ]);
   });
 });

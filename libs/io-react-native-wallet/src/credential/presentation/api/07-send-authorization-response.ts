@@ -1,12 +1,12 @@
-import type { Out } from "../../../../src/utils/misc";
-import type { EvaluateDcqlQueryApi } from "./06-evaluate-dcql-query";
-import type { RelyingPartyConfig } from "./RelyingPartyConfig";
+import type { Out } from '../../../../src/utils/misc';
+import type { EvaluateDcqlQueryApi } from './06-evaluate-dcql-query';
+import type { RelyingPartyConfig } from './RelyingPartyConfig';
 import type {
   AuthorizationResponse,
   ErrorResponse,
   RemotePresentation,
-  RequestObject,
-} from "./types";
+  RequestObject
+} from './types';
 export interface SendAuthorizationResponseApi {
   /**
    * Prepares remote presentations for a set of credentials.
@@ -21,12 +21,12 @@ export interface SendAuthorizationResponseApi {
    * @returns A promise that resolves to an object containing an array of presentations and the generated nonce.
    */
   prepareRemotePresentations(
-    credentials: Out<EvaluateDcqlQueryApi["evaluateDcqlQuery"]>,
+    credentials: Out<EvaluateDcqlQueryApi['evaluateDcqlQuery']>,
     authRequestObject: {
       clientId: string;
       nonce: string;
       responseUri: string;
-    },
+    }
   ): Promise<RemotePresentation>;
 
   /**
@@ -42,7 +42,7 @@ export interface SendAuthorizationResponseApi {
   sendAuthorizationErrorResponse(
     requestObject: RequestObject,
     error: { error: ErrorResponse; errorDescription: string },
-    context?: FetchContext,
+    context?: FetchContext
   ): Promise<AuthorizationResponse>;
 
   /**
@@ -60,7 +60,7 @@ export interface SendAuthorizationResponseApi {
     requestObject: RequestObject,
     remotePresentation: RemotePresentation,
     rpConf?: RelyingPartyConfig,
-    context?: FetchContext,
+    context?: FetchContext
   ): Promise<AuthorizationResponse>;
 }
 

@@ -1,24 +1,24 @@
-import { decode as decodeJwt, verify } from "@pagopa/io-react-native-jwt";
+import { decode as decodeJwt, verify } from '@pagopa/io-react-native-jwt';
 
-import type { StatusAssertionApi } from "../api/status-assertion";
+import type { StatusAssertionApi } from '../api/status-assertion';
 
-import { extractJwkFromCredential } from "../../../utils/credentials";
+import { extractJwkFromCredential } from '../../../utils/credentials';
 import {
   IoWalletError,
   IssuerResponseError,
-  IssuerResponseErrorCodes,
-} from "../../../utils/errors";
-import { isSameThumbprint } from "../../../utils/jwk";
-import { Logger, LogLevel } from "../../../utils/logging";
-import { mapToParsedStatusAssertion } from "./mappers";
+  IssuerResponseErrorCodes
+} from '../../../utils/errors';
+import { isSameThumbprint } from '../../../utils/jwk';
+import { Logger, LogLevel } from '../../../utils/logging';
+import { mapToParsedStatusAssertion } from './mappers';
 import {
   type InvalidStatusErrorReason,
   ParsedStatusAssertionErrorJwt,
   ParsedStatusAssertionResponse,
-  StatusType,
-} from "./types";
+  StatusType
+} from './types';
 
-export const verifyAndParseStatusAssertion: StatusAssertionApi["verifyAndParse"] =
+export const verifyAndParseStatusAssertion: StatusAssertionApi['verifyAndParse'] =
   async (issuerConf, rawStatusAssertion, credential, format) => {
     const { statusAssertion } = rawStatusAssertion;
 
@@ -27,21 +27,21 @@ export const verifyAndParseStatusAssertion: StatusAssertionApi["verifyAndParse"]
     const decodedJwt = decodeJwt(statusAssertion);
     const parsedStatusAssertion = ParsedStatusAssertionResponse.parse({
       header: decodedJwt.protectedHeader,
-      payload: decodedJwt.payload,
+      payload: decodedJwt.payload
     });
 
     Logger.log(
       LogLevel.DEBUG,
-      `Parsed status assertion: ${JSON.stringify(parsedStatusAssertion)}`,
+      `Parsed status assertion: ${JSON.stringify(parsedStatusAssertion)}`
     );
 
     // Errors are transmitted in the JWT and use a 200 HTTP status code
     if (isStatusAssertionError(parsedStatusAssertion)) {
       throw new IssuerResponseError({
         code: IssuerResponseErrorCodes.CredentialInvalidStatus,
-        message: "The status assertion contains an error",
+        message: 'The status assertion contains an error',
         reason: buildErrorReason(parsedStatusAssertion),
-        statusCode: 200,
+        statusCode: 200
       });
     }
 
@@ -57,21 +57,21 @@ export const verifyAndParseStatusAssertion: StatusAssertionApi["verifyAndParse"]
     if (credential_status_type !== StatusType.VALID) {
       throw new IssuerResponseError({
         code: IssuerResponseErrorCodes.CredentialInvalidStatus,
-        message: "Invalid status found for the given credential",
+        message: 'Invalid status found for the given credential',
         reason: buildErrorReason(parsedStatusAssertion),
-        statusCode: 200,
+        statusCode: 200
       });
     }
 
     return {
-      parsedStatusAssertion: mapToParsedStatusAssertion(parsedStatusAssertion),
+      parsedStatusAssertion: mapToParsedStatusAssertion(parsedStatusAssertion)
     };
   };
 
 const isStatusAssertionError = (
-  assertion: ParsedStatusAssertionResponse,
+  assertion: ParsedStatusAssertionResponse
 ): assertion is ParsedStatusAssertionErrorJwt =>
-  assertion.header.typ === "status-assertion-error+jwt";
+  assertion.header.typ === 'status-assertion-error+jwt';
 
 /**
  * Build an object containing the details on the error to use as the IssuerResponseError's reason
@@ -79,19 +79,19 @@ const isStatusAssertionError = (
  * @returns The error's reason object
  */
 const buildErrorReason = ({
-  payload,
+  payload
 }: ParsedStatusAssertionResponse): InvalidStatusErrorReason => {
-  if ("error" in payload) return payload;
+  if ('error' in payload) return payload;
 
   const { credential_status_detail } = payload;
   if (!credential_status_detail) {
     throw new IoWalletError(
-      "Missing credential_status_detail in an invalid status assertion",
+      'Missing credential_status_detail in an invalid status assertion'
     );
   }
 
   return {
     error: credential_status_detail.state,
-    error_description: credential_status_detail.description,
+    error_description: credential_status_detail.description
   };
 };

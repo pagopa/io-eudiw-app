@@ -1,21 +1,21 @@
 import {
   CreateAuthorizationResponseError as SdkCreateAuthorizationResponseError,
-  FetchAuthorizationResponseError as SdkFetchAuthorizationResponseError,
-} from "@pagopa/io-wallet-oid4vp";
-import { JwtParseError as SdkOauth2JwtParseError } from "@pagopa/io-wallet-utils";
+  FetchAuthorizationResponseError as SdkFetchAuthorizationResponseError
+} from '@pagopa/io-wallet-oid4vp';
+import { JwtParseError as SdkOauth2JwtParseError } from '@pagopa/io-wallet-utils';
 import {
   UnexpectedStatusCodeError as SdkUnexpectedStatusCodeError,
-  ValidationError as SdkValidationError,
-} from "@pagopa/io-wallet-utils";
+  ValidationError as SdkValidationError
+} from '@pagopa/io-wallet-utils';
 
-import type { RelyingPartyResponseErrorCode } from "../../../utils/error-codes";
+import type { RelyingPartyResponseErrorCode } from '../../../utils/error-codes';
 
 import {
   RelyingPartyResponseError,
   RelyingPartyResponseErrorCodes,
-  ResponseErrorBuilder,
-} from "../../../utils/errors";
-import { InvalidRequestObjectError } from "../common/errors";
+  ResponseErrorBuilder
+} from '../../../utils/errors';
+import { InvalidRequestObjectError } from '../common/errors';
 
 /**
  * Helper to create a generic RelyingPartyResponseError
@@ -23,13 +23,13 @@ import { InvalidRequestObjectError } from "../common/errors";
 const toRelyingPartyResponseError = (
   message: string,
   statusCode: number,
-  code: RelyingPartyResponseErrorCode = RelyingPartyResponseErrorCodes.RelyingPartyGenericError,
+  code: RelyingPartyResponseErrorCode = RelyingPartyResponseErrorCodes.RelyingPartyGenericError
 ) =>
   new RelyingPartyResponseError({
     code,
     message,
     reason: message,
-    statusCode,
+    statusCode
   });
 
 /**
@@ -49,14 +49,14 @@ export const mapSdkFetchAuthRequestError = (err: unknown) => {
 export const mapSdkRequestObjectError = (err: unknown) => {
   if (err instanceof SdkValidationError) {
     throw new InvalidRequestObjectError(
-      "The Request Object structure is invalid",
-      err.message,
+      'The Request Object structure is invalid',
+      err.message
     );
   }
 
   if (err instanceof SdkOauth2JwtParseError) {
     throw new InvalidRequestObjectError(
-      "The Request Object is not a valid JWT",
+      'The Request Object is not a valid JWT'
     );
   }
 
@@ -73,15 +73,15 @@ export const mapSdkAuthorizationResponseError = (err: unknown) => {
       .handle(400, {
         code: RelyingPartyResponseErrorCodes.InvalidAuthorizationResponse,
         message:
-          "The Authorization Response contains invalid parameters or it is malformed",
+          'The Authorization Response contains invalid parameters or it is malformed'
       })
       .handle(403, {
         code: RelyingPartyResponseErrorCodes.InvalidAuthorizationResponse,
-        message: "The Authorization Response was forbidden",
+        message: 'The Authorization Response was forbidden'
       })
-      .handle("*", {
+      .handle('*', {
         code: RelyingPartyResponseErrorCodes.RelyingPartyGenericError,
-        message: "Unable to successfully send the Authorization Response",
+        message: 'Unable to successfully send the Authorization Response'
       })
       .buildFrom(err);
   }

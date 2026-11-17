@@ -1,18 +1,18 @@
-import type { CryptoContext } from "@pagopa/io-react-native-jwt";
-import type { FederationJwkSet as jsonWebKeySet } from "@pagopa/io-wallet-oid-federation";
-import type { DcqlQuery as DcqlQueryLib } from "dcql";
+import type { CryptoContext } from '@pagopa/io-react-native-jwt';
+import type { FederationJwkSet as jsonWebKeySet } from '@pagopa/io-wallet-oid-federation';
+import type { DcqlQuery as DcqlQueryLib } from 'dcql';
 
-import * as z from "zod";
+import * as z from 'zod';
 
-import type { SupportedSdJwtLegacyFormat } from "../../../sd-jwt/types";
+import type { SupportedSdJwtLegacyFormat } from '../../../sd-jwt/types';
 
 export type PresentationParams = z.infer<typeof PresentationParams>;
 export const PresentationParams = z.object({
   client_id: z.string().nonempty(),
   request: z.string().optional(),
   request_uri: z.url().optional(),
-  request_uri_method: z.enum(["get", "post"]).optional(),
-  state: z.string().optional(),
+  request_uri_method: z.enum(['get', 'post']).optional(),
+  state: z.string().optional()
 });
 
 export type WalletMetadata = z.infer<typeof WalletMetadata>;
@@ -26,9 +26,9 @@ export const WalletMetadata = z.object({
   vp_formats_supported: z.record(
     z.string(),
     z.object({
-      "sd-jwt_alg_values": z.array(z.string()).optional(), // alg_values_supported?
-    }),
-  ),
+      'sd-jwt_alg_values': z.array(z.string()).optional() // alg_values_supported?
+    })
+  )
 });
 
 /**
@@ -40,7 +40,7 @@ export type RequestObjectWalletCapabilities = z.infer<
 >;
 export const RequestObjectWalletCapabilities = z.object({
   wallet_metadata: WalletMetadata,
-  wallet_nonce: z.string().optional(),
+  wallet_nonce: z.string().optional()
 });
 
 /**
@@ -50,12 +50,12 @@ export const RequestObjectWalletCapabilities = z.object({
  */
 export type ErrorResponse = z.infer<typeof ErrorResponse>;
 export const ErrorResponse = z.enum([
-  "invalid_request_object",
-  "invalid_request_uri",
-  "vp_formats_not_supported",
-  "invalid_request",
-  "access_denied",
-  "invalid_client",
+  'invalid_request_object',
+  'invalid_request_uri',
+  'vp_formats_not_supported',
+  'invalid_request',
+  'access_denied',
+  'invalid_client'
 ]);
 
 export interface AuthorizationResponse {
@@ -68,8 +68,8 @@ export interface AuthorizationResponse {
 export type Credential4Dcql = [string /* keyTag */, string /* credential */];
 
 export type CredentialFormat =
-  | { doctype: string; format: "mso_mdoc" }
-  | { format: "dc+sd-jwt"; vct: string }
+  | { doctype: string; format: 'mso_mdoc' }
+  | { format: 'dc+sd-jwt'; vct: string }
   | { format: SupportedSdJwtLegacyFormat; vct: string };
 
 export type DcqlQuery = DcqlQueryLib.Input;
@@ -86,7 +86,7 @@ export interface EvaluatedDisclosure {
 export type Presentation = [
   /* verified credential token */ string,
   /* claims */ PresentationFrame,
-  /* the context for the key associated to the credential */ CryptoContext,
+  /* the context for the key associated to the credential */ CryptoContext
 ];
 
 /**
@@ -129,8 +129,8 @@ export type RequestObject = {
   dcql_query: Record<string, unknown>;
   iss: string;
   nonce: string;
-  response_mode: "direct_post.jwt";
-  response_type: "vp_token";
+  response_mode: 'direct_post.jwt';
+  response_type: 'vp_token';
   response_uri: string;
   state?: string;
   trust_chain?: string[];
@@ -142,5 +142,5 @@ type ClientMetadata = {
   encrypted_response_enc_values_supported: string[];
   jwks: jsonWebKeySet;
   logo_uri?: string;
-  vp_formats_supported: Record<string, { "sd-jwt_alg_values"?: string[] }>;
+  vp_formats_supported: Record<string, { 'sd-jwt_alg_values'?: string[] }>;
 };

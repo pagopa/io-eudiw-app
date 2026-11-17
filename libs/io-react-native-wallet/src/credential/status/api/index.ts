@@ -1,5 +1,5 @@
-import type { StatusAssertionApi } from "./status-assertion";
-import type { StatusListApi } from "./status-list";
+import type { StatusAssertionApi } from './status-assertion';
+import type { StatusListApi } from './status-list';
 
 /**
  * Credential status API. It supports status assertion and status list.
@@ -22,4 +22,4 @@ interface UnsupportedApi {
   isSupported: false;
 }
 
-export * from "./types";
+export * from './types';

@@ -1,8 +1,8 @@
-import type { StatusList } from "../../api/types";
+import type { StatusList } from '../../api/types';
 
-import { getStatus } from "../03-get-status";
+import { getStatus } from '../03-get-status';
 
-describe("getStatus", () => {
+describe('getStatus', () => {
   /*
     [0] VALID             0x00
     [1] INVALID           0x01
@@ -20,43 +20,43 @@ describe("getStatus", () => {
     iat: 1778849463,
     status_list: {
       bits: 8,
-      lst: "H4sIAAAAAAAAE2NgZGBiYGbgZ2ACAN0xnMEKAAAA",
+      lst: 'H4sIAAAAAAAAE2NgZGBiYGbgZ2ACAN0xnMEKAAAA'
     },
-    sub: "https://example/wp",
+    sub: 'https://example/wp'
   } satisfies StatusList;
 
   it.each([
     {
-      expectedStatus: "VALID",
-      expectedStatusBit: "0x00",
-      idx: 0,
+      expectedStatus: 'VALID',
+      expectedStatusBit: '0x00',
+      idx: 0
     },
     {
-      expectedStatus: "INVALID",
-      expectedStatusBit: "0x01",
-      idx: 1,
+      expectedStatus: 'INVALID',
+      expectedStatusBit: '0x01',
+      idx: 1
     },
     {
-      expectedStatus: "SUSPENDED",
-      expectedStatusBit: "0x02",
-      idx: 3,
+      expectedStatus: 'SUSPENDED',
+      expectedStatusBit: '0x02',
+      idx: 3
     },
     {
-      expectedStatus: "UPDATE",
-      expectedStatusBit: "0x03",
-      idx: 5,
+      expectedStatus: 'UPDATE',
+      expectedStatusBit: '0x03',
+      idx: 5
     },
     {
-      expectedStatus: "ATTRIBUTE_UPDATE",
-      expectedStatusBit: "0x0F",
-      idx: 7,
-    },
+      expectedStatus: 'ATTRIBUTE_UPDATE',
+      expectedStatusBit: '0x0F',
+      idx: 7
+    }
   ])(
-    "should extract the correct status and status bit for index $idx -> $expectedStatus",
+    'should extract the correct status and status bit for index $idx -> $expectedStatus',
     ({ expectedStatus, expectedStatusBit, idx }) => {
       const { rawStatus, status } = getStatus(statusList.status_list, idx);
       expect(status).toBe(expectedStatus);
       expect(rawStatus).toBe(expectedStatusBit);
-    },
+    }
   );
 });

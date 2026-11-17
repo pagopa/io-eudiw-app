@@ -1,3 +1,3 @@
-import * as Offer from "./offer";
+import * as Offer from './offer';
 
 export { Offer };

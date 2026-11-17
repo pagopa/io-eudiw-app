@@ -1,35 +1,35 @@
-import { decode as decodeJwt, verify } from "@pagopa/io-react-native-jwt";
+import { decode as decodeJwt, verify } from '@pagopa/io-react-native-jwt';
 
-import { getTrustAnchorEntityConfiguration } from "../../trust/v1.0.0/entities";
-import { IoWalletError } from "../../utils/errors";
-import { hasStatusOrThrow } from "../../utils/misc";
-import { type CredentialsCatalogueApi as Api } from "../api";
-import { mapToCredentialsCatalogue } from "./mappers";
+import { getTrustAnchorEntityConfiguration } from '../../trust/v1.0.0/entities';
+import { IoWalletError } from '../../utils/errors';
+import { hasStatusOrThrow } from '../../utils/misc';
+import { type CredentialsCatalogueApi as Api } from '../api';
+import { mapToCredentialsCatalogue } from './mappers';
 
-export const fetchAndParseCatalogue: Api["fetchAndParseCatalogue"] = async (
+export const fetchAndParseCatalogue: Api['fetchAndParseCatalogue'] = async (
   trustAnchorBaseUrl,
-  { appFetch = fetch } = {},
+  { appFetch = fetch } = {}
 ) => {
   const trustAnchorConfig =
     await getTrustAnchorEntityConfiguration(trustAnchorBaseUrl);
 
   const responseText = await appFetch(
     `${trustAnchorConfig.payload.sub}/.well-known/credential-catalogue`,
-    { method: "GET" },
+    { method: 'GET' }
   )
     .then(hasStatusOrThrow(200))
-    .then((res) => res.text());
+    .then(res => res.text());
 
   const responseJwt = decodeJwt(responseText);
   const catalogueKid = responseJwt.protectedHeader.kid;
 
   const trustAnchorJwk = trustAnchorConfig.payload.jwks.keys.find(
-    (jwk) => jwk.kid === catalogueKid,
+    jwk => jwk.kid === catalogueKid
   );
 
   if (!trustAnchorJwk) {
     throw new IoWalletError(
-      `Could not find JWK with kid ${catalogueKid} in Trust Anchor's Entity Configuration`,
+      `Could not find JWK with kid ${catalogueKid} in Trust Anchor's Entity Configuration`
     );
   }
 
@@ -37,6 +37,6 @@ export const fetchAndParseCatalogue: Api["fetchAndParseCatalogue"] = async (
 
   return mapToCredentialsCatalogue({
     header: responseJwt.protectedHeader,
-    payload: responseJwt.payload,
+    payload: responseJwt.payload
   });
 };

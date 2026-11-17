@@ -1,8 +1,8 @@
-import { zFederationJwk as jsonWebKeySchema } from "@pagopa/io-wallet-oid-federation";
-import * as z from "zod";
+import { zFederationJwk as jsonWebKeySchema } from '@pagopa/io-wallet-oid-federation';
+import * as z from 'zod';
 
-import { JWK } from "../../utils/jwk";
-import { BaseEntityConfiguration } from "../common/types";
+import { JWK } from '../../utils/jwk';
+import { BaseEntityConfiguration } from '../common/types';
 
 const RelyingPartyMetadata = z.object({
   application_type: z.string().optional(),
@@ -13,9 +13,9 @@ const RelyingPartyMetadata = z.object({
   client_name: z.string().optional(),
   contacts: z.array(z.string()).optional(),
   jwks: z.object({
-    keys: z.array(jsonWebKeySchema),
+    keys: z.array(jsonWebKeySchema)
   }),
-  request_uris: z.array(z.string()).optional(),
+  request_uris: z.array(z.string()).optional()
 });
 
 // Display metadata for a credential, used by the issuer to
@@ -23,7 +23,7 @@ const RelyingPartyMetadata = z.object({
 type CredentialDisplayMetadata = z.infer<typeof CredentialDisplayMetadata>;
 const CredentialDisplayMetadata = z.object({
   locale: z.string(),
-  name: z.string(),
+  name: z.string()
 });
 
 // Metadata for displaying issuer information
@@ -32,13 +32,13 @@ type CredentialIssuerDisplayMetadata = z.infer<
 >;
 const CredentialIssuerDisplayMetadata = z.object({
   locale: z.string(),
-  name: z.string(),
+  name: z.string()
 });
 
 type ClaimsMetadata = z.infer<typeof ClaimsMetadata>;
 const ClaimsMetadata = z.object({
   display: z.array(CredentialDisplayMetadata),
-  path: z.array(z.union([z.string(), z.number(), z.null()])), // https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-15.html#name-claims-path-pointer
+  path: z.array(z.union([z.string(), z.number(), z.null()])) // https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-15.html#name-claims-path-pointer
 });
 
 type IssuanceErrorSupported = z.infer<typeof IssuanceErrorSupported>;
@@ -47,17 +47,17 @@ const IssuanceErrorSupported = z.object({
     z.object({
       description: z.string(),
       locale: z.string(),
-      title: z.string(),
-    }),
-  ),
+      title: z.string()
+    })
+  )
 });
 
 // Metadata for a credential which is supported by an Issuer
 type SupportedCredentialMetadata = z.infer<typeof SupportedCredentialMetadata>;
 const SupportedCredentialMetadata = z.intersection(
-  z.discriminatedUnion("format", [
-    z.object({ format: z.literal("dc+sd-jwt"), vct: z.string() }),
-    z.object({ doctype: z.string(), format: z.literal("mso_mdoc") }),
+  z.discriminatedUnion('format', [
+    z.object({ format: z.literal('dc+sd-jwt'), vct: z.string() }),
+    z.object({ doctype: z.string(), format: z.literal('mso_mdoc') })
   ]),
   z.object({
     authentic_source: z.string().optional(),
@@ -68,8 +68,8 @@ const SupportedCredentialMetadata = z.intersection(
     issuance_errors_supported: z
       .record(z.string(), IssuanceErrorSupported)
       .optional(),
-    scope: z.string(),
-  }),
+    scope: z.string()
+  })
 );
 
 // Entity configuration for a Trust Anchor (it has no specific metadata section)
@@ -101,12 +101,12 @@ export const CredentialIssuerEntityConfiguration = BaseEntityConfiguration.and(
           scopes_supported: z.array(z.string()),
           token_endpoint: z.string(),
           token_endpoint_auth_methods_supported: z.array(z.string()),
-          token_endpoint_auth_signing_alg_values_supported: z.array(z.string()),
+          token_endpoint_auth_signing_alg_values_supported: z.array(z.string())
         }),
         openid_credential_issuer: z.object({
           credential_configurations_supported: z.record(
             z.string(),
-            SupportedCredentialMetadata,
+            SupportedCredentialMetadata
           ),
           credential_endpoint: z.string(),
           credential_issuer: z.string(),
@@ -116,16 +116,16 @@ export const CredentialIssuerEntityConfiguration = BaseEntityConfiguration.and(
           nonce_endpoint: z.string(),
           revocation_endpoint: z.string().optional(),
           status_attestation_endpoint: z.string(),
-          trust_frameworks_supported: z.array(z.string()),
+          trust_frameworks_supported: z.array(z.string())
         }),
         /**
          * Credential Issuers act as Relying Party when they require the presentation of other credentials.
          * This does not apply for PID issuance, which requires CIE authz.
          */
-        openid_credential_verifier: RelyingPartyMetadata.optional(),
-      }),
-    }),
-  }),
+        openid_credential_verifier: RelyingPartyMetadata.optional()
+      })
+    })
+  })
 );
 
 // Entity configuration for a Relying Party
@@ -136,10 +136,10 @@ export const RelyingPartyEntityConfiguration = BaseEntityConfiguration.and(
   z.object({
     payload: z.object({
       metadata: z.object({
-        openid_credential_verifier: RelyingPartyMetadata,
-      }),
-    }),
-  }),
+        openid_credential_verifier: RelyingPartyMetadata
+      })
+    })
+  })
 );
 
 // Entity configuration for a Wallet Provider
@@ -158,13 +158,13 @@ export const WalletProviderEntityConfiguration = BaseEntityConfiguration.and(
             token_endpoint: z.string(),
             token_endpoint_auth_methods_supported: z.array(z.string()),
             token_endpoint_auth_signing_alg_values_supported: z.array(
-              z.string(),
-            ),
+              z.string()
+            )
           })
-          .loose(),
-      }),
-    }),
-  }),
+          .loose()
+      })
+    })
+  })
 );
 
 // Maps any entity configuration by the union of every possible shapes
@@ -174,6 +174,6 @@ export const EntityConfiguration = z
     WalletProviderEntityConfiguration,
     CredentialIssuerEntityConfiguration,
     TrustAnchorEntityConfiguration,
-    RelyingPartyEntityConfiguration,
+    RelyingPartyEntityConfiguration
   ])
-  .describe("Any kind of Entity Configuration allowed in the ecosystem");
+  .describe('Any kind of Entity Configuration allowed in the ecosystem');

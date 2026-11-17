@@ -1,14 +1,14 @@
-import type { RemotePresentationApi } from "../api";
+import type { RemotePresentationApi } from '../api';
 
-import { RelyingPartyResponseError } from "../../../utils/errors";
-import { hasStatusOrThrow } from "../../../utils/misc";
-import { RequestObjectWalletCapabilities } from "../api/types";
-import { InvalidQRCodeError } from "../common/errors";
+import { RelyingPartyResponseError } from '../../../utils/errors';
+import { hasStatusOrThrow } from '../../../utils/misc';
+import { RequestObjectWalletCapabilities } from '../api/types';
+import { InvalidQRCodeError } from '../common/errors';
 
-export const getRequestObject: RemotePresentationApi["getRequestObject"] =
+export const getRequestObject: RemotePresentationApi['getRequestObject'] =
   async (
     authorizationRequestUrl,
-    { appFetch = fetch, walletCapabilities } = {},
+    { appFetch = fetch, walletCapabilities } = {}
   ) => {
     const authorizationUrl = new URL(authorizationRequestUrl);
 
@@ -18,10 +18,10 @@ export const getRequestObject: RemotePresentationApi["getRequestObject"] =
      * but here we only extract the `request_uri` to retrieve the Request Object.
      */
     const requestUri =
-      authorizationUrl.searchParams.get("request_uri") ?? undefined;
+      authorizationUrl.searchParams.get('request_uri') ?? undefined;
     if (!requestUri) {
       throw new InvalidQRCodeError(
-        "The QR code is missing the required 'request_uri' parameter.",
+        "The QR code is missing the required 'request_uri' parameter."
       );
     }
 
@@ -32,31 +32,31 @@ export const getRequestObject: RemotePresentationApi["getRequestObject"] =
 
       const formUrlEncodedBody = new URLSearchParams({
         wallet_metadata: JSON.stringify(wallet_metadata),
-        ...(wallet_nonce && { wallet_nonce }),
+        ...(wallet_nonce && { wallet_nonce })
       });
 
       const requestObjectEncodedJwt = await appFetch(requestUri, {
         body: formUrlEncodedBody.toString(),
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          'Content-Type': 'application/x-www-form-urlencoded'
         },
-        method: "POST",
+        method: 'POST'
       })
         .then(hasStatusOrThrow(200, RelyingPartyResponseError))
-        .then((res) => res.text());
+        .then(res => res.text());
 
       return {
-        requestObjectEncodedJwt,
+        requestObjectEncodedJwt
       };
     }
 
     const requestObjectEncodedJwt = await appFetch(requestUri, {
-      method: "GET",
+      method: 'GET'
     })
       .then(hasStatusOrThrow(200, RelyingPartyResponseError))
-      .then((res) => res.text());
+      .then(res => res.text());
 
     return {
-      requestObjectEncodedJwt,
+      requestObjectEncodedJwt
     };
   };

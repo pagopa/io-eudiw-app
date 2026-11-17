@@ -1,18 +1,18 @@
-import { createMapper } from "../../utils/mappers";
-import { assert } from "../../utils/misc";
-import { groupBy, keyBy } from "../../utils/object";
+import { createMapper } from '../../utils/mappers';
+import { assert } from '../../utils/misc';
+import { groupBy, keyBy } from '../../utils/object';
 import {
   type AuthenticSource as ApiAuthenticSource,
   type CredentialFormat as ApiCredentialFormat,
-  DigitalCredentialsCatalogue,
-} from "../api/DigitalCredentialsCatalogue";
+  DigitalCredentialsCatalogue
+} from '../api/DigitalCredentialsCatalogue';
 import {
   AuthenticSourceRegistry,
   DigitalCredentialsCatalogueJwt,
   RegistryDiscoveryJwt,
   SchemaRegistry,
-  TaxonomyRegistry,
-} from "./types";
+  TaxonomyRegistry
+} from './types';
 
 export const mapToCredentialsCatalogue = createMapper<
   [
@@ -20,7 +20,7 @@ export const mapToCredentialsCatalogue = createMapper<
     DigitalCredentialsCatalogueJwt,
     AuthenticSourceRegistry,
     SchemaRegistry,
-    TaxonomyRegistry,
+    TaxonomyRegistry
   ],
   DigitalCredentialsCatalogue
 >(
@@ -29,20 +29,20 @@ export const mapToCredentialsCatalogue = createMapper<
     catalogueJwt,
     authSourceRegistry,
     schemaRegistry,
-    taxonomyRegistry,
+    taxonomyRegistry
   ]) => {
     const authSourcesById = keyBy(
       authSourceRegistry.authentic_sources,
-      "entity_id",
+      'entity_id'
     );
     const schemasByCredentialType = groupBy(
       schemaRegistry.schemas,
-      "credential_type",
+      'credential_type'
     );
 
     const resolveAuthSource = ({
       dataset_id,
-      id,
+      id
     }: {
       dataset_id: string;
       id: string;
@@ -52,7 +52,7 @@ export const mapToCredentialsCatalogue = createMapper<
       const { contacts, ipa_code, organization_name_l10n_id, ...rest } =
         as.organization_info;
       const dataCapability = as.data_capabilities.find(
-        (dc) => dc.dataset_id === dataset_id,
+        dc => dc.dataset_id === dataset_id
       );
       return {
         background_color: dataCapability?.background_color,
@@ -62,7 +62,7 @@ export const mapToCredentialsCatalogue = createMapper<
         organization_code: ipa_code,
         organization_name_l10n_id,
         user_information_l10n_id: dataCapability?.user_information_l10n_id,
-        ...rest,
+        ...rest
       };
     };
 
@@ -70,17 +70,17 @@ export const mapToCredentialsCatalogue = createMapper<
       const schemas = schemasByCredentialType.get(credentialType);
       assert(
         schemas,
-        `Schemas for ${credentialType} must be present in the Schema Registry`,
+        `Schemas for ${credentialType} must be present in the Schema Registry`
       );
-      return schemas.map((schema) => ({
+      return schemas.map(schema => ({
         // Since the schema registry does not contain the actual configuration ID, it is composed according
         // to the IT-Wallet Credential Issuer's convention. Note that this might not be true for every Issuer.
-        configuration_id: `${schema.format.replace(/[+-]/g, "_")}_${schema.credential_type}`,
+        configuration_id: `${schema.format.replace(/[+-]/g, '_')}_${schema.credential_type}`,
         docType: schema.docType,
         format: schema.format,
         schema_uri: schema.schema_uri,
-        "schema_uri#integrity": schema["schema_uri#integrity"],
-        vct: schema.vct,
+        'schema_uri#integrity': schema['schema_uri#integrity'],
+        vct: schema.vct
       }));
     };
 
@@ -94,8 +94,8 @@ export const mapToCredentialsCatalogue = createMapper<
             : [],
           formats: resolveFormats(credential.credential_type),
           name_l10n_id: credential_name_l10n_id,
-          ...credential,
-        }),
+          ...credential
+        })
       ),
       localization: catalogueJwt.payload.localization,
       taxonomy: {
@@ -104,12 +104,12 @@ export const mapToCredentialsCatalogue = createMapper<
         id: taxonomyRegistry.id,
         localization: taxonomyRegistry.localization,
         name_l10n_id: taxonomyRegistry.name_l10n_id,
-        purposes: taxonomyRegistry.purposes,
+        purposes: taxonomyRegistry.purposes
       },
-      taxonomy_uri: discoveryJwt.payload.endpoints.taxonomy,
+      taxonomy_uri: discoveryJwt.payload.endpoints.taxonomy
     };
   },
   {
-    outputSchema: DigitalCredentialsCatalogue,
-  },
+    outputSchema: DigitalCredentialsCatalogue
+  }
 );

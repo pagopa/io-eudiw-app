@@ -1,35 +1,35 @@
-import type { CallbackContext, JwtSignerJwk } from "@pagopa/io-wallet-utils";
+import type { CallbackContext, JwtSignerJwk } from '@pagopa/io-wallet-utils';
 
-import { type CryptoContext, SignJWT } from "@pagopa/io-react-native-jwt";
-import { createTokenDPoP } from "@pagopa/io-wallet-oauth2";
+import { type CryptoContext, SignJWT } from '@pagopa/io-react-native-jwt';
+import { createTokenDPoP } from '@pagopa/io-wallet-oauth2';
 import {
   createCredentialRequest,
-  fetchCredentialResponse,
-} from "@pagopa/io-wallet-oid4vci";
-import { UnexpectedStatusCodeError as SdkUnexpectedStatusCodeError } from "@pagopa/io-wallet-utils";
-import { v4 as uuidv4 } from "uuid";
+  fetchCredentialResponse
+} from '@pagopa/io-wallet-oid4vci';
+import { UnexpectedStatusCodeError as SdkUnexpectedStatusCodeError } from '@pagopa/io-wallet-utils';
+import { v4 as uuidv4 } from 'uuid';
 
-import type { IssuanceApi, IssuerConfig } from "../api";
-import type { AuthorizeAccessApi } from "../api/04-authorize-access";
+import type { IssuanceApi, IssuerConfig } from '../api';
+import type { AuthorizeAccessApi } from '../api/04-authorize-access';
 
 import {
   createSignJwtFromCryptoContext,
-  partialCallbacks,
-} from "../../../utils/callbacks";
-import { sdkConfigV1_4 } from "../../../utils/config";
+  partialCallbacks
+} from '../../../utils/callbacks';
+import { sdkConfigV1_4 } from '../../../utils/config';
 import {
   IoWalletError,
   IssuerResponseError,
   IssuerResponseErrorCodes,
   ResponseErrorBuilder,
-  ValidationFailed,
-} from "../../../utils/errors";
-import { Logger, LogLevel } from "../../../utils/logging";
-import { hasStatusOrThrow, type Out } from "../../../utils/misc";
-import { NonceResponse } from "./types";
+  ValidationFailed
+} from '../../../utils/errors';
+import { Logger, LogLevel } from '../../../utils/logging';
+import { hasStatusOrThrow, type Out } from '../../../utils/misc';
+import { NonceResponse } from './types';
 
 interface CreateRequestParams {
-  accessToken: Out<AuthorizeAccessApi["authorizeAccess"]>["accessToken"];
+  accessToken: Out<AuthorizeAccessApi['authorizeAccess']>['accessToken'];
   appFetch?: typeof fetch;
   clientId: string;
   credentialCryptoContexts: CryptoContext[];
@@ -54,28 +54,28 @@ export const requestCredentials = async ({
   credentialIdentifier,
   dPopCryptoContext,
   issuerConf,
-  keyAttestationJwt,
+  keyAttestationJwt
 }: CreateRequestParams) => {
   const { c_nonce } = await appFetch(issuerConf.nonce_endpoint, {
-    headers: { "Content-Type": "application/json" },
-    method: "POST",
+    headers: { 'Content-Type': 'application/json' },
+    method: 'POST'
   })
     .then(hasStatusOrThrow(200))
-    .then((res) => res.json())
+    .then(res => res.json())
     .then(NonceResponse.parse);
 
   const keys = await Promise.all(
-    credentialCryptoContexts.map(async (ctx) => {
+    credentialCryptoContexts.map(async ctx => {
       const publicJwk = await ctx.getPublicKey();
       return { cryptoContext: ctx, publicJwk };
-    }),
+    })
   );
 
-  const signJwt: CallbackContext["signJwt"] = async (
+  const signJwt: CallbackContext['signJwt'] = async (
     jwtSigner,
-    { header, payload },
+    { header, payload }
   ) => {
-    if (jwtSigner.method !== "jwk") {
+    if (jwtSigner.method !== 'jwk') {
       throw new IoWalletError(`Unsupported signer method: ${jwtSigner.method}`);
     }
 
@@ -85,7 +85,7 @@ export const requestCredentials = async ({
 
     if (!cryptoContext) {
       throw new IoWalletError(
-        `Could not find CryptoContext for key ${jwtSigner.publicJwk.kid}`,
+        `Could not find CryptoContext for key ${jwtSigner.publicJwk.kid}`
       );
     }
 
@@ -94,20 +94,20 @@ export const requestCredentials = async ({
         .setProtectedHeader(header)
         .setPayload(payload)
         .sign(),
-      signerJwk: jwtSigner.publicJwk,
+      signerJwk: jwtSigner.publicJwk
     };
   };
 
   const signers = keys.map<JwtSignerJwk>(({ publicJwk }) => ({
-    alg: "ES256",
-    method: "jwk",
-    publicJwk,
+    alg: 'ES256',
+    method: 'jwk',
+    publicJwk
   }));
 
   const credentialRequest = await createCredentialRequest({
     callbacks: {
       hash: partialCallbacks.hash,
-      signJwt,
+      signJwt
     },
     clientId,
     config: sdkConfigV1_4,
@@ -116,54 +116,54 @@ export const requestCredentials = async ({
     keyAttestation: keyAttestationJwt,
     maxBatchSize: issuerConf.credential_issuance_batch_size,
     nonce: c_nonce,
-    signers,
+    signers
   });
 
   const credentialDPoP = await createTokenDPoP({
     accessToken: accessToken.access_token,
     callbacks: {
       ...partialCallbacks,
-      signJwt: createSignJwtFromCryptoContext(dPopCryptoContext),
+      signJwt: createSignJwtFromCryptoContext(dPopCryptoContext)
     },
     jti: uuidv4(),
     signer: {
-      alg: "ES256",
-      method: "jwk",
-      publicJwk: await dPopCryptoContext.getPublicKey(),
+      alg: 'ES256',
+      method: 'jwk',
+      publicJwk: await dPopCryptoContext.getPublicKey()
     },
     tokenRequest: {
-      method: "POST",
-      url: issuerConf.credential_endpoint,
-    },
+      method: 'POST',
+      url: issuerConf.credential_endpoint
+    }
   });
 
   return await fetchCredentialResponse({
     accessToken: accessToken.access_token,
     callbacks: {
-      fetch: appFetch,
+      fetch: appFetch
     },
     credentialEndpoint: issuerConf.credential_endpoint,
     credentialRequest: credentialRequest,
-    dPoP: credentialDPoP.jwt,
+    dPoP: credentialDPoP.jwt
   }).catch(handleObtainCredentialError);
 };
 
-export const obtainCredential: IssuanceApi["obtainCredential"] = async (
+export const obtainCredential: IssuanceApi['obtainCredential'] = async (
   issuerConf,
   accessToken,
   clientId,
   credentialDefinition,
-  context,
+  context
 ) => {
   const {
     appFetch = fetch,
     credentialCryptoContext,
     dPopCryptoContext,
-    keyAttestation,
+    keyAttestation
   } = context;
   if (!keyAttestation) {
     throw new ValidationFailed({
-      message: "The Key Attestation is required to obtain the credential",
+      message: 'The Key Attestation is required to obtain the credential'
     });
   }
 
@@ -172,21 +172,21 @@ export const obtainCredential: IssuanceApi["obtainCredential"] = async (
 
   // Validation of accessTokenResponse.authorization_details if contain credentialDefinition
   const containsCredentialDefinition = accessToken.authorization_details.some(
-    (c) =>
+    c =>
       c.credential_configuration_id === credential_configuration_id &&
       (credential_identifier
         ? c.credential_identifiers.includes(credential_identifier)
-        : true),
+        : true)
   );
 
   if (!containsCredentialDefinition) {
     Logger.log(
       LogLevel.ERROR,
-      `Credential definition not found in the access token response ${accessToken.authorization_details}`,
+      `Credential definition not found in the access token response ${accessToken.authorization_details}`
     );
     throw new ValidationFailed({
       message:
-        "The access token response does not contain the requested credential",
+        'The access token response does not contain the requested credential'
     });
   }
 
@@ -199,20 +199,20 @@ export const obtainCredential: IssuanceApi["obtainCredential"] = async (
     credentialIdentifier: credential_identifier!,
     dPopCryptoContext,
     issuerConf,
-    keyAttestationJwt: keyAttestation,
+    keyAttestationJwt: keyAttestation
   });
 
   Logger.log(
     LogLevel.DEBUG,
-    `Credential Response: ${JSON.stringify(credentialRes)}`,
+    `Credential Response: ${JSON.stringify(credentialRes)}`
   );
 
   // Extract the format corresponding to the credential_configuration_id used
   const issuerCredentialConfig =
     issuerConf.credential_configurations_supported[credential_configuration_id];
 
-  if ("transaction_id" in credentialRes) {
-    throw new IoWalletError("Deferred issuance is not supported");
+  if ('transaction_id' in credentialRes) {
+    throw new IoWalletError('Deferred issuance is not supported');
   }
 
   // TODO: [SIW-2264] Handle multiple credentials
@@ -220,21 +220,21 @@ export const obtainCredential: IssuanceApi["obtainCredential"] = async (
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- value validated as defined above
     credential: credentialRes.credentials.at(0)!.credential,
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- value validated as defined above
-    format: issuerCredentialConfig!.format,
+    format: issuerCredentialConfig!.format
   };
 };
 
-export const obtainCredentialsBatch: IssuanceApi["obtainCredentialsBatch"] =
+export const obtainCredentialsBatch: IssuanceApi['obtainCredentialsBatch'] =
   async (issuerConf, accessToken, clientId, credentialDefinition, context) => {
     const {
       appFetch = fetch,
       credentialCryptoContexts,
       dPopCryptoContext,
-      keyAttestation,
+      keyAttestation
     } = context;
     if (!keyAttestation) {
       throw new ValidationFailed({
-        message: "The Key Attestation is required to obtain the credential",
+        message: 'The Key Attestation is required to obtain the credential'
       });
     }
 
@@ -249,7 +249,7 @@ export const obtainCredentialsBatch: IssuanceApi["obtainCredentialsBatch"] =
       credentialIdentifier: credential_identifier,
       dPopCryptoContext,
       issuerConf,
-      keyAttestationJwt: keyAttestation,
+      keyAttestationJwt: keyAttestation
     });
 
     // Extract the format corresponding to the credential_configuration_id used
@@ -258,20 +258,20 @@ export const obtainCredentialsBatch: IssuanceApi["obtainCredentialsBatch"] =
         credential_configuration_id
       ];
 
-    if ("transaction_id" in credentialRes) {
-      throw new IoWalletError("Deferred issuance is not currently supported");
+    if ('transaction_id' in credentialRes) {
+      throw new IoWalletError('Deferred issuance is not currently supported');
     }
 
     if (credentialRes.credentials.length !== credentialCryptoContexts.length) {
       throw new IoWalletError(
-        `Batch size mismatch: expected ${credentialCryptoContexts.length} credentials, but got ${credentialRes.credentials.length}`,
+        `Batch size mismatch: expected ${credentialCryptoContexts.length} credentials, but got ${credentialRes.credentials.length}`
       );
     }
 
     return credentialRes.credentials.map(({ credential }) => ({
       credential,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- value validated as defined above
-      format: issuerCredentialConfig!.format,
+      format: issuerCredentialConfig!.format
     }));
   };
 
@@ -291,15 +291,15 @@ const handleObtainCredentialError = (e: unknown) => {
   throw new ResponseErrorBuilder(IssuerResponseError)
     .handle(403, {
       code: IssuerResponseErrorCodes.CredentialInvalidStatus,
-      message: "Invalid status found for the given credential",
+      message: 'Invalid status found for the given credential'
     })
     .handle(404, {
       code: IssuerResponseErrorCodes.CredentialInvalidStatus,
-      message: "Invalid status found for the given credential",
+      message: 'Invalid status found for the given credential'
     })
-    .handle("*", {
+    .handle('*', {
       code: IssuerResponseErrorCodes.CredentialRequestFailed,
-      message: "Unable to obtain the requested credential",
+      message: 'Unable to obtain the requested credential'
     })
     .buildFrom(e);
 };

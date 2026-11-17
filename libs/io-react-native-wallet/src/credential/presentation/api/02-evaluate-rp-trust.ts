@@ -1,4 +1,4 @@
-import type { RelyingPartyConfig } from "./RelyingPartyConfig";
+import type { RelyingPartyConfig } from './RelyingPartyConfig';
 
 export interface EvaluateRelyingPartyTrustApi {
   /**
@@ -12,7 +12,7 @@ export interface EvaluateRelyingPartyTrustApi {
    */
   evaluateRelyingPartyTrust(
     rpUrl: string,
-    ctx?: { appFetch?: typeof fetch },
+    ctx?: { appFetch?: typeof fetch }
   ): Promise<{
     rpConf: RelyingPartyConfig;
   }>;

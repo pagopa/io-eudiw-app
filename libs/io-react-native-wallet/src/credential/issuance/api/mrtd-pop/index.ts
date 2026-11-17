@@ -1,13 +1,13 @@
-import type { CryptoContext } from "@pagopa/io-react-native-jwt";
+import type { CryptoContext } from '@pagopa/io-react-native-jwt';
 
-import type { IssuerConfig } from "../IssuerConfig";
+import type { IssuerConfig } from '../IssuerConfig';
 import type {
   IasPayload,
   MrtdPayload,
   MrtdPoPChallenge,
   MrtdPopVerificationResult,
-  MrtdProofChallengeInfo,
-} from "./types";
+  MrtdProofChallengeInfo
+} from './types';
 
 export interface MRTDPoPApi {
   /**
@@ -21,7 +21,7 @@ export interface MRTDPoPApi {
   buildChallengeCallbackUrl(
     redirectUri: string,
     valPopNonce: string,
-    authSession: string,
+    authSession: string
   ): Promise<{ callbackUrl: string }>;
 
   /**
@@ -45,7 +45,7 @@ export interface MRTDPoPApi {
       appFetch?: typeof fetch;
       walletInstanceAttestation: string;
       wiaCryptoContext: CryptoContext;
-    },
+    }
   ): Promise<MrtdPoPChallenge>;
 
   /**
@@ -74,7 +74,7 @@ export interface MRTDPoPApi {
       appFetch?: typeof fetch;
       walletInstanceAttestation: string;
       wiaCryptoContext: CryptoContext;
-    },
+    }
   ): Promise<MrtdPopVerificationResult>;
 
   /**
@@ -98,8 +98,8 @@ export interface MRTDPoPApi {
     challengeInfoJwt: string,
     context: {
       wiaCryptoContext: CryptoContext;
-    },
+    }
   ): Promise<MrtdProofChallengeInfo>;
 }
 
-export * from "./types";
+export * from './types';

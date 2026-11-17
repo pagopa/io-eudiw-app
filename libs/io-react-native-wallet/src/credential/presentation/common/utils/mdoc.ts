@@ -1,15 +1,15 @@
-import type { DcqlMdocCredential, DcqlQueryResult } from "dcql";
+import type { DcqlMdocCredential, DcqlQueryResult } from 'dcql';
 
-import { CBOR } from "@pagopa/io-react-native-iso18013";
-import { b64utob64 } from "jsrsasign";
+import { CBOR } from '@pagopa/io-react-native-iso18013';
+import { b64utob64 } from 'jsrsasign';
 
 import type {
   Credential4Dcql,
   EvaluatedDisclosure,
-  PresentationFrame,
-} from "../../api";
+  PresentationFrame
+} from '../../api';
 
-import { getValidDcqlClaims } from "./dcql";
+import { getValidDcqlClaims } from './dcql';
 
 type CustomDcqlMdocCredential = DcqlMdocCredential & {
   original_credential: Credential4Dcql;
@@ -22,12 +22,12 @@ type CustomDcqlMdocCredential = DcqlMdocCredential & {
  * @returns List of `dcql` compatible objects
  */
 export const mapCredentialsToObj = async (
-  credentialsMdoc: Credential4Dcql[],
+  credentialsMdoc: Credential4Dcql[]
 ): Promise<CustomDcqlMdocCredential[]> =>
   await Promise.all(
-    credentialsMdoc.map(async (credential) => {
+    credentialsMdoc.map(async credential => {
       const issuerSigned = await CBOR.decodeIssuerSigned(
-        b64utob64(credential[1]),
+        b64utob64(credential[1])
       );
 
       const namespaces = Object.entries(issuerSigned.nameSpaces).reduce(
@@ -35,27 +35,27 @@ export const mapCredentialsToObj = async (
           const flattenNsClaims = Object.entries(nsClaims).reduce(
             (ac, [, el]) => ({
               ...ac,
-              [el.elementIdentifier]: el.elementValue,
+              [el.elementIdentifier]: el.elementValue
             }),
-            {} as Record<string, unknown>,
+            {} as Record<string, unknown>
           );
 
           return {
             ...acc,
-            [ns]: flattenNsClaims,
+            [ns]: flattenNsClaims
           };
         },
-        {} as DcqlMdocCredential["namespaces"],
+        {} as DcqlMdocCredential['namespaces']
       );
 
       return {
-        credential_format: "mso_mdoc",
+        credential_format: 'mso_mdoc',
         cryptographic_holder_binding: true,
-        doctype: issuerSigned.issuerAuth.payload.docType || "missing_doctype",
+        doctype: issuerSigned.issuerAuth.payload.docType || 'missing_doctype',
         namespaces,
-        original_credential: credential,
+        original_credential: credential
       } satisfies CustomDcqlMdocCredential;
-    }),
+    })
   );
 
 /**
@@ -64,16 +64,16 @@ export const mapCredentialsToObj = async (
  * @returns The list of claims in {@link EvaluatedDisclosure} format
  */
 export const getClaimsFromDcqlMatch = (
-  match: DcqlQueryResult.CredentialMatch,
+  match: DcqlQueryResult.CredentialMatch
 ): EvaluatedDisclosure[] =>
   getValidDcqlClaims(match).flatMap(({ output }) =>
     Object.entries(output).flatMap(([ns, nsClaims]) =>
-      Object.keys(nsClaims).map((claimName) => ({
+      Object.keys(nsClaims).map(claimName => ({
         name: claimName,
         namespace: ns,
-        value: nsClaims[claimName],
-      })),
-    ),
+        value: nsClaims[claimName]
+      }))
+    )
   );
 
 /**
@@ -85,7 +85,7 @@ export const getClaimsFromDcqlMatch = (
  */
 export const getPresentationFrameFromClaims = (
   requestedClaims: EvaluatedDisclosure[],
-  docType: string,
+  docType: string
 ): PresentationFrame => ({
   [docType]: requestedClaims.reduce((acc, { name, namespace }) => {
     if (namespace) {
@@ -96,5 +96,5 @@ export const getPresentationFrameFromClaims = (
       acc[name] = true;
     }
     return acc;
-  }, {} as PresentationFrame),
+  }, {} as PresentationFrame)
 });

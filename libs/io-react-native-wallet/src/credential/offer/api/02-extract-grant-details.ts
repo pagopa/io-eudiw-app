@@ -1,4 +1,4 @@
-import type { CredentialOffer, ExtractGrantDetailsResult } from "./types";
+import type { CredentialOffer, ExtractGrantDetailsResult } from './types';
 
 export interface ExtractGrantDetailsApi {
   /**

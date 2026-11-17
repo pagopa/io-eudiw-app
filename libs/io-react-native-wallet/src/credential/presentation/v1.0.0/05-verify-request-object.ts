@@ -1,19 +1,19 @@
-import { decode as decodeJwt, verify } from "@pagopa/io-react-native-jwt";
-import { type z } from "zod";
+import { decode as decodeJwt, verify } from '@pagopa/io-react-native-jwt';
+import { type z } from 'zod';
 
-import type { RelyingPartyConfig, RemotePresentationApi } from "../api";
+import type { RelyingPartyConfig, RemotePresentationApi } from '../api';
 
-import { IoWalletError } from "../../../utils/errors";
-import { InvalidRequestObjectError } from "../common/errors";
-import { mapToRequestObject } from "./mappers";
-import { RawRequestObject } from "./types";
-import { getJwksFromRpConfig } from "./utils.jwks";
+import { IoWalletError } from '../../../utils/errors';
+import { InvalidRequestObjectError } from '../common/errors';
+import { mapToRequestObject } from './mappers';
+import { RawRequestObject } from './types';
+import { getJwksFromRpConfig } from './utils.jwks';
 
-export const verifyRequestObject: RemotePresentationApi["verifyRequestObject"] =
+export const verifyRequestObject: RemotePresentationApi['verifyRequestObject'] =
   async (requestObjectEncodedJwt, { clientId, rpConf, state }) => {
     if (!rpConf) {
       throw new IoWalletError(
-        "Relying Party Configuration is required for OpenID Federation clients",
+        'Relying Party Configuration is required for OpenID Federation clients'
       );
     }
 
@@ -21,7 +21,7 @@ export const verifyRequestObject: RemotePresentationApi["verifyRequestObject"] =
 
     const pubKey = getSigPublicKey(
       rpConf,
-      requestObjectJwt.protectedHeader.kid,
+      requestObjectJwt.protectedHeader.kid
     );
 
     try {
@@ -29,13 +29,13 @@ export const verifyRequestObject: RemotePresentationApi["verifyRequestObject"] =
       await verify(requestObjectEncodedJwt, pubKey, { issuer: clientId });
     } catch {
       throw new InvalidRequestObjectError(
-        "The Request Object signature verification failed",
+        'The Request Object signature verification failed'
       );
     }
 
     const rawRequestObject = validateRequestObjectShape({
       header: requestObjectJwt.protectedHeader,
-      payload: requestObjectJwt.payload,
+      payload: requestObjectJwt.payload
     });
 
     const isClientIdMatch =
@@ -44,18 +44,18 @@ export const verifyRequestObject: RemotePresentationApi["verifyRequestObject"] =
 
     if (!isClientIdMatch) {
       throw new InvalidRequestObjectError(
-        "Client ID does not match Request Object or Entity Configuration",
+        'Client ID does not match Request Object or Entity Configuration'
       );
     }
 
     if (state && state !== rawRequestObject.payload.state) {
       throw new InvalidRequestObjectError(
-        "The provided state does not match the Request Object's",
+        "The provided state does not match the Request Object's"
       );
     }
 
     return {
-      requestObject: mapToRequestObject(rawRequestObject),
+      requestObject: mapToRequestObject(rawRequestObject)
     };
   };
 
@@ -74,8 +74,8 @@ const validateRequestObjectShape = (payload: unknown): RawRequestObject => {
   }
 
   throw new InvalidRequestObjectError(
-    "The Request Object cannot be parsed successfully",
-    formatFlattenedZodErrors(requestObjectParse.error.flatten()),
+    'The Request Object cannot be parsed successfully',
+    formatFlattenedZodErrors(requestObjectParse.error.flatten())
   );
 };
 
@@ -89,19 +89,19 @@ const validateRequestObjectShape = (payload: unknown): RawRequestObject => {
  */
 const getSigPublicKey = (
   rpConf: RelyingPartyConfig,
-  kid: string | undefined,
+  kid: string | undefined
 ) => {
   try {
     const { keys } = getJwksFromRpConfig(rpConf);
 
-    const pubKey = keys.find((k) => k.kid === kid);
+    const pubKey = keys.find(k => k.kid === kid);
 
     if (!pubKey) throw new Error();
 
     return pubKey;
   } catch {
     throw new InvalidRequestObjectError(
-      `The public key for signature verification (${kid}) cannot be found in the Entity Configuration`,
+      `The public key for signature verification (${kid}) cannot be found in the Entity Configuration`
     );
   }
 };
@@ -110,8 +110,8 @@ const getSigPublicKey = (
  * Utility to format flattened Zod errors into a simplified string `key1: key1_error, key2: key2_error`
  */
 const formatFlattenedZodErrors = (
-  errors: z.core.$ZodFlattenedError<RawRequestObject>,
+  errors: z.core.$ZodFlattenedError<RawRequestObject>
 ): string =>
   Object.entries(errors.fieldErrors)
     .map(([key, error]) => `${key}: ${error[0]}`)
-    .join(", ");
+    .join(', ');

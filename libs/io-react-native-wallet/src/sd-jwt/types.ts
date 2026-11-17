@@ -1,22 +1,22 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { JWK } from "../utils/jwk";
-import { UnixTime } from "../utils/zod";
+import { JWK } from '../utils/jwk';
+import { UnixTime } from '../utils/zod';
 
 /**
  * For backward compatibility reasons it is still necessary to support the legacy SD-JWT
  * in a few flows (for instance status assertion and presentation of the old eID).
  */
 export type SupportedSdJwtLegacyFormat = typeof LEGACY_SD_JWT;
-export const LEGACY_SD_JWT = "vc+sd-jwt";
+export const LEGACY_SD_JWT = 'vc+sd-jwt';
 
 const StatusAssertion = z.object({
-  credential_hash_alg: z.literal("sha-256"),
+  credential_hash_alg: z.literal('sha-256')
 });
 
 const StatusList = z.object({
   idx: z.number(),
-  uri: z.string(),
+  uri: z.string()
 });
 
 /**
@@ -29,32 +29,32 @@ export const SdJwt4VCBase = z.object({
     alg: z.string(),
     kid: z.string(),
     trust_chain: z.array(z.string()).optional(),
-    typ: z.enum(["dc+sd-jwt", LEGACY_SD_JWT]),
+    typ: z.enum(['dc+sd-jwt', LEGACY_SD_JWT]),
     vctm: z.array(z.string()).optional(),
-    x5c: z.array(z.string()).optional(),
+    x5c: z.array(z.string()).optional()
   }),
   payload: z.object({
     _sd: z.array(z.string()),
-    _sd_alg: z.literal("sha-256"),
+    _sd_alg: z.literal('sha-256'),
     cnf: z.object({
-      jwk: JWK,
+      jwk: JWK
     }),
     exp: UnixTime,
     iat: UnixTime.optional(),
     iss: z.string(),
     status: z.union([
       z.object({
-        status_list: StatusList,
+        status_list: StatusList
       }),
       z.object({
         /** @deprecated Use `status.status_list` */
-        status_assertion: StatusAssertion,
-      }),
+        status_assertion: StatusAssertion
+      })
     ]),
     sub: z.string(),
     vct: z.string(),
-    "vct#integrity": z.string().optional(),
-  }),
+    'vct#integrity': z.string().optional()
+  })
 });
 
 /**
@@ -64,7 +64,7 @@ export const SdJwt4VCBase = z.object({
 export type Verification = z.infer<typeof Verification>;
 export const Verification = z.object({
   assurance_level: z.string(),
-  trust_framework: z.string(),
+  trust_framework: z.string()
 });
 
 /**
@@ -80,10 +80,10 @@ export const TypeMetadata = z.object({
       homepage_uri: z.url(),
       logo_uri: z.url(),
       organization_code: z.string(),
-      organization_name: z.string(),
+      organization_name: z.string()
     }),
-    trust_framework: z.string(),
+    trust_framework: z.string()
   }),
   description: z.string(),
-  name: z.string(),
+  name: z.string()
 });

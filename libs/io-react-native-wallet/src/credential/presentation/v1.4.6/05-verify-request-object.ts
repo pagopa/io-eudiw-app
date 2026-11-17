@@ -2,27 +2,27 @@ import {
   ClientIdPrefix,
   createX509HashClientId,
   extractClientIdPrefix,
-  parseAuthorizeRequest as sdkParseAuthorizeRequest,
-} from "@pagopa/io-wallet-oid4vp";
+  parseAuthorizeRequest as sdkParseAuthorizeRequest
+} from '@pagopa/io-wallet-oid4vp';
 
-import type { RelyingPartyConfig, RemotePresentationApi } from "../api";
-import type { RawRequestObject } from "./types";
+import type { RelyingPartyConfig, RemotePresentationApi } from '../api';
+import type { RawRequestObject } from './types';
 
-import { partialCallbacks } from "../../../utils/callbacks";
-import { sdkConfigV1_4 } from "../../../utils/config";
-import { IoWalletError } from "../../../utils/errors";
-import { InvalidRequestObjectError } from "../common/errors";
-import { mapToRequestObject } from "./mappers";
-import { mapSdkRequestObjectError } from "./sdkErrorMapper";
+import { partialCallbacks } from '../../../utils/callbacks';
+import { sdkConfigV1_4 } from '../../../utils/config';
+import { IoWalletError } from '../../../utils/errors';
+import { InvalidRequestObjectError } from '../common/errors';
+import { mapToRequestObject } from './mappers';
+import { mapSdkRequestObjectError } from './sdkErrorMapper';
 
-export const verifyRequestObject: RemotePresentationApi["verifyRequestObject"] =
+export const verifyRequestObject: RemotePresentationApi['verifyRequestObject'] =
   async (requestObjectEncodedJwt, { clientId: fullClientId, rpConf }) => {
     const parsedRequestObject = await sdkParseAuthorizeRequest({
       callbacks: {
-        verifyJwt: partialCallbacks.verifyJwt,
+        verifyJwt: partialCallbacks.verifyJwt
       },
       config: sdkConfigV1_4,
-      requestObjectJwt: requestObjectEncodedJwt,
+      requestObjectJwt: requestObjectEncodedJwt
     }).catch(mapSdkRequestObjectError);
 
     const rawRequestObject = parsedRequestObject as RawRequestObject;
@@ -41,12 +41,12 @@ export const verifyRequestObject: RemotePresentationApi["verifyRequestObject"] =
         rawRequestObject,
         fullClientId,
         clientId,
-        rpConf,
+        rpConf
       );
     }
 
     return {
-      requestObject: mapToRequestObject(rawRequestObject),
+      requestObject: mapToRequestObject(rawRequestObject)
     };
   };
 
@@ -54,11 +54,11 @@ const validateOpenIDFederationClient = (
   requestObject: RawRequestObject,
   fullClientId: string,
   clientId: string,
-  rpConf: RelyingPartyConfig | undefined,
+  rpConf: RelyingPartyConfig | undefined
 ) => {
   if (!rpConf) {
     throw new IoWalletError(
-      "Relying Party Configuration is required for OpenID Federation clients",
+      'Relying Party Configuration is required for OpenID Federation clients'
     );
   }
 
@@ -68,23 +68,23 @@ const validateOpenIDFederationClient = (
 
   if (!isClientIdMatch) {
     throw new InvalidRequestObjectError(
-      "Client ID does not match Request Object or Entity Configuration",
+      'Client ID does not match Request Object or Entity Configuration'
     );
   }
 };
 
 const validateX509HashClient = async (
   fullClientId: string,
-  certificateChain: string[] = [],
+  certificateChain: string[] = []
 ) => {
   const calculatedHash = await createX509HashClientId({
     certificateChain,
-    hash: partialCallbacks.hash,
+    hash: partialCallbacks.hash
   });
 
   if (fullClientId !== calculatedHash) {
     throw new InvalidRequestObjectError(
-      "x509_hash does not match the hash of the x5c leaf certificate",
+      'x509_hash does not match the hash of the x5c leaf certificate'
     );
   }
 };

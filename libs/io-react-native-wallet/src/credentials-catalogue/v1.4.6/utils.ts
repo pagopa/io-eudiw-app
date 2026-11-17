@@ -1,10 +1,10 @@
-import { decode as decodeJwt, verify } from "@pagopa/io-react-native-jwt";
-import * as z from "zod";
+import { decode as decodeJwt, verify } from '@pagopa/io-react-native-jwt';
+import * as z from 'zod';
 
-import type { JWK } from "../../utils/jwk";
+import type { JWK } from '../../utils/jwk';
 
-import { IoWalletError } from "../../utils/errors";
-import { assert, hasStatusOrThrow } from "../../utils/misc";
+import { IoWalletError } from '../../utils/errors';
+import { assert, hasStatusOrThrow } from '../../utils/misc';
 
 type FetchRegistryParams<T> = {
   appFetch?: typeof fetch;
@@ -25,48 +25,48 @@ type FetchRegistryParams<T> = {
  */
 export const fetchRegistry = async <T>(
   url: string,
-  params: FetchRegistryParams<T>,
+  params: FetchRegistryParams<T>
 ): Promise<T> => {
   const { appFetch = fetch, asJson = false, schema } = params;
 
   const response = await appFetch(url, {
     headers: {
-      Accept: asJson ? "application/json" : "application/jose, application/jwt",
+      Accept: asJson ? 'application/json' : 'application/jose, application/jwt'
     },
-    method: "GET",
+    method: 'GET'
   }).then(hasStatusOrThrow(200));
 
-  const contentType = response.headers.get("Content-Type");
+  const contentType = response.headers.get('Content-Type');
 
-  if (contentType?.includes("application/json")) {
+  if (contentType?.includes('application/json')) {
     const responseJson = await response.json();
     return schema.parse(responseJson);
   }
 
   if (
-    contentType?.includes("application/jwt") ||
-    contentType?.includes("application/jose")
+    contentType?.includes('application/jwt') ||
+    contentType?.includes('application/jose')
   ) {
-    assert("jwks" in params, "params.jwks required when response is JWT");
+    assert('jwks' in params, 'params.jwks required when response is JWT');
 
     const responseText = await response.text();
     const responseJwt = decodeJwt(responseText);
     const headerKid = responseJwt.protectedHeader.kid;
-    const signatureJwk = params.jwks.find((jwk) => jwk.kid === headerKid);
+    const signatureJwk = params.jwks.find(jwk => jwk.kid === headerKid);
     if (!signatureJwk) {
       throw new IoWalletError(
-        `Could not find JWK with kid ${headerKid} in Trust Anchor's Entity Configuration`,
+        `Could not find JWK with kid ${headerKid} in Trust Anchor's Entity Configuration`
       );
     }
     await verify(responseText, signatureJwk);
     return schema.parse({
       header: responseJwt.protectedHeader,
-      payload: responseJwt.payload,
+      payload: responseJwt.payload
     });
   }
 
   throw new IoWalletError(
-    `Unsupported content-type for ${url}: ${contentType}`,
+    `Unsupported content-type for ${url}: ${contentType}`
   );
 };
 
@@ -83,19 +83,19 @@ export const fetchRegistry = async <T>(
 export const fetchLocaleBundle = async (
   baseUri: string,
   locale: string,
-  appFetch: typeof fetch = fetch,
+  appFetch: typeof fetch = fetch
 ): Promise<Record<string, string>> => {
-  const url = `${baseUri.replace(/\/$/, "")}/${locale}.json`;
+  const url = `${baseUri.replace(/\/$/, '')}/${locale}.json`;
 
   const response = await appFetch(url, {
-    headers: { Accept: "application/json" },
-    method: "GET",
+    headers: { Accept: 'application/json' },
+    method: 'GET'
   }).then(hasStatusOrThrow(200));
 
-  const contentType = response.headers.get("Content-Type");
-  if (!contentType?.includes("application/json")) {
+  const contentType = response.headers.get('Content-Type');
+  if (!contentType?.includes('application/json')) {
     throw new IoWalletError(
-      `Locale bundle at ${url} returned unexpected Content-Type: ${contentType}`,
+      `Locale bundle at ${url} returned unexpected Content-Type: ${contentType}`
     );
   }
 

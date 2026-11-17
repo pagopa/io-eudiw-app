@@ -1,12 +1,12 @@
 import {
   CredentialOfferError,
-  validateCredentialOffer as sdkValidateCredentialOffer,
-} from "@pagopa/io-wallet-oid4vci";
+  validateCredentialOffer as sdkValidateCredentialOffer
+} from '@pagopa/io-wallet-oid4vci';
 
-import type { OfferApi } from "../api";
+import type { OfferApi } from '../api';
 
-import { sdkConfigV1_4 } from "../../../utils/config";
-import { InvalidCredentialOfferError } from "../common/errors";
+import { sdkConfigV1_4 } from '../../../utils/config';
+import { InvalidCredentialOfferError } from '../common/errors';
 
 /**
  * Validates a resolved Credential Offer against the
@@ -20,12 +20,12 @@ import { InvalidCredentialOfferError } from "../common/errors";
  * Delegates to the SDK's {@link sdkValidateCredentialOffer}; validation errors
  * are mapped to {@link InvalidCredentialOfferError}.
  */
-export const validateCredentialOffer: OfferApi["validateCredentialOffer"] =
+export const validateCredentialOffer: OfferApi['validateCredentialOffer'] =
   async ({ credentialIssuerMetadata, offer }) => {
     await sdkValidateCredentialOffer({
       config: sdkConfigV1_4,
       credentialIssuerMetadata,
-      credentialOffer: offer,
+      credentialOffer: offer
     }).catch((e: unknown) => {
       if (e instanceof CredentialOfferError) {
         throw new InvalidCredentialOfferError(e.message);

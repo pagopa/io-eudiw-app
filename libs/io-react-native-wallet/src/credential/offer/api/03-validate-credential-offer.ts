@@ -1,6 +1,6 @@
-import type { ValidateCredentialOfferOptions } from "@pagopa/io-wallet-oid4vci";
+import type { ValidateCredentialOfferOptions } from '@pagopa/io-wallet-oid4vci';
 
-import type { CredentialOffer } from "./types";
+import type { CredentialOffer } from './types';
 
 export interface ValidateCredentialOfferApi {
   /**
@@ -14,7 +14,7 @@ export interface ValidateCredentialOfferApi {
    * @throws {InvalidCredentialOfferError} If the Credential Offer fails validation.
    */
   validateCredentialOffer(options: {
-    credentialIssuerMetadata: ValidateCredentialOfferOptions["credentialIssuerMetadata"];
+    credentialIssuerMetadata: ValidateCredentialOfferOptions['credentialIssuerMetadata'];
     offer: CredentialOffer;
   }): Promise<void>;
 }

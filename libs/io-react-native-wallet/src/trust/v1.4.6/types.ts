@@ -2,12 +2,12 @@ import {
   itWalletAuthorizationServerMetadataV1_3,
   itWalletCredentialIssuerMetadataV1_3,
   itWalletCredentialVerifierMetadataV1_3,
-  itWalletSolutionEntityMetadataV1_3,
-} from "@pagopa/io-wallet-oid-federation";
-import * as z from "zod";
+  itWalletSolutionEntityMetadataV1_3
+} from '@pagopa/io-wallet-oid-federation';
+import * as z from 'zod';
 
-import { JWK } from "../../utils/jwk";
-import { BaseEntityConfiguration } from "../common/types";
+import { JWK } from '../../utils/jwk';
+import { BaseEntityConfiguration } from '../common/types';
 
 // Entity configuration for a Credential Issuer
 export type CredentialIssuerEntityConfiguration = z.infer<
@@ -21,10 +21,10 @@ export const CredentialIssuerEntityConfiguration = BaseEntityConfiguration.and(
         oauth_authorization_server: itWalletAuthorizationServerMetadataV1_3,
         openid_credential_issuer: itWalletCredentialIssuerMetadataV1_3,
         openid_credential_verifier:
-          itWalletCredentialVerifierMetadataV1_3.optional(),
-      }),
-    }),
-  }),
+          itWalletCredentialVerifierMetadataV1_3.optional()
+      })
+    })
+  })
 );
 
 // Entity configuration for a Relying Party
@@ -35,10 +35,10 @@ export const RelyingPartyEntityConfiguration = BaseEntityConfiguration.and(
   z.object({
     payload: z.object({
       metadata: z.object({
-        openid_credential_verifier: itWalletCredentialVerifierMetadataV1_3,
-      }),
-    }),
-  }),
+        openid_credential_verifier: itWalletCredentialVerifierMetadataV1_3
+      })
+    })
+  })
 );
 
 // Entity configuration for a Wallet Provider
@@ -49,10 +49,10 @@ export const WalletProviderEntityConfiguration = BaseEntityConfiguration.and(
   z.object({
     payload: z.object({
       metadata: z.object({
-        wallet_solution: itWalletSolutionEntityMetadataV1_3,
-      }),
-    }),
-  }),
+        wallet_solution: itWalletSolutionEntityMetadataV1_3
+      })
+    })
+  })
 );
 
 // Maps any entity configuration by the union of every possible shapes
@@ -61,6 +61,6 @@ export const EntityConfiguration = z
   .union([
     WalletProviderEntityConfiguration,
     CredentialIssuerEntityConfiguration,
-    RelyingPartyEntityConfiguration,
+    RelyingPartyEntityConfiguration
   ])
-  .describe("Any kind of Entity Configuration allowed in the ecosystem");
+  .describe('Any kind of Entity Configuration allowed in the ecosystem');

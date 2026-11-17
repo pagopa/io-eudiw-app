@@ -1,4 +1,4 @@
-import * as z from "zod";
+import * as z from 'zod';
 
 /**
  * Context for authorization during the {@link 03-start-user-authorization.ts} phase.
@@ -15,7 +15,7 @@ export interface AuthorizationContext {
 export const AuthorizationResultShape = z.object({
   code: z.string(),
   iss: z.string().optional(),
-  state: z.string(),
+  state: z.string()
 });
 
 /**
@@ -28,7 +28,7 @@ export const AuthorizationErrorShape = z.object({
   error: z.string(), // not enforcing the error code format
   error_description: z.string().optional(),
   error_uri: z.string().optional(),
-  state: z.string().optional(),
+  state: z.string().optional()
 });
 
 /**
@@ -41,7 +41,7 @@ export type AuthorizationResult = z.infer<typeof AuthorizationResultShape>;
  */
 
 export const AuthorizationChallengeResultShape = z.object({
-  challenge_info: z.string(),
+  challenge_info: z.string()
 });
 
 export type AuthorizationChallengeResult = z.infer<

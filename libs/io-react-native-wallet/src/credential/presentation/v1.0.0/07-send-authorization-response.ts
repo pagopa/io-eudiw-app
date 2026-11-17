@@ -1,23 +1,23 @@
-import { EncryptJwe } from "@pagopa/io-react-native-jwt";
+import { EncryptJwe } from '@pagopa/io-react-native-jwt';
 
-import type { JWK } from "../../../utils/jwk";
-import type { RelyingPartyConfig, RemotePresentationApi } from "../api";
-import type { RequestObject } from "../api/types";
+import type { JWK } from '../../../utils/jwk';
+import type { RelyingPartyConfig, RemotePresentationApi } from '../api';
+import type { RequestObject } from '../api/types';
 
-import { prepareVpToken } from "../../../sd-jwt";
-import { createCryptoContextFor } from "../../../utils/crypto";
+import { prepareVpToken } from '../../../sd-jwt';
+import { createCryptoContextFor } from '../../../utils/crypto';
 import {
   IoWalletError,
   RelyingPartyResponseError,
   RelyingPartyResponseErrorCodes,
   ResponseErrorBuilder,
-  UnexpectedStatusCodeError,
-} from "../../../utils/errors";
-import { hasStatusOrThrow } from "../../../utils/misc";
-import { NoSuitableKeysFoundInEntityConfiguration } from "../common/errors";
-import { buildDirectPostBody } from "../common/utils/http";
-import { AuthorizationResponse, DirectAuthorizationBodyPayload } from "./types";
-import { getJwksFromRpConfig } from "./utils.jwks";
+  UnexpectedStatusCodeError
+} from '../../../utils/errors';
+import { hasStatusOrThrow } from '../../../utils/misc';
+import { NoSuitableKeysFoundInEntityConfiguration } from '../common/errors';
+import { buildDirectPostBody } from '../common/utils/http';
+import { AuthorizationResponse, DirectAuthorizationBodyPayload } from './types';
+import { getJwksFromRpConfig } from './utils.jwks';
 
 /**
  * Selects a public key (with `use = enc`) from the set of JWK keys
@@ -28,7 +28,7 @@ import { getJwksFromRpConfig } from "./utils.jwks";
  * @throws {NoSuitableKeysFoundInEntityConfiguration} If no suitable encryption key is found.
  */
 export const choosePublicKeyToEncrypt = (rpJwkKeys: JWK[]): JWK => {
-  const encKey = rpJwkKeys.find((jwk) => jwk.use === "enc");
+  const encKey = rpJwkKeys.find(jwk => jwk.use === 'enc');
 
   if (encKey) {
     return encKey;
@@ -36,7 +36,7 @@ export const choosePublicKeyToEncrypt = (rpJwkKeys: JWK[]): JWK => {
 
   // No suitable key found
   throw new NoSuitableKeysFoundInEntityConfiguration(
-    "No suitable public key found for encryption.",
+    'No suitable public key found for encryption.'
   );
 };
 
@@ -51,14 +51,14 @@ export const choosePublicKeyToEncrypt = (rpJwkKeys: JWK[]): JWK => {
 export const buildDirectPostJwtBody = async (
   requestObject: RequestObject,
   rpConf: RelyingPartyConfig,
-  payload: DirectAuthorizationBodyPayload,
+  payload: DirectAuthorizationBodyPayload
 ): Promise<string> => {
   type Jwe = ConstructorParameters<typeof EncryptJwe>[1];
 
   // Prepare the authorization response payload to be encrypted
   const authzResponsePayload = JSON.stringify({
     state: requestObject.state,
-    ...payload,
+    ...payload
   });
   // Choose a suitable public key for encryption
   const { keys } = getJwksFromRpConfig(rpConf);
@@ -67,63 +67,63 @@ export const buildDirectPostJwtBody = async (
   // Encrypt the authorization payload
   const {
     authorization_encrypted_response_alg,
-    authorization_encrypted_response_enc,
+    authorization_encrypted_response_enc
   } = rpConf;
 
-  const defaultAlg: Jwe["alg"] =
-    encPublicJwk.kty === "EC" ? "ECDH-ES" : "RSA-OAEP-256";
+  const defaultAlg: Jwe['alg'] =
+    encPublicJwk.kty === 'EC' ? 'ECDH-ES' : 'RSA-OAEP-256';
 
   const encryptedResponse = await new EncryptJwe(authzResponsePayload, {
-    alg: (authorization_encrypted_response_alg as Jwe["alg"]) || defaultAlg,
+    alg: (authorization_encrypted_response_alg as Jwe['alg']) || defaultAlg,
     enc:
-      (authorization_encrypted_response_enc as Jwe["enc"]) || "A256CBC-HS512",
-    kid: encPublicJwk.kid,
+      (authorization_encrypted_response_enc as Jwe['enc']) || 'A256CBC-HS512',
+    kid: encPublicJwk.kid
   }).encrypt(encPublicJwk);
 
   // Build the x-www-form-urlencoded form body
   const formBody = new URLSearchParams({
     response: encryptedResponse,
-    ...(requestObject.state && { state: requestObject.state }),
+    ...(requestObject.state && { state: requestObject.state })
   });
   return formBody.toString();
 };
 
-export const prepareRemotePresentations: RemotePresentationApi["prepareRemotePresentations"] =
+export const prepareRemotePresentations: RemotePresentationApi['prepareRemotePresentations'] =
   async (credentials, authRequestObject) => {
     const presentations = await Promise.all(
-      credentials.map(async (item) => {
+      credentials.map(async item => {
         const { vp_token } = await prepareVpToken(
           authRequestObject.nonce,
           authRequestObject.clientId,
           [
             item.credential,
             item.presentationFrame,
-            createCryptoContextFor(item.keyTag),
-          ],
+            createCryptoContextFor(item.keyTag)
+          ]
         );
 
         return {
           credentialId: item.id,
           format: item.format,
           requestedClaims: item.requiredDisclosures.map(({ name }) => name),
-          vpToken: vp_token,
+          vpToken: vp_token
         };
-      }),
+      })
     );
 
     return { presentations };
   };
 
-export const sendAuthorizationResponse: RemotePresentationApi["sendAuthorizationResponse"] =
+export const sendAuthorizationResponse: RemotePresentationApi['sendAuthorizationResponse'] =
   async (
     requestObject,
     remotePresentation,
     rpConf,
-    { appFetch = fetch } = {},
+    { appFetch = fetch } = {}
   ) => {
     if (!rpConf) {
       throw new IoWalletError(
-        "Relying Party Configuration is required for OpenID Federation clients",
+        'Relying Party Configuration is required for OpenID Federation clients'
       );
     }
 
@@ -133,46 +133,46 @@ export const sendAuthorizationResponse: RemotePresentationApi["sendAuthorization
       vp_token: presentations.reduce(
         (acc, presentation) => ({
           ...acc,
-          [presentation.credentialId]: presentation.vpToken,
+          [presentation.credentialId]: presentation.vpToken
         }),
-        {} as Record<string, string>,
-      ),
+        {} as Record<string, string>
+      )
     });
 
     // 2. Send the authorization response via HTTP POST and validate the response
     return await appFetch(requestObject.response_uri, {
       body: requestBody,
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      method: "POST",
+      method: 'POST'
     })
       .then(hasStatusOrThrow(200))
-      .then((res) => res.json())
+      .then(res => res.json())
       .then(AuthorizationResponse.parse)
       .catch(handleAuthorizationResponseError);
   };
 
-export const sendAuthorizationErrorResponse: RemotePresentationApi["sendAuthorizationErrorResponse"] =
+export const sendAuthorizationErrorResponse: RemotePresentationApi['sendAuthorizationErrorResponse'] =
   async (
     requestObject,
     { error, errorDescription },
-    { appFetch = fetch } = {},
+    { appFetch = fetch } = {}
   ) => {
     const requestBody = await buildDirectPostBody(requestObject, {
       error,
-      error_description: errorDescription,
+      error_description: errorDescription
     });
 
     return await appFetch(requestObject.response_uri, {
       body: requestBody,
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      method: "POST",
+      method: 'POST'
     })
       .then(hasStatusOrThrow(200, RelyingPartyResponseError))
-      .then((res) => res.json())
+      .then(res => res.json())
       .then(AuthorizationResponse.parse);
   };
 
@@ -191,15 +191,15 @@ const handleAuthorizationResponseError = (e: unknown) => {
     .handle(400, {
       code: RelyingPartyResponseErrorCodes.InvalidAuthorizationResponse,
       message:
-        "The Authorization Response contains invalid parameters or it is malformed",
+        'The Authorization Response contains invalid parameters or it is malformed'
     })
     .handle(403, {
       code: RelyingPartyResponseErrorCodes.InvalidAuthorizationResponse,
-      message: "The Authorization Response was forbidden",
+      message: 'The Authorization Response was forbidden'
     })
-    .handle("*", {
+    .handle('*', {
       code: RelyingPartyResponseErrorCodes.RelyingPartyGenericError,
-      message: "Unable to successfully send the Authorization Response",
+      message: 'Unable to successfully send the Authorization Response'
     })
     .buildFrom(e);
 };

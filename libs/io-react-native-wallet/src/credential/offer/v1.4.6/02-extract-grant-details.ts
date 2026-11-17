@@ -1,13 +1,13 @@
 import {
   CredentialOfferError,
-  extractGrantDetails as sdkExtractGrantDetails,
-} from "@pagopa/io-wallet-oid4vci";
+  extractGrantDetails as sdkExtractGrantDetails
+} from '@pagopa/io-wallet-oid4vci';
 
-import type { OfferApi } from "../api";
+import type { OfferApi } from '../api';
 
-import { sdkConfigV1_4 } from "../../../utils/config";
-import { withMappedErrors } from "../../../utils/errors";
-import { InvalidCredentialOfferError } from "../common/errors";
+import { sdkConfigV1_4 } from '../../../utils/config';
+import { withMappedErrors } from '../../../utils/errors';
+import { InvalidCredentialOfferError } from '../common/errors';
 
 /**
  * Second and final step of the User Request Flow
@@ -22,13 +22,13 @@ import { InvalidCredentialOfferError } from "../common/errors";
  * Delegates directly to the SDK's {@link sdkExtractGrantDetails} — no local
  * mapping is needed because the SDK already returns `ExtractGrantDetailsResult`.
  */
-export const extractGrantDetails: OfferApi["extractGrantDetails"] = (offer) =>
+export const extractGrantDetails: OfferApi['extractGrantDetails'] = offer =>
   withMappedErrors(
     () =>
       sdkExtractGrantDetails({
         config: sdkConfigV1_4,
-        credentialOffer: offer,
+        credentialOffer: offer
       }),
     CredentialOfferError,
-    (e) => new InvalidCredentialOfferError(e.message),
+    e => new InvalidCredentialOfferError(e.message)
   );

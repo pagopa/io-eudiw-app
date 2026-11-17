@@ -1,6 +1,6 @@
-import type { CredentialFormat } from "../../../credential/issuance/api";
-import type { JWK } from "../../../utils/jwk";
-import type { StatusList } from "./types";
+import type { CredentialFormat } from '../../../credential/issuance/api';
+import type { JWK } from '../../../utils/jwk';
+import type { StatusList } from './types';
 
 export interface StatusListApi {
   /**
@@ -26,9 +26,9 @@ export interface StatusListApi {
     format: CredentialFormat,
     context?: {
       appFetch?: typeof fetch;
-    },
+    }
   ): Promise<{
-    format: "jwt";
+    format: 'jwt';
     idx: number;
     statusList: string;
     uri: string;
@@ -45,7 +45,7 @@ export interface StatusListApi {
     uri: string,
     context?: {
       appFetch?: typeof fetch;
-    },
+    }
   ): Promise<string>;
 
   /**
@@ -56,8 +56,8 @@ export interface StatusListApi {
    * @return The status of the credential and the raw status in hexadecimal format (e.g. "0x01")
    */
   getStatus(
-    statusList: StatusList["status_list"],
-    idx: number,
+    statusList: StatusList['status_list'],
+    idx: number
   ): {
     rawStatus: string;
     status: string;
@@ -74,7 +74,7 @@ export interface StatusListApi {
    */
   getStatusListEntry(
     credential: string,
-    format: CredentialFormat,
+    format: CredentialFormat
   ): Promise<{ idx: number; uri: string }>;
 
   isSupported: true;

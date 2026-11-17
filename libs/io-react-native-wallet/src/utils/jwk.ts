@@ -1,5 +1,5 @@
-import { decode, removePadding, thumbprint } from "@pagopa/io-react-native-jwt";
-import { z } from "zod";
+import { decode, removePadding, thumbprint } from '@pagopa/io-react-native-jwt';
+import { z } from 'zod';
 
 export type JWK = z.infer<typeof JWK>;
 export const JWK = z.object({
@@ -20,7 +20,7 @@ export const JWK = z.object({
   /** JWK "kty" (Key Type) Parameter.
    * This attribute is required to discriminate the
    * type of EC/RSA algorithm */
-  kty: z.enum(["RSA", "EC"]),
+  kty: z.enum(['RSA', 'EC']),
   n: z.string().optional(),
   p: z.string().optional(),
   q: z.string().optional(),
@@ -33,10 +33,10 @@ export const JWK = z.object({
   /** JWK "x5t" (X.509 Certificate SHA-1 Thumbprint) Parameter. */
   x5t: z.string().optional(),
   /** "x5t#S256" (X.509 Certificate SHA-256 Thumbprint) Parameter. */
-  "x5t#S256": z.string().optional(),
+  'x5t#S256': z.string().optional(),
   /** JWK "x5u" (X.509 URL) Parameter. */
   x5u: z.string().optional(),
-  y: z.string().optional(),
+  y: z.string().optional()
 });
 
 export type JWKS = z.infer<typeof JWKS>;
@@ -57,11 +57,11 @@ export function fixBase64EncodingOnKey(key: JWK): JWK {
     ...(x ? { x: removePadding(x) } : {}),
     ...(y ? { y: removePadding(y) } : {}),
     ...(e ? { e: removePadding(e) } : {}),
-    ...(n ? { n: removePadding(n) } : {}),
+    ...(n ? { n: removePadding(n) } : {})
   };
 }
 export const JWKS = z.object({
-  keys: z.array(JWK),
+  keys: z.array(JWK)
 });
 
 export type JWTDecodeResult = ReturnType<typeof decode>;
@@ -75,7 +75,7 @@ export type JWTDecodeResult = ReturnType<typeof decode>;
 export const isSameThumbprint = async (jwkA: JWK, jwkB: JWK) => {
   const [thumbprintJwkA, thumbprintJwkB] = await Promise.all([
     thumbprint(jwkA),
-    thumbprint(jwkB),
+    thumbprint(jwkB)
   ]);
   return thumbprintJwkA === thumbprintJwkB;
 };

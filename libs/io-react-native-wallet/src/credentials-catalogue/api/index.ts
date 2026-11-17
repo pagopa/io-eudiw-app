@@ -3,8 +3,8 @@ import {
   type DigitalCredential,
   type DigitalCredentialsCatalogue,
   type LocalizationInfo,
-  type Taxonomy,
-} from "./DigitalCredentialsCatalogue";
+  type Taxonomy
+} from './DigitalCredentialsCatalogue';
 
 export interface CredentialsCatalogueApi {
   /**
@@ -18,7 +18,7 @@ export interface CredentialsCatalogueApi {
    */
   fetchAndParseCatalogue(
     trustAnchorBaseUrl: string,
-    ctx?: FetchContext,
+    ctx?: FetchContext
   ): Promise<DigitalCredentialsCatalogue>;
 
   /**
@@ -39,7 +39,7 @@ export interface CredentialsCatalogueApi {
   fetchTranslations?(
     localizations: FetchTranslationsLocalizations,
     locales: string[],
-    ctx?: FetchContext,
+    ctx?: FetchContext
   ): Promise<CatalogueTranslations>;
 
   /**
@@ -52,7 +52,7 @@ export interface CredentialsCatalogueApi {
    */
   getStatusL10nIds(
     statusBit: string,
-    credentialConfig: DigitalCredential,
+    credentialConfig: DigitalCredential
   ): undefined | { descriptionL10nId: string; titleL10nId: string };
 }
 
@@ -71,5 +71,5 @@ export {
   type DigitalCredential,
   type DigitalCredentialsCatalogue,
   type LocalizationInfo,
-  type Taxonomy,
+  type Taxonomy
 };

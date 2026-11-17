@@ -1,4 +1,4 @@
-import type { IssuerConfig } from "../../credential/issuance";
+import type { IssuerConfig } from '../../credential/issuance';
 
 import {
   extractErrorMessageFromIssuerConf,
@@ -12,55 +12,55 @@ import {
   ResponseErrorBuilder,
   UnexpectedStatusCodeError,
   WalletProviderResponseError,
-  WalletProviderResponseErrorCodes,
-} from "../errors";
+  WalletProviderResponseErrorCodes
+} from '../errors';
 
-describe("extractErrorMessageFromIssuerConf", () => {
-  it("should throw when no credential configuration is found", async () => {
+describe('extractErrorMessageFromIssuerConf', () => {
+  it('should throw when no credential configuration is found', async () => {
     expect(() =>
-      extractErrorMessageFromIssuerConf("credential_revoked", {
-        credentialType: "MDL",
+      extractErrorMessageFromIssuerConf('credential_revoked', {
+        credentialType: 'MDL',
         issuerConf: {
-          credential_configurations_supported: {},
-        } as IssuerConfig,
-      }),
+          credential_configurations_supported: {}
+        } as IssuerConfig
+      })
     ).toThrow();
   });
 
-  it("should return undefined when no credential issuance error is found", async () => {
+  it('should return undefined when no credential issuance error is found', async () => {
     expect(
-      extractErrorMessageFromIssuerConf("credential_revoked", {
-        credentialType: "MDL",
+      extractErrorMessageFromIssuerConf('credential_revoked', {
+        credentialType: 'MDL',
         // @ts-expect-error partial type
         issuerConf: {
           credential_configurations_supported: {
-            MDL: {},
-          },
-        } as IssuerConfig,
-      }),
+            MDL: {}
+          }
+        } as IssuerConfig
+      })
     ).toBeUndefined();
 
     expect(
-      extractErrorMessageFromIssuerConf("credential_revoked", {
-        credentialType: "MDL",
+      extractErrorMessageFromIssuerConf('credential_revoked', {
+        credentialType: 'MDL',
         // @ts-expect-error partial type
         issuerConf: {
           credential_configurations_supported: {
             MDL: {
               issuance_errors_supported: {
-                credential_voided: {},
-              },
-            },
-          },
-        } as IssuerConfig,
-      }),
+                credential_voided: {}
+              }
+            }
+          }
+        } as IssuerConfig
+      })
     ).toBeUndefined();
   });
 
-  it("should return the error message grouped by locales", async () => {
+  it('should return the error message grouped by locales', async () => {
     expect(
-      extractErrorMessageFromIssuerConf("credential_revoked", {
-        credentialType: "MDL",
+      extractErrorMessageFromIssuerConf('credential_revoked', {
+        credentialType: 'MDL',
         // @ts-expect-error partial type
         issuerConf: {
           credential_configurations_supported: {
@@ -68,142 +68,142 @@ describe("extractErrorMessageFromIssuerConf", () => {
               issuance_errors_supported: {
                 credential_revoked: {
                   display: [
-                    { description: "Ciao", locale: "it-IT", title: "Ciao" },
-                    { description: "Hello", locale: "en-US", title: "Hello" },
-                  ],
-                },
-              },
-            },
-          },
-        } as IssuerConfig,
-      }),
+                    { description: 'Ciao', locale: 'it-IT', title: 'Ciao' },
+                    { description: 'Hello', locale: 'en-US', title: 'Hello' }
+                  ]
+                }
+              }
+            }
+          }
+        } as IssuerConfig
+      })
     ).toEqual({
-      "en-US": { description: "Hello", title: "Hello" },
-      "it-IT": { description: "Ciao", title: "Ciao" },
+      'en-US': { description: 'Hello', title: 'Hello' },
+      'it-IT': { description: 'Ciao', title: 'Ciao' }
     });
   });
 });
 
-describe("IssuerResponseError", () => {
-  const fiscalCode = "LVLDAA85T50G702B";
-  const fiscalCodeMask = "*".repeat(16);
+describe('IssuerResponseError', () => {
+  const fiscalCode = 'LVLDAA85T50G702B';
+  const fiscalCodeMask = '*'.repeat(16);
 
-  it("anonymizes fiscal codes in a string reason", () => {
+  it('anonymizes fiscal codes in a string reason', () => {
     const error = new IssuerResponseError({
-      message: "A message",
+      message: 'A message',
       reason: `User ${fiscalCode} not found`,
-      statusCode: 404,
+      statusCode: 404
     });
 
     expect(error.reason).toBe(`User ${fiscalCodeMask} not found`);
   });
 
-  it("leaves a string reason without fiscal codes unchanged", () => {
+  it('leaves a string reason without fiscal codes unchanged', () => {
     const error = new IssuerResponseError({
-      message: "A message",
-      reason: "credential_not_found",
-      statusCode: 404,
+      message: 'A message',
+      reason: 'credential_not_found',
+      statusCode: 404
     });
 
-    expect(error.reason).toBe("credential_not_found");
+    expect(error.reason).toBe('credential_not_found');
   });
 
-  it("anonymizes fiscal codes in an object reason", () => {
+  it('anonymizes fiscal codes in an object reason', () => {
     const error = new IssuerResponseError({
-      message: "A message",
+      message: 'A message',
       reason: {
-        error: "tax_id_code_mismatch",
-        error_description: `Mismatch for ${fiscalCode}`,
+        error: 'tax_id_code_mismatch',
+        error_description: `Mismatch for ${fiscalCode}`
       },
-      statusCode: 400,
+      statusCode: 400
     });
 
     expect(error.reason).toEqual({
-      error: "tax_id_code_mismatch",
-      error_description: `Mismatch for ${fiscalCodeMask}`,
+      error: 'tax_id_code_mismatch',
+      error_description: `Mismatch for ${fiscalCodeMask}`
     });
   });
 });
 
-describe("ResponseErrorBuilder", () => {
+describe('ResponseErrorBuilder', () => {
   const errorBuilderWithFallback = new ResponseErrorBuilder(IssuerResponseError)
     .handle(403, {
       code: IssuerResponseErrorCodes.CredentialInvalidStatus,
-      message: "A message",
+      message: 'A message'
     })
     .handle(409, {
       code: IssuerResponseErrorCodes.CredentialIssuingNotSynchronous,
-      message: "Another message",
-      reason: "A custom reason",
+      message: 'Another message',
+      reason: 'A custom reason'
     })
-    .handle("*", {
+    .handle('*', {
       code: IssuerResponseErrorCodes.IssuerGenericError,
-      message: "Fallback error case",
+      message: 'Fallback error case'
     });
 
   test.each([
     {
       original: new UnexpectedStatusCodeError({
-        message: "base message",
-        reason: "base reason",
-        statusCode: 403,
+        message: 'base message',
+        reason: 'base reason',
+        statusCode: 403
       }),
       target: new IssuerResponseError({
         code: IssuerResponseErrorCodes.CredentialInvalidStatus,
-        message: "A message",
-        reason: "base reason",
-        statusCode: 403,
-      }),
+        message: 'A message',
+        reason: 'base reason',
+        statusCode: 403
+      })
     },
     {
       original: new UnexpectedStatusCodeError({
-        message: "base message",
-        reason: "base reason",
-        statusCode: 409,
+        message: 'base message',
+        reason: 'base reason',
+        statusCode: 409
       }),
       target: new IssuerResponseError({
         code: IssuerResponseErrorCodes.CredentialIssuingNotSynchronous,
-        message: "Another message",
-        reason: "A custom reason",
-        statusCode: 409,
-      }),
+        message: 'Another message',
+        reason: 'A custom reason',
+        statusCode: 409
+      })
     },
     {
       original: new UnexpectedStatusCodeError({
-        message: "base message",
-        reason: "base reason",
-        statusCode: 500,
+        message: 'base message',
+        reason: 'base reason',
+        statusCode: 500
       }),
       target: new IssuerResponseError({
         code: IssuerResponseErrorCodes.IssuerGenericError,
-        message: "Fallback error case",
-        reason: "base reason",
-        statusCode: 500,
-      }),
-    },
+        message: 'Fallback error case',
+        reason: 'base reason',
+        statusCode: 500
+      })
+    }
   ])(
-    "should create the correct error for status code $original.statusCode",
+    'should create the correct error for status code $original.statusCode',
     ({ original, target }) => {
       const error = errorBuilderWithFallback.buildFrom(original);
       expect(error.code).toEqual(target.code);
       expect(error.message).toEqual(target.message);
       expect(error.reason).toEqual(target.reason);
       expect(error.statusCode).toEqual(target.statusCode);
-    },
+    }
   );
 
-  it("should return the original error when nothing matches", () => {
+  it('should return the original error when nothing matches', () => {
     const errorBuilderWithoutFallback = new ResponseErrorBuilder(
-      IssuerResponseError,
+      IssuerResponseError
     ).handle(403, {
       code: IssuerResponseErrorCodes.CredentialInvalidStatus,
-      message: "A message",
+      message: 'A message'
     });
 
     const original = new UnexpectedStatusCodeError({
-      message: "base message",
-      reason: "base reason",
-      statusCode: 500,
+      message: 'base message',
+      reason: 'base reason',
+      statusCode: 500
     });
 
     const error = errorBuilderWithoutFallback.buildFrom(original);
@@ -211,26 +211,26 @@ describe("ResponseErrorBuilder", () => {
   });
 });
 
-describe("Error type guards", () => {
+describe('Error type guards', () => {
   const typeGuards = {
     isIssuerResponseError,
     isRelyingPartyResponseError,
-    isWalletProviderResponseError,
+    isWalletProviderResponseError
   };
 
   test.each([
-    ["isIssuerResponseError", IssuerResponseError, IssuerResponseErrorCodes],
+    ['isIssuerResponseError', IssuerResponseError, IssuerResponseErrorCodes],
     [
-      "isWalletProviderResponseError",
+      'isWalletProviderResponseError',
       WalletProviderResponseError,
-      WalletProviderResponseErrorCodes,
+      WalletProviderResponseErrorCodes
     ],
     [
-      "isRelyingPartyResponseError",
+      'isRelyingPartyResponseError',
       RelyingPartyResponseError,
-      RelyingPartyResponseErrorCodes,
-    ],
-  ])("%s type guard works correctly", (guardName, ErrorClass, errorCodes) => {
+      RelyingPartyResponseErrorCodes
+    ]
+  ])('%s type guard works correctly', (guardName, ErrorClass, errorCodes) => {
     const typeGuard = typeGuards[guardName as keyof typeof typeGuards];
 
     const [correctCode, wrongCode] = Object.keys(errorCodes);
@@ -238,9 +238,9 @@ describe("Error type guards", () => {
     const error = new ErrorClass({
       // @ts-expect-error wrong on purpose
       code: correctCode,
-      message: "A message",
-      reason: "A reason",
-      statusCode: 400,
+      message: 'A message',
+      reason: 'A reason',
+      statusCode: 400
     });
 
     expect(typeGuard(error)).toBe(true);

@@ -1,5 +1,5 @@
-import { type CryptoContext, SignJWT } from "@pagopa/io-react-native-jwt";
-import * as z from "zod";
+import { type CryptoContext, SignJWT } from '@pagopa/io-react-native-jwt';
+import * as z from 'zod';
 
 /**
  * Create a signed DPoP token
@@ -11,24 +11,24 @@ import * as z from "zod";
  */
 export const createDPopToken = async (
   payload: DPoPPayload,
-  crypto: CryptoContext,
+  crypto: CryptoContext
 ): Promise<string> => {
   const jwk = await crypto.getPublicKey();
   return new SignJWT(crypto)
     .setPayload(payload)
     .setProtectedHeader({
       jwk,
-      typ: "dpop+jwt",
+      typ: 'dpop+jwt'
     })
     .setIssuedAt()
-    .setExpirationTime("1h")
+    .setExpirationTime('1h')
     .sign();
 };
 
 export type DPoPPayload = z.infer<typeof DPoPPayload>;
 export const DPoPPayload = z.object({
   ath: z.string().optional(),
-  htm: z.enum(["POST", "GET"]),
+  htm: z.enum(['POST', 'GET']),
   htu: z.string(),
-  jti: z.string(),
+  jti: z.string()
 });

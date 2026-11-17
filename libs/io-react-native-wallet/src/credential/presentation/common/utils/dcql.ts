@@ -1,11 +1,11 @@
-import { DcqlClaimsQuery, DcqlQuery, DcqlQueryResult } from "dcql";
+import { DcqlClaimsQuery, DcqlQuery, DcqlQueryResult } from 'dcql';
 
-import type { EvaluatedDisclosure, PresentationFrame } from "../../api/types";
-import type { NotFoundDetail } from "../errors";
+import type { EvaluatedDisclosure, PresentationFrame } from '../../api/types';
+import type { NotFoundDetail } from '../errors';
 
-import { LEGACY_SD_JWT } from "../../../../sd-jwt/types";
-import { IoWalletError } from "../../../../utils/errors";
-import { isObject } from "../../../../utils/object";
+import { LEGACY_SD_JWT } from '../../../../sd-jwt/types';
+import { IoWalletError } from '../../../../utils/errors';
+import { isObject } from '../../../../utils/object';
 
 type DcqlMatchFailure = Extract<
   DcqlQueryResult.CredentialMatch,
@@ -22,7 +22,7 @@ type DcqlMatchSuccess = Extract<
  */
 export const getDcqlQueryMatches = (result: DcqlQueryResult) =>
   Object.entries(result.credential_matches).filter(
-    ([, match]) => match.success === true,
+    ([, match]) => match.success === true
   ) as [string, DcqlMatchSuccess][];
 
 /**
@@ -30,41 +30,41 @@ export const getDcqlQueryMatches = (result: DcqlQueryResult) =>
  */
 const getDcqlQueryFailedMatches = (result: DcqlQueryResult) =>
   Object.entries(result.credential_matches).filter(
-    ([, match]) => match.success === false,
+    ([, match]) => match.success === false
   ) as [string, DcqlMatchFailure][];
 
 /**
  * Extract details related to failed credentials
  */
 export const extractFailedCredentialsDetails = (
-  queryResult: DcqlQueryResult,
+  queryResult: DcqlQueryResult
 ): NotFoundDetail[] =>
   getDcqlQueryFailedMatches(queryResult).map(([id, match]) => {
-    const credential = queryResult.credentials.find((c) => c.id === id);
+    const credential = queryResult.credentials.find(c => c.id === id);
 
-    const issues = match.failed_credentials?.flatMap((c) => {
-      if ("issues" in c.meta) {
+    const issues = match.failed_credentials?.flatMap(c => {
+      if ('issues' in c.meta) {
         return Object.values(c.meta.issues).flat() as string[];
       }
       if (c.claims.failed_claim_sets) {
         return c.claims.failed_claim_sets.flatMap(
-          (cs) => Object.values(cs.issues).flat() as string[],
+          cs => Object.values(cs.issues).flat() as string[]
         );
       }
       return [];
     });
 
-    if (credential?.format === "mso_mdoc") {
+    if (credential?.format === 'mso_mdoc') {
       return {
         doctypeValue: credential.meta?.doctype_value,
         format: credential.format,
         id,
-        issues,
+        issues
       };
     }
 
     if (
-      credential?.format === "dc+sd-jwt" ||
+      credential?.format === 'dc+sd-jwt' ||
       credential?.format === LEGACY_SD_JWT
     ) {
       return {
@@ -72,9 +72,9 @@ export const extractFailedCredentialsDetails = (
         id,
         issues,
         vctValues:
-          credential.meta && "vct_values" in credential.meta
+          credential.meta && 'vct_values' in credential.meta
             ? credential.meta.vct_values
-            : [],
+            : []
       };
     }
     throw new IoWalletError(`Unsupported format: ${credential?.format}`);
@@ -86,10 +86,10 @@ export const extractFailedCredentialsDetails = (
  * @returns The list of claims in {@link EvaluatedDisclosure} format
  */
 export const getClaimsFromDcqlMatch = (
-  match: DcqlQueryResult.CredentialMatch,
+  match: DcqlQueryResult.CredentialMatch
 ): EvaluatedDisclosure[] =>
-  getValidDcqlClaims(match).flatMap((c) =>
-    Object.entries(c.output).map(([name, value]) => ({ name, value })),
+  getValidDcqlClaims(match).flatMap(c =>
+    Object.entries(c.output).map(([name, value]) => ({ name, value }))
   );
 
 /**
@@ -100,7 +100,7 @@ export const getClaimsFromDcqlMatch = (
  */
 export const pathToPresentationFrame = (
   path: (null | number | string)[],
-  claim: Record<string, unknown>,
+  claim: Record<string, unknown>
 ): PresentationFrame => {
   const [segment, ...rest] = path;
 
@@ -116,7 +116,7 @@ export const pathToPresentationFrame = (
     if (Array.isArray(maybeArrayClaim)) {
       return maybeArrayClaim.reduce(
         (acc, c, i) => ({ ...acc, [i]: pathToPresentationFrame(rest, c) }),
-        {},
+        {}
       );
     }
     // @ts-expect-error unwind recursion
@@ -124,7 +124,7 @@ export const pathToPresentationFrame = (
   }
 
   return {
-    [segment]: pathToPresentationFrame(rest, claim),
+    [segment]: pathToPresentationFrame(rest, claim)
   };
 };
 
@@ -136,7 +136,7 @@ export const pathToPresentationFrame = (
  */
 export const getPresentationFrameFromDcqlMatch = (
   match: DcqlQueryResult.CredentialMatch,
-  originalQuery: DcqlQuery,
+  originalQuery: DcqlQuery
 ): PresentationFrame => {
   // The original DCQL query claims are needed to get their path
   const queryClaims =
@@ -152,7 +152,7 @@ export const getPresentationFrameFromDcqlMatch = (
     const path = typedQueryClaims[c.claim_index]?.path;
     if (!path) {
       throw new Error(
-        `Claim at index ${c.claim_index} does not have a path in the original query.`,
+        `Claim at index ${c.claim_index} does not have a path in the original query.`
       );
     }
     const pf = pathToPresentationFrame(path, c.output);
@@ -183,7 +183,7 @@ export const getValidDcqlClaims = (match: DcqlQueryResult.CredentialMatch) => {
   if (validClaimSet) {
     return (
       validClaimSet.valid_claim_indexes
-        ?.map((i) => validClaims.find((c) => c.claim_index === i))
+        ?.map(i => validClaims.find(c => c.claim_index === i))
         .filter((c): c is NonNullable<typeof c> => c != null) ?? []
     );
   }

@@ -1,11 +1,11 @@
-import type { SupportedSdJwtLegacyFormat } from "../../../sd-jwt/types";
+import type { SupportedSdJwtLegacyFormat } from '../../../sd-jwt/types';
 
-import { IoWalletError, serializeAttrs } from "../../../utils/errors";
-export { DcqlError } from "dcql";
+import { IoWalletError, serializeAttrs } from '../../../utils/errors';
+export { DcqlError } from 'dcql';
 
 export type NotFoundDetail = (
-  | { doctypeValue?: string; format: "mso_mdoc" }
-  | { format: "dc+sd-jwt" | SupportedSdJwtLegacyFormat; vctValues?: string[] }
+  | { doctypeValue?: string; format: 'mso_mdoc' }
+  | { format: 'dc+sd-jwt' | SupportedSdJwtLegacyFormat; vctValues?: string[] }
 ) & {
   id: string;
   issues?: string[];
@@ -20,12 +20,12 @@ export class AuthRequestDecodeError extends IoWalletError {
   /** The Claim for which the validation failed. */
   claim: string;
 
-  override code = "ERR_IO_WALLET_AUTHENTICATION_REQUEST_DECODE_FAILED";
+  override code = 'ERR_IO_WALLET_AUTHENTICATION_REQUEST_DECODE_FAILED';
 
   /** Reason code for the validation failure. */
   reason: string;
 
-  constructor(message: string, claim = "unspecified", reason = "unspecified") {
+  constructor(message: string, claim = 'unspecified', reason = 'unspecified') {
     super(serializeAttrs({ claim, message, reason }));
     this.claim = claim;
     this.reason = reason;
@@ -37,14 +37,14 @@ export class AuthRequestDecodeError extends IoWalletError {
  * and the presentation request cannot be satisfied.
  */
 export class CredentialsNotFoundError extends IoWalletError {
-  override code = "ERR_CREDENTIALS_NOT_FOUND";
+  override code = 'ERR_CREDENTIALS_NOT_FOUND';
   details: NotFoundDetail[];
 
   /**
    * @param details The details of the credentials that could not be found.
    */
   constructor(details: NotFoundDetail[]) {
-    super("One or more credentials cannot be found in the wallet");
+    super('One or more credentials cannot be found in the wallet');
     this.details = details;
   }
 }
@@ -54,13 +54,13 @@ export class CredentialsNotFoundError extends IoWalletError {
  *
  */
 export class InvalidQRCodeError extends IoWalletError {
-  override code = "ERR_INVALID_QR_CODE";
+  override code = 'ERR_INVALID_QR_CODE';
 
   /** Detailed reason for the QR code validation failure. */
   reason: string;
 
   constructor(reason: string) {
-    super("Invalid QR code");
+    super('Invalid QR code');
     this.reason = reason;
   }
 }
@@ -69,12 +69,12 @@ export class InvalidQRCodeError extends IoWalletError {
  * When the Request Object sent by the Relying Party is not valid
  */
 export class InvalidRequestObjectError extends IoWalletError {
-  override code = "ERR_INVALID_REQUEST_OBJECT";
+  override code = 'ERR_INVALID_REQUEST_OBJECT';
 
   /** Detailed reason for the Request Object validation failure. */
   reason: string;
 
-  constructor(message: string, reason = "unspecified") {
+  constructor(message: string, reason = 'unspecified') {
     super(message);
     this.reason = reason;
   }
@@ -85,7 +85,7 @@ export class InvalidRequestObjectError extends IoWalletError {
  *
  */
 export class MissingDataError extends IoWalletError {
-  override code = "ERR_MISSING_DATA";
+  override code = 'ERR_MISSING_DATA';
 
   /**
    * @param missingAttributes An array or description of the attributes that are missing.
@@ -101,7 +101,7 @@ export class MissingDataError extends IoWalletError {
  *
  */
 export class NoSuitableKeysFoundInEntityConfiguration extends IoWalletError {
-  override code = "ERR_NO_SUITABLE_KEYS_NOT_FOUND";
+  override code = 'ERR_NO_SUITABLE_KEYS_NOT_FOUND';
 
   /**
    * @param scenario describe the scenario in which the error arise

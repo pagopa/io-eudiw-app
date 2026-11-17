@@ -1,7 +1,7 @@
-import * as z from "zod";
+import * as z from 'zod';
 
-import { UnixTime } from "../../../utils/zod";
-import { ErrorResponse } from "../api/types";
+import { UnixTime } from '../../../utils/zod';
+import { ErrorResponse } from '../api/types';
 
 export type RawRequestObject = z.infer<typeof RawRequestObject>;
 export const RawRequestObject = z.object({
@@ -9,7 +9,7 @@ export const RawRequestObject = z.object({
     alg: z.string(),
     kid: z.string(),
     trust_chain: z.array(z.string()).optional(),
-    typ: z.literal("oauth-authz-req+jwt"),
+    typ: z.literal('oauth-authz-req+jwt')
   }),
   payload: z.object({
     client_id: z.string(),
@@ -19,13 +19,13 @@ export const RawRequestObject = z.object({
     iss: z.string(),
     nonce: z.string(),
     request_uri_method: z.string().optional(),
-    response_mode: z.literal("direct_post.jwt"),
-    response_type: z.literal("vp_token"),
+    response_mode: z.literal('direct_post.jwt'),
+    response_type: z.literal('vp_token'),
     response_uri: z.string(),
     scope: z.string().optional(),
     state: z.string(),
-    wallet_nonce: z.string().optional(),
-  }),
+    wallet_nonce: z.string().optional()
+  })
 });
 
 /**
@@ -36,14 +36,14 @@ export type DirectAuthorizationBodyPayload = z.infer<
 >;
 export const DirectAuthorizationBodyPayload = z.union([
   z.object({
-    vp_token: z.record(z.string(), z.string()),
+    vp_token: z.record(z.string(), z.string())
   }),
-  z.object({ error: ErrorResponse, error_description: z.string() }),
+  z.object({ error: ErrorResponse, error_description: z.string() })
 ]);
 
 export type AuthorizationResponse = z.infer<typeof AuthorizationResponse>;
 export const AuthorizationResponse = z.object({
   redirect_uri: z.string().optional(),
   response_code: z.string().optional(),
-  status: z.string().optional(),
+  status: z.string().optional()
 });

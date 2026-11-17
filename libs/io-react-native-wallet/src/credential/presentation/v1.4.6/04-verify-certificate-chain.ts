@@ -1,23 +1,23 @@
 import {
   verifyCertificateChain,
-  type X509CertificateOptions,
-} from "@pagopa/io-react-native-crypto";
-import { decode } from "@pagopa/io-react-native-jwt";
+  type X509CertificateOptions
+} from '@pagopa/io-react-native-crypto';
+import { decode } from '@pagopa/io-react-native-jwt';
 
-import type { RemotePresentationApi } from "../api";
+import type { RemotePresentationApi } from '../api';
 
 import {
   MissingX509CertsError,
-  X509ValidationError,
-} from "../../../trust/common/errors";
-import { Logger, LogLevel } from "../../../utils/logging";
+  X509ValidationError
+} from '../../../trust/common/errors';
+import { Logger, LogLevel } from '../../../utils/logging';
 
-export const verifyAuthRequestCertificateChain: RemotePresentationApi["verifyAuthRequestCertificateChain"] =
+export const verifyAuthRequestCertificateChain: RemotePresentationApi['verifyAuthRequestCertificateChain'] =
   async (requestObjectJwt, { caRootCert }) => {
     const x509Options: X509CertificateOptions = {
       connectTimeout: 10_000,
       readTimeout: 10_000,
-      requireCrl: false,
+      requireCrl: false
     };
 
     const requestObject = decode(requestObjectJwt);
@@ -26,7 +26,7 @@ export const verifyAuthRequestCertificateChain: RemotePresentationApi["verifyAut
 
     if (!x5c) {
       throw new MissingX509CertsError(
-        "No certificate chain (x5c) found in the Request Object",
+        'No certificate chain (x5c) found in the Request Object'
       );
     }
 
@@ -41,17 +41,17 @@ export const verifyAuthRequestCertificateChain: RemotePresentationApi["verifyAut
     const validationResult = await verifyCertificateChain(
       certChain,
       caRootCert,
-      x509Options,
+      x509Options
     );
 
     if (!validationResult.isValid) {
       Logger.log(
         LogLevel.ERROR,
-        `Certificate chain failure: ${validationResult.validationStatus} - ${validationResult.errorMessage}`,
+        `Certificate chain failure: ${validationResult.validationStatus} - ${validationResult.errorMessage}`
       );
 
       throw new X509ValidationError(
-        `X.509 certificate chain validation failed. Status: ${validationResult.validationStatus}. Error: ${validationResult.errorMessage}`,
+        `X.509 certificate chain validation failed. Status: ${validationResult.validationStatus}. Error: ${validationResult.errorMessage}`
       );
     }
 

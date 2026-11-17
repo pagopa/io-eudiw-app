@@ -1,4 +1,4 @@
-import type { CredentialOffer } from "./types";
+import type { CredentialOffer } from './types';
 
 export interface ResolveCredentialOfferApi {
   /**
@@ -18,6 +18,6 @@ export interface ResolveCredentialOfferApi {
    */
   resolveCredentialOffer(
     credentialOffer: string,
-    callbacks?: { fetch?: typeof fetch },
+    callbacks?: { fetch?: typeof fetch }
   ): Promise<CredentialOffer>;
 }

@@ -1,12 +1,12 @@
 import {
   CredentialOfferError,
-  resolveCredentialOffer as sdkResolveCredentialOffer,
-} from "@pagopa/io-wallet-oid4vci";
+  resolveCredentialOffer as sdkResolveCredentialOffer
+} from '@pagopa/io-wallet-oid4vci';
 
-import type { OfferApi } from "../api";
+import type { OfferApi } from '../api';
 
-import { sdkConfigV1_4 } from "../../../utils/config";
-import { InvalidQRCodeError } from "../common/errors";
+import { sdkConfigV1_4 } from '../../../utils/config';
+import { InvalidQRCodeError } from '../common/errors';
 
 /**
  * First step of the User Request Flow
@@ -24,7 +24,7 @@ import { InvalidQRCodeError } from "../common/errors";
  * Resolution errors (bad scheme, missing params, network failure) are mapped
  * to {@link InvalidQRCodeError}.
  */
-export const resolveCredentialOffer: OfferApi["resolveCredentialOffer"] =
+export const resolveCredentialOffer: OfferApi['resolveCredentialOffer'] =
   async (credentialOffer, callbacks = {}) => {
     const { fetch: fetchFn = fetch } = callbacks;
 
@@ -32,7 +32,7 @@ export const resolveCredentialOffer: OfferApi["resolveCredentialOffer"] =
     const resolved = await sdkResolveCredentialOffer({
       callbacks: { fetch: fetchFn },
       config: sdkConfigV1_4,
-      credentialOffer,
+      credentialOffer
     }).catch((e: unknown) => {
       if (e instanceof CredentialOfferError) {
         throw new InvalidQRCodeError(e.message);

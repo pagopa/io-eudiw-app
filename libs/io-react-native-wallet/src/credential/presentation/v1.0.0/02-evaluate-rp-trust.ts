@@ -1,15 +1,15 @@
-import type { RemotePresentationApi } from "../api";
+import type { RemotePresentationApi } from '../api';
 
-import { getRelyingPartyEntityConfiguration } from "../../../trust/v1.0.0/entities";
-import { mapToRelyingPartyConfig } from "./mappers";
+import { getRelyingPartyEntityConfiguration } from '../../../trust/v1.0.0/entities';
+import { mapToRelyingPartyConfig } from './mappers';
 
-export const evaluateRelyingPartyTrust: RemotePresentationApi["evaluateRelyingPartyTrust"] =
+export const evaluateRelyingPartyTrust: RemotePresentationApi['evaluateRelyingPartyTrust'] =
   async (rpUrl, { appFetch = fetch } = {}) => {
     const rpEntityConfiguration = await getRelyingPartyEntityConfiguration(
       rpUrl,
-      { appFetch },
+      { appFetch }
     );
     return {
-      rpConf: mapToRelyingPartyConfig(rpEntityConfiguration),
+      rpConf: mapToRelyingPartyConfig(rpEntityConfiguration)
     };
   };

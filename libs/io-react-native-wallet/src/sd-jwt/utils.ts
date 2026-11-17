@@ -1,15 +1,15 @@
-import { hasher } from "@owf/crypto";
-import { sha256ToBase64 } from "@pagopa/io-react-native-jwt";
-import { decodeSdJwtSync, getClaimsSync } from "@sd-jwt/core";
+import { hasher } from '@owf/crypto';
+import { sha256ToBase64 } from '@pagopa/io-react-native-jwt';
+import { decodeSdJwtSync, getClaimsSync } from '@sd-jwt/core';
 
-import { fixLegacyCredentialSdJwt } from "../utils/credentials";
+import { fixLegacyCredentialSdJwt } from '../utils/credentials';
 import {
   IoWalletError,
   IssuerResponseError,
-  ValidationFailed,
-} from "../utils/errors";
-import { hasStatusOrThrow } from "../utils/misc";
-import { TypeMetadata, Verification } from "./types";
+  ValidationFailed
+} from '../utils/errors';
+import { hasStatusOrThrow } from '../utils/misc';
+import { TypeMetadata, Verification } from './types';
 
 /**
  * Retrieve the Type Metadata for a credential and verify its integrity.
@@ -25,25 +25,25 @@ export const fetchTypeMetadata = async (
   vctIntegrity: string,
   context: {
     appFetch?: typeof fetch;
-  } = {},
+  } = {}
 ): Promise<TypeMetadata> => {
   const { appFetch = fetch } = context;
 
-  const url = new URL("/.well-known/type-metadata", issuerUrl);
-  url.searchParams.append("vct", vct);
+  const url = new URL('/.well-known/type-metadata', issuerUrl);
+  url.searchParams.append('vct', vct);
 
   const metadata = await appFetch(url.toString(), {
     headers: {
-      "Content-Type": "application/json",
-    },
+      'Content-Type': 'application/json'
+    }
   })
     .then(hasStatusOrThrow(200, IssuerResponseError))
-    .then((res) => res.json())
+    .then(res => res.json())
     .then(TypeMetadata.parse);
 
   const [alg, hash] = vctIntegrity.split(/-(.*)/s);
 
-  if (alg !== "sha256") {
+  if (alg !== 'sha256') {
     throw new IoWalletError(`${alg} algorithm is not supported`);
   }
 
@@ -52,8 +52,8 @@ export const fetchTypeMetadata = async (
 
   if (metadataHash !== hash) {
     throw new ValidationFailed({
-      message: "Unable to verify VCT integrity",
-      reason: "vct#integrity does not match the metadata hash",
+      message: 'Unable to verify VCT integrity',
+      reason: 'vct#integrity does not match the metadata hash'
     });
   }
 
@@ -66,17 +66,17 @@ export const fetchTypeMetadata = async (
  * @returns The verification claim or undefined if it wasn't found
  */
 export const getVerification = (
-  credentialSdJwt: string,
+  credentialSdJwt: string
 ): undefined | Verification => {
   const decoded = decodeSdJwtSync(
     fixLegacyCredentialSdJwt(credentialSdJwt),
-    hasher,
+    hasher
   );
 
   const claims = getClaimsSync<Record<string, unknown>>(
     decoded.jwt.payload,
     decoded.disclosures,
-    hasher,
+    hasher
   );
 
   return claims.verification

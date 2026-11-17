@@ -1,4 +1,4 @@
-import * as source from "@pagopa/io-react-native-crypto";
+import * as source from '@pagopa/io-react-native-crypto';
 
 // mock keystore
 const keystore: Map<string, source.PublicKey> = new Map<
@@ -8,50 +8,50 @@ const keystore: Map<string, source.PublicKey> = new Map<
 
 // Used for mock-specific errors
 class MockCryptoError extends Error {
-  name = "MockCryptoError";
+  override name = 'MockCryptoError';
 }
 
 const mockKey: source.PublicKey = {
-  alg: "RS256",
-  e: "AQAB",
-  kty: "RSA",
-  n: "utqtxbs-jnK0cPsV7aRkkZKA9t4S-WSZa3nCZtYIKDpgLnR_qcpeF0diJZvKOqXmj2cXaKFUE-8uHKAHo7BL7T-Rj2x3vGESh7SG1pE0thDGlXj4yNsg0qNvCXtk703L2H3i1UXwx6nq1uFxD2EcOE4a6qDYBI16Zl71TUZktJwmOejoHl16CPWqDLGo9GUSk_MmHOV20m4wXWkB4qbvpWVY8H6b2a0rB1B1YPOs5ZLYarSYZgjDEg6DMtZ4NgiwZ-4N1aaLwyO-GLwt9Vf-NBKwoxeRyD3zWE2FXRFBbhKGksMrCGnFDsNl5JTlPjaM3kYyImE941ggcuc495m-Fw",
+  alg: 'RS256',
+  e: 'AQAB',
+  kty: 'RSA',
+  n: 'utqtxbs-jnK0cPsV7aRkkZKA9t4S-WSZa3nCZtYIKDpgLnR_qcpeF0diJZvKOqXmj2cXaKFUE-8uHKAHo7BL7T-Rj2x3vGESh7SG1pE0thDGlXj4yNsg0qNvCXtk703L2H3i1UXwx6nq1uFxD2EcOE4a6qDYBI16Zl71TUZktJwmOejoHl16CPWqDLGo9GUSk_MmHOV20m4wXWkB4qbvpWVY8H6b2a0rB1B1YPOs5ZLYarSYZgjDEg6DMtZ4NgiwZ-4N1aaLwyO-GLwt9Vf-NBKwoxeRyD3zWE2FXRFBbhKGksMrCGnFDsNl5JTlPjaM3kYyImE941ggcuc495m-Fw'
 };
 
 const deleteKey = jest.fn<
   ReturnType<typeof source.deleteKey>,
   Parameters<typeof source.deleteKey>
->(async (keytag) => {
+>(async keytag => {
   keystore.delete(keytag);
 });
 
 const getPublicKey = jest.fn<
   ReturnType<typeof source.getPublicKey>,
   Parameters<typeof source.getPublicKey>
->(async (keytag) => {
+>(async keytag => {
   if (keystore.has(keytag)) return mockKey;
   throw new MockCryptoError(
-    `MockCryptoError: cannot retrieve key, keytag '${keytag}' does not exist`,
+    `MockCryptoError: cannot retrieve key, keytag '${keytag}' does not exist`
   );
 });
 
 const getPublicKeyFixed = jest.fn<
   ReturnType<typeof source.getPublicKeyFixed>,
   Parameters<typeof source.getPublicKeyFixed>
->(async (keytag) => {
+>(async keytag => {
   if (keystore.has(keytag)) return mockKey;
   throw new MockCryptoError(
-    `MockCryptoError: cannot retrieve key, keytag '${keytag}' does not exist`,
+    `MockCryptoError: cannot retrieve key, keytag '${keytag}' does not exist`
   );
 });
 
 const generate = jest.fn<
   ReturnType<typeof source.generate>,
   Parameters<typeof source.generate>
->(async (keytag) => {
+>(async keytag => {
   if (keystore.has(keytag)) {
     throw new MockCryptoError(
-      `MockCryptoError: keytag '${keytag}' already exists`,
+      `MockCryptoError: keytag '${keytag}' already exists`
     );
   }
   keystore.set(keytag, mockKey);
@@ -62,16 +62,16 @@ const sign = jest.fn<
   ReturnType<typeof source.sign>,
   Parameters<typeof source.sign>
 >(async (_, keytag) => {
-  if (keystore.has(keytag)) return "mock-signature";
+  if (keystore.has(keytag)) return 'mock-signature';
   throw new MockCryptoError(
-    `MockCryptoError: cannot sign, keytag '${keytag}' does not exist`,
+    `MockCryptoError: cannot sign, keytag '${keytag}' does not exist`
   );
 });
 
 const verifyCertificateChain = jest.fn().mockResolvedValue({
   errorMessage: undefined,
   isValid: true,
-  validationStatus: "VALID",
+  validationStatus: 'VALID'
 });
 
 export {
@@ -80,5 +80,5 @@ export {
   getPublicKey,
   getPublicKeyFixed,
   sign,
-  verifyCertificateChain,
+  verifyCertificateChain
 };

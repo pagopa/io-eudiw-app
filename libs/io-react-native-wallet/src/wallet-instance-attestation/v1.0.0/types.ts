@@ -1,6 +1,6 @@
-import * as z from "zod";
+import * as z from 'zod';
 
-import { Jwt } from "../common/types";
+import { Jwt } from '../common/types';
 
 export type WalletInstanceAttestationRequestJwt = z.infer<
   typeof WalletInstanceAttestationRequestJwt
@@ -9,8 +9,8 @@ export const WalletInstanceAttestationRequestJwt = z.object({
   header: z.intersection(
     Jwt.shape.header,
     z.object({
-      typ: z.literal("wp-war+jwt"),
-    }),
+      typ: z.literal('wp-war+jwt')
+    })
   ),
   payload: z.intersection(
     Jwt.shape.payload,
@@ -19,9 +19,9 @@ export const WalletInstanceAttestationRequestJwt = z.object({
       hardware_key_tag: z.string(),
       hardware_signature: z.string(),
       integrity_assertion: z.string(),
-      nonce: z.string(),
-    }),
-  ),
+      nonce: z.string()
+    })
+  )
 });
 
 // TODO: [SIW-2089] add type for Wallet Attestation in SD-JWT and MDOC format
@@ -33,8 +33,8 @@ export const WalletInstanceAttestationJwt = z.object({
   header: z.intersection(
     Jwt.shape.header,
     z.object({
-      typ: z.literal("oauth-client-attestation+jwt"),
-    }),
+      typ: z.literal('oauth-client-attestation+jwt')
+    })
   ),
   payload: z.intersection(
     Jwt.shape.payload,
@@ -42,9 +42,9 @@ export const WalletInstanceAttestationJwt = z.object({
       aal: z.string(),
       sub: z.string(),
       wallet_link: z.string().optional(),
-      wallet_name: z.string().optional(),
-    }),
-  ),
+      wallet_name: z.string().optional()
+    })
+  )
 });
 
 export type WalletAttestationResponse = z.infer<
@@ -53,8 +53,8 @@ export type WalletAttestationResponse = z.infer<
 export const WalletAttestationResponse = z.object({
   wallet_attestations: z.array(
     z.object({
-      format: z.enum(["jwt", "dc+sd-jwt", "mso_mdoc"]),
-      wallet_attestation: z.string(),
-    }),
-  ),
+      format: z.enum(['jwt', 'dc+sd-jwt', 'mso_mdoc']),
+      wallet_attestation: z.string()
+    })
+  )
 });

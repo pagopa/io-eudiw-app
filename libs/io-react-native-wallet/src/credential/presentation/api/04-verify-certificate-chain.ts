@@ -1,4 +1,4 @@
-import type { CertificateValidationResult } from "@pagopa/io-react-native-crypto";
+import type { CertificateValidationResult } from '@pagopa/io-react-native-crypto';
 
 export interface VerifyAuthRequestCertificateChainApi {
   /**
@@ -22,6 +22,6 @@ export interface VerifyAuthRequestCertificateChainApi {
     requestObjectJwt: string,
     params: {
       caRootCert: string;
-    },
+    }
   ): Promise<CertificateValidationResult>;
 }

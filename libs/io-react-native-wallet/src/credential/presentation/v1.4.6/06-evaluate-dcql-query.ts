@@ -1,25 +1,25 @@
-import { DcqlError, DcqlQuery } from "dcql";
-import { isValiError } from "valibot";
+import { DcqlError, DcqlQuery } from 'dcql';
+import { isValiError } from 'valibot';
 
-import type { Credential4Dcql, RemotePresentationApi } from "../api";
-import type { CredentialPurpose } from "../api/06-evaluate-dcql-query";
+import type { Credential4Dcql, RemotePresentationApi } from '../api';
+import type { CredentialPurpose } from '../api/06-evaluate-dcql-query';
 
-import { CredentialsNotFoundError } from "../common/errors";
+import { CredentialsNotFoundError } from '../common/errors';
 import {
   extractFailedCredentialsDetails,
   getClaimsFromDcqlMatch,
   getDcqlQueryMatches,
-  getPresentationFrameFromDcqlMatch,
-} from "../common/utils/dcql";
-import * as mdocUtils from "../common/utils/mdoc";
-import * as sdJwtUtils from "../common/utils/sd-jwt";
+  getPresentationFrameFromDcqlMatch
+} from '../common/utils/dcql';
+import * as mdocUtils from '../common/utils/mdoc';
+import * as sdJwtUtils from '../common/utils/sd-jwt';
 
-export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
+export const evaluateDcqlQuery: RemotePresentationApi['evaluateDcqlQuery'] =
   async (query, credentialsSdJwt, credentialsMdoc = []) => {
     const credentials = (
       await Promise.all([
         sdJwtUtils.mapCredentialsToObj(credentialsSdJwt),
-        mdocUtils.mapCredentialsToObj(credentialsMdoc),
+        mdocUtils.mapCredentialsToObj(credentialsMdoc)
       ])
     ).flat();
 
@@ -27,9 +27,9 @@ export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
     const credentialsById = credentials.reduce(
       (acc, c) => ({
         ...acc,
-        ["vct" in c ? c.vct : c.doctype]: c.original_credential,
+        ['vct' in c ? c.vct : c.doctype]: c.original_credential
       }),
-      {} as Record<string, Credential4Dcql>,
+      {} as Record<string, Credential4Dcql>
     );
 
     try {
@@ -41,26 +41,26 @@ export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
 
       if (!queryResult.can_be_satisfied) {
         throw new CredentialsNotFoundError(
-          extractFailedCredentialsDetails(queryResult),
+          extractFailedCredentialsDetails(queryResult)
         );
       }
 
       return getDcqlQueryMatches(queryResult).map(([id, match]) => {
         const purposes = queryResult.credential_sets
-          ?.filter((set) => set.matching_options?.flat().includes(id))
-          ?.map<CredentialPurpose>((credentialSet) => ({
+          ?.filter(set => set.matching_options?.flat().includes(id))
+          ?.map<CredentialPurpose>(credentialSet => ({
             description: credentialSet.purpose?.toString(),
-            required: Boolean(credentialSet.required),
+            required: Boolean(credentialSet.required)
           }));
 
         const matchOutput = match.valid_credentials[0]?.meta.output;
 
-        if (matchOutput?.credential_format === "dc+sd-jwt") {
+        if (matchOutput?.credential_format === 'dc+sd-jwt') {
           const { vct } = matchOutput;
           const sdjwtCredential = credentialsById[vct];
           if (!sdjwtCredential) {
             throw new Error(
-              `Credential with vct ${vct} not found in the provided credentials.`,
+              `Credential with vct ${vct} not found in the provided credentials.`
             );
           }
           const [keyTag, credential] = sdjwtCredential;
@@ -68,7 +68,7 @@ export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
           const requiredDisclosures = getClaimsFromDcqlMatch(match);
           const presentationFrame = getPresentationFrameFromDcqlMatch(
             match,
-            parsedQuery,
+            parsedQuery
           );
 
           return {
@@ -81,16 +81,16 @@ export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
             // See https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-6.4.2
             purposes: purposes ?? [{ required: true }],
             requiredDisclosures,
-            vct,
+            vct
           };
         }
 
-        if (matchOutput?.credential_format === "mso_mdoc") {
+        if (matchOutput?.credential_format === 'mso_mdoc') {
           const { doctype } = matchOutput;
           const mdocCredential = credentialsById[doctype];
           if (!mdocCredential) {
             throw new Error(
-              `Credential with doctype ${doctype} not found in the provided credentials.`,
+              `Credential with doctype ${doctype} not found in the provided credentials.`
             );
           }
           const [keyTag, credential] = mdocCredential;
@@ -98,7 +98,7 @@ export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
           const requiredDisclosures = mdocUtils.getClaimsFromDcqlMatch(match);
           const presentationFrame = mdocUtils.getPresentationFrameFromClaims(
             requiredDisclosures,
-            doctype,
+            doctype
           );
 
           return {
@@ -109,12 +109,12 @@ export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
             keyTag,
             presentationFrame,
             purposes: purposes ?? [{ required: true }],
-            requiredDisclosures,
+            requiredDisclosures
           };
         }
 
         throw new Error(
-          `Unsupported credential format: ${matchOutput?.credential_format}`,
+          `Unsupported credential format: ${matchOutput?.credential_format}`
         );
       });
     } catch (error) {
@@ -122,8 +122,8 @@ export const evaluateDcqlQuery: RemotePresentationApi["evaluateDcqlQuery"] =
       if (isValiError(error)) {
         throw new DcqlError({
           cause: error.issues,
-          code: "PARSE_ERROR",
-          message: "Failed to parse the provided DCQL query",
+          code: 'PARSE_ERROR',
+          message: 'Failed to parse the provided DCQL query'
         });
       }
 

@@ -1,5 +1,5 @@
 export const isObject = (value: unknown): value is Record<string, unknown> =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
+  typeof value === 'object' && value !== null && !Array.isArray(value);
 
 export const keyBy = <T, K extends keyof T>(array: T[], key: K) =>
   array.reduce((acc, item) => {

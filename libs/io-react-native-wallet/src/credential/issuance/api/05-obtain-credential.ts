@@ -1,9 +1,9 @@
-import type { CryptoContext } from "@pagopa/io-react-native-jwt";
+import type { CryptoContext } from '@pagopa/io-react-native-jwt';
 
-import type { Out } from "../../../utils/misc";
-import type { AuthorizeAccessApi } from "./04-authorize-access";
-import type { IssuerConfig } from "./IssuerConfig";
-import type { CredentialFormat } from "./types";
+import type { Out } from '../../../utils/misc';
+import type { AuthorizeAccessApi } from './04-authorize-access';
+import type { IssuerConfig } from './IssuerConfig';
+import type { CredentialFormat } from './types';
 
 export interface ObtainCredentialApi {
   /**
@@ -26,7 +26,7 @@ export interface ObtainCredentialApi {
    */
   obtainCredential(
     issuerConf: IssuerConfig,
-    accessToken: Out<AuthorizeAccessApi["authorizeAccess"]>["accessToken"],
+    accessToken: Out<AuthorizeAccessApi['authorizeAccess']>['accessToken'],
     clientId: string,
     credentialDefinition: {
       credential_configuration_id: string;
@@ -37,7 +37,7 @@ export interface ObtainCredentialApi {
       credentialCryptoContext: CryptoContext;
       dPopCryptoContext: CryptoContext;
       keyAttestation?: string;
-    },
+    }
   ): Promise<{
     credential: string;
     format: CredentialFormat;
@@ -53,7 +53,7 @@ export interface ObtainCredentialApi {
    */
   obtainCredentialsBatch(
     issuerConf: IssuerConfig,
-    accessToken: Out<AuthorizeAccessApi["authorizeAccess"]>["accessToken"],
+    accessToken: Out<AuthorizeAccessApi['authorizeAccess']>['accessToken'],
     clientId: string,
     credentialDefinition: {
       credential_configuration_id: string;
@@ -64,6 +64,6 @@ export interface ObtainCredentialApi {
       credentialCryptoContexts: CryptoContext[];
       dPopCryptoContext: CryptoContext;
       keyAttestation?: string;
-    },
+    }
   ): Promise<{ credential: string; format: CredentialFormat }[]>;
 }

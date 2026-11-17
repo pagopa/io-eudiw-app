@@ -1,68 +1,68 @@
-import type { DcqlQueryResult } from "dcql";
+import type { DcqlQueryResult } from 'dcql';
 
-import type { NotFoundDetail } from "../../errors";
+import type { NotFoundDetail } from '../../errors';
 
 import {
   extractFailedCredentialsDetails,
-  pathToPresentationFrame,
-} from "../dcql";
+  pathToPresentationFrame
+} from '../dcql';
 
 // The `claims` field is irrelevant for these tests but we use this type to cast the empty object
 type UnusedFailedCredentialClaims = NonNullable<
-  DcqlQueryResult["credential_matches"][string]["failed_credentials"]
->[number]["claims"];
+  DcqlQueryResult['credential_matches'][string]['failed_credentials']
+>[number]['claims'];
 
-describe("pathToPresentationFrame", () => {
+describe('pathToPresentationFrame', () => {
   test.each([
-    [["name"], { name: "Mario" }, { name: true }],
+    [['name'], { name: 'Mario' }, { name: true }],
     [
-      ["address", "country"],
-      { address: { city: "Roma", country: "Italy" } },
-      { address: { country: true } },
+      ['address', 'country'],
+      { address: { city: 'Roma', country: 'Italy' } },
+      { address: { country: true } }
     ],
     [
-      ["nested", "claim", "value"],
-      { nested: { claim: { value: "something" } } },
-      { nested: { claim: { value: true } } },
+      ['nested', 'claim', 'value'],
+      { nested: { claim: { value: 'something' } } },
+      { nested: { claim: { value: true } } }
     ],
     [
-      ["list", null],
-      { list: ["a", "b", "c"] },
-      { list: { 0: true, 1: true, 2: true } },
+      ['list', null],
+      { list: ['a', 'b', 'c'] },
+      { list: { 0: true, 1: true, 2: true } }
     ],
-    [["list", 1], { list: ["a", "b", "c"] }, { list: { 1: true } }],
+    [['list', 1], { list: ['a', 'b', 'c'] }, { list: { 1: true } }],
     [
-      ["list", 0, "name"],
+      ['list', 0, 'name'],
       {
         list: [
-          { name: "A", surname: "B" },
-          { name: "C", surname: "D" },
-        ],
+          { name: 'A', surname: 'B' },
+          { name: 'C', surname: 'D' }
+        ]
       },
-      { list: { 0: { name: true } } },
+      { list: { 0: { name: true } } }
     ],
     [
-      ["list", null, "name"],
+      ['list', null, 'name'],
       {
         list: [
-          { name: "A", surname: "B" },
-          { name: "C", surname: "D" },
-        ],
+          { name: 'A', surname: 'B' },
+          { name: 'C', surname: 'D' }
+        ]
       },
-      { list: { 0: { name: true }, 1: { name: true } } },
-    ],
-  ])("should handle path: %s", (path, claim, expected) => {
+      { list: { 0: { name: true }, 1: { name: true } } }
+    ]
+  ])('should handle path: %s', (path, claim, expected) => {
     expect(pathToPresentationFrame(path, claim)).toEqual(expected);
   });
 });
 
-describe("extractFailedCredentialsDetails", () => {
-  it("should extract correct details for failed dc+sd-jwt credentials", () => {
+describe('extractFailedCredentialsDetails', () => {
+  it('should extract correct details for failed dc+sd-jwt credentials', () => {
     const queryResult: DcqlQueryResult = {
       can_be_satisfied: false,
       credential_matches: {
         PersonIdentificationData: {
-          credential_query_id: "PersonIdentificationData",
+          credential_query_id: 'PersonIdentificationData',
           failed_credentials: [
             {
               claims: {} as unknown as UnusedFailedCredentialClaims,
@@ -70,63 +70,63 @@ describe("extractFailedCredentialsDetails", () => {
               meta: {
                 issues: {
                   vct: [
-                    "Expected vct to be 'SomePID' but received 'https://pre.ta.wallet.ipzs.it/vct/v1.0.0/personidentificationdata'",
-                  ],
+                    "Expected vct to be 'SomePID' but received 'https://pre.ta.wallet.ipzs.it/vct/v1.0.0/personidentificationdata'"
+                  ]
                 },
                 output: {
-                  credential_format: "dc+sd-jwt",
+                  credential_format: 'dc+sd-jwt',
                   cryptographic_holder_binding: true,
-                  vct: "https://pre.ta.wallet.ipzs.it/vct/v1.0.0/personidentificationdata",
+                  vct: 'https://pre.ta.wallet.ipzs.it/vct/v1.0.0/personidentificationdata'
                 },
-                success: false,
+                success: false
               },
               success: false,
-              trusted_authorities: { success: true },
+              trusted_authorities: { success: true }
             },
             {
               claims: {} as unknown as UnusedFailedCredentialClaims,
               input_credential_index: 1,
               meta: {
                 issues: {
-                  vct: ["Expected vct to be 'SomePID' but received 'MDL'"],
+                  vct: ["Expected vct to be 'SomePID' but received 'MDL'"]
                 },
                 output: {
-                  credential_format: "dc+sd-jwt",
+                  credential_format: 'dc+sd-jwt',
                   cryptographic_holder_binding: true,
-                  vct: "MDL",
+                  vct: 'MDL'
                 },
-                success: false,
+                success: false
               },
               success: false,
-              trusted_authorities: { success: true },
-            },
+              trusted_authorities: { success: true }
+            }
           ],
-          success: false,
-        },
+          success: false
+        }
       },
       credentials: [
         {
-          format: "dc+sd-jwt",
-          id: "PersonIdentificationData",
-          meta: { vct_values: ["SomePID"] },
+          format: 'dc+sd-jwt',
+          id: 'PersonIdentificationData',
+          meta: { vct_values: ['SomePID'] },
           multiple: false,
-          require_cryptographic_holder_binding: true,
-        },
-      ],
+          require_cryptographic_holder_binding: true
+        }
+      ]
     };
 
     expect(extractFailedCredentialsDetails(queryResult)).toEqual<
       NotFoundDetail[]
     >([
       {
-        format: "dc+sd-jwt",
-        id: "PersonIdentificationData",
+        format: 'dc+sd-jwt',
+        id: 'PersonIdentificationData',
         issues: [
           "Expected vct to be 'SomePID' but received 'https://pre.ta.wallet.ipzs.it/vct/v1.0.0/personidentificationdata'",
-          "Expected vct to be 'SomePID' but received 'MDL'",
+          "Expected vct to be 'SomePID' but received 'MDL'"
         ],
-        vctValues: ["SomePID"],
-      },
+        vctValues: ['SomePID']
+      }
     ]);
   });
 });

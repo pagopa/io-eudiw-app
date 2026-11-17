@@ -1,22 +1,22 @@
-import type { IssuanceApi } from "../api";
+import type { IssuanceApi } from '../api';
 
-import { MRTDPoPv1_3 } from "../mrtd-pop";
-import { evaluateIssuerTrust } from "./01-evaluate-issuer-trust";
-import { startUserAuthorization } from "./02-start-user-authorization";
+import { MRTDPoPv1_3 } from '../mrtd-pop';
+import { evaluateIssuerTrust } from './01-evaluate-issuer-trust';
+import { startUserAuthorization } from './02-start-user-authorization';
 import {
   buildAuthorizationUrl,
   completeEaaUserAuthorizationWithQueryMode,
   completePidUserAuthorizationWithQueryMode,
   completeUserAuthorizationWithFormPostJwtMode,
   continueUserAuthorizationWithMRTDPoPChallenge,
-  getRequestedCredentialToBePresented,
-} from "./03-complete-user-authorization";
-import { authorizeAccess } from "./04-authorize-access";
+  getRequestedCredentialToBePresented
+} from './03-complete-user-authorization';
+import { authorizeAccess } from './04-authorize-access';
 import {
   obtainCredential,
-  obtainCredentialsBatch,
-} from "./05-obtain-credential";
-import { verifyAndParseCredential } from "./06-verify-and-parse-credential";
+  obtainCredentialsBatch
+} from './05-obtain-credential';
+import { verifyAndParseCredential } from './06-verify-and-parse-credential';
 
 export const Issuance: IssuanceApi = {
   authorizeAccess,
@@ -31,5 +31,5 @@ export const Issuance: IssuanceApi = {
   obtainCredential,
   obtainCredentialsBatch,
   startUserAuthorization,
-  verifyAndParseCredential,
+  verifyAndParseCredential
 };

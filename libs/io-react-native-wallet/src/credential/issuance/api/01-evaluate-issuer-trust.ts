@@ -1,4 +1,4 @@
-import type { IssuerConfig } from "./IssuerConfig";
+import type { IssuerConfig } from './IssuerConfig';
 
 export interface EvaluateIssuerTrustApi {
   /**
@@ -15,6 +15,6 @@ export interface EvaluateIssuerTrustApi {
    */
   evaluateIssuerTrust(
     issuerUrl: string,
-    ctx?: { appFetch?: typeof fetch; authorizationServer?: string },
+    ctx?: { appFetch?: typeof fetch; authorizationServer?: string }
   ): Promise<{ issuerConf: IssuerConfig }>;
 }

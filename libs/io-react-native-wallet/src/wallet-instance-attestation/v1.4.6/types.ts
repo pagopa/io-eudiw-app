@@ -1,6 +1,6 @@
-import * as z from "zod";
+import * as z from 'zod';
 
-import { Jwt } from "../common/types";
+import { Jwt } from '../common/types';
 
 export type WalletInstanceAttestationJwt = z.infer<
   typeof WalletInstanceAttestationJwt
@@ -9,23 +9,23 @@ export const WalletInstanceAttestationJwt = z.object({
   header: z.intersection(
     Jwt.shape.header,
     z.object({
-      typ: z.literal("oauth-client-attestation+jwt"),
-      x5c: z.array(z.string()),
-    }),
+      typ: z.literal('oauth-client-attestation+jwt'),
+      x5c: z.array(z.string())
+    })
   ),
   payload: z.intersection(
     Jwt.shape.payload,
     z.object({
       sub: z.string(),
       wallet_link: z.string().optional(),
-      wallet_name: z.string().optional(),
-    }),
-  ),
+      wallet_name: z.string().optional()
+    })
+  )
 });
 
 export type WalletInstanceAttestationResponse = z.infer<
   typeof WalletInstanceAttestationResponse
 >;
 export const WalletInstanceAttestationResponse = z.object({
-  wallet_instance_attestation: z.string(),
+  wallet_instance_attestation: z.string()
 });

@@ -1,6 +1,6 @@
-import type { CertificateValidationStatus } from "@pagopa/io-react-native-crypto"; // Ensure this path is correct
+import type { CertificateValidationStatus } from '@pagopa/io-react-native-crypto'; // Ensure this path is correct
 
-import { IoWalletError, serializeAttrs } from "../../utils/errors";
+import { IoWalletError, serializeAttrs } from '../../utils/errors';
 
 /**
  * Base class for all federation-specific errors.
@@ -18,7 +18,7 @@ export class FederationError extends IoWalletError {
  * General error thrown during the trust chain building process.
  */
 export class BuildTrustChainError extends FederationError {
-  override code = "ERR_FED_BUILD_TRUST_CHAIN_FAILED";
+  override code = 'ERR_FED_BUILD_TRUST_CHAIN_FAILED';
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor -- narrows the `details` type for this error subclass
   constructor(
     message: string,
@@ -26,14 +26,14 @@ export class BuildTrustChainError extends FederationError {
       [key: string]: unknown;
       relyingPartyUrl?: string;
       trustAnchorKid?: string;
-    },
+    }
   ) {
     super(message, details);
   }
 }
 
 export class FederationListParseError extends FederationError {
-  override code = "ERR_FED_FEDERATION_LIST_PARSE_FAILED";
+  override code = 'ERR_FED_FEDERATION_LIST_PARSE_FAILED';
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor -- narrows the `details` type for this error subclass
   constructor(message: string, details: { parseError?: string; url: string }) {
     super(message, details);
@@ -44,11 +44,11 @@ export class FederationListParseError extends FederationError {
  * Error thrown when a 'federation_fetch_endpoint' is missing in an entity's configuration.
  */
 export class MissingFederationFetchEndpointError extends FederationError {
-  override code = "ERR_FED_MISSING_FEDERATION_FETCH_ENDPOINT";
+  override code = 'ERR_FED_MISSING_FEDERATION_FETCH_ENDPOINT';
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor -- narrows the `details` type for this error subclass
   constructor(
     message: string,
-    details: { entityBaseUrl: string; missingInEntityUrl: string },
+    details: { entityBaseUrl: string; missingInEntityUrl: string }
   ) {
     super(message, details);
   }
@@ -58,7 +58,7 @@ export class MissingFederationFetchEndpointError extends FederationError {
  * Error thrown when the X.509 certificate chain is missing in an entity's configuration.
  */
 export class MissingX509CertsError extends FederationError {
-  override code = "ERR_FED_MISSING_X509_CERTS";
+  override code = 'ERR_FED_MISSING_X509_CERTS';
   constructor(message: string) {
     super(message, undefined);
   }
@@ -68,11 +68,11 @@ export class MissingX509CertsError extends FederationError {
  * Error thrown if the Relying Party is not found in the Trust Anchor's federation list.
  */
 export class RelyingPartyNotAuthorizedError extends FederationError {
-  override code = "ERR_FED_RELYING_PARTY_NOT_AUTHORIZED";
+  override code = 'ERR_FED_RELYING_PARTY_NOT_AUTHORIZED';
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor -- narrows the `details` type for this error subclass
   constructor(
     message: string,
-    details: { federationListEndpoint?: string; relyingPartyUrl: string },
+    details: { federationListEndpoint?: string; relyingPartyUrl: string }
   ) {
     super(message, details);
   }
@@ -82,7 +82,7 @@ export class RelyingPartyNotAuthorizedError extends FederationError {
  * Error thrown when the Trust Anchor's key is missing a 'kid'.
  */
 export class TrustAnchorKidMissingError extends FederationError {
-  override code = "ERR_FED_TRUST_ANCHOR_KID_MISSING";
+  override code = 'ERR_FED_TRUST_ANCHOR_KID_MISSING';
   constructor(message = "Missing 'kid' in provided Trust Anchor key.") {
     super(message, undefined);
   }
@@ -92,8 +92,8 @@ export class TrustAnchorKidMissingError extends FederationError {
  * Error thrown when a trust chain is unexpectedly empty.
  */
 export class TrustChainEmptyError extends FederationError {
-  override code = "ERR_FED_TRUST_CHAIN_EMPTY";
-  constructor(message = "Trust chain cannot be empty.") {
+  override code = 'ERR_FED_TRUST_CHAIN_EMPTY';
+  constructor(message = 'Trust chain cannot be empty.') {
     super(message, undefined);
   }
 }
@@ -103,11 +103,11 @@ export class TrustChainEmptyError extends FederationError {
  * This class itself might be used or could be considered a more general renewal error.
  */
 export class TrustChainRenewalError extends FederationError {
-  override code = "ERR_FED_TRUST_CHAIN_RENEWAL_FAILED";
+  override code = 'ERR_FED_TRUST_CHAIN_RENEWAL_FAILED';
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor -- narrows the `details` type for this error subclass
   constructor(
     message: string,
-    details?: { [key: string]: unknown; originalChain?: string[] },
+    details?: { [key: string]: unknown; originalChain?: string[] }
   ) {
     super(message, details);
   }
@@ -117,7 +117,7 @@ export class TrustChainRenewalError extends FederationError {
  * Error thrown when a token is unexpectedly missing from a trust chain during processing.
  */
 export class TrustChainTokenMissingError extends FederationError {
-  override code = "ERR_FED_TRUST_CHAIN_TOKEN_MISSING";
+  override code = 'ERR_FED_TRUST_CHAIN_TOKEN_MISSING';
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor -- narrows the `details` type for this error subclass
   constructor(message: string, details?: { index?: number }) {
     super(message, details);
@@ -129,7 +129,7 @@ export class TrustChainTokenMissingError extends FederationError {
  * This is used to indicate issues with the certificate chain or signature verification.
  */
 export class X509ValidationError extends FederationError {
-  override code = "ERR_FED_X509_VALIDATION_FAILED";
+  override code = 'ERR_FED_X509_VALIDATION_FAILED';
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor -- narrows the `details` type for this error subclass
   constructor(
     message: string,
@@ -139,7 +139,7 @@ export class X509ValidationError extends FederationError {
       tokenIndex?: number;
       x509ErrorMessage?: string;
       x509ValidationStatus?: CertificateValidationStatus;
-    },
+    }
   ) {
     super(message, details);
   }

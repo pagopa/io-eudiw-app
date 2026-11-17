@@ -5,8 +5,8 @@
  * Returns the Date object if found, otherwise returns null.
  */
 export function extractElementValueAsDate(elementValue: string): Date | null {
-  if (typeof elementValue === "string") {
-    const dateParts = elementValue.split("-");
+  if (typeof elementValue === 'string') {
+    const dateParts = elementValue.split('-');
     if (dateParts.length === 3) {
       const [year, month, day] = dateParts.map(Number);
       if (

@@ -3,7 +3,7 @@
  */
 export const isPathEqual = (
   pathA: (null | number | string)[],
-  pathB: (null | number | string)[],
+  pathB: (null | number | string)[]
 ): boolean =>
   pathA.length === pathB.length && pathA.every((v, i) => v === pathB[i]);
 /**
@@ -11,7 +11,7 @@ export const isPathEqual = (
  */
 export const isPrefixOf = (
   prefix: (null | number | string)[],
-  fullPath: (null | number | string)[],
+  fullPath: (null | number | string)[]
 ): boolean => {
   if (prefix.length >= fullPath.length) return false;
   return prefix.every((v, i) => v === fullPath[i]);

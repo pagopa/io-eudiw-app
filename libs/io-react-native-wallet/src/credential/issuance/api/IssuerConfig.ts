@@ -1,16 +1,16 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { FederationEntityMetadata } from "../../../trust/common/types";
-import { JWK } from "../../../utils/jwk";
+import { FederationEntityMetadata } from '../../../trust/common/types';
+import { JWK } from '../../../utils/jwk';
 
 const DisplayConfig = z.object({
   locale: z.string(),
-  name: z.string(),
+  name: z.string()
 });
 
 const ClaimConfig = z.object({
   display: z.array(DisplayConfig).optional(),
-  path: z.array(z.union([z.string(), z.number(), z.null()])),
+  path: z.array(z.union([z.string(), z.number(), z.null()]))
 });
 
 /**
@@ -21,16 +21,16 @@ const LegacyIssuanceErrorSupported = z.object({
     z.object({
       description: z.string(),
       locale: z.string(),
-      title: z.string(),
-    }),
+      title: z.string()
+    })
   ),
-  status_code: z.number().optional(),
+  status_code: z.number().optional()
 });
 
 const CredentialConfig = z.intersection(
-  z.discriminatedUnion("format", [
-    z.object({ format: z.literal("dc+sd-jwt"), vct: z.string() }),
-    z.object({ doctype: z.string(), format: z.literal("mso_mdoc") }),
+  z.discriminatedUnion('format', [
+    z.object({ format: z.literal('dc+sd-jwt'), vct: z.string() }),
+    z.object({ doctype: z.string(), format: z.literal('mso_mdoc') })
   ]),
   z.object({
     /**
@@ -47,8 +47,8 @@ const CredentialConfig = z.intersection(
     issuance_errors_supported: z
       .record(z.string(), LegacyIssuanceErrorSupported)
       .optional(),
-    scope: z.string(),
-  }),
+    scope: z.string()
+  })
 );
 
 /**
@@ -77,5 +77,5 @@ export const IssuerConfig = z.object({
    */
   response_modes_supported: z.array(z.string()).optional(),
   status_assertion_endpoint: z.string().optional(),
-  token_endpoint: z.string(),
+  token_endpoint: z.string()
 });

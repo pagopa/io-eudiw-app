@@ -1,29 +1,29 @@
-import type { Verifier } from "@sd-jwt/core";
+import type { Verifier } from '@sd-jwt/core';
 
-import { hasher } from "@owf/crypto";
+import { hasher } from '@owf/crypto';
 import {
   type CryptoContext,
-  verify as verifyJwt,
-} from "@pagopa/io-react-native-jwt";
-import { type SDJwt, SDJwtInstance, type VerifierOptions } from "@sd-jwt/core";
+  verify as verifyJwt
+} from '@pagopa/io-react-native-jwt';
+import { type SDJwt, SDJwtInstance, type VerifierOptions } from '@sd-jwt/core';
 
-import type { SdJwt4VCBase } from "../../../sd-jwt/types";
-import type { IssuanceApi, IssuerConfig, ParsedCredential } from "../api";
+import type { SdJwt4VCBase } from '../../../sd-jwt/types';
+import type { IssuanceApi, IssuerConfig, ParsedCredential } from '../api';
 
-import { MissingX509CertsError } from "../../../trust/common/errors";
-import { fixLegacyCredentialSdJwt } from "../../../utils/credentials";
-import { IoWalletError } from "../../../utils/errors";
-import { isSameThumbprint, type JWK } from "../../../utils/jwk";
-import { Logger, LogLevel } from "../../../utils/logging";
-import { isPathEqual, isPrefixOf } from "../../../utils/parser";
+import { MissingX509CertsError } from '../../../trust/common/errors';
+import { fixLegacyCredentialSdJwt } from '../../../utils/credentials';
+import { IoWalletError } from '../../../utils/errors';
+import { isSameThumbprint, type JWK } from '../../../utils/jwk';
+import { Logger, LogLevel } from '../../../utils/logging';
+import { isPathEqual, isPrefixOf } from '../../../utils/parser';
 
-type ClaimConfig = CredentialConf["claims"][number];
+type ClaimConfig = CredentialConf['claims'][number];
 
 type CredentialConf =
-  IssuerConfig["credential_configurations_supported"][string];
+  IssuerConfig['credential_configurations_supported'][string];
 
-type DisplayableClaim = Omit<ClaimConfig, "display"> & {
-  display: NonNullable<ClaimConfig["display"]>;
+type DisplayableClaim = Omit<ClaimConfig, 'display'> & {
+  display: NonNullable<ClaimConfig['display']>;
 };
 
 /**
@@ -38,12 +38,12 @@ const parseCredentialSdJwt = (
   credentialConfig: CredentialConf,
   parsedCredentialRaw: Record<string, unknown>,
   ignoreMissingAttributes = false,
-  includeUndefinedAttributes = false,
+  includeUndefinedAttributes = false
 ): ParsedCredential => {
   // Claims without display property (such as `iat`, `exp`, `iss`, etc.)
   // must be ignored as they are not meant to be displayed to the user.
   const displayableClaims = (credentialConfig.claims || []).filter(
-    (c) => c.display !== undefined,
+    c => c.display !== undefined
   ) as DisplayableClaim[];
 
   // Check that all mandatory attributes defined in the issuer configuration are present in the credential
@@ -51,8 +51,8 @@ const parseCredentialSdJwt = (
     const missingPaths: string[] = [];
     const rootKeysToVerify = new Set(
       displayableClaims
-        .map((c) => c.path[0])
-        .filter((p): p is string => typeof p === "string"),
+        .map(c => c.path[0])
+        .filter((p): p is string => typeof p === 'string')
     );
 
     for (const rootKey of rootKeysToVerify) {
@@ -62,10 +62,10 @@ const parseCredentialSdJwt = (
     }
 
     if (missingPaths.length > 0) {
-      const missing = missingPaths.join(", ");
-      const received = Object.keys(parsedCredentialRaw).join(", ");
+      const missing = missingPaths.join(', ');
+      const received = Object.keys(parsedCredentialRaw).join(', ');
       throw new IoWalletError(
-        `Some attributes are missing in the credential. Missing: [${missing}], received: [${received}]`,
+        `Some attributes are missing in the credential. Missing: [${missing}], received: [${received}]`
       );
     }
   }
@@ -74,9 +74,9 @@ const parseCredentialSdJwt = (
    * Helper to find display metadata for any given path
    */
   const getDisplayNames = (
-    path: (null | number | string)[],
+    path: (null | number | string)[]
   ): Record<string, string> | undefined => {
-    const match = displayableClaims.find((c) => isPathEqual(c.path, path));
+    const match = displayableClaims.find(c => isPathEqual(c.path, path));
     if (!match) return undefined;
 
     const nameMap: Record<string, string> = {};
@@ -91,17 +91,17 @@ const parseCredentialSdJwt = (
    */
   const processLevel = (
     currentData: unknown,
-    currentPath: (null | number | string)[],
+    currentPath: (null | number | string)[]
   ): unknown => {
     // Handle Arrays
     if (Array.isArray(currentData)) {
-      return currentData.map((item) =>
-        processLevel(item, [...currentPath, null]),
+      return currentData.map(item =>
+        processLevel(item, [...currentPath, null])
       );
     }
 
     // Handle Objects
-    if (typeof currentData !== "object" || currentData === null) {
+    if (typeof currentData !== 'object' || currentData === null) {
       return currentData;
     }
 
@@ -116,7 +116,7 @@ const parseCredentialSdJwt = (
       if (isPrefixOf(currentPath, claim.path)) {
         const nextPart = claim.path[currentPath.length];
         if (
-          (typeof nextPart === "string" || typeof nextPart === "number") &&
+          (typeof nextPart === 'string' || typeof nextPart === 'number') &&
           !configKeysAtThisLevel.includes(nextPart)
         ) {
           configKeysAtThisLevel.push(nextPart);
@@ -141,7 +141,7 @@ const parseCredentialSdJwt = (
 
       result[stringKey] = {
         name: localizedNames || stringKey,
-        value: processLevel(dataValue, newPath),
+        value: processLevel(dataValue, newPath)
       };
 
       processedKeys.add(key);
@@ -153,7 +153,7 @@ const parseCredentialSdJwt = (
         if (!processedKeys.has(key)) {
           result[key] = {
             name: key,
-            value: value,
+            value: value
           };
         }
       }
@@ -175,14 +175,14 @@ type SdJwtInstanceVerifier = Verifier<VerifierOptions & { issuerKeys: JWK[] }>;
 const sdJwtInstanceVerifier: SdJwtInstanceVerifier = async (
   data,
   signature,
-  options,
+  options
 ) => {
   if (!options?.issuerKeys) {
     return false;
   }
   try {
     await verifyJwt(`${data}.${signature}`, options.issuerKeys, {
-      clockTolerance: options.skewSeconds,
+      clockTolerance: options.skewSeconds
     });
     return true;
   } catch {
@@ -208,19 +208,19 @@ const sdJwtInstanceVerifier: SdJwtInstanceVerifier = async (
 async function verifyCredentialSdJwt(
   rawCredential: string,
   issuerKeys: JWK[],
-  holderBindingContext: CryptoContext,
+  holderBindingContext: CryptoContext
 ): Promise<SDJwt> {
   const sdJwtInstance = new SDJwtInstance({
     hasher,
-    verifier: sdJwtInstanceVerifier,
+    verifier: sdJwtInstanceVerifier
   });
 
   const [verifiedCredential, holderBindingKey] = await Promise.all([
     sdJwtInstance.verify(rawCredential, { issuerKeys, skewSeconds: 30 }),
-    holderBindingContext.getPublicKey(),
+    holderBindingContext.getPublicKey()
   ]);
 
-  const { cnf } = verifiedCredential.payload as SdJwt4VCBase["payload"];
+  const { cnf } = verifiedCredential.payload as SdJwt4VCBase['payload'];
   if (!(await isSameThumbprint(cnf.jwk, holderBindingKey as JWK))) {
     const message = `Failed to verify holder binding, expected kid: ${holderBindingKey.kid}, got: ${cnf.jwk.kid}`;
     Logger.log(LogLevel.ERROR, message);
@@ -230,7 +230,7 @@ async function verifyCredentialSdJwt(
   return await sdJwtInstance.decode(fixLegacyCredentialSdJwt(rawCredential));
 }
 
-export const verifyAndParseCredentialSdJwt: IssuanceApi["verifyAndParseCredential"] =
+export const verifyAndParseCredentialSdJwt: IssuanceApi['verifyAndParseCredential'] =
   async (
     issuerConf,
     credential,
@@ -239,19 +239,19 @@ export const verifyAndParseCredentialSdJwt: IssuanceApi["verifyAndParseCredentia
       credentialCryptoContext,
       ignoreMissingAttributes,
       includeUndefinedAttributes,
-      validateCertificateChain,
+      validateCertificateChain
     },
-    _x509CertRoot,
+    _x509CertRoot
   ) => {
     const decoded = await verifyCredentialSdJwt(
       credential,
       issuerConf.keys,
-      credentialCryptoContext,
+      credentialCryptoContext
     );
 
     Logger.log(
       LogLevel.DEBUG,
-      `Decoded credential: ${JSON.stringify(decoded)}`,
+      `Decoded credential: ${JSON.stringify(decoded)}`
     );
 
     if (validateCertificateChain) {
@@ -260,7 +260,7 @@ export const verifyAndParseCredentialSdJwt: IssuanceApi["verifyAndParseCredentia
       // }
       const x5c = decoded.jwt?.header?.x5c as string[] | undefined;
       if (!x5c || !Array.isArray(x5c) || x5c.length === 0) {
-        throw new MissingX509CertsError("Missing x509 certificates");
+        throw new MissingX509CertsError('Missing x509 certificates');
       }
       // await verifyX509Chain(x5c, x509CertRoot);
     }
@@ -271,9 +271,9 @@ export const verifyAndParseCredentialSdJwt: IssuanceApi["verifyAndParseCredentia
     if (!credentialConfig) {
       Logger.log(
         LogLevel.ERROR,
-        `Credential type not supported by the issuer: ${credentialConfigurationId}`,
+        `Credential type not supported by the issuer: ${credentialConfigurationId}`
       );
-      throw new IoWalletError("Credential type not supported by the issuer");
+      throw new IoWalletError('Credential type not supported by the issuer');
     }
 
     const parsedCredentialRaw = (await decoded.getClaims(hasher)) as Record<
@@ -285,27 +285,27 @@ export const verifyAndParseCredentialSdJwt: IssuanceApi["verifyAndParseCredentia
       credentialConfig,
       parsedCredentialRaw,
       ignoreMissingAttributes,
-      includeUndefinedAttributes,
+      includeUndefinedAttributes
     );
 
     const issuedAt =
-      typeof parsedCredentialRaw.iat === "number"
+      typeof parsedCredentialRaw.iat === 'number'
         ? new Date(parsedCredentialRaw.iat * 1000)
         : undefined;
 
-    if (typeof parsedCredentialRaw.exp !== "number") {
-      throw new IoWalletError("Invalid or missing expiration claim (exp)");
+    if (typeof parsedCredentialRaw.exp !== 'number') {
+      throw new IoWalletError('Invalid or missing expiration claim (exp)');
     }
     const expiration = new Date(parsedCredentialRaw.exp * 1000);
 
     Logger.log(
       LogLevel.DEBUG,
-      `Parsed credential: ${JSON.stringify(parsedCredential)}\nIssued at: ${issuedAt}`,
+      `Parsed credential: ${JSON.stringify(parsedCredential)}\nIssued at: ${issuedAt}`
     );
 
     return {
       expiration,
       issuedAt,
-      parsedCredential,
+      parsedCredential
     };
   };

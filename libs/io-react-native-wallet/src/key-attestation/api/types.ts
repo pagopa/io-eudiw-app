@@ -1,13 +1,13 @@
-import * as z from "zod";
+import * as z from 'zod';
 
-import { JWK } from "../../utils/jwk";
-import { UnixTime } from "../../utils/zod";
+import { JWK } from '../../utils/jwk';
+import { UnixTime } from '../../utils/zod';
 
 const Status = z.object({
   status_list: z.object({
     idx: z.number(),
-    uri: z.string(),
-  }),
+    uri: z.string()
+  })
 });
 
 /**
@@ -22,7 +22,7 @@ export const DecodedKeyAttestation = z.object({
   iss: z.string(),
   key_storage: z.array(z.string()),
   status: Status,
-  user_authentication: z.array(z.string()),
+  user_authentication: z.array(z.string())
 });
 
 export interface WalletAttestation {

@@ -1,4 +1,4 @@
-import * as z from "zod";
+import * as z from 'zod';
 
 /**
  * Create a mapper to convert data from type I to type O.
@@ -24,12 +24,12 @@ import * as z from "zod";
 export function createMapper<I, O>(mapper: (input: I) => O): (input: I) => O;
 export function createMapper<I, O>(
   mapper: (input: I) => O,
-  config: { inputSchema: z.ZodType<I>; outputSchema: z.ZodType<O> },
+  config: { inputSchema: z.ZodType<I>; outputSchema: z.ZodType<O> }
 ): (input: unknown) => O;
 export function createMapper<I, O>(
   mapper: (input: I) => O,
   // eslint-disable-next-line @typescript-eslint/unified-signatures
-  config: { outputSchema: z.ZodType<O> },
+  config: { outputSchema: z.ZodType<O> }
 ): (input: I) => O;
 export function createMapper<I, O>(
   mapper: (input: I) => O,
@@ -38,7 +38,7 @@ export function createMapper<I, O>(
     inputSchema?: z.ZodType<I, any>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     outputSchema: z.ZodType<O, any>;
-  },
+  }
 ) {
   if (!config) {
     return mapper;
@@ -64,7 +64,7 @@ export function createMapper<I, O>(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const withMapper = <A extends any[], I, O>(
   mapper: (input: I) => O,
-  fn: (...args: A) => I,
+  fn: (...args: A) => I
 ) =>
   function wrappedFunction(...args: A) {
     return mapper(fn(...args));
@@ -80,7 +80,7 @@ export const withMapper = <A extends any[], I, O>(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const withMapperAsync = <A extends any[], I, O>(
   mapper: (input: I) => O,
-  fn: (...args: A) => Promise<I>,
+  fn: (...args: A) => Promise<I>
 ) =>
   async function wrappedAsyncFunction(...args: A) {
     return mapper(await fn(...args));

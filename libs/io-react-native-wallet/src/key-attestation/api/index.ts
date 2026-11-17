@@ -1,10 +1,10 @@
-import type { KeyAttestationCryptoContext } from "../../utils/crypto";
-import type { IntegrityContext } from "../../utils/integrity";
+import type { KeyAttestationCryptoContext } from '../../utils/crypto';
+import type { IntegrityContext } from '../../utils/integrity';
 import type {
   DecodedKeyAttestation,
   WalletAttestation,
-  WalletAttestationRequestParams,
-} from "./types";
+  WalletAttestationRequestParams
+} from './types';
 
 export type KeyAttestationApi = KeyAttestationSupportedApi | UnsupportedApi;
 
@@ -38,7 +38,7 @@ export interface KeyAttestationSupportedApi {
       appFetch?: typeof fetch;
       integrityContext: IntegrityContext;
       keysToAttest: KeyAttestationCryptoContext[];
-    },
+    }
   ): Promise<WalletAttestation>;
 
   isSupported: true;
@@ -51,5 +51,5 @@ interface UnsupportedApi {
 export type {
   DecodedKeyAttestation,
   WalletAttestation,
-  WalletAttestationRequestParams,
-} from "./types";
+  WalletAttestationRequestParams
+} from './types';

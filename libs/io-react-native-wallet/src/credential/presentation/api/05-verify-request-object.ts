@@ -1,5 +1,5 @@
-import type { RelyingPartyConfig } from "./RelyingPartyConfig";
-import type { RequestObject } from "./types";
+import type { RelyingPartyConfig } from './RelyingPartyConfig';
+import type { RequestObject } from './types';
 
 export interface VerifyRequestObjectApi {
   /**
@@ -19,6 +19,6 @@ export interface VerifyRequestObjectApi {
       clientId: string;
       rpConf?: RelyingPartyConfig;
       state?: string;
-    },
+    }
   ): Promise<{ requestObject: RequestObject }>;
 }

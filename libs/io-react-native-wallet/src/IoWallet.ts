@@ -1,4 +1,4 @@
-import { type IoWalletApi, ioWalletApiByVersion, type ItwVersion } from "./api";
+import { type IoWalletApi, ioWalletApiByVersion, type ItwVersion } from './api';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/no-unsafe-declaration-merging
 export interface IoWallet extends IoWalletApi {}
@@ -36,7 +36,7 @@ export class IoWallet {
 
     if (!walletApi) {
       throw new Error(
-        `Invalid version provided: IoWallet does not implement ${version} specifications.`,
+        `Invalid version provided: IoWallet does not implement ${version} specifications.`
       );
     }
 
@@ -45,7 +45,7 @@ export class IoWallet {
       Object.defineProperty(this, feature, {
         configurable: false,
         enumerable: true,
-        value: walletApi[feature],
+        value: walletApi[feature]
       });
     }
   }

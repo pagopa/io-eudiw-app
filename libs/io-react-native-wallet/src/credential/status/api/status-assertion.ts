@@ -1,9 +1,9 @@
-import type { CryptoContext } from "@pagopa/io-react-native-jwt";
+import type { CryptoContext } from '@pagopa/io-react-native-jwt';
 
-import type { SupportedSdJwtLegacyFormat } from "../../../sd-jwt/types";
-import type { Out } from "../../../utils/misc";
-import type { CredentialFormat, IssuerConfig } from "../../issuance/api";
-import type { ParsedStatusAssertion } from "./types";
+import type { SupportedSdJwtLegacyFormat } from '../../../sd-jwt/types';
+import type { Out } from '../../../utils/misc';
+import type { CredentialFormat, IssuerConfig } from '../../issuance/api';
+import type { ParsedStatusAssertion } from './types';
 
 export interface StatusAssertionApi {
   /**
@@ -28,7 +28,7 @@ export interface StatusAssertionApi {
       appFetch?: typeof fetch;
       credentialCryptoContext: CryptoContext;
       wiaCryptoContext: CryptoContext;
-    },
+    }
   ): Promise<{ statusAssertion: string }>;
 
   isSupported: true;
@@ -51,8 +51,8 @@ export interface StatusAssertionApi {
    */
   verifyAndParse(
     issuerConf: IssuerConfig,
-    statusAssertion: Out<StatusAssertionApi["get"]>,
+    statusAssertion: Out<StatusAssertionApi['get']>,
     credential: string,
-    format: CredentialFormat | SupportedSdJwtLegacyFormat,
+    format: CredentialFormat | SupportedSdJwtLegacyFormat
   ): Promise<{ parsedStatusAssertion: ParsedStatusAssertion }>;
 }

@@ -18,6 +18,6 @@ export interface IntegrityContext {
   getAttestation: (nonce: string) => Promise<string>;
   getHardwareKeyTag: () => string;
   getHardwareSignatureWithAuthData: (
-    clientData: string,
+    clientData: string
   ) => Promise<HardwareSignatureWithAuthData>;
 }

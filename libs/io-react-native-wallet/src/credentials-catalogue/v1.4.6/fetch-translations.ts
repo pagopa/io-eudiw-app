@@ -1,16 +1,16 @@
-import type { CredentialsCatalogueApi as Api } from "../api";
+import type { CredentialsCatalogueApi as Api } from '../api';
 
-import { fetchLocaleBundle } from "./utils";
+import { fetchLocaleBundle } from './utils';
 
-export const fetchTranslations: NonNullable<Api["fetchTranslations"]> = async (
+export const fetchTranslations: NonNullable<Api['fetchTranslations']> = async (
   { authenticSources, catalogue, taxonomy },
   locales,
-  { appFetch = fetch } = {},
+  { appFetch = fetch } = {}
 ) => {
   const result: Record<string, Record<string, string>> = {};
 
   await Promise.all(
-    locales.map(async (locale) => {
+    locales.map(async locale => {
       const [catalogueBundle, asBundle, taxonomyBundle] = await Promise.all([
         catalogue?.available_locales.includes(locale)
           ? fetchLocaleBundle(catalogue.base_uri, locale, appFetch)
@@ -20,7 +20,7 @@ export const fetchTranslations: NonNullable<Api["fetchTranslations"]> = async (
           : Promise.resolve({}),
         taxonomy?.available_locales.includes(locale)
           ? fetchLocaleBundle(taxonomy.base_uri, locale, appFetch)
-          : Promise.resolve({}),
+          : Promise.resolve({})
       ]);
 
       const merged = { ...catalogueBundle, ...asBundle, ...taxonomyBundle };
@@ -29,7 +29,7 @@ export const fetchTranslations: NonNullable<Api["fetchTranslations"]> = async (
       if (Object.keys(merged).length > 0) {
         result[locale] = merged;
       }
-    }),
+    })
   );
 
   return result;

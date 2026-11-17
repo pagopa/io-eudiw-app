@@ -1,7 +1,7 @@
-import * as z from "zod";
+import * as z from 'zod';
 
-import { JWK } from "../../utils/jwk";
-import { UnixTime } from "../../utils/zod";
+import { JWK } from '../../utils/jwk';
+import { UnixTime } from '../../utils/zod';
 
 /**
  * Common Wallet Instance Attestation shape. This object is
@@ -21,7 +21,7 @@ export const DecodedWalletInstanceAttestation = z.object({
   /** @deprecated */
   wallet_link: z.string().optional(),
   /** @deprecated */
-  wallet_name: z.string().optional(),
+  wallet_name: z.string().optional()
 });
 
 export interface WalletAttestation {

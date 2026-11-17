@@ -1,4 +1,4 @@
-import type { IntegrityContext } from "../../utils/integrity";
+import type { IntegrityContext } from '../../utils/integrity';
 
 export interface WalletInstanceApi {
   /**
@@ -46,8 +46,8 @@ export interface WalletInstanceStatus {
   id: string;
   is_revoked: boolean;
   revocation_reason?:
-    | "CERTIFICATE_REVOKED_BY_ISSUER"
-    | "NEW_WALLET_INSTANCE_CREATED"
-    | "REVOKED_BY_USER"
-    | "WALLET_INSTANCE_RENEWAL";
+    | 'CERTIFICATE_REVOKED_BY_ISSUER'
+    | 'NEW_WALLET_INSTANCE_CREATED'
+    | 'REVOKED_BY_USER'
+    | 'WALLET_INSTANCE_RENEWAL';
 }

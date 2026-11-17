@@ -2,7 +2,7 @@
  * @see https://github.com/JacobWeisenburger/zod_utilz/blob/main/src/stringToJSON.ts
  */
 
-import { z } from "zod";
+import { z } from 'zod';
 
 const literalSchema = z.union([z.string(), z.number(), z.boolean(), z.null()]);
 
@@ -14,8 +14,8 @@ const jsonSchema: z.ZodType<Json> = z.lazy(() =>
   z.union([
     literalSchema,
     z.array(jsonSchema),
-    z.record(z.string(), jsonSchema),
-  ]),
+    z.record(z.string(), jsonSchema)
+  ])
 );
 
 export const json = () => jsonSchema;
@@ -26,7 +26,7 @@ export const stringToJSONSchema = z
     try {
       return JSON.parse(str);
     } catch {
-      ctx.addIssue({ code: "custom", message: "Invalid JSON" });
+      ctx.addIssue({ code: 'custom', message: 'Invalid JSON' });
       return z.NEVER;
     }
   });

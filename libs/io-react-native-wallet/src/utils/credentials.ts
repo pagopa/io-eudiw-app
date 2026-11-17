@@ -1,18 +1,18 @@
-import { hasher } from "@owf/crypto";
-import { thumbprint } from "@pagopa/io-react-native-jwt";
-import { decodeSdJwtSync } from "@sd-jwt/core";
+import { hasher } from '@owf/crypto';
+import { thumbprint } from '@pagopa/io-react-native-jwt';
+import { decodeSdJwtSync } from '@sd-jwt/core';
 
-import type { CredentialFormat } from "../credential/issuance";
-import type { JWK } from "./jwk";
+import type { CredentialFormat } from '../credential/issuance';
+import type { JWK } from './jwk';
 
 import {
   LEGACY_SD_JWT,
   SdJwt4VCBase,
-  type SupportedSdJwtLegacyFormat,
-} from "../sd-jwt/types";
-import { IoWalletError } from "./errors";
+  type SupportedSdJwtLegacyFormat
+} from '../sd-jwt/types';
+import { IoWalletError } from './errors';
 
-const SD_JWT = ["dc+sd-jwt", LEGACY_SD_JWT];
+const SD_JWT = ['dc+sd-jwt', LEGACY_SD_JWT];
 
 /**
  * Extracts a JWK from a credential.
@@ -22,15 +22,15 @@ const SD_JWT = ["dc+sd-jwt", LEGACY_SD_JWT];
  */
 export const extractJwkFromCredential = async (
   credential: string,
-  format: CredentialFormat | SupportedSdJwtLegacyFormat,
+  format: CredentialFormat | SupportedSdJwtLegacyFormat
 ): Promise<JWK> => {
   if (SD_JWT.includes(format)) {
     // 1. SD-JWT case
     const decoded = decodeSdJwtSync(
       fixLegacyCredentialSdJwt(credential),
-      hasher,
+      hasher
     );
-    const { cnf } = decoded.jwt.payload as SdJwt4VCBase["payload"];
+    const { cnf } = decoded.jwt.payload as SdJwt4VCBase['payload'];
     if (cnf.jwk) {
       return { ...cnf.jwk, kid: await thumbprint(cnf.jwk) };
     }
@@ -43,8 +43,8 @@ export const extractJwkFromCredential = async (
  * to avoid decoding errors in the @sd-jwt libraries.
  */
 export const fixLegacyCredentialSdJwt = (token: string) => {
-  if (!token.endsWith("~")) {
-    const hasKeyBindingJwt = token.split("~").at(-1)?.split(".").length === 3;
+  if (!token.endsWith('~')) {
+    const hasKeyBindingJwt = token.split('~').at(-1)?.split('.').length === 3;
     // Either we have a key binding JWT or it is a legacy 0.7.1 credential
     return hasKeyBindingJwt ? token : `${token}~`;
   }

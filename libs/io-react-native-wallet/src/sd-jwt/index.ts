@@ -1,13 +1,13 @@
-import { hasher } from "@owf/crypto";
-import { sha256ToBase64, SignJWT } from "@pagopa/io-react-native-jwt";
-import { decodeSdJwtSync, present } from "@sd-jwt/core";
+import { hasher } from '@owf/crypto';
+import { sha256ToBase64, SignJWT } from '@pagopa/io-react-native-jwt';
+import { decodeSdJwtSync, present } from '@sd-jwt/core';
 
-import type { Presentation } from "../credential/presentation";
+import type { Presentation } from '../credential/presentation';
 
-import { fixLegacyCredentialSdJwt } from "../utils/credentials";
-import { SdJwt4VCBase } from "./types";
+import { fixLegacyCredentialSdJwt } from '../utils/credentials';
+import { SdJwt4VCBase } from './types';
 
-export * from "./utils";
+export * from './utils';
 
 /**
  * Decode a given SD-JWT with Disclosures to get the parsed SD-JWT object they define.
@@ -23,11 +23,11 @@ export const decode = (token: string) => {
 
   const sdJwt = SdJwt4VCBase.parse({
     header: decoded.jwt.header,
-    payload: decoded.jwt.payload,
+    payload: decoded.jwt.payload
   });
-  const disclosures = decoded.disclosures.map((disclosure) => ({
+  const disclosures = decoded.disclosures.map(disclosure => ({
     decoded: [disclosure.salt, disclosure.key, disclosure.value],
-    encoded: disclosure._digest,
+    encoded: disclosure._digest
   }));
   return { disclosures, sdJwt };
 };
@@ -50,7 +50,7 @@ export const decode = (token: string) => {
 export const prepareVpToken = async (
   nonce: string,
   client_id: string,
-  [verifiableCredential, presentationFrame, cryptoContext]: Presentation,
+  [verifiableCredential, presentationFrame, cryptoContext]: Presentation
 ): Promise<{
   vp_token: string;
 }> => {
@@ -58,7 +58,7 @@ export const prepareVpToken = async (
   const vp = await present(
     fixLegacyCredentialSdJwt(verifiableCredential),
     presentationFrame,
-    hasher,
+    hasher
   );
 
   // <Issuer-signed JWT>~<Disclosure 1>~<Disclosure N>~
@@ -66,18 +66,18 @@ export const prepareVpToken = async (
 
   const kbJwt = await new SignJWT(cryptoContext)
     .setProtectedHeader({
-      alg: "ES256",
-      typ: "kb+jwt",
+      alg: 'ES256',
+      typ: 'kb+jwt'
     })
     .setPayload({
       nonce: nonce,
-      sd_hash,
+      sd_hash
     })
     .setAudience(client_id)
     .setIssuedAt()
     .sign();
   // <Issuer-signed JWT>~<Disclosure 1>~...~<Disclosure N>~<KB-JWT>
-  const vp_token = [vp, kbJwt].join("");
+  const vp_token = [vp, kbJwt].join('');
 
   return { vp_token };
 };

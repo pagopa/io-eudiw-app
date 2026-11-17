@@ -1,14 +1,14 @@
 import {
   type CertificateValidationResult,
   verifyCertificateChain,
-  type X509CertificateOptions,
-} from "@pagopa/io-react-native-crypto";
-import * as z from "zod";
+  type X509CertificateOptions
+} from '@pagopa/io-react-native-crypto';
+import * as z from 'zod';
 
-import type { TrustApi } from "../api";
-import type { TrustAnchorConfig } from "../api/TrustAnchorConfig";
+import type { TrustApi } from '../api';
+import type { TrustAnchorConfig } from '../api/TrustAnchorConfig';
 
-import { JWK } from "../../utils/jwk";
+import { JWK } from '../../utils/jwk';
 import {
   FederationError,
   MissingFederationFetchEndpointError,
@@ -16,19 +16,19 @@ import {
   TrustChainEmptyError,
   TrustChainRenewalError,
   TrustChainTokenMissingError,
-  X509ValidationError,
-} from "./errors";
-import { BaseEntityConfiguration, EntityStatement } from "./types";
+  X509ValidationError
+} from './errors';
+import { BaseEntityConfiguration, EntityStatement } from './types';
 import {
   decode,
   getTrustAnchorX509Certificate,
   type ParsedToken,
-  verify,
-} from "./utils";
+  verify
+} from './utils';
 import {
   getSignedEntityConfiguration,
-  getSignedEntityStatement,
-} from "./utils";
+  getSignedEntityStatement
+} from './utils';
 
 export interface BuilderConfig {
   EntityConfigurationShape: z.ZodType<BaseEntityConfiguration>;
@@ -54,17 +54,17 @@ export interface BuilderConfig {
  * @returns `verifyTrustChain` function compliant with the public API
  */
 export function createVerifyTrustChain(
-  config: BuilderConfig,
-): TrustApi["verifyTrustChain"] {
+  config: BuilderConfig
+): TrustApi['verifyTrustChain'] {
   return async function verifyTrustChain(
     trustAnchorEntity,
     chain,
     x509Options = {
       connectTimeout: 10000,
       readTimeout: 10000,
-      requireCrl: true,
+      requireCrl: true
     },
-    { appFetch = fetch, renewOnFail = true } = {},
+    { appFetch = fetch, renewOnFail = true } = {}
   ) {
     const validateTrustChain = createValidateTrustChain(config);
     const renewTrustChain = createRenewTrustChain(config);
@@ -89,7 +89,7 @@ export function createVerifyTrustChain(
  */
 function createRenewTrustChain({
   EntityConfigurationShape,
-  EntityStatementShape,
+  EntityStatementShape
 }: BuilderConfig) {
   /**
    * Given a trust chain, obtain a new trust chain by fetching each element's fresh version
@@ -101,7 +101,7 @@ function createRenewTrustChain({
    */
   return async function renewTrustChain(
     chain: string[],
-    appFetch: typeof fetch = fetch,
+    appFetch: typeof fetch = fetch
   ): Promise<string[]> {
     return Promise.all(
       chain.map(async (token, index) => {
@@ -114,7 +114,7 @@ function createRenewTrustChain({
         if (entityConfigurationResult.success) {
           return getSignedEntityConfiguration(
             entityConfigurationResult.data.payload.iss,
-            { appFetch },
+            { appFetch }
           );
         }
         if (entityStatementResult.success) {
@@ -123,7 +123,7 @@ function createRenewTrustChain({
           const parentBaseUrl = entityStatement.payload.iss;
           const parentECJwt = await getSignedEntityConfiguration(
             parentBaseUrl,
-            { appFetch },
+            { appFetch }
           );
           const parentEC = EntityConfigurationShape.parse(decode(parentECJwt));
 
@@ -135,21 +135,21 @@ function createRenewTrustChain({
               `Parent EC at ${parentBaseUrl} is missing federation_fetch_endpoint, cannot renew ES for ${entityStatement.payload.sub}.`,
               {
                 entityBaseUrl: entityStatement.payload.sub,
-                missingInEntityUrl: parentBaseUrl,
-              },
+                missingInEntityUrl: parentBaseUrl
+              }
             );
           }
           return getSignedEntityStatement(
             federationFetchEndpoint,
             entityStatement.payload.sub,
-            { appFetch },
+            { appFetch }
           );
         }
         throw new TrustChainRenewalError(
           `Failed to renew trust chain. Reason: element #${index} failed to parse.`,
-          { originalChain: chain },
+          { originalChain: chain }
         );
-      }),
+      })
     );
   };
 }
@@ -162,7 +162,7 @@ function createRenewTrustChain({
 function createValidateTrustChain({
   FirstElementShape,
   LastElementShape,
-  MiddleElementShape,
+  MiddleElementShape
 }: BuilderConfig) {
   /**
    * Validates a provided trust chain against a known trust anchor, including X.509 certificate checks.
@@ -176,11 +176,11 @@ function createValidateTrustChain({
   return async function validateTrustChain(
     trustAnchorEntity: TrustAnchorConfig,
     chain: string[],
-    x509Options: X509CertificateOptions,
+    x509Options: X509CertificateOptions
   ): Promise<ParsedToken[]> {
     // If the chain is empty, fail
     if (chain.length === 0) {
-      throw new TrustChainEmptyError("Cannot verify empty trust chain.");
+      throw new TrustChainEmptyError('Cannot verify empty trust chain.');
     }
 
     // Select the expected token shape
@@ -197,7 +197,7 @@ function createValidateTrustChain({
       if (!token) {
         throw new TrustChainTokenMissingError(
           `Token missing at index ${currentIndex} in trust chain.`,
-          { index: currentIndex },
+          { index: currentIndex }
         );
       }
       const shape = selectTokenShape(currentIndex);
@@ -216,7 +216,7 @@ function createValidateTrustChain({
       if (!nextToken) {
         throw new TrustChainTokenMissingError(
           `Next token missing at index ${nextIndex} (needed for keys for token at ${currentIndex}).`,
-          { index: nextIndex },
+          { index: nextIndex }
         );
       }
       const shape = selectTokenShape(nextIndex);
@@ -236,18 +236,18 @@ function createValidateTrustChain({
       const parsedToken = await verify(
         tokenString,
         kidFromTokenHeader,
-        signerJwks,
+        signerJwks
       );
 
       // Step 2: X.509 Certificate Chain Validation
       const jwkUsedForVerification = signerJwks.find(
-        (k) => k.kid === kidFromTokenHeader,
+        k => k.kid === kidFromTokenHeader
       );
 
       if (!jwkUsedForVerification) {
         throw new FederationError(
           `JWK with kid '${kidFromTokenHeader}' was not found in signer's JWKS for token at index ${i}, though JWT verification passed.`,
-          { kid: kidFromTokenHeader, tokenIndex: i },
+          { kid: kidFromTokenHeader, tokenIndex: i }
         );
       }
 
@@ -256,7 +256,7 @@ function createValidateTrustChain({
         jwkUsedForVerification.x5c.length === 0
       ) {
         throw new MissingX509CertsError(
-          `JWK with kid '${kidFromTokenHeader}' does not contain an X.509 certificate chain (x5c) for token at index ${i}.`,
+          `JWK with kid '${kidFromTokenHeader}' does not contain an X.509 certificate chain (x5c) for token at index ${i}.`
         );
       }
 
@@ -273,7 +273,7 @@ function createValidateTrustChain({
         await verifyCertificateChain(
           certChainBase64,
           x509TrustAnchorCertBase64,
-          x509Options,
+          x509Options
         );
 
       if (!x509ValidationResult.isValid) {
@@ -283,8 +283,8 @@ function createValidateTrustChain({
             kid: kidFromTokenHeader,
             tokenIndex: i,
             x509ErrorMessage: x509ValidationResult.errorMessage,
-            x509ValidationStatus: x509ValidationResult.validationStatus,
-          },
+            x509ValidationStatus: x509ValidationResult.validationStatus
+          }
         );
       }
       return parsedToken;

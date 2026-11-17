@@ -1,22 +1,22 @@
 import {
   decode as decodeJwt,
-  verify as verifyJwt,
-} from "@pagopa/io-react-native-jwt";
+  verify as verifyJwt
+} from '@pagopa/io-react-native-jwt';
 
-import type { JWK, JWTDecodeResult } from "../../utils/jwk";
-import type { TrustAnchorConfig } from "../api/TrustAnchorConfig";
+import type { JWK, JWTDecodeResult } from '../../utils/jwk';
+import type { TrustAnchorConfig } from '../api/TrustAnchorConfig';
 
-import { hasStatusOrThrow } from "../../utils/misc";
-import { FederationError, FederationListParseError } from "./errors";
-import { FederationListResponse } from "./types";
+import { hasStatusOrThrow } from '../../utils/misc';
+import { FederationError, FederationListParseError } from './errors';
+import { FederationListResponse } from './types';
 
 export interface FetchOptions {
   appFetch?: typeof fetch;
 }
 
 export interface ParsedToken {
-  header: JWTDecodeResult["protectedHeader"];
-  payload: JWTDecodeResult["payload"];
+  header: JWTDecodeResult['protectedHeader'];
+  payload: JWTDecodeResult['payload'];
 }
 
 // Verify a token signature
@@ -24,9 +24,9 @@ export interface ParsedToken {
 export const verify = async (
   token: string,
   kid: string,
-  jwks: JWK[],
+  jwks: JWK[]
 ): Promise<ParsedToken> => {
-  const jwk = jwks.find((k) => k.kid === kid);
+  const jwk = jwks.find(k => k.kid === kid);
   if (!jwk) {
     throw new Error(`Invalid kid: ${kid}, token: ${token}`);
   }
@@ -54,19 +54,19 @@ export const decode = (token: string): ParsedToken => {
  */
 export async function getFederationList(
   federationListEndpoint: string,
-  { appFetch = fetch }: FetchOptions = {},
+  { appFetch = fetch }: FetchOptions = {}
 ): Promise<string[]> {
   return await appFetch(federationListEndpoint, {
-    method: "GET",
+    method: 'GET'
   })
     .then(hasStatusOrThrow(200))
-    .then((res) => res.json())
-    .then((json) => {
+    .then(res => res.json())
+    .then(json => {
       const result = FederationListResponse.safeParse(json);
       if (!result.success) {
         throw new FederationListParseError(
           `Invalid federation list format received from ${federationListEndpoint}. Error: ${result.error.message}`,
-          { parseError: result.error.toString(), url: federationListEndpoint },
+          { parseError: result.error.toString(), url: federationListEndpoint }
         );
       }
       return result.data;
@@ -82,15 +82,15 @@ export async function getFederationList(
  */
 export async function getSignedEntityConfiguration(
   entityBaseUrl: string,
-  { appFetch = fetch }: FetchOptions = {},
+  { appFetch = fetch }: FetchOptions = {}
 ): Promise<string> {
   const wellKnownUrl = `${entityBaseUrl}/.well-known/openid-federation`;
 
   return await appFetch(wellKnownUrl, {
-    method: "GET",
+    method: 'GET'
   })
     .then(hasStatusOrThrow(200))
-    .then((res) => res.text());
+    .then(res => res.text());
 }
 
 /**
@@ -105,16 +105,16 @@ export async function getSignedEntityConfiguration(
 export async function getSignedEntityStatement(
   federationFetchEndpoint: string,
   subordinatedEntityBaseUrl: string,
-  { appFetch = fetch }: FetchOptions = {},
+  { appFetch = fetch }: FetchOptions = {}
 ) {
   const url = new URL(federationFetchEndpoint);
-  url.searchParams.set("sub", subordinatedEntityBaseUrl);
+  url.searchParams.set('sub', subordinatedEntityBaseUrl);
 
   return await appFetch(url.toString(), {
-    method: "GET",
+    method: 'GET'
   })
     .then(hasStatusOrThrow(200))
-    .then((res) => res.text());
+    .then(res => res.text());
 }
 
 /**
@@ -126,17 +126,17 @@ export async function getSignedEntityStatement(
  * @throws {FederationError} If the certificate cannot be derived.
  */
 export function getTrustAnchorX509Certificate(
-  trustAnchorEntity: TrustAnchorConfig,
+  trustAnchorEntity: TrustAnchorConfig
 ): string {
   const taHeaderKid = trustAnchorEntity.jwt.header.kid;
   const taSigningJwk = trustAnchorEntity.keys.find(
-    (key) => key.kid === taHeaderKid,
+    key => key.kid === taHeaderKid
   );
 
   if (!taSigningJwk) {
     throw new FederationError(
       `Cannot derive X.509 Trust Anchor certificate: JWK with kid '${taHeaderKid}' not found in Trust Anchor's JWKS.`,
-      { reason: "JWK not found for header kid", trustAnchorKid: taHeaderKid },
+      { reason: 'JWK not found for header kid', trustAnchorKid: taHeaderKid }
     );
   }
 
@@ -146,6 +146,6 @@ export function getTrustAnchorX509Certificate(
 
   throw new FederationError(
     `Cannot derive X.509 Trust Anchor certificate: JWK with kid '${taHeaderKid}' does not contain a valid 'x5c' certificate array.`,
-    { reason: "Missing or empty x5c in JWK", trustAnchorKid: taHeaderKid },
+    { reason: 'Missing or empty x5c in JWK', trustAnchorKid: taHeaderKid }
   );
 }

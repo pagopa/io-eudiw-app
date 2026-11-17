@@ -1,68 +1,68 @@
-import type { FederationJwkSet as jsonWebKeySet } from "@pagopa/io-wallet-oid-federation";
+import type { FederationJwkSet as jsonWebKeySet } from '@pagopa/io-wallet-oid-federation';
 
-import { parseMrtdChallenge } from "@pagopa/io-wallet-oauth2";
-import { sendAuthorizationResponseAndExtractCode } from "@pagopa/io-wallet-oid4vci";
+import { parseMrtdChallenge } from '@pagopa/io-wallet-oauth2';
+import { sendAuthorizationResponseAndExtractCode } from '@pagopa/io-wallet-oid4vci';
 import {
   createAuthorizationResponse,
   type CreateAuthorizationResponseResult,
   fetchAuthorizationResponse,
-  parseAuthorizeRequest,
-} from "@pagopa/io-wallet-oid4vp";
-import parseUrl from "parse-url";
+  parseAuthorizeRequest
+} from '@pagopa/io-wallet-oid4vp';
+import parseUrl from 'parse-url';
 
-import type { RequestObject } from "../../presentation";
-import type { EvaluatedDcqlQuery, IssuanceApi, IssuerConfig } from "../api";
+import type { RequestObject } from '../../presentation';
+import type { EvaluatedDcqlQuery, IssuanceApi, IssuerConfig } from '../api';
 
 import {
   AuthorizationErrorShape,
   type AuthorizationResult,
-  AuthorizationResultShape,
-} from "../../../utils/auth";
+  AuthorizationResultShape
+} from '../../../utils/auth';
 import {
   createVerifyJwtFromJwks,
-  partialCallbacks,
-} from "../../../utils/callbacks";
-import { sdkConfigV1_4 } from "../../../utils/config";
-import { IoWalletError, IssuerResponseError } from "../../../utils/errors";
-import { Logger, LogLevel } from "../../../utils/logging";
-import { hasStatusOrThrow } from "../../../utils/misc";
-import { RemotePresentation as RemotePresentationFlow } from "../../presentation/v1.4.6";
-import { AuthorizationError, AuthorizationIdpError } from "../common/errors";
-import { mapToRequestObject } from "./mappers";
+  partialCallbacks
+} from '../../../utils/callbacks';
+import { sdkConfigV1_4 } from '../../../utils/config';
+import { IoWalletError, IssuerResponseError } from '../../../utils/errors';
+import { Logger, LogLevel } from '../../../utils/logging';
+import { hasStatusOrThrow } from '../../../utils/misc';
+import { RemotePresentation as RemotePresentationFlow } from '../../presentation/v1.4.6';
+import { AuthorizationError, AuthorizationIdpError } from '../common/errors';
+import { mapToRequestObject } from './mappers';
 
-export const continueUserAuthorizationWithMRTDPoPChallenge: IssuanceApi["continueUserAuthorizationWithMRTDPoPChallenge"] =
-  async (authRedirectUrl) => {
+export const continueUserAuthorizationWithMRTDPoPChallenge: IssuanceApi['continueUserAuthorizationWithMRTDPoPChallenge'] =
+  async authRedirectUrl => {
     Logger.log(
       LogLevel.DEBUG,
-      "The requested credential is a PID and requires MRTD PoP, starting MRTD PoP validation from auth redirect",
+      'The requested credential is a PID and requires MRTD PoP, starting MRTD PoP validation from auth redirect'
     );
     try {
       const parsedChallenge = parseMrtdChallenge({
-        redirectUrl: authRedirectUrl,
+        redirectUrl: authRedirectUrl
       });
       return { challenge_info: parsedChallenge.challengeJwt };
     } catch (err) {
       const errorMessage =
-        err instanceof Error ? err.message : "MRTD challenge parsing failed";
+        err instanceof Error ? err.message : 'MRTD challenge parsing failed';
       Logger.log(
         LogLevel.ERROR,
-        `Error while parsing the authorization response: ${errorMessage}`,
+        `Error while parsing the authorization response: ${errorMessage}`
       );
       throw new AuthorizationError(errorMessage);
     }
   };
 
-export const buildAuthorizationUrl: IssuanceApi["buildAuthorizationUrl"] =
+export const buildAuthorizationUrl: IssuanceApi['buildAuthorizationUrl'] =
   async (issuerRequestUri, clientId, issuerConf, idpHint) => {
     const authzRequestEndpoint = issuerConf.authorization_endpoint;
 
     const params = new URLSearchParams({
       client_id: clientId,
-      request_uri: issuerRequestUri,
+      request_uri: issuerRequestUri
     });
 
     if (idpHint) {
-      params.append("idphint", idpHint);
+      params.append('idphint', idpHint);
     }
 
     const authUrl = `${authzRequestEndpoint}?${params}`;
@@ -70,77 +70,77 @@ export const buildAuthorizationUrl: IssuanceApi["buildAuthorizationUrl"] =
     return { authUrl };
   };
 
-export const completePidUserAuthorizationWithQueryMode: IssuanceApi["completePidUserAuthorizationWithQueryMode"] =
-  async (authRedirectUrl) => {
+export const completePidUserAuthorizationWithQueryMode: IssuanceApi['completePidUserAuthorizationWithQueryMode'] =
+  async authRedirectUrl => {
     Logger.log(
       LogLevel.DEBUG,
-      "The requested credential is a PID, completing the user authorization with query mode",
+      'The requested credential is a PID, completing the user authorization with query mode'
     );
     const query = parseUrl(authRedirectUrl).query;
 
     return parseAuthorizationResponse(query);
   };
 
-export const getRequestedCredentialToBePresented: IssuanceApi["getRequestedCredentialToBePresented"] =
+export const getRequestedCredentialToBePresented: IssuanceApi['getRequestedCredentialToBePresented'] =
   async (issuerRequestUri, clientId, issuerConf, appFetch = fetch) => {
     Logger.log(
       LogLevel.DEBUG,
-      "The requested credential is not a PID, requesting the credential to be presented",
+      'The requested credential is not a PID, requesting the credential to be presented'
     );
 
     const authzRequestEndpoint = issuerConf.authorization_endpoint;
     const params = new URLSearchParams({
       client_id: clientId,
-      request_uri: issuerRequestUri,
+      request_uri: issuerRequestUri
     });
 
     Logger.log(
       LogLevel.DEBUG,
-      `Requesting the request object to ${authzRequestEndpoint}?${params.toString()}`,
+      `Requesting the request object to ${authzRequestEndpoint}?${params.toString()}`
     );
 
     const requestObjectJwt = await appFetch(
       `${authzRequestEndpoint}?${params.toString()}`,
-      { method: "GET" },
+      { method: 'GET' }
     )
       .then(hasStatusOrThrow(200, IssuerResponseError))
-      .then((res) => res.text());
+      .then(res => res.text());
 
     const parsedAuthRequest = await parseAuthorizeRequest({
       callbacks: {
-        verifyJwt: createVerifyJwtFromJwks(issuerConf.keys),
+        verifyJwt: createVerifyJwtFromJwks(issuerConf.keys)
       },
       config: sdkConfigV1_4,
-      requestObjectJwt,
+      requestObjectJwt
     });
 
     return mapToRequestObject(parsedAuthRequest);
   };
 
 // NOTE: this function is not used in the 1.3 issuance flow. It may be removed in the future.
-export const completeUserAuthorizationWithFormPostJwtMode: IssuanceApi["completeUserAuthorizationWithFormPostJwtMode"] =
+export const completeUserAuthorizationWithFormPostJwtMode: IssuanceApi['completeUserAuthorizationWithFormPostJwtMode'] =
   async (
     requestObject,
     issuerConfig,
     evaluatedDcqlQuery,
-    { appFetch = fetch },
+    { appFetch = fetch }
   ) => {
     Logger.log(
       LogLevel.DEBUG,
-      "The requested credential is not a PID, completing the user authorization with form_post.jwt mode",
+      'The requested credential is not a PID, completing the user authorization with form_post.jwt mode'
     );
 
     const authzResponse = await processPidPresentationAndCreateAuthzResponse({
       evaluatedDcqlQuery,
       issuerConfig,
-      requestObject,
+      requestObject
     });
 
     Logger.log(LogLevel.DEBUG, `Authz response: ${authzResponse}`);
 
-    const issuerSigKey = issuerConfig.keys.find((key) => key.use === "sig");
+    const issuerSigKey = issuerConfig.keys.find(key => key.use === 'sig');
     if (!issuerSigKey) {
-      const errorMessage = "No signature key found in Issuer Metadata JWKS";
+      const errorMessage = 'No signature key found in Issuer Metadata JWKS';
       Logger.log(LogLevel.ERROR, errorMessage);
       throw new IoWalletError(errorMessage);
     }
@@ -149,55 +149,55 @@ export const completeUserAuthorizationWithFormPostJwtMode: IssuanceApi["complete
       authorizationResponseJarm: authzResponse.jarm.responseJwe,
       callbacks: {
         ...partialCallbacks,
-        fetch: appFetch,
+        fetch: appFetch
       },
       iss: requestObject.iss,
       presentationResponseUri: requestObject.response_uri,
       signer: {
-        alg: "ES256",
-        method: "jwk",
-        publicJwk: issuerSigKey,
+        alg: 'ES256',
+        method: 'jwk',
+        publicJwk: issuerSigKey
       },
-      state: requestObject.state ?? "",
+      state: requestObject.state ?? ''
     });
   };
 
-export const completeEaaUserAuthorizationWithQueryMode: IssuanceApi["completeEaaUserAuthorizationWithQueryMode"] =
+export const completeEaaUserAuthorizationWithQueryMode: IssuanceApi['completeEaaUserAuthorizationWithQueryMode'] =
   async (
     requestObject,
     issuerConfig,
     evaluatedDcqlQuery,
     clientRedirectUri,
-    { appFetch = fetch, fetchFinalRedirectUri } = {},
+    { appFetch = fetch, fetchFinalRedirectUri } = {}
   ) => {
     Logger.log(
       LogLevel.DEBUG,
-      "The requested credential is not a PID, completing the user authorization with query mode",
+      'The requested credential is not a PID, completing the user authorization with query mode'
     );
 
     const authzResponse = await processPidPresentationAndCreateAuthzResponse({
       evaluatedDcqlQuery,
       issuerConfig,
-      requestObject,
+      requestObject
     });
 
     Logger.log(
       LogLevel.DEBUG,
-      `Authz response: ${JSON.stringify(authzResponse)}`,
+      `Authz response: ${JSON.stringify(authzResponse)}`
     );
 
     const { redirect_uri } = await fetchAuthorizationResponse({
       authorizationResponseJarm: authzResponse.jarm.responseJwe,
       callbacks: {
         ...partialCallbacks,
-        fetch: appFetch,
+        fetch: appFetch
       },
-      presentationResponseUri: requestObject.response_uri,
+      presentationResponseUri: requestObject.response_uri
     });
 
     if (!redirect_uri) {
       const errorMessage =
-        "The authorization server did not return a redirect_uri to continue the authorization flow";
+        'The authorization server did not return a redirect_uri to continue the authorization flow';
       Logger.log(LogLevel.ERROR, errorMessage);
       throw new AuthorizationError(errorMessage);
     }
@@ -233,7 +233,7 @@ export const completeEaaUserAuthorizationWithQueryMode: IssuanceApi["completeEaa
  * @returns the authorization result which contains code, state and iss
  */
 export const parseAuthorizationResponse = (
-  authRes: unknown,
+  authRes: unknown
 ): AuthorizationResult => {
   const authResParsed = AuthorizationResultShape.safeParse(authRes);
   if (!authResParsed.success) {
@@ -241,17 +241,17 @@ export const parseAuthorizationResponse = (
     if (!authErr.success) {
       Logger.log(
         LogLevel.ERROR,
-        `Error while parsing the authorization response: ${authResParsed.error.message}`,
+        `Error while parsing the authorization response: ${authResParsed.error.message}`
       );
       throw new AuthorizationError(authResParsed.error.message); // an error occured while parsing the result and the error
     }
     Logger.log(
       LogLevel.ERROR,
-      `Error while authorizating with the idp: ${JSON.stringify(authErr)}`,
+      `Error while authorizating with the idp: ${JSON.stringify(authErr)}`
     );
     throw new AuthorizationIdpError(
       authErr.data.error,
-      authErr.data.error_description,
+      authErr.data.error_description
     );
   }
   return authResParsed.data;
@@ -267,7 +267,7 @@ export const parseAuthorizationResponse = (
 const processPidPresentationAndCreateAuthzResponse = async ({
   evaluatedDcqlQuery,
   issuerConfig,
-  requestObject,
+  requestObject
 }: {
   evaluatedDcqlQuery: EvaluatedDcqlQuery;
   issuerConfig: IssuerConfig;
@@ -279,27 +279,27 @@ const processPidPresentationAndCreateAuthzResponse = async ({
       {
         clientId: requestObject.client_id,
         nonce: requestObject.nonce,
-        responseUri: requestObject.response_uri,
-      },
+        responseUri: requestObject.response_uri
+      }
     );
 
   const vp_token = remotePresentation.presentations.reduce(
     (acc, { credentialId, vpToken }) => ({ ...acc, [credentialId]: [vpToken] }),
-    {} as Record<string, string[]>,
+    {} as Record<string, string[]>
   );
 
   return createAuthorizationResponse({
     callbacks: {
       encryptJwe: partialCallbacks.encryptJwe,
-      generateRandom: partialCallbacks.generateRandom,
+      generateRandom: partialCallbacks.generateRandom
     },
     config: sdkConfigV1_4,
     requestObject,
     rpJwks: {
       encrypted_response_enc_values_supported:
         issuerConfig.encrypted_response_enc_values_supported,
-      jwks: { keys: issuerConfig.keys } as jsonWebKeySet,
+      jwks: { keys: issuerConfig.keys } as jsonWebKeySet
     },
-    vp_token,
+    vp_token
   });
 };

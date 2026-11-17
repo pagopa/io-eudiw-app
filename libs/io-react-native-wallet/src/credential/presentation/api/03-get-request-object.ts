@@ -1,4 +1,4 @@
-import type { RequestObjectWalletCapabilities } from "./types";
+import type { RequestObjectWalletCapabilities } from './types';
 
 export interface GetRequestObjectApi {
   /**
@@ -15,6 +15,6 @@ export interface GetRequestObjectApi {
     context?: {
       appFetch?: typeof fetch;
       walletCapabilities?: RequestObjectWalletCapabilities;
-    },
+    }
   ): Promise<{ requestObjectEncodedJwt: string }>;
 }

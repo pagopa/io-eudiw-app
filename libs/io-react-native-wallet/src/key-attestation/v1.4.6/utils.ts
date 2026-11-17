@@ -1,6 +1,6 @@
-import { decode as decodeJwt } from "@pagopa/io-react-native-jwt";
+import { decode as decodeJwt } from '@pagopa/io-react-native-jwt';
 
-import { KeyAttestationJwt } from "./types";
+import { KeyAttestationJwt } from './types';
 
 /**
  * Decode a given JWT to get the parsed Key Attestation object they define.
@@ -10,6 +10,6 @@ export function decode(token: string): KeyAttestationJwt {
   const decodedJwt = decodeJwt(token);
   return KeyAttestationJwt.parse({
     header: decodedJwt.protectedHeader,
-    payload: decodedJwt.payload,
+    payload: decodedJwt.payload
   });
 }

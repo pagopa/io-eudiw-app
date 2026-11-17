@@ -1,22 +1,22 @@
-import { getTrustAnchorEntityConfiguration } from "../../trust/v1.0.0/entities"; // TODO: use trust from v1.4.6
-import { type CredentialsCatalogueApi as Api } from "../api";
-import { mapToCredentialsCatalogue } from "./mappers";
+import { getTrustAnchorEntityConfiguration } from '../../trust/v1.0.0/entities'; // TODO: use trust from v1.4.6
+import { type CredentialsCatalogueApi as Api } from '../api';
+import { mapToCredentialsCatalogue } from './mappers';
 import {
   AuthenticSourceRegistry,
   DigitalCredentialsCatalogueJwt,
   RegistryDiscoveryJwt,
   SchemaRegistry,
-  TaxonomyRegistry,
-} from "./types";
-import { fetchRegistry } from "./utils";
+  TaxonomyRegistry
+} from './types';
+import { fetchRegistry } from './utils';
 
-export const fetchAndParseCatalogue: Api["fetchAndParseCatalogue"] = async (
+export const fetchAndParseCatalogue: Api['fetchAndParseCatalogue'] = async (
   trustAnchorBaseUrl,
-  { appFetch = fetch } = {},
+  { appFetch = fetch } = {}
 ) => {
   const trustAnchorConfig = await getTrustAnchorEntityConfiguration(
     trustAnchorBaseUrl,
-    { appFetch },
+    { appFetch }
   );
   const trustAnchorJwks = trustAnchorConfig.payload.jwks.keys;
 
@@ -25,8 +25,8 @@ export const fetchAndParseCatalogue: Api["fetchAndParseCatalogue"] = async (
     {
       appFetch,
       jwks: trustAnchorJwks,
-      schema: RegistryDiscoveryJwt,
-    },
+      schema: RegistryDiscoveryJwt
+    }
   );
   const { endpoints } = discovery.payload;
 
@@ -35,23 +35,23 @@ export const fetchAndParseCatalogue: Api["fetchAndParseCatalogue"] = async (
     fetchRegistry(endpoints.credential_catalog, {
       appFetch,
       jwks: trustAnchorJwks,
-      schema: DigitalCredentialsCatalogueJwt,
+      schema: DigitalCredentialsCatalogueJwt
     }),
     fetchRegistry(endpoints.authentic_sources, {
       appFetch,
       asJson: true,
-      schema: AuthenticSourceRegistry,
+      schema: AuthenticSourceRegistry
     }),
     fetchRegistry(endpoints.schema_registry, {
       appFetch,
       asJson: true,
-      schema: SchemaRegistry,
+      schema: SchemaRegistry
     }),
     fetchRegistry(endpoints.taxonomy, {
       appFetch,
       asJson: true,
-      schema: TaxonomyRegistry,
-    }),
+      schema: TaxonomyRegistry
+    })
   ]);
 
   return mapToCredentialsCatalogue([discovery, ...registries]);

@@ -1,13 +1,13 @@
-import type { CryptoContext } from "@pagopa/io-react-native-jwt";
+import type { CryptoContext } from '@pagopa/io-react-native-jwt';
 
-import type { RequestObject } from "../../../credential/presentation/api";
-import type { EvaluateDcqlQueryApi } from "../../../credential/presentation/api/06-evaluate-dcql-query";
+import type { RequestObject } from '../../../credential/presentation/api';
+import type { EvaluateDcqlQueryApi } from '../../../credential/presentation/api/06-evaluate-dcql-query';
 import type {
   AuthorizationChallengeResult,
-  AuthorizationResult,
-} from "../../../utils/auth";
-import type { Out } from "../../../utils/misc";
-import type { IssuerConfig } from "./IssuerConfig";
+  AuthorizationResult
+} from '../../../utils/auth';
+import type { Out } from '../../../utils/misc';
+import type { IssuerConfig } from './IssuerConfig';
 
 export interface CompleteUserAuthorizationApi {
   /**
@@ -27,7 +27,7 @@ export interface CompleteUserAuthorizationApi {
     issuerRequestUri: string,
     clientId: string,
     issuerConf: IssuerConfig,
-    idpHint?: string,
+    idpHint?: string
   ): Promise<{ authUrl: string }>;
 
   /**
@@ -51,7 +51,7 @@ export interface CompleteUserAuthorizationApi {
       appFetch?: typeof fetch;
       /** Function to fetch the final redirect uri; it allows full control on how redirects are handled. If not provided, `appFetch` is used. */
       fetchFinalRedirectUri?: (url: string) => Promise<string | undefined>;
-    },
+    }
   ): Promise<AuthorizationResult>;
 
   /**
@@ -65,7 +65,7 @@ export interface CompleteUserAuthorizationApi {
    * @returns the authorization response which contains code, state and iss
    */
   completePidUserAuthorizationWithQueryMode(
-    authRedirectUrl: string,
+    authRedirectUrl: string
   ): Promise<AuthorizationResult>;
 
   /**
@@ -89,7 +89,7 @@ export interface CompleteUserAuthorizationApi {
     context: {
       appFetch?: typeof fetch;
       wiaCryptoContext: CryptoContext;
-    },
+    }
   ): Promise<AuthorizationResult>;
 
   /**
@@ -101,7 +101,7 @@ export interface CompleteUserAuthorizationApi {
    * @returns the authorization response which contains the challenge
    */
   continueUserAuthorizationWithMRTDPoPChallenge(
-    authRedirectUrl: string,
+    authRedirectUrl: string
   ): Promise<AuthorizationChallengeResult>;
 
   /**
@@ -123,8 +123,8 @@ export interface CompleteUserAuthorizationApi {
     issuerRequestUri: string,
     clientId: string,
     issuerConf: IssuerConfig,
-    appFetch?: typeof fetch,
+    appFetch?: typeof fetch
   ): Promise<RequestObject>;
 }
 
-export type EvaluatedDcqlQuery = Out<EvaluateDcqlQueryApi["evaluateDcqlQuery"]>;
+export type EvaluatedDcqlQuery = Out<EvaluateDcqlQueryApi['evaluateDcqlQuery']>;
