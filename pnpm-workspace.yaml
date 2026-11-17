@@ -10,6 +10,8 @@ packages:
   - 'libs/debug-info'
   - 'libs/navigation'
 allowBuilds:
+  arktype: true
+  cbor-extract: true
   '@shopify/react-native-skia': true
   '@swc/core': true
   nx: true
