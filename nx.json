@@ -65,6 +65,30 @@
       "options": {
         "passWithNoTests": true
       }
+    },
+    "start": {
+      "dependsOn": [
+        {
+          "projects": ["@io-app-it-wallet/io-react-native-wallet"],
+          "target": "generate"
+        }
+      ]
+    },
+    "run-ios": {
+      "dependsOn": [
+        {
+          "projects": ["@io-app-it-wallet/io-react-native-wallet"],
+          "target": "generate"
+        }
+      ]
+    },
+    "run-android": {
+      "dependsOn": [
+        {
+          "projects": ["@io-app-it-wallet/io-react-native-wallet"],
+          "target": "generate"
+        }
+      ]
     }
   },
   "neverConnectToCloud": true,
