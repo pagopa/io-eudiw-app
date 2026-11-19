@@ -96,6 +96,8 @@ jobs:
         with:
           bundler-cache: true
           working-directory: apps/main-app
+      - name: Generate wallet provider client
+        run: pnpm nx run @io-app-it-wallet/io-react-native-wallet:generate
       - name: Prebuild Android
         run: pnpm nx run main-app:prebuild --platform android --clean
       - id: build-android
@@ -180,6 +182,8 @@ jobs:
           ssh-add ~/.ssh/id_ed25519
         env:
           SSH_DEPLOY_KEY: ${{secrets.SSH_CERTS_DEPLOY_KEY}}
+      - name: Generate wallet provider client
+        run: pnpm nx run @io-app-it-wallet/io-react-native-wallet:generate
       - name: Prebuild iOS
         run: pnpm nx run main-app:prebuild --platform ios --clean
       - id: build-ios
