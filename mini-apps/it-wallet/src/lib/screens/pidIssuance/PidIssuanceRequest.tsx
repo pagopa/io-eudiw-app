@@ -6,6 +6,7 @@ import {
 } from '@io-eudiw-app/commons';
 import {
   Body,
+  BodySmall,
   ForceScrollDownView,
   H2,
   IOVisualCostants,
@@ -21,12 +22,16 @@ import CredentialPreviewClaimsList from '../../components/credential/CredentialP
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { addPidWithIdentification } from '../../store/credentials';
+import {
+  addPidWithIdentification,
+  itwCredentialsPidSelector
+} from '../../store/credentials';
 import {
   resetPidIssuance,
   setPidIssuanceRequest
 } from '../../store/pidIssuance';
 import {
+  selectPendingCredential,
   selectPidIssuanceData,
   selectPidIssuanceStatus
 } from '../../store/selectors/pidIssuance';
@@ -44,6 +49,8 @@ const PidIssuanceRequest = () => {
   const dispatch = useAppDispatch();
   const { error, loading, success } = useAppSelector(selectPidIssuanceStatus);
   const pid = useAppSelector(selectPidIssuanceData);
+  const isPidStored = useAppSelector(itwCredentialsPidSelector) !== undefined;
+  const pendingCredential = useAppSelector(selectPendingCredential);
   const { navigateToWallet } = useNavigateToWalletWithReset();
 
   const dismissalDialog = useItwDismissalDialog({
@@ -73,6 +80,14 @@ const PidIssuanceRequest = () => {
     }
   }, [error, navigation]);
 
+  useEffect(() => {
+    if (isPidStored && !pendingCredential) {
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PID_ISSUANCE_RESULT'
+      });
+    }
+  }, [isPidStored, pendingCredential, navigation]);
+
   useHeaderSecondLevel({
     canGoBack: success.status,
     goBack: () => {
@@ -87,7 +102,12 @@ const PidIssuanceRequest = () => {
 
   return (
     <>
-      {loading && <LoadingScreenContent contentTitle={t('common:waiting')} />}
+      {loading && (
+        <LoadingScreenContent
+          contentTitle={t('common:waiting')}
+          headerVisible
+        />
+      )}
       {success.status === true && pid && parsedClaims && (
         <ForceScrollDownView
           contentContainerStyle={styles.scroll}
@@ -100,7 +120,11 @@ const PidIssuanceRequest = () => {
                 onPress: () =>
                   dispatch(addPidWithIdentification({ credential: pid }))
               },
-              type: 'SingleButton'
+              secondary: {
+                label: t('pidIssuance.preview.cancel'),
+                onPress: () => dismissalDialog.show()
+              },
+              type: 'TwoButtons'
             }
           }}
         >
@@ -115,6 +139,10 @@ const PidIssuanceRequest = () => {
                 isPreview={true}
               />
             </View>
+            <VSpacer size={16} />
+            <BodySmall color="grey-700">
+              {t('pidIssuance.preview.upgradeNotice')}
+            </BodySmall>
           </VStack>
         </ForceScrollDownView>
       )}

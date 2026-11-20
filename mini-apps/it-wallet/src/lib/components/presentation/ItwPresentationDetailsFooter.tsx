@@ -4,7 +4,6 @@ import { memo } from 'react';
 import { View } from 'react-native';
 
 import { useItwRemoveCredentialWithConfirm } from '../../hooks/useItwRemoveCredentialWithConfirm';
-import { useNotAvailableToastGuard } from '../../hooks/useNotAvailableToastGuard';
 import { useAppSelector } from '../../store';
 import { ItwCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
@@ -18,8 +17,15 @@ const ItwPresentationDetailsFooter = ({
   capabilities,
   credential
 }: ItwPresentationDetailFooterProps) => {
-  const { confirmAndRemoveCredential } =
+  const { confirmAndRemoveCredential, isPid } =
     useItwRemoveCredentialWithConfirm(credential);
+
+  const removeLabel = t(
+    isPid
+      ? 'presentation.credentialDetails.actions.deactivateItWallet'
+      : 'presentation.credentialDetails.actions.removeFromWallet',
+    { ns: 'wallet' }
+  );
 
   return (
     <View>
@@ -29,31 +35,9 @@ const ItwPresentationDetailsFooter = ({
           <ListItemAction key={key} {...props} />
         ))}
       <ListItemAction
-        accessibilityLabel={t(
-          'presentation.credentialDetails.actions.requestAssistance',
-          {
-            ns: 'wallet'
-          }
-        )}
-        icon="message"
-        label={t('presentation.credentialDetails.actions.requestAssistance', {
-          ns: 'wallet'
-        })}
-        onPress={useNotAvailableToastGuard()}
-        testID="requestAssistanceActionTestID"
-        variant="primary"
-      />
-      <ListItemAction
-        accessibilityLabel={t(
-          'presentation.credentialDetails.actions.removeFromWallet',
-          {
-            ns: 'wallet'
-          }
-        )}
+        accessibilityLabel={removeLabel}
         icon="trashcan"
-        label={t('presentation.credentialDetails.actions.removeFromWallet', {
-          ns: 'wallet'
-        })}
+        label={removeLabel}
         onPress={confirmAndRemoveCredential}
         testID="removeCredentialActionTestID"
         variant="danger"
