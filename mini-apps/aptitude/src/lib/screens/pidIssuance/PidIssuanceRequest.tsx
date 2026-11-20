@@ -6,6 +6,7 @@ import {
 } from '@io-eudiw-app/commons';
 import {
   Body,
+  BodySmall,
   ForceScrollDownView,
   H2,
   IOVisualCostants,
@@ -87,7 +88,12 @@ const PidIssuanceRequest = () => {
 
   return (
     <>
-      {loading && <LoadingScreenContent contentTitle={t('common:waiting')} />}
+      {loading && (
+        <LoadingScreenContent
+          contentTitle={t('common:waiting')}
+          headerVisible
+        />
+      )}
       {success.status === true && pid && parsedClaims && (
         <ForceScrollDownView
           contentContainerStyle={styles.scroll}
@@ -100,7 +106,11 @@ const PidIssuanceRequest = () => {
                 onPress: () =>
                   dispatch(addPidWithIdentification({ credential: pid }))
               },
-              type: 'SingleButton'
+              secondary: {
+                label: t('pidIssuance.preview.cancel'),
+                onPress: () => dismissalDialog.show()
+              },
+              type: 'TwoButtons'
             }
           }}
         >
@@ -115,6 +125,10 @@ const PidIssuanceRequest = () => {
                 isPreview={true}
               />
             </View>
+            <VSpacer size={16} />
+            <BodySmall color="grey-700">
+              {t('pidIssuance.preview.testWalletNotice')}
+            </BodySmall>
           </VStack>
         </ForceScrollDownView>
       )}

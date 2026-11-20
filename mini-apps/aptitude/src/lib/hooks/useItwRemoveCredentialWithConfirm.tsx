@@ -36,30 +36,59 @@ export const useItwRemoveCredentialWithConfirm = (
     navigation.pop();
   };
 
+  const isPid = credential.credentialType === wellKnownCredential.PID;
+
   const confirmAndRemoveCredential = () =>
-    Alert.alert(
-      t('presentation.credentialDetails.dialogs.remove.title', {
-        ns: 'aptitude'
-      }),
-      t('presentation.credentialDetails.dialogs.remove.content', {
-        ns: 'aptitude'
-      }),
-      [
-        {
-          style: 'cancel',
-          text: t('buttons.cancel', { ns: 'common' })
-        },
-        {
-          onPress: handleRemoveCredential,
-          style: 'destructive',
-          text: t('presentation.credentialDetails.dialogs.remove.confirm', {
+    isPid
+      ? Alert.alert(
+          t('presentation.credentialDetails.dialogs.deactivate.title', {
             ns: 'aptitude'
-          })
-        }
-      ]
-    );
+          }),
+          t('presentation.credentialDetails.dialogs.deactivate.content', {
+            ns: 'aptitude'
+          }),
+          [
+            {
+              onPress: handleRemoveCredential,
+              style: 'destructive',
+              text: t(
+                'presentation.credentialDetails.dialogs.deactivate.confirm',
+                { ns: 'aptitude' }
+              )
+            },
+            {
+              style: 'cancel',
+              text: t(
+                'presentation.credentialDetails.dialogs.deactivate.cancel',
+                { ns: 'aptitude' }
+              )
+            }
+          ]
+        )
+      : Alert.alert(
+          t('presentation.credentialDetails.dialogs.remove.title', {
+            ns: 'aptitude'
+          }),
+          t('presentation.credentialDetails.dialogs.remove.content', {
+            ns: 'aptitude'
+          }),
+          [
+            {
+              style: 'cancel',
+              text: t('buttons.cancel', { ns: 'common' })
+            },
+            {
+              onPress: handleRemoveCredential,
+              style: 'destructive',
+              text: t('presentation.credentialDetails.dialogs.remove.confirm', {
+                ns: 'aptitude'
+              })
+            }
+          ]
+        );
 
   return {
-    confirmAndRemoveCredential
+    confirmAndRemoveCredential,
+    isPid
   };
 };

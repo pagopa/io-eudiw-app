@@ -18,18 +18,18 @@ const WIA_DOC_TYPE = 'org.iso.18013.5.1.IT.WalletAttestation';
 /**
  * Extracts the relying party identifier (its certificate common name) from the
  * verifier request certificate data, as reported by the ISO 18013-5 SDK.
- * Falls back to 'Unknown' when the verifier is not authenticated and thus does
+ * Returns `undefined` when the verifier is not authenticated and thus does
  * not provide certificate data.
  */
 export const getVerifierIdentity = (
   certificateData: ISO18013_5.VerifierRequest['request'][string]['certificateData']
-): string => {
+): string | undefined => {
   // `commonName` widens through the request record catchall type, so narrow it
   // explicitly instead of relying on the indexed type being a plain string.
   const commonName = certificateData?.commonName;
   return typeof commonName === 'string' && commonName.length > 0
     ? commonName
-    : 'Unknown';
+    : undefined;
 };
 
 export const getProximityDetails = (

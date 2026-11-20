@@ -236,7 +236,8 @@ const obtainPidListener: AppListenerWithAction<
 /**
  * Listener to store the credential after pin validation.
  * It dispatches the action which shows the pin validation modal and awaits for the result.
- * If the pin is correct, the credential is stored, the issuance state is resetted and the user is navigated to the main screen.
+ * After the credential is stored, continue with the pending credential or show
+ * the PID issuance result.
  */
 const addPidWithAuthListener: AppListenerWithAction<
   ReturnType<typeof addPidWithIdentification>
@@ -286,8 +287,9 @@ const addPidWithAuthListener: AppListenerWithAction<
         screen: WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST
       });
     } else {
-      // This should not happen, so by default the flow will just reset navigation and go back home
-      navigator.navigateWithReset(MAIN_ROUTES.TAB_NAV);
+      navigator.navigate(MAIN_ROUTES.WALLET_NAV, {
+        screen: WALLET_ROUTES.PID_ISSUANCE.RESULT
+      });
     }
   } else {
     return;

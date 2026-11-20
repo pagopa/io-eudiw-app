@@ -11,7 +11,6 @@ import {
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
-import { View } from 'react-native';
 
 export const IdentificationMethod = () => {
   const navigation = useNavigation();
@@ -43,12 +42,6 @@ export const IdentificationMethod = () => {
         <VSpacer size={8} />
         <VStack space={16}>
           <ModuleNavigationAlt
-            badge={{
-              text: t('identification.modeSelection.mode.ciePin.badge', {
-                ns: 'aptitude'
-              }),
-              variant: 'highlight'
-            }}
             icon="cieCard"
             onPress={handleOnPress}
             subtitle={t('identification.modeSelection.mode.ciePin.subtitle', {
@@ -56,17 +49,6 @@ export const IdentificationMethod = () => {
             })}
             testID="CiePinMethodModuleTestID"
             title={t('identification.modeSelection.mode.ciePin.title', {
-              ns: 'aptitude'
-            })}
-          />
-          <ModuleNavigationAlt
-            icon="spid"
-            onPress={handleOnPress}
-            subtitle={t('identification.modeSelection.mode.spid.subtitle', {
-              ns: 'aptitude'
-            })}
-            testID="SpidMethodModuleTestID"
-            title={t('identification.modeSelection.mode.spid.title', {
               ns: 'aptitude'
             })}
           />
@@ -81,17 +63,25 @@ export const IdentificationMethod = () => {
               ns: 'aptitude'
             })}
           />
-          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <IOButton
-              label={t('identification.modeSelection.noCieCta', {
-                ns: 'aptitude'
-              })}
-              onPress={handleOnPress}
-              testID={'noCieButtonTestID'}
-              textAlign="center"
-              variant="link"
-            />
-          </View>
+          <ModuleNavigationAlt
+            icon="spid"
+            onPress={handleOnPress}
+            subtitle={t('identification.modeSelection.mode.spid.subtitle', {
+              ns: 'aptitude'
+            })}
+            testID="SpidMethodModuleTestID"
+            title={t('identification.modeSelection.mode.spid.title', {
+              ns: 'aptitude'
+            })}
+          />
+          <IOButton
+            label={t('identification.modeSelection.noCieCta', {
+              ns: 'aptitude'
+            })}
+            onPress={handleOnPress}
+            testID={'noCieButtonTestID'}
+            variant="link"
+          />
         </VStack>
       </ContentWrapper>
     </IOScrollViewWithLargeHeader>

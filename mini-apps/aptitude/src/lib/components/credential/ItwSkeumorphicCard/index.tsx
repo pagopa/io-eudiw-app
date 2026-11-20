@@ -1,4 +1,4 @@
-import { IOColors, Tag } from '@pagopa/io-app-design-system';
+import { hexToRgba, IOColors, Tag } from '@pagopa/io-app-design-system';
 import { Canvas } from '@shopify/react-native-skia';
 import { t } from 'i18next';
 import { ReactNode, useMemo, useState } from 'react';
@@ -227,19 +227,11 @@ export const SKEUMORPHIC_CARD_ASPECT_RATIO = 16 / 10.09;
 
 const styles = StyleSheet.create({
   card: {
-    aspectRatio: SKEUMORPHIC_CARD_ASPECT_RATIO,
-    // Android
-    elevation: 8,
-    shadowColor: IOColors.black,
-    shadowOffset: {
-      height: 4, // To avoid the shadow to be clipped by the header
-      width: 0
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 8
+    aspectRatio: SKEUMORPHIC_CARD_ASPECT_RATIO
   },
   container: {
     borderRadius: 8,
+    boxShadow: `0px 4px 24px ${hexToRgba(IOColors.black, 0.1)}`,
     flex: 1,
     overflow: 'hidden'
   },
