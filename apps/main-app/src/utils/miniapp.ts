@@ -1,5 +1,6 @@
 import type { MiniApp } from '@io-eudiw-app/commons';
 
+import { aptitudeFeature } from '@io-eudiw-app/aptitude';
 import { itWalletFeature } from '@io-eudiw-app/it-wallet';
 
 /**
@@ -10,6 +11,7 @@ import { itWalletFeature } from '@io-eudiw-app/it-wallet';
  * When adding a new mini-app, add an entry here.
  */
 export const miniAppRegistry: Record<string, MiniApp> = {
+  [aptitudeFeature.id]: aptitudeFeature,
   [itWalletFeature.id]: itWalletFeature
 };
 

@@ -1,0 +1,113 @@
+import { type PublicKey } from '@pagopa/io-react-native-crypto';
+import { CBOR, COSE, ISO18013_7 } from '@pagopa/io-react-native-iso18013';
+import { removePadding } from '@pagopa/io-react-native-jwt';
+import { b64utob64 } from 'jsrsasign';
+
+import type { Presentation } from '../credential/presentation';
+
+import { MissingX509CertsError } from '../trust/common/errors';
+import { convertBase64DerToPem, getSigninJwkFromCert } from '../utils/crypto';
+import { IoWalletError } from '../utils/errors';
+export * from './utils';
+
+export const verify = async (
+  token: string
+  // x509CertRoot: string,
+): Promise<{ issuerSigned: CBOR.IssuerSigned }> => {
+  // get decoded data
+  const issuerSigned = await CBOR.decodeIssuerSigned(token);
+
+  if (!issuerSigned) {
+    throw new IoWalletError('Invalid mDoc');
+  }
+
+  if (
+    !issuerSigned.issuerAuth.unprotectedHeader?.x5chain &&
+    (!Array.isArray(issuerSigned.issuerAuth.unprotectedHeader.x5chain) ||
+      issuerSigned.issuerAuth.unprotectedHeader.x5chain.length === 0)
+  ) {
+    throw new MissingX509CertsError('Missing x509 certificates');
+  }
+  const x5chain =
+    issuerSigned.issuerAuth.unprotectedHeader.x5chain.map(b64utob64);
+  // Verify the x5chain
+  // await verifyX509Chain(x5chain, x509CertRoot);
+
+  const coseSign1 = issuerSigned.issuerAuth.rawValue;
+
+  if (!coseSign1) {
+    throw new IoWalletError('Missing coseSign1');
+  }
+
+  const firstCert = x5chain[0];
+
+  if (!firstCert) {
+    throw new IoWalletError('x5chain is empty, cannot verify signature');
+  }
+
+  // Once the x5chain is verified, the signatures verification can be performed
+  await verifyMdocSignature(coseSign1, firstCert);
+
+  return { issuerSigned };
+};
+
+/**
+ * This function verifies that the signature is valid for the given certificate.
+ * If not, it throws an error
+ *
+ * @param coseSign1 The COSE-Sign1 object encoded in base64 or base64url
+ * @param cert The `x5chain`'s leaf certificate
+ */
+const verifyMdocSignature = async (coseSign1: string, cert: string) => {
+  const pemcert = convertBase64DerToPem(cert);
+  const jwk = getSigninJwkFromCert(pemcert);
+
+  if (!jwk.x || !jwk.y) {
+    throw new IoWalletError(
+      "Missing x or y coordinate in the certificate's public key"
+    );
+  }
+
+  jwk.x = b64utob64(jwk.x);
+  jwk.y = b64utob64(jwk.y);
+
+  const signatureCorrect = await COSE.verify(coseSign1, jwk as PublicKey);
+
+  if (!signatureCorrect) throw new Error('Invalid mDoc signature');
+};
+
+export const prepareVpTokenMdoc = async (
+  requestNonce: string,
+  generatedNonce: string,
+  clientId: string,
+  responseUri: string,
+  docType: string,
+  keyTag: string,
+  [verifiableCredential, presentationFrame]: Presentation
+): Promise<{
+  vp_token: string;
+}> => {
+  /* verifiableCredential is a IssuerSigned structure */
+  const documents = [
+    {
+      alias: keyTag,
+      docType,
+      issuerSignedContent: b64utob64(verifiableCredential)
+    }
+  ];
+
+  /* clientId,responseUri,requestNonce are retrieved by Auth Request Object */
+  /* create DeviceResponse as { documents: { docType, issuerSigned, deviceSigned }, version, status } */
+  const vp_token = await ISO18013_7.generateOID4VPDeviceResponse(
+    clientId,
+    responseUri,
+    requestNonce,
+    generatedNonce,
+    documents,
+    presentationFrame as ISO18013_7.AcceptedFields
+  );
+
+  return {
+    vp_token: removePadding(vp_token)
+  };
+};

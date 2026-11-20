@@ -1,9 +1,11 @@
+import { aptitudeFeature } from '@io-eudiw-app/aptitude';
 import { resource as commonResource } from '@io-eudiw-app/commons';
 import { itWalletFeature } from '@io-eudiw-app/it-wallet';
 
 import global from '../../locales/it/global.json';
 
-type DefaultResource = typeof commonResource.it &
+type DefaultResource = typeof aptitudeFeature.resource.it &
+  typeof commonResource.it &
   typeof itWalletFeature.resource.it & {
     global: typeof global;
   };

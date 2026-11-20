@@ -1,3 +1,4 @@
+import { aptitudeFeature } from '@io-eudiw-app/aptitude';
 import { takeLatestEffect } from '@io-eudiw-app/commons';
 import { debugReducer, DebugRootState } from '@io-eudiw-app/debug-info';
 import {
@@ -41,10 +42,11 @@ import { AppDispatch, RootState } from './types';
 export type AppRootState = DebugRootState &
   IdentificationRootState &
   PreferenceRootState & {
+    aptitude: ReturnType<typeof aptitudeFeature.reducer.aptitude>;
+    wallet: ReturnType<typeof itWalletFeature.reducer.wallet>;
+  } & {
     deepLinking: ReturnType<typeof deepLinkingReducer>;
     startup: ReturnType<typeof startupSlice.reducer>;
-  } & {
-    wallet: ReturnType<typeof itWalletFeature.reducer.wallet>;
   };
 
 /**
@@ -56,6 +58,7 @@ const rootReducer = combineReducers({
   ...preferencesReducer,
   ...debugReducer,
   ...identificationReducer,
+  ...aptitudeFeature.reducer,
   ...itWalletFeature.reducer,
   deepLinking: deepLinkingReducer
 });

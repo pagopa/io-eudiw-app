@@ -1,3 +1,4 @@
+import { aptitudeFeature } from '@io-eudiw-app/aptitude';
 import { resource as commonResource } from '@io-eudiw-app/commons';
 import { itWalletFeature } from '@io-eudiw-app/it-wallet';
 import i18n from 'i18next'; // Change this from * as i18n
@@ -30,6 +31,7 @@ const initI18n = async () => {
 
   addResources(commonResource);
   addResources(itWalletFeature.resource);
+  addResources(aptitudeFeature.resource);
 
   return i18n;
 };

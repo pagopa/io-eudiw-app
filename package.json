@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "validate": "nx affected --targets=test,lint,typecheck --configuration=ci",
+    "validate": "nx affected --targets=test,lint,typecheck --configuration=ci --tui",
     "lint": "eslint --fix .",
     "lint:check": "eslint ."
   },

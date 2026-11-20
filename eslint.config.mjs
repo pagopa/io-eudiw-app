@@ -73,5 +73,11 @@ export default [
     rules: {
       '@typescript-eslint/no-require-imports': 'off'
     }
+  },
+  {
+    files: ['**/__tests__/**/*.{ts,tsx}', '**/*.{test,spec,tests}.{ts,tsx}'],
+    rules: {
+      'max-lines-per-function': 'off'
+    }
   }
 ];

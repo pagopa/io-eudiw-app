@@ -4,10 +4,16 @@
   "files": [],
   "references": [
     {
+      "path": "./libs/io-react-native-wallet"
+    },
+    {
       "path": "./apps/main-app"
     },
     {
       "path": "./mini-apps/it-wallet"
+    },
+    {
+      "path": "./mini-apps/aptitude"
     },
     {
       "path": "./libs/commons"

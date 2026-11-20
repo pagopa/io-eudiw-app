@@ -1,3 +1,4 @@
+import { aptitudeFeature } from '@io-eudiw-app/aptitude';
 import {
   useHardwareBackButton,
   useHeaderSecondLevel
@@ -45,6 +46,11 @@ const MiniAppSelection = () => {
       id: itWalletFeature.id,
       image: require('../../assets/icons/it-wallet-mini-app.png'),
       label: t('global:miniAppSelection.miniApps.it-wallet')
+    },
+    {
+      id: aptitudeFeature.id,
+      image: require('../../assets/icons/it-wallet-mini-app.png'),
+      label: t('global:miniAppSelection.miniApps.aptitude')
     }
   ];
 
