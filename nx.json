@@ -91,6 +91,9 @@
       ]
     }
   },
+  "tui": {
+    "enabled": false
+  },
   "neverConnectToCloud": true,
   "analytics": false
 }
