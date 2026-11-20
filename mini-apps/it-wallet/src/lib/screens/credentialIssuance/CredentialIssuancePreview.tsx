@@ -1,19 +1,26 @@
 import {
+  IOMarkdown,
   useDisableGestureNavigation,
-  useHeaderSecondLevel
+  useHeaderSecondLevel,
+  useIOBottomSheetModal
 } from '@io-eudiw-app/commons';
 import {
+  Body,
+  ContentWrapper,
   FooterActions,
   ForceScrollDownView,
   H2,
-  IOVisualCostants,
-  VSpacer
+  IOSpacingScale,
+  VSpacer,
+  VStack
 } from '@pagopa/io-app-design-system';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import CredentialPreviewClaimsList from '../../components/credential/CredentialPreviewClaimsList';
+import { useCredentialCardConfig } from '../../components/credential/ItwCredentialCard/config';
+import { ItwCredentialClaimsCard } from '../../components/credential/ItwCredentialClaimsCard';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -58,6 +65,42 @@ export const CredentialPreview = () => {
 
   useDisableGestureNavigation();
 
+  const cardConfig = useCredentialCardConfig(
+    (credentialPostStatus.success.status
+      ? credentialPostStatus.success.data?.credentialType
+      : undefined) ?? ''
+  );
+
+  const somethingWrongBottomSheet = useIOBottomSheetModal({
+    closeAccessibilityLabel: t('common:buttons.close'),
+    component: (
+      <>
+        <IOMarkdown
+          content={t(
+            'wallet:issuance.credentialPreview.bottomSheet.somethingWrong.bodyMarkdown'
+          )}
+        />
+        <VSpacer size={32} />
+      </>
+    ),
+    footer: (
+      <FooterActions
+        actions={{
+          primary: {
+            label: t(
+              'wallet:issuance.credentialPreview.bottomSheet.somethingWrong.primaryAction'
+            ),
+            onPress: () => somethingWrongBottomSheet.dismiss()
+          },
+          type: 'SingleButton'
+        }}
+      />
+    ),
+    title: t(
+      'wallet:issuance.credentialPreview.bottomSheet.somethingWrong.title'
+    )
+  });
+
   if (
     !credentialPostStatus.success.status ||
     !credentialPostStatus.success.data
@@ -74,19 +117,12 @@ export const CredentialPreview = () => {
   return (
     <ForceScrollDownView
       contentContainerStyle={styles.scrollView}
-      threshold={50}
-    >
-      <View style={styles.container}>
-        <H2>{getCredentialNameByType(credential.credentialType)}</H2>
-        <VSpacer size={24} />
-        <CredentialPreviewClaimsList claims={parsedClaims} isPreview={true} />
-      </View>
-      <FooterActions
-        actions={{
+      footerActions={{
+        actions: {
           primary: {
-            icon: 'add',
+            icon: 'addSmall',
             iconPosition: 'end',
-            label: t('common:buttons.continue'),
+            label: t('wallet:issuance.credentialPreview.actions.primary'),
             onPress: () =>
               dispatch(
                 addCredentialWithIdentification({
@@ -95,23 +131,43 @@ export const CredentialPreview = () => {
               )
           },
           secondary: {
-            label: t('common:buttons.cancel'),
-            onPress: () => {
-              dismissalDialog.show();
-            }
+            label: t(
+              'wallet:issuance.credentialPreview.actions.somethingWrong'
+            ),
+            onPress: somethingWrongBottomSheet.present
           },
           type: 'TwoButtons'
-        }}
-        fixed={false}
-      />
+        }
+      }}
+    >
+      <ContentWrapper style={styles.scrollView}>
+        <VStack space={8}>
+          <H2>{t('wallet:issuance.credentialPreview.detailsTitle')}</H2>
+          <Body>{t('wallet:issuance.credentialPreview.subtitle')}</Body>
+        </VStack>
+        <VSpacer size={24} />
+        <ItwCredentialClaimsCard
+          gradientEndColor={cardConfig.background.colors[0]}
+          title={getCredentialNameByType(credential.credentialType)}
+        >
+          <View style={styles.body}>
+            <CredentialPreviewClaimsList
+              claims={parsedClaims}
+              isPreview={true}
+            />
+          </View>
+        </ItwCredentialClaimsCard>
+      </ContentWrapper>
+      {somethingWrongBottomSheet.bottomSheet}
     </ForceScrollDownView>
   );
 };
 
+const cardSpacing: IOSpacingScale = 16;
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginHorizontal: IOVisualCostants.appMarginDefault
+  body: {
+    paddingHorizontal: cardSpacing
   },
   scrollView: {
     flexGrow: 1

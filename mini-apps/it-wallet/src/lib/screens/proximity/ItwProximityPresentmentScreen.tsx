@@ -14,6 +14,7 @@ import {
   hexToRgba,
   IOButton,
   IOColors,
+  IOVisualCostants,
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
@@ -22,7 +23,11 @@ import I18n from 'i18next';
 import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import Animated, { LinearTransition } from 'react-native-reanimated';
+import Animated, {
+  LinearTransition,
+  useAnimatedRef
+} from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ItwBrandedBox } from '../../components/ItwBrandedBox';
 import { ItwProximityQrCodeImage } from '../../components/proximity/ItwProximityQrCodeImage';
@@ -56,6 +61,8 @@ const ItwProximityPresentmentScreen = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { startEngagement } = useProximityEngagement();
+  const animatedScrollViewRef = useAnimatedRef<Animated.ScrollView>();
+  const safeAreaInsets = useSafeAreaInsets();
 
   const proximityStatus = useAppSelector(selectProximityStatus);
   const proximityFailure = useAppSelector(selectProximityFailure);
@@ -90,18 +97,22 @@ const ItwProximityPresentmentScreen = () => {
     navigation.setOptions({
       header: () => (
         <HeaderSecondLevel
+          animatedRef={animatedScrollViewRef}
+          enableDiscreteTransition={true}
           firstAction={{
             accessibilityLabel: I18n.t('buttons.close', { ns: 'common' }),
             icon: 'closeLarge',
             onPress: () => close()
           }}
           title={''}
+          transparent={true}
           type="singleAction"
         />
       ),
-      headerShown: true
+      headerShown: true,
+      headerTransparent: true
     });
-  }, [navigation, close]);
+  }, [navigation, close, animatedScrollViewRef]);
 
   useEffect(() => {
     // Only the active QR engagement drives navigation: once the user switches to
@@ -140,7 +151,12 @@ const ItwProximityPresentmentScreen = () => {
   };
 
   return (
-    <IOScrollView>
+    <IOScrollView
+      animatedRef={animatedScrollViewRef}
+      contentContainerStyle={{
+        marginTop: safeAreaInsets.top + IOVisualCostants.headerHeight
+      }}
+    >
       {shouldShowExpiredCredentialsBanner && (
         <Animated.View
           layout={LinearTransition.duration(200)}

@@ -13,7 +13,7 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 import QRCode from 'react-native-qrcode-skia';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
-import ItwAvatar from '../../../assets/img/brand/itw_avatar.svg';
+import ItwIcon from '../../../assets/img/brand/itw_icon.svg';
 import { useProximityEngagement } from '../../hooks/useProximityEngagement';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
@@ -24,7 +24,7 @@ import {
 } from '../../store/proximity';
 import { ITW_BRANDED_BOX_PADDING } from '../ItwBrandedBox';
 
-const QR_CODE_LOGO_SIZE = 84;
+const QR_CODE_LOGO_SIZE = 52;
 
 /**
  * For the QR Code size, we start from the window width and subtract the
@@ -85,9 +85,7 @@ export const ItwProximityQrCodeImage = () => {
       <QRCode
         color={theme['textBody-default']}
         errorCorrectionLevel="H"
-        logo={
-          <ItwAvatar height={QR_CODE_LOGO_SIZE} width={QR_CODE_LOGO_SIZE} />
-        }
+        logo={<ItwIcon height={QR_CODE_LOGO_SIZE} width={QR_CODE_LOGO_SIZE} />}
         logoAreaBorderRadius={8}
         logoAreaSize={88}
         shapeOptions={{
