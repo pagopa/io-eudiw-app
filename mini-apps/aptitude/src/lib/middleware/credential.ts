@@ -46,7 +46,6 @@ import {
 } from '../store/credentials';
 import { selectSessionId } from '../store/instance';
 import { ResolvedCredentialOffer } from '../types';
-import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredential } from '../utils/credentials';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { serializeErrorOrUnknown } from '../utils/errors';
@@ -118,7 +117,7 @@ export const resolveCredentialOfferThunk: ResolveCredentialOfferThunk =
     'aptitude/credentialIssuance/resolveOffer',
     async ({ url }, { getState, rejectWithValue }) => {
       try {
-        const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+        const wallet = new IoWallet({ version: 'APTITUDE' });
         const sessionId = selectSessionId(getState());
         const appFetch = createWalletFetch(sessionId);
 
@@ -153,7 +152,7 @@ export const resolveCredentialOfferThunk: ResolveCredentialOfferThunk =
 
 const obtainCredentialListener: AppListenerWithAction<
   ReturnType<typeof setCredentialIssuancePreAuthRequest>
-  // eslint-disable-next-line max-lines-per-function, complexity
+// eslint-disable-next-line max-lines-per-function, complexity
 > = async (_, listenerApi) => {
   try {
     const {
@@ -198,7 +197,7 @@ const obtainCredentialListener: AppListenerWithAction<
     const sessionId = selectSessionId(listenerApi.getState());
     const appFetch = createWalletFetch(sessionId);
 
-    const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+    const wallet = new IoWallet({ version: 'APTITUDE' });
 
     const keyAttestation = await listenerApi
       .dispatch(getKeyAttestationThunk({ keyTags: [credentialKeyTag] }))
@@ -404,7 +403,7 @@ const obtainCredentialListener: AppListenerWithAction<
           issuerConf,
           keyTag: credentialKeyTag,
           parsedCredential,
-          spec_version: WALLET_SPEC_VERSION
+          spec_version: 'APTITUDE'
         }
       })
     );
