@@ -12,7 +12,6 @@ import {
   partialCallbacks
 } from '../../../utils/callbacks';
 import { sdkConfigAPTITUDE } from '../../../utils/config';
-import { IoWalletError } from '../../../utils/errors';
 
 export const authorizeAccess: IssuanceApi['authorizeAccess'] = async (
   issuerConf,
@@ -70,14 +69,6 @@ export const authorizeAccess: IssuanceApi['authorizeAccess'] = async (
     dPoP: tokenDPoP.jwt,
     walletAttestation: walletInstanceAttestation
   });
-
-  // `authorization_details` might be undefined if the PAR used `scope`.
-  // We currently do not support `scope` only.
-  if (!tokenResponse.authorization_details) {
-    throw new IoWalletError(
-      'Access token without authorization_details is not supported'
-    );
-  }
 
   return {
     accessToken: tokenResponse as TokenResponse
