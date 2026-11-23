@@ -5,13 +5,16 @@ import {
 } from '@pagopa/io-wallet-oauth2';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { IssuanceApi, TokenResponse } from '../api';
+import type {
+  IssuanceApi
+} from '../api';
 
 import {
   createSignJwtFromCryptoContext,
   partialCallbacks
 } from '../../../utils/callbacks';
 import { sdkConfigAPTITUDE } from '../../../utils/config';
+import { PreAuthorizedTokenResponse, TokenResponse } from '../api/types';
 
 export const authorizeAccess: IssuanceApi['authorizeAccess'] = async (
   issuerConf,
@@ -70,7 +73,10 @@ export const authorizeAccess: IssuanceApi['authorizeAccess'] = async (
     walletAttestation: walletInstanceAttestation
   });
 
-  return {
-    accessToken: tokenResponse as TokenResponse
-  };
+  const schema =
+    accessTokenRequest.grant_type === 'authorization_code'
+      ? TokenResponse
+      : PreAuthorizedTokenResponse;
+
+  return { accessToken: schema.parse(tokenResponse) };
 };

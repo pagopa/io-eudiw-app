@@ -9,12 +9,12 @@ export type ParsedCredential = Record<
   string,
   {
     name:
-      | /* if i18n is provided */ Record<
-          string /* locale */,
-          string /* value */
-        >
-      | /* if no i18n is provided */ string
-      | undefined; // Add undefined as a possible value for the name property
+    | /* if i18n is provided */ Record<
+      string /* locale */,
+      string /* value */
+    >
+    | /* if no i18n is provided */ string
+    | undefined; // Add undefined as a possible value for the name property
     value: unknown;
   }
 >;
@@ -25,7 +25,6 @@ export const AuthorizationDetail = z.object({
   type: z.literal('openid_credential')
 });
 
-export type TokenResponse = z.infer<typeof TokenResponse>;
 export const TokenResponse = z.object({
   access_token: z.string(),
   authorization_details: z.array(AuthorizationDetail),
@@ -33,3 +32,11 @@ export const TokenResponse = z.object({
   refresh_token: z.string().optional(),
   token_type: z.string()
 });
+
+export const PreAuthorizedTokenResponse = TokenResponse.partial({
+  authorization_details: true
+});
+
+export type StandardTokenResponse = z.infer<typeof TokenResponse>;
+
+export type TokenResponse = z.infer<typeof PreAuthorizedTokenResponse>;

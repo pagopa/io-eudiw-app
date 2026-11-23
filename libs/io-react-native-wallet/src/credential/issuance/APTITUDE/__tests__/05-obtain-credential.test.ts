@@ -1,0 +1,88 @@
+import type { CryptoContext } from '@pagopa/io-react-native-jwt';
+
+import type { IssuerConfig } from '../../api';
+
+import { requestCredentials } from '../05-obtain-credential';
+
+const createMockCryptoContext = (
+  keyTag: string,
+  y: string
+): jest.Mocked<CryptoContext> => ({
+  getPublicKey: jest.fn(async () => ({
+    alg: 'ES256',
+    crv: 'P-256',
+    kid: keyTag,
+    kty: 'EC',
+    use: 'sig',
+    x: '1',
+    y
+  })),
+  getSignature: jest.fn(async _ => `mock-signature-${keyTag}`)
+});
+
+describe('requestCredentials', () => {
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  const mockIssuerConf = {
+    credential_endpoint: 'https://issuer-example/credential',
+    credential_issuer: 'https://issuer-example',
+    nonce_endpoint: 'https://issuer-example/nonce'
+  } as IssuerConfig;
+
+  it.each([false, true])(
+    'builds the credential request (useConfigurationId=%s)',
+    async useConfigurationId => {
+      jest.useFakeTimers().setSystemTime(new Date('2026-03-23T00:00:00Z'));
+
+      const appFetch = jest.fn();
+
+      appFetch.mockResolvedValueOnce(
+        new Response(JSON.stringify({ c_nonce: 'mock-nonce' }), {
+          headers: { 'content-type': 'application/json' },
+          status: 200
+        })
+      );
+
+      appFetch.mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({ credentials: [{ credential: 'issued' }] }),
+          { status: 200 }
+        )
+      );
+      await requestCredentials({
+        accessToken: {} as unknown as Parameters<
+          typeof requestCredentials
+        >[0]['accessToken'],
+        appFetch,
+        clientId: 'client123',
+        credentialCryptoContexts: [
+          createMockCryptoContext('key-1', '1'),
+          createMockCryptoContext('key-2', '2')
+        ],
+        credentialIdentifier: useConfigurationId
+          ? 'student-card'
+          : 'credid-123',
+        dPopCryptoContext: createMockCryptoContext('key-3', '3'),
+        issuerConf: mockIssuerConf,
+        keyAttestationJwt: 'mock-key-attestation',
+        useConfigurationId
+      });
+
+      const [endpoint, request] = appFetch.mock.calls[1];
+      expect(endpoint).toBe(mockIssuerConf.credential_endpoint);
+      expect(JSON.parse(request.body)).toEqual({
+        ...(useConfigurationId
+          ? { credential_configuration_id: 'student-card' }
+          : { credential_identifier: 'credid-123' }),
+        proofs: {
+          jwt: [
+            'eyJhbGciOiJFUzI1NiIsImp3ayI6eyJhbGciOiJFUzI1NiIsImNydiI6IlAtMjU2Iiwia2lkIjoia2V5LTEiLCJrdHkiOiJFQyIsInVzZSI6InNpZyIsIngiOiIxIiwieSI6IjEifSwia2V5X2F0dGVzdGF0aW9uIjoibW9jay1rZXktYXR0ZXN0YXRpb24iLCJ0eXAiOiJvcGVuaWQ0dmNpLXByb29mK2p3dCJ9.eyJhdWQiOiJodHRwczovL2lzc3Vlci1leGFtcGxlIiwiaWF0IjoxNzc0MjI0MDAwLCJpc3MiOiJjbGllbnQxMjMiLCJub25jZSI6Im1vY2stbm9uY2UifQ.mock-signature-key-1',
+            'eyJhbGciOiJFUzI1NiIsImp3ayI6eyJhbGciOiJFUzI1NiIsImNydiI6IlAtMjU2Iiwia2lkIjoia2V5LTIiLCJrdHkiOiJFQyIsInVzZSI6InNpZyIsIngiOiIxIiwieSI6IjIifSwia2V5X2F0dGVzdGF0aW9uIjoibW9jay1rZXktYXR0ZXN0YXRpb24iLCJ0eXAiOiJvcGVuaWQ0dmNpLXByb29mK2p3dCJ9.eyJhdWQiOiJodHRwczovL2lzc3Vlci1leGFtcGxlIiwiaWF0IjoxNzc0MjI0MDAwLCJpc3MiOiJjbGllbnQxMjMiLCJub25jZSI6Im1vY2stbm9uY2UifQ.mock-signature-key-2'
+          ]
+        }
+      });
+    }
+  );
+});

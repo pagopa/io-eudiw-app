@@ -6,7 +6,7 @@ import {
 import { CREDENTIAL_OFFER_GRANTS } from '@pagopa/io-wallet-oid4vci';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { IssuanceApi, TokenResponse } from '../api';
+import type { IssuanceApi, StandardTokenResponse } from '../api';
 
 import {
   createSignJwtFromCryptoContext,
@@ -89,6 +89,6 @@ export const authorizeAccess: IssuanceApi['authorizeAccess'] = async (
   }
 
   return {
-    accessToken: tokenResponse as TokenResponse
+    accessToken: tokenResponse as StandardTokenResponse
   };
 };
