@@ -153,7 +153,7 @@ export const resolveCredentialOfferThunk: ResolveCredentialOfferThunk =
 
 const obtainCredentialListener: AppListenerWithAction<
   ReturnType<typeof setCredentialIssuancePreAuthRequest>
-// eslint-disable-next-line max-lines-per-function, complexity
+  // eslint-disable-next-line max-lines-per-function, complexity
 > = async (_, listenerApi) => {
   try {
     const {
