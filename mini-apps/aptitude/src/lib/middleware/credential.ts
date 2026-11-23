@@ -362,8 +362,16 @@ const obtainCredentialListener: AppListenerWithAction<
 
     // Obtain the credential
     // # TODO: WLEO-727 - rework to support multiple credentials issuance
+    const authorizedCredential = accessToken.authorization_details?.find(
+      detail => detail.credential_configuration_id === credentialId
+    );
+    if (!authorizedCredential) {
+      throw new Error(
+        'The access token does not authorize the requested credential'
+      );
+    }
     const { credential_configuration_id, credential_identifiers } =
-      accessToken.authorization_details[0];
+      authorizedCredential;
 
     // Obtain the credential
     const { credential, format } =

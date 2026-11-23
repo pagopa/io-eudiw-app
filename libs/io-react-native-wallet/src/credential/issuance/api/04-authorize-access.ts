@@ -2,9 +2,11 @@ import type { CryptoContext } from '@pagopa/io-react-native-jwt';
 import type { AccessTokenRequestAPTITUDE } from '@pagopa/io-wallet-oauth2';
 
 import type { IssuerConfig } from './IssuerConfig';
-import type { TokenResponse } from './types';
+import type { StandardTokenResponse, TokenResponse } from './types';
 
-export interface AuthorizeAccessApi {
+export interface AuthorizeAccessApi<
+  TToken extends TokenResponse = StandardTokenResponse
+> {
   /**
    * Creates and sends the DPoP Proof JWT with an access token request to the /token endpoint of the authorization server
    * for requesting the issuance of an access token bound to the public key of the Wallet Instance contained within the DPoP.
@@ -43,7 +45,7 @@ export interface AuthorizeAccessApi {
       walletInstanceAttestation: string;
       wiaCryptoContext: CryptoContext;
     }
-  ): Promise<{ accessToken: TokenResponse }>;
+  ): Promise<{ accessToken: TToken }>;
 }
 
 export type AuthorizeAccessTokenRequest = Extract<
