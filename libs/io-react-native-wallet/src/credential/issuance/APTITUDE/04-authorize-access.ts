@@ -5,9 +5,7 @@ import {
 } from '@pagopa/io-wallet-oauth2';
 import { v4 as uuidv4 } from 'uuid';
 
-import type {
-  IssuanceApi
-} from '../api';
+import type { IssuanceApi } from '../api';
 
 import {
   createSignJwtFromCryptoContext,

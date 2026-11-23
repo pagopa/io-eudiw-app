@@ -1,6 +1,4 @@
-import type {
-  IssuanceApi
-} from '../api';
+import type { IssuanceApi } from '../api';
 
 import { Issuance as V1_4_6 } from '../v1.4.6';
 import { evaluateIssuerTrust } from './01-evaluate-issuer-trust';

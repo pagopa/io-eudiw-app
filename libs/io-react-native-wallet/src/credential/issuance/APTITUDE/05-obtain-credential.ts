@@ -149,92 +149,93 @@ export const requestCredentials = async ({
     // The identifier is outside the signed proofs; select the wire field here.
     credentialRequest: useConfigurationId
       ? {
-        credential_configuration_id: credentialIdentifier,
-        proofs: credentialRequest.proofs
-      }
+          credential_configuration_id: credentialIdentifier,
+          proofs: credentialRequest.proofs
+        }
       : credentialRequest,
     dPoP: credentialDPoP.jwt
   }).catch(handleObtainCredentialError);
 };
 
-export const obtainCredential: IssuanceApi['obtainCredential'] =
-  async (issuerConf, accessToken, clientId, credentialDefinition, context) => {
-    const {
-      appFetch = fetch,
-      credentialCryptoContext,
-      dPopCryptoContext,
-      keyAttestation
-    } = context;
-    if (!keyAttestation) {
-      throw new ValidationFailed({
-        message: 'The Key Attestation is required to obtain the credential'
-      });
-    }
-
-    const { credential_configuration_id, credential_identifier } =
-      credentialDefinition;
-
-    // Validation of accessTokenResponse.authorization_details if contain credentialDefinition
-    const containsCredentialDefinition =
-      accessToken.authorization_details?.some(
-        c =>
-          c.credential_configuration_id === credential_configuration_id &&
-          (credential_identifier
-            ? c.credential_identifiers.includes(credential_identifier)
-            : true)
-      );
-
-    if (
-      accessToken.authorization_details === undefined
-        ? credential_identifier !== undefined
-        : !containsCredentialDefinition || !credential_identifier
-    ) {
-      Logger.log(
-        LogLevel.ERROR,
-        `Credential definition not found in the access token response ${accessToken.authorization_details}`
-      );
-      throw new ValidationFailed({
-        message:
-          'The access token response does not contain the requested credential'
-      });
-    }
-
-    const credentialRes = await requestCredentials({
-      accessToken,
-      appFetch,
-      clientId,
-      credentialCryptoContexts: [credentialCryptoContext],
-      credentialIdentifier:
-        credential_identifier ?? credential_configuration_id,
-      dPopCryptoContext,
-      issuerConf,
-      keyAttestationJwt: keyAttestation,
-      useConfigurationId: credential_identifier === undefined
+export const obtainCredential: IssuanceApi['obtainCredential'] = async (
+  issuerConf,
+  accessToken,
+  clientId,
+  credentialDefinition,
+  context
+) => {
+  const {
+    appFetch = fetch,
+    credentialCryptoContext,
+    dPopCryptoContext,
+    keyAttestation
+  } = context;
+  if (!keyAttestation) {
+    throw new ValidationFailed({
+      message: 'The Key Attestation is required to obtain the credential'
     });
+  }
 
+  const { credential_configuration_id, credential_identifier } =
+    credentialDefinition;
+
+  // Validation of accessTokenResponse.authorization_details if contain credentialDefinition
+  const containsCredentialDefinition = accessToken.authorization_details?.some(
+    c =>
+      c.credential_configuration_id === credential_configuration_id &&
+      (credential_identifier
+        ? c.credential_identifiers.includes(credential_identifier)
+        : true)
+  );
+
+  if (
+    accessToken.authorization_details === undefined
+      ? credential_identifier !== undefined
+      : !containsCredentialDefinition || !credential_identifier
+  ) {
     Logger.log(
-      LogLevel.DEBUG,
-      `Credential Response: ${JSON.stringify(credentialRes)}`
+      LogLevel.ERROR,
+      `Credential definition not found in the access token response ${accessToken.authorization_details}`
     );
+    throw new ValidationFailed({
+      message:
+        'The access token response does not contain the requested credential'
+    });
+  }
 
-    // Extract the format corresponding to the credential_configuration_id used
-    const issuerCredentialConfig =
-      issuerConf.credential_configurations_supported[
-      credential_configuration_id
-      ];
+  const credentialRes = await requestCredentials({
+    accessToken,
+    appFetch,
+    clientId,
+    credentialCryptoContexts: [credentialCryptoContext],
+    credentialIdentifier: credential_identifier ?? credential_configuration_id,
+    dPopCryptoContext,
+    issuerConf,
+    keyAttestationJwt: keyAttestation,
+    useConfigurationId: credential_identifier === undefined
+  });
 
-    if ('transaction_id' in credentialRes) {
-      throw new IoWalletError('Deferred issuance is not supported');
-    }
+  Logger.log(
+    LogLevel.DEBUG,
+    `Credential Response: ${JSON.stringify(credentialRes)}`
+  );
 
-    // TODO: [SIW-2264] Handle multiple credentials
-    return {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- value validated as defined above
-      credential: credentialRes.credentials.at(0)!.credential,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- value validated as defined above
-      format: issuerCredentialConfig!.format
-    };
+  // Extract the format corresponding to the credential_configuration_id used
+  const issuerCredentialConfig =
+    issuerConf.credential_configurations_supported[credential_configuration_id];
+
+  if ('transaction_id' in credentialRes) {
+    throw new IoWalletError('Deferred issuance is not supported');
+  }
+
+  // TODO: [SIW-2264] Handle multiple credentials
+  return {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- value validated as defined above
+    credential: credentialRes.credentials.at(0)!.credential,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- value validated as defined above
+    format: issuerCredentialConfig!.format
   };
+};
 
 /**
  * Handle the credential error by mapping it to a custom exception.

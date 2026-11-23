@@ -9,12 +9,12 @@ export type ParsedCredential = Record<
   string,
   {
     name:
-    | /* if i18n is provided */ Record<
-      string /* locale */,
-      string /* value */
-    >
-    | /* if no i18n is provided */ string
-    | undefined; // Add undefined as a possible value for the name property
+      | /* if i18n is provided */ Record<
+          string /* locale */,
+          string /* value */
+        >
+      | /* if no i18n is provided */ string
+      | undefined; // Add undefined as a possible value for the name property
     value: unknown;
   }
 >;
