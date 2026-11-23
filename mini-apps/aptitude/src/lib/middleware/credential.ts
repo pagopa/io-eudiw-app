@@ -12,6 +12,7 @@ import {
 import { IOToast } from '@pagopa/io-app-design-system';
 import {
   createCryptoContextFor,
+  CREDENTIAL_OFFER_GRANTS,
   IoWallet,
   RemotePresentation
 } from '@pagopa/io-react-native-wallet';
@@ -152,7 +153,7 @@ export const resolveCredentialOfferThunk: ResolveCredentialOfferThunk =
 
 const obtainCredentialListener: AppListenerWithAction<
   ReturnType<typeof setCredentialIssuancePreAuthRequest>
-  // eslint-disable-next-line max-lines-per-function, complexity
+// eslint-disable-next-line max-lines-per-function, complexity
 > = async (_, listenerApi) => {
   try {
     const {
@@ -198,6 +199,7 @@ const obtainCredentialListener: AppListenerWithAction<
     const appFetch = createWalletFetch(sessionId);
 
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+
     const keyAttestation = await listenerApi
       .dispatch(getKeyAttestationThunk({ keyTags: [credentialKeyTag] }))
       .unwrap();
@@ -209,9 +211,17 @@ const obtainCredentialListener: AppListenerWithAction<
     // carry a specific authorization server (required when the Issuer relies on
     // more than one), as well as the `scope` and `issuer_state` that must be
     // forwarded to the PAR.
+    const grantType = CREDENTIAL_OFFER_GRANTS.AUTHORIZATION_CODE;
+
     const authorizationCodeGrant = offer
-      ? wallet.CredentialsOffer.extractGrantDetails(offer).authorization_code
+      ? wallet.CredentialsOffer.extractGrantDetails(offer)[grantType]
       : undefined;
+
+    if (offer && !authorizationCodeGrant) {
+      throw new Error(
+        'The mini-app currently supports authorization-code credential offers only'
+      );
+    }
 
     // Forwarded to the Issuer metadata discovery (fetchMetadata).
     const authorizationServer = authorizationCodeGrant?.authorizationServer;
@@ -235,6 +245,7 @@ const obtainCredentialListener: AppListenerWithAction<
         credentialIssuerMetadata: issuerConf.authorization_servers
           ? { authorization_servers: issuerConf.authorization_servers }
           : {},
+        grantType,
         offer
       });
     }
@@ -336,9 +347,12 @@ const obtainCredentialListener: AppListenerWithAction<
 
     const { accessToken } = await wallet.CredentialIssuance.authorizeAccess(
       issuerConf,
-      code,
-      redirectUri,
-      codeVerifier,
+      {
+        code,
+        code_verifier: codeVerifier,
+        grant_type: grantType,
+        redirect_uri: redirectUri
+      },
       {
         appFetch,
         dPopCryptoContext,
