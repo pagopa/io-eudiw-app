@@ -1,0 +1,252 @@
+import type { IssuerConfig } from '../../credential/issuance';
+
+import {
+  extractErrorMessageFromIssuerConf,
+  isIssuerResponseError,
+  isRelyingPartyResponseError,
+  IssuerResponseError,
+  IssuerResponseErrorCodes,
+  isWalletProviderResponseError,
+  RelyingPartyResponseError,
+  RelyingPartyResponseErrorCodes,
+  ResponseErrorBuilder,
+  UnexpectedStatusCodeError,
+  WalletProviderResponseError,
+  WalletProviderResponseErrorCodes
+} from '../errors';
+
+describe('extractErrorMessageFromIssuerConf', () => {
+  it('should throw when no credential configuration is found', async () => {
+    expect(() =>
+      extractErrorMessageFromIssuerConf('credential_revoked', {
+        credentialType: 'MDL',
+        issuerConf: {
+          credential_configurations_supported: {}
+        } as IssuerConfig
+      })
+    ).toThrow();
+  });
+
+  it('should return undefined when no credential issuance error is found', async () => {
+    expect(
+      extractErrorMessageFromIssuerConf('credential_revoked', {
+        credentialType: 'MDL',
+        // @ts-expect-error partial type
+        issuerConf: {
+          credential_configurations_supported: {
+            MDL: {}
+          }
+        } as IssuerConfig
+      })
+    ).toBeUndefined();
+
+    expect(
+      extractErrorMessageFromIssuerConf('credential_revoked', {
+        credentialType: 'MDL',
+        // @ts-expect-error partial type
+        issuerConf: {
+          credential_configurations_supported: {
+            MDL: {
+              issuance_errors_supported: {
+                credential_voided: {}
+              }
+            }
+          }
+        } as IssuerConfig
+      })
+    ).toBeUndefined();
+  });
+
+  it('should return the error message grouped by locales', async () => {
+    expect(
+      extractErrorMessageFromIssuerConf('credential_revoked', {
+        credentialType: 'MDL',
+        // @ts-expect-error partial type
+        issuerConf: {
+          credential_configurations_supported: {
+            MDL: {
+              issuance_errors_supported: {
+                credential_revoked: {
+                  display: [
+                    { description: 'Ciao', locale: 'it-IT', title: 'Ciao' },
+                    { description: 'Hello', locale: 'en-US', title: 'Hello' }
+                  ]
+                }
+              }
+            }
+          }
+        } as IssuerConfig
+      })
+    ).toEqual({
+      'en-US': { description: 'Hello', title: 'Hello' },
+      'it-IT': { description: 'Ciao', title: 'Ciao' }
+    });
+  });
+});
+
+describe('IssuerResponseError', () => {
+  const fiscalCode = 'LVLDAA85T50G702B';
+  const fiscalCodeMask = '*'.repeat(16);
+
+  it('anonymizes fiscal codes in a string reason', () => {
+    const error = new IssuerResponseError({
+      message: 'A message',
+      reason: `User ${fiscalCode} not found`,
+      statusCode: 404
+    });
+
+    expect(error.reason).toBe(`User ${fiscalCodeMask} not found`);
+  });
+
+  it('leaves a string reason without fiscal codes unchanged', () => {
+    const error = new IssuerResponseError({
+      message: 'A message',
+      reason: 'credential_not_found',
+      statusCode: 404
+    });
+
+    expect(error.reason).toBe('credential_not_found');
+  });
+
+  it('anonymizes fiscal codes in an object reason', () => {
+    const error = new IssuerResponseError({
+      message: 'A message',
+      reason: {
+        error: 'tax_id_code_mismatch',
+        error_description: `Mismatch for ${fiscalCode}`
+      },
+      statusCode: 400
+    });
+
+    expect(error.reason).toEqual({
+      error: 'tax_id_code_mismatch',
+      error_description: `Mismatch for ${fiscalCodeMask}`
+    });
+  });
+});
+
+describe('ResponseErrorBuilder', () => {
+  const errorBuilderWithFallback = new ResponseErrorBuilder(IssuerResponseError)
+    .handle(403, {
+      code: IssuerResponseErrorCodes.CredentialInvalidStatus,
+      message: 'A message'
+    })
+    .handle(409, {
+      code: IssuerResponseErrorCodes.CredentialIssuingNotSynchronous,
+      message: 'Another message',
+      reason: 'A custom reason'
+    })
+    .handle('*', {
+      code: IssuerResponseErrorCodes.IssuerGenericError,
+      message: 'Fallback error case'
+    });
+
+  test.each([
+    {
+      original: new UnexpectedStatusCodeError({
+        message: 'base message',
+        reason: 'base reason',
+        statusCode: 403
+      }),
+      target: new IssuerResponseError({
+        code: IssuerResponseErrorCodes.CredentialInvalidStatus,
+        message: 'A message',
+        reason: 'base reason',
+        statusCode: 403
+      })
+    },
+    {
+      original: new UnexpectedStatusCodeError({
+        message: 'base message',
+        reason: 'base reason',
+        statusCode: 409
+      }),
+      target: new IssuerResponseError({
+        code: IssuerResponseErrorCodes.CredentialIssuingNotSynchronous,
+        message: 'Another message',
+        reason: 'A custom reason',
+        statusCode: 409
+      })
+    },
+    {
+      original: new UnexpectedStatusCodeError({
+        message: 'base message',
+        reason: 'base reason',
+        statusCode: 500
+      }),
+      target: new IssuerResponseError({
+        code: IssuerResponseErrorCodes.IssuerGenericError,
+        message: 'Fallback error case',
+        reason: 'base reason',
+        statusCode: 500
+      })
+    }
+  ])(
+    'should create the correct error for status code $original.statusCode',
+    ({ original, target }) => {
+      const error = errorBuilderWithFallback.buildFrom(original);
+      expect(error.code).toEqual(target.code);
+      expect(error.message).toEqual(target.message);
+      expect(error.reason).toEqual(target.reason);
+      expect(error.statusCode).toEqual(target.statusCode);
+    }
+  );
+
+  it('should return the original error when nothing matches', () => {
+    const errorBuilderWithoutFallback = new ResponseErrorBuilder(
+      IssuerResponseError
+    ).handle(403, {
+      code: IssuerResponseErrorCodes.CredentialInvalidStatus,
+      message: 'A message'
+    });
+
+    const original = new UnexpectedStatusCodeError({
+      message: 'base message',
+      reason: 'base reason',
+      statusCode: 500
+    });
+
+    const error = errorBuilderWithoutFallback.buildFrom(original);
+    expect(error).toEqual(original);
+  });
+});
+
+describe('Error type guards', () => {
+  const typeGuards = {
+    isIssuerResponseError,
+    isRelyingPartyResponseError,
+    isWalletProviderResponseError
+  };
+
+  test.each([
+    ['isIssuerResponseError', IssuerResponseError, IssuerResponseErrorCodes],
+    [
+      'isWalletProviderResponseError',
+      WalletProviderResponseError,
+      WalletProviderResponseErrorCodes
+    ],
+    [
+      'isRelyingPartyResponseError',
+      RelyingPartyResponseError,
+      RelyingPartyResponseErrorCodes
+    ]
+  ])('%s type guard works correctly', (guardName, ErrorClass, errorCodes) => {
+    const typeGuard = typeGuards[guardName as keyof typeof typeGuards];
+
+    const [correctCode, wrongCode] = Object.keys(errorCodes);
+
+    const error = new ErrorClass({
+      // @ts-expect-error wrong on purpose
+      code: correctCode,
+      message: 'A message',
+      reason: 'A reason',
+      statusCode: 400
+    });
+
+    expect(typeGuard(error)).toBe(true);
+    // @ts-expect-error wrong on purpose
+    expect(typeGuard(error, correctCode)).toBe(true);
+    // @ts-expect-error wrong on purpose
+    expect(typeGuard(error, wrongCode)).toBe(false);
+  });
+});

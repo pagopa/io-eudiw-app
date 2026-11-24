@@ -31,7 +31,8 @@
     "available": "App disponibili",
     "miniApps": {
       "aptitude": "Aptitude",
-      "it-wallet": "IT-Wallet (1.4.6)"
+      "it-wallet": "IT-Wallet (1.4.6)",
+      "it-wallet-hsm": "IT-Wallet HSM (1.4.6)"
     }
   },
   "onboarding": {

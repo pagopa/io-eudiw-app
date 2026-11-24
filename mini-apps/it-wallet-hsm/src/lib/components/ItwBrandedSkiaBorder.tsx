@@ -1,0 +1,78 @@
+import {
+  ColorMatrix,
+  Mask,
+  OpacityMatrix,
+  Paint,
+  RoundedRect,
+  Group as SkiaGroup
+} from '@shopify/react-native-skia';
+import { ColorSchemeName, LayoutRectangle } from 'react-native';
+
+import { ItwBrandedSkiaGradient } from './ItwBrandedSkiaGradient';
+
+const strokePaintStyle = { style: 'stroke' as const };
+
+export type ItwIridescentBorderVariant = 'default' | 'error' | 'warning';
+
+type ItwIridescentBorderProps = {
+  cornerRadius?: number;
+  height: LayoutRectangle['height'];
+  themeType?: ColorSchemeName;
+  thickness?: number;
+  variant?: ItwIridescentBorderVariant;
+  width: LayoutRectangle['width'];
+};
+
+/**
+ * WARNING: this component must be placed inside a {@link Canvas} component.
+ *
+ * Renders an animated IT-Wallet branded gradient using Skia and device rotation sensor data.
+ */
+export const ItwBrandedSkiaBorder = ({
+  cornerRadius = 16,
+  height,
+  themeType = 'light',
+  thickness = 3,
+  variant = 'default',
+  width
+}: ItwIridescentBorderProps) => {
+  const isLightMode = themeType === 'light';
+
+  /* Styles */
+  const gradientTickOpacity = isLightMode ? 1 : 0.8;
+  const gradientBorderOpacity = isLightMode ? 1.0 : 0.8;
+
+  return (
+    <Mask
+      mask={
+        <SkiaGroup blendMode={'colorDodge'} opacity={gradientBorderOpacity}>
+          <ItwBrandedSkiaGradient
+            height={height}
+            variant={variant}
+            width={width}
+          />
+        </SkiaGroup>
+      }
+      mode="alpha"
+    >
+      <SkiaGroup
+        layer={
+          <Paint>
+            <ColorMatrix matrix={OpacityMatrix(gradientTickOpacity)} />
+          </Paint>
+        }
+      >
+        <RoundedRect
+          height={height}
+          r={cornerRadius}
+          strokeJoin={'round'}
+          strokeWidth={thickness}
+          {...strokePaintStyle}
+          width={width}
+          x={0}
+          y={0}
+        />
+      </SkiaGroup>
+    </Mask>
+  );
+};

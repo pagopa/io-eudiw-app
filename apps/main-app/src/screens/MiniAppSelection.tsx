@@ -4,6 +4,7 @@ import {
   useHeaderSecondLevel
 } from '@io-eudiw-app/commons';
 import { itWalletFeature } from '@io-eudiw-app/it-wallet';
+import { itWalletHsmFeature } from '@io-eudiw-app/it-wallet-hsm';
 import { preferencesSetSelectedMiniAppId } from '@io-eudiw-app/preferences';
 import {
   Body,
@@ -51,6 +52,11 @@ const MiniAppSelection = () => {
       id: aptitudeFeature.id,
       image: require('../../assets/icons/it-wallet-mini-app.png'),
       label: t('global:miniAppSelection.miniApps.aptitude')
+    },
+    {
+      id: itWalletHsmFeature.id,
+      image: require('../../assets/icons/it-wallet-mini-app.png'),
+      label: t('global:miniAppSelection.miniApps.it-wallet-hsm')
     }
   ];
 
