@@ -1,7 +1,12 @@
-import type { LocalKeySigner } from '@pagopa/io-react-native-wallet';
+import type { LocalKeySigner, Signer } from '@pagopa/io-react-native-wallet';
 
 import { getPublicKeyFixed, sign } from '@pagopa/io-react-native-crypto';
 import { thumbprint } from '@pagopa/io-react-native-jwt';
+
+import type { CredentialKey } from './itwTypesUtils';
+
+import { requestRemotePin } from './pinPrompt';
+import { createRemoteSignerFor } from './remoteCrypto';
 
 /**
  * Constant for the keytag used for the WIA key.
@@ -31,3 +36,22 @@ export const createLocalSignerFor = (keyTag: string): LocalKeySigner => ({
   kind: 'LOCAL',
   sign: (value: string) => sign(value, keyTag)
 });
+
+/**
+ * Creates the {@link Signer} bound to a credential key.
+ * Remote keys ask the user for the Remote WSCD PIN when the first signature is needed.
+ * @param credentialKey - The key bound to the credential
+ * @param xUserId - The user identifier sent as `x-user-id` to the Wallet Provider
+ * @returns the signer
+ */
+export const createCredentialSigner = (
+  credentialKey: CredentialKey,
+  xUserId: string
+): Signer =>
+  credentialKey.remoteKey !== undefined
+    ? createRemoteSignerFor(
+        credentialKey.remoteKey,
+        () => requestRemotePin(),
+        xUserId
+      )
+    : createLocalSignerFor(credentialKey.keyTag);

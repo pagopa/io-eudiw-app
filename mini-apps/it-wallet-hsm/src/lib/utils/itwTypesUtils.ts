@@ -4,6 +4,8 @@ import {
   SdJwt
 } from '@pagopa/io-react-native-wallet';
 
+import type { RemoteKey } from './remoteCrypto';
+
 import { ClaimDisplayFormat } from './itwRemotePresentationUtils';
 
 export const enum CredentialFormat {
@@ -16,17 +18,25 @@ export type ClaimDisplayResult =
   | { type: 'image'; value: string }
   | { type: 'text'; value: string | string[] };
 /**
+ * The key bound to a credential: either a key in the device keystore, identified by its `keyTag`,
+ * or a key enrolled on the Remote WSCD (HSM), which is used for the PID.
+ */
+export type CredentialKey =
+  | { keyTag: string; remoteKey?: undefined }
+  | { keyTag?: undefined; remoteKey: RemoteKey };
+
+/**
  * Type for disclosable claims.
  */
 export type DisclosureClaim = {
   claim: ClaimDisplayFormat;
   source: string;
 };
-
 /**
  * Creates a type that can be either T with none of the properties from U, or U with none of the properties from T
  */
 export type Either<T, U> = Only<T, U> | Only<U, T>;
+
 /**
  * Presentation details enriched for display. The `signer` is omitted because it is not serializable and must not be put in the store.
  */
@@ -97,13 +107,12 @@ export type StoredCredential = StoredCredentialMetadata & {
  * lives in the Redux slice — it omits the encoded SD-JWT/MDOC, which is
  * persisted separately by `CredentialsVault`.
  */
-export type StoredCredentialMetadata = {
+export type StoredCredentialMetadata = CredentialKey & {
   credentialType: string;
   expiration: string;
   format: string;
   issuedAt?: string;
   issuerConf: IssuerConfiguration;
-  keyTag: string;
   parsedCredential: ParsedCredential;
   spec_version?: string;
 };

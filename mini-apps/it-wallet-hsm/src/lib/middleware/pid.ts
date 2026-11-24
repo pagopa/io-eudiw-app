@@ -12,15 +12,19 @@ import {
 } from '@io-eudiw-app/identification';
 import { IoWallet } from '@pagopa/io-react-native-wallet';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
-import * as Crypto from 'expo-crypto';
 import * as WebBrowser from 'expo-web-browser';
+import { t } from 'i18next';
 
 import MAIN_ROUTES from '../navigation/main/routes';
 import { navigator } from '../navigation/utils';
 import WALLET_ROUTES from '../navigation/wallet/routes';
 import { selectWalletInstanceAttestationAsJwt } from '../store/attestation';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
-import { addPidWithIdentification } from '../store/credentials';
+import {
+  addPidWithIdentification,
+  itwCredentialsPidSelector,
+  setCredentialRemoteKey
+} from '../store/credentials';
 import { selectSessionId } from '../store/instance';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
 import {
@@ -34,12 +38,18 @@ import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredential } from '../utils/credentials';
 import { createLocalSignerFor, DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { serializeErrorOrUnknown } from '../utils/errors';
-import { createWalletFetch } from '../utils/fetch';
+import { requestRemotePin } from '../utils/pinPrompt';
+import {
+  changeRemoteKeyPin,
+  createRemoteSignerFor,
+  enrollRemoteKey
+} from '../utils/remoteCrypto';
 import {
   getKeyAttestationThunk,
   getWalletInstanceAttestationThunk
 } from './attestation';
 import { persistCredential } from './credential';
+import { createAppAsyncThunk } from './thunk';
 import { AppListenerWithAction, AppStartListening } from './types';
 
 /**
@@ -53,6 +63,9 @@ const obtainPidListener: AppListenerWithAction<
 > = async (_, listenerApi) => {
   const { dispatch, getState } = listenerApi;
   try {
+    // The PID key is enrolled on the Remote WSCD (HSM) and protected by a PIN, which is never stored.
+    // It is asked before opening the browser, as a modal can't be presented right after it is dismissed.
+    const remotePin = await requestRemotePin();
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
     const {
       EXPO_PUBLIC_PID_PROVIDER_BASE_URL,
@@ -72,17 +85,12 @@ const obtainPidListener: AppListenerWithAction<
 
     // Start the issuance flow
     const sessionId = selectSessionId(getState());
-    const appFetch = createWalletFetch(sessionId);
 
     const issuerUrl = EXPO_PUBLIC_PID_PROVIDER_BASE_URL;
 
     // Evaluate issuer trust
-    const { issuerConf } = await wallet.CredentialIssuance.evaluateIssuerTrust(
-      issuerUrl,
-      {
-        appFetch
-      }
-    );
+    const { issuerConf } =
+      await wallet.CredentialIssuance.evaluateIssuerTrust(issuerUrl);
 
     // Start user authorization
     const { clientId, codeVerifier, credentialDefinition, issuerRequestUri } =
@@ -91,7 +99,6 @@ const obtainPidListener: AppListenerWithAction<
         ['dc_sd_jwt_PersonIdentificationData'],
         { proofType: 'none' },
         {
-          appFetch,
           redirectUri: redirectUri,
           walletInstanceAttestation,
           wiaSigner
@@ -134,9 +141,6 @@ const obtainPidListener: AppListenerWithAction<
         authRedirectUrl.url
       );
 
-    // Create credential crypto context
-    const credentialKeyTag = Crypto.randomUUID().toString();
-
     // Create DPoP context for the whole issuance flow
     await regenerateCryptoKey(DPOP_KEYTAG);
     const dPopSigner = createLocalSignerFor(DPOP_KEYTAG);
@@ -147,7 +151,6 @@ const obtainPidListener: AppListenerWithAction<
       redirectUri,
       codeVerifier,
       {
-        appFetch,
         dPopSigner,
         walletInstanceAttestation,
         wiaSigner
@@ -173,13 +176,19 @@ const obtainPidListener: AppListenerWithAction<
       throw new Error('No credential configuration ID found for PID');
     }
 
+    // Enroll the credential key on the Remote WSCD and attest it using its Key Enrollment Certificate
+    const remoteKey = await enrollRemoteKey(remotePin, sessionId);
+    const credentialSigner = createRemoteSignerFor(
+      remoteKey,
+      async () => remotePin,
+      sessionId
+    );
+
     const keyAttestation = await dispatch(
       getKeyAttestationThunk({
-        keyTags: [credentialKeyTag]
+        keysToAttest: [{ attestation: remoteKey.kec, signer: credentialSigner }]
       })
     ).unwrap();
-
-    const credentialSigner = createLocalSignerFor(credentialKeyTag);
 
     // Get the credential identifier that was authorized
     const { credential, format } =
@@ -192,7 +201,6 @@ const obtainPidListener: AppListenerWithAction<
           credential_identifier
         },
         {
-          appFetch,
           credentialSigner,
           dPopSigner,
           keyAttestation: keyAttestation.attestation
@@ -215,8 +223,8 @@ const obtainPidListener: AppListenerWithAction<
         format,
         issuedAt: issuedAt?.toISOString(),
         issuerConf,
-        keyTag: credentialKeyTag,
         parsedCredential,
+        remoteKey,
         spec_version: WALLET_SPEC_VERSION
       })
     );
@@ -287,6 +295,36 @@ const addPidWithAuthListener: AppListenerWithAction<
     return;
   }
 };
+
+/**
+ * Thunk to change the Remote WSCD PIN of the PID key.
+ * The PINs are asked to the user and never stored. The new KeyBlob replaces the stored one.
+ */
+// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+export const changeRemotePinThunk = createAppAsyncThunk<void, void>(
+  'hsm/pid/changeRemotePin',
+  async (_, { dispatch, getState }) => {
+    const pid = itwCredentialsPidSelector(getState());
+    if (!pid?.remoteKey) {
+      throw new Error('The PID is not bound to a Remote WSCD key');
+    }
+    const pin = await requestRemotePin(
+      t('remoteWscd.pin.currentTitle', { ns: 'hsm' })
+    );
+    const newPin = await requestRemotePin(
+      t('remoteWscd.pin.newTitle', { ns: 'hsm' })
+    );
+    const remoteKey = await changeRemoteKeyPin(
+      pid.remoteKey,
+      pin,
+      newPin,
+      selectSessionId(getState())
+    );
+    dispatch(
+      setCredentialRemoteKey({ credentialType: pid.credentialType, remoteKey })
+    );
+  }
+);
 
 export const addPidListeners = (startAppListening: AppStartListening) => {
   startAppListening({

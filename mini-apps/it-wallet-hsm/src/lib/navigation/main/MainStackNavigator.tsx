@@ -1,6 +1,7 @@
 import { NavigatorScreenParams, PathConfigMap } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import { RemotePinPrompt } from '../../components/RemotePinPrompt';
 import QrCodeScanScreen from '../../screens/presentation/QrCodeScanScreen';
 import ItwBluetoothActivationScreen from '../../screens/proximity/ItwBluetoothActivationScreen';
 import ItwBluetoothPermissionsScreen from '../../screens/proximity/ItwBluetoothPermissionsScreen';
@@ -59,61 +60,64 @@ const Stack = createStackNavigator<MainNavigatorParamsList>();
  * Handles async i18n initialization before rendering the navigation tree.
  */
 export const MainStackNavigator = () => (
-  <Stack.Navigator
-    initialRouteName={MAIN_ROUTES.TAB_NAV}
-    screenOptions={{
-      headerShown: false
-    }}
-  >
-    <Stack.Screen component={TabNavigator} name={MAIN_ROUTES.TAB_NAV} />
+  <>
+    <Stack.Navigator
+      initialRouteName={MAIN_ROUTES.TAB_NAV}
+      screenOptions={{
+        headerShown: false
+      }}
+    >
+      <Stack.Screen component={TabNavigator} name={MAIN_ROUTES.TAB_NAV} />
 
-    <Stack.Screen component={WalletNavigator} name={MAIN_ROUTES.WALLET_NAV} />
+      <Stack.Screen component={WalletNavigator} name={MAIN_ROUTES.WALLET_NAV} />
 
-    <Stack.Screen
-      component={QrCodeScanScreen}
-      name={MAIN_ROUTES.SCAN_QR}
-      options={{ animation: 'slide_from_bottom' }}
-    />
+      <Stack.Screen
+        component={QrCodeScanScreen}
+        name={MAIN_ROUTES.SCAN_QR}
+        options={{ animation: 'slide_from_bottom' }}
+      />
 
-    <Stack.Screen
-      component={ItwProximityPresentmentScreen}
-      name={MAIN_ROUTES.BLE_PRESENTMENT}
-      options={{ animation: 'slide_from_bottom' }}
-    />
+      <Stack.Screen
+        component={ItwProximityPresentmentScreen}
+        name={MAIN_ROUTES.BLE_PRESENTMENT}
+        options={{ animation: 'slide_from_bottom' }}
+      />
 
-    <Stack.Screen
-      component={ItwProximityNfcPresentment}
-      name={MAIN_ROUTES.NFC_PRESENTMENT}
-      options={{ animation: 'slide_from_bottom' }}
-    />
+      <Stack.Screen
+        component={ItwProximityNfcPresentment}
+        name={MAIN_ROUTES.NFC_PRESENTMENT}
+        options={{ animation: 'slide_from_bottom' }}
+      />
 
-    <Stack.Screen
-      component={ItwBluetoothPermissionsScreen}
-      name={MAIN_ROUTES.PROXIMITY_BLUETOOTH_PERMISSIONS}
-    />
+      <Stack.Screen
+        component={ItwBluetoothPermissionsScreen}
+        name={MAIN_ROUTES.PROXIMITY_BLUETOOTH_PERMISSIONS}
+      />
 
-    <Stack.Screen
-      component={ItwBluetoothActivationScreen}
-      name={MAIN_ROUTES.PROXIMITY_BLUETOOTH_ACTIVATION}
-    />
+      <Stack.Screen
+        component={ItwBluetoothActivationScreen}
+        name={MAIN_ROUTES.PROXIMITY_BLUETOOTH_ACTIVATION}
+      />
 
-    <Stack.Screen
-      component={ItwNfcActivationScreen}
-      name={MAIN_ROUTES.PROXIMITY_NFC_ACTIVATION}
-    />
+      <Stack.Screen
+        component={ItwNfcActivationScreen}
+        name={MAIN_ROUTES.PROXIMITY_NFC_ACTIVATION}
+      />
 
-    <Stack.Screen component={Settings} name={MAIN_ROUTES.SETTINGS.MAIN} />
-    <Stack.Screen
-      component={Preference}
-      name={MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN}
-    />
-    <Stack.Screen
-      component={Appearance}
-      name={MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE}
-    />
-    <Stack.Screen
-      component={ProximityConsents}
-      name={MAIN_ROUTES.SETTINGS.PROXIMITY}
-    />
-  </Stack.Navigator>
+      <Stack.Screen component={Settings} name={MAIN_ROUTES.SETTINGS.MAIN} />
+      <Stack.Screen
+        component={Preference}
+        name={MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN}
+      />
+      <Stack.Screen
+        component={Appearance}
+        name={MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE}
+      />
+      <Stack.Screen
+        component={ProximityConsents}
+        name={MAIN_ROUTES.SETTINGS.PROXIMITY}
+      />
+    </Stack.Navigator>
+    <RemotePinPrompt />
+  </>
 );

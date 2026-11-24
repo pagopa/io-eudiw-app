@@ -10,6 +10,7 @@ import {
   setIdentificationUnidentified
 } from '@io-eudiw-app/identification';
 import { IOToast } from '@pagopa/io-app-design-system';
+import { generate } from '@pagopa/io-react-native-crypto';
 import {
   IoWallet,
   RemotePresentation,
@@ -47,9 +48,13 @@ import { selectSessionId } from '../store/instance';
 import { ResolvedCredentialOffer } from '../types';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredential } from '../utils/credentials';
-import { createLocalSignerFor, DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
+import {
+  createCredentialSigner,
+  createLocalSignerFor,
+  DPOP_KEYTAG,
+  WIA_KEYTAG
+} from '../utils/crypto';
 import { serializeErrorOrUnknown } from '../utils/errors';
-import { createWalletFetch } from '../utils/fetch';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
 import { CredentialsVault } from '../utils/itwCredentialVault';
@@ -118,15 +123,8 @@ export const resolveCredentialOfferThunk: ResolveCredentialOfferThunk =
     async ({ url }, { getState, rejectWithValue }) => {
       try {
         const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
-        const sessionId = selectSessionId(getState());
-        const appFetch = createWalletFetch(sessionId);
 
-        const offer = await wallet.CredentialsOffer.resolveCredentialOffer(
-          url,
-          {
-            fetch: appFetch
-          }
-        );
+        const offer = await wallet.CredentialsOffer.resolveCredentialOffer(url);
 
         const [credentialConfigId] = offer.credential_configuration_ids;
         if (!credentialConfigId) {
@@ -195,13 +193,18 @@ const obtainCredentialListener: AppListenerWithAction<
 
     // Start the issuance flow
     const sessionId = selectSessionId(listenerApi.getState());
-    const appFetch = createWalletFetch(sessionId);
 
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
-    const keyAttestation = await listenerApi
-      .dispatch(getKeyAttestationThunk({ keyTags: [credentialKeyTag] }))
-      .unwrap();
+    // Credential keys other than the PID one live in the device keystore
+    await generate(credentialKeyTag);
     const credentialSigner = createLocalSignerFor(credentialKeyTag);
+    const keyAttestation = await listenerApi
+      .dispatch(
+        getKeyAttestationThunk({
+          keysToAttest: [{ signer: credentialSigner }]
+        })
+      )
+      .unwrap();
 
     const pid = selectCredential(wellKnownCredential.PID)(state);
 
@@ -223,7 +226,6 @@ const obtainCredentialListener: AppListenerWithAction<
     const { issuerConf } = await wallet.CredentialIssuance.evaluateIssuerTrust(
       issuerUrl,
       {
-        appFetch,
         authorizationServer
       }
     );
@@ -246,7 +248,6 @@ const obtainCredentialListener: AppListenerWithAction<
         [credentialId],
         { proofType: 'none' },
         {
-          appFetch,
           issuerState,
           redirectUri,
           scope: offerScope,
@@ -269,7 +270,7 @@ const obtainCredentialListener: AppListenerWithAction<
       );
     }
 
-    if (!pid || !pid.keyTag) {
+    if (!pid) {
       throw new Error('PID required for EAA issuance but missing.');
     }
 
@@ -284,14 +285,13 @@ const obtainCredentialListener: AppListenerWithAction<
       await wallet.CredentialIssuance.getRequestedCredentialToBePresented(
         issuerRequestUri,
         clientId,
-        issuerConf,
-        appFetch
+        issuerConf
       );
 
     // Using only the PID credential
     const credentialsSdJwt: [Signer, string][] =
       pid.format === 'dc+sd-jwt' && pidEncoded
-        ? [[createLocalSignerFor(pid.keyTag), pidEncoded]]
+        ? [[createCredentialSigner(pid, sessionId), pidEncoded]]
         : [];
 
     const evaluatedDcqlQuery =
@@ -328,7 +328,7 @@ const obtainCredentialListener: AppListenerWithAction<
         requestObject,
         issuerConf,
         evaluatedDcqlQuery,
-        { appFetch, wiaSigner }
+        { wiaSigner }
       );
 
     // Generate the DPoP context which will be used for the whole issuance flow
@@ -341,7 +341,6 @@ const obtainCredentialListener: AppListenerWithAction<
       redirectUri,
       codeVerifier,
       {
-        appFetch,
         dPopSigner,
         walletInstanceAttestation,
         wiaSigner
@@ -364,7 +363,6 @@ const obtainCredentialListener: AppListenerWithAction<
           credential_identifier: credential_identifiers[0]
         },
         {
-          appFetch,
           credentialSigner,
           dPopSigner,
           keyAttestation: keyAttestation.attestation

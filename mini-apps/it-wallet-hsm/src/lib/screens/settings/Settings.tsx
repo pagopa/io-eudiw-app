@@ -24,8 +24,10 @@ import { useTranslation } from 'react-i18next';
 import { FlatList, ListRenderItemInfo } from 'react-native';
 
 import AppVersion from '../../components/AppVersion';
+import { changeRemotePinThunk } from '../../middleware/pid';
 import MAIN_ROUTES from '../../navigation/main/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
+import { itwCredentialsPidSelector } from '../../store/credentials';
 import { resetLifecycle } from '../../store/lifecycle';
 
 type ProfileNavListItem = Pick<
@@ -49,6 +51,7 @@ const Settings = () => {
   const { t } = useTranslation(['common', 'hsm']);
   const dispatch = useAppDispatch();
   const isDebugModeEnabled = useAppSelector(selectIsDebugModeEnabled);
+  const pid = useAppSelector(itwCredentialsPidSelector);
   const idResetTap = useRef<ReturnType<typeof setInterval> | undefined>(
     undefined
   );
@@ -74,6 +77,17 @@ const Settings = () => {
       description: t('hsm:settings.proximity.description'),
       onPress: () => navigation.navigate(MAIN_ROUTES.SETTINGS.PROXIMITY),
       value: t('hsm:settings.proximity.title')
+    },
+    {
+      description: t('hsm:settings.changeRemotePin.description'),
+      isHidden: !pid?.remoteKey,
+      onPress: () => {
+        dispatch(changeRemotePinThunk())
+          .unwrap()
+          .then(() => toast.success(t('common:generics.success')))
+          .catch(() => toast.error(t('hsm:settings.changeRemotePin.error')));
+      },
+      value: t('hsm:settings.changeRemotePin.title')
     },
     {
       description: t('hsm:settings.debug.wallet.description'),

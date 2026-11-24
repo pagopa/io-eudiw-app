@@ -1,7 +1,6 @@
 import { regenerateCryptoKey } from '@io-eudiw-app/commons';
 import { getEnv } from '@io-eudiw-app/env';
-import { generate } from '@pagopa/io-react-native-crypto';
-import { IoWallet } from '@pagopa/io-react-native-wallet';
+import { IoWallet, type KeyAttestation } from '@pagopa/io-react-native-wallet';
 
 import { AppThunk } from '../store';
 import {
@@ -11,7 +10,6 @@ import {
 import { selectInstanceKeyTag, selectSessionId } from '../store/instance';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { createLocalSignerFor, WIA_KEYTAG } from '../utils/crypto';
-import { createWalletFetch } from '../utils/fetch';
 import { getIntegrityContext } from '../utils/integrity';
 import { createAppAsyncThunk } from './thunk';
 
@@ -36,7 +34,6 @@ export const getWalletInstanceAttestationThunk =
       const sessionId = selectSessionId(state);
       const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
         getEnv();
-      const appFetch = createWalletFetch(sessionId);
 
       const integrityContext = getIntegrityContext(instanceKeyTag);
 
@@ -56,7 +53,6 @@ export const getWalletInstanceAttestationThunk =
             xUserId: sessionId
           },
           {
-            appFetch,
             integrityContext,
             wiaSigner
           }
@@ -68,7 +64,8 @@ export const getWalletInstanceAttestationThunk =
   };
 
 type GetKeyAttestationThunkInput = {
-  keyTags: string[];
+  // The keys must already exist, either locally or on the Remote WSCD
+  keysToAttest: KeyAttestation.KeyToAttest[];
 };
 type GetKeyAttestationThunkOutput = {
   attestation: string;
@@ -78,45 +75,39 @@ type GetKeyAttestationThunkOutput = {
 export const getKeyAttestationThunk = createAppAsyncThunk<
   GetKeyAttestationThunkOutput,
   GetKeyAttestationThunkInput
->('hsm/walletinstance/keyattestation', async ({ keyTags }, { getState }) => {
-  const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
-  const sessionId = selectSessionId(getState());
+>(
+  'hsm/walletinstance/keyattestation',
+  async ({ keysToAttest }, { getState }) => {
+    const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+    const sessionId = selectSessionId(getState());
 
-  const appFetch = createWalletFetch(sessionId);
-
-  // Retrieve the integrity key tag from the store and create its context
-  const integrityKeyTag = selectInstanceKeyTag(getState());
-  if (!integrityKeyTag) {
-    throw new Error('Integrity key not found');
-  }
-  const integrityContext = getIntegrityContext(integrityKeyTag);
-
-  // Get env URLs
-  const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
-    getEnv();
-
-  // Keys must exist before being attested
-  await Promise.all(keyTags.map(keyTag => generate(keyTag)));
-
-  const challenge = await wallet.KeyAttestation.getChallenge(
-    { walletProviderBaseUrl },
-    { appFetch }
-  );
-
-  return await wallet.KeyAttestation.getAttestation(
-    {
-      walletProviderBaseUrl,
-      walletSolutionId: 'appio',
-      walletSolutionVersion: '3.26.0',
-      xUserId: sessionId
-    },
-    {
-      appFetch,
-      challenge,
-      integrityContext,
-      keysToAttest: keyTags.map(keyTag => ({
-        signer: createLocalSignerFor(keyTag)
-      }))
+    // Retrieve the integrity key tag from the store and create its context
+    const integrityKeyTag = selectInstanceKeyTag(getState());
+    if (!integrityKeyTag) {
+      throw new Error('Integrity key not found');
     }
-  );
-});
+    const integrityContext = getIntegrityContext(integrityKeyTag);
+
+    // Get env URLs
+    const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
+      getEnv();
+
+    const challenge = await wallet.KeyAttestation.getChallenge({
+      walletProviderBaseUrl
+    });
+
+    return await wallet.KeyAttestation.getAttestation(
+      {
+        walletProviderBaseUrl,
+        walletSolutionId: 'appio',
+        walletSolutionVersion: '3.26.0',
+        xUserId: sessionId
+      },
+      {
+        challenge,
+        integrityContext,
+        keysToAttest
+      }
+    );
+  }
+);
