@@ -12,6 +12,7 @@ Validates and exposes environment variables at runtime. Throws at startup if any
 | `EXPO_PUBLIC_PID_PROVIDER_BASE_URL` | URL | Base URL of the PID Provider |
 | `EXPO_PUBLIC_EAA_PROVIDER_BASE_URL` | URL | Base URL of the EAA credential issuer |
 | `EXPO_PUBLIC_PID_REDIRECT_URI` | String | OAuth redirect URI for the PID issuance flow |
+| `EXPO_PUBLIC_NSSAM_MASTER_PUBLIC_KEY` | Base64 | NSSAM Master RSA public key (the PEM body on one line, exposed as PEM by `getEnv()`), which signs the Remote WSCD session keys |
 
 Define these in your `.env` file.
 

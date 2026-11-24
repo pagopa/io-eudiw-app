@@ -2,6 +2,7 @@ import { Buffer } from '@craftzdog/react-native-buffer';
 import { getEnv } from '@io-eudiw-app/env';
 import { thumbprint } from '@pagopa/io-react-native-jwt';
 import {
+  Errors,
   getWalletProviderClient,
   type Signer
 } from '@pagopa/io-react-native-wallet';
@@ -10,16 +11,8 @@ import QuickCrypto from 'react-native-quick-crypto';
 /** DER prefix of a SHA-256 DigestInfo, which NSSAM `hashsign` expects before the digest. */
 const SHA256_DIGEST_INFO_PREFIX = '3031300d060960864801650304020105000420';
 
-/** The NSSAM Master RSA public key which signs the session keys. */
-const NSSAM_MASTER_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8wwBN03bIlfiB6TzCP+e
-iWt1c6mGaNuHP8XI3aNmeJocZvJyscyi5sbXAoRSOvTWcfosHIeVR+S7Gte1AR28
-ukitkr6KyjAd9Lgidtz+hSkA5mvyw5lrQ7nEwNB/ctqiYBdQjfOXDRYi0iQO8GEo
-VHjeDtQfvriqd6/2rvKsPHD3L2yljab2IZcaW4O+c2wa5Ymx0gt7h0whH+O5GjXg
-84j3yYfyakYLeOaqGxTVZpgxtxfXmgRURGcC9oSkZS6JQ0rEFBRZZabMoyarKkr7
-5N7+AVBRgbCUAN2ttHVQNk6aZh+hNOZG1JHDXrsUtIBVvxBdQ/XGjpXRCjvrHApZ
-owIDAQAB
------END PUBLIC KEY-----`;
+/** Size in bytes of a P-256 coordinate and of the `r` and `s` values of an ES256 signature. */
+const P256_SIZE = 32;
 
 /**
  * A key pair enrolled on the Remote WSCD. It is serializable and can be persisted along with the credential it is bound to.
@@ -43,13 +36,16 @@ export const enrollRemoteKey = async (
   pin: string,
   xUserId: string
 ): Promise<RemoteKey> => {
-  const { api, header, session } = await openSession(xUserId, accessToken =>
-    enrollRequest(accessToken, pin)
+  const { encryptedKey, kec, publicKey } = await withSession(
+    xUserId,
+    accessToken => enrollRequest(accessToken, pin),
+    ({ api, header, session }) =>
+      api.post('/remote-wscd/keys', { body: session, header })
   );
-  const { encryptedKey, kec, publicKey } = await api.post('/remote-wscd/keys', {
-    body: session,
-    header
-  });
+  // NSSAM generates EC keys on the curve configured on the HSM, P-521 by default, while only P-256 keys can be attested
+  if (publicKey.keyType !== 'EC') {
+    throw new Error('The Remote WSCD key is not an EC P-256 key');
+  }
 
   return {
     encryptedKey,
@@ -58,8 +54,8 @@ export const enrollRemoteKey = async (
     publicKey: {
       crv: 'P-256',
       kty: 'EC',
-      x: Buffer.from(publicKey.modulus, 'base64').toString('base64url'),
-      y: Buffer.from(publicKey.exponent, 'base64').toString('base64url')
+      x: toP256Coordinate(publicKey.modulus),
+      y: toP256Coordinate(publicKey.exponent)
     }
   };
 };
@@ -79,18 +75,15 @@ export const changeRemoteKeyPin = async (
   newPin: string,
   xUserId: string
 ): Promise<RemoteKey> => {
-  /* eslint-disable perfectionist/sort-objects -- NSSAM rejects requests whose fields are not in this order */
-  const { api, header, session } = await openSession(xUserId, accessToken => ({
-    cmd: 194,
-    access_token: accessToken,
-    pin,
-    new_pin: newPin
-  }));
-  /* eslint-enable perfectionist/sort-objects */
-  const { encryptedKey } = await api.post('/remote-wscd/pin-changes', {
-    body: { ...session, encryptedKey: remoteKey.encryptedKey },
-    header
-  });
+  const { encryptedKey } = await withSession(
+    xUserId,
+    accessToken => changePinRequest(accessToken, pin, newPin),
+    ({ api, header, session }) =>
+      api.post('/remote-wscd/pin-changes', {
+        body: { ...session, encryptedKey: remoteKey.encryptedKey },
+        header
+      })
+  );
 
   return { ...remoteKey, encryptedKey };
 };
@@ -124,13 +117,15 @@ export const createRemoteSignerFor = (
       ]).toString('base64');
 
       const currentPin = await pin();
-      const { api, header, session } = await openSession(xUserId, accessToken =>
-        hashSignRequest(accessToken, currentPin, digestInfo)
+      const { signature } = await withSession(
+        xUserId,
+        accessToken => hashSignRequest(accessToken, currentPin, digestInfo),
+        ({ api, header, session }) =>
+          api.post('/remote-wscd/signatures', {
+            body: { ...session, encryptedKey: remoteKey.encryptedKey },
+            header
+          })
       );
-      const { signature } = await api.post('/remote-wscd/signatures', {
-        body: { ...session, encryptedKey: remoteKey.encryptedKey },
-        header
-      });
 
       return rawSignatureToDer(Buffer.from(signature, 'base64'));
     }
@@ -138,12 +133,22 @@ export const createRemoteSignerFor = (
 };
 
 /**
- * Opens an NSSAM session through the Wallet Provider and encrypts the operation request with its session key.
+ * Runs an NSSAM operation in a new session opened through the Wallet Provider, encrypting its request with the session key.
+ * NSSAM limits the open sessions of each user, so the session is cancelled when the operation does not consume it.
+ * @param xUserId - The user identifier sent as `x-user-id` to the Wallet Provider
+ * @param request - Builds the NSSAM request of the operation, which is sent encrypted in the session `data`
+ * @param operation - Sends the session to the Wallet Provider endpoint of the operation
+ * @returns the result of the operation
  */
-const openSession = async (
+const withSession = async <T>(
   xUserId: string,
-  request: (accessToken: string) => object
-) => {
+  request: (accessToken: string) => object,
+  operation: (context: {
+    api: ReturnType<typeof getWalletProviderClient>;
+    header: { 'x-user-id': string };
+    session: { data: string; jwtToken: string; sessionId: string };
+  }) => Promise<T>
+): Promise<T> => {
   const api = getWalletProviderClient({
     walletProviderBaseUrl: getEnv().EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL
   });
@@ -191,52 +196,81 @@ const openSession = async (
     }
   );
 
-  // NSSAM signs the first n bytes of the base64 `encryptionKey`, where n is the length of the decoded key
-  const encryptedSessionKey = Buffer.from(encryptionKey, 'base64');
-  const isSignedByMaster = QuickCrypto.createVerify('SHA256')
-    .update(
-      Buffer.from(encryptionKey, 'utf8').subarray(0, encryptedSessionKey.length)
-    )
-    .verify(
-      { format: 'pem', key: NSSAM_MASTER_PUBLIC_KEY },
-      Buffer.from(signature, 'base64')
+  try {
+    // NSSAM signs the first n bytes of the base64 `encryptionKey`, where n is the length of the decoded key
+    const encryptedSessionKey = Buffer.from(encryptionKey, 'base64');
+    const isSignedByMaster = QuickCrypto.createVerify('SHA256')
+      .update(
+        Buffer.from(encryptionKey, 'utf8').subarray(
+          0,
+          encryptedSessionKey.length
+        )
+      )
+      .verify(
+        { format: 'pem', key: getEnv().EXPO_PUBLIC_NSSAM_MASTER_PUBLIC_KEY },
+        Buffer.from(signature, 'base64')
+      );
+    if (!isSignedByMaster) {
+      throw new Error('The session key is not signed by the NSSAM Master key');
+    }
+
+    const rawSessionKey = await subtle.decrypt(
+      { name: 'RSA-OAEP' },
+      keyPair.privateKey,
+      encryptedSessionKey
     );
-  if (!isSignedByMaster) {
-    throw new Error('The session key is not signed by the NSSAM Master key');
+    // AES-256-GCM is required: a shorter key would silently downgrade to AES-128/192
+    if (rawSessionKey.byteLength !== 32) {
+      throw new Error('The session key is not an AES-256 key');
+    }
+    const sessionKey = await subtle.importKey(
+      'raw',
+      rawSessionKey,
+      { name: 'AES-GCM' },
+      false,
+      ['encrypt']
+    );
+    const iv = QuickCrypto.randomBytes(16);
+    const encryptedRequest = await subtle.encrypt(
+      { iv, name: 'AES-GCM' },
+      sessionKey,
+      Buffer.from(JSON.stringify(request(jwtToken)))
+    );
+
+    // NSSAM format: ivLength || tagLength || iv || ciphertext || tag
+    const data = Buffer.concat([
+      Buffer.from([16, 16]),
+      iv,
+      Buffer.from(encryptedRequest)
+    ]).toString('base64');
+
+    return await operation({
+      api,
+      header,
+      session: { data, jwtToken, sessionId }
+    });
+  } catch (error) {
+    // A Remote WSCD problem is answered only after NSSAM consumed the session or the Wallet Provider cancelled it
+    if (!isRemoteWscdProblem(error)) {
+      void api
+        .post('/remote-wscd/session-cancellations', {
+          body: { jwtToken, sessionId },
+          header
+        })
+        .catch(() => undefined);
+    }
+    throw error;
   }
-
-  const rawSessionKey = await subtle.decrypt(
-    { name: 'RSA-OAEP' },
-    keyPair.privateKey,
-    encryptedSessionKey
-  );
-  // AES-256-GCM is required: a shorter key would silently downgrade to AES-128/192
-  if (rawSessionKey.byteLength !== 32) {
-    throw new Error('The session key is not an AES-256 key');
-  }
-  const sessionKey = await subtle.importKey(
-    'raw',
-    rawSessionKey,
-    { name: 'AES-GCM' },
-    false,
-    ['encrypt']
-  );
-  const iv = QuickCrypto.randomBytes(16);
-  const encryptedRequest = await subtle.encrypt(
-    { iv, name: 'AES-GCM' },
-    sessionKey,
-    Buffer.from(JSON.stringify(request(jwtToken)))
-  );
-
-  // NSSAM format: ivLength || tagLength || iv || ciphertext || tag
-  const data = Buffer.concat([
-    Buffer.from([16, 16]),
-    iv,
-    Buffer.from(encryptedRequest)
-  ]).toString('base64');
-
-  return { api, header, session: { data, jwtToken, sessionId } };
 };
+
+/**
+ * Whether the error is a Remote WSCD problem answered by the Wallet Provider, e.g. `PIN_INCORRECT`.
+ * Other failures, such as network or gateway errors, do not tell whether the request reached NSSAM.
+ */
+const isRemoteWscdProblem = (error: unknown) =>
+  Errors.isWalletProviderResponseError(error) &&
+  error.code !==
+    Errors.WalletProviderResponseErrorCodes.WalletProviderGenericError;
 
 /* eslint-disable perfectionist/sort-objects -- NSSAM rejects requests whose fields are not in this order */
 const enrollRequest = (accessToken: string, pin: string) => ({
@@ -256,18 +290,45 @@ const hashSignRequest = (
   pin,
   digest_info: digestInfo
 });
+
+const changePinRequest = (
+  accessToken: string,
+  pin: string,
+  newPin: string
+) => ({
+  cmd: 194,
+  access_token: accessToken,
+  pin,
+  new_pin: newPin
+});
 /* eslint-enable perfectionist/sort-objects */
 
 /**
- * Encodes the raw `r || s` ECDSA signature returned by NSSAM as DER, as required by {@link Signer}.
+ * Encodes a big-endian EC coordinate as a P-256 JWK coordinate, which is exactly 32 bytes long.
+ * @throws if the coordinate does not fit a P-256 key
+ */
+const toP256Coordinate = (coordinate: string) => {
+  const value = stripLeadingZeros(Buffer.from(coordinate, 'base64'));
+  if (value.length > P256_SIZE) {
+    throw new Error('The Remote WSCD key is not an EC P-256 key');
+  }
+  return Buffer.concat([
+    Buffer.alloc(P256_SIZE - value.length),
+    value
+  ]).toString('base64url');
+};
+
+/**
+ * Encodes the raw `r || s` ES256 signature returned by NSSAM as DER, as required by {@link Signer}.
+ * @throws if the signature is not an ES256 signature
  */
 const rawSignatureToDer = (signature: Buffer) => {
+  // Also guarantees that every DER length below fits the short form
+  if (signature.length !== 2 * P256_SIZE) {
+    throw new Error('The Remote WSCD signature is not an ES256 signature');
+  }
   const toDerInteger = (value: Buffer) => {
-    // Strip the leading zeros, keeping at least one byte
-    const firstNonZero = value.findIndex(byte => byte !== 0);
-    const unsigned = value.subarray(
-      firstNonZero === -1 ? value.length - 1 : firstNonZero
-    );
+    const unsigned = stripLeadingZeros(value);
     // A leading zero keeps the integer positive when its most significant bit is set
     const integer =
       unsigned.readUInt8(0) >= 0x80
@@ -275,12 +336,20 @@ const rawSignatureToDer = (signature: Buffer) => {
         : unsigned;
     return Buffer.concat([Buffer.from([0x02, integer.length]), integer]);
   };
-  const r = toDerInteger(signature.subarray(0, signature.length / 2));
-  const s = toDerInteger(signature.subarray(signature.length / 2));
+  const r = toDerInteger(signature.subarray(0, P256_SIZE));
+  const s = toDerInteger(signature.subarray(P256_SIZE));
 
   return Buffer.concat([
     Buffer.from([0x30, r.length + s.length]),
     r,
     s
   ]).toString('base64');
+};
+
+/**
+ * Strips the leading zeros of a big-endian integer, keeping at least one byte.
+ */
+const stripLeadingZeros = (value: Buffer) => {
+  const firstNonZero = value.findIndex(byte => byte !== 0);
+  return value.subarray(firstNonZero === -1 ? value.length - 1 : firstNonZero);
 };

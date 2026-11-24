@@ -5,6 +5,16 @@ import * as z from 'zod';
  */
 const envSchema = z.object({
   EXPO_PUBLIC_EAA_PROVIDER_BASE_URL: z.string().url(),
+  // `.env` values are single-line, so the PEM body is wrapped here
+  EXPO_PUBLIC_NSSAM_MASTER_PUBLIC_KEY: z
+    .base64()
+    .transform(body =>
+      [
+        '-----BEGIN PUBLIC KEY-----',
+        ...(body.match(/.{1,64}/g) ?? []),
+        '-----END PUBLIC KEY-----'
+      ].join('\n')
+    ),
   EXPO_PUBLIC_PID_PROVIDER_BASE_URL: z.string().url(),
   EXPO_PUBLIC_PID_REDIRECT_URI: z.string(),
   EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: z.string().url()
@@ -15,6 +25,8 @@ type Env = z.infer<typeof envSchema>;
 const rawEnv = {
   EXPO_PUBLIC_EAA_PROVIDER_BASE_URL:
     process.env.EXPO_PUBLIC_EAA_PROVIDER_BASE_URL,
+  EXPO_PUBLIC_NSSAM_MASTER_PUBLIC_KEY:
+    process.env.EXPO_PUBLIC_NSSAM_MASTER_PUBLIC_KEY,
   EXPO_PUBLIC_PID_PROVIDER_BASE_URL:
     process.env.EXPO_PUBLIC_PID_PROVIDER_BASE_URL,
   EXPO_PUBLIC_PID_REDIRECT_URI: process.env.EXPO_PUBLIC_PID_REDIRECT_URI,
