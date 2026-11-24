@@ -251,7 +251,7 @@ const withSession = async <T>(
     });
   } catch (error) {
     // A Remote WSCD problem is answered only after NSSAM consumed the session or the Wallet Provider cancelled it
-    if (!isRemoteWscdProblem(error)) {
+    if (!isRemoteWscdError(error)) {
       void api
         .post('/remote-wscd/session-cancellations', {
           body: { jwtToken, sessionId },
@@ -267,7 +267,7 @@ const withSession = async <T>(
  * Whether the error is a Remote WSCD problem answered by the Wallet Provider, e.g. `PIN_INCORRECT`.
  * Other failures, such as network or gateway errors, do not tell whether the request reached NSSAM.
  */
-const isRemoteWscdProblem = (error: unknown) =>
+const isRemoteWscdError = (error: unknown) =>
   Errors.isWalletProviderResponseError(error) &&
   error.code !==
     Errors.WalletProviderResponseErrorCodes.WalletProviderGenericError;
