@@ -1,0 +1,42 @@
+import { useNavigation } from '@react-navigation/native';
+
+import MAIN_ROUTES from '../../navigation/main/routes';
+import WALLET_ROUTES from '../../navigation/wallet/routes';
+import { withWalletCardBaseComponent } from '../WalletCardBaseComponent';
+import { WalletCardPressableBase } from '../WalletCardPressableBase';
+import { ItwCredentialCard, ItwCredentialCardProps } from './ItwCredentialCard';
+
+type ItwCredentialWalletCardProps = ItwCredentialCardProps & {
+  /* Optional onPress to override press functionality */
+  onPress?: () => void;
+};
+
+const WrappedItwCredentialCard = (props: ItwCredentialWalletCardProps) => {
+  const { credentialType, onPress } = props;
+  const navigation = useNavigation();
+
+  const handleOnPress = () => {
+    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+      params: {
+        credentialType
+      },
+      screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_DETAILS
+    });
+  };
+
+  return (
+    <WalletCardPressableBase
+      onPress={onPress ?? handleOnPress}
+      testID="ItwCredentialWalletCardTestID"
+    >
+      <ItwCredentialCard {...props} />
+    </WalletCardPressableBase>
+  );
+};
+
+/**
+ * Wrapper component which adds wallet capabilites to the ItwCredentialCard component
+ */
+export const ItwCredentialWalletCard = withWalletCardBaseComponent(
+  WrappedItwCredentialCard
+);

@@ -1,0 +1,228 @@
+import {
+  OperationResultScreenContent,
+  usePreventScreenCapture
+} from '@io-eudiw-app/commons';
+import {
+  selectIsDebugModeEnabled,
+  useDebugInfo
+} from '@io-eudiw-app/debug-info';
+import {
+  ContentWrapper,
+  IOButton,
+  Optional,
+  VStack
+} from '@pagopa/io-app-design-system';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
+
+import ItwCredentialNotFound from '../../components/ItwCredentialNotFound';
+import { PoweredByItWalletText } from '../../components/PoweredByItWalletText';
+import { ItwPresentationClaimsSection } from '../../components/presentation/ItwPresentationClaimsSection';
+import { ItwPresentationCredentialInfoAlert } from '../../components/presentation/ItwPresentationCredentialInfoAlert';
+import { ItwPresentationCredentialStatusAlert } from '../../components/presentation/ItwPresentationCredentialStatusAlert';
+import { ItwPresentationCredentialUnknownStatus } from '../../components/presentation/ItwPresentationCredentialUnknownStatus';
+import { ItwPresentationDetailsFooter } from '../../components/presentation/ItwPresentationDetailsFooter';
+import { ItwPresentationDetailsHeader } from '../../components/presentation/ItwPresentationDetailsHeader';
+import {
+  CredentialCtaProps,
+  ItwPresentationDetailsScreenBase
+} from '../../components/presentation/ItwPresentationDetailsScreenBase';
+import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredentialStatus';
+import { useProximityEngagement } from '../../hooks/useProximityEngagement';
+import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
+import MAIN_ROUTES from '../../navigation/main/routes';
+import WALLET_ROUTES from '../../navigation/wallet/routes';
+import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
+import { useAppSelector } from '../../store';
+import { selectCredential } from '../../store/credentials';
+import { lifecycleIsValidSelector } from '../../store/lifecycle';
+import { parseClaimsToRecord } from '../../utils/claims';
+import { wellKnownCredential } from '../../utils/credentials';
+import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
+import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
+import {
+  CredentialFormat,
+  StoredCredentialMetadata
+} from '../../utils/itwTypesUtils';
+
+export type ItwPresentationCredentialDetailNavigationParams = {
+  credentialType: string;
+};
+
+const credentialsWithSkeumorphicCard: readonly string[] = [
+  wellKnownCredential.DRIVING_LICENSE,
+  wellKnownCredential.DISABILITY_CARD
+];
+
+type Props = StackScreenProps<
+  WalletNavigatorParamsList,
+  'PRESENTATION_CREDENTIAL_DETAILS'
+>;
+
+/**
+ * Component that renders the credential detail screen.
+ */
+export const ItwPresentationCredentialDetailScreen = ({ route }: Props) => {
+  const navigation =
+    useNavigation<StackNavigationProp<WalletNavigatorParamsList>>();
+  const { credentialType } = route.params;
+  const { t } = useTranslation(['hsm', 'common']);
+
+  const credential = useAppSelector(selectCredential(credentialType));
+
+  const isWalletValid = useAppSelector(lifecycleIsValidSelector);
+
+  if (!isWalletValid) {
+    const ns = 'issuance.walletInstanceNotActive';
+
+    return (
+      <OperationResultScreenContent
+        action={{
+          label: t(`${ns}.primaryAction`),
+          onPress: () => navigation.replace('PID_ISSUANCE_INSTANCE_CREATION')
+        }}
+        pictogram="itWallet"
+        secondaryAction={{
+          label: t(`${ns}.secondaryAction`),
+          onPress: () => navigation.popToTop()
+        }}
+        subtitle={[
+          { text: t(`${ns}.itWallet.body`) },
+          {
+            text: t(`${ns}.itWallet.bodyBold`),
+            weight: 'Semibold'
+          }
+        ]}
+        title={t(`${ns}.itWallet.title`)}
+      />
+    );
+  }
+
+  if (!credential) {
+    // If the credential is not found, we render a screen that allows the user to request that credential.
+    return (
+      <ItwCredentialNotFound
+        cancelButtonLabel={t('common:buttons.cancel')}
+        continueButtonLabel={t('common:buttons.continue')}
+        credentialType={credentialType}
+      />
+    );
+  }
+  return <ItwPresentationCredentialDetail credential={credential} />;
+};
+
+type ItwPresentationCredentialDetailProps = {
+  credential: StoredCredentialMetadata;
+};
+
+/**
+ * Component that renders the credential detail content.
+ */
+const ItwPresentationCredentialDetail = ({
+  credential
+}: ItwPresentationCredentialDetailProps) => {
+  const navigation =
+    useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
+  const isDebugEnabled = useAppSelector(selectIsDebugModeEnabled);
+  const status = getCredentialStatus(credential);
+  const displayStatus = useItwDisplayCredentialStatus(status);
+  const capabilities = getCredentialCapabilities(credential.credentialType);
+
+  const { t } = useTranslation(['hsm', 'common']);
+  const { startQrVerification } = useProximityEngagement();
+
+  useDebugInfo(credential);
+
+  usePreventScreenCapture(isDebugEnabled);
+
+  const hasSkeumorphicCard = credentialsWithSkeumorphicCard.includes(
+    credential.credentialType
+  );
+
+  // The proximity verification CTA is only available for mdoc credentials
+  // (currently only the mDL), which are the ones presentable over proximity.
+  const ctaProps = useMemo<Optional<CredentialCtaProps>>(() => {
+    if (credential.format === CredentialFormat.MDOC) {
+      return {
+        icon: 'productITWallet',
+        iconPosition: 'end',
+        label: t('hsm:presentation.ctas.present'),
+        onPress: () => void startQrVerification()
+      };
+    }
+
+    return undefined;
+  }, [credential.format, startQrVerification, t]);
+
+  const parsedClaims = useMemo(
+    () => parseClaimsToRecord(credential.parsedCredential),
+    [credential.parsedCredential]
+  );
+
+  const handleOpenCard = () => {
+    navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+      params: {
+        credential,
+        parsedClaims,
+        status: displayStatus
+      },
+      screen: WALLET_ROUTES.PRESENTATION.CREDENTIAL_CARD_MODAL
+    });
+  };
+
+  if (status === 'unknown') {
+    return <ItwPresentationCredentialUnknownStatus credential={credential} />;
+  }
+
+  return (
+    <ItwPresentationDetailsScreenBase
+      credential={credential}
+      ctaProps={ctaProps}
+      headerTransparent
+    >
+      <ItwPresentationDetailsHeader
+        capabilities={capabilities}
+        credential={credential}
+      />
+      <View style={{ paddingVertical: 16 }}>
+        {hasSkeumorphicCard && (
+          <View style={{ alignSelf: 'center', paddingVertical: 8 }}>
+            <IOButton
+              icon="creditCard"
+              iconPosition="start"
+              label={t('presentation.credentialDetails.openCardDocument')}
+              onPress={handleOpenCard}
+              variant="link"
+            />
+          </View>
+        )}
+      </View>
+      <ContentWrapper>
+        <VStack space={24}>
+          <ItwPresentationCredentialStatusAlert
+            credential={credential}
+            suppressStatusAlert={capabilities.suppressStatusAlert}
+          />
+          <ItwPresentationCredentialInfoAlert
+            credential={credential}
+            infoAlert={capabilities.infoAlert}
+          />
+          <ItwPresentationClaimsSection
+            credential={credential}
+            parsedClaims={parsedClaims}
+          />
+          <ItwPresentationDetailsFooter
+            capabilities={capabilities}
+            credential={credential}
+          />
+          <View style={{ alignItems: 'center' }}>
+            <PoweredByItWalletText />
+          </View>
+        </VStack>
+      </ContentWrapper>
+    </ItwPresentationDetailsScreenBase>
+  );
+};

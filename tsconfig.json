@@ -16,6 +16,9 @@
       "path": "./mini-apps/aptitude"
     },
     {
+      "path": "./mini-apps/it-wallet-hsm"
+    },
+    {
       "path": "./libs/commons"
     },
     {

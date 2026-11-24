@@ -2,6 +2,7 @@ import type { MiniApp } from '@io-eudiw-app/commons';
 
 import { aptitudeFeature } from '@io-eudiw-app/aptitude';
 import { itWalletFeature } from '@io-eudiw-app/it-wallet';
+import { itWalletHsmFeature } from '@io-eudiw-app/it-wallet-hsm';
 
 /**
  * Registry that maps each available mini-app ID to its feature object.
@@ -12,7 +13,8 @@ import { itWalletFeature } from '@io-eudiw-app/it-wallet';
  */
 export const miniAppRegistry: Record<string, MiniApp> = {
   [aptitudeFeature.id]: aptitudeFeature,
-  [itWalletFeature.id]: itWalletFeature
+  [itWalletFeature.id]: itWalletFeature,
+  [itWalletHsmFeature.id]: itWalletHsmFeature
 };
 
 /**
