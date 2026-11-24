@@ -1,11 +1,7 @@
 import { regenerateCryptoKey } from '@io-eudiw-app/commons';
 import { getEnv } from '@io-eudiw-app/env';
 import { generate } from '@pagopa/io-react-native-crypto';
-import {
-  createCryptoContextFor,
-  IoWallet,
-  type KeyAttestationCryptoContext
-} from '@pagopa/io-react-native-wallet';
+import { IoWallet } from '@pagopa/io-react-native-wallet';
 
 import { AppThunk } from '../store';
 import {
@@ -14,7 +10,7 @@ import {
 } from '../store/attestation';
 import { selectInstanceKeyTag, selectSessionId } from '../store/instance';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
-import { WIA_KEYTAG } from '../utils/crypto';
+import { createLocalSignerFor, WIA_KEYTAG } from '../utils/crypto';
 import { createWalletFetch } from '../utils/fetch';
 import { getIntegrityContext } from '../utils/integrity';
 import { createAppAsyncThunk } from './thunk';
@@ -45,7 +41,7 @@ export const getWalletInstanceAttestationThunk =
       const integrityContext = getIntegrityContext(instanceKeyTag);
 
       await regenerateCryptoKey(WIA_KEYTAG);
-      const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
+      const wiaSigner = createLocalSignerFor(WIA_KEYTAG);
 
       /**
        * Obtains a new Wallet Instance Attestation.
@@ -56,12 +52,13 @@ export const getWalletInstanceAttestationThunk =
           {
             walletProviderBaseUrl,
             walletSolutionId: 'appio',
-            walletSolutionVersion: '3.26.0'
+            walletSolutionVersion: '3.26.0',
+            xUserId: sessionId
           },
           {
             appFetch,
             integrityContext,
-            wiaCryptoContext
+            wiaSigner
           }
         );
 
@@ -87,12 +84,6 @@ export const getKeyAttestationThunk = createAppAsyncThunk<
 
   const appFetch = createWalletFetch(sessionId);
 
-  if (!wallet.KeyAttestation.isSupported) {
-    throw new Error(
-      `Key Attestation is not supported in v${WALLET_SPEC_VERSION}`
-    );
-  }
-
   // Retrieve the integrity key tag from the store and create its context
   const integrityKeyTag = selectInstanceKeyTag(getState());
   if (!integrityKeyTag) {
@@ -104,26 +95,28 @@ export const getKeyAttestationThunk = createAppAsyncThunk<
   const { EXPO_PUBLIC_WALLET_PROVIDER_BASE_URL: walletProviderBaseUrl } =
     getEnv();
 
+  // Keys must exist before being attested
+  await Promise.all(keyTags.map(keyTag => generate(keyTag)));
+
+  const challenge = await wallet.KeyAttestation.getChallenge(
+    { walletProviderBaseUrl },
+    { appFetch }
+  );
+
   return await wallet.KeyAttestation.getAttestation(
     {
       walletProviderBaseUrl,
       walletSolutionId: 'appio',
-      walletSolutionVersion: '3.26.0'
+      walletSolutionVersion: '3.26.0',
+      xUserId: sessionId
     },
     {
       appFetch,
+      challenge,
       integrityContext,
-      keysToAttest: keyTags.map(createKeyAttestationCryptoContextFor)
+      keysToAttest: keyTags.map(keyTag => ({
+        signer: createLocalSignerFor(keyTag)
+      }))
     }
   );
-});
-
-const createKeyAttestationCryptoContextFor = (
-  keyTag: string
-): KeyAttestationCryptoContext => ({
-  ...createCryptoContextFor(keyTag),
-  async generateKeyWithAttestation(_) {
-    await generate(keyTag);
-    return { success: true };
-  }
 });

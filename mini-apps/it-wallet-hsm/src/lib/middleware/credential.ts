@@ -11,9 +11,9 @@ import {
 } from '@io-eudiw-app/identification';
 import { IOToast } from '@pagopa/io-app-design-system';
 import {
-  createCryptoContextFor,
   IoWallet,
-  RemotePresentation
+  RemotePresentation,
+  type Signer
 } from '@pagopa/io-react-native-wallet';
 import { AsyncThunk, isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 import * as Crypto from 'expo-crypto';
@@ -47,7 +47,7 @@ import { selectSessionId } from '../store/instance';
 import { ResolvedCredentialOffer } from '../types';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredential } from '../utils/credentials';
-import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
+import { createLocalSignerFor, DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { serializeErrorOrUnknown } from '../utils/errors';
 import { createWalletFetch } from '../utils/fetch';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
@@ -189,7 +189,7 @@ const obtainCredentialListener: AppListenerWithAction<
       throw new Error('Wallet Instance Attestation not found');
     }
 
-    const wiaCryptoContext = createCryptoContextFor(WIA_KEYTAG);
+    const wiaSigner = createLocalSignerFor(WIA_KEYTAG);
 
     const credentialKeyTag = Crypto.randomUUID().toString();
 
@@ -201,7 +201,7 @@ const obtainCredentialListener: AppListenerWithAction<
     const keyAttestation = await listenerApi
       .dispatch(getKeyAttestationThunk({ keyTags: [credentialKeyTag] }))
       .unwrap();
-    const credentialCryptoContext = createCryptoContextFor(credentialKeyTag);
+    const credentialSigner = createLocalSignerFor(credentialKeyTag);
 
     const pid = selectCredential(wellKnownCredential.PID)(state);
 
@@ -251,7 +251,7 @@ const obtainCredentialListener: AppListenerWithAction<
           redirectUri,
           scope: offerScope,
           walletInstanceAttestation,
-          wiaCryptoContext
+          wiaSigner
         }
       );
 
@@ -289,9 +289,9 @@ const obtainCredentialListener: AppListenerWithAction<
       );
 
     // Using only the PID credential
-    const credentialsSdJwt: [string, string][] =
+    const credentialsSdJwt: [Signer, string][] =
       pid.format === 'dc+sd-jwt' && pidEncoded
-        ? [[pid.keyTag, pidEncoded]]
+        ? [[createLocalSignerFor(pid.keyTag), pidEncoded]]
         : [];
 
     const evaluatedDcqlQuery =
@@ -328,12 +328,12 @@ const obtainCredentialListener: AppListenerWithAction<
         requestObject,
         issuerConf,
         evaluatedDcqlQuery,
-        { appFetch, wiaCryptoContext }
+        { appFetch, wiaSigner }
       );
 
     // Generate the DPoP context which will be used for the whole issuance flow
     await regenerateCryptoKey(DPOP_KEYTAG);
-    const dPopCryptoContext = createCryptoContextFor(DPOP_KEYTAG);
+    const dPopSigner = createLocalSignerFor(DPOP_KEYTAG);
 
     const { accessToken } = await wallet.CredentialIssuance.authorizeAccess(
       issuerConf,
@@ -342,9 +342,9 @@ const obtainCredentialListener: AppListenerWithAction<
       codeVerifier,
       {
         appFetch,
-        dPopCryptoContext,
+        dPopSigner,
         walletInstanceAttestation,
-        wiaCryptoContext
+        wiaSigner
       }
     );
 
@@ -365,8 +365,8 @@ const obtainCredentialListener: AppListenerWithAction<
         },
         {
           appFetch,
-          credentialCryptoContext,
-          dPopCryptoContext,
+          credentialSigner,
+          dPopSigner,
           keyAttestation: keyAttestation.attestation
         }
       );
@@ -377,7 +377,7 @@ const obtainCredentialListener: AppListenerWithAction<
         issuerConf,
         credential,
         credential_configuration_id,
-        { credentialCryptoContext, ignoreMissingAttributes: true }
+        { credentialSigner, ignoreMissingAttributes: true }
       );
 
     listenerApi.dispatch(

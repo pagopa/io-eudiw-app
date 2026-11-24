@@ -4,7 +4,11 @@ import {
   setIdentificationStarted,
   setIdentificationUnidentified
 } from '@io-eudiw-app/identification';
-import { IoWallet, RemotePresentation } from '@pagopa/io-react-native-wallet';
+import {
+  IoWallet,
+  RemotePresentation,
+  type Signer
+} from '@pagopa/io-react-native-wallet';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 
 import { selectCredentials } from '../store/credentials';
@@ -26,6 +30,7 @@ import {
   getConfigIdByVct,
   wellKnownCredentialConfigurationIDs
 } from '../utils/credentials';
+import { createLocalSignerFor } from '../utils/crypto';
 import { serializeErrorOrUnknown } from '../utils/errors';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
@@ -95,19 +100,21 @@ const presentationListener: AppListenerWithAction<
     const credentials = selectCredentials(listenerApi.getState());
 
     /**
-     * Array of tuples containing the credential keytag and its raw value.
+     * Array of tuples containing the credential signer and its raw value.
      * The encoded SD-JWT is retrieved from the secure vault on demand.
      */
-    const credentialsSdJwt: [string, string][] = (
+    const credentialsSdJwt: [Signer, string][] = (
       await Promise.all(
         credentials
           .filter(c => c.format === 'dc+sd-jwt')
           .map(async c => {
             const encoded = await CredentialsVault.get(c.credentialType);
-            return encoded ? ([c.keyTag, encoded] as [string, string]) : null;
+            return encoded
+              ? ([createLocalSignerFor(c.keyTag), encoded] as [Signer, string])
+              : null;
           })
       )
-    ).filter((x): x is [string, string] => x !== null);
+    ).filter((x): x is [Signer, string] => x !== null);
 
     if (!requestObject.dcql_query) {
       throw new Error('Only DCQL presentations are supported at the moment');
@@ -168,16 +175,10 @@ const presentationListener: AppListenerWithAction<
             optionalCredentials?.includes(c.id)
         );
 
-        const authRequestObject = {
-          clientId: requestObject.client_id,
-          nonce: requestObject.nonce,
-          responseUri: requestObject.response_uri
-        };
-
         const remotePresentations =
           await wallet.RemotePresentation.prepareRemotePresentations(
             credentialsToPresent,
-            authRequestObject
+            requestObject
           );
 
         const authResponse =

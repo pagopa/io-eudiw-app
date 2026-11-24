@@ -7,6 +7,9 @@
       "path": "./libs/io-react-native-wallet"
     },
     {
+      "path": "./libs/io-react-native-wallet-hsm"
+    },
+    {
       "path": "./apps/main-app"
     },
     {

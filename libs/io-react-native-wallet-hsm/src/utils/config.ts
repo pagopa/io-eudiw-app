@@ -1,0 +1,11 @@
+import {
+  IoWalletSdkConfig,
+  ItWalletSpecsVersion
+} from '@pagopa/io-wallet-utils';
+
+/**
+ * IO Wallet SDK configuration object for v1.4 specs.
+ */
+export const sdkConfigV1_4 = new IoWalletSdkConfig({
+  itWalletSpecsVersion: ItWalletSpecsVersion.V1_4
+});

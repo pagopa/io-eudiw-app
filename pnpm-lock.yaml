@@ -802,6 +802,94 @@ importers:
         specifier: ^0.4.1
         version: 0.4.1(@types/node@20.19.9)(openapi-types@12.1.3)(react@19.2.3)(supports-color@8.1.1)
 
+  libs/io-react-native-wallet-hsm:
+    dependencies:
+      '@owf/crypto':
+        specifier: ^0.4.2
+        version: 0.4.2
+      '@owf/token-status-list':
+        specifier: ^0.4.2
+        version: 0.4.2
+      '@pagopa/io-react-native-crypto':
+        specifier: '*'
+        version: 1.2.4(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      '@pagopa/io-react-native-jwt':
+        specifier: '*'
+        version: 2.2.5(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      '@pagopa/io-wallet-oauth2':
+        specifier: 1.5.8
+        version: 1.5.8
+      '@pagopa/io-wallet-oid-federation':
+        specifier: 1.5.8
+        version: 1.5.8
+      '@pagopa/io-wallet-oid4vci':
+        specifier: 1.5.8
+        version: 1.5.8
+      '@pagopa/io-wallet-oid4vp':
+        specifier: 1.5.8
+        version: 1.5.8
+      '@pagopa/io-wallet-utils':
+        specifier: 1.5.8
+        version: 1.5.8
+      '@sd-jwt/core':
+        specifier: ^0.22.0
+        version: 0.22.0
+      dcql:
+        specifier: ^4.0.0
+        version: 4.0.1(typescript@6.0.3)
+      js-base64:
+        specifier: ^3.9.4
+        version: 3.9.6
+      js-sha256:
+        specifier: ^1.0.0
+        version: 1.0.0
+      jsrsasign:
+        specifier: ^11.1.5
+        version: 11.1.5
+      parse-url:
+        specifier: ^11.1.0
+        version: 11.1.0
+      react:
+        specifier: 19.2.3
+        version: 19.2.3
+      react-native:
+        specifier: 0.86.3
+        version: 0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1)
+      react-native-quick-crypto:
+        specifier: '*'
+        version: 0.7.17(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      react-native-url-polyfill:
+        specifier: ^4.0.0
+        version: 4.0.0(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))
+      uuid:
+        specifier: ^14.0.2
+        version: 14.0.3
+      valibot:
+        specifier: 1.5.0
+        version: 1.5.0(typescript@6.0.3)
+      zod:
+        specifier: 4.3.6
+        version: 4.3.6
+    devDependencies:
+      '@pagopa/io-react-native-iso18013':
+        specifier: ^0.9.0
+        version: 0.9.1(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      '@types/jsrsasign':
+        specifier: ^10.5.15
+        version: 10.5.15
+      auto-changelog:
+        specifier: ^2.6.0
+        version: 2.6.0
+      react-native-builder-bob:
+        specifier: ^0.43.0
+        version: 0.43.2(babel-plugin-macros@3.1.0)(supports-color@8.1.1)
+      release-it:
+        specifier: ^19.2.4
+        version: 19.2.4(@types/node@20.19.9)(supports-color@8.1.1)
+      typed-openapi:
+        specifier: ^0.4.1
+        version: 0.4.1(@types/node@20.19.9)(openapi-types@12.1.3)(react@19.2.3)(supports-color@8.1.1)
+
   libs/navigation:
     dependencies:
       '@react-navigation/native':
@@ -1229,8 +1317,8 @@ importers:
         specifier: ^2.2.5
         version: 2.2.5(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
       '@pagopa/io-react-native-wallet':
-        specifier: 3.8.2
-        version: 3.8.2(patch_hash=c552117ebbe211c7a080fa55e32ffcfb4eaf702a9f5ed603f31dec47451f35b6)(18a14b643d732bb5fb1a1e66f85b400d)
+        specifier: workspace:@io-app-it-wallet/io-react-native-wallet-hsm@*
+        version: link:../../libs/io-react-native-wallet-hsm
       '@react-native-async-storage/async-storage':
         specifier: 'catalog:'
         version: 2.2.0(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))
@@ -3282,6 +3370,12 @@ packages:
 
   '@pagopa/io-react-native-iso18013@0.8.6':
     resolution: {integrity: sha512-voMJl9Wu6GYBPeWZMX8ue2zwEGl5ESDf7LE2ncJmkVaJ0BEep1CQd55iZRcUZXX6v7OZnpUlkp8QaWX+JYHZ1g==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
+  '@pagopa/io-react-native-iso18013@0.9.1':
+    resolution: {integrity: sha512-yiiSSRJA4Inf5cBPq9/wMNYsonn6dttsgZNBboIbcZqSKbjovoN8ItNRV7BE5T7ja6/YhNfEUwA4vkrNL/5TIg==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -7341,10 +7435,6 @@ packages:
 
   jsonfile@6.2.1:
     resolution: {integrity: sha512-zwOTdL3rFQ/lRdBnntKVOX6k5cKJwEc1HdilT71BWEu7J41gXIB2MRp+vxduPSwZJPWBxEzv4yH1wYLJGUHX4Q==}
-
-  jsrsasign@11.1.3:
-    resolution: {integrity: sha512-nPnK5D/4lv0Dwr7TlzrKtAd8JlLZwFTqTUUB3NQCbtdobcRcohGFxjbPySDVh74iWUudcCsapYT6OxoyhJLhhA==}
-    deprecated: This package is no longer maintained.
 
   jsrsasign@11.1.5:
     resolution: {integrity: sha512-i6mAjey0/4UQmlOaNS2vROl8EkWV8Ei436reJAby2OPQ3lF6uXSs1VYpnM8hndmmCMFIzNc04Uw2GF+0JVLFbg==}
@@ -14350,6 +14440,12 @@ snapshots:
       react-native: 0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1)
       zod: 4.3.6
 
+  '@pagopa/io-react-native-iso18013@0.9.1(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)':
+    dependencies:
+      react: 19.2.3
+      react-native: 0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1)
+      zod: 4.3.6
+
   '@pagopa/io-react-native-jwt@2.2.5(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)':
     dependencies:
       js-base64: 3.9.2
@@ -14374,9 +14470,9 @@ snapshots:
       '@sd-jwt/present': 0.19.0
       '@sd-jwt/types': 0.19.0
       dcql: 3.0.0(typescript@6.0.3)
-      js-base64: 3.9.2
+      js-base64: 3.9.6
       js-sha256: 0.11.1
-      jsrsasign: 11.1.3
+      jsrsasign: 11.1.5
       parse-url: 10.0.3
       react: 19.2.3
       react-native: 0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1))(@react-native/metro-config@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1)
@@ -20412,8 +20508,6 @@ snapshots:
       universalify: 2.0.1
     optionalDependencies:
       graceful-fs: 4.2.11
-
-  jsrsasign@11.1.3: {}
 
   jsrsasign@11.1.5: {}
 

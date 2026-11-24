@@ -1,0 +1,168 @@
+import type { jsonWebKeySet } from '@pagopa/io-wallet-oid-federation';
+import type { DcqlQuery as DcqlQueryLib } from 'dcql';
+
+import * as z from 'zod';
+
+import type { SupportedSdJwtLegacyFormat } from '../../../sd-jwt/types';
+import type { Signer } from '../../../utils/crypto';
+
+export type PresentationParams = z.infer<typeof PresentationParams>;
+export const PresentationParams = z.object({
+  client_id: z.string().nonempty(),
+  request: z.string().optional(),
+  request_uri: z.url().optional(),
+  request_uri_method: z.enum(['get', 'post']).optional(),
+  state: z.string().optional()
+});
+
+export type WalletMetadata = z.infer<typeof WalletMetadata>;
+export const WalletMetadata = z.object({
+  authorization_endpoint: z.url(),
+  client_id_prefixes_supported: z.array(z.string()).optional(),
+  client_id_schemes_supported: z.array(z.string()).optional(),
+  request_object_signing_alg_values_supported: z.array(z.string()).optional(),
+  response_modes_supported: z.array(z.string()).optional(),
+  response_types_supported: z.array(z.string()).optional(),
+  vp_formats_supported: z.record(
+    z.string(),
+    z.object({
+      'sd-jwt_alg_values': z.array(z.string()).optional() // alg_values_supported?
+    })
+  )
+});
+
+/**
+ * Wallet capabilities that must be submitted to get the Request Object
+ * via POST request when the `request_uri_method` is `post`.
+ */
+export type RequestObjectWalletCapabilities = z.infer<
+  typeof RequestObjectWalletCapabilities
+>;
+export const RequestObjectWalletCapabilities = z.object({
+  wallet_metadata: WalletMetadata,
+  wallet_nonce: z.string().optional()
+});
+
+/**
+ * This type models the possible error responses the OpenID4VP protocol allows for a presentation of a credential.
+ * When the Wallet encounters one of these errors, it will notify the Relying Party through the `response_uri` endpoint.
+ * See https://italia.github.io/eid-wallet-it-docs/versione-corrente/en/pid-eaa-presentation.html#authorization-response-errors for more information.
+ */
+export type ErrorResponse = z.infer<typeof ErrorResponse>;
+export const ErrorResponse = z.enum([
+  'invalid_request_object',
+  'invalid_request_uri',
+  'vp_formats_not_supported',
+  'invalid_request',
+  'access_denied',
+  'invalid_client'
+]);
+
+export interface AuthorizationResponse {
+  redirect_uri?: string;
+}
+
+/**
+ * A tuple that associates the signer bound to a key with its credential, used in DCQL queries
+ */
+export type Credential4Dcql = [
+  Signer /* signer bound to the credential key */,
+  string /* credential */
+];
+
+export type CredentialFormat =
+  | { doctype: string; format: 'mso_mdoc' }
+  | { format: 'dc+sd-jwt'; vct: string }
+  | { format: SupportedSdJwtLegacyFormat; vct: string };
+
+export type DcqlQuery = DcqlQueryLib.Input;
+
+export interface EvaluatedDisclosure {
+  name: string;
+  namespace?: string;
+  value: unknown;
+}
+
+/**
+ * Callback provided by the consumer that generates the ISO 18013-7 DeviceResponse of an mdoc.
+ * The consumer owns the signing of the device authentication, which can be local or remote depending on the signer.
+ *
+ * @returns The DeviceResponse encoded in base64 or base64url, with or without padding.
+ * The library normalizes it to unpadded base64url when building the `vp_token`.
+ */
+export type MdocDeviceResponseGenerator = (params: {
+  clientId: string;
+  docType: string;
+  /** The mdoc credential (IssuerSigned) in base64 or base64url */
+  issuerSignedContent: string;
+  /** base64url SHA-256 thumbprint (RFC 7638) of the response encryption key, or null for an unencrypted response */
+  jwkThumbprint: null | string;
+  presentationFrame: PresentationFrame;
+  requestNonce: string;
+  responseUri: string;
+  signer: Signer;
+}) => Promise<string>;
+
+/**
+ * A pair that associate a tokenized Verified Credential with the claims presented or requested to present.
+ */
+export type Presentation = [
+  /* verified credential token */ string,
+  /* claims */ PresentationFrame,
+  /* the context for the key associated to the credential */ Signer
+];
+
+/**
+ * An object that defines claims to disclose. Nested claims must use a nested structure.
+ * @example { name: true, address: { country: true } }
+ */
+export interface PresentationFrame {
+  [k: string]: boolean | PresentationFrame | undefined;
+}
+
+/**
+ * A object that associate the information needed to multiple remote presentation
+ */
+export interface RemotePresentation {
+  presentations: {
+    credentialId: string;
+    format: string;
+    requestedClaims: string[];
+    vpToken: string;
+  }[];
+}
+
+/**
+ * A object that associate the information needed to multiple remote presentation
+ * Used with DCQL queries
+ */
+export interface RemotePresentationDetails {
+  credentialId: string;
+  requestedClaims: string[];
+  vpToken: string;
+}
+
+/**
+ * Common Request Object type, decoupled from specific IT-Wallet versions
+ */
+export type RequestObject = {
+  client_id: string;
+  client_metadata?: ClientMetadata;
+  dcql_query: Record<string, unknown>;
+  iss: string;
+  nonce: string;
+  response_mode: 'direct_post.jwt';
+  response_type: 'vp_token';
+  response_uri: string;
+  state?: string;
+  trust_chain?: string[];
+  x5c?: string[];
+};
+
+type ClientMetadata = {
+  client_name?: string;
+  encrypted_response_enc_values_supported: string[];
+  jwks: jsonWebKeySet;
+  logo_uri?: string;
+  vp_formats_supported: Record<string, { 'sd-jwt_alg_values'?: string[] }>;
+};

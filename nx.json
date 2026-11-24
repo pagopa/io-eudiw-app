@@ -69,7 +69,10 @@
     "start": {
       "dependsOn": [
         {
-          "projects": ["@io-app-it-wallet/io-react-native-wallet"],
+          "projects": [
+            "@io-app-it-wallet/io-react-native-wallet",
+            "@io-app-it-wallet/io-react-native-wallet-hsm"
+          ],
           "target": "generate"
         }
       ]
@@ -77,7 +80,10 @@
     "run-ios": {
       "dependsOn": [
         {
-          "projects": ["@io-app-it-wallet/io-react-native-wallet"],
+          "projects": [
+            "@io-app-it-wallet/io-react-native-wallet",
+            "@io-app-it-wallet/io-react-native-wallet-hsm"
+          ],
           "target": "generate"
         }
       ]
@@ -85,7 +91,10 @@
     "run-android": {
       "dependsOn": [
         {
-          "projects": ["@io-app-it-wallet/io-react-native-wallet"],
+          "projects": [
+            "@io-app-it-wallet/io-react-native-wallet",
+            "@io-app-it-wallet/io-react-native-wallet-hsm"
+          ],
           "target": "generate"
         }
       ]

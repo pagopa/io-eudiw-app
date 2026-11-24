@@ -35,7 +35,8 @@ export const createInstanceThunk = createAppAsyncThunk<void, void>(
         await wallet.WalletInstance.createWalletInstance({
           appFetch,
           integrityContext,
-          walletProviderBaseUrl
+          walletProviderBaseUrl,
+          xUserId: sessionId
         });
         dispatch(setInstanceKeyTag(keyTag));
       }
