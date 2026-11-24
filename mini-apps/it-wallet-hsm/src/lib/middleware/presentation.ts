@@ -12,6 +12,7 @@ import {
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
 
 import { selectCredentials } from '../store/credentials';
+import { selectSessionId } from '../store/instance';
 import { lifecycleIsOperationalSelector } from '../store/lifecycle';
 import {
   resetPresentation,
@@ -30,7 +31,7 @@ import {
   getConfigIdByVct,
   wellKnownCredentialConfigurationIDs
 } from '../utils/credentials';
-import { createLocalSignerFor } from '../utils/crypto';
+import { createCredentialSigner } from '../utils/crypto';
 import { serializeErrorOrUnknown } from '../utils/errors';
 import { enrichPresentationDetails } from '../utils/itwClaimsUtils';
 import { getInvalidCredentials } from '../utils/itwCredentialStatusUtils';
@@ -98,6 +99,7 @@ const presentationListener: AppListenerWithAction<
       );
 
     const credentials = selectCredentials(listenerApi.getState());
+    const sessionId = selectSessionId(listenerApi.getState());
 
     /**
      * Array of tuples containing the credential signer and its raw value.
@@ -110,7 +112,10 @@ const presentationListener: AppListenerWithAction<
           .map(async c => {
             const encoded = await CredentialsVault.get(c.credentialType);
             return encoded
-              ? ([createLocalSignerFor(c.keyTag), encoded] as [Signer, string])
+              ? ([createCredentialSigner(c, sessionId), encoded] as [
+                  Signer,
+                  string
+                ])
               : null;
           })
       )

@@ -311,6 +311,10 @@ const transmit = async (
           `Encoded credential missing in vault for ${credential.credentialType}`
         );
       }
+      // mdoc credentials are always bound to a key in the device keystore
+      if (!credential.keyTag) {
+        throw new Error(`Local key missing for ${credential.credentialType}`);
+      }
       return {
         alias: credential.keyTag,
         docType: credential.credentialType,

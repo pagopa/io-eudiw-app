@@ -587,6 +587,11 @@
         "empty": "Nessun consenso registrato",
         "delete": "Cancella consenso per {{ rpId }}"
       }
+    },
+    "changeRemotePin": {
+      "title": "Cambia PIN HSM",
+      "description": "Modifica il PIN che protegge la chiave remota del PID",
+      "error": "Impossibile cambiare il PIN HSM"
     }
   },
   "credentialOffer": {
@@ -643,6 +648,16 @@
       "buttonText": {
         "enable": "Enable permissions"
       }
+    }
+  },
+  "remoteWscd": {
+    "pin": {
+      "title": "PIN HSM",
+      "currentTitle": "PIN HSM attuale",
+      "newTitle": "Nuovo PIN HSM",
+      "placeholder": "Inserisci il PIN",
+      "confirm": "Conferma",
+      "cancel": "Annulla"
     }
   }
 }

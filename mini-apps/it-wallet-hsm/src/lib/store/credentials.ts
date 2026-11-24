@@ -6,6 +6,8 @@ import {
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PersistConfig, persistReducer } from 'redux-persist';
 
+import type { RemoteKey } from '../utils/remoteCrypto';
+
 import { WalletCombinedRootState } from '.';
 import { ItwJwtCredentialStatus, WalletCard } from '../types';
 import { wellKnownCredential } from '../utils/credentials';
@@ -108,6 +110,18 @@ const credentialsSlice = createSlice({
           c => c.credentialType !== credentialType
         );
       }
+    },
+    setCredentialRemoteKey: (
+      state,
+      action: PayloadAction<{ credentialType: string; remoteKey: RemoteKey }>
+    ) => {
+      const { credentialType, remoteKey } = action.payload;
+      const credential = state.credentials.find(
+        c => c.credentialType === credentialType
+      );
+      if (credential?.remoteKey) {
+        credential.remoteKey = remoteKey;
+      }
     }
   }
 });
@@ -140,7 +154,8 @@ export const {
   disablePidInfoBanner,
   disableProximityInfoBanner,
   itwSetClaimValuesHidden,
-  removeCredential
+  removeCredential,
+  setCredentialRemoteKey
 } = credentialsSlice.actions;
 
 export const selectCredentials = (state: WalletCombinedRootState) =>
@@ -190,7 +205,7 @@ export const selectWalletCards: (
     .map(cred => ({
       credentialStatus: getCredentialStatus(cred),
       credentialType: cred.credentialType,
-      key: cred.keyTag,
+      key: cred.keyTag ?? cred.credentialType,
       type: 'itw'
     }))
 );
