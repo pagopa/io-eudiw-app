@@ -169,10 +169,16 @@ const presentationListener: AppListenerWithAction<
         isAnyOf(setIdentificationIdentified, setIdentificationUnidentified)
       );
       if (setIdentificationIdentified.match(resAction[0])) {
-        const credentialsToPresent = presentationDetails.filter(
-          c =>
-            c.purposes.some(({ required }) => required) ||
-            optionalCredentials?.includes(c.id)
+        const idsToPresent = presentationDetails
+          .filter(
+            c =>
+              c.purposes.some(({ required }) => required) ||
+              optionalCredentials?.includes(c.id)
+          )
+          .map(c => c.id);
+        // Signers are not kept in the store, so pick them from the evaluated query
+        const credentialsToPresent = evaluatedDcqlQuery.filter(c =>
+          idsToPresent.includes(c.id)
         );
 
         const remotePresentations =

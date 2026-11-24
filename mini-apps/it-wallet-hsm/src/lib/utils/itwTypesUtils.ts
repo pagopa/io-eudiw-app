@@ -27,9 +27,12 @@ export type DisclosureClaim = {
  * Creates a type that can be either T with none of the properties from U, or U with none of the properties from T
  */
 export type Either<T, U> = Only<T, U> | Only<U, T>;
-export type EnrichedPresentationDetails = (Extract<
-  ParsedDcql[number],
-  { format: 'dc+sd-jwt' }
+/**
+ * Presentation details enriched for display. The `signer` is omitted because it is not serializable and must not be put in the store.
+ */
+export type EnrichedPresentationDetails = (Omit<
+  Extract<ParsedDcql[number], { format: 'dc+sd-jwt' }>,
+  'signer'
 > & {
   claimsToDisplay: ClaimDisplayFormat[];
 })[];

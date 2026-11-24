@@ -151,7 +151,8 @@ export const enrichPresentationDetails = (
   presentationDetails: ParsedDcql,
   credentialsByType: StoredCredentialMetadata[]
 ): EnrichedPresentationDetails =>
-  presentationDetails.filter(isPresentationDetailSdJwt).map(details => {
+  presentationDetails.filter(isPresentationDetailSdJwt).map(detail => {
+    const { signer: _signer, ...details } = detail;
     const credentialType = details.vct;
     const credential =
       credentialType &&
