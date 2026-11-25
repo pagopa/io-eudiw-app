@@ -38,14 +38,26 @@
   "discovery": {
     "screen": {
       "itw": {
-        "title": "I tuoi documenti digitali con IT-Wallet: sicuri, ufficiali e sempre con te",
+        "title": "Il meglio dei tuoi documenti digitali, in Italia e in Europa",
         "features": {
-          "1": "La tua Patente su IO è valida come documento di riconoscimento",
-          "2": "Ti basta il tuo telefono per dimostrare la tua identità",
-          "3": "Hai tutto ciò che ti serve anche se lasci a casa il portafoglio",
-          "4": "I nuovi documenti digitali ufficiali, solo sull’app IO",
-          "5": "Accedi in pochi tocchi ai servizi digitali della PA"
+          "1": {
+            "title": "Proteggi le operazioni più importanti",
+            "content": "Sicurezza e privacy garantite dagli standard EUDI Wallet"
+          },
+          "2": {
+            "title": "Servizi digitali a un tocco di distanza",
+            "content": "Accedi ai servizi pubblici e privati in Italia e in tutta l'Unione Europea"
+          },
+          "3": {
+            "title": "La tua identità digitale europea",
+            "content": "Mostra e conferma la tua identità con il telefono, anche in Europa"
+          },
+          "4": {
+            "title": "Patente digitale senza confini",
+            "content": "La tua Patente di guida è ora valida anche in tutti i Paesi della UE"
+          }
         },
+        "tos": "Premendo **Continua** dichiari di aver letto e compreso l’Informativa Privacy e i Termini e Condizioni d’uso.",
         "actions": {
           "primary": "Continua"
         },
@@ -61,42 +73,71 @@
   "identification": {
     "modeSelection": {
       "section": {
-        "issuance": "Attiva IT-Wallet"
+        "issuance": "Abilita IT-Wallet per l’Europa"
       },
       "title": {
         "issuance": "Conferma la tua identità"
       },
       "description": {
-        "issuance": "È un passaggio di sicurezza necessario per associare i documenti digitali alla tua identità. "
+        "issuance": "È un passaggio di sicurezza necessario per abilitare la tua identità digitale e i documenti all’uso in Europa."
       },
-      "noCieCta": "Non hai la Carta di Identità Elettronica?",
       "mode": {
-        "ciePin": {
-          "title": "Continua con CIE + PIN",
-          "subtitle": "Ha una durata di 12 mesi"
-        },
-        "spid": {
-          "title": "Continua con SPID + CIE",
-          "subtitle": "Ha una durata di 90 giorni"
-        },
         "cieId": {
           "title": "Continua con l’app CieID",
-          "subtitle": "Ha una durata di 12 mesi"
+          "subtitle": "Ha una durata di 12 mesi",
+          "bottomSheet": {
+            "title": "Continua con l’app CieID",
+            "requirements": "Hai bisogno di:",
+            "cie": "La tua Carta di Identità Elettronica (CIE)",
+            "app": "L’app CieID certificata sul tuo dispositivo",
+            "primaryAction": "Continua con l’app CieID"
+          }
         }
       }
     }
   },
   "pidIssuance": {
+    "loading": "Attendi qualche secondo",
+    "passwordIntro": {
+      "section": "Ci siamo quasi!",
+      "title": "Stai per ottenere la password di IT-Wallet",
+      "description": "Ti sarà richiesta solo per condividere i dati del tuo IT-Wallet con servizi europei e per operazioni ad alta sicurezza, come aprire un conto bancario o firmare documenti.",
+      "whyCta": "Come mai?",
+      "bottomSheet": {
+        "title": "A cosa serve la password di IT-Wallet?",
+        "body": "Questa password garantisce un ulteriore livello di protezione per l’uso della tua identità digitale con IT-Wallet.\n\nDovrai inserirla quando usi servizi erogati da soggetti europei e per operazioni che richiedono il massimo livello di sicurezza, come aprire un conto bancario o firmare documenti.\n\nPer tutte le altre operazioni, continuerai a usare il codice del tuo dispositivo o il riconoscimento biometrico.",
+        "primaryAction": "Ho capito"
+      }
+    },
+    "password": {
+      "title": "Ecco la tua password: salvala in un luogo sicuro",
+      "inputLabel": "Password di IT-Wallet",
+      "edit": "Modifica password",
+      "copy": "Copia password",
+      "copied": "Password copiata",
+      "requirements": {
+        "title": "Deve contenere almeno {{minLength}} caratteri, di cui:",
+        "uppercase": "una lettera maiuscola",
+        "lowercase": "una lettera minuscola",
+        "digit": "un numero",
+        "special": "un carattere speciale"
+      },
+      "primaryAction": "Ok, l’ho copiata",
+      "bottomSheet": {
+        "title": "Cosa succede se perdi la password di IT-Wallet",
+        "body": "Se perdi la password, il tuo IT-Wallet potrebbe essere disattivato.\nPer continuare a usare i tuoi documenti, dovrai ripetere l’autenticazione con CIE.",
+        "primaryAction": "Ho capito"
+      }
+    },
     "preview": {
-      "title": "Ci siamo quasi!",
+      "title": "Controlla i tuoi dati",
       "subtitle": "Hai verificato la tua identità.\nIl tuo portafoglio IT-Wallet sarà associato a questi dati:",
-      "cancel": "Annulla",
-      "upgradeNotice": "Se hai già aggiunto documenti al Portafoglio, questi saranno aggiornati alle funzionalità IT-Wallet, senza modifiche ai tuoi dati."
+      "confirm": "Conferma",
+      "somethingWrong": "Qualcosa non torna?"
     },
     "result": {
       "title": "Il tuo portafoglio IT-Wallet è pronto!",
-      "subtitle": "Ora hai accesso ai vantaggi del nuovo portafoglio digitale.",
-      "primaryAction": "Esplora IT-Wallet"
+      "primaryAction": "Vai al Portafoglio"
     },
     "failure": {
       "title": "An unexpected error occurred",
@@ -258,6 +299,7 @@
     "home": {
       "cta": "Usa per la verifica"
     },
+    "unavailable": "La funzionalità non è attiva",
     "engagement": {
       "title": "Pronto per la verifica",
       "instruction": "Chi verifica dal vivo userà un’app ufficiale.",

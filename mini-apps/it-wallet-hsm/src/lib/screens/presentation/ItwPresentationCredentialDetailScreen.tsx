@@ -10,6 +10,7 @@ import {
   ContentWrapper,
   IOButton,
   Optional,
+  useIOToast,
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
@@ -31,7 +32,6 @@ import {
   ItwPresentationDetailsScreenBase
 } from '../../components/presentation/ItwPresentationDetailsScreenBase';
 import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredentialStatus';
-import { useProximityEngagement } from '../../hooks/useProximityEngagement';
 import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../../navigation/main/routes';
 import WALLET_ROUTES from '../../navigation/wallet/routes';
@@ -132,7 +132,7 @@ const ItwPresentationCredentialDetail = ({
   const capabilities = getCredentialCapabilities(credential.credentialType);
 
   const { t } = useTranslation(['hsm', 'common']);
-  const { startQrVerification } = useProximityEngagement();
+  const toast = useIOToast();
 
   useDebugInfo(credential);
 
@@ -150,12 +150,12 @@ const ItwPresentationCredentialDetail = ({
         icon: 'productITWallet',
         iconPosition: 'end',
         label: t('hsm:presentation.ctas.present'),
-        onPress: () => void startQrVerification()
+        onPress: () => toast.error(t('hsm:proximity.unavailable'))
       };
     }
 
     return undefined;
-  }, [credential.format, startQrVerification, t]);
+  }, [credential.format, t, toast]);
 
   const parsedClaims = useMemo(
     () => parseClaimsToRecord(credential.parsedCredential),

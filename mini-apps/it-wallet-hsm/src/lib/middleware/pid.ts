@@ -30,7 +30,9 @@ import { Lifecycle, setLifecycle } from '../store/lifecycle';
 import {
   resetPidIssuance,
   setPidIssuanceError,
+  setPidIssuancePassword,
   setPidIssuanceRequest,
+  setPidIssuanceStep,
   setPidIssuanceSuccess
 } from '../store/pidIssuance';
 import { selectPendingCredential } from '../store/selectors/pidIssuance';
@@ -63,9 +65,6 @@ const obtainPidListener: AppListenerWithAction<
 > = async (_, listenerApi) => {
   const { dispatch, getState } = listenerApi;
   try {
-    // The PID key is enrolled on the Remote WSCD (HSM) and protected by a PIN, which is never stored.
-    // It is asked before opening the browser, as a modal can't be presented right after it is dismissed.
-    const remotePin = await requestRemotePin();
     const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
     const {
       EXPO_PUBLIC_PID_PROVIDER_BASE_URL,
@@ -176,6 +175,17 @@ const obtainPidListener: AppListenerWithAction<
       throw new Error('No credential configuration ID found for PID');
     }
 
+    // The PID key is enrolled on the Remote WSCD (HSM) and protected by the HSM password, which is never stored.
+    // The UI asks the user for it and hands it over with the setPidIssuancePassword action.
+    const passwordAction = listenerApi.take(isAnyOf(setPidIssuancePassword));
+    dispatch(setPidIssuanceStep('passwordRequired'));
+    const [
+      {
+        payload: { password: remotePin }
+      }
+    ] = await passwordAction;
+    dispatch(setPidIssuanceStep('issuing'));
+
     // Enroll the credential key on the Remote WSCD and attest it using its Key Enrollment Certificate
     const remoteKey = await enrollRemoteKey(remotePin, sessionId);
     const credentialSigner = createRemoteSignerFor(
@@ -258,7 +268,7 @@ const addPidWithAuthListener: AppListenerWithAction<
     );
     if (persistCredential.rejected.match(persistResult)) {
       // Vault write failed: surface the error through the issuance state so the
-      // PidIssuanceRequest screen reacts to selectPidIssuanceStatus and routes
+      // PidIssuanceRequest screen, still mounted below the preview, reacts to selectPidIssuanceStatus and routes
       // to the failure screen, like the OID4VCI issuance error path does.
       listenerApi.dispatch(
         setPidIssuanceError({

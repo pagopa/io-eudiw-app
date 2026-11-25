@@ -1,5 +1,6 @@
 import {
   AnimatedImage,
+  IOMarkdown,
   IOScrollView,
   useDisableGestureNavigation,
   useHardwareBackButtonToDismiss,
@@ -12,20 +13,18 @@ import {
   HStack,
   IOColors,
   useIOTheme,
-  useIOThemeContext,
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
 import { useEffect, useRef } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import Feature1Image from '../../../assets/img/discovery/feature_1.svg';
-import Feature2Image from '../../../assets/img/discovery/feature_2.svg';
-import Feature3Image from '../../../assets/img/discovery/feature_3.svg';
-import Feature4Image from '../../../assets/img/discovery/feature_4.svg';
-import Feature5Image from '../../../assets/img/discovery/feature_5.svg';
+import DrivingLicenseImage from '../../../assets/img/discovery/feature_1.svg';
+import IdentityImage from '../../../assets/img/discovery/feature_2.svg';
+import ServicesImage from '../../../assets/img/discovery/feature_3.svg';
+import SecurityImage from '../../../assets/img/discovery/feature_4.svg';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { createInstanceThunk } from '../../middleware/instance';
@@ -34,11 +33,10 @@ import { resetInstanceCreation } from '../../store/pidIssuance';
 import { selectInstanceStatus } from '../../store/selectors/pidIssuance';
 
 const features = [
-  { Image: Feature1Image, key: '1' },
-  { Image: Feature2Image, key: '2' },
-  { Image: Feature3Image, key: '3' },
-  { Image: Feature4Image, key: '4' },
-  { Image: Feature5Image, key: '5' }
+  { Image: SecurityImage, key: '1' },
+  { Image: ServicesImage, key: '2' },
+  { Image: IdentityImage, key: '3' },
+  { Image: DrivingLicenseImage, key: '4' }
 ] as const;
 
 type CreateInstancePromise = ReturnType<ReturnType<typeof createInstanceThunk>>;
@@ -122,37 +120,36 @@ export const WalletInstanceCreation = () => {
         <VStack space={16}>
           {features.map(({ Image, key }) => (
             <FeatureBlock
-              content={t(`discovery.screen.itw.features.${key}`, {
+              content={t(`discovery.screen.itw.features.${key}.content`, {
                 ns: 'hsm'
               })}
               image={<Image height={48} width={48} />}
               key={key}
+              title={t(`discovery.screen.itw.features.${key}.title`, {
+                ns: 'hsm'
+              })}
             />
           ))}
         </VStack>
+        <VSpacer size={48} />
+        <IOMarkdown content={t('discovery.screen.itw.tos', { ns: 'hsm' })} />
         <VSpacer size={24} />
       </ContentWrapper>
     </IOScrollView>
   );
 };
 
-const HeroImage = () => {
-  const { themeType } = useIOThemeContext();
-  return (
-    <AnimatedImage
-      source={
-        themeType === 'light'
-          ? require('../../../assets/img/discovery/itw_hero.png')
-          : require('../../../assets/img/discovery/itw_hero_dark.png')
-      }
-      style={styles.hero}
-    />
-  );
-};
+const HeroImage = () => (
+  <AnimatedImage
+    source={require('../../../assets/img/discovery/itw_hero.png')}
+    style={styles.hero}
+  />
+);
 
 const FeatureBlock = (props: {
   content: string;
   image: React.ReactElement;
+  title: string;
 }) => {
   const theme = useIOTheme();
 
@@ -165,9 +162,10 @@ const FeatureBlock = (props: {
       }}
     >
       {props.image}
-      <BodySmall style={{ flex: 1, flexWrap: 'wrap' }}>
-        {props.content}
-      </BodySmall>
+      <View style={styles.featureText}>
+        <BodySmall weight="Semibold">{props.title}</BodySmall>
+        <BodySmall>{props.content}</BodySmall>
+      </View>
     </HStack>
   );
 };
@@ -178,8 +176,10 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     borderRadius: 8,
     borderWidth: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 8
+    padding: 8
+  },
+  featureText: {
+    flex: 1
   },
   hero: {
     aspectRatio: 4 / 3,

@@ -21,7 +21,6 @@ const PidIssuanceResult = () => {
         onPress: navigateToWallet
       }}
       pictogram="success"
-      subtitle={t('pidIssuance.result.subtitle')}
       title={t('pidIssuance.result.title')}
     />
   );

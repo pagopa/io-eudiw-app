@@ -23,19 +23,23 @@ export const myFeature = {
 
 Extends `i18next`'s `Resource` type and enforces at least an `it` (Italian) language key. Used as the `resource` field in `MiniApp`.
 
-### `AsyncStatusValues<T>`
+### `AsyncStatusValues<T, E, S>`
 
-Union type for tracking the state of any asynchronous operation.
+Type for tracking the state of any asynchronous operation in a Redux store.
 
 ```ts
-type AsyncStatusValues<T = undefined> =
-  | { status: 'initial' }
-  | { status: 'loading' }
-  | { status: 'success'; data: T }
-  | { status: 'error'; error: unknown };
+type AsyncStatusValues<T = undefined, E extends string = never, S extends string = never> = {
+  error: { error: unknown; status: true; type: E } | { error: undefined; status: false };
+  loading: boolean;
+  success: { data?: T; status: true } | { status: false };
+} & { step?: S }; // only when S is provided
 ```
 
-Factory helpers: `setInitial()`, `setLoading()`, `setSuccess(data?)`, `setError(error)`.
+- `T`: the data carried on success.
+- `E`: optional string literal union discriminating the error (`type` is omitted when not provided).
+- `S`: optional string literal union of the steps the operation goes through while loading, so the UI can react to its progress (`step` is omitted when not provided).
+
+Factory helpers: `setInitial()`, `setLoading(step?)`, `setSuccess(data?)`, `setError(error, type?)`.
 
 ### Components
 

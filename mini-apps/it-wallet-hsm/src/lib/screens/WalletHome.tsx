@@ -1,14 +1,14 @@
 import { IOScrollView } from '@io-eudiw-app/commons';
 import {
   HeaderActionProps,
-  HeaderFirstLevel
+  HeaderFirstLevel,
+  useIOToast
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { WalletCardsContainer } from '../components/WalletCardsContainer';
-import { useProximityEngagement } from '../hooks/useProximityEngagement';
 import MAIN_ROUTES from '../navigation/main/routes';
 import WALLET_ROUTES from '../navigation/wallet/routes';
 import { useAppSelector } from '../store';
@@ -22,7 +22,7 @@ import { hasPresentableCredentialsSelector } from '../store/credentials';
 const WalletHome = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { startQrVerification } = useProximityEngagement();
+  const toast = useIOToast();
   const hasPresentableCredentials = useAppSelector(
     hasPresentableCredentialsSelector
   );
@@ -60,7 +60,8 @@ const WalletHome = () => {
                   icon: 'productITWallet',
                   iconPosition: 'end',
                   label: t('proximity.home.cta', { ns: 'hsm' }),
-                  onPress: () => void startQrVerification()
+                  onPress: () =>
+                    toast.error(t('proximity.unavailable', { ns: 'hsm' }))
                 },
                 type: 'SingleButton'
               }
