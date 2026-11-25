@@ -1,12 +1,9 @@
 import type { CryptoContext } from '@pagopa/io-react-native-jwt';
 
 import type { IssuerConfig } from './IssuerConfig';
-import type { StandardTokenResponse, TokenResponse } from './types';
-import type { CredentialFormat } from './types';
+import type { CredentialFormat, StandardTokenResponse } from './types';
 
-export interface ObtainCredentialApi<
-  TToken extends TokenResponse = StandardTokenResponse
-> {
+export interface ObtainCredentialApi {
   /**
    * Obtains the credential from the issuer.
    * The key pair of the credentialCryptoContext is used for Openid4vci proof JWT to be presented with the Access Token and the DPoP Proof JWT at the Credential Endpoint
@@ -27,7 +24,7 @@ export interface ObtainCredentialApi<
    */
   obtainCredential(
     issuerConf: IssuerConfig,
-    accessToken: TToken,
+    accessToken: StandardTokenResponse,
     clientId: string,
     credentialDefinition: {
       credential_configuration_id: string;
@@ -54,7 +51,7 @@ export interface ObtainCredentialApi<
    */
   obtainCredentialsBatch(
     issuerConf: IssuerConfig,
-    accessToken: TToken,
+    accessToken: StandardTokenResponse,
     clientId: string,
     credentialDefinition: {
       credential_configuration_id: string;

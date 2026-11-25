@@ -1,4 +1,5 @@
-import { AccessTokenRequestAPTITUDE } from '@pagopa/io-wallet-oauth2';
+import type { AccessTokenRequestAPTITUDE } from '@pagopa/io-wallet-oauth2';
+
 import * as z from 'zod';
 
 export type AuthorizationDetail = z.infer<typeof AuthorizationDetail>;
@@ -22,30 +23,40 @@ export type ParsedCredential = Record<
 
 export const AuthorizationDetail = z.object({
   credential_configuration_id: z.string(),
-  credential_identifiers: z.array(z.string()),
+  credential_identifiers: z.array(z.string()).min(1),
   type: z.literal('openid_credential')
 });
 
-export const TokenResponse = z.object({
+export const StandardTokenResponse = z.object({
   access_token: z.string(),
-  authorization_details: z.array(AuthorizationDetail),
+  authorization_details: z.array(AuthorizationDetail).min(1).optional(),
   expires_in: z.number().optional(),
   refresh_token: z.string().optional(),
   token_type: z.string()
 });
 
-export const PreAuthorizedTokenResponse = TokenResponse.partial({
-  authorization_details: true
+export const AuthDetailsBoundTokenResponse = StandardTokenResponse.extend({
+  authorization_details: z.array(AuthorizationDetail).min(1)
 });
 
+export type AuthDetailsBoundTokenResponse = z.infer<
+  typeof AuthDetailsBoundTokenResponse
+>;
 export type AuthorizeAccessTokenRequest = Extract<
   AccessTokenRequestAPTITUDE,
   | { grant_type: 'authorization_code' }
   | {
       grant_type: 'urn:ietf:params:oauth:grant-type:pre-authorized_code';
     }
->;
+> & {
+  authorization_details?: readonly {
+    credential_configuration_id: string;
+    locations?: readonly string[];
+    type: 'openid_credential';
+  }[];
+};
 
-export type StandardTokenResponse = z.infer<typeof TokenResponse>;
+/** @deprecated Use AuthDetailsBoundTokenResponse for responses with required authorization details. */
+export { AuthDetailsBoundTokenResponse as TokenResponse };
 
-export type TokenResponse = z.infer<typeof PreAuthorizedTokenResponse>;
+export type StandardTokenResponse = z.infer<typeof StandardTokenResponse>;

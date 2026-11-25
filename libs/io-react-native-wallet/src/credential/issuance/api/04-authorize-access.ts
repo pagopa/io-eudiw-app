@@ -2,14 +2,12 @@ import type { CryptoContext } from '@pagopa/io-react-native-jwt';
 
 import type { IssuerConfig } from './IssuerConfig';
 import type {
+  AuthDetailsBoundTokenResponse,
   AuthorizeAccessTokenRequest,
-  StandardTokenResponse,
-  TokenResponse
+  StandardTokenResponse
 } from './types';
 
-export interface AuthorizeAccessApi<
-  TToken extends TokenResponse = StandardTokenResponse
-> {
+export interface AuthorizeAccessApi {
   /**
    * Creates and sends the DPoP Proof JWT with an access token request to the /token endpoint of the authorization server
    * for requesting the issuance of an access token bound to the public key of the Wallet Instance contained within the DPoP.
@@ -34,6 +32,7 @@ export interface AuthorizeAccessApi<
    * @param context.walletInstanceAttestation The Wallet Instance's attestation
    * @param context.wiaCryptoContext The Wallet Instance's crypto context
    * @param context.dPopCryptoContext The DPoP crypto context
+   * @param context.authDetailsBound Whether authorization details must be returned
    * @param context.appFetch (optional) fetch api implementation. Default: built-in fetch
    * @return The token response containing the access token along with the token request signed with DPoP which has to be used in the {@link obtainCredential} step.
    * @throws {ValidationFailed} if an error occurs while parsing the token response
@@ -42,11 +41,21 @@ export interface AuthorizeAccessApi<
   authorizeAccess(
     issuerConf: IssuerConfig,
     accessTokenRequest: AuthorizeAccessTokenRequest,
-    context: {
-      appFetch?: typeof fetch;
-      dPopCryptoContext: CryptoContext;
-      walletInstanceAttestation: string;
-      wiaCryptoContext: CryptoContext;
-    }
-  ): Promise<{ accessToken: TToken }>;
+    context: AuthorizeAccessContext & { authDetailsBound: true }
+  ): Promise<{ accessToken: AuthDetailsBoundTokenResponse }>;
+
+  authorizeAccess(
+    issuerConf: IssuerConfig,
+    accessTokenRequest: AuthorizeAccessTokenRequest,
+    context: AuthorizeAccessContext
+  ): Promise<{ accessToken: StandardTokenResponse }>;
+}
+
+export interface AuthorizeAccessContext {
+  appFetch?: typeof fetch;
+  /** Require authorization details in the response when they were sent in the Authorization Request (including PAR). Details in the Token Request also require them in the response. */
+  authDetailsBound?: boolean;
+  dPopCryptoContext: CryptoContext;
+  walletInstanceAttestation: string;
+  wiaCryptoContext: CryptoContext;
 }

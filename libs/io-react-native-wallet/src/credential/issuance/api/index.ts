@@ -1,5 +1,3 @@
-import type { StandardTokenResponse, TokenResponse } from './types';
-
 import { type EvaluateIssuerTrustApi } from './01-evaluate-issuer-trust';
 import { type StartUserAuthorizationApi } from './02-start-user-authorization';
 import { type CompleteUserAuthorizationApi } from './03-complete-user-authorization';
@@ -8,18 +6,18 @@ import { type ObtainCredentialApi } from './05-obtain-credential';
 import { type VerifyAndParseCredentialApi } from './06-verify-and-parse-credential';
 import { type MRTDPoPApi } from './mrtd-pop';
 
-export interface IssuanceApi<
-  TToken extends TokenResponse = StandardTokenResponse
-> extends AuthorizeAccessApi<TToken>,
+export interface IssuanceApi
+  extends AuthorizeAccessApi,
     CompleteUserAuthorizationApi,
     EvaluateIssuerTrustApi,
-    ObtainCredentialApi<TToken>,
+    ObtainCredentialApi,
     StartUserAuthorizationApi,
     VerifyAndParseCredentialApi {
   MRTDPoP: MRTDPoPApi;
 }
 
 export type { EvaluatedDcqlQuery } from './03-complete-user-authorization';
+export type { AuthorizeAccessContext } from './04-authorize-access';
 export type { IssuerConfig } from './IssuerConfig';
 export type * as MRTDPoP from './mrtd-pop';
 export type * from './types';

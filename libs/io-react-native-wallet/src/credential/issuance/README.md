@@ -232,6 +232,7 @@ const { accessToken } = await wallet.CredentialIssuance.authorizeAccess(
     wiaCryptoContext,
     dPopCryptoContext,
     appFetch,
+    authDetailsBound: true,
   }
 );
 
@@ -389,6 +390,7 @@ const { accessToken } = await wallet.CredentialIssuance.authorizeAccess(
     wiaCryptoContext,
     dPopCryptoContext,
     appFetch,
+    authDetailsBound: true,
   }
 );
 
@@ -449,7 +451,11 @@ The result of this flow is a raw credential and a parsed credential which must b
 For APTITUDE credential offers, resolve and extract the grant with an `IoWallet`
 configured for `APTITUDE`, then pass the pre-authorized token request to
 `authorizeAccess`. If the offer includes a `tx_code` object, provide its value
-as `tx_code` in this request.
+as `tx_code` in this request. The wallet validates that the response includes
+`authorization_details` whenever the token request sends it. Set
+`authDetailsBound: true` when authorization details were already sent in the
+Authorization Request (including PAR) to require them in the token response
+and get the corresponding return type.
 
 ```ts
 const wallet = new IoWallet({ version: "APTITUDE" });

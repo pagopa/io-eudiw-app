@@ -155,6 +155,7 @@ const obtainPidListener: AppListenerWithAction<
       },
       {
         appFetch,
+        authDetailsBound: true,
         dPopCryptoContext,
         walletInstanceAttestation,
         wiaCryptoContext
@@ -168,7 +169,7 @@ const obtainPidListener: AppListenerWithAction<
       pidCredentialDefinition?.credential_configuration_id;
 
     const { credential_configuration_id, credential_identifiers } =
-      accessToken.authorization_details?.find(
+      accessToken.authorization_details.find(
         authDetails =>
           authDetails.credential_configuration_id === pidCredentialConfigId
       ) ?? {};

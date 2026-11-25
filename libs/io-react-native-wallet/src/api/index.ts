@@ -13,7 +13,7 @@ import * as WIA from '../wallet-instance-attestation';
  * The Wallet public API.
  */
 export interface IoWalletApi {
-  CredentialIssuance: CredentialIssuance.IssuanceApi<CredentialIssuance.TokenResponse>;
+  CredentialIssuance: CredentialIssuance.IssuanceApi;
   CredentialsCatalogue: CredentialsCatalogue.CredentialsCatalogueApi;
   CredentialsOffer: CredentialsOffer.OfferApi;
   CredentialStatus: CredentialStatus.CredentialStatusApi;

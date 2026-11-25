@@ -62,7 +62,14 @@ export const authorizeAccess: IssuanceApi['authorizeAccess'] = async (
 
   Logger.log(LogLevel.DEBUG, `WIA DPoP token: ${signedWiaPoP}`);
 
-  const authorizationRequestFormBody = new URLSearchParams(accessTokenRequest);
+  const { authorization_details, ...grantRequest } = accessTokenRequest;
+  const authorizationRequestFormBody = new URLSearchParams(grantRequest);
+  if (authorization_details !== undefined) {
+    authorizationRequestFormBody.set(
+      'authorization_details',
+      JSON.stringify(authorization_details)
+    );
+  }
 
   Logger.log(
     LogLevel.DEBUG,

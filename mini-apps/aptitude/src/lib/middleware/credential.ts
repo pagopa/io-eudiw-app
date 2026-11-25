@@ -354,6 +354,7 @@ const obtainCredentialListener: AppListenerWithAction<
       },
       {
         appFetch,
+        authDetailsBound: true,
         dPopCryptoContext,
         walletInstanceAttestation,
         wiaCryptoContext
@@ -362,7 +363,7 @@ const obtainCredentialListener: AppListenerWithAction<
 
     // Obtain the credential
     // # TODO: WLEO-727 - rework to support multiple credentials issuance
-    const authorizedCredential = accessToken.authorization_details?.find(
+    const authorizedCredential = accessToken.authorization_details.find(
       detail => detail.credential_configuration_id === credentialId
     );
     if (!authorizedCredential) {
