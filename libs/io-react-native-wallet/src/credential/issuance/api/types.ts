@@ -1,3 +1,4 @@
+import { AccessTokenRequestAPTITUDE } from '@pagopa/io-wallet-oauth2';
 import * as z from 'zod';
 
 export type AuthorizationDetail = z.infer<typeof AuthorizationDetail>;
@@ -36,6 +37,14 @@ export const TokenResponse = z.object({
 export const PreAuthorizedTokenResponse = TokenResponse.partial({
   authorization_details: true
 });
+
+export type AuthorizeAccessTokenRequest = Extract<
+  AccessTokenRequestAPTITUDE,
+  | { grant_type: 'authorization_code' }
+  | {
+      grant_type: 'urn:ietf:params:oauth:grant-type:pre-authorized_code';
+    }
+>;
 
 export type StandardTokenResponse = z.infer<typeof TokenResponse>;
 

@@ -1,8 +1,11 @@
 import type { CryptoContext } from '@pagopa/io-react-native-jwt';
-import type { AccessTokenRequestAPTITUDE } from '@pagopa/io-wallet-oauth2';
 
 import type { IssuerConfig } from './IssuerConfig';
-import type { StandardTokenResponse, TokenResponse } from './types';
+import type {
+  AuthorizeAccessTokenRequest,
+  StandardTokenResponse,
+  TokenResponse
+} from './types';
 
 export interface AuthorizeAccessApi<
   TToken extends TokenResponse = StandardTokenResponse
@@ -47,11 +50,3 @@ export interface AuthorizeAccessApi<
     }
   ): Promise<{ accessToken: TToken }>;
 }
-
-export type AuthorizeAccessTokenRequest = Extract<
-  AccessTokenRequestAPTITUDE,
-  | { grant_type: 'authorization_code' }
-  | {
-      grant_type: 'urn:ietf:params:oauth:grant-type:pre-authorized_code';
-    }
->;
