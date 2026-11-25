@@ -12,6 +12,7 @@ import {
 import { IOToast } from '@pagopa/io-app-design-system';
 import {
   createCryptoContextFor,
+  CREDENTIAL_OFFER_GRANTS,
   IoWallet,
   RemotePresentation
 } from '@pagopa/io-react-native-wallet';
@@ -45,7 +46,6 @@ import {
 } from '../store/credentials';
 import { selectSessionId } from '../store/instance';
 import { ResolvedCredentialOffer } from '../types';
-import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredential } from '../utils/credentials';
 import { DPOP_KEYTAG, WIA_KEYTAG } from '../utils/crypto';
 import { serializeErrorOrUnknown } from '../utils/errors';
@@ -117,7 +117,7 @@ export const resolveCredentialOfferThunk: ResolveCredentialOfferThunk =
     'aptitude/credentialIssuance/resolveOffer',
     async ({ url }, { getState, rejectWithValue }) => {
       try {
-        const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+        const wallet = new IoWallet({ version: 'APTITUDE' });
         const sessionId = selectSessionId(getState());
         const appFetch = createWalletFetch(sessionId);
 
@@ -197,7 +197,8 @@ const obtainCredentialListener: AppListenerWithAction<
     const sessionId = selectSessionId(listenerApi.getState());
     const appFetch = createWalletFetch(sessionId);
 
-    const wallet = new IoWallet({ version: WALLET_SPEC_VERSION });
+    const wallet = new IoWallet({ version: 'APTITUDE' });
+
     const keyAttestation = await listenerApi
       .dispatch(getKeyAttestationThunk({ keyTags: [credentialKeyTag] }))
       .unwrap();
@@ -209,9 +210,17 @@ const obtainCredentialListener: AppListenerWithAction<
     // carry a specific authorization server (required when the Issuer relies on
     // more than one), as well as the `scope` and `issuer_state` that must be
     // forwarded to the PAR.
+    const grantType = CREDENTIAL_OFFER_GRANTS.AUTHORIZATION_CODE;
+
     const authorizationCodeGrant = offer
-      ? wallet.CredentialsOffer.extractGrantDetails(offer).authorization_code
+      ? wallet.CredentialsOffer.extractGrantDetails(offer)[grantType]
       : undefined;
+
+    if (offer && !authorizationCodeGrant) {
+      throw new Error(
+        'The mini-app currently supports authorization-code credential offers only'
+      );
+    }
 
     // Forwarded to the Issuer metadata discovery (fetchMetadata).
     const authorizationServer = authorizationCodeGrant?.authorizationServer;
@@ -235,6 +244,7 @@ const obtainCredentialListener: AppListenerWithAction<
         credentialIssuerMetadata: issuerConf.authorization_servers
           ? { authorization_servers: issuerConf.authorization_servers }
           : {},
+        grantType,
         offer
       });
     }
@@ -336,11 +346,15 @@ const obtainCredentialListener: AppListenerWithAction<
 
     const { accessToken } = await wallet.CredentialIssuance.authorizeAccess(
       issuerConf,
-      code,
-      redirectUri,
-      codeVerifier,
+      {
+        code,
+        code_verifier: codeVerifier,
+        grant_type: grantType,
+        redirect_uri: redirectUri
+      },
       {
         appFetch,
+        authDetailsBound: true,
         dPopCryptoContext,
         walletInstanceAttestation,
         wiaCryptoContext
@@ -349,8 +363,16 @@ const obtainCredentialListener: AppListenerWithAction<
 
     // Obtain the credential
     // # TODO: WLEO-727 - rework to support multiple credentials issuance
+    const authorizedCredential = accessToken.authorization_details.find(
+      detail => detail.credential_configuration_id === credentialId
+    );
+    if (!authorizedCredential) {
+      throw new Error(
+        'The access token does not authorize the requested credential'
+      );
+    }
     const { credential_configuration_id, credential_identifiers } =
-      accessToken.authorization_details[0];
+      authorizedCredential;
 
     // Obtain the credential
     const { credential, format } =
@@ -390,7 +412,7 @@ const obtainCredentialListener: AppListenerWithAction<
           issuerConf,
           keyTag: credentialKeyTag,
           parsedCredential,
-          spec_version: WALLET_SPEC_VERSION
+          spec_version: 'APTITUDE'
         }
       })
     );

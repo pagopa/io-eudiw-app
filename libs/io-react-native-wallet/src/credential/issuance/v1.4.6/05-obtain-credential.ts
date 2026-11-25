@@ -171,7 +171,7 @@ export const obtainCredential: IssuanceApi['obtainCredential'] = async (
     credentialDefinition;
 
   // Validation of accessTokenResponse.authorization_details if contain credentialDefinition
-  const containsCredentialDefinition = accessToken.authorization_details.some(
+  const containsCredentialDefinition = accessToken.authorization_details?.some(
     c =>
       c.credential_configuration_id === credential_configuration_id &&
       (credential_identifier

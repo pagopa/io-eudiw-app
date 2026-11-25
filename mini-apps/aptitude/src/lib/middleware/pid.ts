@@ -12,6 +12,7 @@ import {
 } from '@io-eudiw-app/identification';
 import {
   createCryptoContextFor,
+  CREDENTIAL_OFFER_GRANTS,
   IoWallet
 } from '@pagopa/io-react-native-wallet';
 import { isAnyOf, TaskAbortError } from '@reduxjs/toolkit';
@@ -146,11 +147,15 @@ const obtainPidListener: AppListenerWithAction<
 
     const { accessToken } = await wallet.CredentialIssuance.authorizeAccess(
       issuerConf,
-      code,
-      redirectUri,
-      codeVerifier,
+      {
+        code,
+        code_verifier: codeVerifier,
+        grant_type: CREDENTIAL_OFFER_GRANTS.AUTHORIZATION_CODE,
+        redirect_uri: redirectUri
+      },
       {
         appFetch,
+        authDetailsBound: true,
         dPopCryptoContext,
         walletInstanceAttestation,
         wiaCryptoContext

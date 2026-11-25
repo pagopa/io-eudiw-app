@@ -1,23 +1,38 @@
 import type { CryptoContext } from '@pagopa/io-react-native-jwt';
 
 import type { IssuerConfig } from './IssuerConfig';
-import type { TokenResponse } from './types';
+import type {
+  AuthDetailsBoundTokenResponse,
+  AuthorizeAccessTokenRequest,
+  StandardTokenResponse
+} from './types';
 
 export interface AuthorizeAccessApi {
   /**
-   * Creates and sends the DPoP Proof JWT to be presented with the authorization code to the /token endpoint of the authorization server
+   * Creates and sends the DPoP Proof JWT with an access token request to the /token endpoint of the authorization server
    * for requesting the issuance of an access token bound to the public key of the Wallet Instance contained within the DPoP.
    * This enables the Wallet Instance to request a digital credential.
    * The DPoP Proof JWT is generated according to the section 4.3 of the DPoP RFC 9449 specification.
    * @since 1.0.0
    *
    * @param issuerConf The issuer configuration returned by {@link evaluateIssuerTrust}
-   * @param code The authorization code returned by {@link completeUserAuthorizationWithQueryMode} or {@link completeUserAuthorizationWithFormPost}
-   * @param redirectUri The redirect URI which is the custom URL scheme that the Wallet Instance is registered to handle
-   * @param codeVerifier The code verifier returned by {@link startUserAuthorization}
+   * @param accessTokenRequest The authorization-code or pre-authorized-code grant request.
+   *
+   * * **authorization_code grant type parameters:**
+   * - `grant_type` - 'authorization_code'
+   * - `code_verifier` - The code verifier returned by {@link startUserAuthorization}
+   * - `redirect_uri` - The redirect URI which is the custom URL scheme that the Wallet Instance is registered to handle
+   * - `code` - The authorization code returned by {@link completeUserAuthorizationWithQueryMode} or {@link completeUserAuthorizationWithFormPost}.
+   *
+   * * **pre-authorized_code grant type parameters:**
+   * - `grant_type` - 'urn:ietf:params:oauth:grant-type:pre-authorized_code'
+   * - `pre-authorized_code`: Pre-authorized code received in the credential offer.
+   * - `tx_code`: The Transaction code required when the credential offer contains a `tx_code` object.
+   *
    * @param context.walletInstanceAttestation The Wallet Instance's attestation
    * @param context.wiaCryptoContext The Wallet Instance's crypto context
    * @param context.dPopCryptoContext The DPoP crypto context
+   * @param context.authDetailsBound Whether authorization details must be returned
    * @param context.appFetch (optional) fetch api implementation. Default: built-in fetch
    * @return The token response containing the access token along with the token request signed with DPoP which has to be used in the {@link obtainCredential} step.
    * @throws {ValidationFailed} if an error occurs while parsing the token response
@@ -25,14 +40,22 @@ export interface AuthorizeAccessApi {
    */
   authorizeAccess(
     issuerConf: IssuerConfig,
-    code: string,
-    redirectUri: string,
-    codeVerifier: string,
-    context: {
-      appFetch?: typeof fetch;
-      dPopCryptoContext: CryptoContext;
-      walletInstanceAttestation: string;
-      wiaCryptoContext: CryptoContext;
-    }
-  ): Promise<{ accessToken: TokenResponse }>;
+    accessTokenRequest: AuthorizeAccessTokenRequest,
+    context: AuthorizeAccessContext & { authDetailsBound: true }
+  ): Promise<{ accessToken: AuthDetailsBoundTokenResponse }>;
+
+  authorizeAccess(
+    issuerConf: IssuerConfig,
+    accessTokenRequest: AuthorizeAccessTokenRequest,
+    context: AuthorizeAccessContext
+  ): Promise<{ accessToken: StandardTokenResponse }>;
+}
+
+export interface AuthorizeAccessContext {
+  appFetch?: typeof fetch;
+  /** Require authorization details in the response when they were sent in the Authorization Request (including PAR). Details in the Token Request also require them in the response. */
+  authDetailsBound?: boolean;
+  dPopCryptoContext: CryptoContext;
+  walletInstanceAttestation: string;
+  wiaCryptoContext: CryptoContext;
 }
