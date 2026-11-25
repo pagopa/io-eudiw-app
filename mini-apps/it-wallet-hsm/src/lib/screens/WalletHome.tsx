@@ -61,7 +61,7 @@ const WalletHome = () => {
                   iconPosition: 'end',
                   label: t('proximity.home.cta', { ns: 'hsm' }),
                   onPress: () =>
-                    toast.error(t('proximity.unavailable', { ns: 'hsm' }))
+                    toast.error(t('featureUnavailable', { ns: 'hsm' }))
                 },
                 type: 'SingleButton'
               }

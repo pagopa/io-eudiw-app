@@ -38,6 +38,9 @@ const DEFAULT_CAPABILITIES: ItwCredentialCapabilities = {
   suppressStatusAlert: false
 };
 
+const showFeatureUnavailableToast = () =>
+  IOToast.error(I18n.t('featureUnavailable', { ns: 'hsm' }));
+
 const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
   [wellKnownCredential.BONUS_PARI]: {
     getExtraCredentialActions: appSelectorHook => {
@@ -98,7 +101,45 @@ const itwCredentialCapabilities: Record<string, ItwCredentialCapabilities> = {
     suppressStatusAlert: true
   },
   [wellKnownCredential.DISABILITY_CARD]: DEFAULT_CAPABILITIES,
-  [wellKnownCredential.DRIVING_LICENSE]: DEFAULT_CAPABILITIES
+  [wellKnownCredential.DRIVING_LICENSE]: DEFAULT_CAPABILITIES,
+  [wellKnownCredential.PID]: {
+    ...DEFAULT_CAPABILITIES,
+    getExtraCredentialActions: () => [
+      {
+        key: 'PID_NEW_PASSWORD',
+        props: {
+          accessibilityLabel: I18n.t(
+            'presentation.credentialDetails.actions.newPassword',
+            { ns: 'hsm' }
+          ),
+          icon: 'securityPad',
+          label: I18n.t('presentation.credentialDetails.actions.newPassword', {
+            ns: 'hsm'
+          }),
+          onPress: showFeatureUnavailableToast,
+          testID: 'PID_NEW_PASSWORD_TESTID',
+          variant: 'primary'
+        }
+      },
+      {
+        key: 'PID_DISCOVER_IT_WALLET',
+        props: {
+          accessibilityLabel: I18n.t(
+            'presentation.credentialDetails.actions.discoverItWallet',
+            { ns: 'hsm' }
+          ),
+          icon: 'website',
+          label: I18n.t(
+            'presentation.credentialDetails.actions.discoverItWallet',
+            { ns: 'hsm' }
+          ),
+          onPress: showFeatureUnavailableToast,
+          testID: 'PID_DISCOVER_IT_WALLET_TESTID',
+          variant: 'primary'
+        }
+      }
+    ]
+  }
 };
 
 export const getCredentialCapabilities = (

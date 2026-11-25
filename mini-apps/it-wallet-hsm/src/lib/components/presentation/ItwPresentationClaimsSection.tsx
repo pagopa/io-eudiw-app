@@ -14,6 +14,7 @@ import {
   itwSetClaimValuesHidden
 } from '../../store/credentials';
 import { ParsedClaimsRecord } from '../../utils/claims';
+import { wellKnownCredential } from '../../utils/credentials';
 import { WellKnownClaim } from '../../utils/itwClaimsUtils';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
 import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
@@ -102,9 +103,12 @@ export const ItwPresentationClaimsSection = ({
             style={{ flexDirection: 'row', justifyContent: 'space-between' }}
           >
             <H6 color={theme['textHeading-tertiary']}>
-              {t('presentation.credentialDetails.documentDataTitle', {
-                ns: 'hsm'
-              })}
+              {t(
+                credential.credentialType === wellKnownCredential.PID
+                  ? 'presentation.credentialDetails.pidDataTitle'
+                  : 'presentation.credentialDetails.documentDataTitle',
+                { ns: 'hsm' }
+              )}
             </H6>
             {renderHideValuesToggle()}
           </View>

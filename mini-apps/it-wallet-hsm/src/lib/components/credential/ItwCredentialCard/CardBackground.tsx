@@ -3,7 +3,7 @@ import { Canvas } from '@shopify/react-native-skia';
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { useIsScreenFocused } from '../../../hooks/useIsScreenFocused';
+import { useFocusRemountKey } from '../../../hooks/useFocusRemountKey';
 import { useLayoutSize } from '../../../hooks/useLayoutSize';
 import {
   SkiaCardCornerOverlay,
@@ -17,11 +17,9 @@ type Props = Pick<CredentialCardConfig, 'background' | 'color' | 'overlay'>;
 
 export const CardBackground = memo(({ background, color, overlay }: Props) => {
   const { onLayout, size } = useLayoutSize();
-  // Skia's Canvas can fail to paint its first frame when it mounts while the
-  // screen is mid-transition, leaving the card with only its white base color.
-  // Keying the Canvas on the focus state forces a remount when the screen
-  // regains focus, guaranteeing a fresh surface that repaints correctly.
-  const isFocused = useIsScreenFocused();
+  // Skia's Canvas can fail to paint after a transition, leaving the card with
+  // only its white base color: see useFocusRemountKey
+  const remountKey = useFocusRemountKey();
 
   return (
     <View
@@ -29,7 +27,7 @@ export const CardBackground = memo(({ background, color, overlay }: Props) => {
       style={[StyleSheet.absoluteFill, { backgroundColor: IOColors.white }]}
     >
       <Canvas
-        key={isFocused ? 'focused' : 'unfocused'}
+        key={remountKey}
         pointerEvents="none"
         style={StyleSheet.absoluteFill}
       >

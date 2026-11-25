@@ -150,7 +150,7 @@ const ItwPresentationCredentialDetail = ({
         icon: 'productITWallet',
         iconPosition: 'end',
         label: t('hsm:presentation.ctas.present'),
-        onPress: () => toast.error(t('hsm:proximity.unavailable'))
+        onPress: () => toast.error(t('hsm:featureUnavailable'))
       };
     }
 
@@ -219,7 +219,11 @@ const ItwPresentationCredentialDetail = ({
             credential={credential}
           />
           <View style={{ alignItems: 'center' }}>
-            <PoweredByItWalletText />
+            <PoweredByItWalletText
+              showCertifiedEudiWallet={
+                credential.credentialType === wellKnownCredential.PID
+              }
+            />
           </View>
         </VStack>
       </ContentWrapper>

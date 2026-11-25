@@ -258,10 +258,10 @@ export const credentialCardConfigs: Partial<
       borderColor: '#4F99E2',
       color: '#EAF6FF',
       overlay: {
-        card: require('../../../../assets/img/cards/overlay/pid_card_dark.png'),
+        card: require('../../../../assets/img/cards/overlay/pid_card_eudi.png'),
         header: require('../../../../assets/img/cards/overlay/pid_header.png')
       },
-      titleColor: '#115486'
+      titleColor: '#0066CC'
     }
   }
 };
