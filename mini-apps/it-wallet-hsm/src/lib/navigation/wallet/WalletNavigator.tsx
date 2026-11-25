@@ -22,6 +22,9 @@ import DeepLinkHandler, {
 } from '../../screens/deeplink/DeepLinkHandler';
 import { IdentificationMethod } from '../../screens/pidIssuance/IdentificationMethod';
 import PidIssuanceFailure from '../../screens/pidIssuance/PidIssuanceFailure';
+import PidIssuancePassword from '../../screens/pidIssuance/PidIssuancePassword';
+import PidIssuancePasswordIntro from '../../screens/pidIssuance/PidIssuancePasswordIntro';
+import PidIssuancePreview from '../../screens/pidIssuance/PidIssuancePreview';
 import PidIssuancRequest from '../../screens/pidIssuance/PidIssuanceRequest';
 import PidIssuanceResult from '../../screens/pidIssuance/PidIssuanceResult';
 import { WalletInstanceCreation } from '../../screens/pidIssuance/WalletInstanceCreation';
@@ -78,6 +81,9 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.PID_ISSUANCE.ID_METHOD]: undefined;
   // Pid issuance
   [WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION]: undefined;
+  [WALLET_ROUTES.PID_ISSUANCE.PASSWORD]: undefined;
+  [WALLET_ROUTES.PID_ISSUANCE.PASSWORD_INTRO]: undefined;
+  [WALLET_ROUTES.PID_ISSUANCE.PREVIEW]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.REQUEST]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.RESULT]: undefined;
   [WALLET_ROUTES.PRESENTATION
@@ -146,6 +152,18 @@ const WalletNavigator = () => (
       <Stack.Screen
         component={PidIssuancRequest}
         name={WALLET_ROUTES.PID_ISSUANCE.REQUEST}
+      />
+      <Stack.Screen
+        component={PidIssuancePasswordIntro}
+        name={WALLET_ROUTES.PID_ISSUANCE.PASSWORD_INTRO}
+      />
+      <Stack.Screen
+        component={PidIssuancePassword}
+        name={WALLET_ROUTES.PID_ISSUANCE.PASSWORD}
+      />
+      <Stack.Screen
+        component={PidIssuancePreview}
+        name={WALLET_ROUTES.PID_ISSUANCE.PREVIEW}
       />
       <Stack.Screen
         component={PidIssuanceResult}

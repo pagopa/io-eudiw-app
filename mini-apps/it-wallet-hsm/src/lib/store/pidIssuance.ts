@@ -42,9 +42,21 @@ export type PendingCredential =
  */
 export type PidIssuanceErrorType = 'issuance' | 'persist';
 
+/**
+ * Steps of the PID issuance flow while it is loading:
+ * `authorization` until the user is authenticated and the access is authorized,
+ * `passwordRequired` while waiting for the HSM password chosen by the user,
+ * `issuing` while the PID key is enrolled on the Remote WSCD and the PID is obtained.
+ */
+export type PidIssuanceStep = 'authorization' | 'issuing' | 'passwordRequired';
+
 type PidIssuanceStatusSlice = {
   instanceCreation: AsyncStatusValues;
-  issuance: AsyncStatusValues<StoredCredential, PidIssuanceErrorType>;
+  issuance: AsyncStatusValues<
+    StoredCredential,
+    PidIssuanceErrorType,
+    PidIssuanceStep
+  >;
   pendingCredential: PendingCredential;
 };
 
@@ -111,8 +123,19 @@ const pidIssuanceStatusSlice = createSlice({
     },
     // Triggers the PID issuance flow handled by the obtainPidListener and moves
     // the issuance status to loading.
+    // Hands the HSM password chosen by the user over to the obtainPidListener.
+    // The password is the Remote WSCD PIN of the PID key, thus it is only carried by the action and never stored in the state.
+    setPidIssuancePassword: (
+      _state,
+      _action: PayloadAction<{ password: string }>
+    ) => undefined,
     setPidIssuanceRequest: state => {
-      state.issuance = setLoading();
+      state.issuance = setLoading('authorization');
+    },
+    // Moves the PID issuance flow to the given step, so the UI can react to its progress
+    // (e.g. asking the user for the HSM password).
+    setPidIssuanceStep: (state, action: PayloadAction<PidIssuanceStep>) => {
+      state.issuance = setLoading(action.payload);
     },
     setPidIssuanceSuccess: (state, action: PayloadAction<StoredCredential>) => {
       state.issuance = setSuccess(action.payload);
@@ -128,7 +151,9 @@ export const {
   resetPidIssuance,
   setPendingCredential,
   setPidIssuanceError,
+  setPidIssuancePassword,
   setPidIssuanceRequest,
+  setPidIssuanceStep,
   setPidIssuanceSuccess
 } = pidIssuanceStatusSlice.actions;
 
