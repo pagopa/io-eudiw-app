@@ -82,16 +82,15 @@ export const ItwIssuanceMetadata = ({
 }: ItwIssuanceMetadataProps) => {
   const releaserName =
     credential?.issuerConf?.federation_entity.organization_name;
+  const isPid = credential.credentialType === wellKnownCredential.PID;
 
   /* TODO: [WLEO-846] In case of introduction of the credential catalogue
            it will be necessary to obtain the auth source from it.
   */
-  const authSource = t('presentation.authSource', { ns: 'hsm' });
-
-  const releasedByKey =
-    credential.credentialType === wellKnownCredential.PID
-      ? 'releasedByPid'
-      : 'releasedBy';
+  const authSource = t(
+    isPid ? 'presentation.pidAuthSource' : 'presentation.authSource',
+    { ns: 'hsm' }
+  );
 
   const releaserNameBottomSheet: ItwMetadataIssuanceListItemProps['bottomSheet'] =
     useMemo(
@@ -146,7 +145,7 @@ export const ItwIssuanceMetadata = ({
         <ItwMetadataIssuanceListItem
           bottomSheet={releaserNameBottomSheet}
           isPreview={isPreview}
-          label={t(`verifiableCredentials.claims.${releasedByKey}`, {
+          label={t('verifiableCredentials.claims.releasedBy', {
             ns: 'hsm'
           })}
           value={releaserName}

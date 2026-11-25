@@ -1,7 +1,7 @@
 import { IOVisualCostants } from '@pagopa/io-app-design-system';
-import { Canvas, Rect } from '@shopify/react-native-skia';
-import { PropsWithChildren } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Canvas, Rect, Size } from '@shopify/react-native-skia';
+import { PropsWithChildren, ReactNode } from 'react';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useLayoutSize } from '../hooks/useLayoutSize';
@@ -18,6 +18,11 @@ import { ItwBrandedSkiaBorder } from './ItwBrandedSkiaBorder';
 type ItwCredentialDetailCardProps = PropsWithChildren<{
   credentialStatus?: ItwCredentialStatus;
   credentialType: string;
+  /**
+   * Optional Skia elements drawn between the card background and its border
+   */
+  renderOverlay?: (size: Size) => ReactNode;
+  style?: StyleProp<ViewStyle>;
 }>;
 
 // Height of the transparent HeaderSecondLevel navigation bar rendered above this card.
@@ -34,7 +39,9 @@ const CARD_BORDER_RADIUS = 24;
 export const ItwCredentialDetailCard = ({
   children,
   credentialStatus = 'valid',
-  credentialType
+  credentialType,
+  renderOverlay,
+  style
 }: ItwCredentialDetailCardProps) => {
   const safeAreaInsets = useSafeAreaInsets();
   const { onLayout, size } = useLayoutSize();
@@ -54,7 +61,7 @@ export const ItwCredentialDetailCard = ({
     SCROLL_HACK_OFFSET;
 
   return (
-    <View onLayout={onLayout} style={[styles.container, { paddingTop }]}>
+    <View onLayout={onLayout} style={[styles.container, { paddingTop }, style]}>
       {size && (
         <Canvas style={StyleSheet.absoluteFill}>
           {overlay?.header && (
@@ -70,6 +77,7 @@ export const ItwCredentialDetailCard = ({
               <SkiaCardPatternOverlay src={overlay.pattern} {...size} />
             </>
           )}
+          {renderOverlay?.(size)}
 
           <ItwBrandedSkiaBorder
             cornerRadius={CARD_BORDER_RADIUS}

@@ -1,4 +1,5 @@
 {
+  "featureUnavailable": "La funzionalità non è attiva",
   "notActive": {
     "title": "Ottieni IT-Wallet per continuare",
     "body": "Per accedere ai servizi online è necessario attivare IT-Wallet utilizzando la tua Carta di Identità Elettronica (CIE).",
@@ -180,6 +181,9 @@
       },
       "openCardDocument": "Apri copia del documento",
       "documentDataTitle": "Dati del documento",
+      "pidDataTitle": "Dati del tuo ID",
+      "pidTitle": "Il tuo ID",
+      "validIn": "Valido in",
       "boolClaim": {
         "true": "Sì",
         "false": "No"
@@ -194,7 +198,9 @@
         "removeFromWallet": "Rimuovi dal Portafoglio",
         "deactivateItWallet": "Disattiva IT-Wallet",
         "hideClaimValues": "Nascondi gli attributi del documento",
-        "pariPurchases": "Dettaglio acquisti"
+        "pariPurchases": "Dettaglio acquisti",
+        "newPassword": "Ottieni una nuova password",
+        "discoverItWallet": "Scopri di più su IT-Wallet"
       },
       "dialogs": {
         "remove": {
@@ -288,7 +294,8 @@
       "content": "Chiudi e riapri l'app per riprovare.",
       "primaryAction": "Ho capito"
     },
-    "authSource": "PagoPa S.p.A."
+    "authSource": "PagoPa S.p.A.",
+    "pidAuthSource": "Anagrafe nazionale della popolazione residente - ANPR"
   },
   "bonusPari": {
     "barcode": {
@@ -299,7 +306,6 @@
     "home": {
       "cta": "Usa per la verifica"
     },
-    "unavailable": "La funzionalità non è attiva",
     "engagement": {
       "title": "Pronto per la verifica",
       "instruction": "Chi verifica dal vivo userà un’app ufficiale.",
@@ -479,7 +485,6 @@
       "securityLevel": "Livello di sicurezza",
       "info": "Ulteriori info su questi dati",
       "releasedBy": "Emissione versione digitale",
-      "releasedByPid": "Emissione IT-Wallet ID",
       "attachments": "Allegati",
       "authenticSource": "Origine dei dati",
       "mdl": {

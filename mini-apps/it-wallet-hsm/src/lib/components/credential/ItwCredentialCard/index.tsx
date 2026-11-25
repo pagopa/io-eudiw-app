@@ -7,8 +7,10 @@ import {
   useIOThemeContext
 } from '@pagopa/io-app-design-system';
 import { memo, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
+import CertifiedEudiWalletLogo from '../../../../assets/img/brand/certified_eudi_wallet.svg';
 import { useItwDisplayCredentialStatus } from '../../../hooks/useItwDisplayCredentialStatus';
 import { useAppSelector } from '../../../store';
 import { ItwCredentialStatus } from '../../../types';
@@ -20,9 +22,12 @@ import {
   useTagPropsByStatus,
   validCredentialStatuses
 } from '../../../utils/itwCredentialUtils';
-import { ItWalletIdLogo } from '../../ItWalletIdLogo';
+import { BrandedBorder } from './BrandedBorder';
 import { CardBackground } from './CardBackground';
 import { useCredentialCardConfig } from './config';
+import { ValidInBadge } from './ValidInBadge';
+
+const CARD_BORDER_RADIUS = 8;
 
 export type ItwCredentialCardProps = {
   /**
@@ -39,6 +44,7 @@ export type ItwCredentialCardProps = {
 
 export const ItwCredentialCard = memo(
   ({ credentialStatus = 'valid', credentialType }: ItwCredentialCardProps) => {
+    const { t } = useTranslation('hsm');
     const typefacePreference = useAppSelector(selectFontPreference);
     const { theme, themeType } = useIOThemeContext();
     const status = useItwDisplayCredentialStatus(credentialStatus);
@@ -57,11 +63,13 @@ export const ItwCredentialCard = memo(
     );
 
     const appBackgroundColor = IOColors[theme['appBackground-primary']];
+    const isPid = credentialType === wellKnownCredential.PID;
 
     return (
       <View
         style={[
           styles.cardWrapper,
+          isPid && styles.pidCardWrapper,
           status === 'valid' && { boxShadow: `0 0 0 2px ${appBackgroundColor}` }
         ]}
       >
@@ -69,45 +77,50 @@ export const ItwCredentialCard = memo(
           <CardBackground {...cardConfig} />
           <View style={styles.header}>
             <HStack space={16}>
-              {credentialType === wellKnownCredential.PID ? (
-                <View style={{ flex: 1 }}>
-                  <ItWalletIdLogo height={27} width={117} />
-                </View>
-              ) : (
-                <IOText
-                  font={
-                    typefacePreference === 'comfortable'
-                      ? 'Titillio'
-                      : 'TitilliumSansPro'
-                  }
-                  lineHeight={24}
-                  maxFontSizeMultiplier={1.25}
-                  size={16}
-                  style={{
-                    color: cardConfig.titleColor,
-                    flex: 1,
-                    flexShrink: 1,
-                    letterSpacing: 0.25
-                  }}
-                  weight="Semibold"
-                >
-                  {
-                    /*
+              <IOText
+                font={
+                  typefacePreference === 'comfortable'
+                    ? 'Titillio'
+                    : 'TitilliumSansPro'
+                }
+                lineHeight={isPid ? 28 : 24}
+                maxFontSizeMultiplier={1.25}
+                size={isPid ? 20 : 16}
+                style={{
+                  color: cardConfig.titleColor,
+                  flex: 1,
+                  flexShrink: 1,
+                  letterSpacing: 0.25
+                }}
+                weight="Semibold"
+              >
+                {isPid
+                  ? t('presentation.credentialDetails.pidTitle')
+                  : /*
                     A selector that before using `getCredentialNameFromType` uses a wrapper that
                     first checks for Credential Catalogue metadata is present in ITW and has not
                     been ported because such Catalog is not present in the DWallet ecosystem
                   */
-                    getCredentialNameFromType(credentialType).toUpperCase()
-                  }
-                </IOText>
-              )}
+                    getCredentialNameFromType(credentialType).toUpperCase()}
+              </IOText>
             </HStack>
-            {statusTagProps && (
+            {statusTagProps ? (
               <View style={styles.statusTag}>
                 <Tag {...statusTagProps} />
               </View>
+            ) : (
+              isPid && <ValidInBadge />
             )}
           </View>
+          {isPid && (
+            <View style={styles.certifiedLogo}>
+              <CertifiedEudiWalletLogo
+                accessibilityLabel="Certified EUDI Wallet"
+                height={24}
+                width={93}
+              />
+            </View>
+          )}
 
           {!isValid && (
             <View
@@ -121,14 +134,18 @@ export const ItwCredentialCard = memo(
               ]}
             />
           )}
-          <View
-            style={[
-              styles.border,
-              status === 'valid' || capabilites.suppressStatusAlert
-                ? { borderColor: cardConfig.borderColor, borderWidth: 1 }
-                : { borderColor: borderColorMap[status], borderWidth: 2 }
-            ]}
-          />
+          {isPid && status === 'valid' ? (
+            <BrandedBorder cornerRadius={CARD_BORDER_RADIUS} />
+          ) : (
+            <View
+              style={[
+                styles.border,
+                status === 'valid' || capabilites.suppressStatusAlert
+                  ? { borderColor: cardConfig.borderColor, borderWidth: 1 }
+                  : { borderColor: borderColorMap[status], borderWidth: 2 }
+              ]}
+            />
+          )}
         </View>
       </View>
     );
@@ -138,7 +155,7 @@ export const ItwCredentialCard = memo(
 const styles = StyleSheet.create({
   border: {
     borderCurve: 'continuous',
-    borderRadius: 8,
+    borderRadius: CARD_BORDER_RADIUS,
     borderWidth: 1,
     bottom: 0,
     left: 0,
@@ -148,13 +165,18 @@ const styles = StyleSheet.create({
     zIndex: 11
   },
   cardContainer: {
-    borderRadius: 8,
+    borderRadius: CARD_BORDER_RADIUS,
     flex: 1,
     overflow: 'hidden'
   },
   cardWrapper: {
     aspectRatio: 16 / 10,
-    borderRadius: 8
+    borderRadius: CARD_BORDER_RADIUS
+  },
+  certifiedLogo: {
+    bottom: 16,
+    position: 'absolute',
+    right: 16
   },
   header: {
     alignItems: 'center',
@@ -163,6 +185,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingTop: 12
+  },
+  pidCardWrapper: {
+    aspectRatio: 324 / 126
   },
   statusOverlay: {
     opacity: 0.7
