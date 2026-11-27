@@ -52,6 +52,8 @@ export type PidIssuanceStep = 'authorization' | 'issuing' | 'passwordRequired';
 
 type PidIssuanceStatusSlice = {
   instanceCreation: AsyncStatusValues;
+  // Whether the PID obtained by the current issuance flow has been stored, which ends the flow
+  isPidStored: boolean;
   issuance: AsyncStatusValues<
     StoredCredential,
     PidIssuanceErrorType,
@@ -63,6 +65,7 @@ type PidIssuanceStatusSlice = {
 // Initial state for the pidIssuance slice
 const initialState: PidIssuanceStatusSlice = {
   instanceCreation: setInitial(),
+  isPidStored: false,
   issuance: setInitial(),
   pendingCredential: undefined
 };
@@ -100,6 +103,7 @@ const pidIssuanceStatusSlice = createSlice({
     },
     resetPidIssuance: state => {
       state.issuance = setInitial();
+      state.isPidStored = false;
     },
     setPendingCredential: (
       state,
@@ -137,6 +141,10 @@ const pidIssuanceStatusSlice = createSlice({
     setPidIssuanceStep: (state, action: PayloadAction<PidIssuanceStep>) => {
       state.issuance = setLoading(action.payload);
     },
+    // Marks the PID obtained by the current issuance flow as stored
+    setPidIssuanceStored: state => {
+      state.isPidStored = true;
+    },
     setPidIssuanceSuccess: (state, action: PayloadAction<StoredCredential>) => {
       state.issuance = setSuccess(action.payload);
     }
@@ -154,6 +162,7 @@ export const {
   setPidIssuancePassword,
   setPidIssuanceRequest,
   setPidIssuanceStep,
+  setPidIssuanceStored,
   setPidIssuanceSuccess
 } = pidIssuanceStatusSlice.actions;
 

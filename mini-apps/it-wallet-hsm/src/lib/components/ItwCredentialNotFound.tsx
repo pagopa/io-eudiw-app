@@ -13,6 +13,7 @@ import MAIN_ROUTES from '../navigation/main/routes';
 import WALLET_ROUTES from '../navigation/wallet/routes';
 import { useAppDispatch, useAppSelector } from '../store';
 import { setCredentialIssuancePreAuthRequest } from '../store/credentialIssuance';
+import { selectIsRemoteKeyLocked } from '../store/instance';
 import { lifecycleIsOperationalSelector } from '../store/lifecycle';
 import { setPendingCredential } from '../store/pidIssuance';
 import { wellKnownCredentialConfigurationIDs } from '../utils/credentials';
@@ -37,9 +38,17 @@ const ItwCredentialNotFound = ({
   useHardwareBackButton(() => true);
 
   const shouldIssuePidFirst = useAppSelector(lifecycleIsOperationalSelector);
+  const isRemoteKeyLocked = useAppSelector(selectIsRemoteKeyLocked);
 
   const navigateToCredential = () => {
     onDismiss?.();
+    // The issuance requires a PID presentation, which cannot be signed while the Remote WSCD key is locked
+    if (isRemoteKeyLocked) {
+      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+        screen: WALLET_ROUTES.PRESENTATION.REMOTE_KEY_LOCKED
+      });
+      return;
+    }
     if (shouldIssuePidFirst) {
       const isPidOnlyFlow =
         credentialType === wellKnownCredentialConfigurationIDs.PID;

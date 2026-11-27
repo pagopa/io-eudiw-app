@@ -8,6 +8,7 @@ import CredentialFailure from '../../screens/credentialIssuance/CredentialFailur
 import CredentialIntroduction, {
   CredentialIntroductionParams
 } from '../../screens/credentialIssuance/CredentialIntroduction';
+import CredentialIssuanceHsmPassword from '../../screens/credentialIssuance/CredentialIssuanceHsmPassword';
 import { CredentialPreview } from '../../screens/credentialIssuance/CredentialIssuancePreview';
 import CredentialsList from '../../screens/credentialIssuance/CredentialsList';
 import CredentialTrust from '../../screens/credentialIssuance/CredentialTrust';
@@ -20,7 +21,10 @@ import DeepLinkError, {
 import DeepLinkHandler, {
   DeepLinkHandlerParams
 } from '../../screens/deeplink/DeepLinkHandler';
-import { IdentificationMethod } from '../../screens/pidIssuance/IdentificationMethod';
+import {
+  IdentificationMethod,
+  IdentificationMethodParams
+} from '../../screens/pidIssuance/IdentificationMethod';
 import PidIssuanceFailure from '../../screens/pidIssuance/PidIssuanceFailure';
 import PidIssuancePassword from '../../screens/pidIssuance/PidIssuancePassword';
 import PidIssuancePasswordIntro from '../../screens/pidIssuance/PidIssuancePasswordIntro';
@@ -40,12 +44,15 @@ import PresentationCredentialNotFound, {
   PresentationCredentialNotFoundParams
 } from '../../screens/presentation/PresentationCredentialNotFound';
 import PresentationFailure from '../../screens/presentation/PresentationFailure';
+import PresentationHsmPassword from '../../screens/presentation/PresentationHsmPassword';
 import PresentationPostDefinition, {
   PresentationPostDefinitionParams
 } from '../../screens/presentation/PresentationPostDefinition';
 import PresentationPreDefinition, {
   PresentationPreDefinitionParams
 } from '../../screens/presentation/PresentationPreDefinition';
+import PresentationRemoteKeyLocked from '../../screens/presentation/PresentationRemoteKeyLocked';
+import PresentationSending from '../../screens/presentation/PresentationSending';
 import PresentationSuccess from '../../screens/presentation/PresentationSuccess';
 import PresentationWalletNotActive, {
   PresentationWalletNotActiveParams
@@ -65,6 +72,7 @@ import WALLET_ROUTES from './routes';
 export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.ALREADY_OBTAINED]: undefined;
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE]: undefined;
+  [WALLET_ROUTES.CREDENTIAL_ISSUANCE.HSM_PASSWORD]: undefined;
   // Credential Issuance
   [WALLET_ROUTES.CREDENTIAL_ISSUANCE
     .INTRODUCTION]: CredentialIntroductionParams;
@@ -78,7 +86,7 @@ export type WalletNavigatorParamsList = {
   // Deep link / QR centralized entry point
   [WALLET_ROUTES.DEEP_LINK.HANDLER]: DeepLinkHandlerParams;
   [WALLET_ROUTES.PID_ISSUANCE.FAILURE]: undefined;
-  [WALLET_ROUTES.PID_ISSUANCE.ID_METHOD]: undefined;
+  [WALLET_ROUTES.PID_ISSUANCE.ID_METHOD]: IdentificationMethodParams;
   // Pid issuance
   [WALLET_ROUTES.PID_ISSUANCE.INSTANCE_CREATION]: undefined;
   [WALLET_ROUTES.PID_ISSUANCE.PASSWORD]: undefined;
@@ -93,10 +101,13 @@ export type WalletNavigatorParamsList = {
   [WALLET_ROUTES.PRESENTATION
     .CREDENTIAL_NOT_FOUND]: PresentationCredentialNotFoundParams;
   [WALLET_ROUTES.PRESENTATION.FAILURE]: undefined;
+  [WALLET_ROUTES.PRESENTATION.HSM_PASSWORD]: undefined;
 
   [WALLET_ROUTES.PRESENTATION
     .POST_DEFINITION]: PresentationPostDefinitionParams;
   [WALLET_ROUTES.PRESENTATION.PRE_DEFINITION]: PresentationPreDefinitionParams;
+  [WALLET_ROUTES.PRESENTATION.REMOTE_KEY_LOCKED]: undefined;
+  [WALLET_ROUTES.PRESENTATION.SENDING]: undefined;
   [WALLET_ROUTES.PRESENTATION.SUCCESS]: undefined;
   [WALLET_ROUTES.PRESENTATION
     .WALLET_NOT_ACTIVE]: PresentationWalletNotActiveParams;
@@ -208,6 +219,20 @@ const WalletNavigator = () => (
         name={WALLET_ROUTES.PRESENTATION.POST_DEFINITION}
       />
       <Stack.Screen
+        component={PresentationHsmPassword}
+        name={WALLET_ROUTES.PRESENTATION.HSM_PASSWORD}
+      />
+      <Stack.Screen
+        component={PresentationSending}
+        name={WALLET_ROUTES.PRESENTATION.SENDING}
+        options={{ gestureEnabled: false, headerShown: false }}
+      />
+      <Stack.Screen
+        component={PresentationRemoteKeyLocked}
+        name={WALLET_ROUTES.PRESENTATION.REMOTE_KEY_LOCKED}
+        options={{ gestureEnabled: false, headerShown: false }}
+      />
+      <Stack.Screen
         component={PresentationSuccess}
         name={WALLET_ROUTES.PRESENTATION.SUCCESS}
         options={{ headerShown: false }}
@@ -225,6 +250,10 @@ const WalletNavigator = () => (
       <Stack.Screen
         component={CredentialTrust}
         name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.TRUST}
+      />
+      <Stack.Screen
+        component={CredentialIssuanceHsmPassword}
+        name={WALLET_ROUTES.CREDENTIAL_ISSUANCE.HSM_PASSWORD}
       />
       <Stack.Screen
         component={CredentialPreview}

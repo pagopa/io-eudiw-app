@@ -272,6 +272,23 @@ const isRemoteWscdError = (error: unknown) =>
   error.code !==
     Errors.WalletProviderResponseErrorCodes.WalletProviderGenericError;
 
+/**
+ * Returns the attempts left to enter the Remote WSCD PIN when the error is caused by a wrong PIN.
+ * @param error - The error thrown by a Remote WSCD operation
+ * @returns the remaining attempts, or undefined if the error is not caused by a wrong PIN
+ */
+export const getHsmPasswordRemainingAttempts = (error: unknown) =>
+  Errors.isWalletProviderResponseError(error) && error.code === 'PIN_INCORRECT'
+    ? ((error.reason as { remainingAttempts?: number }).remainingAttempts ?? 0)
+    : undefined;
+
+/**
+ * Whether the error is caused by the Remote WSCD keys of the wallet instance being locked after too many wrong PINs.
+ * The lock is permanent: a new wallet instance must be created to enroll new keys.
+ */
+export const isRemoteKeyLockedError = (error: unknown) =>
+  Errors.isWalletProviderResponseError(error) && error.code === 'KEY_LOCKED';
+
 /* eslint-disable perfectionist/sort-objects -- NSSAM rejects requests whose fields are not in this order */
 const enrollRequest = (accessToken: string, pin: string) => ({
   cmd: 192,

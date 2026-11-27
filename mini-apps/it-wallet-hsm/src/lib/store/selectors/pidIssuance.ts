@@ -46,6 +46,14 @@ export const selectPidIssuanceErrorType = (state: WalletCombinedRootState) => {
 };
 
 /**
+ * Selects whether the PID obtained by the current issuance flow has been stored.
+ * @param state - The root state
+ * @returns true if the PID has been stored, false otherwise
+ */
+export const selectIsPidIssuanceStored = (state: WalletCombinedRootState) =>
+  state.hsm.pidIssuanceStatus.isPidStored;
+
+/**
  * Selects the pending credential to issue after the Wallet Pid has been obtained
  * @param state - The root state
  * @returns The credential to issue after the wallet is operational

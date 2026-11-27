@@ -19,7 +19,14 @@ import {
 } from '../utils/itwTypesUtils';
 import { resetLifecycle } from './lifecycle';
 
+/**
+ * Steps of the credential issuance flow after the user consented to share the PID with the issuer:
+ * `hsmPasswordRequired` while waiting for the IT-Wallet HSM password, which authorizes the PID presentation,
+ * `authorizing` while the PID is presented and the credential is obtained.
+ */
+export type CredentialIssuanceStep = 'authorizing' | 'hsmPasswordRequired';
 export type RequestedCredential = string | undefined;
+
 /* State type definition for the credentialIssuance slice
  * issuanceCreation - Async status for the instance creation
  * issuance - Async status for the CREDENTIAL issuance
@@ -39,7 +46,11 @@ type CredentialIssuanceStatusSlice = {
    */
   requestedCredentialOffer: ResolvedCredentialOffer | undefined;
   requestedCredentialType: RequestedCredentialType;
-  statusPostAuth: AsyncStatusValues<StoredCredential>;
+  statusPostAuth: AsyncStatusValues<
+    StoredCredential,
+    never,
+    CredentialIssuanceStep
+  >;
   statusPreAuth: AsyncStatusValues<ObtainCredentialPreAuthResult>;
 };
 
@@ -72,6 +83,12 @@ const credentialIssuanceStatusSlice = createSlice({
   name: 'hsm/credentialIssuanceStatus',
   reducers: {
     resetCredentialIssuance: _ => initialState,
+    // Hands the IT-Wallet password entered by the user over to the issuance listener.
+    // The password is the Remote WSCD PIN, thus it is only carried by the action and never stored in the state.
+    setCredentialIssuanceHsmPassword: (
+      _state,
+      _action: PayloadAction<{ password: string }>
+    ) => undefined,
     setCredentialIssuancePostAuthError: (
       state,
       action: PayloadAction<{ error: unknown }>
@@ -80,6 +97,13 @@ const credentialIssuanceStatusSlice = createSlice({
     },
     setCredentialIssuancePostAuthRequest: state => {
       state.statusPostAuth = setLoading();
+    },
+    // Moves the issuance flow to the given step, so the UI can react to its progress
+    setCredentialIssuancePostAuthStep: (
+      state,
+      action: PayloadAction<CredentialIssuanceStep>
+    ) => {
+      state.statusPostAuth = setLoading(action.payload);
     },
     setCredentialIssuancePostAuthSuccess: (
       state,
@@ -132,8 +156,10 @@ const credentialIssuanceStatusSlice = createSlice({
  */
 export const {
   resetCredentialIssuance,
+  setCredentialIssuanceHsmPassword,
   setCredentialIssuancePostAuthError,
   setCredentialIssuancePostAuthRequest,
+  setCredentialIssuancePostAuthStep,
   setCredentialIssuancePostAuthSuccess,
   setCredentialIssuancePreAuthError,
   setCredentialIssuancePreAuthRequest,

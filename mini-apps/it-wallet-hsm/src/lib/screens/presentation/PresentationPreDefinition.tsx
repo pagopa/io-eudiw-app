@@ -82,6 +82,11 @@ const PresentationPreDefinition = ({ route }: Props) => {
             });
           }
           break;
+        case 'REMOTE_KEY_LOCKED':
+          navigation.navigate('MAIN_WALLET_NAV', {
+            screen: 'PRESENTATION_REMOTE_KEY_LOCKED'
+          });
+          break;
         case 'WALLET_NOT_ACTIVE':
           navigation.navigate('MAIN_WALLET_NAV', {
             screen: 'PRESENTATION_WALLET_NOT_ACTIVE'
@@ -108,10 +113,10 @@ const PresentationPreDefinition = ({ route }: Props) => {
 
   return (
     <LoadingScreenContent
-      contentTitle={t('presentation.loading.title', { ns: 'hsm' })}
+      contentTitle={t('presentation.securityChecks.title', { ns: 'hsm' })}
     >
       <Body style={{ textAlign: 'center' }}>
-        {t('presentation.loading.subtitle', { ns: 'hsm' })}
+        {t('presentation.securityChecks.subtitle', { ns: 'hsm' })}
       </Body>
     </LoadingScreenContent>
   );

@@ -15,12 +15,21 @@ import {
   VSpacer,
   VStack
 } from '@pagopa/io-app-design-system';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
+/**
+ * isRecovering is set when the identity is confirmed again to obtain a new PID and a new IT-Wallet password,
+ * for instance after the PID has been locked by too many wrong passwords.
+ */
+export type IdentificationMethodParams = undefined | { isRecovering?: boolean };
+
 export const IdentificationMethod = () => {
   const navigation = useNavigation();
+  const route =
+    useRoute<RouteProp<{ params: IdentificationMethodParams }, 'params'>>();
+  const isRecovering = route.params?.isRecovering ?? false;
   const { t } = useTranslation(['hsm', 'common']);
   const theme = useIOTheme();
 
@@ -76,7 +85,9 @@ export const IdentificationMethod = () => {
       description={t('identification.modeSelection.description.issuance')}
       title={{
         label: t('identification.modeSelection.title.issuance'),
-        section: t('identification.modeSelection.section.issuance')
+        section: isRecovering
+          ? undefined
+          : t('identification.modeSelection.section.issuance')
       }}
     >
       <ContentWrapper>

@@ -11,6 +11,7 @@ import ItwAvatar from '../../../assets/img/brand/itw_avatar.svg';
 import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredentialStatus';
 import { useAppSelector } from '../../store';
 import { itwCredentialsPidStatusSelector } from '../../store/credentials';
+import { selectIsRemoteKeyLocked } from '../../store/instance';
 import { itwCredentialStatusSelector } from '../../store/selectors/wallet';
 import { wellKnownCredential } from '../../utils/credentials';
 import { useCachedImage } from '../../utils/imageCache';
@@ -66,6 +67,8 @@ const ItwPresentationDetailsHeader = ({
   // Credential's header card is always in light mode
   const { color } = useCredentialCardConfig(credential.credentialType, 'light');
   const pidStatus = useAppSelector(itwCredentialsPidStatusSelector);
+  // The PID cannot be used while its Remote WSCD key is locked
+  const isRemoteKeyLocked = useAppSelector(selectIsRemoteKeyLocked);
   const { status: credentialRawStatus } = useAppSelector(state =>
     itwCredentialStatusSelector(state, credential.credentialType)
   );
@@ -91,6 +94,7 @@ const ItwPresentationDetailsHeader = ({
         <ItwCredentialDetailCard
           credentialStatus={displayStatus}
           credentialType={credential.credentialType}
+          isDisabled={isRemoteKeyLocked}
           renderOverlay={renderPidHeaderStars}
           style={styles.pidCard}
         >
@@ -104,11 +108,13 @@ const ItwPresentationDetailsHeader = ({
               width={93}
             />
           </View>
-          {capabilities.showStatusTag && statusTagProps && (
-            <View style={styles.pidStatusTag}>
-              <Tag forceLightMode {...statusTagProps} />
-            </View>
-          )}
+          {capabilities.showStatusTag &&
+            statusTagProps &&
+            !isRemoteKeyLocked && (
+              <View style={styles.pidStatusTag}>
+                <Tag forceLightMode {...statusTagProps} />
+              </View>
+            )}
         </ItwCredentialDetailCard>
       </>
     );

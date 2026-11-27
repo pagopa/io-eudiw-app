@@ -1,8 +1,7 @@
 import { IOScrollView } from '@io-eudiw-app/commons';
 import {
   HeaderActionProps,
-  HeaderFirstLevel,
-  useIOToast
+  HeaderFirstLevel
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
 import { useMemo } from 'react';
@@ -11,8 +10,6 @@ import { useTranslation } from 'react-i18next';
 import { WalletCardsContainer } from '../components/WalletCardsContainer';
 import MAIN_ROUTES from '../navigation/main/routes';
 import WALLET_ROUTES from '../navigation/wallet/routes';
-import { useAppSelector } from '../store';
-import { hasPresentableCredentialsSelector } from '../store/credentials';
 
 /**
  * Wallet home to be rendered as the first page in the tab navigator.
@@ -22,10 +19,6 @@ import { hasPresentableCredentialsSelector } from '../store/credentials';
 const WalletHome = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const toast = useIOToast();
-  const hasPresentableCredentials = useAppSelector(
-    hasPresentableCredentialsSelector
-  );
 
   const actions: HeaderFirstLevel['actions'] = useMemo(
     () => [
@@ -52,24 +45,7 @@ const WalletHome = () => {
         actions={actions}
         title={t('tabNavigator.wallet', { ns: 'hsm' })}
       />
-      <IOScrollView
-        actions={
-          hasPresentableCredentials
-            ? {
-                primary: {
-                  icon: 'productITWallet',
-                  iconPosition: 'end',
-                  label: t('proximity.home.cta', { ns: 'hsm' }),
-                  onPress: () =>
-                    toast.error(t('featureUnavailable', { ns: 'hsm' }))
-                },
-                type: 'SingleButton'
-              }
-            : undefined
-        }
-        centerContent={true}
-        excludeSafeAreaMargins={true}
-      >
+      <IOScrollView centerContent={true} excludeSafeAreaMargins={true}>
         <WalletCardsContainer />
       </IOScrollView>
     </>

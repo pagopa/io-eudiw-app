@@ -1,4 +1,4 @@
-import { IOVisualCostants } from '@pagopa/io-app-design-system';
+import { IOColors, IOVisualCostants } from '@pagopa/io-app-design-system';
 import { Canvas, Rect, Size } from '@shopify/react-native-skia';
 import { PropsWithChildren, ReactNode } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
@@ -19,6 +19,10 @@ type ItwCredentialDetailCardProps = PropsWithChildren<{
   credentialStatus?: ItwCredentialStatus;
   credentialType: string;
   /**
+   * Whether the card is greyed out, e.g. when the credential cannot be used until the identity is confirmed again
+   */
+  isDisabled?: boolean;
+  /**
    * Optional Skia elements drawn between the card background and its border
    */
   renderOverlay?: (size: Size) => ReactNode;
@@ -35,11 +39,11 @@ const POST_HEADER_CONTENT_PADDING = IOVisualCostants.appMarginDefault;
 const SCROLL_HACK_OFFSET = 4;
 // Border radius for the card container and Skia border.
 const CARD_BORDER_RADIUS = 24;
-
 export const ItwCredentialDetailCard = ({
   children,
   credentialStatus = 'valid',
   credentialType,
+  isDisabled = false,
   renderOverlay,
   style
 }: ItwCredentialDetailCardProps) => {
@@ -79,15 +83,31 @@ export const ItwCredentialDetailCard = ({
           )}
           {renderOverlay?.(size)}
 
-          <ItwBrandedSkiaBorder
-            cornerRadius={CARD_BORDER_RADIUS}
-            height={size.height}
-            variant={borderVariantByStatus[credentialStatus]}
-            width={size.width}
-          />
+          {!isDisabled && (
+            <ItwBrandedSkiaBorder
+              cornerRadius={CARD_BORDER_RADIUS}
+              height={size.height}
+              variant={borderVariantByStatus[credentialStatus]}
+              width={size.width}
+            />
+          )}
         </Canvas>
       )}
       <View style={styles.content}>{children}</View>
+      {isDisabled && size && (
+        <>
+          {/* The veil greys out both the background and the content, while the border stays on top of it */}
+          <View pointerEvents="none" style={styles.disabledOverlay} />
+          <Canvas pointerEvents="none" style={StyleSheet.absoluteFill}>
+            <ItwBrandedSkiaBorder
+              cornerRadius={CARD_BORDER_RADIUS}
+              height={size.height}
+              variant="error"
+              width={size.width}
+            />
+          </Canvas>
+        </>
+      )}
     </View>
   );
 };
@@ -104,5 +124,10 @@ const styles = StyleSheet.create({
   content: {
     alignItems: 'center',
     paddingHorizontal: 16
+  },
+  disabledOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: IOColors.white,
+    opacity: 0.7
   }
 });

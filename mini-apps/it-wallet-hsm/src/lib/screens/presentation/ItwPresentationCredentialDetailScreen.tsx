@@ -7,10 +7,9 @@ import {
   useDebugInfo
 } from '@io-eudiw-app/debug-info';
 import {
+  Alert,
   ContentWrapper,
   IOButton,
-  Optional,
-  useIOToast,
   VStack
 } from '@pagopa/io-app-design-system';
 import { useNavigation } from '@react-navigation/native';
@@ -27,10 +26,7 @@ import { ItwPresentationCredentialStatusAlert } from '../../components/presentat
 import { ItwPresentationCredentialUnknownStatus } from '../../components/presentation/ItwPresentationCredentialUnknownStatus';
 import { ItwPresentationDetailsFooter } from '../../components/presentation/ItwPresentationDetailsFooter';
 import { ItwPresentationDetailsHeader } from '../../components/presentation/ItwPresentationDetailsHeader';
-import {
-  CredentialCtaProps,
-  ItwPresentationDetailsScreenBase
-} from '../../components/presentation/ItwPresentationDetailsScreenBase';
+import { ItwPresentationDetailsScreenBase } from '../../components/presentation/ItwPresentationDetailsScreenBase';
 import { useItwDisplayCredentialStatus } from '../../hooks/useItwDisplayCredentialStatus';
 import { MainNavigatorParamsList } from '../../navigation/main/MainStackNavigator';
 import MAIN_ROUTES from '../../navigation/main/routes';
@@ -38,15 +34,13 @@ import WALLET_ROUTES from '../../navigation/wallet/routes';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { useAppSelector } from '../../store';
 import { selectCredential } from '../../store/credentials';
+import { selectIsRemoteKeyLocked } from '../../store/instance';
 import { lifecycleIsValidSelector } from '../../store/lifecycle';
 import { parseClaimsToRecord } from '../../utils/claims';
 import { wellKnownCredential } from '../../utils/credentials';
 import { getCredentialCapabilities } from '../../utils/itwCredentialCapabilities';
 import { getCredentialStatus } from '../../utils/itwCredentialStatusUtils';
-import {
-  CredentialFormat,
-  StoredCredentialMetadata
-} from '../../utils/itwTypesUtils';
+import { StoredCredentialMetadata } from '../../utils/itwTypesUtils';
 
 export type ItwPresentationCredentialDetailNavigationParams = {
   credentialType: string;
@@ -127,12 +121,15 @@ const ItwPresentationCredentialDetail = ({
   const navigation =
     useNavigation<StackNavigationProp<MainNavigatorParamsList>>();
   const isDebugEnabled = useAppSelector(selectIsDebugModeEnabled);
+  // A PID bound to a locked Remote WSCD key is greyed out until the identity is confirmed again
+  const isPidLocked =
+    useAppSelector(selectIsRemoteKeyLocked) &&
+    credential.credentialType === wellKnownCredential.PID;
   const status = getCredentialStatus(credential);
   const displayStatus = useItwDisplayCredentialStatus(status);
   const capabilities = getCredentialCapabilities(credential.credentialType);
 
   const { t } = useTranslation(['hsm', 'common']);
-  const toast = useIOToast();
 
   useDebugInfo(credential);
 
@@ -141,21 +138,6 @@ const ItwPresentationCredentialDetail = ({
   const hasSkeumorphicCard = credentialsWithSkeumorphicCard.includes(
     credential.credentialType
   );
-
-  // The proximity verification CTA is only available for mdoc credentials
-  // (currently only the mDL), which are the ones presentable over proximity.
-  const ctaProps = useMemo<Optional<CredentialCtaProps>>(() => {
-    if (credential.format === CredentialFormat.MDOC) {
-      return {
-        icon: 'productITWallet',
-        iconPosition: 'end',
-        label: t('hsm:presentation.ctas.present'),
-        onPress: () => toast.error(t('hsm:featureUnavailable'))
-      };
-    }
-
-    return undefined;
-  }, [credential.format, t, toast]);
 
   const parsedClaims = useMemo(
     () => parseClaimsToRecord(credential.parsedCredential),
@@ -178,11 +160,7 @@ const ItwPresentationCredentialDetail = ({
   }
 
   return (
-    <ItwPresentationDetailsScreenBase
-      credential={credential}
-      ctaProps={ctaProps}
-      headerTransparent
-    >
+    <ItwPresentationDetailsScreenBase credential={credential} headerTransparent>
       <ItwPresentationDetailsHeader
         capabilities={capabilities}
         credential={credential}
@@ -202,10 +180,24 @@ const ItwPresentationCredentialDetail = ({
       </View>
       <ContentWrapper>
         <VStack space={24}>
-          <ItwPresentationCredentialStatusAlert
-            credential={credential}
-            suppressStatusAlert={capabilities.suppressStatusAlert}
-          />
+          {isPidLocked ? (
+            <Alert
+              action={t('presentation.remoteKeyLocked.detailAlert.action')}
+              content={t('presentation.remoteKeyLocked.detailAlert.content')}
+              onPress={() =>
+                navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+                  params: { isRecovering: true },
+                  screen: WALLET_ROUTES.PID_ISSUANCE.ID_METHOD
+                })
+              }
+              variant="error"
+            />
+          ) : (
+            <ItwPresentationCredentialStatusAlert
+              credential={credential}
+              suppressStatusAlert={capabilities.suppressStatusAlert}
+            />
+          )}
           <ItwPresentationCredentialInfoAlert
             credential={credential}
             infoAlert={capabilities.infoAlert}
@@ -214,10 +206,12 @@ const ItwPresentationCredentialDetail = ({
             credential={credential}
             parsedClaims={parsedClaims}
           />
-          <ItwPresentationDetailsFooter
-            capabilities={capabilities}
-            credential={credential}
-          />
+          {!isPidLocked && (
+            <ItwPresentationDetailsFooter
+              capabilities={capabilities}
+              credential={credential}
+            />
+          )}
           <View style={{ alignItems: 'center' }}>
             <PoweredByItWalletText
               showCertifiedEudiWallet={

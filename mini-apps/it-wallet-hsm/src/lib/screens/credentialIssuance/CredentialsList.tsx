@@ -26,6 +26,7 @@ import {
   setCredentialIssuancePreAuthRequest
 } from '../../store/credentialIssuance';
 import { selectCredentials } from '../../store/credentials';
+import { selectIsRemoteKeyLocked } from '../../store/instance';
 import { lifecycleIsOperationalSelector } from '../../store/lifecycle';
 import { setPendingCredential } from '../../store/pidIssuance';
 import {
@@ -58,6 +59,7 @@ const CredentialsList = () => {
   const isCredentialRequested = (type: string) => requestedCredential === type;
 
   const shouldIssuePidFirst = useAppSelector(lifecycleIsOperationalSelector);
+  const isRemoteKeyLocked = useAppSelector(selectIsRemoteKeyLocked);
   const preAuthStatus = useAppSelector(selectCredentialIssuancePreAuthStatus);
   const isFocused = useIsFocused();
 
@@ -80,6 +82,13 @@ const CredentialsList = () => {
   }, [isFocused, preAuthStatus.error, navigation, shouldIssuePidFirst]);
 
   const onCredentialPress = (credential: string) => {
+    // The issuance requires a PID presentation, which cannot be signed while the Remote WSCD key is locked
+    if (isRemoteKeyLocked) {
+      navigation.navigate(MAIN_ROUTES.WALLET_NAV, {
+        screen: WALLET_ROUTES.PRESENTATION.REMOTE_KEY_LOCKED
+      });
+      return;
+    }
     // Skip the introduction screen for PARI BONUS
     if (credential !== wellKnownCredentialConfigurationIDs.BONUS_PARI) {
       navigation.navigate(MAIN_ROUTES.WALLET_NAV, {

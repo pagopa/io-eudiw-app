@@ -112,12 +112,15 @@ const PidIssuancePassword = ({ navigation }: Props) => {
         <VSpacer size={24} />
         <PasswordField
           accessibilityLabel={t('pidIssuance.password.inputLabel')}
-          editAccessibilityLabel={t('pidIssuance.password.edit')}
           inputRef={inputRef}
           isEditing={isEditing}
           onBlur={stopEditing}
           onChangeText={setPassword}
-          onEditPress={startEditing}
+          rightAction={{
+            editAccessibilityLabel: t('pidIssuance.password.edit'),
+            onEditPress: startEditing,
+            type: 'edit'
+          }}
           value={password}
         />
         {isEditing && (

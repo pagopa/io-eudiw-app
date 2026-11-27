@@ -56,7 +56,7 @@ export const tagPropsByStatus: Partial<Record<ItwCredentialStatus, Tag>> = {
     variant: 'warning'
   },
   unknown: {
-    icon: { color: 'grey-450', name: 'infoFilled' },
+    icon: { color: 'grey', name: 'infoFilled' },
     text: t('credentials.status.unknown', { ns: 'hsm' }),
     variant: 'custom'
   }
@@ -111,28 +111,28 @@ export const useTagPropsByStatus = (): Partial<
   Record<ItwCredentialStatus, Tag>
 > => ({
   expired: {
-    text: t('hsm', 'credentials.status.expired'),
+    text: t('credentials.status.expired', { ns: 'hsm' }),
     variant: 'error'
   },
   expiring: {
-    text: t('hsm', 'credentials.status.expiring'),
+    text: t('credentials.status.expiring', { ns: 'hsm' }),
     variant: 'warning'
   },
   invalid: {
-    text: t('hsm', 'credentials.status.invalid'),
+    text: t('credentials.status.invalid', { ns: 'hsm' }),
     variant: 'error'
   },
   jwtExpired: {
-    text: t('hsm', 'credentials.status.verificationExpired'),
+    text: t('credentials.status.verificationExpired', { ns: 'hsm' }),
     variant: 'error'
   },
   jwtExpiring: {
-    text: t('hsm', 'credentials.status.verificationExpiring'),
+    text: t('credentials.status.verificationExpiring', { ns: 'hsm' }),
     variant: 'warning'
   },
   unknown: {
-    icon: { color: 'grey-450', name: 'infoFilled' },
-    text: t('hsm', 'credentials.status.unknown'),
+    icon: { color: 'grey', name: 'infoFilled' },
+    text: t('credentials.status.unknown', { ns: 'hsm' }),
     variant: 'custom'
   }
 });

@@ -10,7 +10,6 @@ import ItwProximityNfcPresentment from '../../screens/proximity/ItwProximityNfcP
 import ItwProximityPresentmentScreen from '../../screens/proximity/ItwProximityPresentmentScreen';
 import Appearance from '../../screens/settings/Appearance';
 import Preference from '../../screens/settings/Preferences';
-import { ProximityConsents } from '../../screens/settings/ProximityConsents';
 import Settings from '../../screens/settings/Settings';
 // Internal Imports
 import { TabNavigator } from '../tab/TabNavigator';
@@ -32,7 +31,6 @@ export type MainNavigatorParamsList = {
   [MAIN_ROUTES.SETTINGS.MAIN]: undefined;
   [MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE]: undefined;
   [MAIN_ROUTES.SETTINGS.PREFERENCES.MAIN]: undefined;
-  [MAIN_ROUTES.SETTINGS.PROXIMITY]: undefined;
   [MAIN_ROUTES.TAB_NAV]: undefined;
   [MAIN_ROUTES.WALLET_NAV]: NavigatorScreenParams<WalletNavigatorParamsList>;
 };
@@ -112,10 +110,6 @@ export const MainStackNavigator = () => (
       <Stack.Screen
         component={Appearance}
         name={MAIN_ROUTES.SETTINGS.PREFERENCES.APPEARANCE}
-      />
-      <Stack.Screen
-        component={ProximityConsents}
-        name={MAIN_ROUTES.SETTINGS.PROXIMITY}
       />
     </Stack.Navigator>
     <RemotePinPrompt />

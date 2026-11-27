@@ -25,7 +25,12 @@ import {
   itwCredentialsPidSelector,
   setCredentialRemoteKey
 } from '../store/credentials';
-import { selectSessionId } from '../store/instance';
+import {
+  resetRemoteKeyLock,
+  selectIsInstanceLocked,
+  selectSessionId,
+  setInstanceKeyTag
+} from '../store/instance';
 import { Lifecycle, setLifecycle } from '../store/lifecycle';
 import {
   resetPidIssuance,
@@ -33,6 +38,7 @@ import {
   setPidIssuancePassword,
   setPidIssuanceRequest,
   setPidIssuanceStep,
+  setPidIssuanceStored,
   setPidIssuanceSuccess
 } from '../store/pidIssuance';
 import { selectPendingCredential } from '../store/selectors/pidIssuance';
@@ -51,6 +57,7 @@ import {
   getWalletInstanceAttestationThunk
 } from './attestation';
 import { persistCredential } from './credential';
+import { createWalletInstance } from './instance';
 import { createAppAsyncThunk } from './thunk';
 import { AppListenerWithAction, AppStartListening } from './types';
 
@@ -70,6 +77,12 @@ const obtainPidListener: AppListenerWithAction<
       EXPO_PUBLIC_PID_PROVIDER_BASE_URL,
       EXPO_PUBLIC_PID_REDIRECT_URI: redirectUri
     } = getEnv();
+
+    // A locked wallet instance can't enroll new Remote WSCD keys, thus a new one is created to obtain the PID again
+    if (selectIsInstanceLocked(getState())) {
+      const keyTag = await createWalletInstance(selectSessionId(getState()));
+      dispatch(setInstanceKeyTag(keyTag));
+    }
 
     await dispatch(getWalletInstanceAttestationThunk());
 
@@ -281,6 +294,9 @@ const addPidWithAuthListener: AppListenerWithAction<
     listenerApi.dispatch(
       setLifecycle({ lifecycle: Lifecycle.LIFECYCLE_VALID })
     );
+    // The new PID is bound to a new Remote WSCD key, protected by the new password
+    listenerApi.dispatch(resetRemoteKeyLock());
+    listenerApi.dispatch(setPidIssuanceStored());
     // Get the pending required credential to be obtained after the Pid
     const pendingCredential = selectPendingCredential(listenerApi.getState());
     if (pendingCredential?.credential) {

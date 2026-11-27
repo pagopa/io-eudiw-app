@@ -16,6 +16,7 @@ import {
   setCredentialIssuancePreAuthRequest
 } from '../../store/credentialIssuance';
 import { selectCredentials } from '../../store/credentials';
+import { selectIsRemoteKeyLocked } from '../../store/instance';
 import { lifecycleIsOperationalSelector } from '../../store/lifecycle';
 import { ResolvedCredentialOffer } from '../../types';
 import { getCredentialTypeByConfigId } from '../../utils/credentials';
@@ -41,6 +42,8 @@ type Props = StackScreenProps<
  * - otherwise the pre-authorization request is dispatched and the user is taken
  *   to the trust screen.
  *
+ * While the Remote WSCD key is locked the user is taken to the locked key screen.
+ *
  * On resolution failure the user is taken to the credential issuance failure
  * screen.
  */
@@ -49,6 +52,7 @@ const CredentialOffer = ({ navigation, route }: Props) => {
   const dispatch = useAppDispatch();
   const shouldIssuePidFirst = useAppSelector(lifecycleIsOperationalSelector);
   const credentials = useAppSelector(selectCredentials);
+  const isRemoteKeyLocked = useAppSelector(selectIsRemoteKeyLocked);
 
   // Disable the back gesture navigation and the hardware back button while resolving
   useDisableGestureNavigation();
@@ -64,6 +68,12 @@ const CredentialOffer = ({ navigation, route }: Props) => {
     handledRef.current = true;
 
     try {
+      // The issuance requires a PID presentation, which cannot be signed while the Remote WSCD key is locked
+      if (isRemoteKeyLocked) {
+        navigation.replace(WALLET_ROUTES.PRESENTATION.REMOTE_KEY_LOCKED);
+        return;
+      }
+
       const { offer } = route.params;
       const [credentialConfigId] = offer.credential_configuration_ids;
 
@@ -104,7 +114,14 @@ const CredentialOffer = ({ navigation, route }: Props) => {
       dispatch(setCredentialIssuancePreAuthError({ error }));
       navigation.replace(WALLET_ROUTES.CREDENTIAL_ISSUANCE.FAILURE);
     }
-  }, [route.params, shouldIssuePidFirst, credentials, dispatch, navigation]);
+  }, [
+    route.params,
+    shouldIssuePidFirst,
+    credentials,
+    isRemoteKeyLocked,
+    dispatch,
+    navigation
+  ]);
 
   return (
     <LoadingScreenContent contentTitle={t('hsm:credentialOffer.loading.title')}>

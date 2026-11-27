@@ -28,6 +28,11 @@ import { changeRemotePinThunk } from '../../middleware/pid';
 import MAIN_ROUTES from '../../navigation/main/routes';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { itwCredentialsPidSelector } from '../../store/credentials';
+import {
+  resetRemoteKeyLock,
+  selectIsRemoteKeyLocked,
+  setRemoteKeyLocked
+} from '../../store/instance';
 import { resetLifecycle } from '../../store/lifecycle';
 
 type ProfileNavListItem = Pick<
@@ -52,6 +57,7 @@ const Settings = () => {
   const dispatch = useAppDispatch();
   const isDebugModeEnabled = useAppSelector(selectIsDebugModeEnabled);
   const pid = useAppSelector(itwCredentialsPidSelector);
+  const isRemoteKeyLocked = useAppSelector(selectIsRemoteKeyLocked);
   const idResetTap = useRef<ReturnType<typeof setInterval> | undefined>(
     undefined
   );
@@ -74,11 +80,6 @@ const Settings = () => {
       value: t('hsm:settings.changeApp.title')
     },
     {
-      description: t('hsm:settings.proximity.description'),
-      onPress: () => navigation.navigate(MAIN_ROUTES.SETTINGS.PROXIMITY),
-      value: t('hsm:settings.proximity.title')
-    },
-    {
       description: t('hsm:settings.changeRemotePin.description'),
       isHidden: !pid?.remoteKey,
       onPress: () => {
@@ -88,19 +89,40 @@ const Settings = () => {
           .catch(() => toast.error(t('hsm:settings.changeRemotePin.error')));
       },
       value: t('hsm:settings.changeRemotePin.title')
-    },
+    }
+  ].filter(({ isHidden }) => !isHidden);
+
+  // Options only available in debug mode, shown below the debug mode switch
+  const debugNavListItems: readonly ProfileNavListItem[] = [
     {
       description: t('hsm:settings.debug.wallet.description'),
-      isHidden: !isDebugModeEnabled,
       onPress: () => {
         dispatch(resetLifecycle());
         toast.success(t('common:generics.success'));
       },
       value: t('hsm:settings.debug.wallet.title')
     },
+    // Only the local lock state is changed, the Remote WSCD key is left untouched
+    {
+      description: t('hsm:settings.debug.lockRemoteKey.description'),
+      isHidden: !pid?.remoteKey || isRemoteKeyLocked,
+      onPress: () => {
+        dispatch(setRemoteKeyLocked());
+        toast.success(t('common:generics.success'));
+      },
+      value: t('hsm:settings.debug.lockRemoteKey.title')
+    },
+    {
+      description: t('hsm:settings.debug.unlockRemoteKey.description'),
+      isHidden: !isRemoteKeyLocked,
+      onPress: () => {
+        dispatch(resetRemoteKeyLock());
+        toast.success(t('common:generics.success'));
+      },
+      value: t('hsm:settings.debug.unlockRemoteKey.title')
+    },
     {
       description: t('hsm:settings.debug.app.description'),
-      isHidden: !isDebugModeEnabled,
       onPress: () => {
         dispatch(preferencesReset());
         toast.success(t('common:generics.success'));
@@ -191,6 +213,18 @@ const Settings = () => {
           />
         )}
       </ContentWrapper>
+      {isDebugModeEnabled && (
+        <FlatList
+          contentContainerStyle={{
+            paddingHorizontal: IOVisualCostants.appMarginDefault
+          }}
+          data={debugNavListItems}
+          ItemSeparatorComponent={Divider}
+          keyExtractor={keyExtractor}
+          renderItem={renderProfileNavItem}
+          scrollEnabled={false}
+        />
+      )}
     </IOScrollViewWithLargeHeader>
   );
 };

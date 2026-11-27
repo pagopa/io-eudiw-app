@@ -38,6 +38,8 @@ type ItwClaimsSelectorProps = {
   selectedItemIds?: string[];
   /** Enables the selection of items with a checkbox. */
   selectionEnabled?: boolean;
+  /** Overrides the title derived from the credential type. */
+  title?: string;
 };
 
 const ClaimItem = ({
@@ -100,7 +102,8 @@ export const ItwClaimsSelector = ({
   onItemSelected,
   onToggle,
   selectedItemIds,
-  selectionEnabled = false
+  selectionEnabled = false,
+  title
 }: ItwClaimsSelectorProps) => {
   const {
     bodyAnimatedStyle,
@@ -113,7 +116,7 @@ export const ItwClaimsSelector = ({
   } = useAccordionAnimation({ defaultExpanded });
 
   const { background } = useCredentialCardConfig(credentialType);
-  const title = getCredentialNameFromType(credentialType);
+  const headerTitle = title ?? getCredentialNameFromType(credentialType);
 
   // Deduplicate by id so React keys are unique
   const uniqueItems = useMemo(
@@ -152,7 +155,7 @@ export const ItwClaimsSelector = ({
         toggleAccordion();
         onToggle?.(!expanded);
       }}
-      title={title}
+      title={headerTitle}
     >
       <Animated.View style={bodyAnimatedStyle}>
         <View

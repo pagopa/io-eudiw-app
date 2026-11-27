@@ -11,12 +11,12 @@ import { useTranslation } from 'react-i18next';
 import { useItwDismissalDialog } from '../../hooks/useItwDismissalDialog';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { itwCredentialsPidSelector } from '../../store/credentials';
 import {
   resetPidIssuance,
   setPidIssuanceRequest
 } from '../../store/pidIssuance';
 import {
+  selectIsPidIssuanceStored,
   selectPendingCredential,
   selectPidIssuanceStatus
 } from '../../store/selectors/pidIssuance';
@@ -32,7 +32,7 @@ const PidIssuanceRequest = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { error, step } = useAppSelector(selectPidIssuanceStatus);
-  const isPidStored = useAppSelector(itwCredentialsPidSelector) !== undefined;
+  const isPidStored = useAppSelector(selectIsPidIssuanceStored);
   const pendingCredential = useAppSelector(selectPendingCredential);
   const { navigateToWallet } = useNavigateToWalletWithReset();
 

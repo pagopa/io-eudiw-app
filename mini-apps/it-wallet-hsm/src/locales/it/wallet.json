@@ -238,7 +238,7 @@
     },
     "success": {
       "title": "Fatto!",
-      "subtitle": "Ora puoi continuare a usare i servizi sul sito dell'ente."
+      "subtitle": "Ora puoi continuare a usare i servizi richiesti."
     },
     "successWithRedirect": {
       "title": "Fatto!",
@@ -295,7 +295,59 @@
       "primaryAction": "Ho capito"
     },
     "authSource": "PagoPa S.p.A.",
-    "pidAuthSource": "Anagrafe nazionale della popolazione residente - ANPR"
+    "pidAuthSource": "Anagrafe nazionale della popolazione residente - ANPR",
+    "securityChecks": {
+      "title": "Stiamo facendo alcune verifiche di sicurezza",
+      "subtitle": "Attendi qualche secondo…"
+    },
+    "consent": {
+      "title": "Consenti la verifica di questi dati per continuare",
+      "subtitle": "Saranno condivisi con **Comune di Soleluna** solo per il tempo necessario all’accesso ai servizi richiesti.",
+      "pidTitle": "Il tuo ID"
+    },
+    "cancelDialog": {
+      "title": "Vuoi interrompere l’operazione?",
+      "body": "Potrai riprovare in un secondo momento.",
+      "confirm": "Sì, interrompi",
+      "cancel": "No, riprendi"
+    },
+    "hsmPassword": {
+      "title": "Inserisci la tua password di IT-Wallet",
+      "description": "È un passaggio necessario per autorizzare le tue operazioni con il Wallet.",
+      "inputLabel": "Password IT-Wallet",
+      "reveal": "Mostra password",
+      "hide": "Nascondi password",
+      "attempt": "Tentativo {{attempt}}/{{maxAttempts}}",
+      "remainingAttempts": {
+        "one": "Hai ancora 1 tentativo. Se lo esaurisci, dovrai riconfermare la tua identità e ottenere una nuova password.",
+        "many": "Hai ancora {{attempts}} tentativi. Se li esaurisci, dovrai riconfermare la tua identità e ottenere una nuova password."
+      },
+      "forgot": "Hai dimenticato la password?",
+      "primaryAction": "Continua",
+      "bottomSheet": {
+        "title": "Hai dimenticato la password?",
+        "body": "Hai ottenuto la password quando hai attivato IT-Wallet: è composta da almeno {{minLength}} caratteri, tra cui una lettera maiuscola, una lettera minuscola, un numero e un carattere speciale.\nSe hai dimenticato la password, devi ripetere il processo di conferma identità e ottenerne una nuova.",
+        "primaryAction": "Conferma identità"
+      }
+    },
+    "sending": {
+      "title": "Stiamo comunicando i tuoi dati per la verifica",
+      "subtitle": "Attendi qualche secondo…"
+    },
+    "remoteKeyLocked": {
+      "title": "Hai inserito una password errata troppe volte",
+      "subtitle": "Per continuare a usare il tuo portafoglio IT-Wallet devi confermare la tua identità e ottenere una nuova password.",
+      "primaryAction": "Conferma identità",
+      "secondaryAction": "Esci",
+      "alert": {
+        "content": "Conferma la tua identità per continuare a usare IT-Wallet.",
+        "action": "Conferma identità"
+      },
+      "detailAlert": {
+        "content": "Conferma la tua identità per utilizzare il wallet",
+        "action": "Conferma identità"
+      }
+    }
   },
   "bonusPari": {
     "barcode": {
@@ -621,18 +673,17 @@
         "title": "Resetta il portafoglio",
         "description": "Rimuove tutti i documenti dal portafoglio"
       },
+      "lockRemoteKey": {
+        "title": "Simula il blocco dell'HSM",
+        "description": "Blocca localmente il wallet come nel caso di troppi tentativi errati"
+      },
+      "unlockRemoteKey": {
+        "title": "Rimuovi il blocco dell'HSM",
+        "description": "Rimuove il blocco locale dell'HSM"
+      },
       "app": {
         "title": "Resetta l'app",
         "description": "Rimuove tutte le impostazioni e i dati dell'app"
-      }
-    },
-    "proximity": {
-      "title": "Consensi Proximity NFC",
-      "description": "Gestisci i consensi per le presentazioni in prossimità tramite NFC",
-      "screen": {
-        "title": "Consensi approvati",
-        "empty": "Nessun consenso registrato",
-        "delete": "Cancella consenso per {{ rpId }}"
       }
     },
     "changeRemotePin": {

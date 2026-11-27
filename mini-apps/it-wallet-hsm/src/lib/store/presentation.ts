@@ -26,6 +26,17 @@ export type Descriptor = {
 };
 
 /**
+ * Steps of the presentation flow after the user consented to share the requested claims:
+ * `hsmPasswordRequired` while waiting for the IT-Wallet HSM password, required by credentials bound to a Remote WSCD key,
+ * `authorizing` while the presentations are signed with the password entered by the user,
+ * `sending` while the presentations are sent to the Relying Party.
+ */
+export type PresentationStep =
+  | 'authorizing'
+  | 'hsmPasswordRequired'
+  | 'sending';
+
+/**
  * Response type for the authorization request which is the final step of the presentation flow.
  */
 type AuthResponse = {
@@ -40,6 +51,7 @@ type OptionalClaims = Descriptor['descriptor']; // The optional claims selected 
 type PresentationErrors =
   | 'CREDENTIAL_NOT_FOUND'
   | 'PRESENTATION_ERROR'
+  | 'REMOTE_KEY_LOCKED'
   | 'WALLET_NOT_ACTIVE';
 
 /* State type definition for the presentation slice
@@ -50,7 +62,11 @@ type PresentationErrors =
 type PresentationSlice = {
   credentialNotFound?: string;
   optionalCredentials?: string[];
-  postDefinition: AsyncStatusValues<AuthResponse, PresentationErrors>;
+  postDefinition: AsyncStatusValues<
+    AuthResponse,
+    PresentationErrors,
+    PresentationStep
+  >;
   preDefinition: AsyncStatusValues<Descriptor, PresentationErrors>;
   relyingPartyData?: FederationEntity;
 };
@@ -107,6 +123,10 @@ const presentationSlice = createSlice({
        */
       state.postDefinition = setLoading();
     },
+    // Moves the presentation flow to the given step, so the UI can react to its progress
+    setPostDefinitionStep: (state, action: PayloadAction<PresentationStep>) => {
+      state.postDefinition = setLoading(action.payload);
+    },
     setPostDefinitionSuccess: (state, action: PayloadAction<AuthResponse>) => {
       state.postDefinition = setSuccess(action.payload);
     },
@@ -129,7 +149,13 @@ const presentationSlice = createSlice({
     },
     setPreDefinitionSuccess: (state, action: PayloadAction<Descriptor>) => {
       state.preDefinition = setSuccess(action.payload);
-    }
+    },
+    // Hands the IT-Wallet password entered by the user over to the presentation listener.
+    // The password is the Remote WSCD PIN, thus it is only carried by the action and never stored in the state.
+    setPresentationHsmPassword: (
+      _state,
+      _action: PayloadAction<{ password: string }>
+    ) => undefined
   }
 });
 
@@ -143,10 +169,12 @@ export const {
   setPostDefinitionCancel,
   setPostDefinitionError,
   setPostDefinitionRequest,
+  setPostDefinitionStep,
   setPostDefinitionSuccess,
   setPreDefinitionError,
   setPreDefinitionRequest,
-  setPreDefinitionSuccess
+  setPreDefinitionSuccess,
+  setPresentationHsmPassword
 } = presentationSlice.actions;
 
 /**

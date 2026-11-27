@@ -32,8 +32,10 @@ import {
   selectRequestedCredential,
   selectRequestedCredentialIssuerUrl,
   selectRequestedCredentialOffer,
+  setCredentialIssuanceHsmPassword,
   setCredentialIssuancePostAuthError,
   setCredentialIssuancePostAuthRequest,
+  setCredentialIssuancePostAuthStep,
   setCredentialIssuancePostAuthSuccess,
   setCredentialIssuancePreAuthError,
   setCredentialIssuancePreAuthRequest,
@@ -44,7 +46,11 @@ import {
   addCredentialWithIdentification,
   selectCredential
 } from '../store/credentials';
-import { selectSessionId } from '../store/instance';
+import {
+  selectSessionId,
+  setHsmPasswordRemainingAttempts,
+  setRemoteKeyLocked
+} from '../store/instance';
 import { ResolvedCredentialOffer } from '../types';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
 import { wellKnownCredential } from '../utils/credentials';
@@ -64,15 +70,24 @@ import {
   StoredCredentialMetadata
 } from '../utils/itwTypesUtils';
 import {
+  createRemoteSignerFor,
+  getHsmPasswordRemainingAttempts,
+  isRemoteKeyLockedError
+} from '../utils/remoteCrypto';
+import {
   getKeyAttestationThunk,
   getWalletInstanceAttestationThunk
 } from './attestation';
 import { createAppAsyncThunk } from './thunk';
-import { AppListenerWithAction, AppStartListening } from './types';
+import { AppListener, AppListenerWithAction, AppStartListening } from './types';
 
 type DcqlQuery = Parameters<
   RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']
 >[0];
+
+type EvaluatedDcqlQuery = Awaited<
+  ReturnType<RemotePresentation.RemotePresentationApi['evaluateDcqlQuery']>
+>;
 
 type ResolveCredentialOfferThunk = AsyncThunk<
   ResolvedCredentialOffer,
@@ -106,6 +121,54 @@ export const persistCredential = createAppAsyncThunk<
     return metadata;
   }
 );
+/**
+ * Authorizes the presentation of the PID to the issuer.
+ * A PID bound to a Remote WSCD key is authorized by the IT-Wallet password, which is asked again while it is wrong.
+ * @param listenerApi - The listener API
+ * @param pid - The PID to present
+ * @param credentialsToPresent - The credentials to present, with their signers
+ * @param present - Presents the credentials to the issuer
+ * @returns the result of the presentation
+ * @throws if the presentation fails or the Remote WSCD keys get locked
+ */
+const authorizePidPresentation = async <T>(
+  listenerApi: AppListener,
+  pid: StoredCredentialMetadata,
+  credentialsToPresent: EvaluatedDcqlQuery,
+  present: (items: EvaluatedDcqlQuery) => Promise<T>
+): Promise<T> => {
+  const { dispatch, getState, take } = listenerApi;
+  if (!pid.remoteKey) {
+    return present(credentialsToPresent);
+  }
+  const sessionId = selectSessionId(getState());
+  for (;;) {
+    const passwordAction = take(isAnyOf(setCredentialIssuanceHsmPassword));
+    dispatch(setCredentialIssuancePostAuthStep('hsmPasswordRequired'));
+    const [{ payload }] = await passwordAction;
+    dispatch(setCredentialIssuancePostAuthStep('authorizing'));
+    const signer = createRemoteSignerFor(
+      pid.remoteKey,
+      async () => payload.password,
+      sessionId
+    );
+    try {
+      const result = await present(
+        credentialsToPresent.map(c => ({ ...c, signer }))
+      );
+      // A correct password resets the attempts
+      dispatch(setHsmPasswordRemainingAttempts(undefined));
+      return result;
+    } catch (error) {
+      const remainingAttempts = getHsmPasswordRemainingAttempts(error);
+      if (remainingAttempts === undefined) {
+        throw error;
+      }
+      dispatch(setHsmPasswordRemainingAttempts(remainingAttempts));
+    }
+  }
+};
+
 /* Thunk which resolves and validates a credential offer received via deep link
  * or QR code (OID4VCI, see the IT-Wallet credential offer flow). It supports
  * both by-value and by-reference offers and returns the issuer URL and the
@@ -323,13 +386,18 @@ const obtainCredentialListener: AppListenerWithAction<
     await listenerApi.take(isAnyOf(setCredentialIssuancePostAuthRequest));
 
     // Complete the user authorization via form_post.jwt mode
-    const { code } =
-      await wallet.CredentialIssuance.completeUserAuthorizationWithFormPostJwtMode(
-        requestObject,
-        issuerConf,
-        evaluatedDcqlQuery,
-        { wiaSigner }
-      );
+    const { code } = await authorizePidPresentation(
+      listenerApi,
+      pid,
+      evaluatedDcqlQuery,
+      credentialsToPresent =>
+        wallet.CredentialIssuance.completeUserAuthorizationWithFormPostJwtMode(
+          requestObject,
+          issuerConf,
+          credentialsToPresent,
+          { wiaSigner }
+        )
+    );
 
     // Generate the DPoP context which will be used for the whole issuance flow
     await regenerateCryptoKey(DPOP_KEYTAG);
@@ -396,6 +464,12 @@ const obtainCredentialListener: AppListenerWithAction<
   } catch (error) {
     // Ignore if the task was aborted
     if (error instanceof TaskAbortError) {
+      return;
+    }
+    // The third wrong IT-Wallet password locks the Remote WSCD keys, thus the identity must be confirmed again
+    if (isRemoteKeyLockedError(error)) {
+      listenerApi.dispatch(setRemoteKeyLocked());
+      listenerApi.dispatch(resetCredentialIssuance());
       return;
     }
     // We put the error in both the pre and post auth status as we are unsure where the error occurred.

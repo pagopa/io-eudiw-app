@@ -19,11 +19,12 @@ import { useNavigation } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 
 import { ItwDataExchangeIcons } from '../../components/ItwDataExchangeIcons';
 import { ItwClaimsSelector } from '../../components/presentation/ItwClaimsSelector';
 import { useNavigateToWalletWithReset } from '../../hooks/useNavigateToWalletWithReset';
+import { usePresentationCancelDialog } from '../../hooks/usePresentationCancelDialog';
 import { WalletNavigatorParamsList } from '../../navigation/wallet/WalletNavigator';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
@@ -34,6 +35,7 @@ import {
   setPostDefinitionCancel,
   setPostDefinitionRequest
 } from '../../store/presentation';
+import { wellKnownCredential } from '../../utils/credentials';
 import { groupCredentialsByPurpose } from '../../utils/itwRemotePresentationUtils';
 import { EnrichedPresentationDetails } from '../../utils/itwTypesUtils';
 
@@ -76,43 +78,36 @@ const PresentationPostDefinition = ({ route }: Props) => {
     navigateToWallet();
   };
 
-  const cancelAlert = () => {
-    Alert.alert(t('common:cancelOperation.title'), '', [
-      {
-        onPress: cancel,
-        style: 'destructive',
-        text: t('common:cancelOperation.confirm')
-      },
-      {
-        style: 'cancel',
-        text: t('common:cancelOperation.cancel')
-      }
-    ]);
-  };
+  const cancelAlert = usePresentationCancelDialog(cancel);
 
   /**
    * Checks for changes in the post definition status and navigates to the appropriate screen
-   * if the operation was successful or failed.
+   * for the current step of the presentation or its result.
+   * This screen stays mounted until the presentation ends, thus it drives the navigation of the whole flow.
    */
-  /**
-   * Checks for changes in the post definition status and navigates to the appropriate screen
-   * if the operation was successful or failed.
-   */
+  const { error, step, success } = postDefinitionStatus;
   useEffect(() => {
-    if (postDefinitionStatus.success.status) {
+    if (success.status) {
       navigation.navigate('MAIN_WALLET_NAV', {
         screen: 'PRESENTATION_SUCCESS'
       });
-    } else if (postDefinitionStatus.error.status) {
+    } else if (error.status) {
       navigation.navigate('MAIN_WALLET_NAV', {
-        screen: 'PRESENTATION_FAILURE'
+        screen:
+          error.type === 'REMOTE_KEY_LOCKED'
+            ? 'PRESENTATION_REMOTE_KEY_LOCKED'
+            : 'PRESENTATION_FAILURE'
+      });
+    } else if (step === 'hsmPasswordRequired') {
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PRESENTATION_HSM_PASSWORD'
+      });
+    } else if (step === 'sending') {
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PRESENTATION_SENDING'
       });
     }
-  }, [
-    navigation,
-    postDefinitionStatus.error.status,
-    postDefinitionStatus.success.status
-  ]);
+  }, [navigation, error, step, success.status]);
 
   useHeaderSecondLevel({
     goBack: cancelAlert,
@@ -142,6 +137,11 @@ const PresentationPostDefinition = ({ route }: Props) => {
               defaultExpanded
               items={c.claimsToDisplay}
               key={c.id}
+              title={
+                credentialType === wellKnownCredential.PID
+                  ? t('hsm:presentation.consent.pidTitle')
+                  : undefined
+              }
             />
           );
         })}
@@ -166,7 +166,9 @@ const PresentationPostDefinition = ({ route }: Props) => {
         actions: {
           primary: {
             label: t('buttons.continue'),
-            loading: postDefinitionStatus.loading,
+            loading:
+              postDefinitionStatus.loading &&
+              postDefinitionStatus.step === undefined,
             onPress: () => dispatch(setPostDefinitionRequest([]))
           },
           secondary: {
@@ -186,28 +188,19 @@ const PresentationPostDefinition = ({ route }: Props) => {
         />
         <VSpacer size={24} />
         <VStack space={24}>
-          <H2>{t('hsm:presentation.trust.title')}</H2>
-          <IOMarkdown
-            content={t('hsm:presentation.trust.subtitle', {
-              relyingParty: rpConfig?.organization_name
-            })}
-          />
+          <H2>{t('hsm:presentation.consent.title')}</H2>
+          <IOMarkdown content={t('hsm:presentation.consent.subtitle')} />
         </VStack>
         <VSpacer size={24} />
         {required.map(({ credentials, purpose }) => (
           <View key={`required:${purpose}`}>
-            <ListItemHeader
-              description={
-                purpose
-                  ? t('hsm:presentation.trust.purpose', {
-                      purpose
-                    })
-                  : undefined
-              }
-              iconColor={theme['icon-decorative']}
-              iconName="security"
-              label={t('hsm:presentation.trust.requiredClaims')}
-            />
+            {purpose && (
+              <ListItemHeader
+                iconColor={theme['icon-decorative']}
+                iconName="security"
+                label={t('hsm:presentation.trust.purpose', { purpose })}
+              />
+            )}
             <RequestedCredentialsBlock credentials={credentials} />
           </View>
         ))}

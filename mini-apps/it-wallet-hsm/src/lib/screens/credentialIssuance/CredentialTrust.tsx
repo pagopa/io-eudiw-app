@@ -32,6 +32,7 @@ import {
   selectRequestedCredentialType,
   setCredentialIssuancePostAuthRequest
 } from '../../store/credentialIssuance';
+import { selectIsRemoteKeyLocked } from '../../store/instance';
 import { getCredentialNameByType } from '../../utils/credentials';
 import { getCredentialNameFromType } from '../../utils/itwCredentialUtils';
 import { ISSUER_MOCK_NAME } from '../../utils/itwMocksUtils';
@@ -49,8 +50,10 @@ const CredentialTrust = () => {
   const {
     error: postAuthError,
     loading,
+    step,
     success
   } = useAppSelector(selectCredentialIssuancePostAuthStatus);
+  const isRemoteKeyLocked = useAppSelector(selectIsRemoteKeyLocked);
   const requestedCredential = useAppSelector(selectRequestedCredentialType);
   const navigation = useNavigation();
   const { navigateToWallet } = useNavigateToWalletWithReset();
@@ -113,6 +116,28 @@ const CredentialTrust = () => {
       });
     }
   }, [navigation, success.status]);
+
+  /**
+   * The PID is bound to a Remote WSCD key, thus its presentation to the issuer is authorized by the IT-Wallet password
+   */
+  useEffect(() => {
+    if (step === 'hsmPasswordRequired') {
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'CREDENTIAL_ISSUANCE_HSM_PASSWORD'
+      });
+    }
+  }, [navigation, step]);
+
+  /**
+   * The IT-Wallet password has been entered wrong too many times, thus the identity must be confirmed again
+   */
+  useEffect(() => {
+    if (isRemoteKeyLocked) {
+      navigation.navigate('MAIN_WALLET_NAV', {
+        screen: 'PRESENTATION_REMOTE_KEY_LOCKED'
+      });
+    }
+  }, [navigation, isRemoteKeyLocked]);
 
   /**
    * If an error occurs during the pre auth or post auth request, navigate to the error screen.

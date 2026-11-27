@@ -9,6 +9,7 @@ import { PersistConfig, persistReducer } from 'redux-persist';
 
 import { WalletCombinedRootState } from '.';
 import { WALLET_SPEC_VERSION } from '../utils/constants';
+import { setInstanceKeyTag } from './instance';
 import { resetLifecycle } from './lifecycle';
 
 /* State type definition for the attestation slice
@@ -42,6 +43,8 @@ const attestationSlice = createSlice({
     builder.addCase(preferencesReset, () => initialState);
     builder.addCase(resetLifecycle, () => initialState);
     builder.addCase(preferencesSetIsFirstStartupFalse, () => initialState);
+    // The attestations are bound to the wallet instance, thus a new instance invalidates them
+    builder.addCase(setInstanceKeyTag, () => initialState);
   },
   initialState,
   name: 'hsm/attestation',
